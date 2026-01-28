@@ -38,32 +38,33 @@ export function Creative() {
         const bg = backgrounds[i]
         if (!bg) return
 
-        // Simple crossfade - show when panel is in view
+        // Show background when panel is centered, hide well before text changes
         ScrollTrigger.create({
           trigger: panel,
-          start: 'top 60%',
-          end: 'bottom 40%',
-          onEnter: () => gsap.to(bg, { opacity: 1, duration: 0.4, ease: 'power2.out' }),
-          onLeave: () => gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' }),
-          onEnterBack: () => gsap.to(bg, { opacity: 1, duration: 0.4, ease: 'power2.out' }),
-          onLeaveBack: () => gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' }),
+          start: 'top 80%',
+          end: 'bottom 80%',
+          onEnter: () => gsap.to(bg, { opacity: 1, duration: 0.3, ease: 'power2.out' }),
+          onLeave: () => gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' }),
+          onEnterBack: () => gsap.to(bg, { opacity: 1, duration: 0.3, ease: 'power2.out' }),
+          onLeaveBack: () => gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' }),
         })
 
-        // Card content animation
+        // Card content animation - synced with background timing
         const card = panel.querySelector('[data-installation-card]')
         if (card) {
           gsap.fromTo(
             card,
-            { y: 60, opacity: 0 },
+            { y: 40, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              duration: 0.6,
+              duration: 0.4,
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: panel,
-                start: 'top 60%',
-                toggleActions: 'play none none reverse',
+                start: 'top 70%',
+                end: 'bottom 85%',
+                toggleActions: 'play reverse play reverse',
               },
             }
           )
@@ -141,9 +142,6 @@ export function Creative() {
               <article
                 data-installation-card
                 className="max-w-xl"
-                style={{
-                  textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)',
-                }}
               >
                 <span
                   className="inline-block text-xs font-mono uppercase tracking-wider mb-4"
