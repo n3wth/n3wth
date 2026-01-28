@@ -101,6 +101,7 @@ export function Hero() {
   return (
     <section
       ref={containerRef}
+      id="hero"
       className="relative min-h-screen flex items-center px-6 md:px-12"
     >
       {/* Data stream - represents AI/data flowing at scale */}

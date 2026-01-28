@@ -39,6 +39,7 @@ export function Experience() {
 
       // Horizontal scroll animation - snappier scrub
       gsap.to(track, {
+        id: 'horizontalScroll',
         x: -scrollDistance,
         ease: 'none',
         scrollTrigger: {
