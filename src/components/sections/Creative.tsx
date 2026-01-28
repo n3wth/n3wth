@@ -36,39 +36,34 @@ export function Creative() {
 
       panels.forEach((panel, i) => {
         const bg = backgrounds[i]
+        const card = panel.querySelector('[data-installation-card]')
         if (!bg) return
 
-        // Show background when panel is centered, hide well before text changes
+        // Single scroll trigger controls both background and text together
         ScrollTrigger.create({
           trigger: panel,
-          start: 'top 80%',
-          end: 'bottom 80%',
-          onEnter: () => gsap.to(bg, { opacity: 1, duration: 0.3, ease: 'power2.out' }),
-          onLeave: () => gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' }),
-          onEnterBack: () => gsap.to(bg, { opacity: 1, duration: 0.3, ease: 'power2.out' }),
-          onLeaveBack: () => gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' }),
+          start: 'top bottom',
+          end: 'bottom top',
+          onEnter: () => {
+            gsap.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+          },
+          onLeave: () => {
+            gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 0, y: -20, duration: 0.3, ease: 'power2.out' })
+          },
+          onEnterBack: () => {
+            gsap.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+          },
+          onLeaveBack: () => {
+            gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 0, y: 20, duration: 0.3, ease: 'power2.out' })
+          },
         })
 
-        // Card content animation - synced with background timing
-        const card = panel.querySelector('[data-installation-card]')
-        if (card) {
-          gsap.fromTo(
-            card,
-            { y: 40, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.4,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: panel,
-                start: 'top 70%',
-                end: 'bottom 85%',
-                toggleActions: 'play reverse play reverse',
-              },
-            }
-          )
-        }
+        // Set initial state for cards
+        if (card) gsap.set(card, { opacity: 0, y: 40 })
       })
 
     },
