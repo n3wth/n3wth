@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { installations, siteConfig } from '../../data/content'
+import { installations } from '../../data/content'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -71,18 +71,6 @@ export function Creative() {
         }
       })
 
-      // Footer link animation
-      gsap.from('[data-cr-link]', {
-        scrollTrigger: {
-          trigger: '[data-cr-link]',
-          start: 'top 90%',
-          toggleActions: 'play none none reverse',
-        },
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'expo.out',
-      })
     },
     { scope: sectionRef }
   )
@@ -171,36 +159,6 @@ export function Creative() {
           </div>
         ))}
 
-        {/* Footer link */}
-        <div className="section">
-          <div className="mx-auto max-w-6xl px-6 md:px-12">
-            <div data-cr-link className="text-center">
-              <a
-                href={siteConfig.artSite}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 text-base link-hover focus-ring px-6 py-3 rounded-full"
-                style={{ background: '#111111', border: '1px solid #2a2a2a', color: 'var(--color-grey-200)' }}
-              >
-                View all work at newth.art
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M7 17L17 7" />
-                  <path d="M7 7h10v10" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )
