@@ -2,10 +2,10 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { SplitText } from 'gsap/SplitText'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { siteConfig } from '../../data/content'
-import { MagneticButton } from '../MagneticButton'
 
-gsap.registerPlugin(SplitText)
+gsap.registerPlugin(SplitText, ScrollTrigger)
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null)
@@ -50,22 +50,6 @@ export function Hero() {
         { opacity: 0, y: 40 },
         { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
         '-=0.5'
-      )
-
-      // Companies list
-      tl.fromTo(
-        '[data-company-tag]',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
-        '-=0.4'
-      )
-
-      // CTA
-      tl.fromTo(
-        '[data-hero-cta]',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out' },
-        '-=0.2'
       )
 
       // Animated accent shapes
@@ -115,45 +99,10 @@ export function Hero() {
         {/* The hook - human, memorable */}
         <p
           data-hero-tagline
-          className="text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed mb-12 max-w-2xl opacity-0 text-white"
+          className="text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed max-w-2xl opacity-0 text-white"
         >
           I make AI safe at billion-user scale. By day, I integrate DeepMind into Google products. By night, I build things that glow in the desert.
         </p>
-
-        {/* The proof - where you've done it */}
-        <div className="flex flex-wrap items-center gap-2 mb-12">
-          <span
-            data-company-tag
-            className="text-sm opacity-0 text-white"
-          >
-            AI Product at Google.
-          </span>
-          <span
-            data-company-tag
-            className="text-sm opacity-0 text-white"
-          >
-            Previously Meta, Microsoft, Covariant.
-          </span>
-        </div>
-
-        {/* CTAs */}
-        <div className="flex flex-wrap items-center gap-6">
-          <MagneticButton
-            href="#work"
-            className="text-sm text-white px-6 py-3 rounded-full focus-ring opacity-0"
-            style={{
-              background: '#111111',
-              border: '1px solid #2a2a2a',
-            }}
-            strength={0.4}
-            data-hero-cta
-          >
-            See my work
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M7 17L17 7M7 7h10v10" />
-            </svg>
-          </MagneticButton>
-        </div>
       </div>
 
       {/* Animated geometric accents */}

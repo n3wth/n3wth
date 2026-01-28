@@ -33,32 +33,54 @@ export function Creative() {
       // Each installation panel triggers its background
       const panels = gsap.utils.toArray<HTMLElement>('[data-installation-panel]')
       const backgrounds = gsap.utils.toArray<HTMLElement>('[data-installation-bg]')
+      const backgroundsContainer = backgroundsRef.current
+
+      // Helper to hide all backgrounds
+      const hideAllBackgrounds = () => {
+        backgrounds.forEach(bg => {
+          gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+        })
+      }
+
+      // Master trigger: hide all backgrounds when section is not in view
+      // This prevents backgrounds from showing in Contact/Footer sections
+      if (backgroundsContainer) {
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          onLeave: hideAllBackgrounds,
+          onLeaveBack: hideAllBackgrounds,
+        })
+      }
 
       panels.forEach((panel, i) => {
         const bg = backgrounds[i]
         const card = panel.querySelector('[data-installation-card]')
         if (!bg) return
 
-        // Single scroll trigger controls both background and text together
+        // Each panel controls its own background
         ScrollTrigger.create({
           trigger: panel,
-          start: 'top bottom',
-          end: 'bottom top',
+          start: 'top 60%',    // panel enters viewport
+          end: 'bottom 40%',   // panel leaves viewport
           onEnter: () => {
-            gsap.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+            hideAllBackgrounds()
+            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
           },
           onLeave: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 0, y: -20, duration: 0.3, ease: 'power2.out' })
+            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 0, y: -30, duration: 0.4, ease: 'power2.out' })
           },
           onEnterBack: () => {
-            gsap.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+            hideAllBackgrounds()
+            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
           },
           onLeaveBack: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 0, y: 20, duration: 0.3, ease: 'power2.out' })
+            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 0, y: 30, duration: 0.4, ease: 'power2.out' })
           },
         })
 
