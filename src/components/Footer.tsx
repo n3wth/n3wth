@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer className="py-12 md:py-16">
       <div className="mx-auto max-w-6xl px-6 md:px-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="flex items-center gap-6">
             <span className="font-display text-sm font-medium text-white">
               {siteConfig.name}

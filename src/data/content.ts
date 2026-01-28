@@ -5,7 +5,7 @@ export const siteConfig = {
   email: 'oliver@newth.ai',
   social: {
     github: 'https://github.com/n3wth',
-    linkedin: 'https://linkedin.com/in/olivernewth',
+    linkedin: 'https://linkedin.com/in/newth',
   },
   artSite: 'https://newth.art',
 }
