@@ -129,7 +129,7 @@ export function Contact() {
       className="section relative min-h-screen flex items-center"
     >
       <div className="mx-auto max-w-6xl px-6 md:px-12 w-full">
-        <div className="text-center max-w-3xl mx-auto">
+        <div className="max-w-3xl">
           <p
             data-contact-label
             className="label mb-8 tracking-[0.2em]"
@@ -148,10 +148,10 @@ export function Contact() {
 
           <p
             data-contact-desc
-            className="text-lg md:text-xl leading-relaxed mb-12 max-w-xl mx-auto"
-            style={{ color: 'var(--color-grey-200)' }}
+            className="text-lg md:text-xl leading-relaxed mb-12 max-w-xl"
+            style={{ color: 'var(--color-grey-300)' }}
           >
-            Whether it's AI safety at scale, building something that lights up, or just grabbing coffee in SF.
+            AI safety, LED art, or coffee in San Francisco.
           </p>
 
           {/* Main CTA */}
@@ -179,7 +179,7 @@ export function Contact() {
           </a>
 
           {/* Social links */}
-          <div className="flex items-center justify-center gap-8 mt-16">
+          <div className="flex items-center gap-8 mt-16">
             <a
               data-social-link
               href={siteConfig.social.github}

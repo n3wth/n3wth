@@ -38,21 +38,21 @@ export function Experience() {
       const scrollDistance = track.scrollWidth - window.innerWidth + 100
 
       // Horizontal scroll animation with smooth easing
-      gsap.to(track, {
+      const horizontalScroll = gsap.to(track, {
         x: -scrollDistance,
         ease: 'power1.inOut',
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: () => `+=${scrollDistance * 1.2}`,  // Longer scroll distance for smoother feel
+          end: () => `+=${scrollDistance * 1.2}`,
           pin: true,
-          scrub: 1.5,  // Smoother scrub for more natural easing
+          scrub: 1.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       })
 
-      // Animate each role panel
+      // Animate each role panel using the horizontal scroll as container
       const panels = gsap.utils.toArray<HTMLElement>('[data-role-card]')
       panels.forEach((panel) => {
         // Company name reveal
@@ -68,7 +68,7 @@ export function Experience() {
               start: 'left 90%',
               end: 'left 50%',
               scrub: 0.3,
-              containerAnimation: gsap.getById('horizontalScroll') as gsap.core.Animation,
+              containerAnimation: horizontalScroll,
             },
           }
         )
@@ -87,7 +87,7 @@ export function Experience() {
               start: 'left 80%',
               end: 'left 40%',
               scrub: 0.3,
-              containerAnimation: gsap.getById('horizontalScroll') as gsap.core.Animation,
+              containerAnimation: horizontalScroll,
             },
           }
         )

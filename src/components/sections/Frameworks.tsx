@@ -64,12 +64,13 @@ export function Frameworks() {
         </div>
 
         {/* Principles - simple, focused on content */}
-        <div data-principles className="space-y-12 md:space-y-16">
+        <div data-principles className="space-y-8 md:space-y-10">
           {frameworks.map((fw, index) => (
             <article
               key={fw.id}
               data-principle
-              className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8"
+              className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 pt-8 md:pt-10"
+              style={{ borderTop: '1px solid var(--glass-border)' }}
             >
               {/* Number */}
               <div className="md:col-span-1">

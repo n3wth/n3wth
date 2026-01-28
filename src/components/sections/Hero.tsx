@@ -101,7 +101,7 @@ export function Hero() {
           data-hero-tagline
           className="text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed max-w-2xl opacity-0 text-white"
         >
-          I make AI safe at billion-user scale. By day, I integrate DeepMind into Google products. By night, I build things that glow in the desert.
+          AI safety at Google. LED art in the desert. Building at the intersection of trust and wonder.
         </p>
       </div>
 
