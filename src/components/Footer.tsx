@@ -33,15 +33,6 @@ export function Footer() {
             >
               LinkedIn
             </a>
-            <a
-              href={siteConfig.artSite}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm link-hover focus-ring rounded"
-              style={{ color: 'var(--color-grey-400)' }}
-            >
-              Art
-            </a>
           </div>
         </div>
       </div>

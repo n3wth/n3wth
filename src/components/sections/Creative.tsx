@@ -39,26 +39,35 @@ export function Creative() {
         const card = panel.querySelector('[data-installation-card]')
         if (!bg) return
 
-        // Single scroll trigger controls both background and text together
+        // Tighter trigger zone: only active when panel center is in viewport
+        // This prevents multiple panels being active simultaneously
         ScrollTrigger.create({
           trigger: panel,
-          start: 'top bottom',
-          end: 'bottom top',
+          start: 'top 50%',    // panel top hits middle of viewport
+          end: 'bottom 50%',   // panel bottom hits middle of viewport
           onEnter: () => {
-            gsap.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+            // Fade out all other backgrounds first
+            backgrounds.forEach((b, j) => {
+              if (j !== i) gsap.to(b, { opacity: 0, duration: 0.3, ease: 'power2.out' })
+            })
+            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
           },
           onLeave: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 0, y: -20, duration: 0.3, ease: 'power2.out' })
+            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 0, y: -30, duration: 0.4, ease: 'power2.out' })
           },
           onEnterBack: () => {
-            gsap.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+            // Fade out all other backgrounds first
+            backgrounds.forEach((b, j) => {
+              if (j !== i) gsap.to(b, { opacity: 0, duration: 0.3, ease: 'power2.out' })
+            })
+            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
           },
           onLeaveBack: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 0, y: 20, duration: 0.3, ease: 'power2.out' })
+            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 0, y: 30, duration: 0.4, ease: 'power2.out' })
           },
         })
 

@@ -37,16 +37,16 @@ export function Experience() {
       const track = trackRef.current
       const scrollDistance = track.scrollWidth - window.innerWidth + 100
 
-      // Horizontal scroll animation - snappier scrub
+      // Horizontal scroll animation with smooth easing
       gsap.to(track, {
         x: -scrollDistance,
-        ease: 'none',
+        ease: 'power1.inOut',
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: () => `+=${scrollDistance}`,
+          end: () => `+=${scrollDistance * 1.2}`,  // Longer scroll distance for smoother feel
           pin: true,
-          scrub: 0.5,
+          scrub: 1.5,  // Smoother scrub for more natural easing
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
