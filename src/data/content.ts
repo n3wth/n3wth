@@ -130,6 +130,7 @@ export interface Installation {
   type: 'burning-man' | 'public-art' | 'memorial' | 'interactive'
   image: string
   imageAlt: string
+  lightBg?: boolean
 }
 
 export const installations: Installation[] = [
@@ -152,6 +153,7 @@ export const installations: Installation[] = [
     type: 'burning-man',
     image: '/images/installations/them.jpg',
     imageAlt: 'THEM sculpture at Burning Man casting dramatic shadows on desert floor',
+    lightBg: true,
   },
   {
     id: 'circle-of-light',

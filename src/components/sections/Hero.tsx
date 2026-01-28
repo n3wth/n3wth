@@ -3,7 +3,6 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { siteConfig } from '../../data/content'
-import { DataStream } from '../DataStream'
 import { MagneticButton } from '../MagneticButton'
 
 gsap.registerPlugin(SplitText)
@@ -103,9 +102,6 @@ export function Hero() {
       ref={containerRef}
       className="relative min-h-screen flex items-center px-6 md:px-12"
     >
-      {/* Data stream - represents AI/data flowing at scale */}
-      <DataStream />
-
       <div className="w-full max-w-6xl relative z-10">
         {/* Name - the anchor */}
         <h1
@@ -119,48 +115,25 @@ export function Hero() {
         {/* The hook - human, memorable */}
         <p
           data-hero-tagline
-          className="text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed mb-12 max-w-2xl opacity-0"
-          style={{ color: 'var(--color-grey-200)' }}
+          className="text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed mb-12 max-w-2xl opacity-0 text-white"
         >
-          I make AI safe at billion-user scale.
-          <span style={{ color: 'var(--color-grey-400)' }}>
-            {' '}By day, I integrate DeepMind into Google products. By night, I build things that glow in the desert.
-          </span>
+          I make AI safe at billion-user scale. By day, I integrate DeepMind into Google products. By night, I build things that glow in the desert.
         </p>
 
         {/* The proof - where you've done it */}
-        <div className="flex flex-wrap items-center gap-3 mb-12">
+        <div className="flex flex-wrap items-center gap-2 mb-12">
           <span
             data-company-tag
-            className="text-sm opacity-0"
-            style={{ color: 'var(--color-grey-500)' }}
+            className="text-sm opacity-0 text-white"
           >
-            Currently
+            AI Product at Google.
           </span>
           <span
             data-company-tag
-            className="text-sm font-medium opacity-0"
-            style={{ color: 'var(--color-grey-300)' }}
+            className="text-sm opacity-0 text-white"
           >
-            Google
+            Previously Meta, Microsoft, Covariant.
           </span>
-          <span
-            data-company-tag
-            className="text-sm opacity-0"
-            style={{ color: 'var(--color-grey-600)' }}
-          >
-            Previously
-          </span>
-          {['Meta', 'Microsoft', 'Covariant'].map((company, i) => (
-            <span
-              key={company}
-              data-company-tag
-              className="text-sm font-medium opacity-0"
-              style={{ color: 'var(--color-grey-400)' }}
-            >
-              {company}{i < 2 && <span style={{ color: 'var(--color-grey-600)' }}>&nbsp;·&nbsp;</span>}
-            </span>
-          ))}
         </div>
 
         {/* CTAs */}
@@ -179,15 +152,6 @@ export function Hero() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M7 17L17 7M7 7h10v10" />
             </svg>
-          </MagneticButton>
-          <MagneticButton
-            href={`mailto:${siteConfig.email}`}
-            className="text-sm link-hover opacity-0 focus-ring rounded"
-            style={{ color: 'var(--color-grey-400)' }}
-            strength={0.2}
-            data-hero-cta
-          >
-            {siteConfig.email}
           </MagneticButton>
         </div>
       </div>
@@ -229,8 +193,7 @@ export function Hero() {
 
       {/* Scroll indicator - aligned with content */}
       <div
-        className="absolute bottom-8 left-6 md:left-12 flex items-center gap-3"
-        style={{ color: 'var(--color-grey-600)' }}
+        className="absolute bottom-8 left-6 md:left-12 flex items-center gap-3 text-white"
       >
         <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" strokeWidth="1">
           <path d="M8 4v16M4 16l4 4 4-4" />

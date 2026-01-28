@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { installations, siteConfig } from '../../data/content'
+import { installations } from '../../data/content'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -36,52 +36,36 @@ export function Creative() {
 
       panels.forEach((panel, i) => {
         const bg = backgrounds[i]
+        const card = panel.querySelector('[data-installation-card]')
         if (!bg) return
 
-        // Simple crossfade - show when panel is in view
+        // Single scroll trigger controls both background and text together
         ScrollTrigger.create({
           trigger: panel,
-          start: 'top 60%',
-          end: 'bottom 40%',
-          onEnter: () => gsap.to(bg, { opacity: 1, duration: 0.4, ease: 'power2.out' }),
-          onLeave: () => gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' }),
-          onEnterBack: () => gsap.to(bg, { opacity: 1, duration: 0.4, ease: 'power2.out' }),
-          onLeaveBack: () => gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' }),
+          start: 'top bottom',
+          end: 'bottom top',
+          onEnter: () => {
+            gsap.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+          },
+          onLeave: () => {
+            gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 0, y: -20, duration: 0.3, ease: 'power2.out' })
+          },
+          onEnterBack: () => {
+            gsap.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+          },
+          onLeaveBack: () => {
+            gsap.to(bg, { opacity: 0, duration: 0.3, ease: 'power2.out' })
+            if (card) gsap.to(card, { opacity: 0, y: 20, duration: 0.3, ease: 'power2.out' })
+          },
         })
 
-        // Card content animation
-        const card = panel.querySelector('[data-installation-card]')
-        if (card) {
-          gsap.fromTo(
-            card,
-            { y: 60, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.6,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: panel,
-                start: 'top 60%',
-                toggleActions: 'play none none reverse',
-              },
-            }
-          )
-        }
+        // Set initial state for cards
+        if (card) gsap.set(card, { opacity: 0, y: 40 })
       })
 
-      // Footer link animation
-      gsap.from('[data-cr-link]', {
-        scrollTrigger: {
-          trigger: '[data-cr-link]',
-          start: 'top 90%',
-          toggleActions: 'play none none reverse',
-        },
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'expo.out',
-      })
     },
     { scope: sectionRef }
   )
@@ -131,78 +115,52 @@ export function Creative() {
         </div>
 
         {/* Installation panels - each one is fullscreen height */}
-        {installations.map((inst) => (
-          <div
-            key={inst.id}
-            data-installation-panel
-            className="min-h-screen flex items-end relative"
-          >
-            <div className="mx-auto max-w-6xl px-6 md:px-12 w-full py-16 md:py-24">
-              <article
-                data-installation-card
-                className="max-w-xl"
-                style={{
-                  textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)',
-                }}
-              >
-                <span
-                  className="inline-block text-xs font-mono uppercase tracking-wider mb-4"
-                  style={{ color: 'rgba(255,255,255,0.7)' }}
+        {installations.map((inst) => {
+          const textColor = inst.lightBg ? 'black' : 'white'
+          return (
+            <div
+              key={inst.id}
+              data-installation-panel
+              data-light-bg={inst.lightBg ? 'true' : undefined}
+              className="min-h-screen flex items-center relative"
+            >
+              <div className="mx-auto max-w-6xl px-6 md:px-12 w-full py-16 md:py-24">
+                <article
+                  data-installation-card
+                  className="max-w-xl"
                 >
-                  {inst.type.replace('-', ' ')}
-                </span>
+                  <span
+                    className="inline-block text-xs font-mono uppercase tracking-wider mb-4"
+                    style={{ color: textColor, opacity: 0.7 }}
+                  >
+                    {inst.type.replace('-', ' ')}
+                  </span>
 
-                <h3 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white mb-3 tracking-tight">
-                  {inst.title}
-                </h3>
+                  <h3
+                    className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-3 tracking-tight"
+                    style={{ color: textColor }}
+                  >
+                    {inst.title}
+                  </h3>
 
-                <p
-                  className="text-base sm:text-lg leading-relaxed mb-6"
-                  style={{ color: 'rgba(255,255,255,0.85)' }}
-                >
-                  {inst.tagline}
-                </p>
+                  <p
+                    className="text-base sm:text-lg leading-relaxed mb-6"
+                    style={{ color: textColor, opacity: 0.85 }}
+                  >
+                    {inst.tagline}
+                  </p>
 
-                <div className="flex items-center gap-3 text-sm">
-                  <span style={{ color: 'rgba(255,255,255,0.9)' }}>{inst.year}</span>
-                  <span style={{ color: 'rgba(255,255,255,0.4)' }}>/</span>
-                  <span style={{ color: 'rgba(255,255,255,0.7)' }}>{inst.location}</span>
-                </div>
-              </article>
+                  <div className="flex items-center gap-3 text-sm">
+                    <span style={{ color: textColor, opacity: 0.9 }}>{inst.year}</span>
+                    <span style={{ color: textColor, opacity: 0.4 }}>/</span>
+                    <span style={{ color: textColor, opacity: 0.7 }}>{inst.location}</span>
+                  </div>
+                </article>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
 
-        {/* Footer link */}
-        <div className="section">
-          <div className="mx-auto max-w-6xl px-6 md:px-12">
-            <div data-cr-link className="text-center">
-              <a
-                href={siteConfig.artSite}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 text-base link-hover focus-ring px-6 py-3 rounded-full"
-                style={{ background: '#111111', border: '1px solid #2a2a2a', color: 'var(--color-grey-200)' }}
-              >
-                View all work at newth.art
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M7 17L17 7" />
-                  <path d="M7 7h10v10" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

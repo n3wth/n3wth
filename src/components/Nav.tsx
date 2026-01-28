@@ -56,10 +56,10 @@ export function Nav() {
     const creativeSection = document.getElementById('creative')
     if (!creativeSection) return
 
-    // Find all installation panels within creative
-    const panels = creativeSection.querySelectorAll('[data-installation-panel]')
+    // Find only light background panels
+    const lightPanels = creativeSection.querySelectorAll('[data-light-bg="true"]')
 
-    panels.forEach((panel) => {
+    lightPanels.forEach((panel) => {
       ScrollTrigger.create({
         trigger: panel,
         start: 'top top',
@@ -113,15 +113,6 @@ export function Nav() {
               {item.name}
             </a>
           ))}
-          <a
-            href={siteConfig.artSite}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm link-hover transition-colors duration-500"
-            style={{ color: textColor }}
-          >
-            Art
-          </a>
         </div>
 
         <button
@@ -168,31 +159,6 @@ export function Nav() {
                 {item.name}
               </a>
             ))}
-            <a
-              href={siteConfig.artSite}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={closeMenu}
-              className="mobile-nav-link text-lg py-4 px-4 rounded-xl min-h-[52px] flex items-center text-white"
-            >
-              Art
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="ml-2 opacity-50"
-              >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg>
-            </a>
           </div>
 
           <div className="mt-auto pt-6 border-t" style={{ borderColor: 'var(--glass-border)' }}>
