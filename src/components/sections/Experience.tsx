@@ -1,121 +1,204 @@
-import { useRef, useEffect } from 'react'
-import { gsap, ANIMATION_CONFIG } from '../../lib/animations'
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { experiences } from '../../data/content'
-import { Badge } from '../ui/Badge'
-import { SectionDivider } from '../ui/SectionDivider'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export function Experience() {
   const sectionRef = useRef<HTMLElement>(null)
-  const headerRef = useRef<HTMLDivElement>(null)
-  const itemsRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches
+      if (prefersReducedMotion) return
+
+      if (!containerRef.current || !trackRef.current) return
+
       // Header animation
-      gsap.from(headerRef.current, {
+      gsap.from('[data-exp-header]', {
+        scrollTrigger: {
+          trigger: '[data-exp-header]',
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
         y: 40,
         opacity: 0,
-        duration: ANIMATION_CONFIG.duration.slow,
-        ease: ANIMATION_CONFIG.ease.smooth,
+        duration: 0.8,
+        ease: 'power3.out',
+      })
+
+      // Calculate scroll distance for horizontal scroll
+      const track = trackRef.current
+      const scrollDistance = track.scrollWidth - window.innerWidth + 100
+
+      // Horizontal scroll animation - snappier scrub
+      gsap.to(track, {
+        x: -scrollDistance,
+        ease: 'none',
         scrollTrigger: {
-          trigger: headerRef.current,
-          start: ANIMATION_CONFIG.scroll.start,
-          once: true,
+          trigger: containerRef.current,
+          start: 'top top',
+          end: () => `+=${scrollDistance}`,
+          pin: true,
+          scrub: 0.5,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       })
 
-      // Timeline items animation
-      const items = itemsRef.current?.querySelectorAll('.timeline-item')
-      items?.forEach((item, index) => {
-        gsap.from(item, {
-          y: 40,
-          opacity: 0,
-          duration: ANIMATION_CONFIG.duration.normal,
-          ease: ANIMATION_CONFIG.ease.smooth,
-          delay: index * ANIMATION_CONFIG.stagger.normal,
-          scrollTrigger: {
-            trigger: item,
-            start: ANIMATION_CONFIG.scroll.start,
-            once: true,
-          },
-        })
-      })
-    }, sectionRef)
+      // Animate each role panel
+      const panels = gsap.utils.toArray<HTMLElement>('[data-role-card]')
+      panels.forEach((panel) => {
+        // Company name reveal
+        gsap.fromTo(
+          panel.querySelector('[data-company]'),
+          { x: 100, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: panel,
+              start: 'left 90%',
+              end: 'left 50%',
+              scrub: 0.3,
+              containerAnimation: gsap.getById('horizontalScroll') as gsap.core.Animation,
+            },
+          }
+        )
 
-    return () => ctx.revert()
-  }, [])
+        // Details stagger in
+        gsap.fromTo(
+          panel.querySelectorAll('[data-detail]'),
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.05,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: panel,
+              start: 'left 80%',
+              end: 'left 40%',
+              scrub: 0.3,
+              containerAnimation: gsap.getById('horizontalScroll') as gsap.core.Animation,
+            },
+          }
+        )
+      })
+    },
+    { scope: sectionRef }
+  )
 
   return (
-    <section
-      ref={sectionRef}
-      id="work"
-      className="section-padding bg-obsidian-50/50"
-    >
-      <div className="container-narrow">
-        <div ref={headerRef} className="text-center mb-16">
-          <Badge className="mb-4">Experience</Badge>
-          <h2 className="text-display-sm md:text-display-md font-bold text-white mb-4">
-            Building AI at Scale
-          </h2>
-          <p className="text-lg text-white/60 max-w-2xl mx-auto">
-            Over a decade of product leadership at the world's largest technology companies,
-            shipping AI products to billions of users.
-          </p>
-        </div>
-
-        <div ref={itemsRef} className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-gold/50 via-gold/20 to-transparent md:-translate-x-1/2" />
-
-          {experiences.map((exp, index) => (
-            <div
-              key={exp.id}
-              className={`timeline-item relative pl-8 md:pl-0 pb-12 last:pb-0 ${
-                index % 2 === 0 ? 'md:pr-[50%] md:text-right' : 'md:pl-[50%] md:text-left'
-              }`}
-            >
-              {/* Timeline dot */}
-              <div
-                className={`absolute left-0 md:left-1/2 w-3 h-3 rounded-full bg-gold shadow-glow-gold md:-translate-x-1/2 ${
-                  index === 0 ? 'ring-4 ring-gold/20' : ''
-                }`}
-              />
-
-              <div
-                className={`${
-                  index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'
-                }`}
-              >
-                <span className="text-sm text-gold font-medium">{exp.period}</span>
-                <h3 className="text-xl font-semibold text-white mt-1">{exp.role}</h3>
-                <p className="text-white/60 font-medium">{exp.company}</p>
-                <p className="text-white/50 mt-3 text-sm">{exp.description}</p>
-
-                <ul className={`mt-4 space-y-2 ${index % 2 === 0 ? 'md:text-right' : ''}`}>
-                  {exp.achievements.map((achievement, i) => (
-                    <li key={i} className="text-sm text-white/40 flex items-start gap-2">
-                      <span className={`text-gold mt-1.5 ${index % 2 === 0 ? 'md:order-last' : ''}`}>
-                        &bull;
-                      </span>
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className={`flex flex-wrap gap-2 mt-4 ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
-                  {exp.tech.map((tech) => (
-                    <Badge key={tech} variant="secondary">
-                      {tech}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
+    <section ref={sectionRef} id="work" className="relative">
+      {/* Header */}
+      <div className="section pb-0">
+        <div className="mx-auto max-w-6xl px-6 md:px-12">
+          <div data-exp-header className="mb-16 md:mb-20">
+            <p className="label mb-4">Experience</p>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1]">
+              Building AI products
+              <br />
+              at billion-user scale
+            </h2>
+          </div>
         </div>
       </div>
 
-      <SectionDivider className="mt-20" />
+      {/* Horizontal scroll container */}
+      <div ref={containerRef} className="relative h-screen overflow-hidden">
+        {/* Horizontal track */}
+        <div
+          ref={trackRef}
+          className="flex items-center h-full"
+          style={{ width: 'max-content' }}
+        >
+          {/* Initial spacer */}
+          <div className="w-[8vw] shrink-0" />
+
+          {experiences.map((exp) => (
+            <article
+              key={exp.id}
+              data-role-card
+              className="relative w-[85vw] md:w-[70vw] lg:w-[55vw] shrink-0 h-full flex items-center"
+            >
+              {/* Vertical accent line */}
+              <div
+                className="absolute left-0 top-1/4 bottom-1/4 w-[3px]"
+                style={{ background: 'var(--color-white)' }}
+              />
+
+              {/* Content */}
+              <div className="pl-8 md:pl-12 pr-16 md:pr-24">
+                {/* Period - large monospace */}
+                <div data-detail className="mb-6">
+                  <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: 'var(--color-grey-400)' }}>
+                    {exp.period}
+                  </span>
+                </div>
+
+                {/* Company - massive */}
+                <h3
+                  data-company
+                  className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[9rem] font-semibold text-white tracking-tighter leading-[0.9] mb-6"
+                >
+                  {exp.company}
+                </h3>
+
+                {/* Role */}
+                <p
+                  data-detail
+                  className="font-display text-xl md:text-2xl lg:text-3xl font-medium mb-6"
+                  style={{ color: 'var(--color-grey-100)' }}
+                >
+                  {exp.role}
+                </p>
+
+                {/* Description */}
+                <p
+                  data-detail
+                  className="text-base md:text-lg leading-relaxed max-w-lg mb-8"
+                  style={{ color: 'var(--color-grey-300)' }}
+                >
+                  {exp.description}
+                </p>
+
+                {/* Tech - simple inline list */}
+                <div data-detail className="flex flex-wrap gap-x-4 gap-y-2">
+                  {exp.tech.map((t, i) => (
+                    <span
+                      key={t}
+                      className="text-xs font-mono uppercase tracking-wider"
+                      style={{ color: 'var(--color-grey-500)' }}
+                    >
+                      {t}{i < exp.tech.length - 1 && <span className="ml-4">/</span>}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+            </article>
+          ))}
+
+          {/* End spacer */}
+          <div className="w-[15vw] shrink-0" />
+        </div>
+
+        {/* Scroll hint */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ color: 'var(--color-grey-500)' }}>
+          <span className="text-xs font-mono uppercase tracking-[0.2em]">Scroll</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
     </section>
   )
 }

@@ -1,10 +1,9 @@
 export const siteConfig = {
   name: 'Oliver Newth',
   title: 'Oliver Newth - AI Product Leader',
-  description: 'Product strategy for AI at billion-user scale',
+  description: 'AI safety and Trust & Safety at billion-user scale. Google I/O speaker.',
   email: 'oliver@newth.ai',
   social: {
-    twitter: 'https://twitter.com/olivernewth',
     github: 'https://github.com/n3wth',
     linkedin: 'https://linkedin.com/in/olivernewth',
   },
@@ -32,19 +31,19 @@ export const experiences: Experience[] = [
   {
     id: 'google',
     company: 'Google',
-    role: 'Group Product Manager, ML Platform & Infrastructure',
+    role: 'Group Product Manager, Trust & Safety AI',
     period: '2022 - Present',
-    description: 'Managing $500M+ value platform across 100+ products. Defining vision and aligning executives for AI platforms serving billions.',
+    description: 'Integrating DeepMind models into Google products at billion-user scale. Presented at Google I/O on AI safety.',
     achievements: [
-      'Unified ML platform architecture across organization',
-      'Led cross-functional team of 50+ engineers',
-      'Drove 3x improvement in model deployment velocity',
+      'Shipped DeepMind model integrations across Google surfaces',
+      'Led Trust & Safety AI platform serving billions',
+      'Google I/O 2024 speaker on responsible AI deployment',
     ],
-    tech: ['ML Infrastructure', 'TensorFlow', 'Vertex AI', 'BigQuery'],
+    tech: ['DeepMind', 'Trust & Safety', 'Vertex AI', 'BigQuery'],
   },
   {
     id: 'covariant',
-    company: 'Covariant (Amazon acquisition)',
+    company: 'Covariant',
     role: 'Director of Product',
     period: '2020 - 2022',
     description: 'Vision AI & Robotics. Led product strategy through acquisition by Amazon.',
@@ -93,30 +92,30 @@ export interface Framework {
 
 export const frameworks: Framework[] = [
   {
-    id: 'agent-reliability',
-    title: 'Agent Reliability Patterns',
-    tagline: 'Five patterns for production AI agents',
+    id: 'trust-safety',
+    title: 'Safety is a feature',
+    tagline: 'Users don\'t see the harm you prevented. But they feel it when you fail. I build AI that earns trust at scale.',
     category: 'reliability',
     color: 'gold',
   },
   {
     id: 'ml-platform',
-    title: 'ML Platform Architecture',
-    tagline: 'Building platforms that scale',
+    title: 'Platforms over products',
+    tagline: 'A single ML product serves one team. A platform multiplies impact across the organization. Always build the platform.',
     category: 'architecture',
     color: 'violet',
   },
   {
     id: 'ai-operations',
-    title: 'AI Operations Playbook',
-    tagline: 'Running AI systems at scale',
+    title: 'Observability is product',
+    tagline: 'You can\'t improve what you can\'t see. The best AI teams treat monitoring dashboards like user-facing features.',
     category: 'operations',
     color: 'gold',
   },
   {
     id: 'product-strategy',
-    title: 'AI Product Strategy',
-    tagline: 'From prototype to production',
+    title: 'Ship the learning, not the model',
+    tagline: 'Models depreciate. Learning compounds. Build systems that get smarter from every user interaction.',
     category: 'strategy',
     color: 'violet',
   },
@@ -129,6 +128,8 @@ export interface Installation {
   year: string
   location: string
   type: 'burning-man' | 'public-art' | 'memorial' | 'interactive'
+  image: string
+  imageAlt: string
 }
 
 export const installations: Installation[] = [
@@ -139,6 +140,8 @@ export const installations: Installation[] = [
     year: '2022',
     location: 'San Francisco, CA',
     type: 'memorial',
+    image: '/images/installations/pink-triangle.webp',
+    imageAlt: 'Pink Triangle LED installation illuminating Twin Peaks during Pride Month',
   },
   {
     id: 'them',
@@ -147,6 +150,8 @@ export const installations: Installation[] = [
     year: '2019',
     location: 'Black Rock City, NV',
     type: 'burning-man',
+    image: '/images/installations/them.jpg',
+    imageAlt: 'THEM sculpture at Burning Man casting dramatic shadows on desert floor',
   },
   {
     id: 'circle-of-light',
@@ -155,5 +160,7 @@ export const installations: Installation[] = [
     year: '2021',
     location: 'San Francisco, CA',
     type: 'memorial',
+    image: '/images/installations/circle-of-light.webp',
+    imageAlt: 'Circle of Light illuminated memorial in Golden Gate Park',
   },
 ]

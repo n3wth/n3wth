@@ -1,13 +1,18 @@
-import { Header } from './components/Header'
+import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
-import { Cursor } from './components/Cursor'
+import { NoiseOverlay } from './components/NoiseOverlay'
+import { BackgroundElements } from './components/BackgroundElements'
+import { SmoothScroll } from './components/SmoothScroll'
+import { ScrollProgress } from './components/ScrollProgress'
 import { Hero, Experience, Frameworks, Creative, Contact } from './components/sections'
 
 function App() {
   return (
-    <>
-      <Cursor />
-      <Header />
+    <SmoothScroll>
+      <BackgroundElements />
+      <NoiseOverlay />
+      <Nav />
+      <ScrollProgress />
       <main>
         <Hero />
         <Experience />
@@ -16,7 +21,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </SmoothScroll>
   )
 }
 

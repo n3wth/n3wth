@@ -1,225 +1,459 @@
-@import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
 
-@theme {
-  /* Obsidian background system */
-  --color-obsidian-DEFAULT: #0a0a0f;
-  --color-obsidian-50: #1a1a2e;
-  --color-obsidian-100: #16162a;
-  --color-obsidian-200: #121226;
-  --color-obsidian-300: #0e0e1e;
-  --color-obsidian-400: #0a0a18;
-  --color-obsidian-500: #0a0a0f;
-
-  /* Luxury gold accents */
-  --color-gold-DEFAULT: #D4AF37;
-  --color-gold-50: #FBF7E8;
-  --color-gold-100: #F5EAC4;
-  --color-gold-200: #ECD98F;
-  --color-gold-300: #E3C85A;
-  --color-gold-400: #D4AF37;
-  --color-gold-500: #B8941F;
-  --color-gold-600: #927618;
-  --color-gold-700: #6B5712;
-
-  /* Violet spectrum */
-  --color-violet-DEFAULT: #8B5CF6;
-  --color-violet-400: #A78BFA;
-  --color-violet-500: #8B5CF6;
-  --color-violet-600: #7C3AED;
-
-  /* Shadows */
-  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
-  --shadow-glow-gold-lg: 0 0 40px rgba(212, 175, 55, 0.4);
-  --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.3);
-
-  /* Font families */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-
-  /* Font sizes */
-  --font-size-display-2xl: 4.5rem;
-  --font-size-display-xl: 3.75rem;
-  --font-size-display-lg: 3rem;
-  --font-size-display-md: 2.25rem;
-  --font-size-display-sm: 1.875rem;
+/* Mona Sans - Variable (display/title font) */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/MonaSans-Variable.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-stretch: 75% 125%;
+  font-display: swap;
 }
 
-@layer base {
-  :root {
-    --gold: 45 76% 52%;
-    --violet: 258 90% 66%;
-    --obsidian: 240 25% 4%;
-  }
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/MonaSans-Variable-Italic.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: italic;
+  font-stretch: 75% 125%;
+  font-display: swap;
+}
 
-  * {
-    border-color: rgba(212, 175, 55, 0.1);
+/* Geist Sans */
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Geist Mono */
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Design Tokens */
+@theme {
+  --font-display: 'Mona Sans', system-ui, sans-serif;
+  --font-sans: 'Geist Sans', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+
+  --color-bg: #000000;
+  --color-bg-secondary: #0a0a0a;
+  --color-white: #ffffff;
+  --color-grey-100: #f5f5f7;
+  --color-grey-200: #e8e8ed;
+  --color-grey-300: #c7c7cc;
+  --color-grey-400: #86868b;
+  --color-grey-600: #48484a;
+  --color-grey-800: #1d1d1f;
+
+  --color-accent: #ffffff;
+  --color-accent-soft: rgba(255, 255, 255, 0.15);
+
+  --glass-bg: #0d0d0d;
+  --glass-border: #1a1a1a;
+  --glass-highlight: #2a2a2a;
+
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Base */
+html {
+  background: var(--color-bg);
+  color: var(--color-grey-300);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  line-height: 1.5;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--color-white);
+}
+
+/* Typography Utilities */
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-grey-400);
+}
+
+/* Link hover underline animation */
+.link-hover {
+  position: relative;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.35s var(--ease-out);
+}
+
+.link-hover:hover::after {
+  width: 100%;
+}
+
+/* Card */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  transition: all 0.3s var(--ease-out);
+}
+
+.glass-card:hover {
+  border-color: var(--glass-highlight);
+  background: #111111;
+}
+
+/* Nav */
+.glass-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: #000000;
+}
+
+/* Pill */
+.glass-pill {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 9999px;
+  color: var(--color-grey-400);
+  transition: all 0.2s var(--ease-out);
+  transform: scale(1);
+}
+
+.glass-pill:hover {
+  background: var(--glass-highlight);
+  border-color: #333333;
+  color: var(--color-white);
+  transform: scale(1.02);
+}
+
+.glass-pill:active {
+  transform: scale(0.96);
+  transition-duration: 0.1s;
+}
+
+/* Section */
+.section {
+  padding: 6rem 0;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 10rem 0;
+  }
+}
+
+/* Focus ring */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.02;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Floating shapes */
+.floating-shape {
+  opacity: 0;
+}
+
+/* Hero word animation helper */
+.hero-word {
+  display: inline-block;
+  transform-style: preserve-3d;
+}
+
+/* Hero character animation */
+.hero-char {
+  display: inline-block;
+  transform-style: preserve-3d;
+}
+
+/* Contact text animation */
+.contact-char {
+  display: inline-block;
+  transform-style: preserve-3d;
+}
+
+.contact-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Staggered fade animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeUp 0.6s var(--ease-out) forwards;
+  opacity: 0;
+}
+
+/* Card enter animation */
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-enter {
+  animation: cardEnter 0.4s var(--ease-out) forwards;
+  animation-fill-mode: both;
+}
+
+/* Role card with hover lift */
+.role-card {
+  transition: all 0.35s var(--ease-out);
+}
+
+.role-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--glass-highlight);
+  background: var(--glass-bg);
+}
+
+/* Framework card with color accent */
+.framework-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.framework-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--color-white));
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+.framework-card:hover::before {
+  opacity: 1;
+}
+
+/* Installation card hover */
+.installation-card {
+  transition: all 0.35s var(--ease-out);
+}
+
+.installation-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--glass-highlight);
+}
+
+/* Installation parallax backgrounds */
+[data-installation-bg] {
+  will-change: opacity, transform;
+}
+
+[data-installation-bg] img {
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* Ensure backgrounds don't show outside Creative section */
+#creative [data-installation-bg] {
+  clip-path: inset(0);
+}
+
+/* Button press state */
+.btn-press:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+/* CTA Button */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  transition: all 0.25s var(--ease-out);
+  transform: scale(1);
+}
+
+.cta-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.02);
+}
+
+.cta-button:active {
+  transform: scale(0.98);
+  transition-duration: 0.1s;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--glass-highlight);
+}
+
+/* Mobile Navigation */
+.mobile-nav-link {
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s var(--ease-out);
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+  background: var(--glass-bg);
+}
+
+@media (hover: none) {
+  .mobile-nav-link:active {
+    background: var(--glass-highlight);
+  }
+}
+
+/* Number styling */
+.index-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-grey-600);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 
-  body {
-    background-color: #0a0a0f;
-    color: rgba(255, 255, 255, 0.9);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    margin: 0;
-    font-feature-settings: 'kern' 1, 'liga' 1;
+  .hero-word {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
-  ::selection {
-    background-color: rgba(212, 175, 55, 0.3);
-    color: white;
+  .floating-shape {
+    animation: none !important;
+    opacity: 0.4 !important;
   }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: #16162a;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(212, 175, 55, 0.3);
-    border-radius: 9999px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(212, 175, 55, 0.5);
-  }
-}
-
-@layer components {
-  .glass {
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .glass-gold {
-    background-color: rgba(212, 175, 55, 0.05);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-  }
-
-  .text-gradient-gold {
-    background: linear-gradient(to right, #E3C85A, #D4AF37, #E3C85A);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .text-gradient-violet {
-    background: linear-gradient(to right, #A78BFA, #8B5CF6, #A78BFA);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .glow-line {
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.5), transparent);
-  }
-
-  .section-padding {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-  }
-
-  @media (min-width: 768px) {
-    .section-padding {
-      padding-top: 7rem;
-      padding-bottom: 7rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .section-padding {
-      padding-top: 9rem;
-      padding-bottom: 9rem;
-    }
-  }
-
-  .container-narrow {
-    max-width: 64rem;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .container-narrow {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-  }
-
-  .container-wide {
-    max-width: 80rem;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .container-wide {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  .shadow-glow-gold {
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-  }
-
-  .shadow-glow-gold-lg {
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
-  }
-
-  .shadow-glow-violet {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-  }
-
-  .text-display-2xl {
-    font-size: 4.5rem;
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  .text-display-xl {
-    font-size: 3.75rem;
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  .text-display-lg {
-    font-size: 3rem;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-
-  .text-display-md {
-    font-size: 2.25rem;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-
-  .text-display-sm {
-    font-size: 1.875rem;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
+  .glass-card,
+  .glass-pill,
+  .role-card,
+  .framework-card,
+  .installation-card,
+  .cta-button {
+    transform: none !important;
+    transition: none !important;
   }
 }
