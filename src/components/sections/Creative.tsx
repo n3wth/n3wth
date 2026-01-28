@@ -135,39 +135,38 @@ export function Creative() {
           <div
             key={inst.id}
             data-installation-panel
-            className="min-h-screen flex items-center relative"
+            className="min-h-screen flex items-end relative"
           >
-            <div className="mx-auto max-w-6xl px-6 md:px-12 w-full py-24">
+            <div className="mx-auto max-w-6xl px-6 md:px-12 w-full py-16 md:py-24">
               <article
                 data-installation-card
-                className="p-8 sm:p-12 max-w-xl"
-                style={{ background: 'rgba(0, 0, 0, 0.85)' }}
+                className="max-w-xl"
+                style={{
+                  textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)',
+                }}
               >
                 <span
-                  className="inline-block px-3 py-1 text-xs font-mono uppercase tracking-wider mb-6"
-                  style={{ color: 'var(--color-grey-400)', border: '1px solid var(--color-grey-700)' }}
+                  className="inline-block text-xs font-mono uppercase tracking-wider mb-4"
+                  style={{ color: 'rgba(255,255,255,0.7)' }}
                 >
                   {inst.type.replace('-', ' ')}
                 </span>
 
-                <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
+                <h3 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white mb-3 tracking-tight">
                   {inst.title}
                 </h3>
 
                 <p
-                  className="text-base sm:text-lg leading-relaxed mb-8"
-                  style={{ color: 'var(--color-grey-200)' }}
+                  className="text-base sm:text-lg leading-relaxed mb-6"
+                  style={{ color: 'rgba(255,255,255,0.85)' }}
                 >
                   {inst.tagline}
                 </p>
 
-                <div className="flex items-center gap-4 text-sm">
-                  <span style={{ color: 'var(--color-grey-300)' }}>{inst.year}</span>
-                  <span
-                    className="w-8 h-px"
-                    style={{ background: 'var(--color-grey-600)' }}
-                  />
-                  <span style={{ color: 'var(--color-grey-400)' }}>{inst.location}</span>
+                <div className="flex items-center gap-3 text-sm">
+                  <span style={{ color: 'rgba(255,255,255,0.9)' }}>{inst.year}</span>
+                  <span style={{ color: 'rgba(255,255,255,0.4)' }}>/</span>
+                  <span style={{ color: 'rgba(255,255,255,0.7)' }}>{inst.location}</span>
                 </div>
               </article>
             </div>

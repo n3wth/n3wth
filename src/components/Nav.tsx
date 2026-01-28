@@ -1,5 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { navigation, siteConfig } from '../data/content'
+
+gsap.registerPlugin(ScrollTrigger)
 
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
   return (
@@ -34,6 +39,8 @@ function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
 export function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [isLightBg, setIsLightBg] = useState(false)
+  const navRef = useRef<HTMLElement>(null)
 
   const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), [])
   const closeMenu = useCallback(() => setIsMenuOpen(false), [])
@@ -42,6 +49,27 @@ export function Nav() {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Track when we're in the Creative section with light backgrounds
+  useGSAP(() => {
+    const creativeSection = document.getElementById('creative')
+    if (!creativeSection) return
+
+    // Find all installation panels within creative
+    const panels = creativeSection.querySelectorAll('[data-installation-panel]')
+
+    panels.forEach((panel) => {
+      ScrollTrigger.create({
+        trigger: panel,
+        start: 'top top',
+        end: 'bottom top',
+        onEnter: () => setIsLightBg(true),
+        onLeave: () => setIsLightBg(false),
+        onEnterBack: () => setIsLightBg(true),
+        onLeaveBack: () => setIsLightBg(false),
+      })
+    })
   }, [])
 
   useEffect(() => {
@@ -55,16 +83,21 @@ export function Nav() {
     }
   }, [isMenuOpen])
 
+  const textColor = isLightBg ? 'rgba(0, 0, 0, 0.8)' : 'var(--color-grey-200)'
+  const nameColor = isLightBg ? 'rgba(0, 0, 0, 0.9)' : 'white'
+
   return (
     <>
       <nav
-        className="glass-nav px-6 md:px-12 py-3 md:py-4 flex items-center justify-between transition-all duration-300"
+        ref={navRef}
+        className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-3 md:py-4 flex items-center justify-between transition-all duration-500"
       >
         <a
           href="/"
-          className={`text-base md:text-lg font-display font-semibold tracking-tight text-white hover:opacity-70 transition-all duration-300 focus-ring rounded ${
+          className={`text-base md:text-lg font-display font-semibold tracking-tight hover:opacity-70 transition-all duration-500 focus-ring rounded ${
             scrolled ? 'opacity-100' : 'opacity-0'
           }`}
+          style={{ color: nameColor }}
         >
           {siteConfig.name}
         </a>
@@ -74,8 +107,8 @@ export function Nav() {
             <a
               key={item.name}
               href={item.href}
-              className="text-sm link-hover"
-              style={{ color: 'var(--color-grey-200)' }}
+              className="text-sm link-hover transition-colors duration-500"
+              style={{ color: textColor }}
             >
               {item.name}
             </a>
@@ -84,8 +117,8 @@ export function Nav() {
             href={siteConfig.artSite}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm link-hover"
-            style={{ color: 'var(--color-grey-200)' }}
+            className="text-sm link-hover transition-colors duration-500"
+            style={{ color: textColor }}
           >
             Art
           </a>
@@ -93,8 +126,8 @@ export function Nav() {
 
         <button
           onClick={toggleMenu}
-          className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-all duration-200 hover:opacity-70"
-          style={{ color: 'var(--color-grey-200)' }}
+          className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-all duration-500 hover:opacity-70"
+          style={{ color: textColor }}
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMenuOpen}
         >
