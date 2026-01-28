@@ -56,10 +56,10 @@ export function Nav() {
     const creativeSection = document.getElementById('creative')
     if (!creativeSection) return
 
-    // Find all installation panels within creative
-    const panels = creativeSection.querySelectorAll('[data-installation-panel]')
+    // Find only light background panels
+    const lightPanels = creativeSection.querySelectorAll('[data-light-bg="true"]')
 
-    panels.forEach((panel) => {
+    lightPanels.forEach((panel) => {
       ScrollTrigger.create({
         trigger: panel,
         start: 'top top',
