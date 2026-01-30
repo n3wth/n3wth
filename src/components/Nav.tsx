@@ -49,11 +49,11 @@ export function Nav() {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-3 md:py-4 flex items-center justify-between transition-all duration-500"
+        className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-3 md:py-4 flex items-center justify-between transition-colors duration-500"
       >
         <a
           href="/"
-          className={`text-base md:text-lg font-display font-semibold tracking-tight hover:opacity-70 transition-all duration-500 focus-ring rounded ${
+          className={`text-base md:text-lg font-display font-semibold tracking-tight hover:opacity-70 transition-[color,opacity] duration-500 focus-ring rounded ${
             scrolled ? 'opacity-100' : 'opacity-0'
           }`}
           style={{ color: nameColor }}
@@ -76,7 +76,7 @@ export function Nav() {
 
         <button
           onClick={toggleMenu}
-          className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-all duration-500 hover:opacity-70"
+          className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg transition-opacity duration-500 hover:opacity-70"
           style={{ color: textColor }}
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMenuOpen}
@@ -91,6 +91,7 @@ export function Nav() {
         position="right"
         width="280px"
         zIndex={55}
+        ariaLabel="Navigation menu"
         className="md:hidden"
       >
         <div className="flex flex-col h-full pt-20 px-6 pb-8">
