@@ -28,11 +28,18 @@
 
     <!-- Theme -->
     <meta name="theme-color" content="#0a0a0f" />
+
+    <!-- Critical CSS to prevent FOUC -->
+    <style>
+      html, body { background: #000; color: #000; }
+      #root { opacity: 0; }
+      #root > .seo-fallback { display: none; }
+    </style>
   </head>
   <body>
     <div id="root">
-      <!-- Static content for SEO crawlers (replaced by React) -->
-      <main>
+      <!-- Static content for SEO crawlers (hidden, replaced by React) -->
+      <main class="seo-fallback">
         <h1>Oliver Newth</h1>
         <p>AI Product Leader. Trust & Safety at Google. Previously Director of Product at Covariant (Amazon acquisition), Lead PM at Meta, Senior PM at Microsoft.</p>
         <nav>

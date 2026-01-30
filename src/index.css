@@ -92,6 +92,11 @@
   box-sizing: border-box;
 }
 
+/* Reveal content once CSS loads (prevents FOUC) */
+#root {
+  opacity: 1;
+}
+
 /* Base */
 html {
   background: var(--color-bg);

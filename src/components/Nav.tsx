@@ -2,39 +2,10 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { HamburgerIcon } from '@n3wth/ui'
 import { navigation, siteConfig } from '../data/content'
 
 gsap.registerPlugin(ScrollTrigger)
-
-function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="transition-transform duration-300"
-    >
-      {isOpen ? (
-        <>
-          <path d="M18 6L6 18" />
-          <path d="M6 6l12 12" />
-        </>
-      ) : (
-        <>
-          <path d="M4 6h16" />
-          <path d="M4 12h16" />
-          <path d="M4 18h16" />
-        </>
-      )}
-    </svg>
-  )
-}
 
 export function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
