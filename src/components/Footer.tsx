@@ -8,7 +8,14 @@ export function Footer() {
           &copy; {new Date().getFullYear()}
         </span>
 
-        <div className="flex items-center gap-8">
+        <nav className="flex items-center gap-8" aria-label="Footer navigation">
+          <a
+            href="#contact"
+            className="text-sm link-hover focus-ring rounded"
+            style={{ color: 'var(--color-grey-400)' }}
+          >
+            Contact
+          </a>
           <a
             href={siteConfig.social.github}
             target="_blank"
@@ -27,7 +34,7 @@ export function Footer() {
           >
             LinkedIn
           </a>
-        </div>
+        </nav>
       </div>
     </footer>
   )

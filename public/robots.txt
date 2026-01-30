@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://newth.ai/sitemap.xml
