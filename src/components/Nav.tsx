@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { HamburgerIcon } from '@n3wth/ui'
+import { HamburgerIcon, MobileDrawer } from '@n3wth/ui'
 import { navigation, siteConfig } from '../data/content'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -27,7 +27,6 @@ export function Nav() {
     const creativeSection = document.getElementById('creative')
     if (!creativeSection) return
 
-    // Find only light background panels
     const lightPanels = creativeSection.querySelectorAll('[data-light-bg="true"]')
 
     lightPanels.forEach((panel) => {
@@ -42,17 +41,6 @@ export function Nav() {
       })
     })
   }, [])
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isMenuOpen])
 
   const textColor = isLightBg ? 'rgba(0, 0, 0, 0.8)' : 'var(--color-grey-200)'
   const nameColor = isLightBg ? 'rgba(0, 0, 0, 0.9)' : 'white'
@@ -97,26 +85,13 @@ export function Nav() {
         </button>
       </nav>
 
-      {/* Mobile overlay */}
-      <div
-        className={`md:hidden fixed inset-0 z-[55] transition-opacity duration-300 ${
-          isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-        onClick={closeMenu}
-        aria-hidden={!isMenuOpen}
-      />
-
-      {/* Mobile drawer */}
-      <div
-        className={`md:hidden fixed top-0 right-0 z-[56] h-full w-[280px] max-w-[80vw] transition-transform duration-300 ease-out ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-        style={{
-          backgroundColor: 'var(--color-bg)',
-          borderLeft: '1px solid var(--glass-border)',
-        }}
-        aria-hidden={!isMenuOpen}
+      <MobileDrawer
+        isOpen={isMenuOpen}
+        onClose={closeMenu}
+        position="right"
+        width="280px"
+        zIndex={55}
+        className="md:hidden"
       >
         <div className="flex flex-col h-full pt-20 px-6 pb-8">
           <div className="flex flex-col gap-2">
@@ -141,7 +116,7 @@ export function Nav() {
             </a>
           </div>
         </div>
-      </div>
+      </MobileDrawer>
     </>
   )
 }
