@@ -29,6 +29,42 @@
     <!-- Theme -->
     <meta name="theme-color" content="#0a0a0f" />
 
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Oliver Newth",
+      "url": "https://newth.ai",
+      "jobTitle": "AI Product Leader",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Google"
+      },
+      "description": "AI Product Leader specializing in Trust & Safety at Google. Previously Director of Product at Covariant (acquired by Amazon), Lead PM at Meta, and Senior PM at Microsoft.",
+      "sameAs": [
+        "https://github.com/n3wth",
+        "https://linkedin.com/in/olivernewth",
+        "https://twitter.com/olivernewth"
+      ],
+      "knowsAbout": ["Artificial Intelligence", "Product Management", "Trust and Safety", "Machine Learning", "Robotics"],
+      "alumniOf": [
+        {
+          "@type": "Organization",
+          "name": "Covariant"
+        },
+        {
+          "@type": "Organization",
+          "name": "Meta"
+        },
+        {
+          "@type": "Organization",
+          "name": "Microsoft"
+        }
+      ]
+    }
+    </script>
+
     <!-- Critical CSS to prevent FOUC -->
     <style>
       html, body { background: #000; color: #000; }
@@ -40,14 +76,61 @@
     <div id="root">
       <!-- Static content for SEO crawlers (hidden, replaced by React) -->
       <main class="seo-fallback">
-        <h1>Oliver Newth</h1>
-        <p>AI Product Leader. Trust & Safety at Google. Previously Director of Product at Covariant (Amazon acquisition), Lead PM at Meta, Senior PM at Microsoft.</p>
-        <nav>
+        <h1>Oliver Newth - AI Product Leader</h1>
+
+        <section>
+          <h2>About</h2>
+          <p>Oliver Newth is an AI Product Leader currently working on Trust & Safety at Google, where he focuses on building products that protect billions of users. With over a decade of experience in product management at leading technology companies, Oliver specializes in applying artificial intelligence to solve complex problems at scale.</p>
+        </section>
+
+        <section>
+          <h2>Experience</h2>
+          <article>
+            <h3>Google - Trust & Safety</h3>
+            <p>Leading product initiatives that leverage AI to protect users across Google's ecosystem of products serving billions of people worldwide.</p>
+          </article>
+          <article>
+            <h3>Covariant - Director of Product</h3>
+            <p>Led product strategy for AI-powered robotics systems that revolutionized warehouse automation. The company was <a href="https://techcrunch.com/2024/07/24/amazon-acquires-covariant-ai-robotics-company/" rel="noopener">acquired by Amazon</a> in 2024.</p>
+          </article>
+          <article>
+            <h3>Meta - Lead Product Manager</h3>
+            <p>Managed products impacting billions of users across Facebook's family of applications, focusing on AI-driven features and content systems.</p>
+          </article>
+          <article>
+            <h3>Microsoft - Senior Product Manager</h3>
+            <p>Built enterprise productivity tools and cloud services, establishing foundation for large-scale product development experience.</p>
+          </article>
+        </section>
+
+        <section>
+          <h2>Expertise</h2>
+          <p>Oliver brings deep expertise in artificial intelligence, machine learning, robotics, and building products at billion-user scale. His work spans trust and safety systems, AI-powered automation, and consumer-facing AI products.</p>
+          <ul>
+            <li>AI Product Strategy</li>
+            <li>Trust & Safety Systems</li>
+            <li>Machine Learning Applications</li>
+            <li>Robotics and Automation</li>
+            <li>Large-scale Product Development</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Creative Work</h2>
+          <p>Beyond product leadership, Oliver explores the intersection of technology and art through algorithmic installations and generative design projects.</p>
+        </section>
+
+        <nav aria-label="Main navigation">
           <a href="#work">Experience</a>
           <a href="#frameworks">Frameworks</a>
           <a href="#creative">Creative</a>
           <a href="#contact">Contact</a>
+          <a href="/privacy">Privacy Policy</a>
         </nav>
+
+        <footer>
+          <p>Connect with Oliver on <a href="https://github.com/n3wth" rel="noopener">GitHub</a> or <a href="https://linkedin.com/in/olivernewth" rel="noopener">LinkedIn</a>.</p>
+        </footer>
       </main>
     </div>
     <script type="module" src="/src/main.tsx"></script>

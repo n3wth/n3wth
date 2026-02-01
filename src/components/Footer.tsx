@@ -17,6 +17,13 @@ export function Footer() {
             Contact
           </a>
           <a
+            href="/privacy"
+            className="text-sm link-hover focus-ring rounded"
+            style={{ color: 'var(--color-grey-400)' }}
+          >
+            Privacy
+          </a>
+          <a
             href={siteConfig.social.github}
             target="_blank"
             rel="noopener noreferrer"
