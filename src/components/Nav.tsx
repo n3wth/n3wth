@@ -10,36 +10,38 @@ export function Nav() {
 
   return (
     <>
-      <nav className="px-6 md:px-12 py-4 md:py-6 flex items-center justify-between">
-        <a
-          href="/"
-          className="text-base md:text-lg font-display font-semibold tracking-tight hover:opacity-70 transition-opacity focus-ring rounded text-white"
-        >
-          n3wth
-        </a>
+      <nav className="px-6 md:px-12 py-4 md:py-6">
+        <div className="mx-auto max-w-6xl flex items-center justify-between">
+          <a
+            href="/"
+            className="text-base md:text-lg font-display font-semibold tracking-tight hover:opacity-70 transition-opacity focus-ring rounded text-white"
+          >
+            n3wth
+          </a>
 
-        <div className="hidden md:flex items-center gap-8">
-          {navigation.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-sm link-hover"
-              style={{ color: 'var(--color-grey-200)' }}
-            >
-              {item.name}
-            </a>
-          ))}
+          <div className="hidden md:flex items-center gap-8">
+            {navigation.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-sm link-hover"
+                style={{ color: 'var(--color-grey-200)' }}
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+
+          <button
+            onClick={toggleMenu}
+            className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:opacity-70 transition-opacity"
+            style={{ color: 'var(--color-grey-200)' }}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+          >
+            <HamburgerIcon isOpen={isMenuOpen} />
+          </button>
         </div>
-
-        <button
-          onClick={toggleMenu}
-          className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:opacity-70 transition-opacity"
-          style={{ color: 'var(--color-grey-200)' }}
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isMenuOpen}
-        >
-          <HamburgerIcon isOpen={isMenuOpen} />
-        </button>
       </nav>
 
       <MobileDrawer
