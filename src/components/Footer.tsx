@@ -1,74 +1,54 @@
 import { siteConfig } from '../data/content'
 
+const sites = [
+  { name: 'n3wth', href: 'https://n3wth.com', current: true },
+  { name: 'Skills', href: 'https://skills.n3wth.com' },
+  { name: 'Art', href: 'https://newth.art' },
+]
+
+const social = [
+  { name: 'GitHub', href: siteConfig.social.github },
+  { name: 'LinkedIn', href: siteConfig.social.linkedin },
+]
+
 export function Footer() {
   return (
-    <footer className="py-12 md:py-16 px-6 md:px-12">
-      <div className="flex flex-col gap-8">
-        {/* Site links */}
-        <div className="flex flex-wrap items-center gap-6 md:gap-8">
-          <span className="text-xs font-mono uppercase tracking-wider" style={{ color: 'var(--color-grey-600)' }}>
-            Sites
-          </span>
-          <a
-            href="https://n3wth.com"
-            className="text-sm link-hover focus-ring rounded"
-            style={{ color: 'var(--color-grey-300)' }}
-          >
-            n3wth.com
-          </a>
-          <a
-            href="https://skills.n3wth.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm link-hover focus-ring rounded"
-            style={{ color: 'var(--color-grey-400)' }}
-          >
-            Skills
-          </a>
-          <a
-            href={siteConfig.artSite}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm link-hover focus-ring rounded"
-            style={{ color: 'var(--color-grey-400)' }}
-          >
-            Art
-          </a>
+    <footer className="py-10 px-6 md:px-12 border-t" style={{ borderColor: 'var(--glass-border)' }}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        {/* Sites */}
+        <div className="flex items-center gap-4">
+          {sites.map((site, i) => (
+            <span key={site.name} className="flex items-center gap-4">
+              <a
+                href={site.href}
+                className="text-sm transition-colors"
+                style={{ color: site.current ? 'var(--color-white)' : 'var(--color-grey-500)' }}
+                {...(!site.current && { target: '_blank', rel: 'noopener noreferrer' })}
+              >
+                {site.name}
+              </a>
+              {i < sites.length - 1 && (
+                <span style={{ color: 'var(--color-grey-700)' }}>/</span>
+              )}
+            </span>
+          ))}
         </div>
 
-        {/* Main nav */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <span className="text-sm" style={{ color: 'var(--color-grey-400)' }}>
-            &copy; {new Date().getFullYear()} Oliver Newth
-          </span>
-
-          <nav className="flex flex-wrap items-center gap-6 md:gap-8" aria-label="Footer navigation">
+        {/* Social + Copyright */}
+        <div className="flex items-center gap-4 text-sm" style={{ color: 'var(--color-grey-500)' }}>
+          {social.map((link) => (
             <a
-              href="#contact"
-              className="text-sm link-hover focus-ring rounded"
-              style={{ color: 'var(--color-grey-400)' }}
-            >
-              Contact
-            </a>
-            <a
-              href={siteConfig.social.github}
+              key={link.name}
+              href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm link-hover focus-ring rounded"
-              style={{ color: 'var(--color-grey-400)' }}
+              className="hover:text-white transition-colors"
             >
-              GitHub
+              {link.name}
             </a>
-            <a
-              href={siteConfig.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm link-hover focus-ring rounded"
-              style={{ color: 'var(--color-grey-400)' }}
-            >
-              LinkedIn
-            </a>
-          </nav>
+          ))}
+          <span style={{ color: 'var(--color-grey-700)' }}>/</span>
+          <span style={{ color: 'var(--color-grey-600)' }}>{new Date().getFullYear()}</span>
         </div>
       </div>
     </footer>
