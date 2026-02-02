@@ -126,12 +126,12 @@ export function Creative() {
         <div className="section">
           <div className="mx-auto max-w-6xl px-6 md:px-12">
             <div data-cr-header>
-              <p className="label mb-4">After hours</p>
-              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-6 text-glow">
+              <p className="label mb-3 sm:mb-4">After hours</p>
+              <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6 text-glow">
                 I build things that glow
               </h2>
               <p
-                className="text-base md:text-lg leading-relaxed max-w-xl"
+                className="text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
                 style={{ color: 'var(--color-grey-400)' }}
               >
                 Large-scale LED installations for Burning Man and public memorials. I spoke at Robot Heart about how art and technology intersect.
@@ -150,7 +150,7 @@ export function Creative() {
               data-light-bg={inst.lightBg ? 'true' : undefined}
               className="min-h-screen flex items-center relative"
             >
-              <div className="mx-auto max-w-6xl px-6 md:px-12 w-full py-16 md:py-24">
+              <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-12 w-full py-12 sm:py-16 md:py-24">
                 <article
                   data-installation-card
                   className="max-w-xl"
@@ -163,20 +163,20 @@ export function Creative() {
                   </span>
 
                   <h3
-                    className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-3 tracking-tight"
+                    className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-2 sm:mb-3 tracking-tight"
                     style={{ color: textColor }}
                   >
                     {inst.title}
                   </h3>
 
                   <p
-                    className="text-base sm:text-lg leading-relaxed mb-6"
+                    className="text-sm sm:text-lg leading-relaxed mb-4 sm:mb-6"
                     style={{ color: textColor, opacity: 0.85 }}
                   >
                     {inst.tagline}
                   </p>
 
-                  <div className="flex items-center gap-3 text-sm">
+                  <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
                     <span style={{ color: textColor, opacity: 0.9 }}>{inst.year}</span>
                     <span style={{ color: textColor, opacity: 0.4 }}>/</span>
                     <span style={{ color: textColor, opacity: 0.7 }}>{inst.location}</span>

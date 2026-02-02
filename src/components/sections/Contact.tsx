@@ -136,7 +136,7 @@ export function Contact() {
         <div className="max-w-3xl">
           <p
             data-contact-label
-            className="label mb-8 tracking-[0.2em]"
+            className="label mb-6 sm:mb-8 tracking-[0.15em] sm:tracking-[0.2em]"
           >
             Get in touch
           </p>
@@ -144,7 +144,7 @@ export function Contact() {
           <h2
             ref={titleRef}
             data-contact-title
-            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white tracking-tight leading-[1.05] mb-8 text-glow"
+            className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white tracking-tight leading-[1.05] mb-6 sm:mb-8 text-glow"
             style={{ perspective: '1000px' }}
           >
             Let's talk
@@ -152,17 +152,17 @@ export function Contact() {
 
           <p
             data-contact-desc
-            className="text-lg md:text-xl leading-relaxed mb-12 max-w-xl"
+            className="text-base sm:text-lg md:text-xl leading-relaxed mb-8 sm:mb-12 max-w-xl"
             style={{ color: 'var(--color-grey-300)' }}
           >
             AI safety, LED art, or coffee in San Francisco.
           </p>
 
-          {/* Main CTA */}
+          {/* Main CTA - min 48px touch target */}
           <a
             data-contact-cta
             href={`mailto:${siteConfig.email}`}
-            className="inline-flex items-center gap-3 text-lg md:text-xl text-white px-10 py-5 rounded-full focus-ring group"
+            className="inline-flex items-center gap-2 sm:gap-3 text-sm sm:text-lg md:text-xl text-white px-6 sm:px-10 py-4 sm:py-5 rounded-full focus-ring group min-h-[48px]"
             style={{
               background: '#111111',
               border: '1px solid #2a2a2a',
@@ -170,26 +170,26 @@ export function Contact() {
           >
             <span className="font-medium">{siteConfig.email}</span>
             <svg
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
-              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 sm:w-5 sm:h-5"
             >
               <path d="M7 17L17 7M7 7h10v10" />
             </svg>
           </a>
 
-          {/* Social links */}
-          <div className="flex items-center gap-8 mt-16">
+          {/* Social links - min 44px touch targets */}
+          <div className="flex items-center gap-4 sm:gap-8 mt-10 sm:mt-16">
             <a
               data-social-link
               href={siteConfig.social.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:opacity-70 transition-opacity focus-ring rounded p-2"
+              className="text-white hover:opacity-70 transition-opacity focus-ring rounded-lg p-3 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="GitHub"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -201,7 +201,7 @@ export function Contact() {
               href={siteConfig.social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:opacity-70 transition-opacity focus-ring rounded p-2"
+              className="text-white hover:opacity-70 transition-opacity focus-ring rounded-lg p-3 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="LinkedIn"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">

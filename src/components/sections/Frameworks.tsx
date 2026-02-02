@@ -50,13 +50,13 @@ export function Frameworks() {
     <section ref={sectionRef} id="frameworks" className="section relative">
       <div className="mx-auto max-w-5xl px-6 md:px-12">
         {/* Section header with narrative context */}
-        <div data-fw-header className="mb-16 md:mb-24">
-          <p className="label mb-4">After a decade of building</p>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-6 text-glow">
+        <div data-fw-header className="mb-10 sm:mb-16 md:mb-24">
+          <p className="label mb-3 sm:mb-4">After a decade of building</p>
+          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6 text-glow">
             Four things I believe
           </h2>
           <p
-            className="text-base md:text-lg leading-relaxed max-w-xl"
+            className="text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
             style={{ color: 'var(--color-grey-400)' }}
           >
             Principles I've developed from shipping AI products at Google, Meta, and Microsoft.
@@ -64,18 +64,18 @@ export function Frameworks() {
         </div>
 
         {/* Principles - simple, focused on content */}
-        <div data-principles className="space-y-8 md:space-y-10">
+        <div data-principles className="space-y-6 sm:space-y-8 md:space-y-10">
           {frameworks.map((fw, index) => (
             <article
               key={fw.id}
               data-principle
-              className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 pt-8 md:pt-10"
+              className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 md:gap-8 pt-6 sm:pt-8 md:pt-10"
               style={{ borderTop: '1px solid var(--glass-border)' }}
             >
               {/* Number */}
               <div className="md:col-span-1">
                 <span
-                  className="font-mono text-sm"
+                  className="font-mono text-xs sm:text-sm"
                   style={{ color: 'var(--color-grey-600)' }}
                 >
                   {String(index + 1).padStart(2, '0')}
@@ -84,11 +84,11 @@ export function Frameworks() {
 
               {/* Content */}
               <div className="md:col-span-11">
-                <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-semibold text-white tracking-tight mb-4">
+                <h3 className="font-display text-lg sm:text-2xl md:text-3xl font-semibold text-white tracking-tight mb-2 sm:mb-4">
                   {fw.title}
                 </h3>
                 <p
-                  className="text-base md:text-lg leading-relaxed max-w-2xl"
+                  className="text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl"
                   style={{ color: 'var(--color-grey-300)' }}
                 >
                   {fw.tagline}

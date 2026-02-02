@@ -206,13 +206,25 @@ body {
 
 /* Section */
 .section {
-  padding: 6rem 0;
+  padding: 4rem 0;
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding: 6rem 0;
+  }
 }
 
 @media (min-width: 768px) {
   .section {
     padding: 10rem 0;
   }
+}
+
+/* Content visibility for performance - skip rendering off-screen sections */
+section[id] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100vh;
 }
 
 /* Focus ring */
@@ -416,6 +428,17 @@ body {
   }
 }
 
+/* Touch-friendly tap targets */
+@media (pointer: coarse) {
+  a, button {
+    min-height: 44px;
+  }
+
+  .link-hover {
+    padding: 0.5rem 0;
+  }
+}
+
 /* Number styling */
 .index-num {
   font-family: var(--font-mono);
@@ -437,6 +460,35 @@ html.lenis, html.lenis body {
   overscroll-behavior: contain;
 }
 
+
+/* Safe area insets for mobile devices with notches */
+@supports (padding: env(safe-area-inset-bottom)) {
+  footer {
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+  }
+
+  nav {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Horizontal scroll touch support */
+[data-role-card] {
+  touch-action: pan-x pan-y;
+}
+
+/* Prevent text selection during scroll/swipe on mobile */
+@media (pointer: coarse) {
+  [data-role-card] {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+/* Better touch scrolling in horizontal sections */
+.touch-pan-x {
+  touch-action: pan-x;
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -470,5 +522,11 @@ html.lenis, html.lenis body {
   .cta-button {
     transform: none !important;
     transition: none !important;
+  }
+
+  /* Disable content-visibility for reduced motion to ensure all content visible */
+  section[id] {
+    content-visibility: visible;
+    contain-intrinsic-size: none;
   }
 }

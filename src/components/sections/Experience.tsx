@@ -35,8 +35,10 @@ export function Experience() {
       })
 
       // Calculate scroll distance for horizontal scroll
+      // Use documentElement.clientWidth to avoid issues with mobile scrollbars
       const track = trackRef.current
-      const scrollDistance = track.scrollWidth - window.innerWidth + 100
+      const viewportWidth = document.documentElement.clientWidth
+      const scrollDistance = track.scrollWidth - viewportWidth + 100
 
       // Horizontal scroll animation with smooth easing
       const horizontalScroll = gsap.to(track, {
@@ -105,9 +107,9 @@ export function Experience() {
       {/* Header */}
       <div className="section pb-0">
         <div className="mx-auto max-w-6xl px-6 md:px-12">
-          <div data-exp-header className="mb-16 md:mb-20">
-            <p className="label mb-4">Experience</p>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] text-glow">
+          <div data-exp-header className="mb-10 sm:mb-16 md:mb-20">
+            <p className="label mb-3 sm:mb-4">Experience</p>
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] text-glow">
               Building AI products
               <br />
               at billion-user scale
@@ -131,7 +133,7 @@ export function Experience() {
             <article
               key={exp.id}
               data-role-card
-              className="relative w-[85vw] md:w-[70vw] lg:w-[55vw] shrink-0 h-full flex items-center"
+              className="relative w-[90vw] sm:w-[85vw] md:w-[70vw] lg:w-[55vw] shrink-0 h-full flex items-center touch-pan-x"
             >
               {/* Vertical accent line */}
               <div
@@ -140,7 +142,7 @@ export function Experience() {
               />
 
               {/* Content */}
-              <div className="pl-8 md:pl-12 pr-16 md:pr-24">
+              <div className="pl-6 sm:pl-8 md:pl-12 pr-8 sm:pr-16 md:pr-24">
                 {/* Period - large monospace */}
                 <div data-detail className="mb-6">
                   <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: 'var(--color-grey-400)' }}>
@@ -151,7 +153,7 @@ export function Experience() {
                 {/* Company - massive */}
                 <h3
                   data-company
-                  className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[9rem] font-semibold text-white tracking-tighter leading-[0.9] mb-6 text-glow"
+                  className="font-display text-[clamp(2.5rem,10vw,9rem)] font-semibold text-white tracking-tighter leading-[0.9] mb-4 sm:mb-6 text-glow"
                 >
                   {exp.company}
                 </h3>
@@ -159,7 +161,7 @@ export function Experience() {
                 {/* Role */}
                 <p
                   data-detail
-                  className="font-display text-xl md:text-2xl lg:text-3xl font-medium mb-6"
+                  className="font-display text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium mb-4 sm:mb-6"
                   style={{ color: 'var(--color-grey-100)' }}
                 >
                   {exp.role}
@@ -168,7 +170,7 @@ export function Experience() {
                 {/* Description */}
                 <p
                   data-detail
-                  className="text-base md:text-lg leading-relaxed max-w-lg mb-8"
+                  className="text-sm sm:text-base md:text-lg leading-relaxed max-w-lg mb-6 sm:mb-8"
                   style={{ color: 'var(--color-grey-300)' }}
                 >
                   {exp.description}
@@ -196,9 +198,9 @@ export function Experience() {
         </div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ color: 'var(--color-grey-500)' }}>
-          <span className="text-xs font-mono uppercase tracking-[0.2em]">Scroll</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3" style={{ color: 'var(--color-grey-500)' }}>
+          <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em]">Swipe</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="sm:w-5 sm:h-5">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </div>

@@ -12,34 +12,34 @@ const legal = [
 
 export function Footer() {
   return (
-    <footer className="py-10 px-6 md:px-12 border-t" style={{ borderColor: 'var(--glass-border)' }}>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <footer className="py-8 sm:py-10 px-4 sm:px-6 md:px-12 border-t" style={{ borderColor: 'var(--glass-border)' }}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-4">
         {/* Sites */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           {sites.map((site, i) => (
-            <span key={site.name} className="flex items-center gap-4">
+            <span key={site.name} className="flex items-center gap-3 sm:gap-4">
               <a
                 href={site.href}
-                className="text-sm transition-colors hover:text-white"
+                className="text-sm transition-colors hover:text-white py-1"
                 style={{ color: site.current ? 'var(--color-white)' : 'var(--color-grey-500)' }}
                 {...(!site.current && { target: '_blank', rel: 'noopener noreferrer' })}
               >
                 {site.name}
               </a>
               {i < sites.length - 1 && (
-                <span style={{ color: 'var(--color-grey-700)' }}>/</span>
+                <span className="hidden sm:inline" style={{ color: 'var(--color-grey-700)' }}>/</span>
               )}
             </span>
           ))}
         </div>
 
         {/* Legal */}
-        <div className="flex items-center gap-4 text-sm" style={{ color: 'var(--color-grey-500)' }}>
+        <div className="flex items-center gap-3 sm:gap-4 text-sm" style={{ color: 'var(--color-grey-500)' }}>
           {legal.map((link, i) => (
-            <span key={link.name} className="flex items-center gap-4">
+            <span key={link.name} className="flex items-center gap-3 sm:gap-4">
               <a
                 href={link.href}
-                className="hover:text-white transition-colors"
+                className="hover:text-white transition-colors py-1"
               >
                 {link.name}
               </a>
