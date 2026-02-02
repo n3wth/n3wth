@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -9,18 +9,12 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const [isLightBg, setIsLightBg] = useState(false)
   const navRef = useRef<HTMLElement>(null)
 
   const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), [])
   const closeMenu = useCallback(() => setIsMenuOpen(false), [])
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   // Track when we're in the Creative section with light backgrounds
   useGSAP(() => {
@@ -53,12 +47,10 @@ export function Nav() {
       >
         <a
           href="/"
-          className={`text-base md:text-lg font-display font-semibold tracking-tight hover:opacity-70 transition-[color,opacity] duration-500 focus-ring rounded ${
-            scrolled ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="text-base md:text-lg font-display font-semibold tracking-tight hover:opacity-70 transition-colors duration-500 focus-ring rounded"
           style={{ color: nameColor }}
         >
-          {siteConfig.name}
+          n3wth
         </a>
 
         <div className="hidden md:flex items-center gap-8">
