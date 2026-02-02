@@ -31,21 +31,21 @@ export const experiences: Experience[] = [
   {
     id: 'google',
     company: 'Google',
-    role: 'Group Product Manager, Trust & Safety AI',
-    period: '2022 - Present',
-    description: 'Integrating DeepMind models into Google products at billion-user scale. Presented at Google I/O on AI safety.',
+    role: 'AI Product Leader',
+    period: '2024 - Present',
+    description: 'Bringing AI systems from research to production at billion-user scale. Google I/O 2025 speaker.',
     achievements: [
-      'Shipped DeepMind model integrations across Google surfaces',
-      'Led Trust & Safety AI platform serving billions',
-      'Google I/O 2024 speaker on responsible AI deployment',
+      'Shipped Opal, a no-code GenAI product',
+      'Google I/O 2025 speaker on responsible AI deployment',
+      'Led Trust & Safety AI initiatives',
     ],
-    tech: ['DeepMind', 'Trust & Safety', 'Vertex AI', 'BigQuery'],
+    tech: ['Gemini', 'Vertex AI', 'Trust & Safety', 'BigQuery'],
   },
   {
     id: 'covariant',
     company: 'Covariant',
-    role: 'Director of Product',
-    period: '2020 - 2022',
+    role: 'Senior Product Manager',
+    period: '2022 - 2024',
     description: 'Vision AI & Robotics. Led product strategy through acquisition by Amazon.',
     achievements: [
       'Scaled from 5 to 50+ enterprise deployments',
@@ -57,9 +57,9 @@ export const experiences: Experience[] = [
   {
     id: 'meta',
     company: 'Meta',
-    role: 'Lead Product Manager',
-    period: '2017 - 2020',
-    description: 'Instagram Calling. Launched video calling to 750M daily active users in 6 months.',
+    role: 'Product Manager',
+    period: 'Instagram',
+    description: 'Instagram Calling. Launched video calling to 750M daily active users.',
     achievements: [
       '0 to 75% DAU adoption in 6 months',
       'Built real-time communication infrastructure',
@@ -70,8 +70,8 @@ export const experiences: Experience[] = [
   {
     id: 'microsoft',
     company: 'Microsoft',
-    role: 'Senior Product Manager',
-    period: '2014 - 2017',
+    role: 'Product Manager',
+    period: 'Azure',
     description: 'Azure Cognitive Services. Built AI services used by millions of developers.',
     achievements: [
       'Launched Computer Vision API to general availability',

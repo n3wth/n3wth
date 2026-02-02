@@ -2,10 +2,9 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { siteConfig } from '../../data/content'
+import { FloatingShapes } from '../FloatingShapes'
 
-gsap.registerPlugin(SplitText, ScrollTrigger)
+gsap.registerPlugin(SplitText)
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null)
@@ -39,7 +38,7 @@ export function Hero() {
           rotateX: 0,
           duration: 1.2,
           ease: 'power3.out',
-          stagger: { amount: 0.6, from: 'start' },
+          stagger: { amount: 0.5, from: 'start' },
           transformOrigin: 'center bottom',
         }
       )
@@ -49,27 +48,16 @@ export function Hero() {
         '[data-hero-tagline]',
         { opacity: 0, y: 40 },
         { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.4'
+      )
+
+      // Subtitle fades in
+      tl.fromTo(
+        '[data-hero-subtitle]',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
         '-=0.5'
       )
-
-      // Animated accent shapes
-      tl.fromTo(
-        '[data-hero-accent]',
-        { scale: 0, opacity: 0, rotation: -180 },
-        { scale: 1, opacity: 1, rotation: 0, duration: 1.2, stagger: 0.2, ease: 'power3.out' },
-        '-=1'
-      )
-
-      // Subtle floating animation for accents
-      gsap.to('[data-hero-accent]', {
-        y: 'random(-20, 20)',
-        rotation: 'random(-5, 5)',
-        duration: 'random(3, 5)',
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-        stagger: { amount: 1, from: 'random' },
-      })
 
       return () => {
         if (splitRef.current) {
@@ -86,61 +74,37 @@ export function Hero() {
       ref={containerRef}
       className="relative min-h-screen flex items-center px-6 md:px-12"
     >
-      <div className="w-full max-w-6xl relative z-10">
-        {/* Name - the anchor */}
+      <FloatingShapes />
+
+      <div className="w-full max-w-5xl relative z-10">
+        {/* Big name - stacked for visual impact */}
         <h1
           ref={titleRef}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-display font-semibold tracking-tighter leading-[0.85] mb-8 text-white"
+          className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] font-display font-semibold tracking-tighter leading-[0.85] mb-6 md:mb-8 text-white"
           style={{ perspective: '1000px' }}
         >
-          {siteConfig.name}
+          Oliver<br />Newth
         </h1>
 
-        {/* The hook - human, memorable */}
+        {/* The hook */}
         <p
           data-hero-tagline
-          className="text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed max-w-2xl opacity-0 text-white"
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-snug max-w-2xl opacity-0 text-white font-display font-medium tracking-tight"
         >
-          AI safety at Google. LED art in the desert. Building at the intersection of trust and wonder.
+          AI at Google.<br className="sm:hidden" /> Art in the desert.
+        </p>
+
+        {/* Subtitle */}
+        <p
+          data-hero-subtitle
+          className="mt-6 text-base md:text-lg leading-relaxed max-w-xl opacity-0"
+          style={{ color: 'var(--color-grey-300)' }}
+        >
+          Building at the intersection of trust and wonder. 10+ years bringing AI systems from research to production.
         </p>
       </div>
 
-      {/* Animated geometric accents */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        {/* Circle accent - top right */}
-        <div
-          data-hero-accent
-          className="absolute w-32 h-32 md:w-48 md:h-48 rounded-full"
-          style={{
-            top: '15%',
-            right: '10%',
-            border: '1px solid rgba(255,255,255,0.08)',
-          }}
-        />
-        {/* Diamond accent - bottom right */}
-        <div
-          data-hero-accent
-          className="absolute w-16 h-16 md:w-24 md:h-24"
-          style={{
-            bottom: '25%',
-            right: '20%',
-            border: '1px solid rgba(255,255,255,0.05)',
-            transform: 'rotate(45deg)',
-          }}
-        />
-        {/* Small circle - mid left */}
-        <div
-          data-hero-accent
-          className="absolute w-8 h-8 md:w-12 md:h-12 rounded-full"
-          style={{
-            top: '40%',
-            left: '5%',
-            background: 'rgba(255,255,255,0.03)',
-          }}
-        />
-      </div>
-
-      {/* Scroll indicator - aligned with content */}
+      {/* Scroll indicator */}
       <div
         className="absolute bottom-8 left-6 md:left-12 flex items-center gap-3 text-white"
       >

@@ -1,22 +1,30 @@
 # Hey, I'm Oliver
 
-Group Product Manager at Google, building Trust & Safety AI at billion-user scale.
+AI Product Leader at Google. 10+ years bringing AI systems from research to production.
 
-## What I do
+Kennedy Scholar, MIT. Google I/O speaker. LED artist.
 
-**At work:** Integrating DeepMind models into Google products. Presented at Google I/O on responsible AI deployment.
+## Work
 
-**After hours:** Large-scale LED art installations for Burning Man and public spaces. 30-foot interactive sculptures. Pride memorials.
+**Google** - AI Product Leader (2024-present)
+- Shipped Opal, a no-code GenAI product
+- Google I/O 2025 speaker
 
-## Career path
+**Covariant** - Senior PM, Vision AI & Robotics (2022-2024)
+- Acquired by Amazon
 
-- **Google** - GPM, Trust & Safety AI (2022-present)
-- **Covariant** - Director of Product, Vision AI & Robotics (acquired by Amazon)
-- **Meta** - Lead PM, Instagram Calling (0 to 750M DAU in 6 months)
-- **Microsoft** - Senior PM, Azure Cognitive Services
+**Meta** - PM, Instagram Calling
+- Launched video calling to 750M DAU
 
-## Find me
+**Microsoft** - PM, Azure Cognitive Services
 
-- [n3wth.com](https://n3wth.com) - Personal site
-- [newth.art](https://newth.art) - LED art portfolio
-- [LinkedIn](https://linkedin.com/in/newth)
+## Creative
+
+Large-scale LED art installations for Burning Man and public spaces:
+- **Pink Triangle** - SF Pride memorial on Twin Peaks
+- **THEM** - 30-foot interactive sculpture, Black Rock City
+- **Circle of Light** - World AIDS Day memorial
+
+## Links
+
+[n3wth.com](https://n3wth.com) | [newth.art](https://newth.art) | [LinkedIn](https://linkedin.com/in/newth)
