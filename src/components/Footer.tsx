@@ -1,14 +1,13 @@
-import { siteConfig } from '../data/content'
-
 const sites = [
   { name: 'n3wth', href: 'https://n3wth.com', current: true },
   { name: 'Skills', href: 'https://skills.n3wth.com' },
-  { name: 'Art', href: 'https://newth.art' },
+  { name: 'UI', href: 'https://ui.n3wth.com' },
+  { name: 'Garden', href: 'https://garden.n3wth.com' },
 ]
 
-const social = [
-  { name: 'GitHub', href: siteConfig.social.github },
-  { name: 'LinkedIn', href: siteConfig.social.linkedin },
+const legal = [
+  { name: 'Terms', href: '/terms' },
+  { name: 'Privacy', href: '/privacy' },
 ]
 
 export function Footer() {
@@ -21,7 +20,7 @@ export function Footer() {
             <span key={site.name} className="flex items-center gap-4">
               <a
                 href={site.href}
-                className="text-sm transition-colors"
+                className="text-sm transition-colors hover:text-white"
                 style={{ color: site.current ? 'var(--color-white)' : 'var(--color-grey-500)' }}
                 {...(!site.current && { target: '_blank', rel: 'noopener noreferrer' })}
               >
@@ -34,21 +33,21 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Social + Copyright */}
+        {/* Legal */}
         <div className="flex items-center gap-4 text-sm" style={{ color: 'var(--color-grey-500)' }}>
-          {social.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
-            >
-              {link.name}
-            </a>
+          {legal.map((link, i) => (
+            <span key={link.name} className="flex items-center gap-4">
+              <a
+                href={link.href}
+                className="hover:text-white transition-colors"
+              >
+                {link.name}
+              </a>
+              {i < legal.length - 1 && (
+                <span style={{ color: 'var(--color-grey-700)' }}>/</span>
+              )}
+            </span>
           ))}
-          <span style={{ color: 'var(--color-grey-700)' }}>/</span>
-          <span style={{ color: 'var(--color-grey-600)' }}>{new Date().getFullYear()}</span>
         </div>
       </div>
     </footer>

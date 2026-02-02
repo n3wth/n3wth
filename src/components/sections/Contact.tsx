@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import { siteConfig } from '../../data/content'
+import { ContactShapes } from '../shapes'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -128,6 +129,9 @@ export function Contact() {
       id="contact"
       className="section relative min-h-screen flex items-center"
     >
+      {/* Connection-themed shapes */}
+      <ContactShapes />
+
       <div className="mx-auto max-w-6xl px-6 md:px-12 w-full">
         <div className="max-w-3xl">
           <p

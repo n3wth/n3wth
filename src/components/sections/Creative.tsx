@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { installations } from '../../data/content'
+import { CreativeShapes } from '../shapes'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -94,6 +95,9 @@ export function Creative() {
 
   return (
     <section ref={sectionRef} id="creative" className="relative">
+      {/* Art-inspired geometric shapes */}
+      <CreativeShapes />
+
       {/* Fixed background container */}
       <div
         ref={backgroundsRef}

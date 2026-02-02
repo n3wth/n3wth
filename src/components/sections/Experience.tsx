@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { experiences } from '../../data/content'
+import { ExperienceShapes } from '../shapes'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -98,6 +99,9 @@ export function Experience() {
 
   return (
     <section ref={sectionRef} id="work" className="relative">
+      {/* Geometric shapes - career trajectory */}
+      <ExperienceShapes />
+
       {/* Header */}
       <div className="section pb-0">
         <div className="mx-auto max-w-6xl px-6 md:px-12">
