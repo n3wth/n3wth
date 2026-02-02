@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@n3wth/ui/styles';
 
 /* Mona Sans - Variable (display/title font) */
 @font-face {
