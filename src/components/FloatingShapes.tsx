@@ -7,13 +7,13 @@ gsap.registerPlugin(ScrollTrigger)
 
 /**
  * SHAPE MEANINGS - Oliver's Journey:
+ * Solid symmetric geometric shapes representing key themes.
  *
- * circle (pink)    = LED glow, warmth, community - Oliver's art creates connection
- * arc (yellow)     = trajectory, growth upward - career arc from startup to Google to Scale
- * ring (blue)      = iteration, AI training loops - the work at Scale AI
- * semicircle (purple) = potential, half-complete - always building toward something
- * triangle (coral) = direction, Pink Triangle memorial - art with purpose
- * dots (mint)      = data points, billions of users - scale of impact
+ * circle (pink)      = LED glow, warmth, community - Oliver's art creates connection
+ * semicircle (yellow) = horizon, growth - career rising from startup to Google to Scale
+ * triangle (coral)   = direction, Pink Triangle memorial - art with purpose
+ * diamond (blue)     = precision, data - AI work, billions of training examples
+ * square (purple)    = foundation, stability - building lasting systems
  */
 
 const colors = {
@@ -26,7 +26,7 @@ const colors = {
 }
 
 interface ShapeConfig {
-  type: 'circle' | 'ring' | 'arc' | 'semicircle' | 'triangle' | 'dots'
+  type: 'circle' | 'semicircle' | 'triangle' | 'diamond' | 'square'
   color: string
   size: number
   x: string
@@ -36,28 +36,25 @@ interface ShapeConfig {
 
 // Shapes positioned to create a visual journey on the right side
 const shapes: ShapeConfig[] = [
-  // Primary accent - LED glow
-  { type: 'ring', color: colors.pink, size: 120, x: '85%', y: '12%', meaning: 'iteration' },
+  // Primary - LED glow, community
+  { type: 'circle', color: colors.pink, size: 90, x: '85%', y: '15%', meaning: 'warmth' },
 
-  // Career arc
-  { type: 'arc', color: colors.yellow, size: 100, x: '75%', y: '45%', meaning: 'growth' },
+  // Horizon - career growth
+  { type: 'semicircle', color: colors.yellow, size: 80, x: '75%', y: '45%', meaning: 'growth' },
 
-  // AI/tech ring
-  { type: 'ring', color: colors.blue, size: 80, x: '60%', y: '70%', meaning: 'ai-loops' },
+  // Precision - AI/data work
+  { type: 'diamond', color: colors.blue, size: 70, x: '60%', y: '70%', meaning: 'precision' },
 
-  // Innovation quarter
-  { type: 'semicircle', color: colors.purple, size: 70, x: '90%', y: '35%', meaning: 'potential' },
+  // Foundation - building systems
+  { type: 'square', color: colors.purple, size: 50, x: '90%', y: '55%', meaning: 'foundation' },
 
-  // Data points - scale
-  { type: 'dots', color: colors.mint, size: 60, x: '70%', y: '20%', meaning: 'scale' },
+  // Direction - Pink Triangle memorial
+  { type: 'triangle', color: colors.coral, size: 55, x: '55%', y: '35%', meaning: 'direction' },
 
-  // Art direction
-  { type: 'triangle', color: colors.coral, size: 45, x: '55%', y: '55%', meaning: 'direction' },
-
-  // Small accents - warmth
-  { type: 'circle', color: colors.pink, size: 25, x: '80%', y: '65%', meaning: 'warmth' },
-  { type: 'circle', color: colors.yellow, size: 18, x: '65%', y: '15%', meaning: 'energy' },
-  { type: 'circle', color: colors.purple, size: 15, x: '58%', y: '80%', meaning: 'spark' },
+  // Small accents
+  { type: 'circle', color: colors.yellow, size: 30, x: '70%', y: '20%', meaning: 'energy' },
+  { type: 'circle', color: colors.blue, size: 20, x: '80%', y: '75%', meaning: 'spark' },
+  { type: 'diamond', color: colors.pink, size: 25, x: '65%', y: '60%', meaning: 'detail' },
 ]
 
 function ShapeSVG({ type, color, size }: { type: ShapeConfig['type']; color: string; size: number }) {
@@ -70,42 +67,28 @@ function ShapeSVG({ type, color, size }: { type: ShapeConfig['type']; color: str
           <circle cx="50" cy="50" r="45" fill={color} />
         </svg>
       )
-    case 'ring':
-      return (
-        <svg width={s} height={s} viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="40" fill="none" stroke={color} strokeWidth="8" />
-        </svg>
-      )
-    case 'arc':
-      return (
-        <svg width={s} height={s} viewBox="0 0 100 100">
-          <path
-            d="M 10 80 Q 50 10 90 80"
-            fill="none"
-            stroke={color}
-            strokeWidth="10"
-            strokeLinecap="round"
-          />
-        </svg>
-      )
     case 'semicircle':
       return (
         <svg width={s} height={s} viewBox="0 0 100 100">
-          <path d="M 50 5 A 45 45 0 0 1 50 95" fill={color} />
+          <path d="M 5 50 A 45 45 0 0 1 95 50 L 5 50" fill={color} />
         </svg>
       )
     case 'triangle':
       return (
         <svg width={s} height={s} viewBox="0 0 100 100">
-          <polygon points="50,10 90,90 10,90" fill={color} />
+          <polygon points="50,5 95,90 5,90" fill={color} />
         </svg>
       )
-    case 'dots':
+    case 'diamond':
       return (
         <svg width={s} height={s} viewBox="0 0 100 100">
-          <circle cx="20" cy="50" r="12" fill={color} />
-          <circle cx="50" cy="50" r="12" fill={color} />
-          <circle cx="80" cy="50" r="12" fill={color} />
+          <polygon points="50,5 95,50 50,95 5,50" fill={color} />
+        </svg>
+      )
+    case 'square':
+      return (
+        <svg width={s} height={s} viewBox="0 0 100 100">
+          <rect x="10" y="10" width="80" height="80" fill={color} />
         </svg>
       )
   }
@@ -156,20 +139,20 @@ export function FloatingShapes() {
         delay: i * 0.2,
       })
 
-      // Rings rotate slowly - continuous iteration
-      if (shape.type === 'ring') {
+      // Diamonds rotate slowly - precision in motion
+      if (shape.type === 'diamond') {
         gsap.to(el, {
           rotation: 360,
-          duration: gsap.utils.random(20, 30),
+          duration: gsap.utils.random(40, 60),
           ease: 'none',
           repeat: -1,
         })
       }
 
-      // Semicircles and arcs sway - growth movement
-      if (shape.type === 'semicircle' || shape.type === 'arc') {
+      // Semicircles sway gently - welcoming gesture
+      if (shape.type === 'semicircle') {
         gsap.to(el, {
-          rotation: gsap.utils.random(-15, 15),
+          rotation: gsap.utils.random(-8, 8),
           duration: gsap.utils.random(6, 10),
           ease: 'sine.inOut',
           yoyo: true,

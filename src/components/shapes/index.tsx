@@ -5,21 +5,38 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Colors from the palette
+/**
+ * SHAPE LANGUAGE - Oliver's Story
+ *
+ * Solid symmetric shapes create visual continuity across sections.
+ * Each shape carries meaning tied to the narrative.
+ *
+ * EXPERIENCE (Tech/Career):
+ *   square = foundation, systems thinking
+ *   diamond = precision, data quality
+ *
+ * CREATIVE (Art/LED):
+ *   triangle = Pink Triangle memorial, direction
+ *   circle = LED glow, warmth, community
+ *
+ * CONTACT (Connection):
+ *   semicircle = openness, welcoming gesture
+ *   circle = connection points
+ */
+
 const colors = {
-  pink: '#FF6B9D',      // LED art, warmth
-  yellow: '#FFD93D',    // Energy, ideas
-  blue: '#5DADE2',      // Tech, trust
-  purple: '#A78BFA',    // AI, innovation
-  green: '#2ECC71',     // Growth, success
-  orange: '#FF7F50',    // Creativity
-  coral: '#FF8A80',     // Passion
-  mint: '#64FFDA',      // Fresh, modern
+  pink: '#FF6B9D',
+  yellow: '#FFD93D',
+  blue: '#5DADE2',
+  purple: '#A78BFA',
+  green: '#2ECC71',
+  coral: '#FF8A80',
+  mint: '#64FFDA',
 }
 
 /**
- * ExperienceShapes - Geometric accents for the work section
- * Shapes represent the trajectory of career growth
+ * ExperienceShapes - Angular precision for the work section
+ * Squares and diamonds represent systems thinking and data quality
  */
 export function ExperienceShapes() {
   const ref = useRef<HTMLDivElement>(null)
@@ -31,30 +48,27 @@ export function ExperienceShapes() {
 
     const shapes = ref.current.querySelectorAll('.exp-shape')
 
-    // Shapes appear on scroll
     shapes.forEach((shape, i) => {
       gsap.fromTo(shape,
-        { opacity: 0, scale: 0.5, rotation: -45 },
+        { opacity: 0, scale: 0.5 },
         {
-          opacity: 0.5,
+          opacity: 0.4,
           scale: 1,
-          rotation: 0,
           duration: 0.8,
           ease: 'back.out(1.5)',
           scrollTrigger: {
             trigger: shape,
-            start: 'top 80%',
+            start: 'top 85%',
             toggleActions: 'play none none reverse',
           },
-          delay: i * 0.1,
+          delay: i * 0.15,
         }
       )
 
       // Gentle floating
       gsap.to(shape, {
-        y: gsap.utils.random(-15, 15),
-        rotation: gsap.utils.random(-10, 10),
-        duration: gsap.utils.random(4, 6),
+        y: gsap.utils.random(-12, 12),
+        duration: gsap.utils.random(5, 7),
         ease: 'sine.inOut',
         yoyo: true,
         repeat: -1,
@@ -64,42 +78,31 @@ export function ExperienceShapes() {
 
   return (
     <div ref={ref} className="pointer-events-none hidden md:block">
-      {/* Arc - career trajectory, growth over time */}
-      <div className="exp-shape fixed top-[15%] right-[5%] z-0 opacity-0">
-        <svg width="100" height="60" viewBox="0 0 100 60">
-          <path
-            d="M 5 55 Q 50 5 95 55"
-            fill="none"
-            stroke={colors.purple}
-            strokeWidth="6"
-            strokeLinecap="round"
-          />
-        </svg>
-      </div>
-
-      {/* Stacked rings - iteration, AI training loops */}
-      <div className="exp-shape fixed bottom-[20%] right-[8%] z-0 opacity-0">
-        <svg width="70" height="70" viewBox="0 0 70 70">
-          <circle cx="35" cy="35" r="30" fill="none" stroke={colors.blue} strokeWidth="4" />
-          <circle cx="35" cy="35" r="20" fill="none" stroke={colors.mint} strokeWidth="3" />
-          <circle cx="35" cy="35" r="10" fill={colors.blue} />
-        </svg>
-      </div>
-
-      {/* Grid dots - data, scale */}
-      <div className="exp-shape fixed top-[40%] right-[3%] z-0 opacity-0">
+      {/* Square - foundation, building systems */}
+      <div className="exp-shape fixed top-[18%] right-[6%] z-0 opacity-0">
         <svg width="50" height="50" viewBox="0 0 50 50">
-          {[0, 1, 2].map(row =>
-            [0, 1, 2].map(col => (
-              <circle
-                key={`${row}-${col}`}
-                cx={10 + col * 15}
-                cy={10 + row * 15}
-                r="4"
-                fill={colors.green}
-              />
-            ))
-          )}
+          <rect x="5" y="5" width="40" height="40" fill={colors.purple} />
+        </svg>
+      </div>
+
+      {/* Diamond - precision, data quality */}
+      <div className="exp-shape fixed bottom-[25%] right-[8%] z-0 opacity-0">
+        <svg width="60" height="60" viewBox="0 0 60 60">
+          <polygon points="30,5 55,30 30,55 5,30" fill={colors.blue} />
+        </svg>
+      </div>
+
+      {/* Small circle - success point */}
+      <div className="exp-shape fixed top-[45%] right-[4%] z-0 opacity-0">
+        <svg width="30" height="30" viewBox="0 0 30 30">
+          <circle cx="15" cy="15" r="12" fill={colors.green} />
+        </svg>
+      </div>
+
+      {/* Small square - micro foundation */}
+      <div className="exp-shape fixed bottom-[40%] right-[12%] z-0 opacity-0">
+        <svg width="25" height="25" viewBox="0 0 25 25">
+          <rect x="3" y="3" width="19" height="19" fill={colors.mint} />
         </svg>
       </div>
     </div>
@@ -107,8 +110,8 @@ export function ExperienceShapes() {
 }
 
 /**
- * CreativeShapes - Art-inspired shapes for the creative section
- * Each shape references Oliver's actual installations
+ * CreativeShapes - Warm shapes for the art section
+ * Circles and triangles represent LED glow and the Pink Triangle memorial
  */
 export function CreativeShapes() {
   const ref = useRef<HTMLDivElement>(null)
@@ -121,15 +124,15 @@ export function CreativeShapes() {
     const shapes = ref.current.querySelectorAll('.art-shape')
 
     shapes.forEach((shape, i) => {
-      // Pulse like LEDs
+      // LED-like pulse
       gsap.to(shape, {
-        opacity: gsap.utils.random(0.3, 0.7),
-        scale: gsap.utils.random(0.95, 1.05),
-        duration: gsap.utils.random(1.5, 2.5),
+        opacity: gsap.utils.random(0.25, 0.5),
+        scale: gsap.utils.random(0.97, 1.03),
+        duration: gsap.utils.random(2, 3),
         ease: 'sine.inOut',
         yoyo: true,
         repeat: -1,
-        delay: i * 0.3,
+        delay: i * 0.4,
       })
     })
   }, { scope: ref })
@@ -137,28 +140,30 @@ export function CreativeShapes() {
   return (
     <div ref={ref} className="pointer-events-none hidden md:block">
       {/* Triangle - Pink Triangle memorial */}
-      <div className="art-shape fixed top-[25%] left-[5%] z-[5] opacity-40">
-        <svg width="60" height="52" viewBox="0 0 60 52">
-          <polygon points="30,2 58,50 2,50" fill={colors.pink} />
+      <div className="art-shape fixed top-[20%] left-[5%] z-[5] opacity-35">
+        <svg width="55" height="48" viewBox="0 0 55 48">
+          <polygon points="27.5,3 52,45 3,45" fill={colors.pink} />
         </svg>
       </div>
 
-      {/* Concentric circles - Circle of Light */}
-      <div className="art-shape fixed bottom-[30%] left-[8%] z-[5] opacity-40">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="35" fill="none" stroke={colors.yellow} strokeWidth="2" />
-          <circle cx="40" cy="40" r="25" fill="none" stroke={colors.orange} strokeWidth="2" />
-          <circle cx="40" cy="40" r="15" fill="none" stroke={colors.coral} strokeWidth="2" />
-          <circle cx="40" cy="40" r="5" fill={colors.yellow} />
+      {/* Circle - LED glow, warmth */}
+      <div className="art-shape fixed bottom-[35%] left-[7%] z-[5] opacity-35">
+        <svg width="45" height="45" viewBox="0 0 45 45">
+          <circle cx="22.5" cy="22.5" r="20" fill={colors.yellow} />
         </svg>
       </div>
 
-      {/* Abstract sculpture form - THEM */}
-      <div className="art-shape fixed top-[60%] left-[3%] z-[5] opacity-40">
-        <svg width="50" height="90" viewBox="0 0 50 90">
-          <rect x="20" y="0" width="10" height="90" fill={colors.purple} />
-          <rect x="0" y="30" width="50" height="10" fill={colors.purple} />
-          <circle cx="25" cy="15" r="12" fill={colors.mint} />
+      {/* Small circle - warmth accent */}
+      <div className="art-shape fixed top-[55%] left-[3%] z-[5] opacity-30">
+        <svg width="25" height="25" viewBox="0 0 25 25">
+          <circle cx="12.5" cy="12.5" r="10" fill={colors.coral} />
+        </svg>
+      </div>
+
+      {/* Small triangle - direction */}
+      <div className="art-shape fixed bottom-[20%] left-[10%] z-[5] opacity-30">
+        <svg width="30" height="26" viewBox="0 0 30 26">
+          <polygon points="15,2 28,24 2,24" fill={colors.purple} />
         </svg>
       </div>
     </div>
@@ -166,8 +171,8 @@ export function CreativeShapes() {
 }
 
 /**
- * ContactShapes - Warm, inviting shapes for the contact section
- * Represent connection and openness
+ * ContactShapes - Welcoming shapes for the contact section
+ * Semicircles and circles represent openness and connection
  */
 export function ContactShapes() {
   const ref = useRef<HTMLDivElement>(null)
@@ -179,71 +184,56 @@ export function ContactShapes() {
 
     const shapes = ref.current.querySelectorAll('.contact-shape')
 
-    // Entrance animation
     gsap.fromTo(shapes,
       { opacity: 0, scale: 0 },
       {
-        opacity: 0.6,
+        opacity: 0.45,
         scale: 1,
         duration: 1,
-        ease: 'elastic.out(1, 0.5)',
-        stagger: 0.15,
+        ease: 'elastic.out(1, 0.6)',
+        stagger: 0.2,
         scrollTrigger: {
           trigger: ref.current,
-          start: 'top 70%',
+          start: 'top 75%',
           toggleActions: 'play none none reverse',
         },
       }
     )
 
-    // Gentle orbit
+    // Gentle sway
     shapes.forEach((shape, i) => {
       gsap.to(shape, {
-        rotation: i % 2 === 0 ? 360 : -360,
-        duration: 30 + i * 5,
-        ease: 'none',
+        y: gsap.utils.random(-8, 8),
+        rotation: gsap.utils.random(-5, 5),
+        duration: gsap.utils.random(4, 6),
+        ease: 'sine.inOut',
+        yoyo: true,
         repeat: -1,
-        transformOrigin: i % 2 === 0 ? '150% 150%' : '-50% -50%',
+        delay: i * 0.2,
       })
     })
   }, { scope: ref })
 
   return (
     <div ref={ref} className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* Open ring - invitation */}
-      <div className="contact-shape absolute top-[10%] right-[10%] opacity-0">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <path
-            d="M 40 5 A 35 35 0 1 1 5 40"
-            fill="none"
-            stroke={colors.pink}
-            strokeWidth="5"
-            strokeLinecap="round"
-          />
+      {/* Semicircle - welcoming gesture */}
+      <div className="contact-shape absolute top-[12%] right-[8%] opacity-0">
+        <svg width="70" height="35" viewBox="0 0 70 35">
+          <path d="M 0 35 A 35 35 0 0 1 70 35 L 0 35" fill={colors.pink} />
         </svg>
       </div>
 
-      {/* Dots radiating - communication */}
-      <div className="contact-shape absolute bottom-[20%] right-[15%] opacity-0">
-        <svg width="60" height="60" viewBox="0 0 60 60">
-          <circle cx="30" cy="30" r="8" fill={colors.yellow} />
-          <circle cx="10" cy="30" r="5" fill={colors.yellow} opacity="0.6" />
-          <circle cx="50" cy="30" r="5" fill={colors.yellow} opacity="0.6" />
-          <circle cx="30" cy="10" r="5" fill={colors.yellow} opacity="0.6" />
-          <circle cx="30" cy="50" r="5" fill={colors.yellow} opacity="0.6" />
+      {/* Circle - connection point */}
+      <div className="contact-shape absolute bottom-[25%] right-[12%] opacity-0">
+        <svg width="35" height="35" viewBox="0 0 35 35">
+          <circle cx="17.5" cy="17.5" r="15" fill={colors.yellow} />
         </svg>
       </div>
 
-      {/* Arc pointing forward - direction */}
-      <div className="contact-shape absolute top-[50%] right-[5%] opacity-0">
-        <svg width="50" height="100" viewBox="0 0 50 100">
-          <path
-            d="M 45 10 Q 5 50 45 90"
-            fill="none"
-            stroke={colors.mint}
-            strokeWidth="4"
-            strokeLinecap="round"
-          />
+      {/* Small circle - secondary connection */}
+      <div className="contact-shape absolute top-[45%] right-[5%] opacity-0">
+        <svg width="22" height="22" viewBox="0 0 22 22">
+          <circle cx="11" cy="11" r="9" fill={colors.mint} />
         </svg>
       </div>
     </div>
@@ -252,19 +242,18 @@ export function ContactShapes() {
 
 /**
  * SectionDivider - Geometric transition between sections
+ * Diamond shape pointing forward suggests progression
  */
 export function SectionDivider({ color = colors.purple }: { color?: string }) {
   return (
-    <div className="relative h-32 overflow-hidden pointer-events-none">
+    <div className="relative h-24 overflow-hidden pointer-events-none">
       <svg
-        className="absolute left-1/2 -translate-x-1/2 opacity-30"
-        width="200"
-        height="100"
-        viewBox="0 0 200 100"
+        className="absolute left-1/2 -translate-x-1/2 opacity-25"
+        width="60"
+        height="60"
+        viewBox="0 0 60 60"
       >
-        <line x1="0" y1="50" x2="80" y2="50" stroke={color} strokeWidth="2" />
-        <polygon points="100,30 120,50 100,70 80,50" fill={color} />
-        <line x1="120" y1="50" x2="200" y2="50" stroke={color} strokeWidth="2" />
+        <polygon points="30,5 55,30 30,55 5,30" fill={color} />
       </svg>
     </div>
   )
