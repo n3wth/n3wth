@@ -107,7 +107,7 @@ export function Experience() {
         <div className="mx-auto max-w-6xl px-6 md:px-12">
           <div data-exp-header className="mb-16 md:mb-20">
             <p className="label mb-4">Experience</p>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1]">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] text-glow">
               Building AI products
               <br />
               at billion-user scale
@@ -151,7 +151,7 @@ export function Experience() {
                 {/* Company - massive */}
                 <h3
                   data-company
-                  className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[9rem] font-semibold text-white tracking-tighter leading-[0.9] mb-6"
+                  className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[9rem] font-semibold text-white tracking-tighter leading-[0.9] mb-6 text-glow"
                 >
                   {exp.company}
                 </h3>

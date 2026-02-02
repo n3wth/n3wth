@@ -176,13 +176,15 @@ export function FloatingShapes() {
 
     // Shapes respond to scroll - move as you journey through the page
     // Each shape moves at different rate creating parallax depth
+    // Using yPercent to avoid conflicting with the y-based floating animations
     gsap.to(els, {
-      y: (i) => 50 + i * 15,
+      yPercent: (i) => 20 + i * 8,
       scrollTrigger: {
         trigger: 'body',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 2,
+        scrub: 1.5,
+        invalidateOnRefresh: true,
       },
     })
 

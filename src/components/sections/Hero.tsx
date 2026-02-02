@@ -80,7 +80,7 @@ export function Hero() {
         {/* Big name - stacked for visual impact */}
         <h1
           ref={titleRef}
-          className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] font-display font-semibold tracking-tighter leading-[0.85] mb-6 md:mb-8 text-white"
+          className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] font-display font-semibold tracking-tighter leading-[0.85] mb-6 md:mb-8 text-white text-glow"
           style={{ perspective: '1000px' }}
         >
           Oliver<br />Newth
@@ -89,7 +89,7 @@ export function Hero() {
         {/* The hook */}
         <p
           data-hero-tagline
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-snug max-w-2xl opacity-0 text-white font-display font-medium tracking-tight"
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-snug max-w-2xl opacity-0 text-white font-display font-medium tracking-tight text-glow-subtle"
         >
           AI at Google.<br className="sm:hidden" /> Art in the desert.
         </p>

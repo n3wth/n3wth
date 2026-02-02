@@ -127,7 +127,7 @@ export function Creative() {
           <div className="mx-auto max-w-6xl px-6 md:px-12">
             <div data-cr-header>
               <p className="label mb-4">After hours</p>
-              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-6">
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-6 text-glow">
                 I build things that glow
               </h2>
               <p

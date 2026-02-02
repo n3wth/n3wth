@@ -52,7 +52,7 @@ export function Frameworks() {
         {/* Section header with narrative context */}
         <div data-fw-header className="mb-16 md:mb-24">
           <p className="label mb-4">After a decade of building</p>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-6">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-6 text-glow">
             Four things I believe
           </h2>
           <p
