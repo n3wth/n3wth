@@ -223,7 +223,8 @@ body {
 }
 
 /* Content visibility for performance - skip rendering off-screen sections */
-section[id] {
+/* Note: Disabled for #work section as it breaks GSAP horizontal scroll calculations */
+section[id]:not(#work):not(#creative) {
   content-visibility: auto;
   contain-intrinsic-size: auto 100vh;
 }

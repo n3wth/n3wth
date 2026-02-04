@@ -98,10 +98,10 @@ export function Creative() {
       {/* Art-inspired geometric shapes */}
       <CreativeShapes />
 
-      {/* Fixed background container */}
+      {/* Fixed background container - z-[1] to sit above BackgroundElements */}
       <div
         ref={backgroundsRef}
-        className="fixed inset-0 pointer-events-none z-0"
+        className="fixed inset-0 pointer-events-none z-[1]"
         aria-hidden="true"
       >
         {installations.map((inst) => (

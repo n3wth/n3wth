@@ -34,22 +34,20 @@ export function Experience() {
         ease: 'power3.out',
       })
 
-      // Calculate scroll distance for horizontal scroll
-      // Use documentElement.clientWidth to avoid issues with mobile scrollbars
+      // Horizontal scroll animation
+      // Using function-based values for x and end ensures recalculation on refresh
       const track = trackRef.current
-      const viewportWidth = document.documentElement.clientWidth
-      const scrollDistance = track.scrollWidth - viewportWidth + 100
+      const getScrollDistance = () => track.scrollWidth - window.innerWidth + 100
 
-      // Horizontal scroll animation with smooth easing
       const horizontalScroll = gsap.to(track, {
-        x: -scrollDistance,
-        ease: 'power1.inOut',
+        x: () => -getScrollDistance(),
+        ease: 'none',
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: () => `+=${scrollDistance * 1.2}`,
+          end: () => `+=${getScrollDistance()}`,
           pin: true,
-          scrub: 1.5,
+          scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
