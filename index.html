@@ -29,6 +29,10 @@
     <!-- Theme -->
     <meta name="theme-color" content="#0a0a0f" />
 
+    <!-- Preload critical fonts to improve FCP -->
+    <link rel="preload" href="/fonts/MonaSans-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -65,11 +69,35 @@
     }
     </script>
 
-    <!-- Critical CSS to prevent FOUC -->
+    <!-- Critical CSS - inline styles for immediate FCP -->
     <style>
-      html, body { background: #000; color: #000; }
-      #root { opacity: 0; }
+      /* Base styles for instant render */
+      html, body {
+        margin: 0;
+        background: #000;
+        color: #c7c7cc;
+        font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* Show content immediately - CSS will enhance when loaded */
+      #root { min-height: 100vh; }
       #root > .seo-fallback { display: none; }
+      /* Minimal hero placeholder to prevent layout shift */
+      .hero-placeholder {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .hero-placeholder h1 {
+        font-family: 'Mona Sans', system-ui, sans-serif;
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+        line-height: 1.1;
+      }
     </style>
   </head>
   <body>
