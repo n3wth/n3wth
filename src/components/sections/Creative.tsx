@@ -21,8 +21,8 @@ export function Creative() {
       // Hide all shapes (both floating and art shapes) when in creative section to keep images clean
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'top 80%',
-        end: 'bottom 20%',
+        start: 'top bottom',
+        end: 'bottom top',
         onEnter: () => {
           gsap.to('[data-float-shape], .art-shape', { opacity: 0, duration: 0.4, pointerEvents: 'none' })
         },
