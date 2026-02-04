@@ -32,18 +32,20 @@ export function AIExplainer() {
         ease: 'power3.out'
       })
 
-      // Challenge cards stagger in
-      gsap.from('[data-challenge-card]', {
-        scrollTrigger: {
-          trigger: '[data-challenges]',
-          start: 'top 75%',
-          toggleActions: 'play none none reverse'
-        },
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: 'power3.out'
+      // Each challenge card animates individually when it enters viewport
+      const cards = gsap.utils.toArray<HTMLElement>('[data-challenge-card]')
+      cards.forEach((card) => {
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse'
+          },
+          y: 50,
+          opacity: 0,
+          duration: 0.7,
+          ease: 'power3.out'
+        })
       })
     },
     { scope: sectionRef }

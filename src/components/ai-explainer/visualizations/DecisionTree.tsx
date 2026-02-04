@@ -4,6 +4,17 @@ interface DecisionTreeProps {
   metrics: Record<string, number> | null
 }
 
+// Colors that work on dark backgrounds
+const colors = {
+  green: '#34d399',
+  greenLight: '#6ee7b7',
+  blue: '#60a5fa',
+  blueLight: '#93c5fd',
+  grey300: '#c7c7cc',
+  grey500: '#6b7280',
+  grey600: '#48484a'
+}
+
 export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTreeProps) {
   const safetyValue = metrics?.safety || 0
   const fairnessValue = metrics?.fairness || 0
@@ -17,7 +28,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         cy="50"
         r="35"
         fill="none"
-        stroke="var(--color-grey-500)"
+        stroke={colors.grey500}
         strokeWidth="2"
         opacity={hasChoice ? 1 : 0.4}
       />
@@ -25,7 +36,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         x="200"
         y="55"
         textAnchor="middle"
-        fill="var(--color-grey-300)"
+        fill={colors.grey300}
         fontSize="12"
         fontWeight="600"
       >
@@ -38,7 +49,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         y1="78"
         x2="100"
         y2="140"
-        stroke="var(--color-green-500)"
+        stroke={colors.green}
         strokeWidth="2"
         opacity={hasChoice ? 0.8 : 0.3}
       />
@@ -46,7 +57,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         cx="100"
         cy="170"
         r="40"
-        fill="var(--color-green-500)"
+        fill={colors.green}
         opacity={hasChoice ? 0.15 : 0.05}
       />
       <circle
@@ -54,7 +65,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         cy="170"
         r="40"
         fill="none"
-        stroke="var(--color-green-500)"
+        stroke={colors.green}
         strokeWidth="2"
         opacity={hasChoice ? 0.8 : 0.3}
       />
@@ -62,7 +73,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         x="100"
         y="165"
         textAnchor="middle"
-        fill="var(--color-green-400)"
+        fill={colors.greenLight}
         fontSize="11"
         fontWeight="500"
       >
@@ -85,7 +96,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         y1="78"
         x2="300"
         y2="140"
-        stroke="var(--color-blue-500)"
+        stroke={colors.blue}
         strokeWidth="2"
         opacity={hasChoice ? 0.8 : 0.3}
       />
@@ -93,7 +104,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         cx="300"
         cy="170"
         r="40"
-        fill="var(--color-blue-500)"
+        fill={colors.blue}
         opacity={hasChoice ? 0.15 : 0.05}
       />
       <circle
@@ -101,7 +112,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         cy="170"
         r="40"
         fill="none"
-        stroke="var(--color-blue-500)"
+        stroke={colors.blue}
         strokeWidth="2"
         opacity={hasChoice ? 0.8 : 0.3}
       />
@@ -109,7 +120,7 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
         x="300"
         y="165"
         textAnchor="middle"
-        fill="var(--color-blue-400)"
+        fill={colors.blueLight}
         fontSize="11"
         fontWeight="500"
       >
@@ -127,10 +138,10 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
       </text>
 
       {/* Labels */}
-      <text x="80" y="245" fill="var(--color-grey-500)" fontSize="10" textAnchor="middle">
+      <text x="80" y="245" fill={colors.grey500} fontSize="10" textAnchor="middle">
         Catch more harm
       </text>
-      <text x="320" y="245" fill="var(--color-grey-500)" fontSize="10" textAnchor="middle">
+      <text x="320" y="245" fill={colors.grey500} fontSize="10" textAnchor="middle">
         Fewer false positives
       </text>
     </svg>
