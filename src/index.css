@@ -135,9 +135,14 @@
   box-sizing: border-box;
 }
 
-/* Reveal content once CSS loads (prevents FOUC) */
+/* Content visible immediately - no opacity animation blocking FCP */
 #root {
   opacity: 1;
+}
+
+/* Hide hero placeholder once React hydrates */
+.hero-placeholder {
+  display: none !important;
 }
 
 /* Base */
