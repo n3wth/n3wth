@@ -365,6 +365,7 @@ section[id]:not(#work):not(#creative) {
   clip-path: inset(0);
 }
 
+
 /* Button press state */
 .btn-press:active {
   transform: scale(0.96);

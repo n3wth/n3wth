@@ -18,6 +18,25 @@ export function Creative() {
       ).matches
       if (prefersReducedMotion) return
 
+      // Hide floating shapes when in creative section to keep images clean
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        onEnter: () => {
+          gsap.to('[data-float-shape]', { opacity: 0, duration: 0.4, pointerEvents: 'none' })
+        },
+        onLeave: () => {
+          gsap.to('[data-float-shape]', { opacity: (i) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
+        },
+        onEnterBack: () => {
+          gsap.to('[data-float-shape]', { opacity: 0, duration: 0.4 })
+        },
+        onLeaveBack: () => {
+          gsap.to('[data-float-shape]', { opacity: (i) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
+        },
+      })
+
       // Header animation
       gsap.from('[data-cr-header]', {
         scrollTrigger: {
@@ -57,36 +76,106 @@ export function Creative() {
 
       panels.forEach((panel, i) => {
         const bg = backgrounds[i]
-        const card = panel.querySelector('[data-installation-card]')
+        const backdrop = panel.querySelector('[data-inst-backdrop]')
+        const label = panel.querySelector('[data-inst-label]')
+        const title = panel.querySelector('[data-inst-title]')
+        const tagline = panel.querySelector('[data-inst-tagline]')
+        const meta = panel.querySelector('[data-inst-meta]')
         if (!bg) return
 
-        // Each panel controls its own background
+        // Background crossfade
         ScrollTrigger.create({
           trigger: panel,
-          start: 'top 60%',    // panel enters viewport
-          end: 'bottom 40%',   // panel leaves viewport
+          start: 'top 60%',
+          end: 'bottom 40%',
           onEnter: () => {
             hideAllBackgrounds()
             gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
-            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
           },
           onLeave: () => {
             gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 0, y: -30, duration: 0.4, ease: 'power2.out' })
           },
           onEnterBack: () => {
             hideAllBackgrounds()
             gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
-            if (card) gsap.to(card, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
           },
           onLeaveBack: () => {
             gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
-            if (card) gsap.to(card, { opacity: 0, y: 30, duration: 0.4, ease: 'power2.out' })
           },
         })
 
-        // Set initial state for cards
-        if (card) gsap.set(card, { opacity: 0, y: 40 })
+        // Text elements for staggered animation
+        const textElements = [label, title, tagline, meta].filter(Boolean)
+
+        // Backdrop blur fade IN
+        if (backdrop) {
+          gsap.fromTo(backdrop,
+            { opacity: 0 },
+            {
+              opacity: 1,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: panel,
+                start: 'top 85%',
+                end: 'top 40%',
+                scrub: 0.5,
+              },
+            }
+          )
+        }
+
+        // Text fade IN - staggered entrance as panel scrolls into view
+        textElements.forEach((el, index) => {
+          gsap.fromTo(el,
+            { opacity: 0, y: 30 + index * 8 },
+            {
+              opacity: 1,
+              y: 0,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: panel,
+                start: `top ${80 - index * 5}%`,
+                end: `top ${35 - index * 3}%`,
+                scrub: 0.5,
+              },
+            }
+          )
+        })
+
+        // Backdrop blur fade OUT
+        if (backdrop) {
+          gsap.fromTo(backdrop,
+            { opacity: 1 },
+            {
+              opacity: 0,
+              ease: 'power2.in',
+              scrollTrigger: {
+                trigger: panel,
+                start: 'bottom 65%',
+                end: 'bottom 25%',
+                scrub: 0.5,
+              },
+            }
+          )
+        }
+
+        // Text fade OUT - staggered exit as panel scrolls away
+        textElements.forEach((el, index) => {
+          gsap.fromTo(el,
+            { opacity: 1, y: 0 },
+            {
+              opacity: 0,
+              y: -25 - index * 6,
+              ease: 'power2.in',
+              scrollTrigger: {
+                trigger: panel,
+                start: `bottom ${70 - index * 3}%`,
+                end: `bottom ${30 - index * 2}%`,
+                scrub: 0.5,
+              },
+            }
+          )
+        })
       })
 
     },
@@ -153,9 +242,22 @@ export function Creative() {
               <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-12 w-full py-12 sm:py-16 md:py-24">
                 <article
                   data-installation-card
-                  className="max-w-xl"
+                  className="max-w-xl relative"
                 >
+                  {/* Gaussian blur backdrop for readability */}
+                  <div
+                    data-inst-backdrop
+                    className="absolute -inset-8 sm:-inset-10 md:-inset-12 -z-10 rounded-3xl"
+                    style={{
+                      background: inst.lightBg
+                        ? 'radial-gradient(ellipse 120% 100% at 20% 50%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 50%, transparent 80%)'
+                        : 'radial-gradient(ellipse 120% 100% at 20% 50%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 80%)',
+                      backdropFilter: 'blur(40px)',
+                      WebkitBackdropFilter: 'blur(40px)',
+                    }}
+                  />
                   <span
+                    data-inst-label
                     className="inline-block text-xs font-mono uppercase tracking-wider mb-4"
                     style={{ color: textColor, opacity: 0.7 }}
                   >
@@ -163,6 +265,7 @@ export function Creative() {
                   </span>
 
                   <h3
+                    data-inst-title
                     className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-2 sm:mb-3 tracking-tight"
                     style={{ color: textColor }}
                   >
@@ -170,13 +273,17 @@ export function Creative() {
                   </h3>
 
                   <p
+                    data-inst-tagline
                     className="text-sm sm:text-lg leading-relaxed mb-4 sm:mb-6"
                     style={{ color: textColor, opacity: 0.85 }}
                   >
                     {inst.tagline}
                   </p>
 
-                  <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
+                  <div
+                    data-inst-meta
+                    className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm"
+                  >
                     <span style={{ color: textColor, opacity: 0.9 }}>{inst.year}</span>
                     <span style={{ color: textColor, opacity: 0.4 }}>/</span>
                     <span style={{ color: textColor, opacity: 0.7 }}>{inst.location}</span>

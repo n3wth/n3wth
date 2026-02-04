@@ -76,7 +76,7 @@ export function Hero() {
     >
       <FloatingShapes />
 
-      <div className="w-full max-w-5xl relative z-10">
+      <div className="w-full max-w-6xl mx-auto relative z-10">
         {/* Big name - stacked for visual impact */}
         <h1
           ref={titleRef}
