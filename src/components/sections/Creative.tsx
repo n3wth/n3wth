@@ -1,11 +1,7 @@
 import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'
 import { installations } from '../../data/content'
 import { CreativeShapes } from '../shapes'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function Creative() {
   const sectionRef = useRef<HTMLElement>(null)

@@ -7,13 +7,19 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Split GSAP into its own chunk for better caching
-          gsap: ['gsap', '@gsap/react', 'gsap/ScrollTrigger', 'gsap/SplitText'],
-          // Split React vendor bundle
-          vendor: ['react', 'react-dom'],
-          // Split Lenis for smooth scroll
-          lenis: ['lenis'],
+        manualChunks(id) {
+          // GSAP and its plugins in one chunk (loaded together, cached together)
+          if (id.includes('gsap') || id.includes('@gsap/react')) {
+            return 'gsap'
+          }
+          // React vendor bundle
+          if (id.includes('react-dom') || (id.includes('react') && !id.includes('react-router'))) {
+            return 'vendor'
+          }
+          // Lenis for smooth scroll
+          if (id.includes('lenis')) {
+            return 'lenis'
+          }
         },
       },
     },
