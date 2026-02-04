@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { memo, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -94,7 +94,7 @@ function ShapeSVG({ type, color, size }: { type: ShapeConfig['type']; color: str
   }
 }
 
-export function FloatingShapes() {
+export const FloatingShapes = memo(function FloatingShapes() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
@@ -208,4 +208,4 @@ export function FloatingShapes() {
       ))}
     </div>
   )
-}
+})

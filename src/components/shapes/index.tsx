@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { memo, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -38,7 +38,7 @@ const colors = {
  * ExperienceShapes - Angular precision for the work section
  * Squares and diamonds represent systems thinking and data quality
  */
-export function ExperienceShapes() {
+export const ExperienceShapes = memo(function ExperienceShapes() {
   const ref = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
@@ -107,13 +107,13 @@ export function ExperienceShapes() {
       </div>
     </div>
   )
-}
+})
 
 /**
  * CreativeShapes - Warm shapes for the art section
  * Circles and triangles represent LED glow and the Pink Triangle memorial
  */
-export function CreativeShapes() {
+export const CreativeShapes = memo(function CreativeShapes() {
   const ref = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
@@ -168,13 +168,13 @@ export function CreativeShapes() {
       </div>
     </div>
   )
-}
+})
 
 /**
  * ContactShapes - Welcoming shapes for the contact section
  * Semicircles and circles represent openness and connection
  */
-export function ContactShapes() {
+export const ContactShapes = memo(function ContactShapes() {
   const ref = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
@@ -238,7 +238,7 @@ export function ContactShapes() {
       </div>
     </div>
   )
-}
+})
 
 /**
  * SectionDivider - Geometric transition between sections

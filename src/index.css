@@ -1,11 +1,21 @@
 @import 'tailwindcss';
 @import '@n3wth/ui/styles';
 
-/* Mona Sans - Variable (display/title font) */
+/* Mona Sans - Variable (display/title font) - text weights */
 @font-face {
   font-family: 'Mona Sans';
   src: url('/fonts/MonaSans-Variable.woff2') format('woff2-variations');
-  font-weight: 200 900;
+  font-weight: 200 500;
+  font-style: normal;
+  font-stretch: 75% 125%;
+  font-display: swap;
+}
+
+/* Mona Sans - Variable (display/title font) - bold weights */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/MonaSans-Variable.woff2') format('woff2-variations');
+  font-weight: 600 900;
   font-style: normal;
   font-stretch: 75% 125%;
   font-display: swap;
@@ -14,13 +24,22 @@
 @font-face {
   font-family: 'Mona Sans';
   src: url('/fonts/MonaSans-Variable-Italic.woff2') format('woff2-variations');
-  font-weight: 200 900;
+  font-weight: 200 500;
   font-style: italic;
   font-stretch: 75% 125%;
   font-display: swap;
 }
 
-/* Geist Sans */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/MonaSans-Variable-Italic.woff2') format('woff2-variations');
+  font-weight: 600 900;
+  font-style: italic;
+  font-stretch: 75% 125%;
+  font-display: swap;
+}
+
+/* Geist Sans - body weight */
 @font-face {
   font-family: 'Geist Sans';
   src: url('/fonts/Geist-Regular.woff2') format('woff2');
@@ -29,18 +48,11 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
+/* Geist Sans - medium weights */
 @font-face {
   font-family: 'Geist Sans';
   src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
-  font-weight: 600;
+  font-weight: 500 600;
   font-style: normal;
   font-display: swap;
 }
