@@ -47,25 +47,6 @@ export function AIExplainer() {
           ease: 'power3.out'
         })
       })
-
-      // Hide Creative section backgrounds while in AI Explainer section
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        onEnter: () => {
-          gsap.to('[data-installation-bg]', { opacity: 0, duration: 0.3 })
-        },
-        onLeave: () => {
-          // Let Creative section handle its own backgrounds
-        },
-        onEnterBack: () => {
-          gsap.to('[data-installation-bg]', { opacity: 0, duration: 0.3 })
-        },
-        onLeaveBack: () => {
-          // Let Creative section handle its own backgrounds
-        }
-      })
     },
     { scope: sectionRef }
   )
@@ -81,7 +62,7 @@ export function AIExplainer() {
         {/* Header */}
         <div data-ai-header className="mb-10 sm:mb-16 md:mb-20">
           <p className="label mb-3 sm:mb-4">How I think about alignment</p>
-          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6 text-glow">
+          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6">
             AI safety has no perfect solutions
           </h2>
           <p

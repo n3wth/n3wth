@@ -56,27 +56,6 @@ export function Creative() {
       // Each installation panel triggers its background
       const panels = gsap.utils.toArray<HTMLElement>('[data-installation-panel]')
       const backgrounds = gsap.utils.toArray<HTMLElement>('[data-installation-bg]')
-      const backgroundsContainer = backgroundsRef.current
-
-      // Helper to hide all backgrounds
-      const hideAllBackgrounds = () => {
-        backgrounds.forEach(bg => {
-          gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
-        })
-      }
-
-      // Master trigger: hide all backgrounds when section is not in view
-      // This prevents backgrounds from showing in Contact/Footer sections
-      if (backgroundsContainer) {
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          invalidateOnRefresh: true,
-          onLeave: hideAllBackgrounds,
-          onLeaveBack: hideAllBackgrounds,
-        })
-      }
 
       panels.forEach((panel, i) => {
         const bg = backgrounds[i]
@@ -87,25 +66,26 @@ export function Creative() {
         const meta = panel.querySelector('[data-inst-meta]')
         if (!bg) return
 
-        // Background crossfade
+        // Background crossfade - immediate hide others, fade in active
+        gsap.set(bg, { opacity: 0 })
+
         ScrollTrigger.create({
           trigger: panel,
-          start: 'top 60%',
-          end: 'bottom 40%',
-          invalidateOnRefresh: true,
+          start: 'top 70%',
+          end: 'bottom 30%',
           onEnter: () => {
-            hideAllBackgrounds()
-            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+            backgrounds.forEach(b => gsap.set(b, { opacity: 0 }))
+            gsap.to(bg, { opacity: 1, duration: 0.4 })
           },
           onLeave: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+            gsap.to(bg, { opacity: 0, duration: 0.3 })
           },
           onEnterBack: () => {
-            hideAllBackgrounds()
-            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+            backgrounds.forEach(b => gsap.set(b, { opacity: 0 }))
+            gsap.to(bg, { opacity: 1, duration: 0.4 })
           },
           onLeaveBack: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+            gsap.to(bg, { opacity: 0, duration: 0.3 })
           },
         })
 
