@@ -298,10 +298,16 @@ section[id]:not(#work):not(#creative) {
   transform-style: preserve-3d;
 }
 
-/* Hero character animation */
+/* Hero character animation - visible by default for LCP, GSAP animates as enhancement */
 .hero-char {
   display: inline-block;
   transform-style: preserve-3d;
+}
+
+/* Ensure hero content is visible before JS loads (critical for LCP) */
+.hero-visible-default {
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 /* Contact text animation */
