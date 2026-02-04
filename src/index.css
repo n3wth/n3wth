@@ -506,10 +506,6 @@ html.lenis, html.lenis body {
   footer {
     padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
   }
-
-  nav {
-    padding-top: env(safe-area-inset-top);
-  }
 }
 
 /* Horizontal scroll touch support */
