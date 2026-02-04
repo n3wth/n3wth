@@ -10,10 +10,17 @@ export const siteConfig = {
   artSite: 'https://newth.art',
 }
 
-export const navigation = [
+export interface NavItem {
+  name: string
+  href: string
+  external?: boolean
+}
+
+export const navigation: NavItem[] = [
   { name: 'Work', href: '#work' },
   { name: 'Frameworks', href: '#frameworks' },
   { name: 'Creative', href: '#creative' },
+  { name: 'Skills', href: 'https://skills.n3wth.com', external: true },
   { name: 'Contact', href: '#contact' },
 ]
 
