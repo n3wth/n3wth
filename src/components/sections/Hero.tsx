@@ -1,4 +1,4 @@
-import { useRef, lazy, Suspense } from 'react'
+import { useRef, lazy, Suspense, useState } from 'react'
 import { gsap, SplitText, useGSAP } from '../../lib/gsap'
 
 // Lazy load decorative shapes to prioritize text content for FCP
@@ -8,6 +8,8 @@ export function Hero() {
   const containerRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const splitRef = useRef<SplitText | null>(null)
+  // Track if animation has started - content visible by default for LCP
+  const [animationReady, setAnimationReady] = useState(false)
 
   useGSAP(
     () => {
@@ -17,6 +19,9 @@ export function Hero() {
         '(prefers-reduced-motion: reduce)'
       ).matches
       if (prefersReducedMotion) return
+
+      // Mark animation as ready before starting - hides content briefly for reveal
+      setAnimationReady(true)
 
       splitRef.current = new SplitText(titleRef.current, {
         type: 'chars',
@@ -86,18 +91,18 @@ export function Hero() {
           Oliver<br />Newth
         </h1>
 
-        {/* The hook */}
+        {/* The hook - visible by default for LCP, animated only after JS ready */}
         <p
           data-hero-tagline
-          className="text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl leading-snug max-w-2xl opacity-0 text-white font-display font-medium tracking-tight text-glow-subtle"
+          className={`text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl leading-snug max-w-2xl text-white font-display font-medium tracking-tight text-glow-subtle ${animationReady ? 'opacity-0' : 'opacity-100'}`}
         >
           AI at Google.<br className="sm:hidden" /> Art in the desert.
         </p>
 
-        {/* Subtitle */}
+        {/* Subtitle - visible by default for LCP */}
         <p
           data-hero-subtitle
-          className="mt-3 sm:mt-6 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-xl opacity-0"
+          className={`mt-3 sm:mt-6 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-xl ${animationReady ? 'opacity-0' : 'opacity-100'}`}
           style={{ color: 'var(--color-grey-300)' }}
         >
           Building at the intersection of trust and wonder. 10+ years bringing AI systems from research to production.

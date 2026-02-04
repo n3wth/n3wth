@@ -29,8 +29,8 @@
     <!-- Theme -->
     <meta name="theme-color" content="#0a0a0f" />
 
-    <!-- Preload critical fonts to improve FCP -->
-    <link rel="preload" href="/fonts/MonaSans-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Preload critical fonts to improve FCP/LCP - display font first for hero -->
+    <link rel="preload" href="/fonts/MonaSans-Variable.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
     <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Structured Data -->
@@ -69,7 +69,7 @@
     }
     </script>
 
-    <!-- Critical CSS - inline styles for immediate FCP -->
+    <!-- Critical CSS - inline styles for immediate FCP/LCP -->
     <style>
       /* Base styles for instant render */
       html, body {
@@ -97,6 +97,11 @@
         color: #fff;
         margin: 0;
         line-height: 1.1;
+      }
+      /* Critical: Ensure hero LCP element is visible before JS loads */
+      /* This prevents opacity:0 from GSAP animation blocking LCP */
+      [data-hero-tagline], [data-hero-subtitle] {
+        opacity: 1;
       }
     </style>
   </head>
