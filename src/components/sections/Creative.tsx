@@ -23,6 +23,7 @@ export function Creative() {
         trigger: sectionRef.current,
         start: 'top bottom',
         end: 'bottom top',
+        invalidateOnRefresh: true,
         onEnter: () => {
           gsap.to('[data-float-shape], .art-shape', { opacity: 0, duration: 0.4, pointerEvents: 'none' })
         },
@@ -71,6 +72,7 @@ export function Creative() {
           trigger: sectionRef.current,
           start: 'top bottom',
           end: 'bottom top',
+          invalidateOnRefresh: true,
           onLeave: hideAllBackgrounds,
           onLeaveBack: hideAllBackgrounds,
         })
@@ -90,6 +92,7 @@ export function Creative() {
           trigger: panel,
           start: 'top 60%',
           end: 'bottom 40%',
+          invalidateOnRefresh: true,
           onEnter: () => {
             hideAllBackgrounds()
             gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
