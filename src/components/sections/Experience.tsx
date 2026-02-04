@@ -131,7 +131,7 @@ export function Experience() {
             <article
               key={exp.id}
               data-role-card
-              className="relative w-[90vw] sm:w-[85vw] md:w-[70vw] lg:w-[55vw] shrink-0 h-full flex items-center touch-pan-x"
+              className="relative w-[95vw] xs:w-[90vw] sm:w-[85vw] md:w-[70vw] lg:w-[55vw] shrink-0 h-full flex items-center touch-pan-x"
             >
               {/* Vertical accent line */}
               <div
@@ -140,7 +140,7 @@ export function Experience() {
               />
 
               {/* Content */}
-              <div className="pl-6 sm:pl-8 md:pl-12 pr-8 sm:pr-16 md:pr-24">
+              <div className="pl-4 sm:pl-6 md:pl-8 lg:pl-12 pr-4 sm:pr-8 md:pr-16 lg:pr-24">
                 {/* Period - large monospace */}
                 <div data-detail className="mb-6">
                   <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: 'var(--color-grey-400)' }}>
@@ -151,7 +151,7 @@ export function Experience() {
                 {/* Company - massive */}
                 <h3
                   data-company
-                  className="font-display text-[clamp(2.5rem,10vw,9rem)] font-semibold text-white tracking-tighter leading-[0.9] mb-4 sm:mb-6 text-glow"
+                  className="font-display text-[clamp(2rem,8vw,9rem)] font-semibold text-white tracking-tighter leading-[0.9] mb-3 sm:mb-4 md:mb-6 text-glow"
                 >
                   {exp.company}
                 </h3>

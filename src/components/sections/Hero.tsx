@@ -76,11 +76,11 @@ export function Hero() {
     >
       <FloatingShapes />
 
-      <div className="w-full max-w-6xl mx-auto relative z-10">
+      <div className="w-full max-w-6xl mx-auto relative z-10 px-2 sm:px-0">
         {/* Big name - stacked for visual impact */}
         <h1
           ref={titleRef}
-          className="text-[clamp(3rem,12vw,12rem)] font-display font-semibold tracking-tighter leading-[0.85] mb-6 md:mb-8 text-white text-glow"
+          className="text-[clamp(2.5rem,10vw,12rem)] font-display font-semibold tracking-tighter leading-[0.85] mb-4 sm:mb-6 md:mb-8 text-white text-glow"
           style={{ perspective: '1000px' }}
         >
           Oliver<br />Newth
@@ -89,7 +89,7 @@ export function Hero() {
         {/* The hook */}
         <p
           data-hero-tagline
-          className="text-lg sm:text-2xl md:text-3xl lg:text-4xl leading-snug max-w-2xl opacity-0 text-white font-display font-medium tracking-tight text-glow-subtle"
+          className="text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl leading-snug max-w-2xl opacity-0 text-white font-display font-medium tracking-tight text-glow-subtle"
         >
           AI at Google.<br className="sm:hidden" /> Art in the desert.
         </p>
@@ -97,7 +97,7 @@ export function Hero() {
         {/* Subtitle */}
         <p
           data-hero-subtitle
-          className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl opacity-0"
+          className="mt-3 sm:mt-6 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-xl opacity-0"
           style={{ color: 'var(--color-grey-300)' }}
         >
           Building at the intersection of trust and wonder. 10+ years bringing AI systems from research to production.

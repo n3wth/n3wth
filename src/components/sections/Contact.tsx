@@ -132,7 +132,7 @@ export function Contact() {
       {/* Connection-themed shapes */}
       <ContactShapes />
 
-      <div className="mx-auto max-w-6xl px-6 md:px-12 w-full">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-12 w-full">
         <div className="max-w-3xl">
           <p
             data-contact-label
@@ -144,7 +144,7 @@ export function Contact() {
           <h2
             ref={titleRef}
             data-contact-title
-            className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white tracking-tight leading-[1.05] mb-6 sm:mb-8 text-glow"
+            className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-white tracking-tight leading-[1.05] mb-4 sm:mb-6 md:mb-8 text-glow"
             style={{ perspective: '1000px' }}
           >
             Let's talk
@@ -152,7 +152,7 @@ export function Contact() {
 
           <p
             data-contact-desc
-            className="text-base sm:text-lg md:text-xl leading-relaxed mb-8 sm:mb-12 max-w-xl"
+            className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8 md:mb-12 max-w-xl"
             style={{ color: 'var(--color-grey-300)' }}
           >
             AI safety, LED art, or coffee in San Francisco.

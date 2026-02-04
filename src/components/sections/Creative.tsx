@@ -244,15 +244,15 @@ export function Creative() {
               data-light-bg={inst.lightBg ? 'true' : undefined}
               className="min-h-screen flex items-center relative"
             >
-              <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-12 w-full py-12 sm:py-16 md:py-24">
+              <div className="mx-auto max-w-6xl px-3 sm:px-4 md:px-6 lg:px-12 w-full py-8 sm:py-12 md:py-16 lg:py-24">
                 <article
                   data-installation-card
-                  className="max-w-xl relative"
+                  className="max-w-full sm:max-w-xl relative"
                 >
                   {/* Gaussian blur backdrop for readability */}
                   <div
                     data-inst-backdrop
-                    className="absolute -inset-8 sm:-inset-10 md:-inset-12 -z-10 rounded-3xl"
+                    className="absolute -inset-4 sm:-inset-6 md:-inset-8 lg:-inset-12 -z-10 rounded-2xl sm:rounded-3xl"
                     style={{
                       background: inst.lightBg
                         ? 'radial-gradient(ellipse 120% 100% at 20% 50%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 50%, transparent 80%)'
@@ -271,7 +271,7 @@ export function Creative() {
 
                   <h3
                     data-inst-title
-                    className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-2 sm:mb-3 tracking-tight"
+                    className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold mb-2 sm:mb-3 tracking-tight"
                     style={{ color: textColor }}
                   >
                     {inst.title}

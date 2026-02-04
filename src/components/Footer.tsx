@@ -12,8 +12,8 @@ const legal = [
 
 export function Footer() {
   return (
-    <footer className="py-8 sm:py-10 px-4 sm:px-6 md:px-12 border-t" style={{ borderColor: 'var(--glass-border)' }}>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-4">
+    <footer className="py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-12 border-t" style={{ borderColor: 'var(--glass-border)' }}>
+      <div className="mx-auto max-w-6xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
         {/* Sites */}
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           {sites.map((site, i) => (

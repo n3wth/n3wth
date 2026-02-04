@@ -48,7 +48,7 @@ export function Frameworks() {
 
   return (
     <section ref={sectionRef} id="frameworks" className="section relative">
-      <div className="mx-auto max-w-5xl px-6 md:px-12">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 md:px-12">
         {/* Section header with narrative context */}
         <div data-fw-header className="mb-10 sm:mb-16 md:mb-24">
           <p className="label mb-3 sm:mb-4">After a decade of building</p>
@@ -73,7 +73,7 @@ export function Frameworks() {
               style={{ borderTop: '1px solid var(--glass-border)' }}
             >
               {/* Number */}
-              <div className="md:col-span-1">
+              <div className="md:col-span-1 flex-shrink-0">
                 <span
                   className="font-mono text-xs sm:text-sm"
                   style={{ color: 'var(--color-grey-600)' }}
@@ -84,11 +84,11 @@ export function Frameworks() {
 
               {/* Content */}
               <div className="md:col-span-11">
-                <h3 className="font-display text-lg sm:text-2xl md:text-3xl font-semibold text-white tracking-tight mb-2 sm:mb-4">
+                <h3 className="font-display text-base sm:text-lg md:text-2xl lg:text-3xl font-semibold text-white tracking-tight mb-1 sm:mb-2 md:mb-4">
                   {fw.title}
                 </h3>
                 <p
-                  className="text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl"
+                  className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-2xl"
                   style={{ color: 'var(--color-grey-300)' }}
                 >
                   {fw.tagline}
