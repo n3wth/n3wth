@@ -47,6 +47,25 @@ export function AIExplainer() {
           ease: 'power3.out'
         })
       })
+
+      // Hide Creative section backgrounds while in AI Explainer section
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        onEnter: () => {
+          gsap.to('[data-installation-bg]', { opacity: 0, duration: 0.3 })
+        },
+        onLeave: () => {
+          // Let Creative section handle its own backgrounds
+        },
+        onEnterBack: () => {
+          gsap.to('[data-installation-bg]', { opacity: 0, duration: 0.3 })
+        },
+        onLeaveBack: () => {
+          // Let Creative section handle its own backgrounds
+        }
+      })
     },
     { scope: sectionRef }
   )
@@ -55,10 +74,10 @@ export function AIExplainer() {
     <section
       ref={sectionRef}
       id="ai-explainer"
-      className="section relative z-10"
-      style={{ background: 'var(--color-black)' }}
+      className="section relative z-[5]"
+      style={{ background: '#000' }}
     >
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 md:px-12 relative z-10">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 md:px-12 relative">
         {/* Header */}
         <div data-ai-header className="mb-10 sm:mb-16 md:mb-20">
           <p className="label mb-3 sm:mb-4">How I think about alignment</p>
