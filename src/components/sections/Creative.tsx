@@ -18,22 +18,24 @@ export function Creative() {
       ).matches
       if (prefersReducedMotion) return
 
-      // Hide floating shapes when in creative section to keep images clean
+      // Hide all shapes (both floating and art shapes) when in creative section to keep images clean
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top 80%',
         end: 'bottom 20%',
         onEnter: () => {
-          gsap.to('[data-float-shape]', { opacity: 0, duration: 0.4, pointerEvents: 'none' })
+          gsap.to('[data-float-shape], .art-shape', { opacity: 0, duration: 0.4, pointerEvents: 'none' })
         },
         onLeave: () => {
           gsap.to('[data-float-shape]', { opacity: (i) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
+          gsap.to('.art-shape', { opacity: (i) => [0.35, 0.35, 0.3, 0.3][i] || 0.35, duration: 0.6 })
         },
         onEnterBack: () => {
-          gsap.to('[data-float-shape]', { opacity: 0, duration: 0.4 })
+          gsap.to('[data-float-shape], .art-shape', { opacity: 0, duration: 0.4 })
         },
         onLeaveBack: () => {
           gsap.to('[data-float-shape]', { opacity: (i) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
+          gsap.to('.art-shape', { opacity: (i) => [0.35, 0.35, 0.3, 0.3][i] || 0.35, duration: 0.6 })
         },
       })
 

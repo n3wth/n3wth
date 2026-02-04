@@ -72,7 +72,7 @@ export function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center px-6 md:px-12"
+      className="relative min-h-screen flex items-center px-4 md:px-8"
     >
       <FloatingShapes />
 
@@ -106,7 +106,7 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <div
-        className="absolute bottom-8 left-6 md:left-12 flex items-center gap-3 text-white"
+        className="absolute bottom-8 left-4 md:left-8 flex items-center gap-3 text-white"
       >
         <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" strokeWidth="1">
           <path d="M8 4v16M4 16l4 4 4-4" />
