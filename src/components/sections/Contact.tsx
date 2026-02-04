@@ -1,12 +1,7 @@
 import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { SplitText } from 'gsap/SplitText'
+import { gsap, SplitText, useGSAP } from '../../lib/gsap'
 import { siteConfig } from '../../data/content'
 import { ContactShapes } from '../shapes'
-
-gsap.registerPlugin(ScrollTrigger, SplitText)
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null)

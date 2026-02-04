@@ -1,12 +1,8 @@
 import { useRef, lazy, Suspense } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { SplitText } from 'gsap/SplitText'
+import { gsap, SplitText, useGSAP } from '../../lib/gsap'
 
 // Lazy load decorative shapes to prioritize text content for FCP
 const FloatingShapes = lazy(() => import('../FloatingShapes').then(m => ({ default: m.FloatingShapes })))
-
-gsap.registerPlugin(SplitText)
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null)

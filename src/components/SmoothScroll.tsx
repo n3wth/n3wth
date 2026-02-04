@@ -1,9 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import gsap from 'gsap'
-
-gsap.registerPlugin(ScrollTrigger)
+import { gsap, ScrollTrigger } from '../lib/gsap'
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
