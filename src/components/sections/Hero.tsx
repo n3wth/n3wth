@@ -103,16 +103,6 @@ export function Hero() {
           Building at the intersection of trust and wonder. 10+ years bringing AI systems from research to production.
         </p>
       </div>
-
-      {/* Scroll indicator */}
-      <div
-        className="absolute bottom-8 left-4 md:left-8 flex items-center gap-3 text-white"
-      >
-        <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" strokeWidth="1">
-          <path d="M8 4v16M4 16l4 4 4-4" />
-        </svg>
-        <span className="text-xs font-mono uppercase tracking-wider">Scroll</span>
-      </div>
     </section>
   )
 }
