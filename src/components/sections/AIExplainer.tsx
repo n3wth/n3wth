@@ -52,8 +52,13 @@ export function AIExplainer() {
   )
 
   return (
-    <section ref={sectionRef} id="ai-explainer" className="section relative">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 md:px-12">
+    <section
+      ref={sectionRef}
+      id="ai-explainer"
+      className="section relative z-10"
+      style={{ background: 'var(--color-black)' }}
+    >
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 md:px-12 relative z-10">
         {/* Header */}
         <div data-ai-header className="mb-10 sm:mb-16 md:mb-20">
           <p className="label mb-3 sm:mb-4">How I think about alignment</p>
