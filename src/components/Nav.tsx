@@ -14,7 +14,8 @@ export function Nav() {
       logoHref="/"
       items={navItems}
       showThemeToggle={false}
-      className="mx-auto max-w-6xl py-4 md:py-6"
+      fixed
+      hideOnScroll
     />
   )
 }
