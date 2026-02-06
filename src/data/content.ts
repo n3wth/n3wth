@@ -18,6 +18,7 @@ export interface NavItem {
 
 export const navigation: NavItem[] = [
   { name: 'Work', href: '#work' },
+  { name: 'Thinking', href: '#thinking' },
   { name: 'Frameworks', href: '#frameworks' },
   { name: 'Creative', href: '#creative' },
   { name: 'Skills', href: 'https://skills.n3wth.com', external: true },
@@ -40,7 +41,7 @@ export const experiences: Experience[] = [
     company: 'Google',
     role: 'AI Product Leader',
     period: '2024 - Present',
-    description: 'Bringing AI systems from research to production at billion-user scale. Google I/O 2025 speaker.',
+    description: 'Where trust meets scale. Shipping Gemini-powered products that need to be right, not just fast. Google I/O 2025 speaker on what responsible AI deployment actually looks like in production.',
     achievements: [
       'Shipped Opal, a no-code GenAI product',
       'Google I/O 2025 speaker on responsible AI deployment',
@@ -53,7 +54,7 @@ export const experiences: Experience[] = [
     company: 'Covariant',
     role: 'Senior Product Manager',
     period: '2022 - 2024',
-    description: 'Vision AI & Robotics. Led product strategy through acquisition by Amazon.',
+    description: 'AI that touches the physical world. Took computer vision from research demos to warehouse floors running 24/7, then navigated the company through acquisition by Amazon.',
     achievements: [
       'Scaled from 5 to 50+ enterprise deployments',
       'Built real-time computer vision pipeline',
@@ -66,7 +67,7 @@ export const experiences: Experience[] = [
     company: 'Meta',
     role: 'Product Manager',
     period: 'Instagram',
-    description: 'Instagram Calling. Launched video calling to 750M daily active users.',
+    description: 'Real-time infrastructure at hypergrowth speed. Launched video calling on Instagram to 750M daily users -- learning that at this scale, latency is a feature and reliability is the product.',
     achievements: [
       '0 to 75% DAU adoption in 6 months',
       'Built real-time communication infrastructure',
@@ -79,7 +80,7 @@ export const experiences: Experience[] = [
     company: 'Microsoft',
     role: 'Product Manager',
     period: 'Azure',
-    description: 'Azure Cognitive Services. Built AI services used by millions of developers.',
+    description: 'Where I learned that developer platforms are trust products. Built Azure Cognitive Services APIs used by millions of developers, establishing the playbook for enterprise AI adoption.',
     achievements: [
       'Launched Computer Vision API to general availability',
       'Grew to 1M+ API calls per day',

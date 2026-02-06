@@ -10,6 +10,7 @@ const BackgroundElements = lazy(() => import('./components/BackgroundElements').
 
 // Lazy load below-fold sections for better initial load performance
 const Experience = lazy(() => import('./components/sections/Experience').then(m => ({ default: m.Experience })))
+const Thinking = lazy(() => import('./components/sections/Thinking').then(m => ({ default: m.Thinking })))
 const Frameworks = lazy(() => import('./components/sections/Frameworks').then(m => ({ default: m.Frameworks })))
 const Creative = lazy(() => import('./components/sections/Creative').then(m => ({ default: m.Creative })))
 const Contact = lazy(() => import('./components/sections/Contact').then(m => ({ default: m.Contact })))
@@ -32,6 +33,9 @@ function App() {
         <Hero />
         <Suspense fallback={<SectionFallback />}>
           <Experience />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Thinking />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Frameworks />
