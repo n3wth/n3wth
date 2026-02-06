@@ -75,7 +75,7 @@ export function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center px-4 md:px-8"
+      className="relative min-h-screen flex items-center px-6 md:px-12"
     >
       <Suspense fallback={null}>
         <FloatingShapes />

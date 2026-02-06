@@ -43,7 +43,7 @@ function scrollToTop() {
 export function Footer() {
   return (
     <footer
-      className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 border-t"
+      className="relative py-12 sm:py-16 md:py-20 px-6 md:px-12 border-t"
       style={{ borderColor: 'var(--glass-border)' }}
     >
       <div className="mx-auto max-w-6xl">
