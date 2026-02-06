@@ -1,12 +1,19 @@
-import { useRef } from 'react'
-import { gsap, useGSAP } from '../../lib/gsap'
+import { useRef, useState, useCallback } from 'react'
+import { ChevronDown } from 'lucide-react'
+import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'
 import { experiences } from '../../data/content'
 import { ExperienceShapes } from '../shapes'
+
+const INITIAL_COUNT = 3
 
 export function Experience() {
   const sectionRef = useRef<HTMLElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
+  const [showAll, setShowAll] = useState(false)
+
+  const visibleExperiences = showAll ? experiences : experiences.slice(0, INITIAL_COUNT)
+  const hiddenCount = experiences.length - INITIAL_COUNT
 
   useGSAP(
     () => {
@@ -17,7 +24,6 @@ export function Experience() {
 
       if (!containerRef.current || !trackRef.current) return
 
-      // Header animation
       gsap.from('[data-exp-header]', {
         scrollTrigger: {
           trigger: '[data-exp-header]',
@@ -30,8 +36,6 @@ export function Experience() {
         ease: 'power3.out',
       })
 
-      // Horizontal scroll animation
-      // Using function-based values for x and end ensures recalculation on refresh
       const track = trackRef.current
       const getScrollDistance = () => track.scrollWidth - window.innerWidth + 100
 
@@ -49,10 +53,8 @@ export function Experience() {
         },
       })
 
-      // Animate each role panel using the horizontal scroll as container
       const panels = gsap.utils.toArray<HTMLElement>('[data-role-card]')
       panels.forEach((panel) => {
-        // Company name reveal
         gsap.fromTo(
           panel.querySelector('[data-company]'),
           { x: 100, opacity: 0 },
@@ -70,7 +72,6 @@ export function Experience() {
           }
         )
 
-        // Details stagger in
         gsap.fromTo(
           panel.querySelectorAll('[data-detail]'),
           { y: 30, opacity: 0 },
@@ -90,15 +91,20 @@ export function Experience() {
         )
       })
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [showAll], revertOnUpdate: true }
   )
+
+  const handleToggle = useCallback(() => {
+    setShowAll((prev) => !prev)
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+    })
+  }, [])
 
   return (
     <section ref={sectionRef} id="work" className="relative">
-      {/* Geometric shapes - career trajectory */}
       <ExperienceShapes />
 
-      {/* Header */}
       <div className="section pb-0">
         <div className="mx-auto max-w-6xl px-6 md:px-12">
           <div data-exp-header className="mb-10 sm:mb-16 md:mb-20">
@@ -108,43 +114,50 @@ export function Experience() {
               <br />
               at billion-user scale
             </h2>
+            {hiddenCount > 0 && (
+              <button
+                onClick={handleToggle}
+                className="mt-4 sm:mt-6 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.15em] transition-colors duration-300 cursor-pointer hover:text-white"
+                style={{ color: 'var(--color-grey-500)' }}
+              >
+                <span>{showAll ? 'Show recent' : `Show all experience (+${hiddenCount})`}</span>
+                <ChevronDown
+                  size={14}
+                  className="transition-transform duration-300"
+                  style={{ transform: showAll ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                />
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Horizontal scroll container */}
       <div ref={containerRef} className="relative h-screen overflow-hidden">
-        {/* Horizontal track */}
         <div
           ref={trackRef}
           className="flex items-center h-full"
           style={{ width: 'max-content' }}
         >
-          {/* Initial spacer */}
           <div className="w-[8vw] shrink-0" />
 
-          {experiences.map((exp) => (
+          {visibleExperiences.map((exp) => (
             <article
               key={exp.id}
               data-role-card
               className="relative w-[95vw] xs:w-[90vw] sm:w-[85vw] md:w-[70vw] lg:w-[55vw] shrink-0 h-full flex items-center touch-pan-x"
             >
-              {/* Vertical accent line */}
               <div
                 className="absolute left-0 top-1/4 bottom-1/4 w-[3px]"
                 style={{ background: 'var(--color-white)' }}
               />
 
-              {/* Content */}
               <div className="pl-4 sm:pl-6 md:pl-8 lg:pl-12 pr-4 sm:pr-8 md:pr-16 lg:pr-24">
-                {/* Period - large monospace */}
                 <div data-detail className="mb-6">
                   <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: 'var(--color-grey-400)' }}>
                     {exp.period}
                   </span>
                 </div>
 
-                {/* Company - massive */}
                 <h3
                   data-company
                   className="font-display text-[clamp(2rem,8vw,9rem)] font-semibold text-white tracking-tighter leading-[0.9] mb-3 sm:mb-4 md:mb-6 text-glow"
@@ -152,7 +165,6 @@ export function Experience() {
                   {exp.company}
                 </h3>
 
-                {/* Role */}
                 <p
                   data-detail
                   className="font-display text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium mb-4 sm:mb-6"
@@ -161,7 +173,6 @@ export function Experience() {
                   {exp.role}
                 </p>
 
-                {/* Description */}
                 <p
                   data-detail
                   className="text-sm sm:text-base md:text-lg leading-relaxed max-w-lg mb-6 sm:mb-8"
@@ -170,7 +181,6 @@ export function Experience() {
                   {exp.description}
                 </p>
 
-                {/* Tech - simple inline list */}
                 <div data-detail className="flex flex-wrap gap-x-4 gap-y-2">
                   {exp.tech.map((t, i) => (
                     <span
@@ -187,11 +197,9 @@ export function Experience() {
             </article>
           ))}
 
-          {/* End spacer */}
           <div className="w-[15vw] shrink-0" />
         </div>
 
-        {/* Scroll hint */}
         <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3" style={{ color: 'var(--color-grey-500)' }}>
           <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em]">Swipe</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="sm:w-5 sm:h-5">
