@@ -152,7 +152,6 @@ html {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -398,13 +397,7 @@ section[id]:not(#work):not(#creative) {
   border-color: var(--glass-highlight);
 }
 
-/* Installation parallax backgrounds */
-[data-installation-bg] {
-  will-change: opacity, transform;
-}
-
 [data-installation-bg] img {
-  will-change: transform;
   transform-origin: center center;
 }
 
@@ -498,7 +491,6 @@ section[id]:not(#work):not(#creative) {
   font-variant-numeric: tabular-nums;
 }
 
-/* Lenis smooth scroll */
 html.lenis, html.lenis body {
   height: auto;
 }
@@ -509,6 +501,10 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 
