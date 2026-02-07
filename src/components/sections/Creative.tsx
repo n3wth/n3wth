@@ -54,11 +54,8 @@ export function Creative() {
       const backgrounds = gsap.utils.toArray<HTMLElement>('[data-installation-bg]')
       const backgroundsContainer = backgroundsRef.current
 
-      // Helper to hide all backgrounds
       const hideAllBackgrounds = () => {
-        backgrounds.forEach(bg => {
-          gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
-        })
+        gsap.set(backgrounds, { opacity: 0 })
       }
 
       // Master trigger: hide all backgrounds when section is not in view
@@ -83,98 +80,67 @@ export function Creative() {
         const meta = panel.querySelector('[data-inst-meta]')
         if (!bg) return
 
-        // Background crossfade
         ScrollTrigger.create({
           trigger: panel,
           start: 'top 60%',
           end: 'bottom 40%',
           invalidateOnRefresh: true,
+          fastScrollEnd: true,
           onEnter: () => {
             hideAllBackgrounds()
-            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut', overwrite: true })
           },
           onLeave: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out', overwrite: true })
           },
           onEnterBack: () => {
             hideAllBackgrounds()
-            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+            gsap.to(bg, { opacity: 1, duration: 0.6, ease: 'power2.inOut', overwrite: true })
           },
           onLeaveBack: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+            gsap.to(bg, { opacity: 0, duration: 0.4, ease: 'power2.out', overwrite: true })
           },
         })
 
-        // Text elements for staggered animation
         const textElements = [label, title, tagline, meta].filter(Boolean)
 
-        // Backdrop blur fade IN
-        if (backdrop) {
-          gsap.fromTo(backdrop,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: panel,
-                start: 'top 85%',
-                end: 'top 40%',
-                scrub: 0.5,
-              },
-            }
-          )
-        }
+        const enterTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: panel,
+            start: 'top 85%',
+            end: 'top 30%',
+            scrub: 0.3,
+          },
+        })
 
-        // Text fade IN - staggered entrance as panel scrolls into view
+        if (backdrop) {
+          enterTl.fromTo(backdrop, { opacity: 0 }, { opacity: 1, ease: 'power2.out' }, 0)
+        }
         textElements.forEach((el, index) => {
-          gsap.fromTo(el,
+          enterTl.fromTo(el,
             { opacity: 0, y: 30 + index * 8 },
-            {
-              opacity: 1,
-              y: 0,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: panel,
-                start: `top ${80 - index * 5}%`,
-                end: `top ${35 - index * 3}%`,
-                scrub: 0.5,
-              },
-            }
+            { opacity: 1, y: 0, ease: 'power2.out' },
+            index * 0.1
           )
         })
 
-        // Backdrop blur fade OUT
-        if (backdrop) {
-          gsap.fromTo(backdrop,
-            { opacity: 1 },
-            {
-              opacity: 0,
-              ease: 'power2.in',
-              scrollTrigger: {
-                trigger: panel,
-                start: 'bottom 65%',
-                end: 'bottom 25%',
-                scrub: 0.5,
-              },
-            }
-          )
-        }
+        const exitTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: panel,
+            start: 'bottom 70%',
+            end: 'bottom 25%',
+            scrub: 0.3,
+          },
+        })
 
-        // Text fade OUT - staggered exit as panel scrolls away
+        if (backdrop) {
+          exitTl.fromTo(backdrop, { opacity: 1 }, { opacity: 0, ease: 'power2.in' }, 0)
+        }
         textElements.forEach((el, index) => {
-          gsap.fromTo(el,
+          exitTl.fromTo(el,
             { opacity: 1, y: 0 },
-            {
-              opacity: 0,
-              y: -25 - index * 6,
-              ease: 'power2.in',
-              scrollTrigger: {
-                trigger: panel,
-                start: `bottom ${70 - index * 3}%`,
-                end: `bottom ${30 - index * 2}%`,
-                scrub: 0.5,
-              },
-            }
+            { opacity: 0, y: -25 - index * 6, ease: 'power2.in' },
+            index * 0.08
           )
         })
       })

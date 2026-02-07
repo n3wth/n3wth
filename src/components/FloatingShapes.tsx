@@ -179,7 +179,7 @@ export const FloatingShapes = memo(function FloatingShapes() {
         trigger: 'body',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 1.5,
+        scrub: true,
         invalidateOnRefresh: true,
       },
     })
