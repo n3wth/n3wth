@@ -263,12 +263,6 @@ body {
   }
 }
 
-/* Content visibility for performance - skip rendering off-screen sections */
-/* Note: Disabled for #work section as it breaks GSAP horizontal scroll calculations */
-section[id]:not(#work):not(#creative) {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 100vh;
-}
 
 /* Focus ring */
 .focus-ring:focus-visible {
@@ -489,22 +483,6 @@ section[id]:not(#work):not(#creative) {
   font-size: 10px;
   color: var(--color-grey-600);
   font-variant-numeric: tabular-nums;
-}
-
-html.lenis, html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
 }
 
 
