@@ -16,6 +16,9 @@ const categoryColors: Record<string, string> = {
 export function Thinking() {
   const sectionRef = useRef<HTMLElement>(null)
 
+  const featured = thoughtPieces[0]
+  const supporting = thoughtPieces.slice(1)
+
   useGSAP(
     () => {
       const prefersReducedMotion = window.matchMedia(
@@ -36,11 +39,37 @@ export function Thinking() {
         ease: 'power3.out',
       })
 
-      // Stagger in the thought cards
-      gsap.from('[data-thought-card]', {
+      // Featured piece enters first
+      gsap.from('[data-thought-featured]', {
         scrollTrigger: {
           trigger: '[data-thought-cards]',
           start: 'top 75%',
+          toggleActions: 'play none none reverse',
+        },
+        y: 60,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+      })
+
+      // Pull quote slides in after featured
+      gsap.from('[data-thought-quote]', {
+        scrollTrigger: {
+          trigger: '[data-thought-cards]',
+          start: 'top 70%',
+          toggleActions: 'play none none reverse',
+        },
+        x: -30,
+        opacity: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+      })
+
+      // Supporting cards stagger in
+      gsap.from('[data-thought-card]', {
+        scrollTrigger: {
+          trigger: '[data-thought-supporting]',
+          start: 'top 80%',
           toggleActions: 'play none none reverse',
         },
         y: 60,
@@ -70,54 +99,111 @@ export function Thinking() {
           </p>
         </div>
 
-        {/* Thought pieces grid */}
-        <div data-thought-cards className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10">
-          {thoughtPieces.map((piece) => (
-            <article
-              key={piece.id}
-              data-thought-card
-              className="group relative pt-6 sm:pt-8"
-              style={{ borderTop: '1px solid var(--glass-border)' }}
+        <div data-thought-cards>
+          {/* Featured piece - full width, editorial treatment */}
+          <article
+            data-thought-featured
+            className="relative mb-12 md:mb-16 lg:mb-20 pt-6 sm:pt-8"
+            style={{ borderTop: '1px solid var(--glass-border)' }}
+          >
+            <span
+              className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] mb-4 sm:mb-5"
+              style={{ color: categoryColors[featured.category] || 'var(--color-grey-400)' }}
             >
-              {/* Category tag */}
-              <span
-                className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] mb-3 sm:mb-4"
-                style={{ color: categoryColors[piece.category] || 'var(--color-grey-400)' }}
-              >
-                {piece.category}
-              </span>
+              {featured.category}
+            </span>
 
-              {/* Title */}
-              <h3 className="font-display text-lg sm:text-xl md:text-2xl font-semibold text-white tracking-tight mb-3 sm:mb-4 leading-tight">
-                {piece.title}
-              </h3>
+            <h3 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white tracking-tight mb-4 sm:mb-6 md:mb-8 leading-[1.1]">
+              {featured.title}
+            </h3>
 
-              {/* Description */}
+            <p
+              className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 md:mb-12 max-w-3xl"
+              style={{ color: 'var(--color-grey-300)' }}
+            >
+              {featured.description}
+            </p>
+
+            {/* Pull quote - first insight elevated */}
+            <blockquote
+              data-thought-quote
+              className="pl-5 sm:pl-6 md:pl-8 mb-8 sm:mb-10 max-w-3xl"
+              style={{ borderLeft: `2px solid ${categoryColors[featured.category] || 'var(--color-grey-400)'}` }}
+            >
               <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed mb-4 sm:mb-6"
-                style={{ color: 'var(--color-grey-300)' }}
+                className="text-sm sm:text-base md:text-lg leading-relaxed"
+                style={{ color: 'var(--color-grey-200)' }}
               >
-                {piece.description}
+                {featured.insights[0]}
               </p>
+            </blockquote>
 
-              {/* Insights */}
-              <ul className="space-y-3 sm:space-y-4">
-                {piece.insights.map((insight, i) => (
-                  <li
-                    key={i}
-                    className="flex gap-3 text-xs sm:text-sm leading-relaxed"
-                    style={{ color: 'var(--color-grey-400)' }}
-                  >
-                    <span
-                      className="shrink-0 mt-1.5 w-1 h-1 rounded-full"
-                      style={{ background: categoryColors[piece.category] || 'var(--color-grey-500)', opacity: 0.6 }}
-                    />
-                    <span>{insight}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+            {/* Remaining insights */}
+            <ul className="space-y-3 sm:space-y-4">
+              {featured.insights.slice(1).map((insight, i) => (
+                <li
+                  key={i}
+                  className="flex gap-3 text-xs sm:text-sm leading-relaxed"
+                  style={{ color: 'var(--color-grey-400)' }}
+                >
+                  <span
+                    className="shrink-0 mt-1.5 w-1 h-1 rounded-full"
+                    style={{ background: categoryColors[featured.category] || 'var(--color-grey-500)', opacity: 0.6 }}
+                  />
+                  <span>{insight}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+
+          {/* Supporting pieces - 3 column on desktop */}
+          <div
+            data-thought-supporting
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10"
+          >
+            {supporting.map((piece) => (
+              <article
+                key={piece.id}
+                data-thought-card
+                className="group relative pt-6 sm:pt-8"
+                style={{ borderTop: '1px solid var(--glass-border)' }}
+              >
+                <span
+                  className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] mb-3 sm:mb-4"
+                  style={{ color: categoryColors[piece.category] || 'var(--color-grey-400)' }}
+                >
+                  {piece.category}
+                </span>
+
+                <h3 className="font-display text-lg sm:text-xl font-semibold text-white tracking-tight mb-3 sm:mb-4 leading-tight">
+                  {piece.title}
+                </h3>
+
+                <p
+                  className="text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6"
+                  style={{ color: 'var(--color-grey-300)' }}
+                >
+                  {piece.description}
+                </p>
+
+                <ul className="space-y-3">
+                  {piece.insights.map((insight, i) => (
+                    <li
+                      key={i}
+                      className="flex gap-3 text-xs leading-relaxed"
+                      style={{ color: 'var(--color-grey-400)' }}
+                    >
+                      <span
+                        className="shrink-0 mt-1.5 w-1 h-1 rounded-full"
+                        style={{ background: categoryColors[piece.category] || 'var(--color-grey-500)', opacity: 0.6 }}
+                      />
+                      <span>{insight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

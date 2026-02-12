@@ -105,7 +105,7 @@ export function Hero() {
           className={`mt-3 sm:mt-6 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-xl ${animationReady ? 'opacity-0' : 'opacity-100'}`}
           style={{ color: 'var(--color-grey-300)' }}
         >
-          Building at the intersection of trust and wonder. 10+ years bringing AI systems from research to production.
+          Building at the intersection of trust and wonder. More than 10 years bringing AI systems from research to production.
         </p>
       </div>
     </section>
