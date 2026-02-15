@@ -90,15 +90,15 @@
   --color-grey-200: #e8e8ed;
   --color-grey-300: #c7c7cc;
   --color-grey-400: #86868b;
-  --color-grey-600: #48484a;
+  --color-grey-600: #6e6e73;
   --color-grey-800: #1d1d1f;
 
   --color-accent: #ffffff;
   --color-accent-soft: rgba(255, 255, 255, 0.15);
 
-  --glass-bg: #0d0d0d;
-  --glass-border: #1a1a1a;
-  --glass-highlight: #2a2a2a;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
 
   --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -117,15 +117,15 @@
   --color-grey-200: #e8e8ed;
   --color-grey-300: #c7c7cc;
   --color-grey-400: #86868b;
-  --color-grey-600: #48484a;
+  --color-grey-600: #6e6e73;
   --color-grey-800: #1d1d1f;
 
   --color-accent: #ffffff;
   --color-accent-soft: rgba(255, 255, 255, 0.15);
 
-  --glass-bg: #0d0d0d;
-  --glass-border: #1a1a1a;
-  --glass-highlight: #2a2a2a;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
 
   --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -168,9 +168,8 @@ body {
 
 /* Typography Utilities */
 .label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-grey-400);
