@@ -11,6 +11,7 @@ posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
   capture_pageview: true,
   capture_pageleave: true,
   capture_performance: { web_vitals: true },
+  disable_web_experiments: false,
 })
 
 createRoot(document.getElementById('root')!).render(
