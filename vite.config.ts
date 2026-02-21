@@ -1,10 +1,24 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import posthog from '@posthog/rollup-plugin'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    ...(process.env.POSTHOG_PERSONAL_API_KEY
+      ? [posthog({
+          personalApiKey: process.env.POSTHOG_PERSONAL_API_KEY,
+          projectId: '223560',
+          host: 'https://us.i.posthog.com',
+          sourcemaps: {
+            deleteAfterUpload: true,
+          },
+        })]
+      : []),
+  ],
   build: {
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks(id) {
