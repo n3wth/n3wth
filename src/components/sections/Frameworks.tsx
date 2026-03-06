@@ -173,6 +173,7 @@ export function Frameworks() {
 
             <button
               onClick={handleToggle}
+              aria-expanded={showAll}
               className="mt-8 sm:mt-10 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.15em] transition-colors duration-300 cursor-pointer hover:text-white"
               style={{ color: 'var(--color-grey-500)' }}
             >

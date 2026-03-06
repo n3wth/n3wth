@@ -24,24 +24,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Mona Sans';
-  src: url('/fonts/MonaSans-Variable-Italic.woff2') format('woff2-variations');
-  font-weight: 200 500;
-  font-style: italic;
-  font-stretch: 75% 125%;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mona Sans';
-  src: url('/fonts/MonaSans-Variable-Italic.woff2') format('woff2-variations');
-  font-weight: 600 900;
-  font-style: italic;
-  font-stretch: 75% 125%;
-  font-display: swap;
-}
-
 /* Geist Sans - body weight */
 @font-face {
   font-family: 'Geist Sans';
@@ -262,6 +244,25 @@ body {
   }
 }
 
+
+/* Skip to content link */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-white);
+  color: var(--color-bg);
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
 
 /* Focus ring */
 .focus-ring:focus-visible {
