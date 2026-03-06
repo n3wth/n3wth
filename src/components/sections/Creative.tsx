@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'
 import { installations } from '../../data/content'
 import { CreativeShapes } from '../shapes'
@@ -6,6 +6,24 @@ import { CreativeShapes } from '../shapes'
 export function Creative() {
   const sectionRef = useRef<HTMLElement>(null)
   const backgroundsRef = useRef<HTMLDivElement>(null)
+  const [imagesLoaded, setImagesLoaded] = useState(false)
+
+  // Only mount fixed background images when section is approaching viewport
+  // position:fixed elements defeat loading="lazy"
+  useEffect(() => {
+    if (!sectionRef.current || imagesLoaded) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setImagesLoaded(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200% 0px' } // Start loading 2 viewports before visible
+    )
+    observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [imagesLoaded])
 
   useGSAP(
     () => {
@@ -14,26 +32,28 @@ export function Creative() {
       ).matches
       if (prefersReducedMotion) return
 
-      // Hide all shapes (both floating and art shapes) when in creative section to keep images clean
+      // Hide ALL decorative shapes when creative section is in view to keep images clean
+      const allShapes = '[data-float-shape], .art-shape, .shape, .exp-shape, .contact-shape'
+      const hideShapes = () => {
+        gsap.to(allShapes, { opacity: 0, duration: 0.4, overwrite: true, pointerEvents: 'none' })
+      }
+      const restoreShapes = () => {
+        gsap.to('[data-float-shape]', { opacity: (i: number) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
+        gsap.to('.art-shape', { opacity: (i: number) => [0.35, 0.35, 0.3, 0.3][i] || 0.35, duration: 0.6 })
+        gsap.to('.shape', { opacity: 0.75, duration: 0.6 })
+        gsap.to('.exp-shape', { opacity: 0.4, duration: 0.6 })
+        gsap.to('.contact-shape', { opacity: 0.45, duration: 0.6 })
+      }
+
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top bottom',
         end: 'bottom top',
         invalidateOnRefresh: true,
-        onEnter: () => {
-          gsap.to('[data-float-shape], .art-shape', { opacity: 0, duration: 0.4, pointerEvents: 'none' })
-        },
-        onLeave: () => {
-          gsap.to('[data-float-shape]', { opacity: (i) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
-          gsap.to('.art-shape', { opacity: (i) => [0.35, 0.35, 0.3, 0.3][i] || 0.35, duration: 0.6 })
-        },
-        onEnterBack: () => {
-          gsap.to('[data-float-shape], .art-shape', { opacity: 0, duration: 0.4 })
-        },
-        onLeaveBack: () => {
-          gsap.to('[data-float-shape]', { opacity: (i) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
-          gsap.to('.art-shape', { opacity: (i) => [0.35, 0.35, 0.3, 0.3][i] || 0.35, duration: 0.6 })
-        },
+        onEnter: hideShapes,
+        onLeave: restoreShapes,
+        onEnterBack: hideShapes,
+        onLeaveBack: restoreShapes,
       })
 
       // Header animation
@@ -146,7 +166,7 @@ export function Creative() {
       })
 
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [imagesLoaded], revertOnUpdate: true }
   )
 
   return (
@@ -155,26 +175,29 @@ export function Creative() {
       <CreativeShapes />
 
       {/* Fixed background container - z-[1] to sit above BackgroundElements */}
-      <div
-        ref={backgroundsRef}
-        className="fixed inset-0 pointer-events-none z-[1]"
-        aria-hidden="true"
-      >
-        {installations.map((inst) => (
-          <div
-            key={`bg-${inst.id}`}
-            data-installation-bg
-            className="absolute inset-0 opacity-0"
-          >
-            <img
-              src={inst.image}
-              alt=""
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        ))}
-      </div>
+      {/* Only mount when section is approaching viewport (fixed position defeats loading="lazy") */}
+      {imagesLoaded && (
+        <div
+          ref={backgroundsRef}
+          className="fixed inset-0 pointer-events-none z-[1]"
+          style={{ willChange: 'opacity' }}
+          aria-hidden="true"
+        >
+          {installations.map((inst) => (
+            <div
+              key={`bg-${inst.id}`}
+              data-installation-bg
+              className="absolute inset-0 opacity-0"
+            >
+              <img
+                src={inst.image}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Content */}
       <div className="relative z-10">

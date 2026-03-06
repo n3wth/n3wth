@@ -117,64 +117,51 @@ export const FloatingShapes = memo(function FloatingShapes() {
         ease: 'back.out(1.5)',
         stagger: { amount: 0.8, from: 'random' },
         delay: 0.3,
+        // Start floating animations only after entrance completes
+        onComplete() {
+          els.forEach((el, i) => {
+            const shape = shapes[i]
+
+            // All shapes float gently - single combined tween per shape
+            gsap.to(el, {
+              x: () => gsap.utils.random(-20, 20),
+              y: () => gsap.utils.random(-15, 15),
+              rotation: shape.type === 'semicircle' ? gsap.utils.random(-8, 8) : undefined,
+              duration: gsap.utils.random(10, 16),
+              ease: 'sine.inOut',
+              yoyo: true,
+              repeat: -1,
+            })
+
+            // Diamonds rotate slowly - separate since it's continuous (not yoyo)
+            if (shape.type === 'diamond') {
+              gsap.to(el, {
+                rotation: 360,
+                duration: gsap.utils.random(40, 60),
+                ease: 'none',
+                repeat: -1,
+              })
+            }
+
+            // Large shapes pulse subtly
+            if (shape.size > 60) {
+              gsap.to(el, {
+                scale: gsap.utils.random(0.92, 1.08),
+                opacity: gsap.utils.random(0.6, 0.85),
+                duration: gsap.utils.random(4, 6),
+                ease: 'sine.inOut',
+                yoyo: true,
+                repeat: -1,
+              })
+            }
+          })
+        },
       }
     )
 
-    // Each shape has gentle floating based on its meaning
-    els.forEach((el, i) => {
-      const shape = shapes[i]
-
-      // All shapes float gently
-      gsap.to(el, {
-        x: () => gsap.utils.random(-20, 20),
-        y: () => gsap.utils.random(-15, 15),
-        duration: gsap.utils.random(10, 16),
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-        delay: i * 0.2,
-      })
-
-      // Diamonds rotate slowly - precision in motion
-      if (shape.type === 'diamond') {
-        gsap.to(el, {
-          rotation: 360,
-          duration: gsap.utils.random(40, 60),
-          ease: 'none',
-          repeat: -1,
-        })
-      }
-
-      // Semicircles sway gently - welcoming gesture
-      if (shape.type === 'semicircle') {
-        gsap.to(el, {
-          rotation: gsap.utils.random(-8, 8),
-          duration: gsap.utils.random(6, 10),
-          ease: 'sine.inOut',
-          yoyo: true,
-          repeat: -1,
-        })
-      }
-
-      // Large shapes pulse subtly
-      if (shape.size > 60) {
-        gsap.to(el, {
-          scale: gsap.utils.random(0.92, 1.08),
-          opacity: gsap.utils.random(0.6, 0.85),
-          duration: gsap.utils.random(4, 6),
-          ease: 'sine.inOut',
-          yoyo: true,
-          repeat: -1,
-          delay: i * 0.3,
-        })
-      }
-    })
-
-    // Shapes respond to scroll - move as you journey through the page
-    // Each shape moves at different rate creating parallax depth
-    // Using yPercent to avoid conflicting with the y-based floating animations
+    // Shapes respond to scroll - parallax depth
     gsap.to(els, {
-      yPercent: (i) => 20 + i * 8,
+      yPercent: (i: number) => 20 + i * 8,
       scrollTrigger: {
         trigger: 'body',
         start: 'top top',
@@ -187,7 +174,7 @@ export const FloatingShapes = memo(function FloatingShapes() {
   }, { scope: containerRef })
 
   return (
-    <div ref={containerRef} className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div ref={containerRef} className="fixed inset-0 overflow-hidden pointer-events-none z-0" style={{ willChange: 'transform' }}>
       {shapes.map((s, i) => (
         <div
           key={i}
