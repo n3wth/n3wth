@@ -229,7 +229,7 @@ export function Creative() {
               data-light-bg={inst.lightBg ? 'true' : undefined}
               className="min-h-screen flex items-center relative"
             >
-              <div className="mx-auto max-w-6xl px-3 sm:px-4 md:px-6 lg:px-12 w-full py-8 sm:py-12 md:py-16 lg:py-24">
+              <div className="mx-auto max-w-6xl px-6 md:px-12 w-full py-8 sm:py-12 md:py-16 lg:py-24">
                 <article
                   data-installation-card
                   className="max-w-full sm:max-w-xl relative"
