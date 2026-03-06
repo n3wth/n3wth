@@ -81,7 +81,7 @@ export function Hero() {
         <FloatingShapes />
       </Suspense>
 
-      <div className="w-full max-w-6xl mx-auto relative z-10 px-2 sm:px-0">
+      <div className="w-full max-w-6xl mx-auto relative z-10">
         {/* Big name - stacked for visual impact */}
         <h1
           ref={titleRef}

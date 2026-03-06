@@ -127,7 +127,7 @@ export function Contact() {
       {/* Connection-themed shapes */}
       <ContactShapes />
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-12 w-full">
+      <div className="mx-auto max-w-6xl px-6 md:px-12 w-full">
         <div className="max-w-3xl">
           <p
             data-contact-label
