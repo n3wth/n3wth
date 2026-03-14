@@ -7,6 +7,7 @@ import { ScrollProgress } from './components/ScrollProgress'
 import { AmbientAgent } from './components/AmbientAgent'
 import { AgentPresence } from './components/AgentPresence'
 import { useKonamiCode } from './hooks/useKonamiCode'
+import { useKeyboardNav } from './hooks/useKeyboardNav'
 import { gsap } from './lib/gsap'
 import { Hero } from './components/sections/Hero'
 
@@ -43,6 +44,7 @@ function App() {
   }, [])
 
   useKonamiCode(onKonami)
+  useKeyboardNav()
 
   return (
     <SmoothScroll>

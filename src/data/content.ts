@@ -177,7 +177,7 @@ export const projects: Project[] = [
   {
     id: 'r3',
     name: 'r3',
-    description: 'Intelligent memory MCP for AI apps',
+    description: 'Give any AI app persistent memory. Vector search, entity extraction, knowledge graphs -- zero config.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
     url: 'https://r3.newth.ai',
     github: 'https://github.com/n3wth/r3',
@@ -185,7 +185,7 @@ export const projects: Project[] = [
   {
     id: 'kit',
     name: 'kit',
-    description: 'AI-native component registry for design systems',
+    description: '47 components with AI context packs. Ships your design system to v0, Cursor, and Claude Code.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
     url: 'https://kit.newth.ai',
     github: 'https://github.com/n3wth/kit',
@@ -193,14 +193,14 @@ export const projects: Project[] = [
   {
     id: 'proof-sdk',
     name: 'Proof SDK',
-    description: 'Collaborative editor with provenance tracking',
+    description: 'Open-source editor where every change has an author -- human or AI. Provenance built in.',
     tech: ['TypeScript', 'Tiptap', 'WebSocket', 'SQLite'],
     url: 'https://github.com/n3wth/proof-sdk',
   },
   {
     id: 'skills',
     name: 'skills',
-    description: 'Markdown skills that teach AI assistants new tricks',
+    description: 'A registry of markdown skills for Gemini CLI and Claude Code. Install with one command.',
     tech: ['Next.js', 'React', 'Supabase'],
     url: 'https://skills.n3wth.com',
     github: 'https://github.com/n3wth/skills',
