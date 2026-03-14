@@ -151,7 +151,7 @@ export function Experience() {
               <button
                 onClick={handleToggle}
                 aria-expanded={showAll}
-                className="mt-4 sm:mt-6 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.15em] transition-colors duration-300 cursor-pointer hover:text-white"
+                className="mt-4 sm:mt-6 flex items-center gap-2 font-mono text-xs sm:text-sm uppercase tracking-[0.12em] transition-colors duration-300 cursor-pointer hover:text-white"
                 style={{ color: 'var(--color-grey-500)' }}
               >
                 <span>{showAll ? 'Show recent' : `Show all experience (+${hiddenCount})`}</span>
@@ -177,7 +177,7 @@ export function Experience() {
               style={{ borderLeft: '3px solid var(--color-white)' }}
             >
               <div className="mb-3">
-                <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: 'var(--color-grey-400)' }}>
+                <span className="font-mono text-sm tracking-[0.2em] uppercase" style={{ color: 'var(--color-grey-400)' }}>
                   {exp.period}
                 </span>
               </div>
@@ -193,8 +193,15 @@ export function Experience() {
                 {exp.role}
               </p>
 
+              {exp.metric && (
+                <div className="mb-4 mt-1">
+                  <span className="font-display text-2xl font-semibold text-white">{exp.metric.value}</span>
+                  <span className="ml-2 text-sm" style={{ color: 'var(--color-grey-400)' }}>{exp.metric.label}</span>
+                </div>
+              )}
+
               <p
-                className="text-sm leading-relaxed mb-4"
+                className="text-base leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-300)' }}
               >
                 {exp.description}
@@ -204,7 +211,7 @@ export function Experience() {
                 {exp.tech.map((t, i) => (
                   <span
                     key={t}
-                    className="text-xs font-mono uppercase tracking-wider"
+                    className="text-sm font-mono uppercase tracking-wider"
                     style={{ color: 'var(--color-grey-500)' }}
                   >
                     {t}{i < exp.tech.length - 1 && <span className="ml-3">/</span>}
@@ -238,7 +245,7 @@ export function Experience() {
 
               <div className="pl-8 lg:pl-12 pr-16 lg:pr-24">
                 <div data-detail className="mb-6">
-                  <span className="font-mono text-xs tracking-[0.3em] uppercase" style={{ color: 'var(--color-grey-400)' }}>
+                  <span className="font-mono text-sm tracking-[0.2em] uppercase" style={{ color: 'var(--color-grey-400)' }}>
                     {exp.period}
                   </span>
                 </div>
@@ -258,9 +265,16 @@ export function Experience() {
                   {exp.role}
                 </p>
 
+                {exp.metric && (
+                  <div data-detail className="mb-4 sm:mb-6">
+                    <span className="font-display text-3xl lg:text-4xl font-semibold text-white">{exp.metric.value}</span>
+                    <span className="ml-3 text-base lg:text-lg" style={{ color: 'var(--color-grey-400)' }}>{exp.metric.label}</span>
+                  </div>
+                )}
+
                 <p
                   data-detail
-                  className="text-base md:text-lg leading-relaxed max-w-lg mb-6 sm:mb-8"
+                  className="text-lg md:text-xl leading-relaxed max-w-lg mb-6 sm:mb-8"
                   style={{ color: 'var(--color-grey-300)' }}
                 >
                   {exp.description}
@@ -270,7 +284,7 @@ export function Experience() {
                   {exp.tech.map((t, i) => (
                     <span
                       key={t}
-                      className="text-xs font-mono uppercase tracking-wider"
+                      className="text-sm font-mono uppercase tracking-wider"
                       style={{ color: 'var(--color-grey-500)' }}
                     >
                       {t}{i < exp.tech.length - 1 && <span className="ml-4">/</span>}
@@ -286,7 +300,7 @@ export function Experience() {
         </div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3" style={{ color: 'var(--color-grey-500)' }}>
-          <span className="text-xs font-mono uppercase tracking-[0.2em]">Scroll</span>
+          <span className="text-sm font-mono uppercase tracking-[0.2em]">Scroll</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>

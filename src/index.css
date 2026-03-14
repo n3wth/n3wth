@@ -72,6 +72,7 @@
   --color-grey-200: #e8e8ed;
   --color-grey-300: #c7c7cc;
   --color-grey-400: #86868b;
+  --color-grey-500: #7a7a80;
   --color-grey-600: #6e6e73;
   --color-grey-800: #1d1d1f;
 
@@ -99,6 +100,7 @@
   --color-grey-200: #e8e8ed;
   --color-grey-300: #c7c7cc;
   --color-grey-400: #86868b;
+  --color-grey-500: #7a7a80;
   --color-grey-600: #6e6e73;
   --color-grey-800: #1d1d1f;
 
@@ -115,6 +117,23 @@
 
 * {
   box-sizing: border-box;
+}
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 /* Content visible immediately - no opacity animation blocking FCP */
@@ -151,10 +170,17 @@ body {
 /* Typography Utilities */
 .label {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-grey-400);
+}
+
+@media (min-width: 768px) {
+  .label {
+    font-size: 14px;
+    letter-spacing: 0.1em;
+  }
 }
 
 /* Apple-style subtle text shadow for readability over shapes */
@@ -480,7 +506,7 @@ body {
 /* Number styling */
 .index-num {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--color-grey-600);
   font-variant-numeric: tabular-nums;
 }
@@ -509,6 +535,11 @@ body {
 /* Better touch scrolling in horizontal sections */
 .touch-pan-x {
   touch-action: pan-x;
+}
+
+/* Custom cursor - hide native cursor on non-touch devices */
+@media (pointer: fine) {
+  * { cursor: none !important; }
 }
 
 /* Reduced motion */
