@@ -2,11 +2,15 @@ import { useRef } from 'react'
 import { gsap, SplitText, useGSAP } from '../../lib/gsap'
 import { siteConfig } from '../../data/content'
 import { ContactShapes } from '../shapes'
+import { useMagnetic } from '../../hooks/useMagnetic'
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
+  const ctaRef = useRef<HTMLAnchorElement>(null)
   const splitRef = useRef<SplitText | null>(null)
+
+  useMagnetic(ctaRef, 0.25)
 
   useGSAP(
     () => {
@@ -155,6 +159,7 @@ export function Contact() {
 
           {/* Main CTA - min 48px touch target */}
           <a
+            ref={ctaRef}
             data-contact-cta
             href={`mailto:${siteConfig.email}`}
             className="inline-flex items-center gap-2 sm:gap-3 text-sm sm:text-lg md:text-xl text-white px-6 sm:px-10 py-4 sm:py-5 rounded-full focus-ring group min-h-[48px]"

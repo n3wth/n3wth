@@ -33,7 +33,7 @@ export function Creative() {
       if (prefersReducedMotion) return
 
       // Hide ALL decorative shapes when creative section is in view to keep images clean
-      const allShapes = '[data-float-shape], .art-shape, .shape, .exp-shape, .contact-shape'
+      const allShapes = '[data-float-shape], [data-particle-field], .art-shape, .shape, .exp-shape, .contact-shape'
       const hideShapes = () => {
         gsap.to(allShapes, { opacity: 0, duration: 0.4, overwrite: true, pointerEvents: 'none' })
       }
@@ -210,7 +210,7 @@ export function Creative() {
                 I build things that glow
               </h2>
               <p
-                className="text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
+                className="text-base sm:text-lg md:text-xl leading-relaxed max-w-xl"
                 style={{ color: 'var(--color-grey-400)' }}
               >
                 Large-scale LED installations for Burning Man and public memorials. I spoke at Robot Heart about how art and technology intersect.
@@ -283,7 +283,6 @@ export function Creative() {
             </div>
           )
         })}
-
       </div>
     </section>
   )

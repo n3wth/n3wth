@@ -4,8 +4,6 @@ import { thoughtPieces } from '../../data/thinking'
 
 const categoryColors: Record<string, string> = {
   AI: 'var(--color-grey-300)',
-  'Creative Tech': '#A78BFA',
-  Design: '#FFD93D',
   Trust: '#5DADE2',
 }
 
@@ -88,7 +86,7 @@ export function Thinking() {
             Where trust meets craft
           </h2>
           <p
-            className="text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
+            className="text-base sm:text-lg md:text-xl leading-relaxed max-w-xl"
             style={{ color: 'var(--color-grey-400)' }}
           >
             Writing from the intersection of production AI, creative practice, and the hard-won lessons of shipping at scale.
@@ -103,7 +101,7 @@ export function Thinking() {
             style={{ borderTop: '1px solid var(--glass-border)' }}
           >
             <span
-              className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] mb-4 sm:mb-5"
+              className="inline-block text-xs sm:text-sm font-mono uppercase tracking-[0.15em] mb-4 sm:mb-5"
               style={{ color: categoryColors[featured.category] || 'var(--color-grey-400)' }}
             >
               {featured.category}
@@ -139,7 +137,7 @@ export function Thinking() {
               {featured.insights.slice(1).map((insight, i) => (
                 <li
                   key={i}
-                  className="flex gap-3 text-xs sm:text-sm leading-relaxed"
+                  className="flex gap-3 text-sm sm:text-base leading-relaxed"
                   style={{ color: 'var(--color-grey-400)' }}
                 >
                   <span
@@ -152,10 +150,10 @@ export function Thinking() {
             </ul>
           </article>
 
-          {/* Supporting pieces - 3 column on desktop */}
+          {/* Supporting pieces */}
           <div
             data-thought-supporting
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10"
+            className={`grid grid-cols-1 gap-6 sm:gap-8 md:gap-10 ${supporting.length >= 3 ? 'md:grid-cols-2 lg:grid-cols-3' : supporting.length === 2 ? 'md:grid-cols-2' : ''}`}
           >
             {supporting.map((piece) => (
               <article
@@ -165,18 +163,18 @@ export function Thinking() {
                 style={{ borderTop: '1px solid var(--glass-border)' }}
               >
                 <span
-                  className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] mb-3 sm:mb-4"
+                  className="inline-block text-xs sm:text-sm font-mono uppercase tracking-[0.15em] mb-3 sm:mb-4"
                   style={{ color: categoryColors[piece.category] || 'var(--color-grey-400)' }}
                 >
                   {piece.category}
                 </span>
 
-                <h3 className="font-display text-lg sm:text-xl font-semibold text-white tracking-tight mb-3 sm:mb-4 leading-tight">
+                <h3 className="font-display text-xl sm:text-2xl font-semibold text-white tracking-tight mb-3 sm:mb-4 leading-tight">
                   {piece.title}
                 </h3>
 
                 <p
-                  className="text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6"
+                  className="text-sm sm:text-base leading-relaxed mb-4 sm:mb-6"
                   style={{ color: 'var(--color-grey-300)' }}
                 >
                   {piece.description}
@@ -186,7 +184,7 @@ export function Thinking() {
                   {piece.insights.map((insight, i) => (
                     <li
                       key={i}
-                      className="flex gap-3 text-xs leading-relaxed"
+                      className="flex gap-3 text-sm leading-relaxed"
                       style={{ color: 'var(--color-grey-400)' }}
                     >
                       <span
