@@ -135,6 +135,11 @@ export function AmbientAgent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: query.trim(), context: currentSection }),
       })
+      const contentType = res.headers.get('content-type') || ''
+      if (!contentType.includes('application/json')) {
+        setReply('Agent is waking up. Try again in a moment.')
+        return
+      }
       const data = await res.json()
       setReply(data.reply || data.error || 'No response.')
     } catch {
