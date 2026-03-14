@@ -1,10 +1,6 @@
 import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { gsap, useGSAP } from '../../lib/gsap'
 import { thoughtPieces } from '../../data/thinking'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const categoryColors: Record<string, string> = {
   AI: 'var(--color-grey-300)',

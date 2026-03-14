@@ -1,0 +1,21 @@
+{
+  "name": "Oliver Newth",
+  "short_name": "n3wth",
+  "description": "AI Product Leader. Building at the intersection of trust and wonder.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#000000",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ]
+}

@@ -68,6 +68,7 @@ export function BackgroundElements() {
           top: '10%',
           right: '-10%',
           background: 'radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%)',
+          willChange: 'transform',
         }}
       />
       <div
@@ -77,6 +78,7 @@ export function BackgroundElements() {
           top: '60%',
           left: '-5%',
           background: 'radial-gradient(circle, rgba(255,255,255,0.01) 0%, transparent 70%)',
+          willChange: 'transform',
         }}
       />
       <div
@@ -87,6 +89,7 @@ export function BackgroundElements() {
           right: '10%',
           border: '1px solid rgba(255,255,255,0.03)',
           transform: 'rotate(45deg)',
+          willChange: 'transform',
         }}
       />
 

@@ -5,7 +5,7 @@ export const siteConfig = {
   email: 'oliver@newth.ai',
   social: {
     github: 'https://github.com/n3wth',
-    linkedin: 'https://linkedin.com/in/newth',
+    linkedin: 'https://linkedin.com/in/olivernewth',
   },
   artSite: 'https://newth.art',
 }
@@ -159,7 +159,7 @@ export const installations: Installation[] = [
     year: '2019',
     location: 'Black Rock City, Nevada',
     type: 'burning-man',
-    image: '/images/installations/them.jpg',
+    image: '/images/installations/them.webp',
     imageAlt: 'THEM sculpture at Burning Man casting dramatic shadows on desert floor',
     lightBg: true,
   },
