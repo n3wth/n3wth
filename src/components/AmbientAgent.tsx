@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from '../lib/gsap'
 
 interface Nudge {
+  agent: string
   message: string
   cta?: string
   target?: string
@@ -10,6 +11,7 @@ interface Nudge {
 const NUDGES: Record<string, Nudge[]> = {
   work: [
     {
+      agent: 'career-agent',
       message: 'Oliver shipped trust infrastructure at Google and navigated an Amazon acquisition at Covariant.',
       cta: 'See what he builds on the side',
       target: '#building',
@@ -17,6 +19,7 @@ const NUDGES: Record<string, Nudge[]> = {
   ],
   building: [
     {
+      agent: 'builder-agent',
       message: 'These tools reflect a thesis: AI should collaborate, not just respond.',
       cta: 'Read the argument',
       target: '#thinking',
@@ -24,6 +27,7 @@ const NUDGES: Record<string, Nudge[]> = {
   ],
   thinking: [
     {
+      agent: 'research-agent',
       message: 'Trust as a runtime property drove 99.9% uptime at Covariant and shapes his work at Google.',
       cta: 'See the track record',
       target: '#work',
@@ -31,6 +35,7 @@ const NUDGES: Record<string, Nudge[]> = {
   ],
   frameworks: [
     {
+      agent: 'philosophy-agent',
       message: 'These principles come from shipping at Google, Meta, Microsoft, and Covariant.',
       cta: 'See the creative side',
       target: '#creative',
@@ -38,16 +43,19 @@ const NUDGES: Record<string, Nudge[]> = {
   ],
   creative: [
     {
+      agent: 'creative-agent',
       message: '70,000 people experienced THEM at Burning Man. The same systems thinking applies to billion-user products.',
     },
   ],
   contact: [
     {
+      agent: 'coordinator',
       message: 'AI safety, ambient agents, or LED art. Oliver is usually up for a conversation.',
     },
   ],
   _explored: [
     {
+      agent: 'coordinator',
       message: 'You have seen the work. The real question is what Oliver is building next.',
       cta: 'Get in touch',
       target: '#contact',
@@ -253,7 +261,7 @@ export function AmbientAgent() {
               <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: '#5DADE2' }} />
             </span>
             <span className="text-[11px] font-mono uppercase tracking-wider" style={{ color: 'var(--color-grey-400)' }}>
-              Agent
+              {currentNudge?.agent || 'agent'}
             </span>
             <button
               onClick={dismissPermanently}

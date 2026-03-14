@@ -5,6 +5,7 @@ import { SmoothScroll } from './components/SmoothScroll'
 import { GameCursor } from './components/GameCursor'
 import { ScrollProgress } from './components/ScrollProgress'
 import { AmbientAgent } from './components/AmbientAgent'
+import { AgentPresence } from './components/AgentPresence'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { gsap } from './lib/gsap'
 import { Hero } from './components/sections/Hero'
@@ -48,6 +49,7 @@ function App() {
       <GameCursor />
       <ScrollProgress />
       <AmbientAgent />
+      <AgentPresence />
       {/* Decorative elements lazy-loaded to prioritize FCP */}
       <Suspense fallback={null}>
         <BackgroundElements />
