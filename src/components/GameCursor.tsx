@@ -12,7 +12,6 @@ export function GameCursor() {
     const label = labelRef.current
     if (!dot || !ring || !label) return
 
-    // Skip on touch devices or reduced motion
     const isTouch = window.matchMedia('(pointer: coarse)').matches
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (isTouch || prefersReducedMotion) {
@@ -21,10 +20,10 @@ export function GameCursor() {
       return
     }
 
-    const dotX = gsap.quickTo(dot, 'x', { duration: 0.15, ease: 'power2.out' })
-    const dotY = gsap.quickTo(dot, 'y', { duration: 0.15, ease: 'power2.out' })
-    const ringX = gsap.quickTo(ring, 'x', { duration: 0.3, ease: 'power2.out' })
-    const ringY = gsap.quickTo(ring, 'y', { duration: 0.3, ease: 'power2.out' })
+    const dotX = gsap.quickTo(dot, 'left', { duration: 0.15, ease: 'power2.out' })
+    const dotY = gsap.quickTo(dot, 'top', { duration: 0.15, ease: 'power2.out' })
+    const ringX = gsap.quickTo(ring, 'left', { duration: 0.3, ease: 'power2.out' })
+    const ringY = gsap.quickTo(ring, 'top', { duration: 0.3, ease: 'power2.out' })
 
     let currentLabel = ''
 
@@ -58,7 +57,7 @@ export function GameCursor() {
           gsap.to(label, { opacity: 1, duration: 0.15 })
         }
       } else if (interactive) {
-        gsap.to(ring, { width: 48, height: 48, duration: 0.2 })
+        gsap.to(ring, { width: 40, height: 40, duration: 0.2 })
         gsap.to(dot, { scale: 0.5, duration: 0.15 })
         if (currentLabel !== '') {
           currentLabel = ''
@@ -87,33 +86,35 @@ export function GameCursor() {
     <>
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 z-[9998] pointer-events-none"
+        className="fixed z-[9998] pointer-events-none"
         style={{
           width: 8,
           height: 8,
-          marginLeft: -4,
-          marginTop: -4,
           borderRadius: '50%',
           background: 'white',
+          transform: 'translate(-50%, -50%)',
+          top: 0,
+          left: 0,
         }}
         aria-hidden="true"
       />
       <div
         ref={ringRef}
-        className="fixed top-0 left-0 z-[9998] pointer-events-none flex items-center justify-center"
+        className="fixed z-[9998] pointer-events-none flex items-center justify-center"
         style={{
           width: 32,
           height: 32,
-          marginLeft: -16,
-          marginTop: -16,
           borderRadius: '50%',
           border: '1px solid rgba(255,255,255,0.3)',
+          transform: 'translate(-50%, -50%)',
+          top: 0,
+          left: 0,
         }}
         aria-hidden="true"
       >
         <span
           ref={labelRef}
-          className="text-[10px] font-mono text-white uppercase tracking-wider opacity-0"
+          className="text-[10px] font-mono text-white uppercase tracking-wider opacity-0 whitespace-nowrap"
         />
       </div>
     </>
