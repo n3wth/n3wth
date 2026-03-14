@@ -1,9 +1,5 @@
 import { memo, useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import { gsap, useGSAP } from '../../lib/gsap'
 
 /**
  * SHAPE LANGUAGE - Oliver's Story

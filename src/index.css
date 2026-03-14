@@ -24,24 +24,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Mona Sans';
-  src: url('/fonts/MonaSans-Variable-Italic.woff2') format('woff2-variations');
-  font-weight: 200 500;
-  font-style: italic;
-  font-stretch: 75% 125%;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Mona Sans';
-  src: url('/fonts/MonaSans-Variable-Italic.woff2') format('woff2-variations');
-  font-weight: 600 900;
-  font-style: italic;
-  font-stretch: 75% 125%;
-  font-display: swap;
-}
-
 /* Geist Sans - body weight */
 @font-face {
   font-family: 'Geist Sans';
@@ -90,15 +72,15 @@
   --color-grey-200: #e8e8ed;
   --color-grey-300: #c7c7cc;
   --color-grey-400: #86868b;
-  --color-grey-600: #48484a;
+  --color-grey-600: #6e6e73;
   --color-grey-800: #1d1d1f;
 
   --color-accent: #ffffff;
   --color-accent-soft: rgba(255, 255, 255, 0.15);
 
-  --glass-bg: #0d0d0d;
-  --glass-border: #1a1a1a;
-  --glass-highlight: #2a2a2a;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
 
   --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -117,15 +99,15 @@
   --color-grey-200: #e8e8ed;
   --color-grey-300: #c7c7cc;
   --color-grey-400: #86868b;
-  --color-grey-600: #48484a;
+  --color-grey-600: #6e6e73;
   --color-grey-800: #1d1d1f;
 
   --color-accent: #ffffff;
   --color-accent-soft: rgba(255, 255, 255, 0.15);
 
-  --glass-bg: #0d0d0d;
-  --glass-border: #1a1a1a;
-  --glass-highlight: #2a2a2a;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
 
   --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -135,9 +117,14 @@
   box-sizing: border-box;
 }
 
-/* Reveal content once CSS loads (prevents FOUC) */
+/* Content visible immediately - no opacity animation blocking FCP */
 #root {
   opacity: 1;
+}
+
+/* Hide hero placeholder once React hydrates */
+.hero-placeholder {
+  display: none !important;
 }
 
 /* Base */
@@ -147,7 +134,6 @@ html {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -164,9 +150,8 @@ body {
 
 /* Typography Utilities */
 .label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-grey-400);
@@ -259,11 +244,24 @@ body {
   }
 }
 
-/* Content visibility for performance - skip rendering off-screen sections */
-/* Note: Disabled for #work section as it breaks GSAP horizontal scroll calculations */
-section[id]:not(#work):not(#creative) {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 100vh;
+
+/* Skip to content link */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-white);
+  color: var(--color-bg);
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
 }
 
 /* Focus ring */
@@ -293,10 +291,16 @@ section[id]:not(#work):not(#creative) {
   transform-style: preserve-3d;
 }
 
-/* Hero character animation */
+/* Hero character animation - visible by default for LCP, GSAP animates as enhancement */
 .hero-char {
   display: inline-block;
   transform-style: preserve-3d;
+}
+
+/* Ensure hero content is visible before JS loads (critical for LCP) */
+.hero-visible-default {
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 /* Contact text animation */
@@ -387,13 +391,7 @@ section[id]:not(#work):not(#creative) {
   border-color: var(--glass-highlight);
 }
 
-/* Installation parallax backgrounds */
-[data-installation-bg] {
-  will-change: opacity, transform;
-}
-
 [data-installation-bg] img {
-  will-change: transform;
   transform-origin: center center;
 }
 
@@ -485,19 +483,6 @@ section[id]:not(#work):not(#creative) {
   font-size: 10px;
   color: var(--color-grey-600);
   font-variant-numeric: tabular-nums;
-}
-
-/* Lenis smooth scroll */
-html.lenis, html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
 }
 
 

@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oliver Newth - AI Product Leader | newth.ai</title>
-    <meta name="description" content="Product strategy for AI at billion-user scale. Previously Director of Product at Covariant (Amazon acquisition), Lead PM at Meta, Senior PM at Microsoft." />
+    <title>Oliver Newth - AI Product Leader | n3wth.com</title>
+    <meta name="description" content="Oliver Newth builds AI products at billion-user scale. Director of product at Covariant (Amazon acquisition), lead PM at Meta, senior PM at Microsoft." />
     <meta name="author" content="Oliver Newth" />
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://newth.ai/" />
+    <link rel="canonical" href="https://n3wth.com/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Oliver Newth - AI Product Leader" />
-    <meta property="og:description" content="Product strategy for AI at billion-user scale. Previously Director of Product at Covariant (Amazon acquisition), Lead PM at Meta, Senior PM at Microsoft." />
-    <meta property="og:url" content="https://newth.ai/" />
-    <meta property="og:image" content="https://newth.ai/og-image.png" />
+    <meta property="og:description" content="Oliver Newth builds AI products at billion-user scale. Director of product at Covariant (Amazon acquisition), lead PM at Meta, senior PM at Microsoft." />
+    <meta property="og:url" content="https://n3wth.com/" />
+    <meta property="og:image" content="https://n3wth.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -24,10 +24,14 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@olivernewth" />
     <meta name="twitter:creator" content="@olivernewth" />
-    <meta name="twitter:image" content="https://newth.ai/og-image.png" />
+    <meta name="twitter:image" content="https://n3wth.com/og-image.png" />
 
     <!-- Theme -->
     <meta name="theme-color" content="#0a0a0f" />
+
+    <!-- Preload critical fonts to improve FCP/LCP - display font first for hero -->
+    <link rel="preload" href="/fonts/MonaSans-Variable.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
+    <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -35,13 +39,13 @@
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Oliver Newth",
-      "url": "https://newth.ai",
+      "url": "https://n3wth.com",
       "jobTitle": "AI Product Leader",
       "worksFor": {
         "@type": "Organization",
         "name": "Google"
       },
-      "description": "AI Product Leader specializing in Trust & Safety at Google. Previously Director of Product at Covariant (acquired by Amazon), Lead PM at Meta, and Senior PM at Microsoft.",
+      "description": "AI product leader building Trust & Safety products at Google. Director of product at Covariant (Amazon acquired the company in 2024), lead PM at Meta, and senior PM at Microsoft.",
       "sameAs": [
         "https://github.com/n3wth",
         "https://linkedin.com/in/olivernewth",
@@ -65,47 +69,87 @@
     }
     </script>
 
-    <!-- Critical CSS to prevent FOUC -->
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Critical CSS - inline styles for immediate FCP/LCP -->
     <style>
-      html, body { background: #000; color: #000; }
-      #root { opacity: 0; }
+      /* Base styles for instant render */
+      html, body {
+        margin: 0;
+        background: #000;
+        color: #c7c7cc;
+        font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* Show content immediately - CSS will enhance when loaded */
+      #root { min-height: 100vh; }
       #root > .seo-fallback { display: none; }
+      /* Show SEO fallback if JS fails */
+      noscript + .seo-fallback { display: block !important; }
+      /* Minimal hero placeholder to prevent layout shift */
+      .hero-placeholder {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .hero-placeholder h1 {
+        font-family: 'Mona Sans', system-ui, sans-serif;
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+        line-height: 1.1;
+      }
+      /* Critical: Ensure hero LCP element is visible before JS loads */
+      /* This prevents opacity:0 from GSAP animation blocking LCP */
+      [data-hero-tagline], [data-hero-subtitle] {
+        opacity: 1;
+      }
     </style>
+
   </head>
   <body>
+    <a href="#work" class="skip-link">Skip to content</a>
     <div id="root">
-      <!-- Static content for SEO crawlers (hidden, replaced by React) -->
+      <noscript>
+        <style>.seo-fallback { display: block !important; padding: 2rem; }</style>
+      </noscript>
+      <!-- Static content for SEO crawlers (hidden when JS loads, shown via noscript) -->
       <main class="seo-fallback">
         <h1>Oliver Newth - AI Product Leader</h1>
 
         <section>
           <h2>About</h2>
-          <p>Oliver Newth is an AI Product Leader currently working on Trust & Safety at Google, where he focuses on building products that protect billions of users. With over a decade of experience in product management at leading technology companies, Oliver specializes in applying artificial intelligence to solve complex problems at scale.</p>
+          <p>Oliver Newth builds AI products for Trust & Safety at Google, protecting billions of users. He has led product teams at Covariant, Meta, and Microsoft, applying artificial intelligence to solve problems at billion-user scale.</p>
         </section>
 
         <section>
           <h2>Experience</h2>
           <article>
             <h3>Google - Trust & Safety</h3>
-            <p>Leading product initiatives that leverage AI to protect users across Google's ecosystem of products serving billions of people worldwide.</p>
+            <p>Leads AI product initiatives that protect users across Google's ecosystem, serving billions of people worldwide.</p>
           </article>
           <article>
             <h3>Covariant - Director of Product</h3>
-            <p>Led product strategy for AI-powered robotics systems that revolutionized warehouse automation. The company was <a href="https://techcrunch.com/2024/07/24/amazon-acquires-covariant-ai-robotics-company/" rel="noopener">acquired by Amazon</a> in 2024.</p>
+            <p>Led product strategy for AI-powered robotics systems that transformed warehouse automation. <a href="https://techcrunch.com/2024/08/31/amazon-hires-the-founders-of-robotics-ai-startup-covariant/" rel="noopener">Amazon acquired</a> the company in 2024.</p>
           </article>
           <article>
             <h3>Meta - Lead Product Manager</h3>
-            <p>Managed products impacting billions of users across Facebook's family of applications, focusing on AI-driven features and content systems.</p>
+            <p>Managed products reaching billions of users across Facebook's family of applications, building AI-driven features and content systems.</p>
           </article>
           <article>
             <h3>Microsoft - Senior Product Manager</h3>
-            <p>Built enterprise productivity tools and cloud services, establishing foundation for large-scale product development experience.</p>
+            <p>Built enterprise productivity tools and cloud services for large-scale product development.</p>
           </article>
         </section>
 
         <section>
           <h2>Expertise</h2>
-          <p>Oliver brings deep expertise in artificial intelligence, machine learning, robotics, and building products at billion-user scale. His work spans trust and safety systems, AI-powered automation, and consumer-facing AI products.</p>
+          <p>Oliver works across artificial intelligence, machine learning, robotics, and billion-user scale product development. He builds trust and safety systems, AI-powered automation, and consumer-facing AI products.</p>
           <ul>
             <li>AI Product Strategy</li>
             <li>Trust & Safety Systems</li>
@@ -117,7 +161,7 @@
 
         <section>
           <h2>Creative Work</h2>
-          <p>Beyond product leadership, Oliver explores the intersection of technology and art through algorithmic installations and generative design projects.</p>
+          <p>Oliver creates algorithmic installations and generative design projects, combining technology and art.</p>
         </section>
 
         <nav aria-label="Main navigation">

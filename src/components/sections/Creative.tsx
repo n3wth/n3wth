@@ -1,15 +1,29 @@
-import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useRef, useState, useEffect } from 'react'
+import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'
 import { installations } from '../../data/content'
 import { CreativeShapes } from '../shapes'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function Creative() {
   const sectionRef = useRef<HTMLElement>(null)
   const backgroundsRef = useRef<HTMLDivElement>(null)
+  const [imagesLoaded, setImagesLoaded] = useState(false)
+
+  // Only mount fixed background images when section is approaching viewport
+  // position:fixed elements defeat loading="lazy"
+  useEffect(() => {
+    if (!sectionRef.current || imagesLoaded) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setImagesLoaded(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200% 0px' } // Start loading 2 viewports before visible
+    )
+    observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [imagesLoaded])
 
   useGSAP(
     () => {
@@ -18,26 +32,28 @@ export function Creative() {
       ).matches
       if (prefersReducedMotion) return
 
-      // Hide all shapes (both floating and art shapes) when in creative section to keep images clean
+      // Hide ALL decorative shapes when creative section is in view to keep images clean
+      const allShapes = '[data-float-shape], .art-shape, .shape, .exp-shape, .contact-shape'
+      const hideShapes = () => {
+        gsap.to(allShapes, { opacity: 0, duration: 0.4, overwrite: true, pointerEvents: 'none' })
+      }
+      const restoreShapes = () => {
+        gsap.to('[data-float-shape]', { opacity: (i: number) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
+        gsap.to('.art-shape', { opacity: (i: number) => [0.35, 0.35, 0.3, 0.3][i] || 0.35, duration: 0.6 })
+        gsap.to('.shape', { opacity: 0.75, duration: 0.6 })
+        gsap.to('.exp-shape', { opacity: 0.4, duration: 0.6 })
+        gsap.to('.contact-shape', { opacity: 0.45, duration: 0.6 })
+      }
+
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top bottom',
         end: 'bottom top',
         invalidateOnRefresh: true,
-        onEnter: () => {
-          gsap.to('[data-float-shape], .art-shape', { opacity: 0, duration: 0.4, pointerEvents: 'none' })
-        },
-        onLeave: () => {
-          gsap.to('[data-float-shape]', { opacity: (i) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
-          gsap.to('.art-shape', { opacity: (i) => [0.35, 0.35, 0.3, 0.3][i] || 0.35, duration: 0.6 })
-        },
-        onEnterBack: () => {
-          gsap.to('[data-float-shape], .art-shape', { opacity: 0, duration: 0.4 })
-        },
-        onLeaveBack: () => {
-          gsap.to('[data-float-shape]', { opacity: (i) => [0.015, 0.01, 0][i] || 0.015, duration: 0.6 })
-          gsap.to('.art-shape', { opacity: (i) => [0.35, 0.35, 0.3, 0.3][i] || 0.35, duration: 0.6 })
-        },
+        onEnter: hideShapes,
+        onLeave: restoreShapes,
+        onEnterBack: hideShapes,
+        onLeaveBack: restoreShapes,
       })
 
       // Header animation
@@ -89,82 +105,51 @@ export function Creative() {
           },
         })
 
-        // Text elements for staggered animation
         const textElements = [label, title, tagline, meta].filter(Boolean)
 
-        // Backdrop blur fade IN
-        if (backdrop) {
-          gsap.fromTo(backdrop,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: panel,
-                start: 'top 85%',
-                end: 'top 40%',
-                scrub: 0.5,
-              },
-            }
-          )
-        }
+        const enterTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: panel,
+            start: 'top 85%',
+            end: 'top 30%',
+            scrub: 0.3,
+          },
+        })
 
-        // Text fade IN - staggered entrance as panel scrolls into view
+        if (backdrop) {
+          enterTl.fromTo(backdrop, { opacity: 0 }, { opacity: 1, ease: 'power2.out' }, 0)
+        }
         textElements.forEach((el, index) => {
-          gsap.fromTo(el,
+          enterTl.fromTo(el,
             { opacity: 0, y: 30 + index * 8 },
-            {
-              opacity: 1,
-              y: 0,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: panel,
-                start: `top ${80 - index * 5}%`,
-                end: `top ${35 - index * 3}%`,
-                scrub: 0.5,
-              },
-            }
+            { opacity: 1, y: 0, ease: 'power2.out' },
+            index * 0.1
           )
         })
 
-        // Backdrop blur fade OUT
-        if (backdrop) {
-          gsap.fromTo(backdrop,
-            { opacity: 1 },
-            {
-              opacity: 0,
-              ease: 'power2.in',
-              scrollTrigger: {
-                trigger: panel,
-                start: 'bottom 65%',
-                end: 'bottom 25%',
-                scrub: 0.5,
-              },
-            }
-          )
-        }
+        const exitTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: panel,
+            start: 'bottom 70%',
+            end: 'bottom 25%',
+            scrub: 0.3,
+          },
+        })
 
-        // Text fade OUT - staggered exit as panel scrolls away
+        if (backdrop) {
+          exitTl.fromTo(backdrop, { opacity: 1 }, { opacity: 0, ease: 'power2.in' }, 0)
+        }
         textElements.forEach((el, index) => {
-          gsap.fromTo(el,
+          exitTl.fromTo(el,
             { opacity: 1, y: 0 },
-            {
-              opacity: 0,
-              y: -25 - index * 6,
-              ease: 'power2.in',
-              scrollTrigger: {
-                trigger: panel,
-                start: `bottom ${70 - index * 3}%`,
-                end: `bottom ${30 - index * 2}%`,
-                scrub: 0.5,
-              },
-            }
+            { opacity: 0, y: -25 - index * 6, ease: 'power2.in' },
+            index * 0.08
           )
         })
       })
 
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [imagesLoaded], revertOnUpdate: true }
   )
 
   return (
@@ -173,26 +158,29 @@ export function Creative() {
       <CreativeShapes />
 
       {/* Fixed background container - z-[1] to sit above BackgroundElements */}
-      <div
-        ref={backgroundsRef}
-        className="fixed inset-0 pointer-events-none z-[1]"
-        aria-hidden="true"
-      >
-        {installations.map((inst) => (
-          <div
-            key={`bg-${inst.id}`}
-            data-installation-bg
-            className="absolute inset-0 opacity-0"
-          >
-            <img
-              src={inst.image}
-              alt=""
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        ))}
-      </div>
+      {/* Only mount when section is approaching viewport (fixed position defeats loading="lazy") */}
+      {imagesLoaded && (
+        <div
+          ref={backgroundsRef}
+          className="fixed inset-0 pointer-events-none z-[1]"
+          style={{ willChange: 'opacity' }}
+          aria-hidden="true"
+        >
+          {installations.map((inst) => (
+            <div
+              key={`bg-${inst.id}`}
+              data-installation-bg
+              className="absolute inset-0 opacity-0"
+            >
+              <img
+                src={inst.image}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Content */}
       <div className="relative z-10">
@@ -224,7 +212,7 @@ export function Creative() {
               data-light-bg={inst.lightBg ? 'true' : undefined}
               className="min-h-screen flex items-center relative"
             >
-              <div className="mx-auto max-w-6xl px-3 sm:px-4 md:px-6 lg:px-12 w-full py-8 sm:py-12 md:py-16 lg:py-24">
+              <div className="mx-auto max-w-6xl px-6 md:px-12 w-full py-8 sm:py-12 md:py-16 lg:py-24">
                 <article
                   data-installation-card
                   className="max-w-full sm:max-w-xl relative"

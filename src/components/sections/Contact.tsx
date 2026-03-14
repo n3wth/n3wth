@@ -1,12 +1,7 @@
 import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { SplitText } from 'gsap/SplitText'
+import { gsap, SplitText, useGSAP } from '../../lib/gsap'
 import { siteConfig } from '../../data/content'
 import { ContactShapes } from '../shapes'
-
-gsap.registerPlugin(ScrollTrigger, SplitText)
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -132,7 +127,7 @@ export function Contact() {
       {/* Connection-themed shapes */}
       <ContactShapes />
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-12 w-full">
+      <div className="mx-auto max-w-6xl px-6 md:px-12 w-full">
         <div className="max-w-3xl">
           <p
             data-contact-label
