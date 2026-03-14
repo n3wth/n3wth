@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Oliver Newth',
   title: 'Oliver Newth - AI Product Leader',
-  description: 'Responsible AI and Trust and Safety at billion-user scale. Google I/O speaker.',
+  description: 'AI product leader building at the intersection of trust, collaboration, and creative practice. Google I/O speaker.',
   email: 'oliver@newth.ai',
   social: {
     github: 'https://github.com/n3wth',
@@ -18,12 +18,17 @@ export interface NavItem {
 
 export const navigation: NavItem[] = [
   { name: 'Work', href: '#work' },
+  { name: 'Building', href: '#building' },
   { name: 'Thinking', href: '#thinking' },
   { name: 'Frameworks', href: '#frameworks' },
   { name: 'Creative', href: '#creative' },
-  { name: 'Skills', href: 'https://skills.n3wth.com', external: true },
   { name: 'Contact', href: '#contact' },
 ]
+
+export interface Metric {
+  value: string
+  label: string
+}
 
 export interface Experience {
   id: string
@@ -31,8 +36,8 @@ export interface Experience {
   role: string
   period: string
   description: string
-  achievements: string[]
   tech: string[]
+  metric?: Metric
 }
 
 export const experiences: Experience[] = [
@@ -41,52 +46,36 @@ export const experiences: Experience[] = [
     company: 'Google',
     role: 'AI Product Leader',
     period: '2024 - Present',
-    description: 'Where trust meets scale. Shipping Gemini-powered products that need to be right, not fast. Google I/O 2025 speaker on what responsible AI deployment looks like in production.',
-    achievements: [
-      'Shipped Opal, a no-code GenAI product',
-      'Google I/O 2025 speaker on responsible AI deployment',
-      'Led Trust and Safety AI initiatives',
-    ],
-    tech: ['Gemini', 'Vertex AI', 'Trust & Safety', 'BigQuery'],
+    description: 'Shipping Gemini-powered products across Google\'s GenAI platform. Working at the intersection of Gemini, PaLM 2, and Imagen models with DeepMind collaboration. Google I/O 2025 speaker on responsible AI deployment in production.',
+    tech: ['GenAI', 'Trust & Safety', 'Responsible AI', 'Large Language Models'],
+    metric: { value: 'I/O 2025', label: 'Speaker' },
   },
   {
     id: 'covariant',
     company: 'Covariant',
     role: 'Senior Product Manager',
     period: '2022 - 2024',
-    description: 'AI that touches the physical world. Took computer vision from research demos to warehouse floors running 24/7, then navigated the company through Amazon\'s acquisition.',
-    achievements: [
-      'Scaled from five to 50-plus enterprise deployments',
-      'Built real-time computer vision pipeline',
-      'Achieved 99.9 percent uptime for production systems',
-    ],
-    tech: ['Computer Vision', 'Robotics', 'PyTorch', 'ROS'],
+    description: 'AI that touches the physical world. Took computer vision from research demos to warehouse floors running 24/7 across 50+ enterprise deployments, then navigated the company through Amazon\'s acquisition.',
+    tech: ['Computer Vision', 'Robotics', 'Enterprise AI', 'M&A'],
+    metric: { value: '50+', label: 'Enterprise deployments' },
   },
   {
     id: 'meta',
     company: 'Meta',
-    role: 'Product Manager',
-    period: 'Instagram',
+    role: 'Product Manager, Instagram',
+    period: '2019 - 2022',
     description: 'Real-time infrastructure at Instagram speed. Launched video calling to 750 million daily users—learning that at this scale, latency is a feature and reliability is the product.',
-    achievements: [
-      'Zero to 75 percent DAU adoption in six months',
-      'Built real-time communication infrastructure',
-      'Led team through rapid growth phase',
-    ],
-    tech: ['WebRTC', 'Mobile', 'Real-time Systems', 'A/B Testing'],
+    tech: ['Real-time Systems', 'Consumer Social', 'Scale Infrastructure'],
+    metric: { value: '750M', label: 'Daily active users' },
   },
   {
     id: 'microsoft',
     company: 'Microsoft',
-    role: 'Product Manager',
-    period: 'Azure',
+    role: 'Product Manager, Azure',
+    period: '2016 - 2019',
     description: 'Where I learned that developer platforms are trust products. Built Azure Cognitive Services APIs used by millions of developers and established the playbook for enterprise AI adoption.',
-    achievements: [
-      'Launched Computer Vision API to general availability',
-      'Grew to more than one million API calls per day',
-      'Established enterprise AI adoption playbook',
-    ],
-    tech: ['Azure', 'Cognitive Services', 'REST APIs', 'Enterprise AI'],
+    tech: ['Developer Platforms', 'Cognitive Services', 'Enterprise AI'],
+    metric: { value: '1M+', label: 'API calls per day' },
   },
 ]
 
@@ -145,7 +134,7 @@ export const installations: Installation[] = [
   {
     id: 'pink-triangle',
     title: 'Pink Triangle',
-    tagline: 'Illuminated landmark honoring LGBTQIA+ history',
+    tagline: 'Illuminated LGBTQIA+ memorial on Twin Peaks during Pride Month',
     year: '2022',
     location: 'San Francisco, California',
     type: 'memorial',
@@ -155,7 +144,7 @@ export const installations: Installation[] = [
   {
     id: 'them',
     title: 'THEM',
-    tagline: '30-foot interactive light sculpture',
+    tagline: '30-foot interactive light sculpture for 70,000 attendees',
     year: '2019',
     location: 'Black Rock City, Nevada',
     type: 'burning-man',
@@ -172,5 +161,48 @@ export const installations: Installation[] = [
     type: 'memorial',
     image: '/images/installations/circle-of-light.webp',
     imageAlt: 'Circle of Light illuminated memorial in Golden Gate Park',
+  },
+]
+
+export interface Project {
+  id: string
+  name: string
+  description: string
+  tech: string[]
+  url: string
+  github?: string
+}
+
+export const projects: Project[] = [
+  {
+    id: 'r3',
+    name: 'r3',
+    description: 'Intelligent memory MCP for AI apps',
+    tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
+    url: 'https://r3.newth.ai',
+    github: 'https://github.com/n3wth/r3',
+  },
+  {
+    id: 'kit',
+    name: 'kit',
+    description: 'AI-native component registry for design systems',
+    tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
+    url: 'https://kit.newth.ai',
+    github: 'https://github.com/n3wth/kit',
+  },
+  {
+    id: 'proof-sdk',
+    name: 'Proof SDK',
+    description: 'Collaborative editor with provenance tracking',
+    tech: ['TypeScript', 'Tiptap', 'WebSocket', 'SQLite'],
+    url: 'https://github.com/n3wth/proof-sdk',
+  },
+  {
+    id: 'skills',
+    name: 'skills',
+    description: 'Markdown skills that teach AI assistants new tricks',
+    tech: ['Next.js', 'React', 'Supabase'],
+    url: 'https://skills.n3wth.com',
+    github: 'https://github.com/n3wth/skills',
   },
 ]

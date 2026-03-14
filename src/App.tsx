@@ -1,7 +1,12 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useCallback } from 'react'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
 import { SmoothScroll } from './components/SmoothScroll'
+import { GameCursor } from './components/GameCursor'
+import { ScrollProgress } from './components/ScrollProgress'
+import { AmbientAgent } from './components/AmbientAgent'
+import { useKonamiCode } from './hooks/useKonamiCode'
+import { gsap } from './lib/gsap'
 import { Hero } from './components/sections/Hero'
 
 // Lazy load decorative elements - not critical for FCP
@@ -11,6 +16,7 @@ const BackgroundElements = lazy(() => import('./components/BackgroundElements').
 // Lazy load below-fold sections for better initial load performance
 const Experience = lazy(() => import('./components/sections/Experience').then(m => ({ default: m.Experience })))
 const Thinking = lazy(() => import('./components/sections/Thinking').then(m => ({ default: m.Thinking })))
+const Building = lazy(() => import('./components/sections/Building').then(m => ({ default: m.Building })))
 const Frameworks = lazy(() => import('./components/sections/Frameworks').then(m => ({ default: m.Frameworks })))
 const Creative = lazy(() => import('./components/sections/Creative').then(m => ({ default: m.Creative })))
 const Contact = lazy(() => import('./components/sections/Contact').then(m => ({ default: m.Contact })))
@@ -20,9 +26,28 @@ function SectionFallback() {
   return <div className="min-h-screen" aria-hidden="true" />
 }
 
+const ACCENT_COLORS = ['#FF6B9D', '#5DADE2', '#FFD93D', '#A78BFA']
+
 function App() {
+  const onKonami = useCallback(() => {
+    const color = ACCENT_COLORS[Math.floor(Math.random() * ACCENT_COLORS.length)]
+    const els = document.querySelectorAll('h1, h2, h3, p, span, a')
+    gsap.to(els, {
+      color,
+      duration: 0.3,
+      onComplete: () => {
+        gsap.to(els, { clearProps: 'color', duration: 0.5 })
+      },
+    })
+  }, [])
+
+  useKonamiCode(onKonami)
+
   return (
     <SmoothScroll>
+      <GameCursor />
+      <ScrollProgress />
+      <AmbientAgent />
       {/* Decorative elements lazy-loaded to prioritize FCP */}
       <Suspense fallback={null}>
         <BackgroundElements />
@@ -33,6 +58,9 @@ function App() {
         <Hero />
         <Suspense fallback={<SectionFallback />}>
           <Experience />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Building />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Thinking />
