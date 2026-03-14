@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
 
 // Try multiple model names for resilience
 const MODELS = [
@@ -102,6 +103,44 @@ async function callGemini(message: string, context: string | undefined): Promise
   return null
 }
 
+async function callOpenRouter(message: string, context: string | undefined): Promise<string | null> {
+  if (!OPENROUTER_API_KEY) return null
+
+  try {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://n3wth.com',
+        'X-Title': 'n3wth.com ambient agent',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash-preview',
+        max_tokens: 100,
+        temperature: 0.7,
+        messages: [
+          { role: 'system', content: SYSTEM_CONTEXT },
+          { role: 'user', content: context ? `[User is currently viewing: ${context}]\n\n${message}` : message },
+        ],
+      }),
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      const text = data.choices?.[0]?.message?.content
+      if (text) return text
+    }
+
+    const errText = await response.text()
+    console.error(`OpenRouter error (${response.status}):`, errText.slice(0, 200))
+  } catch (err) {
+    console.error('OpenRouter fetch error:', err)
+  }
+
+  return null
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS for same-origin
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -122,13 +161,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Invalid message' })
   }
 
-  // Try Gemini first, fall back to keyword-based responses
+  // Try Gemini first
   const geminiReply = await callGemini(message, context)
   if (geminiReply) {
     return res.status(200).json({ reply: geminiReply })
   }
 
-  // Fallback: smart keyword-based response
+  // Try OpenRouter as secondary LLM
+  const openRouterReply = await callOpenRouter(message, context)
+  if (openRouterReply) {
+    return res.status(200).json({ reply: openRouterReply })
+  }
+
+  // Final fallback: keyword-based response
   const fallback = getFallbackReply(message)
   return res.status(200).json({ reply: fallback, fallback: true })
 }
