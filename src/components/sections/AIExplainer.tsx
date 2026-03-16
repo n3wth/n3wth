@@ -57,15 +57,15 @@ export function AIExplainer() {
       <div className="mx-auto max-w-5xl px-4 sm:px-6 md:px-12 relative">
         {/* Header */}
         <div data-ai-header className="mb-10 sm:mb-16 md:mb-20">
-          <p className="label mb-3 sm:mb-4">How I think about alignment</p>
+          <p className="label mb-3 sm:mb-4">The decisions that keep me up at night</p>
           <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6">
-            AI safety has no perfect solutions
+            Every AI decision is a bet on what matters most
           </h2>
           <p
             className="text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
             style={{ color: 'var(--color-grey-400)' }}
           >
-            Only trade-offs. Explore three real alignment challenges and see why every decision involves choosing what matters most.
+            There are no clean answers in AI safety—only trade-offs with real consequences for real people. These are three dilemmas I've faced. Make a choice and see what you're actually optimizing for.
           </p>
         </div>
 

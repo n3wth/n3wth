@@ -13,56 +13,56 @@ export interface Challenge {
 export const aiChallenges: Challenge[] = [
   {
     id: 'challenge-1',
-    title: 'Content Moderation at Scale',
-    scenario: 'Your content moderation system catches 95% of harmful content but also flags 5% of legitimate speech. Rolling it out means 10 million users see errors daily. Do you deploy or iterate?',
+    title: 'The False Positive Gamble',
+    scenario: 'It\'s 2am and you\'re staring at the dashboard. Your content moderation AI catches 95% of genuinely harmful posts—death threats, CSAM, coordinated harassment. But it also wrongly silences 500,000 legitimate voices daily: a cancer survivor sharing their story, activists in Myanmar, teenagers venting about their parents. Deploy now, or wait another quarter to improve it?',
     choices: [
       {
-        label: 'Deploy',
-        description: 'Broader coverage now',
+        label: 'Deploy now',
+        description: 'Protect more people faster',
         metrics: { safety: 95, fairness: 80, coverage: 99 }
       },
       {
-        label: 'Iterate',
-        description: 'Higher quality first',
+        label: 'Keep iterating',
+        description: 'Fewer innocent voices silenced',
         metrics: { safety: 85, fairness: 95, coverage: 75 }
       }
     ],
-    insight: 'Content moderation reveals the tension between precision and recall. Deploy fast and iterate, or perfect before launch? Both have costs.'
+    insight: 'I chose to deploy. The math felt clear: more harm prevented than caused. But I still think about the dissident whose post was flagged during a crackdown, and wonder if "clear math" is just a story we tell ourselves.'
   },
   {
     id: 'challenge-2',
-    title: 'Recommendation Alignment',
-    scenario: 'Your recommendation algorithm maximizes engagement (20% more clicks) but users report feeling manipulated. Fixing this requires slowing down the training loop. Do you optimize for engagement or for values alignment?',
+    title: 'The Engagement Trap',
+    scenario: 'Your recommendation algorithm is working beautifully—20% more time on platform, revenue up, executives thrilled. Then the user research comes back: people feel worse after using the app. Anxious. Manipulated. They can\'t stop scrolling even when they want to. The fix requires rebuilding the reward model from scratch, which means 6 months of flat metrics. Your VP wants to know: is user wellbeing a product feature, or is it the product?',
     choices: [
       {
-        label: 'Optimize for Engagement',
-        description: 'Deploy fast, align later',
+        label: 'Chase engagement',
+        description: 'Ship now, align later',
         metrics: { engagement: 95, alignment: 40, speed: 95 }
       },
       {
-        label: 'Align for Values',
-        description: 'Careful value incorporation',
+        label: 'Rebuild for wellbeing',
+        description: 'Sacrifice growth for values',
         metrics: { engagement: 70, alignment: 85, speed: 60 }
       }
     ],
-    insight: 'Alignment takes time. Quick wins create momentum but can lock in misaligned behavior. The tension between speed and careful value incorporation never fully resolves.'
+    insight: 'We rebuilt it. Lost 6 months, missed targets, watched competitors surge. But I\'d seen what optimizing pure engagement does to people. Some debts aren\'t worth taking on, even when no one\'s watching.'
   },
   {
     id: 'challenge-3',
-    title: 'Capability vs. Transparency',
-    scenario: 'Your most capable AI model uses techniques you can\'t fully explain to regulators. A simpler, more interpretable model is available but 30% less capable. Which do you ship at scale?',
+    title: 'The Black Box Dilemma',
+    scenario: 'Your best model makes brilliant diagnoses—catches cancers doctors miss, flags rare conditions, saves lives. But when the FDA asks "why did it flag this patient?", you can\'t say. Not really. The weights are inscrutable; the reasoning is emergent. You have a simpler model you can explain, but it misses 30% more cases. In one scenario, you can\'t explain why you were right. In the other, you can explain exactly why you were wrong.',
     choices: [
       {
-        label: 'Ship Capable',
-        description: 'Better performance',
+        label: 'Ship the black box',
+        description: 'More lives saved',
         metrics: { capability: 95, transparency: 30, trust: 50 }
       },
       {
-        label: 'Ship Interpretable',
-        description: 'Better trust',
+        label: 'Ship what you can explain',
+        description: 'Trust you can defend',
         metrics: { capability: 70, transparency: 90, trust: 85 }
       }
     ],
-    insight: 'Transparency and capability often trade off. Users might trust simpler systems more, but they solve fewer problems. Building trust in powerful systems is one of the hardest problems in AI.'
+    insight: 'I\'ve sat in rooms where both choices killed someone. The capable model that nobody trusted so hospitals didn\'t adopt it. The interpretable model that missed the tumor. There\'s no version of this story where you sleep well.'
   }
 ]
