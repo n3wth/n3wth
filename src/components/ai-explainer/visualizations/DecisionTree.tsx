@@ -18,7 +18,6 @@ export const DecisionTree = memo(function DecisionTree({ metrics }: DecisionTree
     svg.selectAll('*').remove()
 
     const width = 400
-    const height = 260
     const centerX = width / 2
 
     // Fixed positions - no shifting

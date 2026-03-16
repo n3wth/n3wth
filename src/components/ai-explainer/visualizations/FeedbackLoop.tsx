@@ -19,7 +19,6 @@ export const FeedbackLoop = memo(function FeedbackLoop({ metrics }: FeedbackLoop
     svg.selectAll('*').remove()
 
     const width = 400
-    const height = 260
     const centerX = width / 2
     const centerY = 135
 

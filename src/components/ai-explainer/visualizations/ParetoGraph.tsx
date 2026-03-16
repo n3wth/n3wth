@@ -125,7 +125,7 @@ export const ParetoGraph = memo(function ParetoGraph({ metrics }: ParetoGraphPro
       .text('Alignment')
 
     // Pareto frontier (optimal trade-off curve) - dashed line
-    const frontierPoints = [
+    const frontierPoints: [number, number][] = [
       [15, 95], [30, 80], [50, 60], [70, 40], [85, 25], [95, 15]
     ]
     const lineGenerator = d3.line()
