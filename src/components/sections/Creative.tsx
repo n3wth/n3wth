@@ -73,6 +73,17 @@ export function Creative() {
       const panels = gsap.utils.toArray<HTMLElement>('[data-installation-panel]')
       const backgrounds = gsap.utils.toArray<HTMLElement>('[data-installation-bg]')
 
+      // Master trigger: hide all backgrounds when section is not in view
+      // This prevents backgrounds from showing in Contact/Footer sections
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        invalidateOnRefresh: true,
+        onLeave: () => backgrounds.forEach(b => gsap.set(b, { opacity: 0 })),
+        onLeaveBack: () => backgrounds.forEach(b => gsap.set(b, { opacity: 0 })),
+      })
+
       panels.forEach((panel, i) => {
         const bg = backgrounds[i]
         const backdrop = panel.querySelector('[data-inst-backdrop]')
@@ -91,17 +102,17 @@ export function Creative() {
           end: 'bottom 30%',
           onEnter: () => {
             backgrounds.forEach(b => gsap.set(b, { opacity: 0 }))
-            gsap.to(bg, { opacity: 1, duration: 0.4 })
+            gsap.to(bg, { opacity: 1, duration: 0.4, overwrite: true })
           },
           onLeave: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.3 })
+            gsap.to(bg, { opacity: 0, duration: 0.3, overwrite: true })
           },
           onEnterBack: () => {
             backgrounds.forEach(b => gsap.set(b, { opacity: 0 }))
-            gsap.to(bg, { opacity: 1, duration: 0.4 })
+            gsap.to(bg, { opacity: 1, duration: 0.4, overwrite: true })
           },
           onLeaveBack: () => {
-            gsap.to(bg, { opacity: 0, duration: 0.3 })
+            gsap.to(bg, { opacity: 0, duration: 0.3, overwrite: true })
           },
         })
 

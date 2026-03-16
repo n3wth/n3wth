@@ -1,12 +1,8 @@
 import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'
 import { aiChallenges } from '../../data/ai-challenges'
 import { useAIExplainerState } from '../../hooks/useAIExplainerState'
 import { ChallengeCard } from '../ai-explainer/ChallengeCard'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function AIExplainer() {
   const sectionRef = useRef<HTMLElement>(null)
