@@ -4,7 +4,8 @@ import './index.css'
 import App from './App.tsx'
 
 // Defer PostHog init to after first paint - not needed for FCP/LCP
-requestIdleCallback(() => {
+const deferCallback = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 1));
+deferCallback(() => {
   import('posthog-js').then(({ default: posthog }) => {
     posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
       api_host: 'https://elephant.n3wth.com',
