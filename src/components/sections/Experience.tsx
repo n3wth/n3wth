@@ -142,7 +142,7 @@ export function Experience() {
         <div className="mx-auto max-w-6xl px-6 md:px-12">
           <div data-exp-header className="mb-10 sm:mb-16 md:mb-20">
             <p className="label mb-3 sm:mb-4">Experience</p>
-            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] text-glow">
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1]">
               Building AI products
               <br />
               at billion-user scale
@@ -182,7 +182,7 @@ export function Experience() {
                 </span>
               </div>
 
-              <h3 className="font-display text-3xl font-semibold text-white tracking-tighter leading-[0.9] mb-2 text-glow">
+              <h3 className="font-display text-3xl font-semibold text-white tracking-tighter leading-[0.9] mb-2">
                 {exp.company}
               </h3>
 
@@ -252,7 +252,7 @@ export function Experience() {
 
                 <h3
                   data-company
-                  className="font-display text-[clamp(2rem,8vw,9rem)] font-semibold text-white tracking-tighter leading-[0.9] mb-4 md:mb-6 text-glow"
+                  className="font-display text-[clamp(2rem,8vw,9rem)] font-semibold text-white tracking-tighter leading-[0.9] mb-4 md:mb-6"
                 >
                   {exp.company}
                 </h3>

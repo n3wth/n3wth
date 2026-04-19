@@ -176,7 +176,7 @@ export function Hero() {
         {/* Big name - stacked for visual impact */}
         <h1
           ref={titleRef}
-          className="text-[clamp(2.5rem,10vw,12rem)] font-display font-semibold tracking-tighter leading-[0.85] mb-4 sm:mb-6 md:mb-8 text-white text-glow"
+          className="text-[clamp(2.5rem,10vw,12rem)] font-display font-semibold tracking-tighter leading-[0.85] mb-4 sm:mb-6 md:mb-8 text-white"
           style={{ perspective: '1000px' }}
         >
           Oliver<br />Newth
@@ -185,7 +185,7 @@ export function Hero() {
         {/* The hook - visible by default for LCP, animated only after JS ready */}
         <p
           data-hero-tagline
-          className={`text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl leading-snug max-w-2xl text-white font-display font-medium tracking-tight text-glow-subtle ${animationReady ? 'opacity-0' : 'opacity-100'}`}
+          className={`text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl leading-snug max-w-2xl text-white font-display font-medium tracking-tight ${animationReady ? 'opacity-0' : 'opacity-100'}`}
         >
           AI at Google.<br className="sm:hidden" /> Art in the desert.
         </p>

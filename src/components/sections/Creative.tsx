@@ -206,7 +206,7 @@ export function Creative() {
           <div className="mx-auto max-w-6xl px-6 md:px-12">
             <div data-cr-header>
               <p className="label mb-3 sm:mb-4">After hours</p>
-              <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6 text-glow">
+              <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6">
                 I build things that glow
               </h2>
               <p
@@ -240,10 +240,8 @@ export function Creative() {
                     className="absolute -inset-4 sm:-inset-6 md:-inset-8 lg:-inset-12 -z-10 rounded-2xl sm:rounded-3xl"
                     style={{
                       background: inst.lightBg
-                        ? 'radial-gradient(ellipse 120% 100% at 20% 50%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 50%, transparent 80%)'
-                        : 'radial-gradient(ellipse 120% 100% at 20% 50%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 80%)',
-                      backdropFilter: 'blur(40px)',
-                      WebkitBackdropFilter: 'blur(40px)',
+                        ? 'rgba(255,255,255,0.85)'
+                        : 'rgba(0,0,0,0.75)',
                     }}
                   />
                   <span
