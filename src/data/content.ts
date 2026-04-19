@@ -38,6 +38,10 @@ export interface Experience {
   description: string
   tech: string[]
   metric?: Metric
+  businessContext?: string
+  decision?: string
+  businessOutcome?: string
+  strategicLesson?: string
 }
 
 export const experiences: Experience[] = [
@@ -49,6 +53,10 @@ export const experiences: Experience[] = [
     description: 'Shipping Gemini-powered products across Google\'s GenAI platform. Working at the intersection of Gemini, PaLM 2, and Imagen models with DeepMind collaboration. Google I/O 2025 speaker on responsible AI deployment in production.',
     tech: ['GenAI', 'Trust & Safety', 'Responsible AI', 'Large Language Models'],
     metric: { value: 'I/O 2025', label: 'Speaker' },
+    businessContext: '[OLIVER: 1 sentence on the business state before]',
+    decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
+    businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
+    strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
   },
   {
     id: 'covariant',
@@ -58,6 +66,10 @@ export const experiences: Experience[] = [
     description: 'AI that touches the physical world. Took computer vision from research demos to warehouse floors running 24/7 across 50+ enterprise deployments, then navigated the company through Amazon\'s acquisition.',
     tech: ['Computer Vision', 'Robotics', 'Enterprise AI', 'M&A'],
     metric: { value: '50+', label: 'Enterprise deployments' },
+    businessContext: '[OLIVER: 1 sentence on the business state before]',
+    decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
+    businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
+    strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
   },
   {
     id: 'meta',
@@ -67,6 +79,10 @@ export const experiences: Experience[] = [
     description: 'Real-time infrastructure at Instagram speed. Launched video calling to 750 million daily users—learning that at this scale, latency is a feature and reliability is the product.',
     tech: ['Real-time Systems', 'Consumer Social', 'Scale Infrastructure'],
     metric: { value: '750M', label: 'Daily active users' },
+    businessContext: '[OLIVER: 1 sentence on the business state before]',
+    decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
+    businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
+    strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
   },
   {
     id: 'microsoft',
@@ -76,6 +92,10 @@ export const experiences: Experience[] = [
     description: 'Where I learned that developer platforms are trust products. Built Azure Cognitive Services APIs used by millions of developers and established the playbook for enterprise AI adoption.',
     tech: ['Developer Platforms', 'Cognitive Services', 'Enterprise AI'],
     metric: { value: '1M+', label: 'API calls per day' },
+    businessContext: '[OLIVER: 1 sentence on the business state before]',
+    decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
+    businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
+    strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
   },
 ]
 
