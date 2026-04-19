@@ -196,7 +196,7 @@ export function Hero() {
           className={`mt-3 sm:mt-6 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed max-w-xl ${animationReady ? 'opacity-0' : 'opacity-100'}`}
           style={{ color: 'var(--color-grey-300)' }}
         >
-          Shipping AI products to billions of users across Google, Meta, and Microsoft. Google I/O 2025 speaker.
+          Shipping AI products to billions of users across Google, Meta, and Microsoft. Google I/O 2025 speaker. 10+ years bringing AI systems from research to production.
         </p>
 
         {/* Currently signal - forward trajectory */}
