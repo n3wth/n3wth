@@ -82,7 +82,7 @@ export function Thinking() {
         {/* Section header */}
         <div data-th-header className="mb-10 sm:mb-16 md:mb-24">
           <p className="label mb-3 sm:mb-4">Thinking</p>
-          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6 text-glow">
+          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6">
             Where trust meets craft
           </h2>
           <p

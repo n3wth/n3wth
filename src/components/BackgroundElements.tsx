@@ -51,10 +51,10 @@ export function BackgroundElements() {
           <div
             key={`v-${i}`}
             data-grid-line
-            className="absolute top-0 bottom-0 w-px opacity-[0.06]"
+            className="absolute top-0 bottom-0 w-px opacity-[0.04]"
             style={{
               left: `${(i + 1) * 12.5}%`,
-              background: 'linear-gradient(to bottom, transparent, var(--color-grey-700), transparent)',
+              background: 'var(--color-grey-800)',
             }}
           />
         ))}
@@ -67,7 +67,7 @@ export function BackgroundElements() {
         style={{
           top: '10%',
           right: '-10%',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%)',
+          background: 'rgba(255,255,255,0.01)',
           willChange: 'transform',
         }}
       />
@@ -77,7 +77,7 @@ export function BackgroundElements() {
         style={{
           top: '60%',
           left: '-5%',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.01) 0%, transparent 70%)',
+          background: 'rgba(255,255,255,0.005)',
           willChange: 'transform',
         }}
       />
@@ -87,7 +87,7 @@ export function BackgroundElements() {
         style={{
           top: '40%',
           right: '10%',
-          border: '1px solid rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.02)',
           transform: 'rotate(45deg)',
           willChange: 'transform',
         }}
@@ -99,7 +99,7 @@ export function BackgroundElements() {
         style={{
           top: '20%',
           left: '20%',
-          background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.05), transparent)',
+          background: 'rgba(255,255,255,0.03)',
           transform: 'rotate(30deg)',
         }}
       />

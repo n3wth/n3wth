@@ -143,7 +143,7 @@ export function Contact() {
           <h2
             ref={titleRef}
             data-contact-title
-            className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-white tracking-tight leading-[1.05] mb-4 sm:mb-6 md:mb-8 text-glow"
+            className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-white tracking-tight leading-[1.05] mb-4 sm:mb-6 md:mb-8"
             style={{ perspective: '1000px' }}
           >
             Let's talk

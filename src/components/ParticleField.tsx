@@ -15,8 +15,8 @@ const ACCENT_COLORS = [
   'rgba(255, 217, 61, 0.6)',  // yellow
   'rgba(167, 139, 250, 0.6)', // purple
 ]
-const DEFAULT_COLOR = 'rgba(255, 255, 255, 0.15)'
-const LINE_COLOR = 'rgba(255, 255, 255, 0.04)'
+const DEFAULT_COLOR = 'rgba(255, 255, 255, 0.1)'
+const LINE_COLOR = 'rgba(255, 255, 255, 0.02)'
 const CONNECTION_DIST = 120
 const CURSOR_RADIUS = 150
 const CURSOR_FORCE = 0.8
