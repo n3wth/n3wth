@@ -207,6 +207,35 @@ export function Experience() {
                 {exp.description}
               </p>
 
+              {(exp.businessContext || exp.decision || exp.businessOutcome || exp.strategicLesson) && (
+                <div className="mb-6 space-y-4 border-l border-white/10 pl-4 py-1">
+                  {exp.businessContext && (
+                    <div>
+                      <span className="block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">Context</span>
+                      <p className="text-sm text-white/70 leading-relaxed">{exp.businessContext}</p>
+                    </div>
+                  )}
+                  {exp.decision && (
+                    <div>
+                      <span className="block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">Decision</span>
+                      <p className="text-sm text-white/70 leading-relaxed">{exp.decision}</p>
+                    </div>
+                  )}
+                  {exp.businessOutcome && (
+                    <div>
+                      <span className="block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">Outcome</span>
+                      <p className="text-sm text-white/70 leading-relaxed">{exp.businessOutcome}</p>
+                    </div>
+                  )}
+                  {exp.strategicLesson && (
+                    <div>
+                      <span className="block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">Strategic Lesson</span>
+                      <p className="text-sm text-white/70 leading-relaxed italic">{exp.strategicLesson}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <div className="flex flex-wrap gap-x-3 gap-y-1">
                 {exp.tech.map((t, i) => (
                   <span
@@ -279,6 +308,35 @@ export function Experience() {
                 >
                   {exp.description}
                 </p>
+
+                {(exp.businessContext || exp.decision || exp.businessOutcome || exp.strategicLesson) && (
+                  <div data-detail className="mb-8 space-y-5 border-l border-white/10 pl-6 py-1 max-w-xl">
+                    {exp.businessContext && (
+                      <div>
+                        <span className="block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">Context</span>
+                        <p className="text-base text-white/70 leading-relaxed">{exp.businessContext}</p>
+                      </div>
+                    )}
+                    {exp.decision && (
+                      <div>
+                        <span className="block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">Decision</span>
+                        <p className="text-base text-white/70 leading-relaxed">{exp.decision}</p>
+                      </div>
+                    )}
+                    {exp.businessOutcome && (
+                      <div>
+                        <span className="block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">Outcome</span>
+                        <p className="text-base text-white/70 leading-relaxed">{exp.businessOutcome}</p>
+                      </div>
+                    )}
+                    {exp.strategicLesson && (
+                      <div>
+                        <span className="block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">Strategic Lesson</span>
+                        <p className="text-base text-white/70 leading-relaxed italic">{exp.strategicLesson}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <div data-detail className="flex flex-wrap gap-x-4 gap-y-2">
                   {exp.tech.map((t, i) => (
