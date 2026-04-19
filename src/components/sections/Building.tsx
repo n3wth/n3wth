@@ -1,12 +1,44 @@
-import { useRef } from 'react'
-import { ArrowUpRight, Github } from 'lucide-react'
+import { useRef, useState, useEffect } from 'react'
+import { ArrowUpRight, Github, Star, GitFork } from 'lucide-react'
 import { gsap, useGSAP } from '../../lib/gsap'
 import { projects, type Project } from '../../data/content'
 import { useTilt } from '../../hooks/useTilt'
 
-function ProjectCard({ project }: { project: Project }) {
+export interface GitHubStats {
+  stars: number | string
+  forks: number | string
+}
+
+export function ProjectCard({ project }: { project: Project }) {
   const cardRef = useRef<HTMLElement>(null)
+  const [stats, setStats] = useState<GitHubStats>({ stars: '—', forks: '—' })
   useTilt(cardRef)
+
+  useEffect(() => {
+    if (!project.github) return
+
+    const fetchStats = async () => {
+      try {
+        const url = new URL(project.github!)
+        const [, owner, repo] = url.pathname.split('/')
+        if (!owner || !repo) return
+
+        const response = await fetch(`/api/github-stats?owner=${owner}&repo=${repo}`)
+        if (!response.ok) throw new Error('Failed to fetch')
+        
+        const data = await response.json()
+        setStats({
+          stars: data.stars ?? '—',
+          forks: data.forks ?? '—'
+        })
+      } catch (err) {
+        console.error(`Error fetching stats for ${project.name}:`, err)
+        setStats({ stars: '—', forks: '—' })
+      }
+    }
+
+    fetchStats()
+  }, [project.github, project.name])
 
   return (
     <article
@@ -19,6 +51,18 @@ function ProjectCard({ project }: { project: Project }) {
           {project.name}
         </h3>
         <div className="flex items-center gap-2">
+          {project.github && (
+            <div className="flex items-center gap-3 mr-2 text-xs font-mono" style={{ color: 'var(--color-grey-400)' }}>
+              <span className="flex items-center gap-1">
+                <Star size={12} />
+                {stats.stars}
+              </span>
+              <span className="flex items-center gap-1">
+                <GitFork size={12} />
+                {stats.forks}
+              </span>
+            </div>
+          )}
           {project.github && project.github !== project.url && (
             <a
               href={project.github}
