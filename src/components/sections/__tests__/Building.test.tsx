@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { Building } from '../Building'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import React from 'react'
 
 // Mock the projects data to have a predictable set
 vi.mock('../../../data/content', async () => {
@@ -36,12 +35,12 @@ describe('Building Component', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     // Mock global fetch
-    global.fetch = vi.fn()
+    vi.stubGlobal('fetch', vi.fn())
   })
 
   it('shows dash fallback when GitHub API fails', async () => {
     // Mock a failed API response
-    ;(global.fetch as any).mockResolvedValueOnce({
+    ;(fetch as any).mockResolvedValueOnce({
       ok: false,
       status: 500,
       json: async () => ({ error: 'Internal Server Error' }),
@@ -60,7 +59,7 @@ describe('Building Component', () => {
 
   it('shows actual stats when GitHub API succeeds', async () => {
     // Mock a successful API response
-    ;(global.fetch as any).mockResolvedValueOnce({
+    ;(fetch as any).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ stars: 42, forks: 12 }),
     })
