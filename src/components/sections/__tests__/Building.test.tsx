@@ -1,6 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { Building } from '../Building'
-import { projects } from '../../../data/content'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import React from 'react'
 
@@ -26,7 +25,9 @@ vi.mock('../../../data/content', async () => {
 vi.mock('../../../lib/gsap', () => ({
   gsap: {
     from: vi.fn(),
+    set: vi.fn(),
     registerPlugin: vi.fn(),
+    quickTo: vi.fn(() => vi.fn()),
   },
   useGSAP: vi.fn(),
 }))
