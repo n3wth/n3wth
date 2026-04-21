@@ -24,7 +24,10 @@ export function ProjectCard({ project }: { project: Project }) {
         if (!owner || !repo) return
 
         const response = await fetch(`/api/github-stats?owner=${owner}&repo=${repo}`)
-        if (!response.ok) throw new Error('Failed to fetch')
+        if (!response.ok) {
+          setStats({ stars: '—', forks: '—' })
+          return
+        }
         
         const data = await response.json()
         setStats({
