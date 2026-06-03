@@ -6,6 +6,12 @@ import App from './App.tsx'
 // Enable JS-only reveal state (static fallback stays visible if JS fails).
 document.documentElement.classList.add('js')
 
+// CSS Studio — dev-only visual CSS editor. Dynamic import so it is NEVER bundled
+// into the production build. Removed entirely when import.meta.env.DEV is false.
+if (import.meta.env.DEV) {
+  import('cssstudio').then(({ startStudio }) => startStudio())
+}
+
 // Defer PostHog init to after first paint - not needed for FCP/LCP
 const deferCallback = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 1))
 deferCallback(() => {
