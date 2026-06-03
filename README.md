@@ -1,29 +1,22 @@
-# Hey, I'm Oliver
+# n3wth
 
-AI Product Leader at Google. 10+ years bringing AI systems from research to production.
+Oliver Newth's personal site. AI Product Leader at Google.
 
-Kennedy Scholar, MIT. Google I/O speaker. LED artist.
+Live at [n3wth.com](https://n3wth.com).
 
-## Work
+## Stack
 
-**Google** - AI Product Leader (2024-present)
-- Shipped Opal, a no-code GenAI product
-- Google I/O 2025 speaker
+Vite + React + TypeScript + Tailwind CSS v4. GSAP for animation, deployed on Vercel.
 
-**Covariant** - Senior PM, Vision AI & Robotics (2022-2024)
-- Acquired by Amazon
+The site runs an ambient AI agent that observes, connects dots, and answers questions in the background.
 
-**Meta** - PM, Instagram Calling
-- Launched video calling to 750M DAU
+## Develop
 
-**Microsoft** - PM, Azure Cognitive Services
-
-## Creative
-
-Large-scale LED art installations for Burning Man and public spaces:
-- **Pink Triangle** - SF Pride memorial on Twin Peaks
-- **THEM** - 30-foot interactive sculpture, Black Rock City
-- **Circle of Light** - World AIDS Day memorial
+```bash
+npm install
+npm run dev      # Vite dev server
+npm run build    # tsc + vite build
+```
 
 ## Links
 
