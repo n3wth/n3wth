@@ -21,6 +21,7 @@ export const navigation: NavItem[] = [
   { name: 'Building', href: '#building' },
   { name: 'Thinking', href: '#thinking' },
   { name: 'Frameworks', href: '#frameworks' },
+  { name: 'Alignment', href: '#ai-explainer' },
   { name: 'Creative', href: '#creative' },
   { name: 'Contact', href: '#contact' },
 ]

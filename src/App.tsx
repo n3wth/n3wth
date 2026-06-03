@@ -20,6 +20,7 @@ const Experience = lazy(() => import('./components/sections/Experience').then(m 
 const Thinking = lazy(() => import('./components/sections/Thinking').then(m => ({ default: m.Thinking })))
 const Building = lazy(() => import('./components/sections/Building').then(m => ({ default: m.Building })))
 const Frameworks = lazy(() => import('./components/sections/Frameworks').then(m => ({ default: m.Frameworks })))
+const AIExplainer = lazy(() => import('./components/sections/AIExplainer').then(m => ({ default: m.AIExplainer })))
 const Creative = lazy(() => import('./components/sections/Creative').then(m => ({ default: m.Creative })))
 const Contact = lazy(() => import('./components/sections/Contact').then(m => ({ default: m.Contact })))
 
@@ -71,6 +72,9 @@ function App() {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Frameworks />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <AIExplainer />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Creative />
