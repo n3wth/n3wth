@@ -22,7 +22,7 @@
   font-display: swap;
 }
 
-/* Geist Mono (eyebrows / labels / indices) */
+/* Geist Mono — literal machine output ONLY (code, coordinates, GitHub counts). Labels/eyebrows use Geist Sans. */
 @font-face {
   font-family: 'Geist Mono';
   src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
@@ -50,6 +50,7 @@
   --color-ink: #f2f3f5;
   --color-ink-dim: #9aa0a8;
   --color-ink-faint: #62666d;
+  --color-ink-label: #787c83;
   --color-ink-ghost: #2c2f34;
   --color-rail: rgba(255, 255, 255, 0.09);
   --color-rail-strong: rgba(255, 255, 255, 0.17);
@@ -69,6 +70,9 @@
   --ink: #f2f3f5;
   --ink-dim: #9aa0a8;
   --ink-faint: #62666d;
+  /* Accessible label tone (4.75:1 on canvas) — small uppercase meta/labels.
+     --ink-faint stays for decorative marks/separators only. */
+  --ink-label: #787c83;
   --ink-ghost: #2c2f34;
   --accent: #ffffff;
   --accent-dim: #d4d6da;
@@ -193,7 +197,7 @@ html.lenis, html.lenis body { height: auto; }
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--ink-label);
   font-variant-numeric: tabular-nums;
 }
 @media (min-width: 768px) {
@@ -215,7 +219,7 @@ html.lenis, html.lenis body { height: auto; }
   font-family: var(--font-sans);
   font-size: 0.8125rem;
   letter-spacing: 0;
-  color: var(--ink-faint);
+  color: var(--ink-dim);
   font-variant-numeric: tabular-nums;
 }
 
@@ -225,7 +229,7 @@ html.lenis, html.lenis body { height: auto; }
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.02em;
-  color: var(--ink-faint);
+  color: var(--ink-label);
   font-variant-numeric: tabular-nums;
 }
 

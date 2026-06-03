@@ -9,10 +9,9 @@ interface ConsequenceVizProps {
 }
 
 /**
- * The consequence of a choice, rendered as art rather than a chart.
- * A generative two-pole tension field — the seam between two opposing forces.
- * The field redistributes toward whatever the choice optimized for; the
- * imbalance is felt, not tallied. No numbers, no percentages, no labeled nodes.
+ * Shows the consequence of a choice as a two-pole tension field. The field
+ * redistributes toward whatever the choice optimized for, so the trade-off is
+ * visible without numbers or labeled nodes.
  */
 export const ConsequenceViz = memo(function ConsequenceViz({
   metrics,
@@ -26,24 +25,24 @@ export const ConsequenceViz = memo(function ConsequenceViz({
     >
       <div className="flex items-baseline justify-between gap-4 mb-1">
         <p className="index" style={{ color: "var(--accent)" }}>
-          The Geometry of Equilibrium
+          Trade-off
         </p>
         <p className="index">
-          {metrics ? "What you optimized for" : "The field at rest"}
+          {metrics ? "What you optimized for" : "Before you choose"}
         </p>
       </div>
       <p className="meta mb-5 max-w-2xl">
-        Two opposing forces in one field. Alignment is the art of holding the seam.
+        Each choice pulls the field toward one priority and away from another.
       </p>
 
       <TensionField metrics={metrics} isAnimating={isAnimating} />
 
       {poleLabels && (
         <div className="mt-4 flex items-center justify-between">
-          <span className="index" style={{ color: "var(--ink-faint)" }}>
+          <span className="index">
             {poleLabels[0]}
           </span>
-          <span className="index" style={{ color: "var(--ink-faint)" }}>
+          <span className="index">
             {poleLabels[1]}
           </span>
         </div>
