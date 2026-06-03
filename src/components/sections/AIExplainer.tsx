@@ -14,15 +14,14 @@ export function AIExplainer() {
   return (
     <section ref={ref} id="ai-explainer" aria-label="Alignment">
       <SectionHeader
-        index="05"
         eyebrow="The decisions that keep me up at night"
         title={
           <>
-            Every AI decision is a <span className="signal">bet</span> on what
+            Every AI decision is a <span className="accent">bet</span> on what
             matters most
           </>
         }
-        lede="There are no clean answers in AI safety — only trade-offs with real consequences for real people. Three dilemmas I've faced. Make a choice and see what you're actually optimizing for."
+        lede="AI safety rarely has clean answers — only trade-offs with real consequences for real people. Here are three dilemmas I've faced. Make a choice and see what you're optimizing for."
         mark={<ForkMark size={56} />}
       />
 

@@ -44,14 +44,18 @@
   --font-display: 'Geist', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 
-  --color-canvas: #08090b;
+  --color-bg: #08090b;
+  --color-bg-soft: #0d0e10;
+  --color-bg-raise: #131316;
   --color-ink: #f2f3f5;
-  --color-dim: #9aa0a8;
-  --color-faint: #61666e;
+  --color-ink-dim: #9aa0a8;
+  --color-ink-faint: #62666d;
+  --color-ink-ghost: #2c2f34;
   --color-rail: rgba(255, 255, 255, 0.09);
   --color-rail-strong: rgba(255, 255, 255, 0.17);
-  --color-signal: #4ade80;
-  --color-blue: #38bdf8;
+  --color-accent: #e8a04a;
+  --color-accent-dim: #c9803a;
+  --color-accent-ink: #1a0f02;
 }
 
 /* CSS custom properties for var() usage outside utilities */
@@ -59,14 +63,19 @@
   --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 
-  --canvas: #08090b;
+  --bg: #08090b;
+  --bg-soft: #0d0e10;
+  --bg-raise: #131316;
   --ink: #f2f3f5;
-  --dim: #9aa0a8;
-  --faint: #61666e;
+  --ink-dim: #9aa0a8;
+  --ink-faint: #62666d;
+  --ink-ghost: #2c2f34;
+  --accent: #e8a04a;
+  --accent-dim: #c9803a;
+  --accent-ink: #1a0f02;
   --rail: rgba(255, 255, 255, 0.09);
   --rail-strong: rgba(255, 255, 255, 0.17);
-  --signal: #4ade80;
-  --blue: #38bdf8;
+  --accent-rail: rgba(232, 160, 74, 0.32);
 
   --frame-max: 1280px;
   --gutter: 1.5rem;
@@ -80,8 +89,8 @@
 * { box-sizing: border-box; }
 
 html {
-  background: var(--canvas);
-  color: var(--dim);
+  background: var(--bg);
+  color: var(--ink-dim);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -91,15 +100,15 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--canvas);
-  line-height: 1.55;
+  background: var(--bg);
+  line-height: 1.65;
 }
 
 #root { min-height: 100vh; }
 .hero-placeholder { display: none !important; }
 
 ::selection {
-  background: rgba(74, 222, 128, 0.22);
+  background: rgba(232, 160, 74, 0.24);
   color: var(--ink);
 }
 
@@ -164,26 +173,31 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* ---------- Typography ---------- */
+/* Label recipe: sans, weight 500, technical tracking. */
 .eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--dim);
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
 }
 @media (min-width: 768px) {
   .eyebrow { font-size: 12px; }
 }
 
 .index {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--ink-faint);
   font-variant-numeric: tabular-nums;
+}
+@media (min-width: 768px) {
+  .index { font-size: 12px; }
 }
 
 .display {
@@ -194,15 +208,49 @@ html.lenis, html.lenis body { height: auto; }
   color: var(--ink);
 }
 
-.signal { color: var(--signal); }
+.accent { color: var(--accent); }
 
-/* Mono meta text */
+/* Sentence meta (sans). Use .mono for literal machine output. */
 .meta {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--faint);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  letter-spacing: 0;
+  color: var(--ink-faint);
   font-variant-numeric: tabular-nums;
+}
+
+/* Literal machine output: coordinates, IDs, URLs-as-data, star counts. */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Display type scale (matches agents site) */
+.t-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(3rem, 8.6vw, 7rem);
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  color: var(--ink);
+}
+.t-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.85rem, 3.8vw, 3.1rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+.t-lead {
+  font-size: 1.125rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
 }
 
 /* ---------- Links ---------- */
@@ -217,7 +265,7 @@ html.lenis, html.lenis body { height: auto; }
   bottom: -2px;
   width: 100%;
   height: 1px;
-  background: var(--rail-strong);
+  background: var(--accent-rail);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s var(--ease);
@@ -237,25 +285,41 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* ---------- Buttons ---------- */
+/* Ghost: subtle hover (border→accent-rail, text→ink). Solid: ink fill. */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.625rem;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.06em;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--ink-dim);
   border: 1px solid var(--rail-strong);
   background: transparent;
-  padding: 0.875rem 1.375rem;
+  padding: 0.8125rem 1.5rem;
+  border-radius: 999px;
   transition: border-color 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease);
   cursor: pointer;
 }
 .btn:hover {
-  border-color: var(--signal);
-  color: var(--signal);
+  border-color: var(--accent-rail);
+  color: var(--ink);
 }
+.btn-solid {
+  color: var(--bg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.btn-solid:hover {
+  color: var(--bg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.btn .btn-arrow { color: var(--ink-dim); transition: color 0.3s var(--ease); }
+.btn:hover .btn-arrow { color: var(--ink); }
+.btn-solid .btn-arrow { color: var(--bg); }
 
 /* ---------- Reveal (GSAP-driven, with static fallback) ---------- */
 .reveal { opacity: 1; }
@@ -269,10 +333,11 @@ html.lenis, html.lenis body { height: auto; }
   z-index: 10000;
   padding: 0.75rem 1.5rem;
   background: var(--ink);
-  color: var(--canvas);
-  font-family: var(--font-mono);
+  color: var(--bg);
+  font-family: var(--font-sans);
   font-size: 12px;
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
   transition: top 0.2s;
@@ -281,15 +346,32 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ---------- Focus ---------- */
 :focus-visible {
-  outline: 1px solid var(--signal);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
 /* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--canvas); }
+::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--rail-strong); }
-::-webkit-scrollbar-thumb:hover { background: var(--dim); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-dim); }
+
+/* ---------- Vertical rhythm variants ---------- */
+.pad-air { padding-top: 6.3rem; padding-bottom: 6.3rem; }
+.pad-tight { padding-top: 3.85rem; padding-bottom: 3.85rem; }
+@media (min-width: 768px) {
+  .pad-air { padding-top: 9.8rem; padding-bottom: 9.8rem; }
+  .pad-tight { padding-top: 5.95rem; padding-bottom: 5.95rem; }
+}
+
+/* ---------- LED status pixel (static amber square) ---------- */
+.led {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  vertical-align: middle;
+}
 
 /* ---------- Touch targets ---------- */
 @media (pointer: coarse) {

@@ -15,11 +15,10 @@ export function Experience() {
   return (
     <section ref={ref} id="work" aria-label="Experience">
       <SectionHeader
-        index="01"
         eyebrow="Experience"
         title={
           <>
-            Building AI products at <span className="signal">billion-user</span>{' '}
+            Building AI products at <span className="accent">billion-user</span>{' '}
             scale
           </>
         }
@@ -76,7 +75,7 @@ export function Experience() {
 
                   <p
                     className="mt-4 max-w-2xl text-sm md:text-base leading-relaxed"
-                    style={{ color: 'var(--dim)' }}
+                    style={{ color: 'var(--ink-dim)' }}
                   >
                     {exp.description}
                   </p>
@@ -91,7 +90,7 @@ export function Experience() {
                           <dt className="index mb-1">{k}</dt>
                           <dd
                             className="text-sm leading-relaxed"
-                            style={{ color: 'var(--dim)' }}
+                            style={{ color: 'var(--ink-dim)' }}
                           >
                             {v}
                           </dd>

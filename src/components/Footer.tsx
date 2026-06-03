@@ -12,14 +12,14 @@ export function Footer() {
             <div>
               <a
                 href="#top"
-                className="font-mono text-sm font-medium tracking-[0.04em]"
+                className="text-sm font-medium tracking-[0.01em]"
                 style={{ color: 'var(--ink)' }}
               >
-                n3wth<span style={{ color: 'var(--signal)' }}>.</span>
+                n3wth<span style={{ color: 'var(--accent)' }}>.</span>
               </a>
               <p className="meta mt-4 max-w-xs leading-relaxed">
-                AI product leader. Building toward a world where agents work
-                alongside humans, not just for them.
+                I build AI products at Google and large LED art on the side.
+                Based in San Francisco.
               </p>
             </div>
 
@@ -29,7 +29,7 @@ export function Footer() {
                   href={siteConfig.social.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline font-mono text-xs uppercase tracking-[0.14em]"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
                 >
                   GitHub
                 </a>
@@ -39,7 +39,7 @@ export function Footer() {
                   href={siteConfig.social.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline font-mono text-xs uppercase tracking-[0.14em]"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
                 >
                   LinkedIn
                 </a>
@@ -49,7 +49,7 @@ export function Footer() {
                   href={siteConfig.artSite}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline font-mono text-xs uppercase tracking-[0.14em]"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
                 >
                   newth.art
                 </a>
@@ -57,7 +57,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="link-underline font-mono text-xs uppercase tracking-[0.14em]"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
                 >
                   Email
                 </a>

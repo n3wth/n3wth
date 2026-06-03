@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { ArrowDown, ArrowRight } from 'lucide-react'
 import { gsap, SplitText, useGSAP } from '../../lib/gsap'
 import { AsciiField } from '../AsciiField'
 
@@ -50,18 +51,18 @@ export function Hero() {
       {/* coordinate marks */}
       <span
         aria-hidden="true"
-        className="absolute left-6 md:left-10 top-20 md:top-24 meta"
+        className="absolute left-6 md:left-10 top-20 md:top-24 mono"
       >
         37.7749° N
       </span>
       <span
         aria-hidden="true"
-        className="absolute right-6 md:right-10 top-20 md:top-24 meta text-right"
+        className="absolute right-6 md:right-10 top-20 md:top-24 mono text-right"
       >
         122.4194° W
       </span>
 
-      <div className="relative z-10 section-pad !pb-14 md:!pb-20 w-full">
+      <div className="relative z-10 section-pad pad-air !pb-14 md:!pb-20 w-full">
         <p data-hero-eyebrow className="eyebrow mb-6 md:mb-8">
           San Francisco — AI Product Leader
         </p>
@@ -82,27 +83,29 @@ export function Hero() {
             className="text-lg md:text-2xl leading-snug display !tracking-tight"
             style={{ letterSpacing: '-0.02em' }}
           >
-            AI at Google. <span className="signal">Art in the desert.</span>
+            AI at Google. <span className="accent">Art in the desert.</span>
           </p>
           <div data-hero-fade className="space-y-4 max-w-md">
-            <p className="text-sm md:text-base leading-relaxed" style={{ color: 'var(--dim)' }}>
-              Shipping AI products to billions of users across Google, Meta, and
-              Microsoft. Google I/O 2025 speaker. A decade bringing AI systems
-              from research to production.
+            <p className="text-sm md:text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+              I've shipped AI products to billions of users across Google, Meta,
+              and Microsoft, and spoke at Google I/O 2025. A decade taking AI
+              systems from research to production.
             </p>
             <p className="meta leading-relaxed">
-              Now building toward a world where AI agents work alongside humans,
-              not just for them.
+              These days I'm focused on agents that work alongside people, not
+              just for them.
             </p>
           </div>
         </div>
 
         <div data-hero-fade className="mt-10 md:mt-14 flex flex-wrap items-center gap-4">
-          <a href="#contact" className="btn">
+          <a href="#contact" className="btn btn-solid">
             Get in touch
+            <ArrowRight size={16} strokeWidth={1.5} className="btn-arrow" aria-hidden="true" />
           </a>
           <a href="#work" className="btn" style={{ borderColor: 'var(--rail)' }}>
-            View work ↓
+            View work
+            <ArrowDown size={16} strokeWidth={1.5} className="btn-arrow" aria-hidden="true" />
           </a>
         </div>
       </div>

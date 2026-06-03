@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 import { gsap, SplitText, useGSAP } from '../../lib/gsap'
 import { siteConfig } from '../../data/content'
 import { ArrowMark } from '../marks'
@@ -46,11 +47,11 @@ export function Contact() {
       className="relative min-h-[85vh] flex items-center"
     >
       <span className="tick tick-tl" aria-hidden="true" style={{ top: 0, left: -5 }} />
-      <div className="section-pad w-full">
+      <div className="section-pad pad-air w-full">
         <div className="flex items-start justify-between gap-6">
           <div className="max-w-3xl">
-            <p data-contact-eyebrow className="index mb-6">
-              [ 07 ] <span className="mx-1">—</span> Get in touch
+            <p data-contact-eyebrow className="eyebrow mb-6">
+              Get in touch
             </p>
             <h2
               ref={titleRef}
@@ -63,23 +64,24 @@ export function Contact() {
             <p
               data-contact-fade
               className="mt-8 text-base md:text-xl leading-relaxed max-w-lg"
-              style={{ color: 'var(--dim)' }}
+              style={{ color: 'var(--ink-dim)' }}
             >
-              AI safety, LED art, or coffee in San Francisco.
+              Happy to talk about AI safety, LED art, or grab coffee in San
+              Francisco.
             </p>
 
             <a
               data-contact-fade
               href={`mailto:${siteConfig.email}`}
-              className="btn mt-10 group"
+              className="btn btn-solid mt-10 group"
             >
               {siteConfig.email}
-              <span
+              <ArrowUpRight
+                size={16}
+                strokeWidth={1.5}
+                className="btn-arrow transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 aria-hidden="true"
-                className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-              >
-                ↗
-              </span>
+              />
             </a>
 
             <ul data-contact-fade className="flex flex-wrap gap-x-8 gap-y-3 mt-12">
@@ -88,7 +90,7 @@ export function Contact() {
                   href={siteConfig.social.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline font-mono text-xs uppercase tracking-[0.14em]"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
                 >
                   GitHub
                 </a>
@@ -98,7 +100,7 @@ export function Contact() {
                   href={siteConfig.social.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline font-mono text-xs uppercase tracking-[0.14em]"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
                 >
                   LinkedIn
                 </a>
@@ -108,7 +110,7 @@ export function Contact() {
                   href={siteConfig.artSite}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline font-mono text-xs uppercase tracking-[0.14em]"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
                 >
                   newth.art
                 </a>
@@ -119,7 +121,7 @@ export function Contact() {
           <div
             data-contact-fade
             className="hidden md:block shrink-0"
-            style={{ color: 'var(--faint)' }}
+            style={{ color: 'var(--ink-faint)' }}
           >
             <ArrowMark size={64} />
           </div>

@@ -44,12 +44,12 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
         </div>
         <div className="flex items-center gap-3">
           {project.github && (
-            <span className="meta flex items-center gap-3">
+            <span className="mono flex items-center gap-3">
               <span className="flex items-center gap-1">
-                <Star size={11} aria-hidden="true" /> {stats.stars}
+                <Star size={14} strokeWidth={1.5} aria-hidden="true" /> {stats.stars}
               </span>
               <span className="flex items-center gap-1">
-                <GitFork size={11} aria-hidden="true" /> {stats.forks}
+                <GitFork size={14} strokeWidth={1.5} aria-hidden="true" /> {stats.forks}
               </span>
             </span>
           )}
@@ -58,7 +58,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
 
       <p
         className="text-sm sm:text-base leading-relaxed mb-6"
-        style={{ color: 'var(--dim)' }}
+        style={{ color: 'var(--ink-dim)' }}
       >
         {project.description}
       </p>
@@ -79,20 +79,20 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
           href={project.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="link-underline font-mono text-xs uppercase tracking-[0.14em] inline-flex items-center gap-1.5"
+          className="link-underline text-xs font-medium uppercase tracking-[0.16em] inline-flex items-center gap-1.5"
           aria-label={`Visit ${project.name}`}
         >
-          Visit <ArrowUpRight size={13} aria-hidden="true" />
+          Visit <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />
         </a>
         {project.github && project.github !== project.url && (
           <a
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="link-underline font-mono text-xs uppercase tracking-[0.14em] inline-flex items-center gap-1.5"
+            className="link-underline text-xs font-medium uppercase tracking-[0.16em] inline-flex items-center gap-1.5"
             aria-label={`${project.name} on GitHub`}
           >
-            <Github size={13} aria-hidden="true" /> Source
+            <Github size={14} strokeWidth={1.5} aria-hidden="true" /> Source
           </a>
         )}
       </div>
@@ -107,17 +107,20 @@ export function Building() {
   return (
     <section ref={ref} id="building" aria-label="Building">
       <SectionHeader
-        index="02"
         eyebrow="Building"
         title="Open-source tools"
-        lede="At the intersection of AI and collaboration. Shipped, documented, and free to use."
+        lede="Small tools for AI and collaboration. Shipped, documented, and free to use."
         mark={<CubeMark size={56} />}
       />
 
-      <div className="section-pad !pt-0">
+      <div className="section-pad pad-tight !pt-0">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: 'var(--rail)' }}>
           {projects.map((project, i) => (
-            <div key={project.id} style={{ background: 'var(--canvas)' }}>
+            <div
+              key={project.id}
+              className={i === 0 ? 'md:col-span-2' : undefined}
+              style={{ background: 'var(--bg)' }}
+            >
               <ProjectCard project={project} index={i} />
             </div>
           ))}

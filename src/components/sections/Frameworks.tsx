@@ -11,14 +11,13 @@ export function Frameworks() {
   return (
     <section ref={ref} id="frameworks" aria-label="Frameworks">
       <SectionHeader
-        index="04"
         eyebrow="After a decade of building"
         title="Four things I believe"
-        lede="Principles developed from shipping AI products at Google, Meta, and Microsoft."
+        lede="Principles I've developed shipping AI products at Google, Meta, and Microsoft."
         mark={<GridMark size={56} />}
       />
 
-      <div className="section-pad !pt-0">
+      <div className="section-pad pad-tight !pt-0">
         <ol style={{ borderTop: '1px solid var(--rail)' }}>
           {frameworks.map((fw, i) => (
             <li
@@ -34,7 +33,7 @@ export function Frameworks() {
                 </h3>
                 <p
                   className="text-sm md:text-lg leading-relaxed"
-                  style={{ color: 'var(--dim)' }}
+                  style={{ color: 'var(--ink-dim)' }}
                 >
                   {fw.tagline}
                 </p>

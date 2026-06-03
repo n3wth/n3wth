@@ -23,17 +23,16 @@ export function Rule() {
 }
 
 /**
- * Blueprint section header: a mono index `[ 01 ] — Title`, a large display
- * headline, and optional lede. Children render an optional geometric mark.
+ * Section header: a quiet sans eyebrow, a large display headline, and an
+ * optional lede. Children render an optional geometric mark that diagrams the
+ * adjacent concept.
  */
 export function SectionHeader({
-  index,
   eyebrow,
   title,
   lede,
   mark,
 }: {
-  index: string
   eyebrow: string
   title: ReactNode
   lede?: ReactNode
@@ -43,20 +42,21 @@ export function SectionHeader({
     <header className="section-pad pb-8 md:pb-12">
       <div className="flex items-start justify-between gap-6">
         <div className="min-w-0">
-          <p data-reveal className="reveal index mb-5">
-            [ {index} ] <span className="mx-1">—</span> {eyebrow}
+          <p data-reveal className="reveal eyebrow mb-5">
+            {eyebrow}
           </p>
           <h2
             data-reveal
-            className="reveal display text-[clamp(2rem,6.5vw,4.5rem)] max-w-[14ch]"
+            className="reveal display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch]"
+            style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
           >
             {title}
           </h2>
           {lede && (
             <p
               data-reveal
-              className="reveal mt-6 max-w-xl text-base md:text-lg leading-relaxed"
-              style={{ color: 'var(--dim)' }}
+              className="reveal t-lead mt-6 max-w-xl"
+              style={{ color: 'var(--ink-dim)' }}
             >
               {lede}
             </p>
@@ -66,7 +66,7 @@ export function SectionHeader({
           <div
             data-reveal
             className="reveal hidden sm:block shrink-0"
-            style={{ color: 'var(--faint)' }}
+            style={{ color: 'var(--ink-faint)' }}
           >
             {mark}
           </div>

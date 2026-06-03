@@ -34,7 +34,7 @@ export const ChallengeCard = memo(function ChallengeCard({
           </h3>
           <p
             className="text-sm md:text-base leading-relaxed max-w-2xl mb-8"
-            style={{ color: 'var(--dim)' }}
+            style={{ color: 'var(--ink-dim)' }}
           >
             {challenge.scenario}
           </p>
@@ -57,7 +57,7 @@ export const ChallengeCard = memo(function ChallengeCard({
               className="mt-8 p-5 md:p-7"
               style={{ border: '1px solid var(--rail)' }}
             >
-              <p className="index mb-3" style={{ color: 'var(--signal)' }}>
+              <p className="index mb-3" style={{ color: 'var(--accent)' }}>
                 Key insight
               </p>
               <p

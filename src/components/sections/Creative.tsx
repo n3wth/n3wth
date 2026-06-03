@@ -86,14 +86,13 @@ export function Creative() {
 
       <div className="relative z-10">
         <SectionHeader
-          index="06"
           eyebrow="After hours"
           title="I build things that glow"
-          lede="Large-scale LED installations for Burning Man and public memorials. I spoke at Robot Heart about how art and technology intersect."
+          lede="Large-scale LED installations for Burning Man and public memorials. I spoke at Robot Heart about where art and technology meet."
           mark={<BeamsMark size={56} />}
         />
 
-        {installations.map((inst, i) => (
+        {installations.map((inst) => (
           <div
             key={inst.id}
             data-installation-panel
@@ -101,9 +100,11 @@ export function Creative() {
           >
             <div className="section-pad w-full">
               <article data-reveal className="reveal max-w-xl relative">
-                <div className="flex items-center gap-4 mb-5">
-                  <span className="index">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="eyebrow">{inst.type.replace('-', ' ')}</span>
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="led" aria-hidden="true" />
+                  <span className="eyebrow" style={{ color: 'var(--accent)' }}>
+                    {inst.type.replace('-', ' ')}
+                  </span>
                 </div>
                 <h3 className="display text-[clamp(2rem,7vw,4.5rem)] mb-4" style={{ color: 'var(--ink)' }}>
                   {inst.title}
