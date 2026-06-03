@@ -40,11 +40,11 @@ describe('Building Component', () => {
 
   it('shows dash fallback when GitHub API fails', async () => {
     // Mock a failed API response
-    ;(fetch as any).mockResolvedValueOnce({
+    vi.mocked(fetch).mockResolvedValueOnce({
       ok: false,
       status: 500,
       json: async () => ({ error: 'Internal Server Error' }),
-    })
+    } as Response)
 
     render(<Building />)
 
@@ -59,10 +59,10 @@ describe('Building Component', () => {
 
   it('shows actual stats when GitHub API succeeds', async () => {
     // Mock a successful API response
-    ;(fetch as any).mockResolvedValueOnce({
+    vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ stars: 42, forks: 12 }),
-    })
+    } as Response)
 
     render(<Building />)
 
