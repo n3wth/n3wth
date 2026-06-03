@@ -13,12 +13,12 @@ import { gsap, useGSAP } from '../lib/gsap'
  */
 
 const colors = {
-  pink: '#FF6B9D',      // LED art, warmth
-  yellow: '#FFD93D',    // Energy, growth
-  blue: '#5DADE2',      // Tech, AI
-  purple: '#A78BFA',    // Innovation
-  coral: '#FF8A80',     // Passion, art
-  mint: '#64FFDA',      // Fresh, data
+  pink: '#d4d6da',      // LED art, warmth
+  yellow: '#d4d6da',    // Energy, growth
+  blue: '#ffffff',      // Tech, AI
+  purple: '#d4d6da',    // Innovation
+  coral: '#d4d6da',     // Passion, art
+  mint: '#d4d6da',      // Fresh, data
 }
 
 interface ShapeConfig {

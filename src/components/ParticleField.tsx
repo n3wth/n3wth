@@ -10,10 +10,10 @@ interface Particle {
 }
 
 const ACCENT_COLORS = [
-  'rgba(255, 107, 157, 0.6)', // pink
-  'rgba(93, 173, 226, 0.6)',  // blue
-  'rgba(255, 217, 61, 0.6)',  // yellow
-  'rgba(167, 139, 250, 0.6)', // purple
+  'rgba(255, 255, 255, 0.6)', // pink
+  'rgba(255, 255, 255, 0.6)',  // blue
+  'rgba(212, 214, 218, 0.6)',  // yellow
+  'rgba(255, 255, 255, 0.6)', // purple
 ]
 const DEFAULT_COLOR = 'rgba(255, 255, 255, 0.1)'
 const LINE_COLOR = 'rgba(255, 255, 255, 0.02)'

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { CursorMark } from './marks'
 import { navigation } from '../data/content'
 
 export function Nav() {
@@ -42,10 +43,12 @@ export function Nav() {
         >
           <a
             href="#top"
-            className="text-sm font-medium tracking-[0.01em]"
+            className="flex items-center gap-2 text-sm font-medium tracking-[0.01em]"
             style={{ color: 'var(--ink)' }}
+            aria-label="n3wth — home"
           >
-            n3wth<span style={{ color: 'var(--accent)' }}>.</span>
+            <CursorMark size={17} className="shrink-0" style={{ color: 'var(--accent)' }} />
+            <span>n3wth</span>
           </a>
 
           <ul className="hidden md:flex items-center gap-7">

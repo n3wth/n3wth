@@ -34,7 +34,7 @@ export function useKeyboardNav() {
       if (header) {
         gsap.fromTo(
           header,
-          { color: '#5DADE2' },
+          { color: '#ffffff' },
           { color: '', duration: 0.8, ease: 'power2.out' }
         )
       }

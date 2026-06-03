@@ -50,6 +50,11 @@ export const ChallengeCard = memo(function ChallengeCard({
             challengeId={challenge.id}
             metrics={chosenMetrics}
             isAnimating={isAnimating}
+            poleLabels={
+              challenge.choices.length >= 2
+                ? [challenge.choices[0].label, challenge.choices[1].label]
+                : undefined
+            }
           />
 
           {chosenMetrics && (

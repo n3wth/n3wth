@@ -48,20 +48,6 @@ export function Hero() {
     >
       <AsciiField />
 
-      {/* coordinate marks */}
-      <span
-        aria-hidden="true"
-        className="absolute left-6 md:left-10 top-20 md:top-24 mono"
-      >
-        37.7749° N
-      </span>
-      <span
-        aria-hidden="true"
-        className="absolute right-6 md:right-10 top-20 md:top-24 mono text-right"
-      >
-        122.4194° W
-      </span>
-
       <div className="relative z-10 section-pad pad-air !pb-14 md:!pb-20 w-full">
         <p data-hero-eyebrow className="eyebrow mb-6 md:mb-8">
           San Francisco — AI Product Leader

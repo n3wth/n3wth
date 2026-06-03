@@ -229,9 +229,9 @@ export function AmbientAgent() {
           <span className="relative flex h-2 w-2">
             <span
               className="absolute inline-flex h-full w-full rounded-full opacity-75"
-              style={{ background: '#5DADE2', animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite' }}
+              style={{ background: '#ffffff', animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite' }}
             />
-            <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: '#5DADE2' }} />
+            <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: '#ffffff' }} />
           </span>
           <span className="text-[11px] font-mono uppercase tracking-wider" style={{ color: 'var(--color-grey-400)' }}>
             Agent
@@ -261,9 +261,9 @@ export function AmbientAgent() {
             <span className="relative flex h-2 w-2">
               <span
                 className="absolute inline-flex h-full w-full rounded-full opacity-75"
-                style={{ background: '#5DADE2', animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite' }}
+                style={{ background: '#ffffff', animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite' }}
               />
-              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: '#5DADE2' }} />
+              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: '#ffffff' }} />
             </span>
             <span className="text-[11px] font-mono uppercase tracking-wider" style={{ color: 'var(--color-grey-400)' }}>
               {currentNudge?.agent || 'agent'}
@@ -289,7 +289,7 @@ export function AmbientAgent() {
                   <button
                     onClick={() => navigate(currentNudge.target!)}
                     className="text-xs font-mono uppercase tracking-wider transition-colors hover:text-white"
-                    style={{ color: '#5DADE2' }}
+                    style={{ color: '#ffffff' }}
                   >
                     {currentNudge.cta} &rarr;
                   </button>
@@ -342,14 +342,14 @@ export function AmbientAgent() {
                   placeholder="Ask the agent..."
                   maxLength={500}
                   disabled={loading}
-                  className="flex-1 bg-transparent border rounded-lg px-3 py-2 text-sm text-white placeholder:text-[var(--color-grey-600)] focus:outline-none focus:border-[#5DADE2] disabled:opacity-50"
+                  className="flex-1 bg-transparent border rounded-lg px-3 py-2 text-sm text-white placeholder:text-[var(--color-grey-600)] focus:outline-none focus:border-[#ffffff] disabled:opacity-50"
                   style={{ borderColor: 'var(--glass-border)' }}
                 />
                 <button
                   type="submit"
                   disabled={loading || !query.trim()}
                   className="text-xs font-mono uppercase tracking-wider px-3 py-2 rounded-lg transition-colors hover:text-white disabled:opacity-30"
-                  style={{ color: '#5DADE2', border: '1px solid var(--glass-border)' }}
+                  style={{ color: '#ffffff', border: '1px solid var(--glass-border)' }}
                 >
                   Ask
                 </button>

@@ -21,13 +21,13 @@ import { gsap, useGSAP } from '../../lib/gsap'
  */
 
 const colors = {
-  pink: '#FF6B9D',
-  yellow: '#FFD93D',
-  blue: '#5DADE2',
-  purple: '#A78BFA',
-  green: '#2ECC71',
-  coral: '#FF8A80',
-  mint: '#64FFDA',
+  pink: '#d4d6da',
+  yellow: '#d4d6da',
+  blue: '#ffffff',
+  purple: '#d4d6da',
+  green: '#d4d6da',
+  coral: '#d4d6da',
+  mint: '#d4d6da',
 }
 
 /**

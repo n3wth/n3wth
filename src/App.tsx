@@ -25,7 +25,7 @@ function App() {
     const els = document.querySelectorAll('h1, h2, h3, .display')
     gsap.fromTo(
       els,
-      { color: '#E8A04A' },
+      { color: '#ffffff' },
       { clearProps: 'color', duration: 0.8, ease: 'power2.out' }
     )
   }, [])

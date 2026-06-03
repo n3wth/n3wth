@@ -97,7 +97,7 @@ function AgentIndicator({ dot }: { dot: AgentDot }) {
         style={{
           width: 6,
           height: 6,
-          border: '1px solid rgba(93, 173, 226, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
         }}
       />
       {/* Core dot */}
@@ -107,7 +107,7 @@ function AgentIndicator({ dot }: { dot: AgentDot }) {
           width: 4,
           height: 4,
           margin: 1,
-          background: 'rgba(93, 173, 226, 0.5)',
+          background: 'rgba(255, 255, 255, 0.5)',
         }}
       />
     </div>

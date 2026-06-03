@@ -1,4 +1,5 @@
 import { siteConfig } from '../data/content'
+import { CursorMark } from './marks'
 
 export function Footer() {
   const year = new Date().getFullYear()
@@ -12,10 +13,12 @@ export function Footer() {
             <div>
               <a
                 href="#top"
-                className="text-sm font-medium tracking-[0.01em]"
+                className="flex items-center gap-2 text-sm font-medium tracking-[0.01em]"
                 style={{ color: 'var(--ink)' }}
+                aria-label="n3wth — back to top"
               >
-                n3wth<span style={{ color: 'var(--accent)' }}>.</span>
+                <CursorMark size={17} className="shrink-0" style={{ color: 'var(--accent)' }} />
+                <span>n3wth</span>
               </a>
               <p className="meta mt-4 max-w-xs leading-relaxed">
                 I build AI products at Google and large LED art on the side.

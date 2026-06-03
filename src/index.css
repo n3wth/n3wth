@@ -53,9 +53,9 @@
   --color-ink-ghost: #2c2f34;
   --color-rail: rgba(255, 255, 255, 0.09);
   --color-rail-strong: rgba(255, 255, 255, 0.17);
-  --color-accent: #e8a04a;
-  --color-accent-dim: #c9803a;
-  --color-accent-ink: #1a0f02;
+  --color-accent: #ffffff;
+  --color-accent-dim: #d4d6da;
+  --color-accent-ink: #08090b;
 }
 
 /* CSS custom properties for var() usage outside utilities */
@@ -70,12 +70,12 @@
   --ink-dim: #9aa0a8;
   --ink-faint: #62666d;
   --ink-ghost: #2c2f34;
-  --accent: #e8a04a;
-  --accent-dim: #c9803a;
-  --accent-ink: #1a0f02;
+  --accent: #ffffff;
+  --accent-dim: #d4d6da;
+  --accent-ink: #08090b;
   --rail: rgba(255, 255, 255, 0.09);
   --rail-strong: rgba(255, 255, 255, 0.17);
-  --accent-rail: rgba(232, 160, 74, 0.32);
+  --accent-rail: rgba(255, 255, 255, 0.32);
 
   --frame-max: 1280px;
   --gutter: 1.5rem;
@@ -108,7 +108,7 @@ body {
 .hero-placeholder { display: none !important; }
 
 ::selection {
-  background: rgba(232, 160, 74, 0.24);
+  background: rgba(255, 255, 255, 0.18);
   color: var(--ink);
 }
 
@@ -208,7 +208,7 @@ html.lenis, html.lenis body { height: auto; }
   color: var(--ink);
 }
 
-.accent { color: var(--accent); }
+.accent { color: var(--accent); font-weight: 600; }
 
 /* Sentence meta (sans). Use .mono for literal machine output. */
 .meta {
@@ -364,7 +364,7 @@ html.lenis, html.lenis body { height: auto; }
   .pad-tight { padding-top: 5.95rem; padding-bottom: 5.95rem; }
 }
 
-/* ---------- LED status pixel (static amber square) ---------- */
+/* ---------- LED status pixel (static white square) ---------- */
 .led {
   display: inline-block;
   width: 4px;
