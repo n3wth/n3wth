@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { ArrowUpRight, Github, Star, GitFork } from 'lucide-react'
+import { Github, Star, GitFork } from 'lucide-react'
 import { useReveal } from '../../hooks/useReveal'
 import { SectionHeader } from '../Frame'
 import { CubeMark } from '../marks'
@@ -10,7 +10,7 @@ export interface GitHubStats {
   forks: number | string
 }
 
-export function ProjectCard({ project, index }: { project: Project; index: number }) {
+export function ProjectCard({ project }: { project: Project }) {
   const [stats, setStats] = useState<GitHubStats>({ stars: '—', forks: '—' })
 
   useEffect(() => {
@@ -35,15 +35,26 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
     fetchStats()
   }, [project.github, project.name])
 
+  const hasStars = Number(stats.stars) > 0
+
   return (
     <article data-reveal data-build-card className="reveal cell group p-6 sm:p-8">
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex items-baseline gap-3">
-          <span className="index">{String(index + 1).padStart(2, '0')}</span>
-          <h3 className="display text-2xl sm:text-3xl !tracking-tight">{project.name}</h3>
+          <h3 className="display text-2xl sm:text-3xl !tracking-tight">
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-underline"
+              aria-label={`Visit ${project.name}`}
+            >
+              {project.name}
+            </a>
+          </h3>
         </div>
         <div className="flex items-center gap-3">
-          {project.github && (
+          {project.github && hasStars && (
             <span className="mono flex items-center gap-3">
               <span className="flex items-center gap-1">
                 <Star size={14} strokeWidth={1.5} aria-hidden="true" /> {stats.stars}
@@ -75,16 +86,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
         className="flex items-center gap-5 pt-5"
         style={{ borderTop: '1px solid var(--rail)' }}
       >
-        <a
-          href={project.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="link-underline text-xs font-medium uppercase tracking-[0.16em] inline-flex items-center gap-1.5"
-          aria-label={`Visit ${project.name}`}
-        >
-          Visit <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />
-        </a>
-        {project.github && project.github !== project.url && (
+        {project.github && (
           <a
             href={project.github}
             target="_blank"
@@ -92,7 +94,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
             className="link-underline text-xs font-medium uppercase tracking-[0.16em] inline-flex items-center gap-1.5"
             aria-label={`${project.name} on GitHub`}
           >
-            <Github size={14} strokeWidth={1.5} aria-hidden="true" /> Source
+            <Github size={14} strokeWidth={1.5} aria-hidden="true" /> GitHub
           </a>
         )}
       </div>
@@ -121,7 +123,7 @@ export function Building() {
               className={i === 0 ? 'md:col-span-2' : undefined}
               style={{ background: 'var(--bg)' }}
             >
-              <ProjectCard project={project} index={i} />
+              <ProjectCard project={project} />
             </div>
           ))}
         </div>

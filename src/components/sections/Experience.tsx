@@ -27,7 +27,7 @@ export function Experience() {
       />
 
       <ol>
-        {experiences.map((exp, i) => {
+        {experiences.map((exp) => {
           const details: [string, string | undefined][] = [
             ['Context', exp.businessContext],
             ['Decision', exp.decision],
@@ -47,7 +47,6 @@ export function Experience() {
 
               <div className="grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
                 <div className="flex md:flex-col md:items-start items-baseline gap-4 md:gap-3 md:pt-2">
-                  <span className="index">{String(i + 1).padStart(2, '0')}</span>
                   <span className="meta">{exp.period}</span>
                 </div>
 

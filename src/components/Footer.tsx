@@ -2,7 +2,6 @@ import { siteConfig } from '../data/content'
 import { CursorMark } from './marks'
 
 export function Footer() {
-  const year = new Date().getFullYear()
   return (
     <footer style={{ borderTop: '1px solid var(--rail)' }}>
       <div className="frame !border-b-0">
@@ -13,7 +12,7 @@ export function Footer() {
             <div>
               <a href="#top" className="brand" aria-label="n3wth — back to top">
                 <span className="brand-mark shrink-0" aria-hidden="true">
-                  <CursorMark size={18} />
+                  <CursorMark size={20} />
                 </span>
                 <span>n3wth</span>
               </a>
@@ -29,7 +28,7 @@ export function Footer() {
                   href={siteConfig.social.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
+                  className="link-underline meta font-normal tracking-[0.04em]"
                 >
                   GitHub
                 </a>
@@ -39,7 +38,7 @@ export function Footer() {
                   href={siteConfig.social.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
+                  className="link-underline meta font-normal tracking-[0.04em]"
                 >
                   LinkedIn
                 </a>
@@ -49,7 +48,7 @@ export function Footer() {
                   href={siteConfig.artSite}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
+                  className="link-underline meta font-normal tracking-[0.04em]"
                 >
                   newth.art
                 </a>
@@ -57,7 +56,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
+                  className="link-underline meta font-normal tracking-[0.04em]"
                 >
                   Email
                 </a>
@@ -66,7 +65,7 @@ export function Footer() {
           </div>
 
           <p className="meta mt-10">
-            © {year} Oliver Newth — n3wth.com
+            © Oliver Newth 2026
           </p>
         </div>
       </div>

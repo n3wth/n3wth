@@ -19,7 +19,7 @@ export function Thinking() {
 
       <div className="section-pad pad-tight !pt-0">
         <div style={{ borderTop: '1px solid var(--rail)' }}>
-        {thoughtPieces.map((piece, i) => (
+        {thoughtPieces.map((piece) => (
           <article
             key={piece.id}
             data-reveal
@@ -28,7 +28,6 @@ export function Thinking() {
           >
             <div className="grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
               <div className="flex md:flex-col items-baseline md:items-start gap-4 md:gap-3 md:pt-2">
-                <span className="index">{String(i + 1).padStart(2, '0')}</span>
                 <span className="eyebrow">
                   {piece.category}
                 </span>

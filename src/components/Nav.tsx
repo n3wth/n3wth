@@ -40,11 +40,11 @@ export function Nav() {
       <div className="frame !border-t-0" style={{ borderBottom: 'none' }}>
         <nav
           aria-label="Primary"
-          className="flex items-center justify-between px-6 md:px-10 h-16 md:h-[4.5rem]"
+          className="section-pad !py-0 flex items-center justify-between h-16 md:h-[4.5rem]"
         >
           <a href="#top" className="brand" aria-label="n3wth — home">
             <span className="brand-mark shrink-0" aria-hidden="true">
-              <CursorMark size={20} />
+              <CursorMark size={22} />
             </span>
             <span>n3wth</span>
           </a>

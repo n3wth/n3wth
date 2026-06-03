@@ -182,8 +182,8 @@ html.lenis, html.lenis body { height: auto; }
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--ink-dim);
   font-variant-numeric: tabular-nums;
 }
@@ -195,8 +195,8 @@ html.lenis, html.lenis body { height: auto; }
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--ink-label);
   font-variant-numeric: tabular-nums;
 }
@@ -297,8 +297,8 @@ html.lenis, html.lenis body { height: auto; }
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: var(--ink-dim);
   border: 1px solid var(--rail-strong);
   background: transparent;
@@ -341,8 +341,8 @@ html.lenis, html.lenis body { height: auto; }
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-transform: none;
   text-decoration: none;
   transition: top 0.2s;
 }
@@ -381,14 +381,9 @@ html.lenis, html.lenis body { height: auto; }
   color: var(--ink);
 }
 .brand-mark {
-  display: inline-grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border: 1px solid var(--rail-strong);
-  border-radius: 7px;
-  color: var(--ink-faint);
-  transition: border-color 0.3s var(--ease);
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
 }
 
 /* ---------- LED status pixel (static white square) ---------- */

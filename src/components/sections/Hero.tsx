@@ -37,7 +37,7 @@ export function Hero() {
 
         <h1
           ref={titleRef}
-          className="display text-[clamp(3.25rem,15vw,12rem)]"
+          className="display text-[clamp(2.75rem,11vw,8rem)]"
           style={{ overflow: 'hidden', lineHeight: 0.82 }}
         >
           Oliver
