@@ -16,29 +16,31 @@ interface ChoiceButtonsProps {
 export const ChoiceButtons = memo(function ChoiceButtons({
   choices,
   onChoice,
-  isAnimating
+  isAnimating,
 }: ChoiceButtonsProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+    <div className="flex flex-col sm:flex-row gap-px" style={{ background: 'var(--rail)' }}>
       {choices.map((choice, idx) => (
         <button
           key={idx}
           onClick={() => onChoice(choice.metrics)}
           disabled={isAnimating}
-          className="group relative flex-1 px-5 py-4 sm:px-6 sm:py-5 text-left transition-all duration-200 disabled:opacity-50 rounded-lg border-2 border-white/20 hover:border-white/50 hover:bg-white/5 focus:outline-none focus:border-white/60"
-          style={{ background: 'transparent' }}
+          className="cell group relative flex-1 px-5 py-4 sm:px-6 sm:py-5 text-left disabled:opacity-50"
         >
           <div className="flex items-center justify-between gap-3">
             <div>
-              <div className="font-display text-base sm:text-lg font-semibold text-white mb-1">
+              <div
+                className="font-display text-base sm:text-lg font-semibold mb-1"
+                style={{ color: 'var(--ink)', letterSpacing: '-0.02em' }}
+              >
                 {choice.label}
               </div>
-              <div className="text-sm text-white/60">
-                {choice.description}
-              </div>
+              <div className="meta">{choice.description}</div>
             </div>
             <ChevronRight
-              className="w-5 h-5 text-white/40 group-hover:text-white/80 group-hover:translate-x-1 transition-all duration-200 flex-shrink-0"
+              className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 shrink-0"
+              style={{ color: 'var(--faint)' }}
+              aria-hidden="true"
             />
           </div>
         </button>

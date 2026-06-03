@@ -1,48 +1,28 @@
 @import 'tailwindcss';
-@import '@n3wth/ui/styles';
 
-/* Scan @n3wth/ui components for Tailwind classes */
-@source "../node_modules/@n3wth/ui/dist";
+/* ============================================================
+   n3wth.com — Wireframe / Blueprint design system
+   Dark near-black canvas, hairline rails, Geist + Geist Mono.
+   Flat only: 1px borders & subtle fills, no glows/gradients.
+   ============================================================ */
 
-/* Mona Sans - Variable (display/title font) - text weights */
+/* Geist (display + body) */
 @font-face {
-  font-family: 'Mona Sans';
-  src: url('/fonts/MonaSans-Variable.woff2') format('woff2-variations');
-  font-weight: 200 500;
-  font-style: normal;
-  font-stretch: 75% 125%;
-  font-display: swap;
-}
-
-/* Mona Sans - Variable (display/title font) - bold weights */
-@font-face {
-  font-family: 'Mona Sans';
-  src: url('/fonts/MonaSans-Variable.woff2') format('woff2-variations');
-  font-weight: 600 900;
-  font-style: normal;
-  font-stretch: 75% 125%;
-  font-display: swap;
-}
-
-/* Geist Sans - body weight */
-@font-face {
-  font-family: 'Geist Sans';
+  font-family: 'Geist';
   src: url('/fonts/Geist-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
-/* Geist Sans - medium weights */
 @font-face {
-  font-family: 'Geist Sans';
+  font-family: 'Geist';
   src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
-  font-weight: 500 600;
+  font-weight: 500 700;
   font-style: normal;
   font-display: swap;
 }
 
-/* Geist Mono */
+/* Geist Mono (eyebrows / labels / indices) */
 @font-face {
   font-family: 'Geist Mono';
   src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
@@ -50,534 +30,280 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'Geist Mono';
   src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
-  font-weight: 500;
+  font-weight: 500 600;
   font-style: normal;
   font-display: swap;
 }
 
-/* Design Tokens - Tailwind v4 theme */
+/* Design tokens — Tailwind v4 theme */
 @theme {
-  --font-display: 'Mona Sans', system-ui, sans-serif;
-  --font-sans: 'Geist Sans', system-ui, sans-serif;
+  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-display: 'Geist', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 
-  --color-bg: #000000;
-  --color-bg-secondary: #0a0a0a;
-  --color-white: #ffffff;
-  --color-grey-100: #f5f5f7;
-  --color-grey-200: #e8e8ed;
-  --color-grey-300: #c7c7cc;
-  --color-grey-400: #86868b;
-  --color-grey-500: #7a7a80;
-  --color-grey-600: #6e6e73;
-  --color-grey-800: #1d1d1f;
-
-  --color-accent: #ffffff;
-  --color-accent-soft: rgba(255, 255, 255, 0.1);
-
-  --glass-bg: #0a0a0a;
-  --glass-border: #1d1d1f;
-  --glass-highlight: #2a2a2a;
-
-  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --color-canvas: #08090b;
+  --color-ink: #f2f3f5;
+  --color-dim: #9aa0a8;
+  --color-faint: #61666e;
+  --color-rail: rgba(255, 255, 255, 0.09);
+  --color-rail-strong: rgba(255, 255, 255, 0.17);
+  --color-signal: #4ade80;
+  --color-blue: #38bdf8;
 }
 
-/* CSS Custom Properties for var() usage */
+/* CSS custom properties for var() usage outside utilities */
 :root {
-  --font-display: 'Mona Sans', system-ui, sans-serif;
-  --font-sans: 'Geist Sans', system-ui, sans-serif;
+  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 
-  --color-bg: #000000;
-  --color-bg-secondary: #0a0a0a;
-  --color-white: #ffffff;
-  --color-grey-100: #f5f5f7;
-  --color-grey-200: #e8e8ed;
-  --color-grey-300: #c7c7cc;
-  --color-grey-400: #86868b;
-  --color-grey-500: #7a7a80;
-  --color-grey-600: #6e6e73;
-  --color-grey-800: #1d1d1f;
+  --canvas: #08090b;
+  --ink: #f2f3f5;
+  --dim: #9aa0a8;
+  --faint: #61666e;
+  --rail: rgba(255, 255, 255, 0.09);
+  --rail-strong: rgba(255, 255, 255, 0.17);
+  --signal: #4ade80;
+  --blue: #38bdf8;
 
-  --color-accent: #ffffff;
-  --color-accent-soft: rgba(255, 255, 255, 0.1);
-
-  --glass-bg: #0a0a0a;
-  --glass-border: #1d1d1f;
-  --glass-highlight: #2a2a2a;
-
-  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --frame-max: 1280px;
+  --gutter: 1.5rem;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
-  box-sizing: border-box;
+@media (min-width: 768px) {
+  :root { --gutter: 2.5rem; }
 }
 
-/* Lenis smooth scroll */
-html.lenis, html.lenis body {
-  height: auto;
-}
+* { box-sizing: border-box; }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-/* Content visible immediately - no opacity animation blocking FCP */
-#root {
-  opacity: 1;
-}
-
-/* Hide hero placeholder once React hydrates */
-.hero-placeholder {
-  display: none !important;
-}
-
-/* Base */
 html {
-  background: var(--color-bg);
-  color: var(--color-grey-300);
+  background: var(--canvas);
+  color: var(--dim);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--color-bg);
-  line-height: 1.5;
+  background: var(--canvas);
+  line-height: 1.55;
 }
+
+#root { min-height: 100vh; }
+.hero-placeholder { display: none !important; }
 
 ::selection {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--color-white);
+  background: rgba(74, 222, 128, 0.22);
+  color: var(--ink);
 }
 
-/* Typography Utilities */
-.label {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-grey-400);
-}
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
 
-@media (min-width: 768px) {
-  .label {
-    font-size: 14px;
-    letter-spacing: 0.1em;
-  }
-}
-
-/* Apple-style subtle text shadow for readability over shapes */
-.text-glow {
-  text-shadow: none;
-}
-
-.text-glow-subtle {
-  text-shadow: none;
-}
-
-/* Link hover underline animation */
-.link-hover {
+/* ---------- Hairline frame ---------- */
+/* The frame: a centered max-width column with 1px left/right rails. */
+.frame {
   position: relative;
+  width: 100%;
+  max-width: var(--frame-max);
+  margin: 0 auto;
+  border-left: 1px solid var(--rail);
+  border-right: 1px solid var(--rail);
 }
 
-.link-hover::after {
+/* A horizontal hairline rule that spans the frame, with corner ticks. */
+.rule {
+  position: relative;
+  height: 0;
+  border-top: 1px solid var(--rail);
+}
+
+/* Corner tick: a small crossed + mark sitting on a rail join. */
+.tick {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+  z-index: 2;
+}
+.tick::before,
+.tick::after {
   content: '';
   position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.35s var(--ease-out);
+  background: var(--rail-strong);
 }
+.tick::before { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-0.5px); }
+.tick::after { top: 50%; left: 0; height: 1px; width: 100%; transform: translateY(-0.5px); }
 
-.link-hover:hover::after {
-  width: 100%;
+.tick-tl { left: -5px; top: -5px; }
+.tick-tr { right: -5px; top: -5px; }
+.tick-bl { left: -5px; bottom: -5px; }
+.tick-br { right: -5px; bottom: -5px; }
+
+/* Section padding inside the frame */
+.section-pad {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
 }
-
-/* Card */
-.glass-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  transition: all 0.3s var(--ease-out);
-}
-
-.glass-card:hover {
-  border-color: var(--glass-highlight);
-  background: #111111;
-}
-
-/* Nav - background only, positioning handled by component */
-.glass-nav {
-  background: var(--color-bg);
-}
-
-/* Pill */
-.glass-pill {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 9999px;
-  color: var(--color-grey-400);
-  transition: all 0.2s var(--ease-out);
-  transform: scale(1);
-}
-
-.glass-pill:hover {
-  background: var(--glass-highlight);
-  border-color: #333333;
-  color: var(--color-white);
-  transform: scale(1.02);
-}
-
-.glass-pill:active {
-  transform: scale(0.96);
-  transition-duration: 0.1s;
-}
-
-/* Section */
-.section {
-  padding: 4rem 0;
-}
-
-@media (min-width: 640px) {
-  .section {
-    padding: 6rem 0;
-  }
-}
-
 @media (min-width: 768px) {
-  .section {
-    padding: 10rem 0;
+  .section-pad {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
   }
 }
 
+/* ---------- Typography ---------- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+@media (min-width: 768px) {
+  .eyebrow { font-size: 12px; }
+}
 
-/* Skip to content link */
+.index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  color: var(--ink);
+}
+
+.signal { color: var(--signal); }
+
+/* Mono meta text */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Links ---------- */
+.link-underline {
+  position: relative;
+  color: var(--ink);
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: var(--rail-strong);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+.link-underline:hover::after { transform: scaleX(1); }
+
+/* ---------- Blueprint cell (bordered tile) ---------- */
+.cell {
+  position: relative;
+  border: 1px solid var(--rail);
+  background: rgba(255, 255, 255, 0.012);
+  transition: border-color 0.35s var(--ease), background 0.35s var(--ease);
+}
+.cell:hover {
+  border-color: var(--rail-strong);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border: 1px solid var(--rail-strong);
+  background: transparent;
+  padding: 0.875rem 1.375rem;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease);
+  cursor: pointer;
+}
+.btn:hover {
+  border-color: var(--signal);
+  color: var(--signal);
+}
+
+/* ---------- Reveal (GSAP-driven, with static fallback) ---------- */
+.reveal { opacity: 1; }
+.js .reveal { opacity: 0; }
+
+/* ---------- Skip link ---------- */
 .skip-link {
   position: fixed;
   top: -100%;
   left: 1rem;
   z-index: 10000;
   padding: 0.75rem 1.5rem;
-  background: var(--color-white);
-  color: var(--color-bg);
-  font-weight: 600;
-  border-radius: 0 0 8px 8px;
+  background: var(--ink);
+  color: var(--canvas);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   text-decoration: none;
   transition: top 0.2s;
 }
+.skip-link:focus { top: 0; }
 
-.skip-link:focus {
-  top: 0;
+/* ---------- Focus ---------- */
+:focus-visible {
+  outline: 1px solid var(--signal);
+  outline-offset: 3px;
 }
 
-/* Focus ring */
-.focus-ring:focus-visible {
-  outline: 2px solid var(--color-white);
-  outline-offset: 2px;
-}
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--canvas); }
+::-webkit-scrollbar-thumb { background: var(--rail-strong); }
+::-webkit-scrollbar-thumb:hover { background: var(--dim); }
 
-/* Noise texture overlay */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.02;
-  z-index: 9999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* Floating shapes */
-.floating-shape {
-  opacity: 0;
-}
-
-/* Hero word animation helper */
-.hero-word {
-  display: inline-block;
-  transform-style: preserve-3d;
-}
-
-/* Hero character animation - visible by default for LCP, GSAP animates as enhancement */
-.hero-char {
-  display: inline-block;
-  transform-style: preserve-3d;
-}
-
-/* Ensure hero content is visible before JS loads (critical for LCP) */
-.hero-visible-default {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-/* Contact text animation */
-.contact-char {
-  display: inline-block;
-  transform-style: preserve-3d;
-}
-
-.contact-word {
-  display: inline-block;
-  white-space: nowrap;
-}
-
-/* Staggered fade animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-in {
-  animation: fadeUp 0.6s var(--ease-out) forwards;
-  opacity: 0;
-}
-
-/* Card enter animation */
-@keyframes cardEnter {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.card-enter {
-  animation: cardEnter 0.4s var(--ease-out) forwards;
-  animation-fill-mode: both;
-}
-
-/* Role card with hover lift */
-.role-card {
-  transition: all 0.35s var(--ease-out);
-}
-
-.role-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--glass-highlight);
-  background: var(--glass-bg);
-}
-
-/* Framework card with color accent */
-.framework-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.framework-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--card-accent, var(--color-white));
-  opacity: 0;
-  transition: opacity 0.3s var(--ease-out);
-}
-
-.framework-card:hover::before {
-  opacity: 1;
-}
-
-/* Installation card hover */
-.installation-card {
-  transition: all 0.35s var(--ease-out);
-}
-
-.installation-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--glass-highlight);
-}
-
-[data-installation-bg] img {
-  transform-origin: center center;
-}
-
-/* Ensure backgrounds don't show outside Creative section */
-#creative [data-installation-bg] {
-  clip-path: inset(0);
-}
-
-
-/* Button press state */
-.btn-press:active {
-  transform: scale(0.96);
-  transition: transform 0.1s ease;
-}
-
-/* CTA Button */
-.cta-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 9999px;
-  transition: all 0.25s var(--ease-out);
-  transform: scale(1);
-}
-
-.cta-button:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: scale(1.02);
-}
-
-.cta-button:active {
-  transform: scale(0.98);
-  transition-duration: 0.1s;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--glass-border);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--glass-highlight);
-}
-
-/* Mobile Navigation */
-.mobile-nav-link {
-  background: transparent;
-  -webkit-tap-highlight-color: transparent;
-  transition: background 0.2s var(--ease-out);
-}
-
-.mobile-nav-link:hover,
-.mobile-nav-link:active {
-  background: var(--glass-bg);
-}
-
-@media (hover: none) {
-  .mobile-nav-link:active {
-    background: var(--glass-highlight);
-  }
-}
-
-/* Touch-friendly tap targets */
+/* ---------- Touch targets ---------- */
 @media (pointer: coarse) {
-  a, button {
-    min-height: 44px;
-  }
-
-  .link-hover {
-    padding: 0.5rem 0;
-  }
+  a, button { min-height: 44px; }
 }
 
-/* Number styling */
-.index-num {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-grey-600);
-  font-variant-numeric: tabular-nums;
-}
-
-
-/* Safe area insets for mobile devices with notches */
-@supports (padding: env(safe-area-inset-bottom)) {
-  footer {
-    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
-  }
-}
-
-/* Horizontal scroll touch support */
-[data-role-card] {
-  touch-action: pan-x pan-y;
-}
-
-/* Prevent text selection during scroll/swipe on mobile */
-@media (pointer: coarse) {
-  [data-role-card] {
-    user-select: none;
-    -webkit-user-select: none;
-  }
-}
-
-/* Better touch scrolling in horizontal sections */
-.touch-pan-x {
-  touch-action: pan-x;
-}
-
-/* Custom cursor - hide native cursor on non-touch devices */
-@media (pointer: fine) {
-  * { cursor: none !important; }
-}
-
-/* Reduced motion */
+/* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-
-  html {
-    scroll-behavior: auto;
-  }
-
-  .hero-word {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  .floating-shape {
-    animation: none !important;
-    opacity: 0.4 !important;
-  }
-
-  .glass-card,
-  .glass-pill,
-  .role-card,
-  .framework-card,
-  .installation-card,
-  .cta-button {
-    transform: none !important;
-    transition: none !important;
-  }
-
-  /* Disable content-visibility for reduced motion to ensure all content visible */
-  section[id] {
-    content-visibility: visible;
-    contain-intrinsic-size: none;
-  }
+  .reveal,
+  .js .reveal { opacity: 1 !important; transform: none !important; }
 }

@@ -12,7 +12,7 @@ interface ConsequenceVizProps {
 export const ConsequenceViz = memo(function ConsequenceViz({
   challengeId,
   metrics,
-  isAnimating
+  isAnimating,
 }: ConsequenceVizProps) {
   const vizComponent = useMemo(() => {
     switch (challengeId) {
@@ -30,16 +30,13 @@ export const ConsequenceViz = memo(function ConsequenceViz({
   return (
     <div
       data-consequence-viz
-      className="mt-8 sm:mt-10 p-4 sm:p-6 md:p-8 rounded-2xl transition-all duration-500"
+      className="mt-8 p-4 sm:p-6 md:p-8 transition-opacity duration-500"
       style={{
-        background: 'var(--glass-bg)',
-        border: '1px solid var(--glass-border)',
-        opacity: isAnimating ? 1 : 0.85
+        border: '1px solid var(--rail)',
+        opacity: isAnimating ? 1 : 0.9,
       }}
     >
-      <div className="text-xs sm:text-sm mb-4" style={{ color: 'var(--color-grey-500)' }}>
-        Consequences
-      </div>
+      <p className="index mb-4">Consequences</p>
       {vizComponent}
     </div>
   )

@@ -1,81 +1,39 @@
 import { useRef } from 'react'
-import { gsap, useGSAP } from '../../lib/gsap'
+import { useReveal } from '../../hooks/useReveal'
+import { SectionHeader } from '../Frame'
+import { ForkMark } from '../marks'
 import { aiChallenges } from '../../data/ai-challenges'
 import { useAIExplainerState } from '../../hooks/useAIExplainerState'
 import { ChallengeCard } from '../ai-explainer/ChallengeCard'
 
 export function AIExplainer() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLElement>(null)
   const { makeChoice, getChallengeState } = useAIExplainerState()
-
-  useGSAP(
-    () => {
-      const prefersReducedMotion = window.matchMedia(
-        '(prefers-reduced-motion: reduce)'
-      ).matches
-      if (prefersReducedMotion) return
-
-      // Header animation
-      gsap.from('[data-ai-header]', {
-        scrollTrigger: {
-          trigger: '[data-ai-header]',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      })
-
-      // Each challenge card animates individually when it enters viewport
-      const cards = gsap.utils.toArray<HTMLElement>('[data-challenge-card]')
-      cards.forEach((card) => {
-        gsap.from(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse'
-          },
-          y: 50,
-          opacity: 0,
-          duration: 0.7,
-          ease: 'power3.out'
-        })
-      })
-    },
-    { scope: sectionRef }
-  )
+  useReveal(ref)
 
   return (
-    <section
-      ref={sectionRef}
-      id="ai-explainer"
-      className="section relative z-[5]"
-      style={{ background: '#000' }}
-    >
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 md:px-12 relative">
-        {/* Header */}
-        <div data-ai-header className="mb-10 sm:mb-16 md:mb-20">
-          <p className="label mb-3 sm:mb-4">The decisions that keep me up at night</p>
-          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6">
-            Every AI decision is a bet on what matters most
-          </h2>
-          <p
-            className="text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
-            style={{ color: 'var(--color-grey-400)' }}
-          >
-            There are no clean answers in AI safety—only trade-offs with real consequences for real people. These are three dilemmas I've faced. Make a choice and see what you're actually optimizing for.
-          </p>
-        </div>
+    <section ref={ref} id="ai-explainer" aria-label="Alignment">
+      <SectionHeader
+        index="05"
+        eyebrow="The decisions that keep me up at night"
+        title={
+          <>
+            Every AI decision is a <span className="signal">bet</span> on what
+            matters most
+          </>
+        }
+        lede="There are no clean answers in AI safety — only trade-offs with real consequences for real people. Three dilemmas I've faced. Make a choice and see what you're actually optimizing for."
+        mark={<ForkMark size={56} />}
+      />
 
-        {/* Challenges */}
-        <div data-challenges>
-          {aiChallenges.map((challenge) => {
+      <div className="section-pad !pt-0">
+        <div style={{ borderTop: '1px solid var(--rail)' }}>
+          {aiChallenges.map((challenge, i) => {
             const state = getChallengeState(challenge.id)
             return (
               <ChallengeCard
                 key={challenge.id}
+                index={i}
                 challenge={challenge}
                 onChoice={(metrics) => makeChoice(challenge.id, metrics)}
                 isAnimating={state.isAnimating}
