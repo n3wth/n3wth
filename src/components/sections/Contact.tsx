@@ -1,213 +1,129 @@
 import { useRef } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 import { gsap, SplitText, useGSAP } from '../../lib/gsap'
 import { siteConfig } from '../../data/content'
-import { ContactShapes } from '../shapes'
-import { useMagnetic } from '../../hooks/useMagnetic'
+import { ArrowMark } from '../marks'
 
 export function Contact() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const ctaRef = useRef<HTMLAnchorElement>(null)
   const splitRef = useRef<SplitText | null>(null)
-
-  useMagnetic(ctaRef, 0.25)
 
   useGSAP(
     () => {
-      const prefersReducedMotion = window.matchMedia(
-        '(prefers-reduced-motion: reduce)'
-      ).matches
-      if (prefersReducedMotion) return
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (reduced || !titleRef.current) return
 
-      if (!titleRef.current) return
-
-      // Split the title text for character animation
       splitRef.current = new SplitText(titleRef.current, {
-        type: 'chars,words',
+        type: 'chars',
         charsClass: 'contact-char',
-        wordsClass: 'contact-word',
       })
 
-      const chars = splitRef.current.chars
-
-      // Create dramatic reveal timeline
       const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 60%',
-          end: 'top 20%',
-          scrub: 1,
-        },
+        scrollTrigger: { trigger: ref.current, start: 'top 70%' },
+        defaults: { ease: 'power3.out' },
       })
+      tl.from('[data-contact-eyebrow]', { opacity: 0, y: 16, duration: 0.5 })
+        .from(
+          splitRef.current.chars,
+          { yPercent: 110, opacity: 0, duration: 0.8, stagger: { amount: 0.4 } },
+          '-=0.2'
+        )
+        .from('[data-contact-fade]', { opacity: 0, y: 20, duration: 0.6, stagger: 0.12 }, '-=0.3')
 
-      // Label slides up
-      tl.fromTo(
-        '[data-contact-label]',
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.4 },
-        0.1
-      )
-
-      // Character by character reveal with wave effect
-      tl.fromTo(
-        chars,
-        {
-          y: 100,
-          opacity: 0,
-          rotateX: -90,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          rotateX: 0,
-          duration: 0.8,
-          stagger: {
-            amount: 0.8,
-            from: 'start',
-          },
-          ease: 'back.out(1.2)',
-        },
-        0.2
-      )
-
-      // Description fades in
-      tl.fromTo(
-        '[data-contact-desc]',
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 },
-        0.6
-      )
-
-      // CTA button
-      tl.fromTo(
-        '[data-contact-cta]',
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: 'power2.out',
-        },
-        0.8
-      )
-
-      // Social links stagger in
-      tl.fromTo(
-        '[data-social-link]',
-        {
-          y: 20,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.4,
-          stagger: 0.1,
-          ease: 'power2.out',
-        },
-        0.9
-      )
-
-      // Cleanup
       return () => {
-        if (splitRef.current) {
-          splitRef.current.revert()
-          splitRef.current = null
-        }
+        splitRef.current?.revert()
+        splitRef.current = null
       }
     },
-    { scope: sectionRef }
+    { scope: ref }
   )
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref}
       id="contact"
-      className="section relative min-h-screen flex items-center"
+      aria-label="Contact"
+      className="relative min-h-[85vh] flex items-center"
     >
-      {/* Connection-themed shapes */}
-      <ContactShapes />
-
-      <div className="mx-auto max-w-6xl px-6 md:px-12 w-full">
-        <div className="max-w-3xl">
-          <p
-            data-contact-label
-            className="label mb-6 sm:mb-8 tracking-[0.15em] sm:tracking-[0.2em]"
-          >
-            Get in touch
-          </p>
-
-          <h2
-            ref={titleRef}
-            data-contact-title
-            className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-white tracking-tight leading-[1.05] mb-4 sm:mb-6 md:mb-8"
-            style={{ perspective: '1000px' }}
-          >
-            Let's talk
-          </h2>
-
-          <p
-            data-contact-desc
-            className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-8 md:mb-12 max-w-xl"
-            style={{ color: 'var(--color-grey-300)' }}
-          >
-            AI safety, LED art, or coffee in San Francisco.
-          </p>
-
-          {/* Main CTA - min 48px touch target */}
-          <a
-            ref={ctaRef}
-            data-contact-cta
-            href={`mailto:${siteConfig.email}`}
-            className="inline-flex items-center gap-2 sm:gap-3 text-sm sm:text-lg md:text-xl text-white px-6 sm:px-10 py-4 sm:py-5 rounded-full focus-ring group min-h-[48px]"
-            style={{
-              background: '#111111',
-              border: '1px solid #2a2a2a',
-            }}
-          >
-            <span className="font-medium">{siteConfig.email}</span>
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 sm:w-5 sm:h-5"
+      <span className="tick tick-tl" aria-hidden="true" style={{ top: 0, left: -5 }} />
+      <div className="section-pad pad-air w-full">
+        <div className="flex items-start justify-between gap-6">
+          <div className="max-w-3xl">
+            <p data-contact-eyebrow className="eyebrow mb-6">
+              Get in touch
+            </p>
+            <h2
+              ref={titleRef}
+              className="display text-[clamp(3rem,12vw,9rem)]"
+              style={{ overflow: 'hidden' }}
             >
-              <path d="M7 17L17 7M7 7h10v10" />
-            </svg>
-          </a>
+              Let's talk
+            </h2>
 
-          {/* Social links - min 44px touch targets */}
-          <div className="flex items-center gap-4 sm:gap-8 mt-10 sm:mt-16">
+            <p
+              data-contact-fade
+              className="mt-8 text-base md:text-xl leading-relaxed max-w-lg"
+              style={{ color: 'var(--ink-dim)' }}
+            >
+              Happy to talk about AI safety, LED art, or grab coffee in San
+              Francisco.
+            </p>
+
             <a
-              data-social-link
-              href={siteConfig.social.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:opacity-70 transition-opacity focus-ring rounded-lg p-3 min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="GitHub"
+              data-contact-fade
+              href={`mailto:${siteConfig.email}`}
+              className="btn btn-solid mt-10 group"
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-              </svg>
+              {siteConfig.email}
+              <ArrowUpRight
+                size={16}
+                strokeWidth={1.5}
+                className="btn-arrow transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+              />
             </a>
-            <a
-              data-social-link
-              href={siteConfig.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:opacity-70 transition-opacity focus-ring rounded-lg p-3 min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="LinkedIn"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-              </svg>
-            </a>
+
+            <ul data-contact-fade className="flex flex-wrap gap-x-8 gap-y-3 mt-12">
+              <li>
+                <a
+                  href={siteConfig.social.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
+                >
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  href={siteConfig.social.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
+                >
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a
+                  href={siteConfig.artSite}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
+                >
+                  newth.art
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            data-contact-fade
+            className="hidden md:block shrink-0"
+            style={{ color: 'var(--ink-faint)' }}
+          >
+            <ArrowMark size={64} />
           </div>
         </div>
       </div>

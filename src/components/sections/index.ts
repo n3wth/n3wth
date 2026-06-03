@@ -1,5 +1,8 @@
 export { Hero } from './Hero'
 export { Experience } from './Experience'
+export { Building } from './Building'
+export { Thinking } from './Thinking'
 export { Frameworks } from './Frameworks'
+export { AIExplainer } from './AIExplainer'
 export { Creative } from './Creative'
 export { Contact } from './Contact'

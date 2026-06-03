@@ -24,10 +24,13 @@ vi.mock('../../../data/content', async () => {
 vi.mock('../../../lib/gsap', () => ({
   gsap: {
     from: vi.fn(),
+    fromTo: vi.fn(),
     set: vi.fn(),
     registerPlugin: vi.fn(),
     quickTo: vi.fn(() => vi.fn()),
+    context: vi.fn(() => ({ revert: vi.fn() })),
   },
+  ScrollTrigger: { refresh: vi.fn() },
   useGSAP: vi.fn(),
 }))
 

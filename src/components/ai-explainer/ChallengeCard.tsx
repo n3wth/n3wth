@@ -5,6 +5,7 @@ import { ConsequenceViz } from './ConsequenceViz'
 
 interface ChallengeCardProps {
   challenge: Challenge
+  index: number
   onChoice: (metrics: Record<string, number>) => void
   isAnimating: boolean
   chosenMetrics: Record<string, number> | null
@@ -12,64 +13,68 @@ interface ChallengeCardProps {
 
 export const ChallengeCard = memo(function ChallengeCard({
   challenge,
+  index,
   onChoice,
   isAnimating,
-  chosenMetrics
+  chosenMetrics,
 }: ChallengeCardProps) {
   return (
     <article
+      data-reveal
       data-challenge-card
-      className="py-16 sm:py-20 md:py-24"
-      style={{ borderTop: '1px solid var(--glass-border)' }}
+      className="reveal relative py-10 md:py-14"
+      style={{ borderBottom: '1px solid var(--rail)' }}
     >
-      <div className="mb-8 sm:mb-10">
-        <h3 className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white mb-4 tracking-tight">
-          {challenge.title}
-        </h3>
-        <p
-          className="text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl"
-          style={{ color: 'var(--color-grey-300)' }}
-        >
-          {challenge.scenario}
-        </p>
-      </div>
+      <div className="grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
+        <span className="index md:pt-2">{String(index + 1).padStart(2, '0')}</span>
 
-      <div className="mb-8 sm:mb-10">
-        <div className="text-xs sm:text-sm mb-4" style={{ color: 'var(--color-grey-500)' }}>
-          Choose a path
-        </div>
-        <ChoiceButtons
-          choices={challenge.choices}
-          onChoice={onChoice}
-          isAnimating={isAnimating}
-        />
-      </div>
-
-      <ConsequenceViz
-        challengeId={challenge.id}
-        metrics={chosenMetrics}
-        isAnimating={isAnimating}
-      />
-
-      {chosenMetrics && (
-        <div
-          className="mt-8 sm:mt-10 p-4 sm:p-6 md:p-8 rounded-2xl"
-          style={{
-            background: 'var(--glass-bg)',
-            border: '1px solid var(--glass-border)'
-          }}
-        >
-          <div className="text-xs sm:text-sm mb-2" style={{ color: 'var(--color-grey-500)' }}>
-            Key Insight
-          </div>
+        <div>
+          <h3 className="display text-[clamp(1.5rem,4vw,2.5rem)] mb-5">
+            {challenge.title}
+          </h3>
           <p
-            className="text-sm sm:text-base md:text-lg leading-relaxed"
-            style={{ color: 'var(--color-grey-200)' }}
+            className="text-sm md:text-base leading-relaxed max-w-2xl mb-8"
+            style={{ color: 'var(--ink-dim)' }}
           >
-            {challenge.insight}
+            {challenge.scenario}
           </p>
+
+          <p className="index mb-4">Choose a path</p>
+          <ChoiceButtons
+            choices={challenge.choices}
+            onChoice={onChoice}
+            isAnimating={isAnimating}
+          />
+
+          <ConsequenceViz
+            challengeId={challenge.id}
+            metrics={chosenMetrics}
+            isAnimating={isAnimating}
+            poleLabels={
+              challenge.choices.length >= 2
+                ? [challenge.choices[0].label, challenge.choices[1].label]
+                : undefined
+            }
+          />
+
+          {chosenMetrics && (
+            <div
+              className="mt-8 p-5 md:p-7"
+              style={{ border: '1px solid var(--rail)' }}
+            >
+              <p className="index mb-3" style={{ color: 'var(--accent)' }}>
+                Key insight
+              </p>
+              <p
+                className="text-sm md:text-base leading-relaxed"
+                style={{ color: 'var(--ink)' }}
+              >
+                {challenge.insight}
+              </p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </article>
   )
 })
