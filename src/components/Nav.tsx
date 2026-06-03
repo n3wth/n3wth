@@ -47,7 +47,7 @@ export function Nav() {
             style={{ color: 'var(--ink)' }}
             aria-label="n3wth — home"
           >
-            <CursorMark size={17} className="shrink-0" style={{ color: 'var(--accent)' }} />
+            <CursorMark size={17} className="shrink-0" />
             <span>n3wth</span>
           </a>
 

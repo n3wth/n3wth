@@ -17,7 +17,7 @@ export function Footer() {
                 style={{ color: 'var(--ink)' }}
                 aria-label="n3wth — back to top"
               >
-                <CursorMark size={17} className="shrink-0" style={{ color: 'var(--accent)' }} />
+                <CursorMark size={17} className="shrink-0" />
                 <span>n3wth</span>
               </a>
               <p className="meta mt-4 max-w-xs leading-relaxed">

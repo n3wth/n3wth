@@ -38,7 +38,9 @@ export const ChoiceButtons = memo(function ChoiceButtons({
               <div className="meta">{choice.description}</div>
             </div>
             <ChevronRight
-              className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 shrink-0"
+              size={16}
+              strokeWidth={1.5}
+              className="transition-transform duration-200 group-hover:translate-x-1 shrink-0"
               style={{ color: 'var(--ink-faint)' }}
               aria-hidden="true"
             />
