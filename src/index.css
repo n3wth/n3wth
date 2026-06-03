@@ -6,16 +6,16 @@
    Flat only: 1px borders & subtle fills, no glows/gradients.
    ============================================================ */
 
-/* Geist (display + body) */
+/* Geist Sans (display + body) — family name matches @n3wth/ui canonical */
 @font-face {
-  font-family: 'Geist';
+  font-family: 'Geist Sans';
   src: url('/fonts/Geist-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Geist';
+  font-family: 'Geist Sans';
   src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
   font-weight: 500 700;
   font-style: normal;
@@ -40,8 +40,8 @@
 
 /* Design tokens — Tailwind v4 theme */
 @theme {
-  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
-  --font-display: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Geist Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Geist Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 
   --color-bg: #08090b;
@@ -61,7 +61,8 @@
 
 /* CSS custom properties for var() usage outside utilities */
 :root {
-  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Geist Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Geist Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 
   --bg: #08090b;
