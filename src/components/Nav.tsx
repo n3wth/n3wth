@@ -31,23 +31,21 @@ export function Nav() {
       className="fixed inset-x-0 top-0 z-50 transition-transform duration-500"
       style={{
         transform: hidden && !open ? 'translateY(-100%)' : 'translateY(0)',
-        background: 'color-mix(in srgb, var(--bg) 86%, transparent)',
-        backdropFilter: 'saturate(140%)',
+        background: 'color-mix(in srgb, var(--bg) 78%, transparent)',
+        backdropFilter: 'blur(14px) saturate(140%)',
+        WebkitBackdropFilter: 'blur(14px) saturate(140%)',
         borderBottom: '1px solid var(--rail)',
       }}
     >
       <div className="frame !border-t-0" style={{ borderBottom: 'none' }}>
         <nav
           aria-label="Primary"
-          className="flex items-center justify-between px-6 md:px-10 h-14 md:h-16"
+          className="flex items-center justify-between px-6 md:px-10 h-16 md:h-[4.5rem]"
         >
-          <a
-            href="#top"
-            className="flex items-center gap-2 text-sm font-medium tracking-[0.01em]"
-            style={{ color: 'var(--ink)' }}
-            aria-label="n3wth — home"
-          >
-            <CursorMark size={17} className="shrink-0" />
+          <a href="#top" className="brand" aria-label="n3wth — home">
+            <span className="brand-mark shrink-0" aria-hidden="true">
+              <CursorMark size={20} />
+            </span>
             <span>n3wth</span>
           </a>
 
@@ -56,7 +54,7 @@ export function Nav() {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="text-xs font-medium uppercase tracking-[0.16em] transition-colors"
+                  className="text-[0.8125rem] font-medium tracking-[0.01em] transition-colors"
                   style={{ color: 'var(--ink-dim)' }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ink)')}
                   onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ink-dim)')}
@@ -95,7 +93,7 @@ export function Nav() {
               <a
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block py-5 text-sm font-medium uppercase tracking-[0.16em]"
+                className="block py-5 text-sm font-medium tracking-[0.01em]"
                 style={{ color: 'var(--ink)' }}
               >
                 <span className="index mr-3">

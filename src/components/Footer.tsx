@@ -11,13 +11,10 @@ export function Footer() {
           <span className="tick tick-tr" aria-hidden="true" />
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
             <div>
-              <a
-                href="#top"
-                className="flex items-center gap-2 text-sm font-medium tracking-[0.01em]"
-                style={{ color: 'var(--ink)' }}
-                aria-label="n3wth — back to top"
-              >
-                <CursorMark size={17} className="shrink-0" />
+              <a href="#top" className="brand" aria-label="n3wth — back to top">
+                <span className="brand-mark shrink-0" aria-hidden="true">
+                  <CursorMark size={18} />
+                </span>
                 <span>n3wth</span>
               </a>
               <p className="meta mt-4 max-w-xs leading-relaxed">

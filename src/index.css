@@ -368,6 +368,29 @@ html.lenis, html.lenis body { height: auto; }
   .pad-tight { padding-top: 5.95rem; padding-bottom: 5.95rem; }
 }
 
+/* ---------- Brand lockup (matches agents reference) ---------- */
+/* Shared family treatment with agents.n3wth.com: boxed cursor glyph +
+   wordmark. n3wth.com is the parent brand (no sub-brand word). */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--rail-strong);
+  border-radius: 7px;
+  color: var(--ink-faint);
+  transition: border-color 0.3s var(--ease);
+}
+
 /* ---------- LED status pixel (static white square) ---------- */
 .led {
   display: inline-block;

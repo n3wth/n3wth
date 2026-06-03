@@ -14,6 +14,7 @@ interface ConsequenceVizProps {
  * visible without numbers or labeled nodes.
  */
 export const ConsequenceViz = memo(function ConsequenceViz({
+  challengeId,
   metrics,
   isAnimating,
   poleLabels,
@@ -35,14 +36,21 @@ export const ConsequenceViz = memo(function ConsequenceViz({
         Each choice pulls the field toward one priority and away from another.
       </p>
 
-      <TensionField metrics={metrics} isAnimating={isAnimating} />
+      <TensionField
+        challengeId={challengeId}
+        metrics={metrics}
+        isAnimating={isAnimating}
+      />
 
       {poleLabels && (
-        <div className="mt-4 flex items-center justify-between">
-          <span className="index">
+        <div className="mt-4 flex items-center justify-between gap-4">
+          <span className="index" style={{ color: 'var(--ink-dim)' }}>
             {poleLabels[0]}
           </span>
-          <span className="index">
+          <span
+            className="index text-right"
+            style={{ color: 'var(--ink-dim)' }}
+          >
             {poleLabels[1]}
           </span>
         </div>

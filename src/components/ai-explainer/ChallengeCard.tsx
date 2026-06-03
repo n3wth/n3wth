@@ -22,11 +22,11 @@ export const ChallengeCard = memo(function ChallengeCard({
     <article
       data-reveal
       data-challenge-card
-      className="reveal relative py-12 md:py-16"
+      className="reveal relative py-10 md:py-14"
       style={{ borderBottom: '1px solid var(--rail)' }}
     >
       <div className="grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
-        <span className="index">{String(index + 1).padStart(2, '0')}</span>
+        <span className="index md:pt-2">{String(index + 1).padStart(2, '0')}</span>
 
         <div>
           <h3 className="display text-[clamp(1.5rem,4vw,2.5rem)] mb-5">

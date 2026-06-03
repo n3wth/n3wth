@@ -1,41 +1,23 @@
 import { useRef } from 'react'
 import { ArrowDown, ArrowRight } from 'lucide-react'
-import { gsap, SplitText, useGSAP } from '../../lib/gsap'
+import { gsap, useGSAP } from '../../lib/gsap'
 import { AsciiField } from '../AsciiField'
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const splitRef = useRef<SplitText | null>(null)
 
   useGSAP(
     () => {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       if (reduced || !titleRef.current) return
 
-      splitRef.current = new SplitText(titleRef.current, {
-        type: 'chars',
-        charsClass: 'hero-char',
-      })
-
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.from(splitRef.current.chars, {
-        yPercent: 110,
-        opacity: 0,
-        duration: 1,
-        stagger: { amount: 0.5, from: 'start' },
-      })
-        .from('[data-hero-eyebrow]', { opacity: 0, y: 16, duration: 0.6 }, 0.1)
-        .from(
-          '[data-hero-fade]',
-          { opacity: 0, y: 20, duration: 0.7, stagger: 0.12 },
-          '-=0.5'
-        )
-
-      return () => {
-        splitRef.current?.revert()
-        splitRef.current = null
-      }
+      // Restraint: one quiet opacity fade for the headline — no per-char
+      // stagger, no y-translate. Calm ease-out, no overshoot.
+      const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })
+      tl.from(titleRef.current, { opacity: 0, duration: 0.6 })
+        .from('[data-hero-eyebrow]', { opacity: 0, duration: 0.5 }, 0.05)
+        .from('[data-hero-fade]', { opacity: 0, duration: 0.5, stagger: 0.1 }, '-=0.3')
     },
     { scope: ref }
   )
@@ -56,7 +38,7 @@ export function Hero() {
         <h1
           ref={titleRef}
           className="display text-[clamp(3.25rem,15vw,12rem)]"
-          style={{ overflow: 'hidden' }}
+          style={{ overflow: 'hidden', lineHeight: 0.82 }}
         >
           Oliver
           <br />

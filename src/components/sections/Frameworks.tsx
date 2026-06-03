@@ -23,10 +23,10 @@ export function Frameworks() {
             <li
               key={fw.id}
               data-reveal
-              className="reveal grid gap-3 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10 py-8 md:py-10"
+              className="reveal grid gap-3 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10 py-9 md:py-12"
               style={{ borderBottom: '1px solid var(--rail)' }}
             >
-              <span className="index">{String(i + 1).padStart(2, '0')}</span>
+              <span className="index md:pt-2">{String(i + 1).padStart(2, '0')}</span>
               <div className="max-w-2xl">
                 <h3 className="display text-[clamp(1.4rem,3.5vw,2.25rem)] mb-3">
                   {fw.title}
