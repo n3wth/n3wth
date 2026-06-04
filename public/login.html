@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in | Oliver Newth - n3wth.com</title>
+    <meta name="description" content="Sign in to n3wth.com." />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://n3wth.com/login" />
+    <meta name="theme-color" content="#0a0a0f" />
+    <style>
+      :root {
+        --bg: #0a0a0f;
+        --text: #f5f5f7;
+        --text-muted: #86868b;
+        --accent: #a78bfa;
+        --rail: #1c1c22;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .card {
+        width: 100%;
+        max-width: 360px;
+        text-align: center;
+      }
+      .mark { width: 40px; height: 40px; margin: 0 auto 1.5rem; display: block; }
+      h1 { font-size: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; }
+      .sub { font-size: 0.9375rem; color: var(--text-muted); margin-bottom: 2rem; }
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        width: 100%;
+        padding: 0.8125rem 1rem;
+        border: 1px solid var(--rail);
+        border-radius: 10px;
+        background: #fff;
+        color: #111;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: opacity 0.15s ease;
+      }
+      .btn:hover { opacity: 0.9; text-decoration: none; }
+      .gicon { width: 18px; height: 18px; }
+      .back { display: inline-block; margin-top: 2rem; color: var(--text-muted); font-size: 0.875rem; }
+      .back:hover { color: var(--text); }
+      .legal { margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; }
+      .legal a { color: var(--text-muted); text-decoration: underline; }
+      .legal a:hover { color: var(--text); }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#08090b" />
+        <path d="M9.4 6.6 25.2 14a1.5 1.5 0 0 1-.15 2.78l-6.1 1.78a2 2 0 0 0-1.32 1.24l-2.2 6.1c-.5 1.36-2.42 1.27-2.78-.15L8.0 8.2A1.6 1.6 0 0 1 9.4 6.6Z" fill="#ffffff" />
+      </svg>
+      <h1>Sign in to n3wth</h1>
+      <p class="sub">Continue with your Google account.</p>
+
+      <a id="google" class="btn" href="#">
+        <svg class="gicon" viewBox="0 0 18 18" aria-hidden="true">
+          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62Z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18Z"/>
+          <path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33Z"/>
+          <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58A9 9 0 0 0 .96 4.95L3.97 7.28C4.68 5.16 6.66 3.58 9 3.58Z"/>
+        </svg>
+        Continue with Google
+      </a>
+
+      <p class="legal">
+        By continuing you agree to the
+        <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.
+      </p>
+
+      <a href="/" class="back">&larr; Back to n3wth.com</a>
+    </div>
+
+    <script>
+      // Auth0 Universal Login -> Google connection (Authorization Code + PKCE).
+      // Builds the /authorize URL at runtime so the redirect_uri matches the
+      // current origin (works on n3wth.com and localhost).
+      (function () {
+        var AUTH0_DOMAIN = 'auth.n3wth.com';
+        var CLIENT_ID = 'ODRP6ZZD1SRHwZgkmGc5t526ZRAyLXJm';
+
+        function base64url(bytes) {
+          var s = btoa(String.fromCharCode.apply(null, bytes));
+          return s.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+        function randomVerifier() {
+          var arr = new Uint8Array(32);
+          crypto.getRandomValues(arr);
+          return base64url(arr);
+        }
+        async function sha256(str) {
+          var data = new TextEncoder().encode(str);
+          var digest = await crypto.subtle.digest('SHA-256', data);
+          return base64url(new Uint8Array(digest));
+        }
+
+        document.getElementById('google').addEventListener('click', async function (e) {
+          e.preventDefault();
+          var verifier = randomVerifier();
+          var challenge = await sha256(verifier);
+          sessionStorage.setItem('pkce_verifier', verifier);
+
+          var redirectUri = window.location.origin + '/callback';
+          var params = new URLSearchParams({
+            response_type: 'code',
+            client_id: CLIENT_ID,
+            redirect_uri: redirectUri,
+            scope: 'openid profile email',
+            connection: 'google-oauth2',
+            code_challenge: challenge,
+            code_challenge_method: 'S256'
+          });
+          window.location.href = 'https://' + AUTH0_DOMAIN + '/authorize?' + params.toString();
+        });
+      })();
+    </script>
+  </body>
+</html>

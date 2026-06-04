@@ -64,9 +64,35 @@ export function Footer() {
             </ul>
           </div>
 
-          <p className="meta mt-10">
-            © Oliver Newth 2026
-          </p>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="meta">© Oliver Newth 2026</p>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              <li>
+                <a
+                  href="/login"
+                  className="link-underline meta font-normal tracking-[0.04em]"
+                >
+                  Sign in
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/privacy"
+                  className="link-underline meta font-normal tracking-[0.04em]"
+                >
+                  Privacy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/terms"
+                  className="link-underline meta font-normal tracking-[0.04em]"
+                >
+                  Terms
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </footer>
