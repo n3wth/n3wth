@@ -1,6 +1,5 @@
-import { useRef, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Github, Star, GitFork } from 'lucide-react'
-import { useReveal } from '../../hooks/useReveal'
 import { SectionHeader } from '../Frame'
 import { CubeMark } from '../marks'
 import { projects, type Project } from '../../data/content'
@@ -38,7 +37,7 @@ export function ProjectCard({ project }: { project: Project }) {
   const hasStars = Number(stats.stars) > 0
 
   return (
-    <article data-reveal data-build-card className="reveal cell group p-6 sm:p-8">
+    <article data-build-card className="cell group p-6 sm:p-8">
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex items-baseline gap-3">
           <h3 className="display text-2xl sm:text-3xl !tracking-tight">
@@ -103,15 +102,12 @@ export function ProjectCard({ project }: { project: Project }) {
 }
 
 export function Building() {
-  const ref = useRef<HTMLElement>(null)
-  useReveal(ref)
-
   return (
-    <section ref={ref} id="building" aria-label="Building">
+    <section id="building" aria-label="Building">
       <SectionHeader
-        eyebrow="Building"
-        title="Open-source tools"
-        lede="Small tools for AI and collaboration. Shipped, documented, and free to use."
+        eyebrow="Open source"
+        title="Tools I've shipped"
+        lede="Small, focused tools for AI and collaboration — documented, in production, and free to use."
         mark={<CubeMark size={56} />}
       />
 

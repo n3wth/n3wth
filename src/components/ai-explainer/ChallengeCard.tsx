@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import type { Challenge } from '../../data/ai-challenges'
 import { ChoiceButtons } from './ChoiceButtons'
-import { ConsequenceViz } from './ConsequenceViz'
+import { TradeoffBars } from './TradeoffBars'
 import { CardField } from './CardField'
 
 interface ChallengeCardProps {
@@ -21,9 +21,8 @@ export const ChallengeCard = memo(function ChallengeCard({
 }: ChallengeCardProps) {
   return (
     <article
-      data-reveal
       data-challenge-card
-      className="reveal relative py-10 md:py-14"
+      className="relative py-10 md:py-14"
       style={{ borderBottom: '1px solid var(--rail)' }}
     >
       <CardField seed={index} />
@@ -48,16 +47,7 @@ export const ChallengeCard = memo(function ChallengeCard({
             isAnimating={isAnimating}
           />
 
-          <ConsequenceViz
-            challengeId={challenge.id}
-            metrics={chosenMetrics}
-            isAnimating={isAnimating}
-            poleLabels={
-              challenge.choices.length >= 2
-                ? [challenge.choices[0].label, challenge.choices[1].label]
-                : undefined
-            }
-          />
+          <TradeoffBars choices={challenge.choices} chosenMetrics={chosenMetrics} />
 
           {chosenMetrics && (
             <div

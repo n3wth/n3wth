@@ -1,5 +1,3 @@
-import { useRef } from 'react'
-import { useReveal } from '../../hooks/useReveal'
 import { SectionHeader } from '../Frame'
 import { RingsMark } from '../marks'
 import { experiences } from '../../data/content'
@@ -9,11 +7,8 @@ function isReal(v?: string) {
 }
 
 export function Experience() {
-  const ref = useRef<HTMLElement>(null)
-  useReveal(ref)
-
   return (
-    <section ref={ref} id="work" aria-label="Experience">
+    <section id="work" aria-label="Experience">
       <SectionHeader
         eyebrow="Experience"
         title={
@@ -38,8 +33,7 @@ export function Experience() {
           return (
             <li
               key={exp.id}
-              data-reveal
-              className="reveal relative section-pad !py-10 md:!py-14"
+              className="relative section-pad !py-10 md:!py-14"
               style={{ borderTop: '1px solid var(--rail)' }}
             >
               <span className="tick tick-tl" aria-hidden="true" />

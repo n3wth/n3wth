@@ -117,12 +117,6 @@ body {
   color: var(--ink);
 }
 
-/* Lenis smooth scroll */
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
-
 /* ---------- Hairline frame ---------- */
 /* The frame: a centered max-width column with 1px left/right rails. */
 .frame {
@@ -326,9 +320,6 @@ html.lenis, html.lenis body { height: auto; }
 .btn:hover .btn-arrow { color: var(--ink); }
 .btn-solid .btn-arrow { color: var(--bg); }
 
-/* ---------- Reveal (GSAP-driven, with static fallback) ---------- */
-.reveal { opacity: 1; }
-.js .reveal { opacity: 0; }
 
 /* ---------- Skip link ---------- */
 .skip-link {
@@ -409,6 +400,4 @@ html.lenis, html.lenis body { height: auto; }
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal,
-  .js .reveal { opacity: 1 !important; transform: none !important; }
 }

@@ -5,7 +5,7 @@ const SECTION_KEYS: Record<string, string> = {
   '1': '#work',
   '2': '#building',
   '3': '#thinking',
-  '4': '#frameworks',
+  '4': '#ai-explainer',
   '5': '#creative',
   '6': '#contact',
 }

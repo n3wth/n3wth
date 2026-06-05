@@ -1,19 +1,14 @@
-import { useRef } from 'react'
-import { useReveal } from '../../hooks/useReveal'
 import { SectionHeader } from '../Frame'
 import { NodesMark } from '../marks'
 import { thoughtPieces } from '../../data/thinking'
 
 export function Thinking() {
-  const ref = useRef<HTMLElement>(null)
-  useReveal(ref)
-
   return (
-    <section ref={ref} id="thinking" aria-label="Thinking">
+    <section id="thinking" aria-label="Thinking">
       <SectionHeader
-        eyebrow="Thinking"
-        title="Notes on trust and craft"
-        lede="Writing about production AI, creative work, and what I've learned shipping at scale."
+        eyebrow="Point of view"
+        title="What I believe about production AI"
+        lede="Two positions I've arrived at after a decade shipping AI at scale — and the specific, hard-won reasons behind each."
         mark={<NodesMark size={56} />}
       />
 
@@ -22,8 +17,7 @@ export function Thinking() {
         {thoughtPieces.map((piece) => (
           <article
             key={piece.id}
-            data-reveal
-            className="reveal relative py-10 md:py-14"
+            className="relative py-10 md:py-14"
             style={{ borderBottom: '1px solid var(--rail)' }}
           >
             <div className="grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">

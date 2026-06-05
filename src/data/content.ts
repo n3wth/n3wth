@@ -20,7 +20,6 @@ export const navigation: NavItem[] = [
   { name: 'Work', href: '#work' },
   { name: 'Building', href: '#building' },
   { name: 'Thinking', href: '#thinking' },
-  { name: 'Frameworks', href: '#frameworks' },
   { name: 'Alignment', href: '#ai-explainer' },
   { name: 'Creative', href: '#creative' },
   { name: 'Contact', href: '#contact' },
@@ -97,45 +96,6 @@ export const experiences: Experience[] = [
     decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
     businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
     strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
-  },
-]
-
-export interface Framework {
-  id: string
-  title: string
-  tagline: string
-  category: 'reliability' | 'architecture' | 'operations' | 'strategy'
-  color: string
-}
-
-export const frameworks: Framework[] = [
-  {
-    id: 'trust-safety',
-    title: 'Safety is a feature',
-    tagline: 'Users rarely notice the harm a system prevents, but they notice when it fails. I design AI to hold up under that scrutiny at scale.',
-    category: 'reliability',
-    color: 'gold',
-  },
-  {
-    id: 'ml-platform',
-    title: 'Platforms over products',
-    tagline: 'A single ML product serves one team; a platform serves the whole organization. I build the platform when the use cases will repeat.',
-    category: 'architecture',
-    color: 'violet',
-  },
-  {
-    id: 'ai-operations',
-    title: 'Observability is product',
-    tagline: 'AI systems are hard to improve when you cannot see how they behave in production. I treat monitoring as a core feature, not an afterthought.',
-    category: 'operations',
-    color: 'gold',
-  },
-  {
-    id: 'product-strategy',
-    title: 'Ship the learning, not the model',
-    tagline: 'A specific model goes stale fast. I build systems that keep improving from real user interaction, so the product gets better as the models change underneath it.',
-    category: 'strategy',
-    color: 'violet',
   },
 ]
 

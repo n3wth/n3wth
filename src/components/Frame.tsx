@@ -42,20 +42,18 @@ export function SectionHeader({
     <header className="section-pad pb-8 md:pb-12">
       <div className="flex items-start justify-between gap-6">
         <div className="min-w-0">
-          <p data-reveal className="reveal eyebrow mb-5">
+          <p className="eyebrow mb-5">
             {eyebrow}
           </p>
           <h2
-            data-reveal
-            className="reveal display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch]"
+            className="display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch]"
             style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
           >
             {title}
           </h2>
           {lede && (
             <p
-              data-reveal
-              className="reveal t-lead mt-6 max-w-xl"
+              className="t-lead mt-6 max-w-xl"
               style={{ color: 'var(--ink-dim)' }}
             >
               {lede}
@@ -64,8 +62,7 @@ export function SectionHeader({
         </div>
         {mark && (
           <div
-            data-reveal
-            className="reveal hidden sm:block shrink-0"
+            className="hidden sm:block shrink-0"
             style={{ color: 'var(--ink-faint)' }}
           >
             {mark}

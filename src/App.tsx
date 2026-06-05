@@ -1,7 +1,6 @@
 import { Suspense, lazy, useCallback } from 'react'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
-import { SmoothScroll } from './components/SmoothScroll'
 import { Rule, CornerTicks } from './components/Frame'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
@@ -11,7 +10,6 @@ import { Hero } from './components/sections/Hero'
 const Experience = lazy(() => import('./components/sections/Experience').then((m) => ({ default: m.Experience })))
 const Building = lazy(() => import('./components/sections/Building').then((m) => ({ default: m.Building })))
 const Thinking = lazy(() => import('./components/sections/Thinking').then((m) => ({ default: m.Thinking })))
-const Frameworks = lazy(() => import('./components/sections/Frameworks').then((m) => ({ default: m.Frameworks })))
 const AIExplainer = lazy(() => import('./components/sections/AIExplainer').then((m) => ({ default: m.AIExplainer })))
 const Creative = lazy(() => import('./components/sections/Creative').then((m) => ({ default: m.Creative })))
 const Contact = lazy(() => import('./components/sections/Contact').then((m) => ({ default: m.Contact })))
@@ -34,7 +32,7 @@ function App() {
   useKeyboardNav()
 
   return (
-    <SmoothScroll>
+    <>
       <Nav />
       <div className="pt-14 md:pt-16">
         <div className="frame">
@@ -55,10 +53,6 @@ function App() {
             </Suspense>
             <Rule />
             <Suspense fallback={<SectionFallback />}>
-              <Frameworks />
-            </Suspense>
-            <Rule />
-            <Suspense fallback={<SectionFallback />}>
               <AIExplainer />
             </Suspense>
             <Rule />
@@ -73,7 +67,7 @@ function App() {
         </div>
       </div>
       <Footer />
-    </SmoothScroll>
+    </>
   )
 }
 

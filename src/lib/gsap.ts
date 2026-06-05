@@ -1,19 +1,12 @@
 /**
  * Centralized GSAP configuration
  *
- * Import gsap and plugins from this file to ensure:
- * 1. Plugins are registered only once
- * 2. Better tree-shaking via consistent imports
- * 3. Cleaner import statements across components
+ * Import gsap and useGSAP from this file to keep import statements
+ * consistent across components. Only load-time and hover animations
+ * remain (Hero entrance, magnetic/tilt) — no ScrollTrigger.
  */
 
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { SplitText } from 'gsap/SplitText'
 import { useGSAP } from '@gsap/react'
 
-// Register plugins once globally
-gsap.registerPlugin(ScrollTrigger, SplitText)
-
-// Re-export everything components need
-export { gsap, ScrollTrigger, SplitText, useGSAP }
+export { gsap, useGSAP }
