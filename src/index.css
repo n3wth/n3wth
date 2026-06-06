@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@n3wth/ui/theme';
 
 /* ============================================================
    n3wth.com — Wireframe / Blueprint design system
@@ -39,24 +40,13 @@
 }
 
 /* Design tokens — Tailwind v4 theme */
+/* Colors come from @n3wth/ui/theme (imported above). Only the site's
+   font choice is declared here — Geist for display (the lib's components
+   default to Mona Sans; n3wth.com uses Geist throughout). */
 @theme {
   --font-sans: 'Geist Sans', system-ui, -apple-system, sans-serif;
   --font-display: 'Geist Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
-
-  --color-bg: #08090b;
-  --color-bg-soft: #0d0e10;
-  --color-bg-raise: #131316;
-  --color-ink: #f2f3f5;
-  --color-ink-dim: #9aa0a8;
-  --color-ink-faint: #62666d;
-  --color-ink-label: #787c83;
-  --color-ink-ghost: #2c2f34;
-  --color-rail: rgba(255, 255, 255, 0.09);
-  --color-rail-strong: rgba(255, 255, 255, 0.17);
-  --color-accent: #ffffff;
-  --color-accent-dim: #d4d6da;
-  --color-accent-ink: #08090b;
 }
 
 /* Bare-name aliases for var() usage outside utilities. Values are defined
