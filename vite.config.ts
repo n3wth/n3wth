@@ -17,10 +17,6 @@ export default defineConfig({
           if (id.includes('react-dom') || (id.includes('react') && !id.includes('react-router'))) {
             return 'vendor'
           }
-          // Lenis for smooth scroll
-          if (id.includes('lenis')) {
-            return 'lenis'
-          }
         },
       },
     },
