@@ -59,27 +59,26 @@
   --color-accent-ink: #08090b;
 }
 
-/* CSS custom properties for var() usage outside utilities */
+/* Bare-name aliases for var() usage outside utilities. Values are defined
+   ONCE in @theme above (canonical @n3wth/ui palette, mirrored here for the
+   site's Tailwind v4 build) and aliased here — no re-hardcoding.
+   --ink-label: accessible label tone (4.75:1 on canvas) for small uppercase
+   meta; --ink-faint stays for decorative marks/separators only.
+   --accent-rail has no @theme entry, so it's defined here. */
 :root {
-  --font-sans: 'Geist Sans', system-ui, -apple-system, sans-serif;
-  --font-display: 'Geist Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
-
-  --bg: #08090b;
-  --bg-soft: #0d0e10;
-  --bg-raise: #131316;
-  --ink: #f2f3f5;
-  --ink-dim: #9aa0a8;
-  --ink-faint: #62666d;
-  /* Accessible label tone (4.75:1 on canvas) — small uppercase meta/labels.
-     --ink-faint stays for decorative marks/separators only. */
-  --ink-label: #787c83;
-  --ink-ghost: #2c2f34;
-  --accent: #ffffff;
-  --accent-dim: #d4d6da;
-  --accent-ink: #08090b;
-  --rail: rgba(255, 255, 255, 0.09);
-  --rail-strong: rgba(255, 255, 255, 0.17);
+  --bg: var(--color-bg);
+  --bg-soft: var(--color-bg-soft);
+  --bg-raise: var(--color-bg-raise);
+  --ink: var(--color-ink);
+  --ink-dim: var(--color-ink-dim);
+  --ink-faint: var(--color-ink-faint);
+  --ink-label: var(--color-ink-label);
+  --ink-ghost: var(--color-ink-ghost);
+  --accent: var(--color-accent);
+  --accent-dim: var(--color-accent-dim);
+  --accent-ink: var(--color-accent-ink);
+  --rail: var(--color-rail);
+  --rail-strong: var(--color-rail-strong);
   --accent-rail: rgba(255, 255, 255, 0.32);
 
   --frame-max: 1280px;
