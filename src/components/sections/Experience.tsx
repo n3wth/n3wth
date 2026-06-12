@@ -1,15 +1,18 @@
 import { SectionHeader } from '../Frame'
 import { RingsMark } from '../marks'
 import { experiences } from '../../data/content'
+import { useReveal } from '../../hooks/useReveal'
 
 function isReal(v?: string) {
   return !!v && !v.trimStart().startsWith('[OLIVER')
 }
 
 export function Experience() {
+  const revealRef = useReveal<HTMLElement>()
   return (
-    <section id="work" aria-label="Experience">
+    <section id="work" aria-label="Experience" ref={revealRef}>
       <SectionHeader
+        index="01"
         eyebrow="Experience"
         title={
           <>
@@ -35,6 +38,7 @@ export function Experience() {
               key={exp.id}
               className="relative section-pad !py-10 md:!py-14"
               style={{ borderTop: '1px solid var(--rail)' }}
+              data-reveal
             >
               <span className="tick tick-tl" aria-hidden="true" />
               <span className="tick tick-tr" aria-hidden="true" />

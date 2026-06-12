@@ -1,11 +1,14 @@
 import { SectionHeader } from '../Frame'
 import { NodesMark } from '../marks'
 import { thoughtPieces } from '../../data/thinking'
+import { useReveal } from '../../hooks/useReveal'
 
 export function Thinking() {
+  const revealRef = useReveal<HTMLElement>()
   return (
-    <section id="thinking" aria-label="Thinking">
+    <section id="thinking" aria-label="Thinking" ref={revealRef}>
       <SectionHeader
+        index="03"
         eyebrow="Point of view"
         title="What I believe about production AI"
         lede="Two positions I've arrived at after a decade shipping AI at scale — and the specific, hard-won reasons behind each."
@@ -19,6 +22,7 @@ export function Thinking() {
             key={piece.id}
             className="relative py-10 md:py-14"
             style={{ borderBottom: '1px solid var(--rail)' }}
+            data-reveal
           >
             <div className="grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
               <div className="flex md:flex-col items-baseline md:items-start gap-4 md:gap-3 md:pt-2">

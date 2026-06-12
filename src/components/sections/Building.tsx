@@ -3,6 +3,7 @@ import { Github, Star, GitFork } from 'lucide-react'
 import { SectionHeader } from '../Frame'
 import { CubeMark } from '../marks'
 import { projects, type Project } from '../../data/content'
+import { useReveal } from '../../hooks/useReveal'
 
 export interface GitHubStats {
   stars: number | string
@@ -102,9 +103,11 @@ export function ProjectCard({ project }: { project: Project }) {
 }
 
 export function Building() {
+  const revealRef = useReveal<HTMLElement>()
   return (
-    <section id="building" aria-label="Building">
+    <section id="building" aria-label="Building" ref={revealRef}>
       <SectionHeader
+        index="02"
         eyebrow="Open source"
         title="Tools I've shipped"
         lede="Small, focused tools for AI and collaboration — documented, in production, and free to use."
@@ -118,6 +121,7 @@ export function Building() {
               key={project.id}
               className={i === 0 ? 'md:col-span-2' : undefined}
               style={{ background: 'var(--bg)' }}
+              data-reveal
             >
               <ProjectCard project={project} />
             </div>

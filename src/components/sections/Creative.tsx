@@ -1,6 +1,7 @@
 import { SectionHeader } from '../Frame'
 import { BeamsMark } from '../marks'
 import { installations } from '../../data/content'
+import { useReveal } from '../../hooks/useReveal'
 
 /** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
 function sentenceCase(type: string) {
@@ -9,9 +10,11 @@ function sentenceCase(type: string) {
 }
 
 export function Creative() {
+  const revealRef = useReveal<HTMLElement>()
   return (
-    <section id="creative" aria-label="Creative">
+    <section id="creative" aria-label="Creative" ref={revealRef}>
       <SectionHeader
+        index="05"
         eyebrow="After hours"
         title="I build things that glow"
         lede="Large-scale LED installations for Burning Man and public memorials. I spoke at Robot Heart about where art and technology meet."
@@ -24,14 +27,14 @@ export function Creative() {
           style={{ background: 'var(--rail)' }}
         >
           {installations.map((inst) => (
-            <article key={inst.id} className="cell group flex flex-col">
+            <article key={inst.id} className="cell group flex flex-col" data-reveal>
               <div className="relative aspect-[4/3] overflow-hidden" style={{ background: 'var(--bg)' }}>
                 <img
                   src={inst.image}
                   alt={inst.imageAlt}
                   loading="lazy"
                   decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className="cell-img absolute inset-0 h-full w-full object-cover"
                 />
               </div>
 

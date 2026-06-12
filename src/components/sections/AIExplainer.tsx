@@ -3,13 +3,16 @@ import { ForkMark } from '../marks'
 import { aiChallenges } from '../../data/ai-challenges'
 import { useAIExplainerState } from '../../hooks/useAIExplainerState'
 import { ChallengeCard } from '../ai-explainer/ChallengeCard'
+import { useReveal } from '../../hooks/useReveal'
 
 export function AIExplainer() {
   const { makeChoice, getChallengeState } = useAIExplainerState()
+  const revealRef = useReveal<HTMLElement>()
 
   return (
-    <section id="ai-explainer" aria-label="Alignment">
+    <section id="ai-explainer" aria-label="Alignment" ref={revealRef}>
       <SectionHeader
+        index="04"
         eyebrow="Alignment"
         title={
           <>

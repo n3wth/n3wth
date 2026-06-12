@@ -1,28 +1,36 @@
 import { ArrowUpRight } from 'lucide-react'
 import { siteConfig } from '../../data/content'
 import { ArrowMark } from '../marks'
+import { useReveal } from '../../hooks/useReveal'
 
 export function Contact() {
+  const revealRef = useReveal<HTMLElement>()
   return (
     <section
       id="contact"
       aria-label="Contact"
       className="relative min-h-[85vh] flex items-center"
+      ref={revealRef}
     >
       <span className="tick tick-tl" aria-hidden="true" style={{ top: 0, left: -5 }} />
       <div className="section-pad pad-air w-full">
         <div className="flex items-start justify-between gap-6">
           <div className="max-w-3xl">
-            <p className="eyebrow mb-6">
+            <p className="eyebrow mb-6" data-reveal>
+              <span style={{ color: 'var(--ink-label)' }}>06</span>
+              <span className="mx-2.5" style={{ color: 'var(--rail-strong)' }} aria-hidden="true">
+                /
+              </span>
               Get in touch
             </p>
-            <h2 className="display text-[clamp(3rem,12vw,9rem)]">
+            <h2 className="display text-[clamp(3rem,12vw,9rem)]" data-reveal>
               Let's talk
             </h2>
 
             <p
               className="mt-8 text-base md:text-xl leading-relaxed max-w-lg"
               style={{ color: 'var(--ink-dim)' }}
+              data-reveal
             >
               Happy to talk about AI safety, LED art, or grab coffee in San
               Francisco.
@@ -31,6 +39,7 @@ export function Contact() {
             <a
               href={`mailto:${siteConfig.email}`}
               className="btn btn-solid mt-10 group"
+              data-reveal
             >
               {siteConfig.email}
               <ArrowUpRight
@@ -41,7 +50,7 @@ export function Contact() {
               />
             </a>
 
-            <ul className="flex flex-wrap gap-x-8 gap-y-3 mt-12">
+            <ul className="flex flex-wrap gap-x-8 gap-y-3 mt-12" data-reveal>
               <li>
                 <a
                   href={siteConfig.social.github}

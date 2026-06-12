@@ -23,16 +23,19 @@ export function Rule() {
 }
 
 /**
- * Section header: a quiet sans eyebrow, a large display headline, and an
- * optional lede. Children render an optional geometric mark that diagrams the
- * adjacent concept.
+ * Section header: a quiet sans eyebrow (with optional blueprint index), a
+ * large display headline, and an optional lede. Children render an optional
+ * geometric mark that diagrams the adjacent concept. Parts carry [data-reveal]
+ * so a section-level useReveal container can stagger them in.
  */
 export function SectionHeader({
+  index,
   eyebrow,
   title,
   lede,
   mark,
 }: {
+  index?: string
   eyebrow: string
   title: ReactNode
   lede?: ReactNode
@@ -42,12 +45,21 @@ export function SectionHeader({
     <header className="section-pad pb-8 md:pb-12">
       <div className="flex items-start justify-between gap-6">
         <div className="min-w-0">
-          <p className="eyebrow mb-5">
+          <p className="eyebrow mb-5" data-reveal>
+            {index && (
+              <>
+                <span style={{ color: 'var(--ink-label)' }}>{index}</span>
+                <span className="mx-2.5" style={{ color: 'var(--rail-strong)' }} aria-hidden="true">
+                  /
+                </span>
+              </>
+            )}
             {eyebrow}
           </p>
           <h2
             className="display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch]"
             style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
+            data-reveal
           >
             {title}
           </h2>
@@ -55,6 +67,7 @@ export function SectionHeader({
             <p
               className="t-lead mt-6 max-w-xl"
               style={{ color: 'var(--ink-dim)' }}
+              data-reveal
             >
               {lede}
             </p>
@@ -64,6 +77,7 @@ export function SectionHeader({
           <div
             className="hidden sm:block shrink-0"
             style={{ color: 'var(--ink-faint)' }}
+            data-reveal
           >
             {mark}
           </div>
