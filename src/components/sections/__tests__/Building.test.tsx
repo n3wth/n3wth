@@ -41,7 +41,7 @@ describe('Building Component', () => {
     vi.stubGlobal('fetch', vi.fn())
   })
 
-  it('shows dash fallback when GitHub API fails', async () => {
+  it('hides stats when GitHub API fails', async () => {
     // Mock a failed API response
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: false,
@@ -53,11 +53,11 @@ describe('Building Component', () => {
 
     // Wait for the fetch to be called and state to update
     await waitFor(() => {
-      // Check for the dash fallback in the stats
-      // We expect two dashes (one for stars, one for forks)
-      const dashes = screen.getAllByText('—')
-      expect(dashes.length).toBeGreaterThanOrEqual(2)
+      expect(fetch).toHaveBeenCalled()
     }, { timeout: 2000 })
+
+    // Stats row only renders with a positive star count, so failure shows nothing
+    expect(screen.queryByText('—')).toBeNull()
   })
 
   it('shows actual stats when GitHub API succeeds', async () => {
