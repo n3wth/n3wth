@@ -27,11 +27,15 @@ export function useKeyboardNav() {
       const el = document.querySelector(target)
       if (!el) return
 
-      el.scrollIntoView({ behavior: 'smooth' })
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches
+
+      el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
 
       // Brief flash on the section header
       const header = el.querySelector('h2')
-      if (header) {
+      if (header && !prefersReducedMotion) {
         gsap.fromTo(
           header,
           { color: '#ffffff' },

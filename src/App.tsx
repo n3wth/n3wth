@@ -20,6 +20,7 @@ function SectionFallback() {
 
 function App() {
   const onKonami = useCallback(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const els = document.querySelectorAll('h1, h2, h3, .display')
     gsap.fromTo(
       els,
