@@ -10,6 +10,14 @@ export const siteConfig = {
   artSite: 'https://newth.art',
 }
 
+/** Proof points surfaced in the hero — sourced from the experience records below. */
+export const heroStats: Metric[] = [
+  { value: '10+', label: 'Years shipping AI' },
+  { value: '750M', label: 'Daily users served' },
+  { value: '50+', label: 'Enterprise deployments' },
+  { value: 'I/O 2025', label: 'Google speaker' },
+]
+
 export interface NavItem {
   name: string
   href: string

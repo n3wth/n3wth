@@ -105,6 +105,7 @@ export function Building() {
   return (
     <section id="building" aria-label="Building">
       <SectionHeader
+        index="02"
         eyebrow="Open source"
         title="Tools I've shipped"
         lede="Small, focused tools for AI and collaboration — documented, in production, and free to use."
