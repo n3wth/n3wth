@@ -28,11 +28,13 @@ export function Rule() {
  * adjacent concept.
  */
 export function SectionHeader({
+  index,
   eyebrow,
   title,
   lede,
   mark,
 }: {
+  index?: string
   eyebrow: string
   title: ReactNode
   lede?: ReactNode
@@ -43,6 +45,14 @@ export function SectionHeader({
       <div className="flex items-start justify-between gap-6">
         <div className="min-w-0">
           <p className="eyebrow mb-5">
+            {index && (
+              <>
+                <span className="index">{index}</span>
+                <span className="mx-3" style={{ color: 'var(--rail-strong)' }} aria-hidden="true">
+                  /
+                </span>
+              </>
+            )}
             {eyebrow}
           </p>
           <h2

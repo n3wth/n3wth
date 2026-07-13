@@ -12,6 +12,7 @@ export function Creative() {
   return (
     <section id="creative" aria-label="Creative">
       <SectionHeader
+        index="05"
         eyebrow="After hours"
         title="I build things that glow"
         lede="Large-scale LED installations for Burning Man and public memorials. I spoke at Robot Heart about where art and technology meet."

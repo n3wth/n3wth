@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowRight } from 'lucide-react'
 import { AsciiField } from '../AsciiField'
+import { heroStats } from '../../data/content'
 
 export function Hero() {
   return (
@@ -53,6 +54,24 @@ export function Hero() {
             <ArrowDown size={16} strokeWidth={1.5} className="btn-arrow" aria-hidden="true" />
           </a>
         </div>
+
+        <dl
+          className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-px border"
+          style={{ background: 'var(--rail)', borderColor: 'var(--rail)' }}
+        >
+          {heroStats.map((stat) => (
+            <div
+              key={stat.label}
+              className="flex flex-col-reverse px-4 py-4 md:px-5 md:py-5"
+              style={{ background: 'var(--bg)' }}
+            >
+              <dt className="meta mt-1">{stat.label}</dt>
+              <dd className="display m-0 text-xl md:text-2xl !tracking-tight">
+                {stat.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   )
