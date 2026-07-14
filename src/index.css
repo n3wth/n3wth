@@ -1,10 +1,19 @@
-@import 'tailwindcss';
-@import '@n3wth/ui/theme';
+@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import '@astryxdesign/core/reset.css';
+@import '@astryxdesign/core/astryx.css';
+@import './theme/n3wth-theme.css';
+@import '@astryxdesign/core/tailwind-theme.css';
+@import 'tailwindcss/utilities.css' layer(utilities);
 
 /* ============================================================
    n3wth.com — Wireframe / Blueprint design system
    Dark near-black canvas, hairline rails, Geist + Geist Mono.
    Flat only: 1px borders & subtle fills, no glows/gradients.
+   Colors + type now sourced from Astryx (src/theme/n3wthTheme.ts),
+   which mirrors the site's canonical palette 1:1.
    ============================================================ */
 
 /* Geist Sans (display + body) — family name matches @n3wth/ui canonical */
@@ -40,35 +49,36 @@
 }
 
 /* Design tokens — Tailwind v4 theme */
-/* Colors come from @n3wth/ui/theme (imported above). Only the site's
-   font choice is declared here — Geist for display (the lib's components
-   default to Mona Sans; n3wth.com uses Geist throughout). */
-@theme {
-  --font-sans: 'Geist Sans', system-ui, -apple-system, sans-serif;
-  --font-display: 'Geist Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+/* Bridge Astryx font tokens (src/theme/n3wthTheme.ts) into Tailwind font
+   utilities so `font-display` / `font-sans` / `font-mono` keep working.
+   `inline` keeps these as live var() refs instead of resolving at build
+   time, since the values are set at runtime by the Astryx theme CSS. */
+@theme inline {
+  --font-display: var(--font-family-heading);
+  --font-sans: var(--font-family-body);
+  --font-mono: var(--font-family-code);
 }
 
-/* Bare-name aliases for var() usage outside utilities. Values are defined
-   ONCE in @theme above (canonical @n3wth/ui palette, mirrored here for the
-   site's Tailwind v4 build) and aliased here — no re-hardcoding.
-   --ink-label: accessible label tone (4.75:1 on canvas) for small uppercase
-   meta; --ink-faint stays for decorative marks/separators only.
-   --accent-rail has no @theme entry, so it's defined here. */
+/* Bare-name aliases for var() usage outside utilities. Values are sourced
+   from Astryx design tokens (src/theme/n3wthTheme.ts, generated into
+   src/theme/n3wth-theme.css) — no re-hardcoding.
+   --ink-label: accessible label tone for small uppercase meta;
+   --ink-faint / --ink-ghost stay for decorative marks/separators only.
+   --accent-rail has no Astryx token counterpart, so it's defined here. */
 :root {
-  --bg: var(--color-bg);
-  --bg-soft: var(--color-bg-soft);
-  --bg-raise: var(--color-bg-raise);
-  --ink: var(--color-ink);
-  --ink-dim: var(--color-ink-dim);
-  --ink-faint: var(--color-ink-faint);
-  --ink-label: var(--color-ink-label);
-  --ink-ghost: var(--color-ink-ghost);
+  --bg: var(--color-background-body);
+  --bg-soft: var(--color-background-surface);
+  --bg-raise: var(--color-background-card);
+  --ink: var(--color-text-primary);
+  --ink-dim: var(--color-text-secondary);
+  --ink-faint: var(--color-text-disabled);
+  --ink-label: var(--color-text-secondary);
+  --ink-ghost: var(--color-text-disabled);
   --accent: var(--color-accent);
-  --accent-dim: var(--color-accent-dim);
-  --accent-ink: var(--color-accent-ink);
-  --rail: var(--color-rail);
-  --rail-strong: var(--color-rail-strong);
+  --accent-dim: var(--color-accent-muted);
+  --accent-ink: var(--color-on-accent);
+  --rail: var(--color-border);
+  --rail-strong: var(--color-border-emphasized);
   --accent-rail: rgba(255, 255, 255, 0.32);
 
   --frame-max: 1280px;
@@ -366,6 +376,19 @@ body {
   align-items: center;
   color: var(--ink);
 }
+
+/* ---------- Footer links (Connect / ecosystem / legal) ---------- */
+.footer-link {
+  color: var(--ink-dim);
+  transition: color 0.2s var(--ease);
+}
+.footer-link:hover { color: var(--ink); }
+
+.footer-link-muted {
+  color: var(--ink-faint);
+  transition: color 0.2s var(--ease);
+}
+.footer-link-muted:hover { color: var(--ink); }
 
 /* ---------- LED status pixel (static white square) ---------- */
 .led {

@@ -1,7 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Theme } from '@astryxdesign/core/theme'
 import './index.css'
 import App from './App.tsx'
+import { n3wthTheme } from './theme/n3wthTheme'
 
 // CSS Studio — dev-only visual CSS editor. Dynamic import so it is NEVER bundled
 // into the production build. Removed entirely when import.meta.env.DEV is false.
@@ -27,6 +29,8 @@ deferCallback(() => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <Theme theme={n3wthTheme} mode="dark">
+      <App />
+    </Theme>
   </StrictMode>,
 )
