@@ -57,21 +57,23 @@ export function Hero() {
             {heroStats.map((stat) => (
               <div
                 key={stat.label}
-                className="px-4 py-4 md:px-5 md:py-5"
+                className="flex flex-col-reverse px-4 py-4 md:px-5 md:py-5"
                 style={{ background: 'var(--bg)' }}
               >
-                <dd
-                  className="text-sm font-semibold tracking-[-0.01em] m-0"
-                  style={{ color: 'var(--ink)' }}
-                >
-                  {stat.value}
-                </dd>
+                {/* dt precedes dd in the DOM for valid <dl> semantics;
+                    flex-col-reverse keeps the value visually first. */}
                 <dt
                   className="mt-1.5 text-[11px] uppercase tracking-[0.08em]"
                   style={{ color: 'var(--ink-faint)' }}
                 >
                   {stat.label}
                 </dt>
+                <dd
+                  className="text-sm font-semibold tracking-[-0.01em] m-0"
+                  style={{ color: 'var(--ink)' }}
+                >
+                  {stat.value}
+                </dd>
               </div>
             ))}
           </dl>
