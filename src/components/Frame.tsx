@@ -48,8 +48,8 @@ export function SectionHeader({
             {index && (
               <>
                 <span className="index">{index}</span>
-                <span className="mx-3" style={{ color: 'var(--rail-strong)' }} aria-hidden="true">
-                  /
+                <span className="mx-3" style={{ color: 'var(--ink-faint)' }} aria-hidden="true">
+                  ·
                 </span>
               </>
             )}

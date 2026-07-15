@@ -22,7 +22,7 @@ export function AIExplainer() {
         mark={<ForkMark size={56} />}
       />
 
-      <div className="section-pad !pt-0">
+      <div className="section-pad pad-tight !pt-0">
         <div style={{ borderTop: '1px solid var(--rail)' }}>
           {aiChallenges.map((challenge, i) => {
             const state = getChallengeState(challenge.id)

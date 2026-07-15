@@ -48,7 +48,10 @@ export function Experience() {
 
                 <div>
                   <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-                    <h3 className="display text-[clamp(2rem,7vw,4.5rem)]">
+                    <h3
+                      className="display text-[1.75rem]"
+                      style={{ letterSpacing: '-0.02em', lineHeight: 1.1 }}
+                    >
                       {exp.company}
                     </h3>
                     {exp.metric && (
@@ -99,8 +102,8 @@ export function Experience() {
                       <li key={t} className="meta">
                         {t}
                         {ti < exp.tech.length - 1 && (
-                          <span className="ml-3" style={{ color: 'var(--rail-strong)' }}>
-                            /
+                          <span className="ml-3" style={{ color: 'var(--ink-faint)' }}>
+                            ·
                           </span>
                         )}
                       </li>
