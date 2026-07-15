@@ -25,84 +25,69 @@ const currentSite = 'n3wth'
 
 export function Footer() {
   return (
-    <footer style={{ borderTop: '1px solid var(--rail)', background: 'var(--bg)' }}>
+    <footer className="mt-auto">
       <div className="mx-auto max-w-6xl px-6 md:px-12">
-        <div className="py-16">
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-4 lg:grid-cols-5">
-            <div className="md:col-span-2 lg:col-span-2">
-              <span className="brand" aria-label="n3wth">
-                <span className="brand-mark shrink-0" aria-hidden="true">
-                  <CursorMark size={20} />
-                </span>
-                <span>n3wth</span>
+        <div className="rule" />
+        <div className="py-12 grid grid-cols-2 gap-10 md:grid-cols-[1fr_auto_auto] md:gap-20">
+          <div className="col-span-2 md:col-span-1">
+            <span className="brand" aria-label="n3wth">
+              <span className="brand-mark shrink-0" aria-hidden="true">
+                <CursorMark size={18} />
               </span>
-              <p className="mt-4 text-sm max-w-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-                I build AI products at Google and large LED art on the side. Based in San
-                Francisco.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="eyebrow mb-4">Connect</h4>
-              <ul className="space-y-3">
-                {connectLinks.map((link) => (
-                  <li key={link.href}>
-                    <a href={link.href} className="footer-link text-sm">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4 py-10" style={{ borderTop: '1px solid var(--rail)' }}>
-          <nav className="flex flex-wrap items-center gap-4" aria-label="n3wth sites">
-            {ecosystemSites.map((site, i) => (
-              <span key={site.name} className="flex items-center gap-4">
-                {site.name === currentSite ? (
-                  <span className="text-sm font-medium" style={{ color: 'var(--ink)' }}>
-                    {site.name}
-                  </span>
-                ) : (
-                  <a
-                    href={site.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="footer-link-muted text-sm"
-                  >
-                    {site.name}
-                  </a>
-                )}
-                {i < ecosystemSites.length - 1 && (
-                  <span aria-hidden="true" style={{ color: 'var(--rail-strong)' }}>
-                    /
-                  </span>
-                )}
-              </span>
-            ))}
-          </nav>
-
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <p className="text-xs" style={{ color: 'var(--ink-faint)' }}>
+              <span>n3wth</span>
+            </span>
+            <p className="mt-2 text-sm max-w-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+              I build AI products at Google and large LED art on the side. Based in San
+              Francisco.
+            </p>
+            <p className="mt-6 text-[11px] uppercase tracking-[0.08em]" style={{ color: 'var(--ink-faint)' }}>
               © Oliver Newth 2026
             </p>
-            <nav className="flex items-center gap-4 text-xs" aria-label="Legal">
-              {legalLinks.map((link, i) => (
-                <span key={link.href} className="flex items-center gap-4">
-                  <a href={link.href} className="footer-link">
-                    {link.label}
-                  </a>
-                  {i < legalLinks.length - 1 && (
-                    <span aria-hidden="true" style={{ color: 'var(--rail-strong)' }}>
-                      /
-                    </span>
-                  )}
-                </span>
+            <nav className="mt-2 flex items-center gap-4" aria-label="Legal">
+              {legalLinks.map((link) => (
+                <a key={link.href} href={link.href} className="footer-link text-xs">
+                  {link.label}
+                </a>
               ))}
             </nav>
           </div>
+
+          <nav aria-label="Connect">
+            <p className="label mb-3">Connect</p>
+            <ul className="space-y-2">
+              {connectLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className="footer-link text-sm">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Ecosystem">
+            <p className="label mb-3">Ecosystem</p>
+            <ul className="space-y-2">
+              {ecosystemSites.map((site) => (
+                <li key={site.name}>
+                  {site.name === currentSite ? (
+                    <span className="text-sm font-medium" style={{ color: 'var(--ink)' }}>
+                      {site.name}
+                    </span>
+                  ) : (
+                    <a
+                      href={site.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="footer-link-muted text-sm"
+                    >
+                      {site.name}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>

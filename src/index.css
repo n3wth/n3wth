@@ -59,6 +59,17 @@
   --font-mono: var(--font-family-code);
 }
 
+/* Deliberate UI type scale (matches garden.n3wth.com): 11 (micro labels) /
+   13 (secondary UI) / 15 (primary UI) / 16 (prose) / display. Tailwind's
+   xs/sm steps are redefined so every text-xs / text-sm usage lands on
+   the scale. */
+@theme {
+  --text-xs: 13px;
+  --text-xs--line-height: 1.45;
+  --text-sm: 15px;
+  --text-sm--line-height: 1.5;
+}
+
 /* Bare-name aliases for var() usage outside utilities. Values are sourced
    from Astryx design tokens (src/theme/n3wthTheme.ts, generated into
    src/theme/n3wth-theme.css) — no re-hardcoding.
@@ -389,6 +400,90 @@ body {
   transition: color 0.2s var(--ease);
 }
 .footer-link-muted:hover { color: var(--ink); }
+
+/* Small uppercase section label (footer columns) — matches garden.n3wth.com */
+.label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* ---------- Floating island nav (matches garden.n3wth.com) ----------
+   NOTE: declare only the standard backdrop-filter — writing the -webkit-
+   prefix by hand makes the minifier merge the pair and emit only the
+   prefixed form, which drops the effect entirely. */
+.nav-island {
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.02)
+    ),
+    color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 768px) {
+  .nav-island {
+    border-radius: 9999px;
+  }
+}
+
+/* Nav links — compact, medium weight, pill hover/active */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  color: var(--ink-dim);
+  transition:
+    color 0.15s var(--ease),
+    background 0.15s var(--ease);
+}
+
+.nav-link:hover {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Full-screen mobile menu */
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.mobile-menu {
+  animation: menu-in 0.25s var(--ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu { animation: none; }
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--ink);
+  transition: background 0.2s var(--ease);
+}
+
+.mobile-nav-link:active {
+  background: rgba(255, 255, 255, 0.06);
+}
 
 /* ---------- LED status pixel (static white square) ---------- */
 .led {

@@ -35,7 +35,7 @@ function App() {
   return (
     <>
       <Nav />
-      <div className="pt-14 md:pt-16">
+      <div className="pt-20">
         <div className="frame">
           <CornerTicks />
           <main>

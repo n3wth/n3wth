@@ -1,111 +1,109 @@
 import { useEffect, useState } from 'react'
+import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, X } from 'lucide-react'
 import { CursorMark } from './marks'
 import { navigation } from '../data/content'
 
 export function Nav() {
   const [open, setOpen] = useState(false)
-  const [hidden, setHidden] = useState(false)
 
+  // Close the mobile menu after an anchor navigates
   useEffect(() => {
-    let lastY = window.scrollY
-    const onScroll = () => {
-      const y = window.scrollY
-      setHidden(y > 120 && y > lastY)
-      lastY = y
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    if (!open) return
+    const onHashChange = () => setOpen(false)
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [open])
 
+  // Lock body scroll while the full-screen menu is open; Escape closes it
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
     return () => {
       document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKeyDown)
     }
   }, [open])
 
   return (
     <>
-    <header
-      className="fixed inset-x-0 top-0 z-50 transition-transform duration-500"
-      style={{
-        transform: hidden && !open ? 'translateY(-100%)' : 'translateY(0)',
-        background: 'color-mix(in srgb, var(--bg) 78%, transparent)',
-        backdropFilter: 'blur(14px) saturate(140%)',
-        WebkitBackdropFilter: 'blur(14px) saturate(140%)',
-        borderBottom: '1px solid var(--rail)',
-      }}
-    >
-      <div className="frame !border-t-0" style={{ borderBottom: 'none' }}>
-        <nav
-          aria-label="Primary"
-          className="section-pad !py-0 flex items-center justify-between h-16 md:h-[4.5rem]"
-        >
-          <a href="#top" className="brand" aria-label="n3wth — home">
+      {/* Floating island nav */}
+      <header
+        className="fixed inset-x-3 md:inset-x-4 z-50 flex md:justify-center pointer-events-none"
+        style={{ top: 'calc(0.75rem + env(safe-area-inset-top))' }}
+      >
+        <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-1 pl-4 pr-2 md:w-auto md:pl-5">
+          <a href="#top" className="brand shrink-0" aria-label="n3wth — home">
             <span className="brand-mark shrink-0" aria-hidden="true">
-              <CursorMark size={22} />
+              <CursorMark size={18} />
             </span>
             <span>n3wth</span>
           </a>
 
-          <ul className="hidden md:flex items-center gap-7">
+          <nav aria-label="Primary" className="hidden md:flex items-center gap-0.5 ml-3">
             {navigation.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  className="text-[0.8125rem] font-medium tracking-[0.01em] transition-colors"
-                  style={{ color: 'var(--ink-dim)' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ink)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ink-dim)')}
-                >
-                  {item.name}
-                </a>
-              </li>
+              <a key={item.href} href={item.href} className="nav-link">
+                {item.name}
+              </a>
             ))}
-          </ul>
+          </nav>
 
-          <button
-            type="button"
-            className="md:hidden flex items-center justify-center p-2 -mr-2"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? (
-              <X size={20} strokeWidth={1.5} style={{ color: 'var(--ink)' }} aria-hidden="true" />
-            ) : (
-              <Menu size={20} strokeWidth={1.5} style={{ color: 'var(--ink)' }} aria-hidden="true" />
-            )}
-          </button>
-        </nav>
-      </div>
-    </header>
+          <span className="md:hidden ml-auto inline-flex items-center">
+            <IconButton
+              label={open ? 'Close menu' : 'Open menu'}
+              icon={open ? <X size={18} /> : <Menu size={18} />}
+              variant="ghost"
+              onClick={() => setOpen((v) => !v)}
+            />
+          </span>
+        </div>
+      </header>
 
-    {open && (
-      <div
-        className="md:hidden fixed inset-0 z-40 pt-14"
-        style={{ background: 'var(--bg)' }}
-      >
-        <ul className="flex flex-col px-6 pt-4">
-          {navigation.map((item) => (
-            <li key={item.href} style={{ borderTop: '1px solid var(--rail)' }}>
+      {/* Full-screen mobile menu — app-style sheet with large tap targets */}
+      {open && (
+        <div
+          className="mobile-menu fixed inset-0 z-[70] md:hidden flex flex-col"
+          style={{
+            background: 'var(--bg)',
+            paddingTop: 'env(safe-area-inset-top)',
+            paddingBottom: 'env(safe-area-inset-bottom)',
+          }}
+        >
+          <div className="flex items-center justify-between h-16 px-4">
+            <span className="brand" aria-hidden="true">
+              <span className="brand-mark shrink-0">
+                <CursorMark size={18} />
+              </span>
+              <span>n3wth</span>
+            </span>
+            <IconButton
+              label="Close navigation"
+              icon={<X size={20} />}
+              variant="ghost"
+              size="lg"
+              onClick={() => setOpen(false)}
+            />
+          </div>
+          <nav className="flex flex-col gap-1 px-4 pt-2" aria-label="Mobile navigation">
+            {navigation.map((item) => (
               <a
+                key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block py-5 text-sm font-medium tracking-[0.01em]"
-                style={{ color: 'var(--ink)' }}
+                className="mobile-nav-link"
               >
                 <span className="index mr-3">
                   {String(navigation.indexOf(item) + 1).padStart(2, '0')}
                 </span>
                 {item.name}
               </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )}
+            ))}
+          </nav>
+        </div>
+      )}
     </>
   )
 }
