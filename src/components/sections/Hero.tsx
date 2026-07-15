@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowRight } from 'lucide-react'
 import { Rule } from '../Frame'
+import { HeroBackdrop } from '../HeroBackdrop'
 import { heroStats } from '../../data/content'
 
 export function Hero() {
@@ -8,6 +9,8 @@ export function Hero() {
       id="top"
       className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden"
     >
+      <HeroBackdrop />
+
       <div className="relative z-10 section-pad pad-air !pb-14 md:!pb-20 w-full">
         <p className="label mb-6 md:mb-8">
           San Francisco — AI Product Leader

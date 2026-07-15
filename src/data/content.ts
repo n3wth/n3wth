@@ -180,11 +180,11 @@ export const projects: Project[] = [
     github: 'https://github.com/n3wth/kit',
   },
   {
-    id: 'proof-sdk',
-    name: 'Proof SDK',
-    description: 'Open-source editor where every change has an author -- human or AI. Provenance built in.',
-    tech: ['TypeScript', 'Tiptap', 'WebSocket', 'SQLite'],
-    url: 'https://github.com/n3wth/proof-sdk',
+    id: 'hop-flights',
+    name: 'hop.flights',
+    description: 'AI points-vs-cash flight optimizer and travel companion -- finds the cheapest way to fly, miles or money.',
+    tech: ['Next.js', 'AI SDK', 'Duffel'],
+    url: 'https://hop.flights',
   },
   {
     id: 'skills',
@@ -193,5 +193,12 @@ export const projects: Project[] = [
     tech: ['Next.js', 'React', 'Supabase'],
     url: 'https://skills.n3wth.com',
     github: 'https://github.com/n3wth/skills',
+  },
+  {
+    id: 'garden',
+    name: 'garden',
+    description: 'A digital garden of interconnected notes -- Obsidian-flavored markdown rendered as a living wiki.',
+    tech: ['Next.js', 'Astryx', 'Wikilinks'],
+    url: 'https://garden.n3wth.com',
   },
 ]
