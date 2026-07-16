@@ -113,6 +113,7 @@ html {
 }
 
 body {
+  overflow-x: clip; /* full-bleed hero backdrop uses a 100vw breakout */
   margin: 0;
   min-height: 100vh;
   background: var(--bg);
@@ -121,6 +122,76 @@ body {
 
 #root { min-height: 100vh; }
 .hero-placeholder { display: none !important; }
+
+/* ---------- Hero backdrop ---------- */
+/* Full-bleed crossfading installation photos behind the hero content.
+   Layers are stacked absolutely; opacity/scale are driven by GSAP in
+   HeroBackdrop.tsx. The scrim + fade sit above the photos and below the
+   hero text (z-index 1), keeping CTAs/text AAA-crisp over any frame. */
+.hero-backdrop {
+  /* Full-bleed breakout: the hero lives inside the 1280px .frame, but the
+     art should span the whole viewport. */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-backdrop-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Pre-hydration baseline so only the first (eager) frame paints before
+   GSAP takes over — avoids a flash of every layer stacked at opacity 1. */
+.hero-backdrop-layer:first-child { opacity: 1; }
+
+/* Light text-protection scrim only: gentle over the text column, a whisper
+   of darkening along the very top so the floating nav reads over the
+   brightest frames, fully transparent elsewhere — the art stays vivid. */
+.hero-backdrop-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(8, 9, 11, 0.5) 0%,
+      rgba(8, 9, 11, 0) 16%
+    ),
+    linear-gradient(
+      to right,
+      rgba(8, 9, 11, 0.66) 0%,
+      rgba(8, 9, 11, 0.38) 36%,
+      rgba(8, 9, 11, 0.08) 62%,
+      rgba(8, 9, 11, 0) 100%
+    );
+}
+
+/* Bottom fade so the hero blends into the stats band / page background. */
+.hero-backdrop-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 80%,
+    var(--bg) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-backdrop-layer { transition: none !important; }
+}
 
 ::selection {
   background: rgba(255, 255, 255, 0.18);

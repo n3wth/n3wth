@@ -57,7 +57,7 @@ export function Creative() {
 
                 <div className="flex items-center gap-3 meta">
                   <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
-                  <span style={{ color: 'var(--rail-strong)' }}>/</span>
+                  <span style={{ color: 'var(--ink-faint)' }}>·</span>
                   <span>{inst.location}</span>
                 </div>
               </div>

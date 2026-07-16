@@ -1,17 +1,18 @@
 import { ArrowDown, ArrowRight } from 'lucide-react'
-import { AsciiField } from '../AsciiField'
+import { Rule } from '../Frame'
+import { HeroBackdrop } from '../HeroBackdrop'
 import { heroStats } from '../../data/content'
 
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden"
+      className="relative -mt-20 min-h-[100svh] flex flex-col justify-end"
     >
-      <AsciiField />
+      <HeroBackdrop />
 
       <div className="relative z-10 section-pad pad-air !pb-14 md:!pb-20 w-full">
-        <p className="eyebrow mb-6 md:mb-8">
+        <p className="label mb-6 md:mb-8">
           San Francisco — AI Product Leader
         </p>
 
@@ -24,24 +25,19 @@ export function Hero() {
           Newth
         </h1>
 
-        <div className="mt-8 md:mt-12 grid gap-x-12 gap-y-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] max-w-4xl">
-          <p
-            className="text-lg md:text-2xl leading-snug display !tracking-tight"
-            style={{ letterSpacing: '-0.02em' }}
-          >
+        <div className="mt-8 md:mt-12">
+          <p className="display text-xl leading-snug" style={{ letterSpacing: '-0.02em' }}>
             AI at Google. <span className="accent">Art in the desert.</span>
           </p>
-          <div className="space-y-4 max-w-md">
-            <p className="text-sm md:text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-              I've shipped AI products to billions of users across Google, Meta,
-              and Microsoft, and spoke at Google I/O 2025. A decade taking AI
-              systems from research to production.
-            </p>
-            <p className="meta leading-relaxed">
-              These days I'm focused on agents that work alongside people, not
-              just for them.
-            </p>
-          </div>
+          <p
+            className="mt-4 text-sm leading-relaxed max-w-md"
+            style={{ color: 'var(--ink-dim)' }}
+          >
+            I've shipped AI products to billions of users across Google, Meta,
+            and Microsoft, and spoke at Google I/O 2025. A decade taking AI
+            systems from research to production. These days I'm focused on
+            agents that work alongside people, not just for them.
+          </p>
         </div>
 
         <div className="mt-10 md:mt-14 flex flex-wrap items-center gap-4">
@@ -55,23 +51,36 @@ export function Hero() {
           </a>
         </div>
 
-        <dl
-          className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-px border"
-          style={{ background: 'var(--rail)', borderColor: 'var(--rail)' }}
-        >
-          {heroStats.map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col-reverse px-4 py-4 md:px-5 md:py-5"
-              style={{ background: 'var(--bg)' }}
-            >
-              <dt className="meta mt-1">{stat.label}</dt>
-              <dd className="display m-0 text-xl md:text-2xl !tracking-tight">
-                {stat.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <div className="mt-12 md:mt-16">
+          <Rule />
+          <dl
+            className="grid grid-cols-2 md:grid-cols-4 gap-px"
+            style={{ background: 'var(--rail)' }}
+          >
+            {heroStats.map((stat) => (
+              <div
+                key={stat.label}
+                className="flex flex-col-reverse px-4 py-4 md:px-5 md:py-5"
+                style={{ background: 'var(--bg)' }}
+              >
+                {/* dt precedes dd in the DOM for valid <dl> semantics;
+                    flex-col-reverse keeps the value visually first. */}
+                <dt
+                  className="mt-1.5 text-[11px] uppercase tracking-[0.08em]"
+                  style={{ color: 'var(--ink-faint)' }}
+                >
+                  {stat.label}
+                </dt>
+                <dd
+                  className="text-sm font-semibold tracking-[-0.01em] m-0"
+                  style={{ color: 'var(--ink)' }}
+                >
+                  {stat.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
     </section>
   )

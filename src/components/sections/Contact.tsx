@@ -15,8 +15,8 @@ export function Contact() {
           <div className="max-w-3xl">
             <p className="eyebrow mb-6">
               <span className="index">06</span>
-              <span className="mx-3" style={{ color: 'var(--rail-strong)' }} aria-hidden="true">
-                /
+              <span className="mx-3" style={{ color: 'var(--ink-faint)' }} aria-hidden="true">
+                ·
               </span>
               Get in touch
             </p>
