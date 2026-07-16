@@ -13,7 +13,7 @@ function sentenceCase(type: string) {
    This is the visual counterweight to the dense ship log above. */
 export function Creative() {
   return (
-    <section id="creative" aria-label="Creative">
+    <section id="creative" aria-label="After dark">
       <SectionHeader
         index="03"
         eyebrow="After dark"
