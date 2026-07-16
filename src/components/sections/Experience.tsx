@@ -2,119 +2,62 @@ import { SectionHeader } from '../Frame'
 import { RingsMark } from '../marks'
 import { experiences } from '../../data/content'
 
-function isReal(v?: string) {
-  return !!v && !v.trimStart().startsWith('[OLIVER')
-}
-
+/* Ship log: a decade of work as a dense, confident index — one line per
+   chapter, no résumé prose. Density here earns the breathing room the
+   art chapter gets below. */
 export function Experience() {
   return (
     <section id="work" aria-label="Experience">
       <SectionHeader
         index="01"
         eyebrow="Experience"
-        title={
-          <>
-            Building AI products at <span className="accent">billion-user</span>{' '}
-            scale
-          </>
-        }
-        lede="A decade shipping AI from research demos to production systems that millions depend on."
+        title="A decade of AI, in production"
+        lede="Google, Covariant, Meta, Microsoft — taking systems from research demos to things billions of people rely on."
         mark={<RingsMark size={56} />}
       />
 
-      <ol>
-        {experiences.map((exp, i) => {
-          const details: [string, string | undefined][] = [
-            ['Context', exp.businessContext],
-            ['Decision', exp.decision],
-            ['Outcome', exp.businessOutcome],
-            ['Lesson', exp.strategicLesson],
-          ]
-          const realDetails = details.filter(([, v]) => isReal(v))
-          return (
+      <div className="section-pad pad-tight !pt-0">
+        <ol style={{ borderTop: '1px solid var(--rail)' }}>
+          {experiences.map((exp) => (
             <li
               key={exp.id}
-              className="relative section-pad !py-10 md:!py-14"
-              style={{ borderTop: '1px solid var(--rail)' }}
+              data-reveal
+              className="grid gap-x-8 gap-y-2 py-7 md:py-8 md:grid-cols-[6.5rem_13rem_minmax(0,1fr)_auto] md:items-baseline"
+              style={{ borderBottom: '1px solid var(--rail)' }}
             >
-              <span className="tick tick-tl" aria-hidden="true" />
-              <span className="tick tick-tr" aria-hidden="true" />
+              <span className="meta" style={{ color: 'var(--ink-faint)' }}>
+                {exp.period}
+              </span>
 
-              <div className="grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
-                <div className="flex md:flex-col md:items-start items-baseline gap-4 md:gap-3 md:pt-2">
-                  <span className="index">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="meta">{exp.period}</span>
-                </div>
-
-                <div>
-                  <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-                    <h3
-                      className="display text-[1.75rem]"
-                      style={{ letterSpacing: '-0.02em', lineHeight: 1.1 }}
-                    >
-                      {exp.company}
-                    </h3>
-                    {exp.metric && (
-                      <span className="meta">
-                        <span style={{ color: 'var(--ink)' }}>
-                          {exp.metric.value}
-                        </span>{' '}
-                        {exp.metric.label}
-                      </span>
-                    )}
-                  </div>
-
-                  <p
-                    className="mt-2 text-base md:text-lg font-medium"
-                    style={{ color: 'var(--ink)' }}
-                  >
-                    {exp.role}
-                  </p>
-
-                  <p
-                    className="mt-4 max-w-2xl text-sm md:text-base leading-relaxed"
-                    style={{ color: 'var(--ink-dim)' }}
-                  >
-                    {exp.description}
-                  </p>
-
-                  {realDetails.length > 0 && (
-                    <dl
-                      className="mt-6 grid gap-4 sm:grid-cols-2 max-w-2xl pl-4"
-                      style={{ borderLeft: '1px solid var(--rail)' }}
-                    >
-                      {realDetails.map(([k, v]) => (
-                        <div key={k}>
-                          <dt className="index mb-1">{k}</dt>
-                          <dd
-                            className="text-sm leading-relaxed"
-                            style={{ color: 'var(--ink-dim)' }}
-                          >
-                            {v}
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                  )}
-
-                  <ul className="mt-6 flex flex-wrap gap-x-3 gap-y-1">
-                    {exp.tech.map((t, ti) => (
-                      <li key={t} className="meta">
-                        {t}
-                        {ti < exp.tech.length - 1 && (
-                          <span className="ml-3" style={{ color: 'var(--ink-faint)' }}>
-                            ·
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div>
+                <h3
+                  className="display text-xl"
+                  style={{ letterSpacing: '-0.02em', lineHeight: 1.1 }}
+                >
+                  {exp.company}
+                </h3>
+                <p className="meta mt-1">{exp.role}</p>
               </div>
+
+              <p
+                className="text-sm leading-relaxed max-w-xl"
+                style={{ color: 'var(--ink-dim)' }}
+              >
+                {exp.summary}
+              </p>
+
+              {exp.metric && (
+                <p className="meta md:text-right md:justify-self-end whitespace-nowrap">
+                  <span className="font-semibold" style={{ color: 'var(--ink)' }}>
+                    {exp.metric.value}
+                  </span>{' '}
+                  {exp.metric.label}
+                </p>
+              )}
             </li>
-          )
-        })}
-      </ol>
+          ))}
+        </ol>
+      </div>
     </section>
   )
 }

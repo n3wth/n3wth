@@ -104,6 +104,7 @@
 * { box-sizing: border-box; }
 
 html {
+  overflow-x: clip; /* .bleed bands are in-flow 100vw breakouts */
   background: var(--bg);
   color: var(--ink-dim);
   font-family: var(--font-sans);
@@ -196,6 +197,58 @@ body {
 ::selection {
   background: rgba(255, 255, 255, 0.18);
   color: var(--ink);
+}
+
+/* ---------- Cursor-light text reveal (glow-free; matches garden) ----------
+   .shimmer-layer is a transparent clone of the text carrying a sharp light
+   spot clipped to the glyphs; GSAP drives --shine-x from the cursor. */
+.shimmer-wrap {
+  position: relative;
+  display: inline-block;
+}
+.shimmer-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    180px circle at var(--shine-x, 50%) 50%,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0.85) 40%,
+    transparent 70%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Full-bleed band (same viewport breakout as the hero) ---------- */
+.bleed {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+}
+
+/* ---------- Scroll reveal (driven by useReveal) ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ---------- Hairline frame ---------- */

@@ -10,7 +10,7 @@ export function AIExplainer() {
   return (
     <section id="ai-explainer" aria-label="Alignment">
       <SectionHeader
-        index="04"
+        index="05"
         eyebrow="Alignment"
         title={
           <>

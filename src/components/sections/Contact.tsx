@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { siteConfig } from '../../data/content'
 import { ArrowMark } from '../marks'
+import { ShimmerText } from '../ShimmerText'
 
 export function Contact() {
   return (
@@ -21,7 +22,7 @@ export function Contact() {
               Get in touch
             </p>
             <h2 className="display text-[clamp(3rem,12vw,9rem)]">
-              Let's talk
+              <ShimmerText>Let's talk</ShimmerText>
             </h2>
 
             <p

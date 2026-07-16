@@ -6,7 +6,7 @@ export function Thinking() {
   return (
     <section id="thinking" aria-label="Thinking">
       <SectionHeader
-        index="03"
+        index="04"
         eyebrow="Point of view"
         title="What I believe about production AI"
         lede="Two positions I've arrived at after a decade shipping AI at scale — and the specific, hard-won reasons behind each."

@@ -41,7 +41,7 @@ export function SectionHeader({
   mark?: ReactNode
 }) {
   return (
-    <header className="section-pad pb-8 md:pb-12">
+    <header data-reveal className="section-pad pb-8 md:pb-12">
       <div className="flex items-start justify-between gap-6">
         <div className="min-w-0">
           <p className="eyebrow mb-5">

@@ -27,9 +27,9 @@ export interface NavItem {
 export const navigation: NavItem[] = [
   { name: 'Work', href: '#work' },
   { name: 'Building', href: '#building' },
+  { name: 'After dark', href: '#creative' },
   { name: 'Thinking', href: '#thinking' },
   { name: 'Alignment', href: '#ai-explainer' },
-  { name: 'Creative', href: '#creative' },
   { name: 'Contact', href: '#contact' },
 ]
 
@@ -43,13 +43,9 @@ export interface Experience {
   company: string
   role: string
   period: string
-  description: string
-  tech: string[]
+  /** One confident line — the ship log reads like an index, not a résumé. */
+  summary: string
   metric?: Metric
-  businessContext?: string
-  decision?: string
-  businessOutcome?: string
-  strategicLesson?: string
 }
 
 export const experiences: Experience[] = [
@@ -57,53 +53,37 @@ export const experiences: Experience[] = [
     id: 'google',
     company: 'Google',
     role: 'AI Product Leader',
-    period: '2024 - Present',
-    description: 'Shipping Gemini-powered products across Google\'s GenAI platform. Working at the intersection of Gemini, PaLM 2, and Imagen models with DeepMind collaboration. Google I/O 2025 speaker on responsible AI deployment in production.',
-    tech: ['GenAI', 'Trust & Safety', 'Responsible AI', 'Large Language Models'],
+    period: '2024 —',
+    summary:
+      'Gemini-powered products across Google’s GenAI platform, working with DeepMind. Spoke at I/O 2025 on responsible AI in production.',
     metric: { value: 'I/O 2025', label: 'Speaker' },
-    businessContext: '[OLIVER: 1 sentence on the business state before]',
-    decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
-    businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
-    strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
   },
   {
     id: 'covariant',
     company: 'Covariant',
     role: 'Senior Product Manager',
-    period: '2022 - 2024',
-    description: 'AI that touches the physical world. Took computer vision from research demos to warehouse floors running 24/7 across 50+ enterprise deployments, then navigated the company through Amazon\'s acquisition.',
-    tech: ['Computer Vision', 'Robotics', 'Enterprise AI', 'M&A'],
+    period: '2022 – 24',
+    summary:
+      'Computer vision from research demos to warehouse floors running 24/7 — then through Amazon’s acquisition.',
     metric: { value: '50+', label: 'Enterprise deployments' },
-    businessContext: '[OLIVER: 1 sentence on the business state before]',
-    decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
-    businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
-    strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
   },
   {
     id: 'meta',
     company: 'Meta',
     role: 'Product Manager, Instagram',
-    period: '2019 - 2022',
-    description: 'Launched video calling on Instagram to 750 million daily users. At that scale, low latency and reliability were the product, so most of the work was in the real-time infrastructure behind the feature.',
-    tech: ['Real-time Systems', 'Consumer Social', 'Scale Infrastructure'],
-    metric: { value: '750M', label: 'Daily active users' },
-    businessContext: '[OLIVER: 1 sentence on the business state before]',
-    decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
-    businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
-    strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
+    period: '2019 – 22',
+    summary:
+      'Launched video calling on Instagram. At that scale, latency and reliability are the product.',
+    metric: { value: '750M', label: 'Daily users' },
   },
   {
     id: 'microsoft',
     company: 'Microsoft',
     role: 'Product Manager, Azure',
-    period: '2016 - 2019',
-    description: 'Built Azure Cognitive Services APIs used by millions of developers and set the playbook for enterprise AI adoption. Developer platforms live or die on reliability and clear contracts, so trust was the main thing I was shipping.',
-    tech: ['Developer Platforms', 'Cognitive Services', 'Enterprise AI'],
-    metric: { value: '1M+', label: 'API calls per day' },
-    businessContext: '[OLIVER: 1 sentence on the business state before]',
-    decision: '[OLIVER: 1-2 sentences on the call Oliver made + trade-offs]',
-    businessOutcome: '[OLIVER: revenue / cost / retention numbers (real, not hand-wavy)]',
-    strategicLesson: '[OLIVER: 1 sentence on what this says about Oliver as a leader]',
+    period: '2016 – 19',
+    summary:
+      'Built Azure Cognitive Services and the playbook for enterprise AI adoption — trust as the thing being shipped.',
+    metric: { value: '1M+', label: 'API calls / day' },
   },
 ]
 
@@ -121,16 +101,6 @@ export interface Installation {
 
 export const installations: Installation[] = [
   {
-    id: 'pink-triangle',
-    title: 'Pink Triangle',
-    tagline: 'Illuminated LGBTQIA+ memorial on Twin Peaks during Pride Month',
-    year: '2022',
-    location: 'San Francisco, California',
-    type: 'memorial',
-    image: '/images/installations/pink-triangle.webp',
-    imageAlt: 'Pink Triangle LED installation illuminating Twin Peaks during Pride Month',
-  },
-  {
     id: 'them',
     title: 'THEM',
     tagline: '30-foot interactive light sculpture for 70,000 attendees',
@@ -140,6 +110,16 @@ export const installations: Installation[] = [
     image: '/images/installations/them.webp',
     imageAlt: 'THEM sculpture at Burning Man casting dramatic shadows on desert floor',
     lightBg: true,
+  },
+  {
+    id: 'pink-triangle',
+    title: 'Pink Triangle',
+    tagline: 'Illuminated LGBTQIA+ memorial on Twin Peaks during Pride Month',
+    year: '2022',
+    location: 'San Francisco, California',
+    type: 'memorial',
+    image: '/images/installations/pink-triangle.webp',
+    imageAlt: 'Pink Triangle LED installation illuminating Twin Peaks during Pride Month',
   },
   {
     id: 'circle-of-light',

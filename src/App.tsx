@@ -4,6 +4,7 @@ import { Footer } from './components/Footer'
 import { Rule, CornerTicks } from './components/Frame'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
+import { useReveal } from './hooks/useReveal'
 import { gsap } from './lib/gsap'
 import { Hero } from './components/sections/Hero'
 
@@ -31,6 +32,7 @@ function App() {
 
   useKonamiCode(onKonami)
   useKeyboardNav()
+  useReveal()
 
   return (
     <>
@@ -50,15 +52,15 @@ function App() {
             </Suspense>
             <Rule />
             <Suspense fallback={<SectionFallback />}>
+              <Creative />
+            </Suspense>
+            <Rule />
+            <Suspense fallback={<SectionFallback />}>
               <Thinking />
             </Suspense>
             <Rule />
             <Suspense fallback={<SectionFallback />}>
               <AIExplainer />
-            </Suspense>
-            <Rule />
-            <Suspense fallback={<SectionFallback />}>
-              <Creative />
             </Suspense>
             <Rule />
             <Suspense fallback={<SectionFallback />}>
