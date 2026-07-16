@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-[100svh] flex flex-col justify-end"
+      className="relative -mt-20 min-h-[100svh] flex flex-col justify-end"
     >
       <HeroBackdrop />
 
