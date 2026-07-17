@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { Lightbox, type LightboxMedia } from '@astryxdesign/core/Lightbox'
 import { Button } from '@astryxdesign/core/Button'
 import { installations, siteConfig } from '../../data/content'
 
@@ -9,38 +7,19 @@ function sentenceCase(type: string) {
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
-const media: LightboxMedia[] = installations.map((inst) => ({
-  src: inst.image,
-  alt: inst.imageAlt,
-}))
-
 const [opener, ...works] = installations
 
 /* After dark as a walk through a night gallery: a full-viewport opening
    work with the page title living on the image, a statement of intent,
    then each remaining installation at near-viewport height with its
    caption overlaid on the frame. Every image drifts slowly (CSS Ken
-   Burns, reduced-motion safe) and opens a Lightbox at full resolution. */
+   Burns, reduced-motion safe). */
 export function Creative() {
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [lightboxIndex, setLightboxIndex] = useState(0)
-
-  const open = (index: number) => {
-    setLightboxIndex(index)
-    setLightboxOpen(true)
-  }
-
   return (
     <section aria-label="After dark">
       {/* Opening work: the page begins inside the art */}
       <div className="-mt-20">
-        <button
-          type="button"
-          className="art-band bleed block w-full cursor-zoom-in p-0 border-0 bg-transparent text-left"
-          style={{ height: '100svh' }}
-          onClick={() => open(0)}
-          aria-label={`View ${opener.title} full screen`}
-        >
+        <div className="art-band bleed" style={{ height: '100svh' }}>
           <img
             src={opener.image}
             alt={opener.imageAlt}
@@ -65,7 +44,7 @@ export function Creative() {
               sculpture and San Francisco memorials.
             </span>
           </span>
-        </button>
+        </div>
       </div>
 
       {/* Statement of intent */}
@@ -81,14 +60,11 @@ export function Creative() {
 
       {/* The works */}
       <div className="pb-4 md:pb-8">
-        {works.map((inst, i) => (
+        {works.map((inst) => (
           <figure key={inst.id} data-reveal className="mb-6 md:mb-10 last:mb-0 m-0">
-            <button
-              type="button"
-              className="art-band bleed block w-full cursor-zoom-in p-0 border-0 bg-transparent text-left"
+            <div
+              className="art-band bleed"
               style={{ height: 'clamp(480px, 88svh, 900px)' }}
-              onClick={() => open(i + 1)}
-              aria-label={`View ${inst.title} full screen`}
             >
               <img
                 src={inst.image}
@@ -123,7 +99,7 @@ export function Creative() {
                   {sentenceCase(inst.type)}
                 </span>
               </span>
-            </button>
+            </div>
           </figure>
         ))}
       </div>
@@ -147,14 +123,6 @@ export function Creative() {
           <Button label="Build one with me" variant="ghost" href="/contact" />
         </div>
       </div>
-
-      <Lightbox
-        isOpen={lightboxOpen}
-        onOpenChange={setLightboxOpen}
-        media={media}
-        index={lightboxIndex}
-        onIndexChange={setLightboxIndex}
-      />
     </section>
   )
 }
