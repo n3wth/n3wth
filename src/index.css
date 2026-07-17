@@ -169,23 +169,32 @@ body {
       rgba(8, 9, 11, 0.5) 0%,
       rgba(8, 9, 11, 0) 16%
     ),
+    radial-gradient(
+      110% 90% at 12% 78%,
+      rgba(8, 9, 11, 0.72) 0%,
+      rgba(8, 9, 11, 0.42) 42%,
+      rgba(8, 9, 11, 0) 72%
+    ),
     linear-gradient(
       to right,
-      rgba(8, 9, 11, 0.66) 0%,
-      rgba(8, 9, 11, 0.38) 36%,
-      rgba(8, 9, 11, 0.08) 62%,
+      rgba(8, 9, 11, 0.6) 0%,
+      rgba(8, 9, 11, 0.32) 36%,
+      rgba(8, 9, 11, 0.06) 62%,
       rgba(8, 9, 11, 0) 100%
     );
 }
 
-/* Bottom fade so the hero blends into the stats band / page background. */
+/* Bottom fade so the hero blends into the stats band / page background —
+   starts earlier and carries some weight so the lede, CTAs, and stats sit
+   on solid ground even over the brightest frame. */
 .hero-backdrop-fade {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 80%,
+    transparent 58%,
+    rgba(8, 9, 11, 0.45) 82%,
     var(--bg) 100%
   );
 }

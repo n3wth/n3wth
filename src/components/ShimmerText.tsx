@@ -36,21 +36,47 @@ export function ShimmerText({
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const setX = gsap.quickSetter(wrap, '--shine-x', 'px') as (v: number) => void
-    const fade = (on: boolean, duration: number) => {
-      gsap.to(shine, { opacity: on ? 1 : 0, duration, ease: 'power2.out', overwrite: 'auto' })
-      gsap.to(base, { opacity: on ? 0.45 : 1, duration, ease: 'power2.out', overwrite: 'auto' })
+    // The light trails the cursor on an eased delay rather than snapping to
+    // it — a proxy value eases toward the pointer, quickTo restarting the
+    // tween on every move so fast sweeps lag and settle naturally.
+    const pos = { x: 0 }
+    const xTo = gsap.quickTo(pos, 'x', {
+      duration: 0.6,
+      ease: 'power3.out',
+      onUpdate: () => setX(pos.x),
+    })
+    // Staggered reveal: the light arrives first, the base dims a beat later
+    // (and recovers a beat after the light leaves).
+    const fade = (on: boolean) => {
+      gsap.to(shine, {
+        opacity: on ? 1 : 0,
+        duration: on ? 0.35 : 0.55,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      })
+      gsap.to(base, {
+        opacity: on ? 0.45 : 1,
+        duration: on ? 0.5 : 0.7,
+        delay: on ? 0.06 : 0.1,
+        ease: 'power2.inOut',
+        overwrite: 'auto',
+      })
     }
 
     const onEnter = (e: MouseEvent) => {
       const rect = wrap.getBoundingClientRect()
-      setX(e.clientX - rect.left)
-      fade(true, 0.25)
+      // Appear at the entry point (no tween across from the last position),
+      // then let subsequent movement trail.
+      pos.x = e.clientX - rect.left
+      setX(pos.x)
+      xTo(pos.x)
+      fade(true)
     }
     const onMove = (e: MouseEvent) => {
       const rect = wrap.getBoundingClientRect()
-      setX(e.clientX - rect.left)
+      xTo(e.clientX - rect.left)
     }
-    const onLeave = () => fade(false, 0.5)
+    const onLeave = () => fade(false)
 
     wrap.addEventListener('mouseenter', onEnter)
     wrap.addEventListener('mousemove', onMove)
@@ -62,12 +88,12 @@ export function ShimmerText({
       const proxy = { x: -width * 0.25 }
       sweep = gsap.to(proxy, {
         x: width * 1.25,
-        duration: 1.2,
+        duration: 1.4,
         delay: sweepDelay,
         ease: 'power2.inOut',
-        onStart: () => fade(true, 0.35),
+        onStart: () => fade(true),
         onUpdate: () => setX(proxy.x),
-        onComplete: () => fade(false, 0.4),
+        onComplete: () => fade(false),
       })
     }
 

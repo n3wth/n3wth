@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Github, Star, GitFork } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
-import { StatusDot } from '@astryxdesign/core/StatusDot'
 import { SectionHeader } from '../Frame'
 import { projects, type Project } from '../../data/content'
 
@@ -117,19 +116,8 @@ export function Building() {
         index="02"
         eyebrow="Products"
         title="Designed by hand, shipped by agents"
-        lede={
-          <>
-            Five products in production. I set the direction and design the
-            systems; a standing team of autonomous agents engineers, reviews,
-            and ships them daily.
-          </>
-        }
+        lede="Five products in production. I design the systems; my agent team keeps them shipping."
       />
-
-      <div className="section-pad !pt-0 !pb-4 flex items-center gap-2">
-        <StatusDot variant="success" label="All products live" />
-        <span className="meta">All live · agent-maintained · open by default</span>
-      </div>
 
       <div className="section-pad pad-tight !pt-0">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: 'var(--rail)' }}>
