@@ -2,8 +2,10 @@ import { Suspense, lazy, useCallback } from 'react'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
 import { Rule, CornerTicks } from './components/Frame'
+import { ScrollBeacon } from './components/ScrollBeacon'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
+import { useReveal } from './hooks/useReveal'
 import { gsap } from './lib/gsap'
 import { Hero } from './components/sections/Hero'
 
@@ -31,10 +33,12 @@ function App() {
 
   useKonamiCode(onKonami)
   useKeyboardNav()
+  useReveal()
 
   return (
     <>
       <Nav />
+      <ScrollBeacon />
       <div className="pt-20">
         <div className="frame">
           <CornerTicks />
@@ -50,15 +54,15 @@ function App() {
             </Suspense>
             <Rule />
             <Suspense fallback={<SectionFallback />}>
+              <Creative />
+            </Suspense>
+            <Rule />
+            <Suspense fallback={<SectionFallback />}>
               <Thinking />
             </Suspense>
             <Rule />
             <Suspense fallback={<SectionFallback />}>
               <AIExplainer />
-            </Suspense>
-            <Rule />
-            <Suspense fallback={<SectionFallback />}>
-              <Creative />
             </Suspense>
             <Rule />
             <Suspense fallback={<SectionFallback />}>

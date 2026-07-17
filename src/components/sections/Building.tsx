@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Github, Star, GitFork } from 'lucide-react'
+import { Button } from '@astryxdesign/core/Button'
 import { SectionHeader } from '../Frame'
-import { CubeMark } from '../marks'
 import { projects, type Project } from '../../data/content'
 
 export interface GitHubStats {
@@ -82,19 +82,27 @@ export function ProjectCard({ project }: { project: Project }) {
       </ul>
 
       <div
-        className="flex items-center gap-5 pt-5"
+        className="flex items-center gap-3 pt-4"
         style={{ borderTop: '1px solid var(--rail)' }}
       >
+        <Button
+          label="Visit"
+          variant="ghost"
+          size="sm"
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        />
         {project.github && (
-          <a
+          <Button
+            label="GitHub"
+            variant="ghost"
+            size="sm"
+            icon={<Github size={14} strokeWidth={1.5} aria-hidden="true" />}
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="link-underline text-xs font-medium uppercase tracking-[0.16em] inline-flex items-center gap-1.5"
-            aria-label={`${project.name} on GitHub`}
-          >
-            <Github size={14} strokeWidth={1.5} aria-hidden="true" /> GitHub
-          </a>
+          />
         )}
       </div>
     </article>
@@ -106,10 +114,8 @@ export function Building() {
     <section id="building" aria-label="Building">
       <SectionHeader
         index="02"
-        eyebrow="Open source"
-        title="Tools I've shipped"
-        lede="Small, focused tools for AI and collaboration — documented, in production, and free to use."
-        mark={<CubeMark size={56} />}
+        title="Designed by hand, shipped by agents"
+        lede="Five products in production. I design the systems; my agent team keeps them shipping."
       />
 
       <div className="section-pad pad-tight !pt-0">

@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
+import { Button } from '@astryxdesign/core/Button'
 import { siteConfig } from '../../data/content'
-import { ArrowMark } from '../marks'
 
 export function Contact() {
   return (
@@ -10,16 +10,12 @@ export function Contact() {
       className="relative min-h-[85vh] flex items-center"
     >
       <span className="tick tick-tl" aria-hidden="true" style={{ top: 0, left: -5 }} />
-      <div className="section-pad pad-air w-full">
+      <div className="section-pad pad-air w-full relative">
+        <span className="ghost-index ghost-index--lit" aria-hidden="true">
+          06
+        </span>
         <div className="flex items-start justify-between gap-6">
-          <div className="max-w-3xl">
-            <p className="eyebrow mb-6">
-              <span className="index">06</span>
-              <span className="mx-3" style={{ color: 'var(--ink-faint)' }} aria-hidden="true">
-                ·
-              </span>
-              Get in touch
-            </p>
+          <div className="max-w-3xl relative">
             <h2 className="display text-[clamp(3rem,12vw,9rem)]">
               Let's talk
             </h2>
@@ -32,18 +28,16 @@ export function Contact() {
               Francisco.
             </p>
 
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="btn btn-solid mt-10 group"
-            >
-              {siteConfig.email}
-              <ArrowUpRight
-                size={16}
-                strokeWidth={1.5}
-                className="btn-arrow transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                aria-hidden="true"
+            <div className="mt-10">
+              <Button
+                label={siteConfig.email}
+                variant="primary"
+                href={`mailto:${siteConfig.email}`}
+                endContent={
+                  <ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
+                }
               />
-            </a>
+            </div>
 
             <ul className="flex flex-wrap gap-x-8 gap-y-3 mt-12">
               <li>
@@ -79,12 +73,6 @@ export function Contact() {
             </ul>
           </div>
 
-          <div
-            className="hidden md:block shrink-0"
-            style={{ color: 'var(--ink-faint)' }}
-          >
-            <ArrowMark size={64} />
-          </div>
         </div>
       </div>
     </section>

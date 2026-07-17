@@ -1,62 +1,68 @@
+import { Collapsible } from '@astryxdesign/core/Collapsible'
 import { SectionHeader } from '../Frame'
-import { NodesMark } from '../marks'
 import { thoughtPieces } from '../../data/thinking'
 
+/* Positions read as a scannable index: title + thesis visible, the
+   numbered reasons folded into an Astryx Collapsible per piece. Keeps the
+   section at one screen instead of three stacked essays. */
 export function Thinking() {
   return (
     <section id="thinking" aria-label="Thinking">
       <SectionHeader
-        index="03"
-        eyebrow="Point of view"
+        index="04"
         title="What I believe about production AI"
-        lede="Two positions I've arrived at after a decade shipping AI at scale — and the specific, hard-won reasons behind each."
-        mark={<NodesMark size={56} />}
+        lede="Three positions I've arrived at from shipping AI at scale — and from running a team of autonomous agents in production — with the specific, hard-won reasons behind each."
+        lit
       />
 
       <div className="section-pad pad-tight !pt-0">
         <div style={{ borderTop: '1px solid var(--rail)' }}>
-        {thoughtPieces.map((piece) => (
-          <article
-            key={piece.id}
-            className="relative py-10 md:py-14"
-            style={{ borderBottom: '1px solid var(--rail)' }}
-          >
-            <div className="grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
-              <div className="flex md:flex-col items-baseline md:items-start gap-4 md:gap-3 md:pt-2">
-                <span className="eyebrow">
-                  {piece.category}
-                </span>
-              </div>
+          {thoughtPieces.map((piece) => (
+            <article
+              key={piece.id}
+              data-reveal
+              className="relative py-8 md:py-10"
+              style={{ borderBottom: '1px solid var(--rail)' }}
+            >
+              <div className="grid gap-4 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
+                <div className="md:pt-1">
+                  <span className="eyebrow">{piece.category}</span>
+                </div>
 
-              <div className="max-w-3xl">
-                <h3 className="display text-[clamp(1.6rem,4vw,2.75rem)] mb-5">
-                  {piece.title}
-                </h3>
-                <p
-                  className="text-base md:text-lg leading-relaxed mb-7"
-                  style={{ color: 'var(--ink-dim)' }}
-                >
-                  {piece.description}
-                </p>
+                <div className="max-w-3xl">
+                  <h3
+                    className="display text-xl md:text-2xl mb-3"
+                    style={{ letterSpacing: '-0.02em' }}
+                  >
+                    {piece.title}
+                  </h3>
+                  <p
+                    className="text-sm md:text-base leading-relaxed mb-5"
+                    style={{ color: 'var(--ink-dim)' }}
+                  >
+                    {piece.description}
+                  </p>
 
-                <ul className="space-y-4">
-                  {piece.insights.map((insight, idx) => (
-                    <li
-                      key={idx}
-                      className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3 text-sm md:text-base leading-relaxed"
-                      style={{ color: 'var(--ink-dim)' }}
-                    >
-                      <span className="index pt-1">
-                        {String(idx + 1).padStart(2, '0')}
-                      </span>
-                      <span>{insight}</span>
-                    </li>
-                  ))}
-                </ul>
+                  <Collapsible trigger="The reasons" defaultIsOpen={false}>
+                    <ul className="space-y-4 pt-3 pb-1">
+                      {piece.insights.map((insight, idx) => (
+                        <li
+                          key={idx}
+                          className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3 text-sm leading-relaxed"
+                          style={{ color: 'var(--ink-dim)' }}
+                        >
+                          <span className="index pt-0.5">
+                            {String(idx + 1).padStart(2, '0')}
+                          </span>
+                          <span>{insight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Collapsible>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
         </div>
       </div>
     </section>
