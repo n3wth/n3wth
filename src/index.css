@@ -216,52 +216,6 @@ body {
   transform: translateX(-50%);
 }
 
-/* ---------- Ghost numerals (chapter landmarks, day→night) ----------
-   Daylight chapters: stroke-only wireframe digits. After-dark chapters
-   (--lit): digits filled with faint light. Decorative — hidden on mobile. */
-.ghost-index {
-  display: none;
-  position: absolute;
-  right: var(--gutter);
-  top: 3.2rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(7rem, 15vw, 11.5rem);
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  color: transparent;
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.09);
-  pointer-events: none;
-  user-select: none;
-  font-variant-numeric: tabular-nums;
-}
-@media (min-width: 900px) {
-  .ghost-index { display: block; }
-}
-.ghost-index--lit {
-  -webkit-text-stroke: 0;
-  color: rgba(255, 255, 255, 0.05);
-}
-
-/* ---------- Scroll beacon (a light travelling the left rail) ---------- */
-.scroll-beacon {
-  position: fixed;
-  top: 0;
-  left: max(0px, calc((100vw - var(--frame-max)) / 2));
-  width: 2px;
-  height: 28px;
-  margin-left: -0.5px;
-  border-radius: 2px;
-  background: var(--ink);
-  opacity: 0.3;
-  z-index: 40;
-  pointer-events: none;
-  display: none;
-}
-@media (min-width: 1024px) {
-  .scroll-beacon { display: block; }
-}
-
 /* ---------- Scroll reveal (driven by useReveal) ---------- */
 [data-reveal] {
   opacity: 0;
@@ -282,45 +236,13 @@ body {
   }
 }
 
-/* ---------- Hairline frame ---------- */
-/* The frame: a centered max-width column with 1px left/right rails. */
+/* ---------- Content column ---------- */
 .frame {
   position: relative;
   width: 100%;
   max-width: var(--frame-max);
   margin: 0 auto;
-  border-left: 1px solid var(--rail);
-  border-right: 1px solid var(--rail);
 }
-
-/* A horizontal hairline rule that spans the frame, with corner ticks. */
-.rule {
-  position: relative;
-  height: 0;
-  border-top: 1px solid var(--rail);
-}
-
-/* Corner tick: a small crossed + mark sitting on a rail join. */
-.tick {
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  pointer-events: none;
-  z-index: 2;
-}
-.tick::before,
-.tick::after {
-  content: '';
-  position: absolute;
-  background: var(--rail-strong);
-}
-.tick::before { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-0.5px); }
-.tick::after { top: 50%; left: 0; height: 1px; width: 100%; transform: translateY(-0.5px); }
-
-.tick-tl { left: -5px; top: -5px; }
-.tick-tr { right: -5px; top: -5px; }
-.tick-bl { left: -5px; bottom: -5px; }
-.tick-br { right: -5px; bottom: -5px; }
 
 /* Section padding inside the frame */
 .section-pad {
@@ -436,16 +358,15 @@ body {
 }
 .link-underline:hover::after { transform: scaleX(1); }
 
-/* ---------- Blueprint cell (bordered tile) ---------- */
+/* ---------- Surface card (soft, borderless) ---------- */
 .cell {
   position: relative;
-  border: 1px solid var(--rail);
-  background: rgba(255, 255, 255, 0.012);
-  transition: border-color 0.35s var(--ease), background 0.35s var(--ease);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.35s var(--ease);
 }
 .cell:hover {
-  border-color: var(--rail-strong);
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* ---------- Buttons ---------- */
@@ -608,6 +529,11 @@ body {
 .nav-link:hover {
   color: var(--ink);
   background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link-active {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Full-screen mobile menu */

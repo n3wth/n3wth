@@ -25,10 +25,8 @@ export function Creative() {
   return (
     <section id="creative" aria-label="After dark">
       <SectionHeader
-        index="03"
         title="I build things that glow"
         lede="Large-scale light for the desert and the city — Burning Man sculpture and San Francisco memorials. I spoke at Robot Heart about where art and technology meet."
-        lit
       />
 
       <div className="pb-6 md:pb-10">

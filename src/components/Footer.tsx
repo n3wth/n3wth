@@ -27,7 +27,6 @@ export function Footer() {
   return (
     <footer className="mt-auto">
       <div className="mx-auto max-w-6xl px-6 md:px-12">
-        <div className="rule" />
         <div className="py-12 grid grid-cols-2 gap-10 md:grid-cols-[1fr_auto_auto] md:gap-20">
           <div className="col-span-2 md:col-span-1">
             <span className="brand" aria-label="n3wth">

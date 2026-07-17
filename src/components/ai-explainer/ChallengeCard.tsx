@@ -21,8 +21,7 @@ export const ChallengeCard = memo(function ChallengeCard({
   return (
     <article
       data-challenge-card
-      className="relative py-10 md:py-14"
-      style={{ borderBottom: '1px solid var(--rail)' }}
+      className="cell relative px-5 py-8 md:px-8 md:py-10"
     >
       <div className="relative grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
         <span className="index md:pt-2">{String(index + 1).padStart(2, '0')}</span>
@@ -52,8 +51,8 @@ export const ChallengeCard = memo(function ChallengeCard({
 
           {chosenMetrics && (
             <div
-              className="mt-8 p-5 md:p-7"
-              style={{ border: '1px solid var(--rail)' }}
+              className="mt-8 p-5 md:p-7 rounded-xl"
+              style={{ background: 'rgba(255, 255, 255, 0.04)' }}
             >
               <p className="index mb-3" style={{ color: 'var(--accent)' }}>
                 Key insight

@@ -1,57 +1,17 @@
 import type { ReactNode } from 'react'
 
-/** Corner ticks for a bordered region. */
-export function CornerTicks() {
-  return (
-    <>
-      <span className="tick tick-tl" aria-hidden="true" />
-      <span className="tick tick-tr" aria-hidden="true" />
-      <span className="tick tick-bl" aria-hidden="true" />
-      <span className="tick tick-br" aria-hidden="true" />
-    </>
-  )
-}
-
-/** Hairline horizontal rule spanning the frame, with corner ticks at the joins. */
-export function Rule() {
-  return (
-    <div className="rule" role="separator" aria-hidden="true">
-      <span className="tick tick-tl" />
-      <span className="tick tick-tr" />
-    </div>
-  )
-}
-
 /**
- * Section header: a quiet sans eyebrow, a large display headline, and an
- * optional lede. The section index renders as a huge "ghost" numeral on the
- * right — a landmark that makes each chapter visually distinct while
- * scrolling, and that carries the page's day→night narrative: daylight
- * chapters get stroke-only wireframe numerals (blueprints), chapters after
- * dark get numerals filled with light (`lit`).
+ * Section header: a large display headline and an optional lede.
  */
 export function SectionHeader({
-  index,
   title,
   lede,
-  lit = false,
 }: {
-  index?: string
   title: ReactNode
   lede?: ReactNode
-  /** After-dark chapters: numeral filled with light instead of wireframe. */
-  lit?: boolean
 }) {
   return (
     <header data-reveal className="section-pad pb-8 md:pb-12 relative">
-      {index && (
-        <span
-          className={`ghost-index ${lit ? 'ghost-index--lit' : ''}`}
-          aria-hidden="true"
-        >
-          {index}
-        </span>
-      )}
       <div className="relative min-w-0">
         <h2
           className="display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch]"
