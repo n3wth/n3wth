@@ -26,6 +26,9 @@ npm run build    # tsc + vite build (verify before committing)
 - `src/data/thinking.ts` - Thought pieces content
 - `src/lib/gsap.ts` - Centralized GSAP plugin registration (always import from here)
 
+## Design
+- **Before any visual or design work, read `.claude/skills/frontend-design/SKILL.md`** (Anthropic's frontend-design skill) and design against it: ground choices in the subject (light art × agentic systems), spend boldness in one signature element, keep everything else quiet, respect reduced motion, and treat copy as design material.
+
 ## Key Conventions
 - **GSAP imports:** Always use `import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'` - never import gsap directly or re-register plugins
 - **Reduced motion:** Every animation block must check `prefers-reduced-motion` and bail early
