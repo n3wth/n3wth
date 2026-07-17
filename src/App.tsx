@@ -2,6 +2,7 @@ import { Suspense, lazy, useCallback } from 'react'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
 import { Rule, CornerTicks } from './components/Frame'
+import { ScrollBeacon } from './components/ScrollBeacon'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
 import { useReveal } from './hooks/useReveal'
@@ -37,6 +38,7 @@ function App() {
   return (
     <>
       <Nav />
+      <ScrollBeacon />
       <div className="pt-20">
         <div className="frame">
           <CornerTicks />

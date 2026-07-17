@@ -1,7 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
 import { siteConfig } from '../../data/content'
-import { ArrowMark } from '../marks'
 import { ShimmerText } from '../ShimmerText'
 
 export function Contact() {
@@ -12,9 +11,12 @@ export function Contact() {
       className="relative min-h-[85vh] flex items-center"
     >
       <span className="tick tick-tl" aria-hidden="true" style={{ top: 0, left: -5 }} />
-      <div className="section-pad pad-air w-full">
+      <div className="section-pad pad-air w-full relative">
+        <span className="ghost-index ghost-index--lit" aria-hidden="true">
+          06
+        </span>
         <div className="flex items-start justify-between gap-6">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl relative">
             <p className="eyebrow mb-6">
               <span className="index">06</span>
               <span className="mx-3" style={{ color: 'var(--ink-faint)' }} aria-hidden="true">
@@ -79,12 +81,6 @@ export function Contact() {
             </ul>
           </div>
 
-          <div
-            className="hidden md:block shrink-0"
-            style={{ color: 'var(--ink-faint)' }}
-          >
-            <ArrowMark size={64} />
-          </div>
         </div>
       </div>
     </section>

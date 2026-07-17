@@ -1,5 +1,4 @@
 import { SectionHeader } from '../Frame'
-import { RingsMark } from '../marks'
 import { experiences } from '../../data/content'
 
 /* Ship log: a decade of work as a dense, confident index — one line per
@@ -13,7 +12,6 @@ export function Experience() {
         eyebrow="Experience"
         title="A decade of AI, in production"
         lede="Google, Covariant, Meta, Microsoft — taking systems from research demos to things billions of people rely on."
-        mark={<RingsMark size={56} />}
       />
 
       <div className="section-pad pad-tight !pt-0">

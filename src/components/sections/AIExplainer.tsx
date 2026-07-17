@@ -1,5 +1,4 @@
 import { SectionHeader } from '../Frame'
-import { ForkMark } from '../marks'
 import { aiChallenges } from '../../data/ai-challenges'
 import { useAIExplainerState } from '../../hooks/useAIExplainerState'
 import { ChallengeCard } from '../ai-explainer/ChallengeCard'
@@ -19,7 +18,7 @@ export function AIExplainer() {
           </>
         }
         lede="Each is a real dilemma I've worked through, and every option costs real people something. Pick a path, see exactly what it trades away, then read the call I actually made."
-        mark={<ForkMark size={56} />}
+        lit
       />
 
       <div className="section-pad pad-tight !pt-0">

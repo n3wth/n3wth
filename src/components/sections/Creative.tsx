@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Lightbox, type LightboxMedia } from '@astryxdesign/core/Lightbox'
 import { SectionHeader } from '../Frame'
-import { BeamsMark } from '../marks'
 import { installations } from '../../data/content'
 
 /** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
@@ -30,7 +29,7 @@ export function Creative() {
         eyebrow="After dark"
         title="I build things that glow"
         lede="Large-scale light for the desert and the city — Burning Man sculpture and San Francisco memorials. I spoke at Robot Heart about where art and technology meet."
-        mark={<BeamsMark size={56} />}
+        lit
       />
 
       <div className="pb-6 md:pb-10">

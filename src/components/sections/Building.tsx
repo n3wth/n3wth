@@ -3,7 +3,6 @@ import { Github, Star, GitFork } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
 import { StatusDot } from '@astryxdesign/core/StatusDot'
 import { SectionHeader } from '../Frame'
-import { CubeMark } from '../marks'
 import { projects, type Project } from '../../data/content'
 
 export interface GitHubStats {
@@ -125,7 +124,6 @@ export function Building() {
             and ships them daily.
           </>
         }
-        mark={<CubeMark size={56} />}
       />
 
       <div className="section-pad !pt-0 !pb-4 flex items-center gap-2">
