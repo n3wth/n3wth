@@ -216,6 +216,56 @@ body {
   transform: translateX(-50%);
 }
 
+/* ---------- Art bands (After dark gallery) ----------
+   Near-viewport image frames with captions living on the image over a
+   bottom scrim, and a very slow Ken Burns drift. */
+.art-band {
+  overflow: hidden;
+}
+.art-band-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: art-drift 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes art-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .art-band-img { animation: none; }
+}
+
+/* Bottom text protection only — the top of every frame stays untouched. */
+.art-band-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(8, 9, 11, 0.78) 0%,
+    rgba(8, 9, 11, 0.38) 22%,
+    rgba(8, 9, 11, 0) 42%
+  );
+}
+
+/* Caption aligned to the frame's gutters even though the band is 100vw. */
+.art-band-caption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: block;
+  max-width: var(--frame-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 2.5rem;
+}
+@media (min-width: 768px) {
+  .art-band-caption { padding-bottom: 3.25rem; }
+}
+
 /* ---------- Scroll reveal (driven by useReveal) ---------- */
 [data-reveal] {
   opacity: 0;
