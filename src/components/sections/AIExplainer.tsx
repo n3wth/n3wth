@@ -10,7 +10,6 @@ export function AIExplainer() {
     <section id="ai-explainer" aria-label="Alignment">
       <SectionHeader
         index="05"
-        eyebrow="Alignment"
         title={
           <>
             Most AI safety calls are <span className="accent">trade-offs</span>,

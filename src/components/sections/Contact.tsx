@@ -1,7 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
 import { siteConfig } from '../../data/content'
-import { ShimmerText } from '../ShimmerText'
 
 export function Contact() {
   return (
@@ -17,15 +16,8 @@ export function Contact() {
         </span>
         <div className="flex items-start justify-between gap-6">
           <div className="max-w-3xl relative">
-            <p className="eyebrow mb-6">
-              <span className="index">06</span>
-              <span className="mx-3" style={{ color: 'var(--ink-faint)' }} aria-hidden="true">
-                ·
-              </span>
-              Get in touch
-            </p>
             <h2 className="display text-[clamp(3rem,12vw,9rem)]">
-              <ShimmerText>Let's talk</ShimmerText>
+              Let's talk
             </h2>
 
             <p

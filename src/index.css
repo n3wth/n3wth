@@ -208,30 +208,6 @@ body {
   color: var(--ink);
 }
 
-/* ---------- Cursor-light text reveal (glow-free; matches garden) ----------
-   .shimmer-layer is a transparent clone of the text carrying a sharp light
-   spot clipped to the glyphs; GSAP drives --shine-x from the cursor. */
-.shimmer-wrap {
-  position: relative;
-  display: inline-block;
-}
-.shimmer-layer {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  background-image: radial-gradient(
-    180px circle at var(--shine-x, 50%) 50%,
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0.85) 40%,
-    transparent 70%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
-
 /* ---------- Full-bleed band (same viewport breakout as the hero) ---------- */
 .bleed {
   position: relative;

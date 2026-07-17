@@ -1,7 +1,6 @@
 import { Button } from '@astryxdesign/core/Button'
 import { Rule } from '../Frame'
 import { HeroBackdrop } from '../HeroBackdrop'
-import { ShimmerText } from '../ShimmerText'
 import { heroStats } from '../../data/content'
 
 export function Hero() {
@@ -21,11 +20,9 @@ export function Hero() {
           className="display text-[clamp(2.75rem,11vw,8rem)]"
           style={{ lineHeight: 0.82 }}
         >
-          <ShimmerText sweepOnMount sweepDelay={1.6}>
-            Oliver
-            <br />
-            Newth
-          </ShimmerText>
+          Oliver
+          <br />
+          Newth
         </h1>
 
         <div className="mt-8 md:mt-12">

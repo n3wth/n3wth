@@ -32,13 +32,11 @@ export function Rule() {
  */
 export function SectionHeader({
   index,
-  eyebrow,
   title,
   lede,
   lit = false,
 }: {
   index?: string
-  eyebrow: string
   title: ReactNode
   lede?: ReactNode
   /** After-dark chapters: numeral filled with light instead of wireframe. */
@@ -55,17 +53,6 @@ export function SectionHeader({
         </span>
       )}
       <div className="relative min-w-0">
-        <p className="eyebrow mb-5">
-          {index && (
-            <>
-              <span className="index">{index}</span>
-              <span className="mx-3" style={{ color: 'var(--ink-faint)' }} aria-hidden="true">
-                ·
-              </span>
-            </>
-          )}
-          {eyebrow}
-        </p>
         <h2
           className="display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch]"
           style={{ letterSpacing: '-0.03em', lineHeight: 1 }}

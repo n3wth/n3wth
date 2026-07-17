@@ -9,7 +9,6 @@ export function Experience() {
     <section id="work" aria-label="Experience">
       <SectionHeader
         index="01"
-        eyebrow="Experience"
         title="A decade of AI, in production"
         lede="Google, Covariant, Meta, Microsoft — taking systems from research demos to things billions of people rely on."
       />

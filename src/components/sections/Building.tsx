@@ -114,7 +114,6 @@ export function Building() {
     <section id="building" aria-label="Building">
       <SectionHeader
         index="02"
-        eyebrow="Products"
         title="Designed by hand, shipped by agents"
         lede="Five products in production. I design the systems; my agent team keeps them shipping."
       />
