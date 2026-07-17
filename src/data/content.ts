@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Oliver Newth',
-  title: 'Oliver Newth - AI Product Leader',
-  description: 'AI product leader building at the intersection of trust, collaboration, and creative practice. Google I/O speaker.',
+  title: 'Oliver Newth - AI & Design Leader',
+  description: 'AI and design leader. Ships products with a standing team of autonomous agents; designs the systems, interfaces, and desert-scale light they run on. Google I/O 2025 speaker.',
   email: 'oliver@newth.ai',
   social: {
     github: 'https://github.com/n3wth',
@@ -10,11 +10,11 @@ export const siteConfig = {
   artSite: 'https://newth.art',
 }
 
-/** Proof points surfaced in the hero — sourced from the experience records below. */
+/** Proof points surfaced in the hero — experience records + the live agent org. */
 export const heroStats: Metric[] = [
   { value: '10+', label: 'Years shipping AI' },
   { value: '750M', label: 'Daily users served' },
-  { value: '50+', label: 'Enterprise deployments' },
+  { value: '8', label: 'Autonomous agents on the team' },
   { value: 'I/O 2025', label: 'Google speaker' },
 ]
 

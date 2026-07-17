@@ -9,7 +9,7 @@ export function Thinking() {
         index="04"
         eyebrow="Point of view"
         title="What I believe about production AI"
-        lede="Two positions I've arrived at after a decade shipping AI at scale — and the specific, hard-won reasons behind each."
+        lede="Three positions I've arrived at from shipping AI at scale — and from running a team of autonomous agents in production — with the specific, hard-won reasons behind each."
         mark={<NodesMark size={56} />}
       />
 

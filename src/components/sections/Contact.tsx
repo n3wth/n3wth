@@ -1,4 +1,5 @@
 import { ArrowUpRight } from 'lucide-react'
+import { Button } from '@astryxdesign/core/Button'
 import { siteConfig } from '../../data/content'
 import { ArrowMark } from '../marks'
 import { ShimmerText } from '../ShimmerText'
@@ -33,18 +34,16 @@ export function Contact() {
               Francisco.
             </p>
 
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="btn btn-solid mt-10 group"
-            >
-              {siteConfig.email}
-              <ArrowUpRight
-                size={16}
-                strokeWidth={1.5}
-                className="btn-arrow transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                aria-hidden="true"
+            <div className="mt-10">
+              <Button
+                label={siteConfig.email}
+                variant="primary"
+                href={`mailto:${siteConfig.email}`}
+                endContent={
+                  <ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
+                }
               />
-            </a>
+            </div>
 
             <ul className="flex flex-wrap gap-x-8 gap-y-3 mt-12">
               <li>

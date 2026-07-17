@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight } from 'lucide-react'
+import { Button } from '@astryxdesign/core/Button'
 import { Rule } from '../Frame'
 import { HeroBackdrop } from '../HeroBackdrop'
 import { ShimmerText } from '../ShimmerText'
@@ -14,7 +14,7 @@ export function Hero() {
 
       <div className="relative z-10 section-pad pad-air !pb-14 md:!pb-20 w-full">
         <p className="label mb-6 md:mb-8">
-          San Francisco — AI Product Leader
+          AI agents · Design · San Francisco
         </p>
 
         <h1
@@ -36,22 +36,16 @@ export function Hero() {
             className="mt-4 text-sm leading-relaxed max-w-md"
             style={{ color: 'var(--ink-dim)' }}
           >
-            I've shipped AI products to billions of users across Google, Meta,
-            and Microsoft, and spoke at Google I/O 2025. A decade taking AI
-            systems from research to production. These days I'm focused on
-            agents that work alongside people, not just for them.
+            I've shipped AI to billions at Google, Meta, and Microsoft, and
+            spoke at Google I/O 2025. Now I work at the front of two crafts:
+            agentic systems — my products ship daily via a standing team of
+            autonomous agents — and the visual design of everything they build.
           </p>
         </div>
 
         <div className="mt-10 md:mt-14 flex flex-wrap items-center gap-4">
-          <a href="#contact" className="btn btn-solid">
-            Get in touch
-            <ArrowRight size={16} strokeWidth={1.5} className="btn-arrow" aria-hidden="true" />
-          </a>
-          <a href="#work" className="btn" style={{ borderColor: 'var(--rail)' }}>
-            View work
-            <ArrowDown size={16} strokeWidth={1.5} className="btn-arrow" aria-hidden="true" />
-          </a>
+          <Button label="Get in touch" variant="primary" href="#contact" />
+          <Button label="View work" variant="ghost" href="#work" />
         </div>
 
         <div className="mt-12 md:mt-16">
