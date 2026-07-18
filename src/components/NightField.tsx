@@ -753,6 +753,87 @@ function Embers({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: b
   )
 }
 
+/* One new stem, seeded fresh every ~18s: grows from the ground, holds,
+   then fades so the next cycle can relocate cleanly. Literalizes
+   "250+ notes, growing" as an actual repeating growth animation. */
+const SPROUT_CYCLE = 18
+function sproutRnd(i: number, salt: number) {
+  const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453
+  return x - Math.floor(x)
+}
+function Sprout({ reducedMotion }: { reducedMotion: boolean }) {
+  const outer = useRef<THREE.Group>(null)
+  const inner = useRef<THREE.Group>(null)
+  const lineMat = useRef<(THREE.Material & { opacity: number }) | null>(null)
+  const tipMat = useRef<THREE.MeshBasicMaterial>(null)
+  const kRef = useRef(-1)
+  const [cycle, setCycle] = useState(() => ({
+    x: Math.cos(0 * 2.399) * (0.7 + sproutRnd(0, 31) * 2.6),
+    z: Math.sin(0 * 2.399) * (0.7 + sproutRnd(0, 32) * 2.6) * 0.7,
+    h: 0.7 + sproutRnd(0, 33) * 1.2,
+  }))
+
+  useFrame(({ clock }) => {
+    if (reducedMotion) return
+    const t = clock.elapsedTime
+    const k = Math.floor(t / SPROUT_CYCLE)
+    const p = (t % SPROUT_CYCLE) / SPROUT_CYCLE
+    if (k !== kRef.current) {
+      kRef.current = k
+      setCycle({
+        x: Math.cos(k * 2.399) * (0.7 + sproutRnd(k, 31) * 2.6),
+        z: Math.sin(k * 2.399) * (0.7 + sproutRnd(k, 32) * 2.6) * 0.7,
+        h: 0.7 + sproutRnd(k, 33) * 1.2,
+      })
+    }
+    let growth = 1
+    let opacity = 1
+    if (p < 0.12) {
+      const u = p / 0.12
+      growth = 1 - Math.pow(1 - u, 3)
+    } else if (p >= 0.92) {
+      const u = (p - 0.92) / 0.08
+      opacity = 1 - u
+    }
+    if (outer.current) outer.current.position.set(cycle.x, 0, cycle.z)
+    if (inner.current) inner.current.scale.y = Math.max(growth, 0.0001)
+    if (lineMat.current) lineMat.current.opacity = opacity
+    if (tipMat.current) tipMat.current.opacity = opacity
+  })
+
+  if (reducedMotion) return null
+
+  return (
+    <group ref={outer} position={[cycle.x, 0, cycle.z]}>
+      <group ref={inner}>
+        <Line
+          ref={(el: unknown) => {
+            const line = el as { material?: THREE.Material & { opacity: number } } | null
+            lineMat.current = line?.material ?? null
+          }}
+          points={[
+            [0, 0, 0],
+            [0, cycle.h, 0],
+          ]}
+          lineWidth={1}
+          color={new THREE.Color('#8a9a80').multiplyScalar(1.2)}
+          toneMapped={false}
+          transparent
+        />
+        <mesh position={[0, cycle.h, 0]}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshBasicMaterial
+            ref={tipMat}
+            color={new THREE.Color('#e2e8d8').multiplyScalar(1.6)}
+            toneMapped={false}
+            transparent
+          />
+        </mesh>
+      </group>
+    </group>
+  )
+}
+
 /* The garden — an actual planted bed at night: curved stems with leaf
    blades, glowing bud tips, and a few tall alliums holding orbs of
    light over the rest. The plant-glyph language of garden.n3wth.com. */
@@ -780,7 +861,7 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
       const r = (0.5 + rnd(i, 1) * 3.1) * (1 - 0.12 * Math.sin(a * 2))
       const x = Math.cos(a) * r
       const z = Math.sin(a) * r * 0.7
-      const h = 0.5 + rnd(i, 2) * 1.3
+      const h = 0.4 + Math.pow(rnd(i, 2), 1.6) * 1.9
       const lean = (rnd(i, 3) - 0.5) * 0.5
       plants.push({ x, z, h, lean })
       const base = new THREE.Vector3(x, 0, z)
@@ -825,9 +906,9 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
       bed.current.rotation.z = Math.sin(t * 0.55) * 0.014 + Math.sin(t * 1.31 + 2.1) * 0.011
       bed.current.rotation.x = Math.sin(t * 0.43 + 1.2) * 0.008
     }
-    if (stemsMat.current) stemsMat.current.color.set('#6f8f6a').multiplyScalar(1 + h.current * 0.8)
-    if (tipsMat.current) tipsMat.current.color.set('#d8e8cf').multiplyScalar(1.3 + h.current * 0.9)
-    if (orbsMat.current) orbsMat.current.color.set('#e8f0e0').multiplyScalar(1.5 + h.current * 0.9)
+    if (stemsMat.current) stemsMat.current.color.set('#78876f').multiplyScalar(1 + h.current * 0.8)
+    if (tipsMat.current) tipsMat.current.color.set('#e2e8d8').multiplyScalar(1.3 + h.current * 0.9)
+    if (orbsMat.current) orbsMat.current.color.set('#efeee6').multiplyScalar(1.5 + h.current * 0.9)
     if (tips.current) {
       for (let i = 0; i < plants.length; i++) {
         const p = plants[i]
@@ -864,29 +945,31 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
       <group ref={bed}>
         {/* stems + leaves, one draw call */}
         <lineSegments geometry={stemGeo}>
-          <lineBasicMaterial ref={stemsMat} color={new THREE.Color('#6f8f6a')} toneMapped={false} />
+          <lineBasicMaterial ref={stemsMat} color={new THREE.Color('#78876f')} toneMapped={false} />
         </lineSegments>
         {/* glowing bud tips */}
         <instancedMesh ref={tips} args={[undefined, undefined, plants.length]}>
           <sphereGeometry args={[1, 8, 8]} />
-          <meshBasicMaterial ref={tipsMat} color={new THREE.Color('#d8e8cf').multiplyScalar(1.3)} toneMapped={false} />
+          <meshBasicMaterial ref={tipsMat} color={new THREE.Color('#e2e8d8').multiplyScalar(1.3)} toneMapped={false} />
         </instancedMesh>
         {/* allium orbs above the bed */}
         <instancedMesh ref={orbs} args={[undefined, undefined, alliums.length]}>
           <icosahedronGeometry args={[1, 1]} />
           <meshBasicMaterial
             ref={orbsMat}
-            color={new THREE.Color('#e8f0e0').multiplyScalar(1.5)}
+            color={new THREE.Color('#efeee6').multiplyScalar(1.5)}
             wireframe
             toneMapped={false}
           />
         </instancedMesh>
+        {/* one new stem growing every ~18s — makes "growing" literal */}
+        <Sprout reducedMotion={reducedMotion} />
       </group>
-      <LightPool position={[0, 0.03, 0]} scale={8} color="#9fcf9f" opacity={0.07} />
+      <LightPool position={[0, 0.03, 0]} scale={8} color="#b9c9a8" opacity={0.07} />
       <mesh position={[0, 1.9, 0]} visible={false}>
         <boxGeometry args={[8.5, 4.6, 6.5]} />
       </mesh>
-      <EasedLight hovered={hovered} on={22} off={14} position={[0, 1.2, 0]} color="#9fcf9f" distance={14} decay={2} />
+      <EasedLight hovered={hovered} on={22} off={14} position={[0, 1.2, 0]} color="#b9c9a8" distance={14} decay={2} />
     </group>
   )
 }
