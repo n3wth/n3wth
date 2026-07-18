@@ -7,7 +7,27 @@ export default function NotFound() {
   usePageMeta('Not found — Oliver Newth', 'This page does not exist.')
 
   return (
-    <section aria-label="Page not found" className="min-h-[70vh] flex items-center">
+    <section
+      aria-label="Page not found"
+      className="bleed relative min-h-[70vh] flex items-center overflow-hidden"
+    >
+      {/* An empty playa — nothing stands here. Edges fade into the page. */}
+      <div aria-hidden className="absolute inset-0">
+        <img
+          src="/images/empty-playa.webp"
+          alt=""
+          decoding="async"
+          className="w-full h-full object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to right, rgba(8,9,11,0.85), rgba(8,9,11,0.3) 55%, rgba(8,9,11,0.1)), linear-gradient(to bottom, var(--bg), transparent 20%, transparent 80%, var(--bg))',
+          }}
+        />
+      </div>
+      <div className="frame relative w-full">
       <div className="section-pad pad-air w-full">
         <p className="label mb-5" style={{ color: 'var(--ink-dim)' }}>
           404
@@ -25,6 +45,7 @@ export default function NotFound() {
           <Button label="Go home" variant="primary" href="/" />
           <Button label="View work" variant="ghost" href="/work" />
         </div>
+      </div>
       </div>
     </section>
   )

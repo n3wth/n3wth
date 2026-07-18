@@ -75,20 +75,24 @@ export function Creative() {
                 className="art-band-img"
               />
             </div>
-            <figcaption className="section-pad !py-5 md:!py-6">
-              <h3
-                className="display text-2xl md:text-3xl mb-2"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {inst.title}
-              </h3>
-              <p
-                className="max-w-md text-sm leading-relaxed mb-2"
-                style={{ color: 'var(--ink-dim)' }}
-              >
-                {inst.tagline}
-              </p>
-              <p className="meta m-0">
+            {/* Balanced rail: title + tagline left, provenance right —
+                the stacked-left version left the rail's right half empty */}
+            <figcaption className="section-pad !py-5 md:!py-6 md:flex md:items-baseline md:justify-between md:gap-16">
+              <div className="min-w-0">
+                <h3
+                  className="display text-2xl md:text-3xl mb-2"
+                  style={{ letterSpacing: '-0.02em' }}
+                >
+                  {inst.title}
+                </h3>
+                <p
+                  className="max-w-md text-sm leading-relaxed m-0"
+                  style={{ color: 'var(--ink-dim)' }}
+                >
+                  {inst.tagline}
+                </p>
+              </div>
+              <p className="meta m-0 mt-3 md:mt-0 shrink-0 md:text-right">
                 <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
                 <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
                 {inst.location}
@@ -100,8 +104,8 @@ export function Creative() {
         ))}
       </div>
 
-      {/* Closing */}
-      <div data-reveal className="section-pad pad-air !pt-10 md:!pt-14">
+      {/* Closing — centered coda, the one symmetric moment on the page */}
+      <div data-reveal className="section-pad pad-air !pt-10 md:!pt-14 flex flex-col items-center text-center">
         <p
           className="display max-w-2xl text-[clamp(1.4rem,2.8vw,2.1rem)] mb-8"
           style={{ letterSpacing: '-0.02em', lineHeight: 1.2 }}

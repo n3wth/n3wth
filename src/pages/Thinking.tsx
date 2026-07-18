@@ -11,6 +11,21 @@ export default function ThinkingPage() {
   return (
     <>
       <Positions />
+      {/* A light path forking in the dark — the page's subject drawn once,
+          between the positions and the trade-off walkthroughs. */}
+      {/* data-reveal lives on the img, not the bleed wrapper — the reveal's
+          transform would override .bleed's translateX(-50%) centering */}
+      <div className="bleed" aria-hidden>
+        <img
+          data-reveal
+          src="/images/thinking-fork.webp"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="w-full object-cover"
+          style={{ height: 'clamp(220px, 42svh, 420px)' }}
+        />
+      </div>
       <AIExplainer />
     </>
   )
