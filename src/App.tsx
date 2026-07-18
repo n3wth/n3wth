@@ -1,16 +1,15 @@
 import { useCallback, useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
+import { Theme } from '@astryxdesign/core/theme'
+import { LinkProvider } from '@astryxdesign/core/Link'
+import { RouterLink } from './components/RouterLink'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
 import { useReveal } from './hooks/useReveal'
 import { gsap } from './lib/gsap'
-import Home from './pages/Home'
-import Work from './pages/Work'
-import Art from './pages/Art'
-import Thinking from './pages/Thinking'
-import Contact from './pages/Contact'
+import { n3wthTheme } from './theme/n3wthTheme'
 
 /** Jump to the top on route change (browser back/forward keeps its position). */
 function ScrollToTop() {
@@ -37,25 +36,20 @@ function App() {
   useReveal()
 
   return (
-    <>
-      <Nav />
-      <ScrollToTop />
-      <div className="pt-20">
-        <div className="frame">
-          <main id="main">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/work" element={<Work />} />
-              <Route path="/art" element={<Art />} />
-              <Route path="/thinking" element={<Thinking />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<Home />} />
-            </Routes>
-          </main>
+    <Theme theme={n3wthTheme} mode="dark">
+      <LinkProvider component={RouterLink}>
+        <Nav />
+        <ScrollToTop />
+        <div className="pt-20">
+          <div className="frame">
+            <main id="main">
+              <Outlet />
+            </main>
+          </div>
         </div>
-      </div>
-      <Footer />
-    </>
+        <Footer />
+      </LinkProvider>
+    </Theme>
   )
 }
 
