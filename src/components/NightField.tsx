@@ -42,6 +42,24 @@ function usePortalHover(): [boolean, { onPointerOver: (e: THREE.Event) => void; 
   ]
 }
 
+/* A lumpy rock: icosahedron with seeded vertex displacement — no two
+   faces parallel, the way real rocks sit */
+const rockGeometry = (() => {
+  let geo: THREE.BufferGeometry | null = null
+  return () => {
+    if (geo) return geo
+    geo = new THREE.IcosahedronGeometry(1, 1)
+    const pos = geo.getAttribute('position')
+    for (let i = 0; i < pos.count; i++) {
+      const s = Math.sin(i * 127.1 + 311.7) * 43758.5453
+      const r = 1 + ((s - Math.floor(s)) - 0.5) * 0.55
+      pos.setXYZ(i, pos.getX(i) * r, pos.getY(i) * r * 0.85, pos.getZ(i) * r)
+    }
+    geo.computeVertexNormals()
+    return geo
+  }
+})()
+
 /* A pool of light on the playa — additive radial gradient, the way a
    real lamp reveals the ground around it */
 const poolTexture = (() => {
@@ -78,13 +96,12 @@ function LightPool({ position, scale = 1, color, opacity }: { position: [number,
   )
 }
 
-function PortalLabel({ visible, label, sub, y = 0 }: { visible: boolean; label: string; sub: string; y?: number }) {
+function PortalLabel({ visible, label, y = 0 }: { visible: boolean; label: string; y?: number }) {
   if (!visible) return null
   return (
     <Html position={[0, y, 0]} center zIndexRange={[20, 10]} style={{ pointerEvents: 'none' }}>
       <div className="world-label" style={{ position: 'static', transform: 'translateY(-8px)' }}>
         <span className="world-label-title">{label}</span>
-        <span className="world-label-sub">{sub}</span>
       </div>
     </Html>
   )
@@ -341,7 +358,7 @@ function Them({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
 
   return (
     <group
-      position={[17, 0, -31]}
+      position={[27, 0, -46]}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -357,7 +374,7 @@ function Them({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
         <boxGeometry args={[19, 7, 13]} />
       </mesh>
       <pointLight position={[0, 1.6, 0]} color="#ffce8a" intensity={hovered ? 65 : 45} distance={16} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={9.5} />
+      <PortalLabel visible={hovered} label={def.label} y={5.9} />
     </group>
   )
 }
@@ -391,40 +408,19 @@ function Constellation({ def, onEnter, reducedMotion }: { def: PortalDef; onEnte
     >
       <group ref={azimuth}>
         <primitive object={telescope} />
-        {/* red light riding the sweep */}
-        <Beacon2 reducedMotion={reducedMotion} position={[0, 7.6, 0]} />
       </group>
-      {/* tight hit volume — group is scale 3, keep it off other portals */}
-      <mesh position={[0, 4, 0]} visible={false}>
-        <boxGeometry args={[4.5, 8.5, 4.5]} />
+      {/* hit volume covering the full dish sweep so hover stays stable */}
+      <mesh position={[0, 5, 0]} visible={false}>
+        <boxGeometry args={[10.5, 10.5, 10.5]} />
       </mesh>
       {/* night lighting: a cool key from behind-left rims the dish edge
           while the bowl stays in soft shadow; a weak fill keeps the
           pedestal legible. No frontal floodlight — that flattens the
           bowl into a white disc. */}
-      <pointLight position={[-7, 9, -6]} color="#b8c4d8" intensity={hovered ? 600 : 340} distance={70} decay={2} />
+      <pointLight position={[-7, 9, -6]} color="#b8c4d8" intensity={hovered ? 700 : 430} distance={70} decay={2} />
       <pointLight position={[0, 1.2, -2]} color="#8fa8d8" intensity={hovered ? 300 : 170} distance={50} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={9.5} />
+      <PortalLabel visible={hovered} label={def.label} y={9.7} />
     </group>
-  )
-}
-
-/* Slow red pulse at the tower apex — the universal "tall thing at
-   night" signal */
-function Beacon2({ reducedMotion, position = [0, 10.5, 0] }: { reducedMotion: boolean; position?: [number, number, number] }) {
-  const ref = useRef<THREE.Mesh>(null)
-  useFrame(({ clock }) => {
-    if (!ref.current) return
-    const t = reducedMotion ? 0 : clock.elapsedTime
-    const on = (Math.sin(t * 1.6) + 1) / 2
-    const m = ref.current.material as THREE.MeshBasicMaterial
-    m.color.set('#ff2d2d').multiplyScalar(0.6 + on * 2.6)
-  })
-  return (
-    <mesh ref={ref} position={position}>
-      <sphereGeometry args={[0.13, 8, 8]} />
-      <meshBasicMaterial color="#ff2d2d" toneMapped={false} fog={false} />
-    </mesh>
   )
 }
 
@@ -462,9 +458,8 @@ function Fork({ def, onEnter }: { def: PortalDef; onEnter: NightFieldProps['onEn
     >
       <primitive object={signpost} />
       {markers.map((m, i) => (
-        <mesh key={i} position={[m.x, m.s * 0.6, m.z]} rotation-y={i * 1.7} scale={m.s}>
-          <dodecahedronGeometry args={[1, 0]} />
-          <meshStandardMaterial color="#3a362f" roughness={0.98} />
+        <mesh key={i} geometry={rockGeometry()} position={[m.x, m.s * 0.6, m.z]} rotation={[i * 1.3, i * 1.7, i * 0.7]} scale={m.s}>
+          <meshStandardMaterial color="#3a362f" roughness={0.98} flatShading />
         </mesh>
       ))}
       {/* Suzanne on a plinth beside the fork, thinking it over */}
@@ -487,7 +482,7 @@ function Fork({ def, onEnter }: { def: PortalDef; onEnter: NightFieldProps['onEn
         <boxGeometry args={[6.5, 5.4, 3.5]} />
       </mesh>
       <pointLight position={[1.6, 3.4, 1.8]} color="#d8c294" intensity={hovered ? 20 : 9} distance={9} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={5.6} />
+      <PortalLabel visible={hovered} label={def.label} y={5.7} />
     </group>
   )
 }
@@ -665,9 +660,14 @@ function Beacon({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: Nigh
       ))}
       {/* stone ring, kicked slightly out of true */}
       {stones.map((s, i) => (
-        <mesh key={i} position={s.pos} rotation-y={s.rot} scale={[s.scale, s.scale * s.squash, s.scale]}>
-          <dodecahedronGeometry args={[1, 0]} />
-          <meshStandardMaterial color={new THREE.Color('#5c564e').multiplyScalar(s.tone)} roughness={0.98} />
+        <mesh
+          key={i}
+          geometry={rockGeometry()}
+          position={s.pos}
+          rotation={[i * 2.1, s.rot, i * 0.9]}
+          scale={[s.scale, s.scale * s.squash, s.scale]}
+        >
+          <meshStandardMaterial color={new THREE.Color('#5c564e').multiplyScalar(s.tone)} roughness={0.98} flatShading />
         </mesh>
       ))}
       {/* embers glowing low in the pit */}
@@ -684,7 +684,7 @@ function Beacon({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: Nigh
         <sphereGeometry args={[2.2, 8, 8]} />
       </mesh>
       <pointLight ref={light} position={[0, 0.9, 0]} color="#ff9d4d" intensity={60} distance={16} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={3.2} />
+      <PortalLabel visible={hovered} label={def.label} y={-0.4} />
     </group>
   )
 }
@@ -816,7 +816,7 @@ function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter:
 
   return (
     <group
-      position={[-18, 0, -14]}
+      position={[-6, 0, -16]}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -848,7 +848,7 @@ function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter:
         <boxGeometry args={[8.5, 4.6, 6.5]} />
       </mesh>
       <pointLight position={[0, 1.2, 0]} color="#9fcf9f" intensity={hovered ? 22 : 14} distance={14} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={3.8} />
+      <PortalLabel visible={hovered} label={def.label} y={3.1} />
     </group>
   )
 }
@@ -889,7 +889,6 @@ function PinkTriangle({ def, onEnter }: { def: PortalDef; onEnter: NightFieldPro
       <mesh position={[0, 2.2, 0]} visible={false}>
         <boxGeometry args={[8, 6, 3]} />
       </mesh>
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={5.6} />
     </group>
   )
 }
