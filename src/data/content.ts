@@ -18,7 +18,7 @@ export interface NavItem {
 
 export const navigation: NavItem[] = [
   { name: 'Work', href: '/work' },
-  { name: 'After dark', href: '/art' },
+  { name: 'Art', href: '/art' },
   { name: 'Thinking', href: '/thinking' },
   { name: 'Contact', href: '/contact' },
 ]

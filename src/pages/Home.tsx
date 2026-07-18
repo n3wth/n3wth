@@ -48,7 +48,7 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
 
 const portals = [
   { href: '/work', label: 'Work' },
-  { href: '/art', label: 'After dark' },
+  { href: '/art', label: 'Art' },
   { href: '/thinking', label: 'Thinking' },
   { href: '/contact', label: 'Contact' },
 ]

@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Astryx vs shadcn vs Angular Material for LLM Development",
+    "href": "https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material",
+    "description": "Field notes from rebuilding this garden with Astryx — how three design systems compare when an LLM is the one writing the UI, and which makes accessible design easiest",
+    "date": "Tue, 14 Jul 2026 17:31:07 GMT"
+  },
+  {
+    "title": "How OpenClaw Dreaming Works",
+    "href": "https://garden.n3wth.com/how-openclaw-dreaming-works",
+    "description": "A detailed research report exploring the inner workings of OpenClaw's autonomous background memory consolidation sweeps, sleep-inspired phases, scoring logic, and operational tuning.",
+    "date": "Thu, 18 Jun 2026 00:28:23 GMT"
+  },
+  {
+    "title": "ATS Optimization",
+    "href": "https://garden.n3wth.com/ats-optimization",
+    "description": "Strategies for enhancing the effectiveness of an Application Tracking System",
+    "date": "Sun, 15 Feb 2026 07:47:48 GMT"
+  },
+  {
+    "title": "Active Learning",
+    "href": "https://garden.n3wth.com/active-learning",
+    "description": "Techniques for engaging and effective learning",
+    "date": "Sun, 15 Feb 2026 07:47:48 GMT"
+  },
+  {
+    "title": "Actual Gardening Costs",
+    "href": "https://garden.n3wth.com/actual-gardening-costs",
+    "description": "",
+    "date": "Sun, 15 Feb 2026 07:47:48 GMT"
+  }
+]

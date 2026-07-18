@@ -1209,12 +1209,12 @@ useTexture.preload('/textures/wood-tile.webp')
 useTexture.preload('/textures/marble-pano.webp')
 
 const PORTALS: Record<string, PortalDef> = {
-  art: { id: 'art', label: 'After dark', sub: 'Light installations', href: '/art' },
+  art: { id: 'art', label: 'Art', sub: 'Light installations', href: '/art' },
   work: { id: 'work', label: 'Work', sub: 'A decade of AI in production', href: '/work' },
   thinking: { id: 'thinking', label: 'Thinking', sub: 'Trade-offs, not clean answers', href: '/thinking' },
   contact: { id: 'contact', label: "Let's talk", sub: 'oliver@newth.ai', href: '/contact' },
   garden: { id: 'garden', label: 'The garden', sub: '250+ notes, growing', href: 'https://garden.n3wth.com', external: true },
-  triangle: { id: 'triangle', label: 'After dark', sub: 'Pink Triangle, Twin Peaks', href: '/art' },
+  triangle: { id: 'triangle', label: 'Art', sub: 'Pink Triangle, Twin Peaks', href: '/art' },
 }
 
 export default function NightField({ onEnter, reducedMotion }: NightFieldProps) {
