@@ -16,16 +16,18 @@ export function SectionHeader({
 }) {
   return (
     <header data-reveal className="section-pad pb-8 md:pb-12 relative">
-      <div className="relative min-w-0">
+      {/* Title left, lede right: stacking both in one narrow left column
+          left the whole upper-right of every page as dead space. */}
+      <div className="relative min-w-0 md:flex md:items-end md:justify-between md:gap-16">
         <Heading
-          className="display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch]"
+          className="display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch] shrink-0"
           style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
         >
           {title}
         </Heading>
         {lede && (
           <p
-            className="t-lead mt-6 max-w-xl"
+            className="t-lead mt-6 md:mt-0 max-w-xl md:max-w-sm md:pb-1"
             style={{ color: 'var(--ink-dim)' }}
           >
             {lede}
