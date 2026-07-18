@@ -738,6 +738,32 @@ body {
   }
 }
 
+/* ---------- Thinking: the fork of light ---------- */
+.fork-path {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+}
+[data-reveal].is-in .fork-trunk {
+  animation: fork-draw 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+[data-reveal].is-in .fork-branch {
+  animation: fork-draw 1.2s cubic-bezier(0.3, 0, 0.2, 1) 0.6s forwards;
+}
+[data-reveal].is-in .fork-branch-b {
+  animation-delay: 0.72s; /* the second path is taken a beat later */
+}
+@keyframes fork-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fork-path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
+
 /* ---------- Night-field home ---------- */
 .world-label {
   position: absolute;
