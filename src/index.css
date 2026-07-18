@@ -300,7 +300,21 @@ body {
    Near-viewport image frames with captions living on the image over a
    bottom scrim, and a very slow Ken Burns drift. */
 .art-band {
+  position: relative;
   overflow: hidden;
+}
+/* The photographs' blacks are warmer and deeper than the page's #08090b,
+   which left a visible seam where each band ended. The bottom of every
+   band now dissolves into the page background. */
+.art-band::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(56px, 12vh, 140px);
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--bg));
 }
 .art-band-img {
   position: absolute;
