@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
@@ -7,15 +7,10 @@ import { useKeyboardNav } from './hooks/useKeyboardNav'
 import { useReveal } from './hooks/useReveal'
 import { gsap } from './lib/gsap'
 import Home from './pages/Home'
-
-const Work = lazy(() => import('./pages/Work'))
-const Art = lazy(() => import('./pages/Art'))
-const Thinking = lazy(() => import('./pages/Thinking'))
-const Contact = lazy(() => import('./pages/Contact'))
-
-function PageFallback() {
-  return <div className="min-h-[60vh]" aria-hidden="true" />
-}
+import Work from './pages/Work'
+import Art from './pages/Art'
+import Thinking from './pages/Thinking'
+import Contact from './pages/Contact'
 
 /** Jump to the top on route change (browser back/forward keeps its position). */
 function ScrollToTop() {
@@ -48,16 +43,14 @@ function App() {
       <div className="pt-20">
         <div className="frame">
           <main id="main">
-            <Suspense fallback={<PageFallback />}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/work" element={<Work />} />
-                <Route path="/art" element={<Art />} />
-                <Route path="/thinking" element={<Thinking />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="*" element={<Home />} />
-              </Routes>
-            </Suspense>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/work" element={<Work />} />
+              <Route path="/art" element={<Art />} />
+              <Route path="/thinking" element={<Thinking />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
           </main>
         </div>
       </div>

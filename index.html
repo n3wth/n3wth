@@ -41,6 +41,10 @@
     <!-- Theme -->
     <meta name="theme-color" content="#08090b" />
 
+    <!-- Preload the /art opener so its first navigation transitions onto a
+         painted image instead of a decode pop -->
+    <link rel="preload" href="/images/installations/them.webp" as="image" type="image/webp" />
+
     <!-- Preload critical fonts to improve FCP/LCP - display font first for hero -->
     <link rel="preload" href="/fonts/Geist-SemiBold.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
     <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
