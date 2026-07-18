@@ -111,6 +111,32 @@ function useGLBGeometry(url: string): THREE.BufferGeometry {
   return first
 }
 
+/* A whole GLB with its own PBR materials (Rodin-generated heroes) */
+function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): THREE.Group {
+  const { scene } = useGLTF(url)
+  return useMemo(() => {
+    scene.traverse((o) => {
+      const m = o as THREE.Mesh
+      if (m.isMesh) {
+        /* rebuild the material from scratch: generated GLBs ship exotic
+           material state (spec-gloss, metalness 1, odd alpha) that can
+           render invisible under plain point lights */
+        const old = (Array.isArray(m.material) ? m.material[0] : m.material) as THREE.MeshStandardMaterial
+        m.material = new THREE.MeshStandardMaterial({
+          map: old.map ?? null,
+          color: old.map ? new THREE.Color(tint) : (old.color ?? new THREE.Color(0x888888)),
+          roughness: 0.7,
+          metalness: 0.15,
+          fog: !fogOff,
+          side: THREE.DoubleSide,
+        })
+        m.frustumCulled = false
+      }
+    })
+    return scene
+  }, [scene, fogOff])
+}
+
 /* A sculpture the way the real ones are built: a solid body wearing a
    real material (FLORA steel or wood), revealed only where the light
    pools, and light running along its edges. */
@@ -225,9 +251,10 @@ function Thylacine({
   const walker = useRef<THREE.Group>(null)
   const bodyGroup = useRef<THREE.Group>(null)
   const legRefs = useRef<Record<string, THREE.Group | null>>({})
-  const RX = 7.5
-  const RZ = 5.5
-  const OMEGA = (2 * Math.PI) / 85 // one slow lap in ~85s
+  // concentric, non-intersecting ellipses per animal, derived from phase
+  const RX = 7.5 - phase * 0.5
+  const RZ = 5.5 - phase * 0.35
+  const OMEGA = (2 * Math.PI) / (70 + phase * 8) // slow laps of ~70-95s, so the pack drifts apart and regroups
 
   useFrame(({ clock }) => {
     const g = walker.current
@@ -237,15 +264,20 @@ function Thylacine({
     g.position.set(Math.cos(th) * RX, 0, Math.sin(th) * RZ)
     // face along the direction of travel (ellipse tangent)
     g.rotation.y = Math.atan2(Math.cos(th) * RZ, Math.sin(th) * RX)
-    const w = 3.4 // leg swing frequency, tuned to stride length
+    const w = 5.5 / scale // leg swing frequency: foot ground-speed matches body travel; small ones step quicker
     for (const [name, pivot] of Object.entries(LEG_PIVOTS)) {
       const leg = legRefs.current[name]
-      if (leg) leg.rotation.z = reducedMotion ? 0 : Math.sin(t * w + LEG_PHASE[name] + phase) * 0.28
+      if (leg) {
+        // asymmetric gait: quick swing, slow stance
+        const a = t * w + LEG_PHASE[name] + phase
+        leg.rotation.z = reducedMotion ? 0 : Math.sin(a) * 0.17 + Math.sin(2 * a + 0.6) * 0.03
+      }
       void pivot
     }
     if (bodyGroup.current) {
-      bodyGroup.current.position.y = reducedMotion ? 0 : Math.abs(Math.sin(t * w + phase)) * 0.07
-      bodyGroup.current.rotation.x = reducedMotion ? 0 : Math.sin(t * w * 0.5 + phase) * 0.015
+      // body vaults highest at mid-stance (legs vertical), not at touchdown
+      bodyGroup.current.position.y = reducedMotion ? 0 : Math.abs(Math.cos(t * w + phase)) * 0.07
+      bodyGroup.current.rotation.x = reducedMotion ? 0 : Math.sin(t * w + phase + 0.9) * 0.02
     }
   })
 
@@ -260,7 +292,7 @@ function Thylacine({
             geometry={body}
             edgeColor="#ffdda8"
             edgeThreshold={20}
-            glow={hovered ? 2.6 : 1.3}
+            glow={hovered ? 1.9 : 1.0}
             breathe={1.1}
             phase={phase}
             reducedMotion={reducedMotion}
@@ -269,7 +301,7 @@ function Thylacine({
         )}
         {stripes && (
           <mesh geometry={stripes}>
-            <meshBasicMaterial color={new THREE.Color('#ffdda8').multiplyScalar(hovered ? 2.8 : 1.9)} toneMapped={false} />
+            <meshBasicMaterial color={new THREE.Color('#ffdda8').multiplyScalar(hovered ? 2.0 : 1.35)} toneMapped={false} />
           </mesh>
         )}
       </group>
@@ -289,7 +321,7 @@ function Thylacine({
                 geometry={geo}
                 edgeColor="#ffdda8"
                 edgeThreshold={20}
-                glow={hovered ? 2.2 : 1.1}
+                glow={hovered ? 1.7 : 0.9}
                 breathe={1.1}
                 phase={phase + 2}
                 reducedMotion={reducedMotion}
@@ -309,92 +341,69 @@ function Them({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
 
   return (
     <group
-      position={[9, 0, -30]}
+      position={[17, 0, -31]}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
-      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={1.5} theta0={0} phase={0} />
-      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={1.2} theta0={1.1} phase={1.7} />
-      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={0.9} theta0={2.3} phase={3.1} />
-      <LightPool position={[0, 0.03, 0]} scale={26} color="#ffce8a" opacity={0.1} />
+      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={1.1} theta0={0} phase={0} />
+      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={0.95} theta0={1.7} phase={1.7} />
+      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={0.8} theta0={3.5} phase={3.1} />
+      <LightPool position={[0, 0.03, 0]} scale={12} color="#ffce8a" opacity={0.10} />
       {/* invisible hit volume covering the loop the pack walks */}
-      <mesh position={[0, 4, 0]} visible={false}>
-        <boxGeometry args={[24, 10, 16]} />
+      <mesh position={[0, 3, 0]} visible={false}>
+        <boxGeometry args={[19, 7, 13]} />
       </mesh>
-      <pointLight position={[0, 1.6, 0]} color="#ffce8a" intensity={hovered ? 100 : 75} distance={22} decay={2} />
+      <pointLight position={[0, 1.6, 0]} color="#ffce8a" intensity={hovered ? 65 : 45} distance={16} decay={2} />
       <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={9.5} />
     </group>
   )
 }
 
-/* Work — a radio telescope (modeled in Blender): faceted dish on a
-   lattice pedestal, feed tripod, tilted at the sky and slowly tracking
-   something across it. Listening at production scale. */
+/* Work — a real radio telescope (Hyper3D-generated, PBR): weathered
+   white dish with panel segments on an alt-az pedestal, tilted at the
+   sky and slowly tracking something across it. Listening at production
+   scale. */
 function Constellation({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean }) {
   const [hovered, handlers] = usePortalHover()
-  const parts = useGLBGeometries('/models/dish.glb')
-  const mount = parts['dish_mount']
-  const head = parts['dish_head']
+  const telescope = useGLBScene('/models/telescope.glb?v=2', { fogOff: true, tint: '#7e848c' })
   const azimuth = useRef<THREE.Group>(null)
 
   useFrame(({ clock }) => {
     if (!azimuth.current || reducedMotion) return
-    // one slow sweep and back across the sky, like a long observation
+    // one slow sweep and back across the sky, like a long observation;
+    // the whole alt-az assembly turns on its pedestal, the way they do
     azimuth.current.rotation.y = Math.sin(clock.elapsedTime * 0.045) * 0.55
   })
 
   return (
     <group
-      position={[-34, 0, -85]}
+      position={[-52, 0, -100]}
       rotation-y={0.35}
-      scale={3}
+      scale={2.2}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
-      {mount && (
-        <SteelAndWire
-          geometry={mount}
-          edgeColor="#9fc4ff"
-          edgeThreshold={12}
-          glow={hovered ? 2.0 : 1.0}
-          breathe={0.8}
-          reducedMotion={reducedMotion}
-          mapUrl="/textures/steel-tile.webp"
-          edgeFog={false}
-          bodyFog={false}
-        />
-      )}
-      {head && (
-        <group ref={azimuth}>
-          <SteelAndWire
-            geometry={head}
-            edgeColor="#9fc4ff"
-            edgeThreshold={18}
-            glow={hovered ? 1.8 : 0.9}
-            breathe={0.8}
-            phase={1.2}
-            reducedMotion={reducedMotion}
-            mapUrl="/textures/steel-tile.webp"
-            edgeFog={false}
-            bodyColor="#f4f4ee"
-            bodyFog={false}
-          />
-          {/* red light on the receiver, riding the sweep */}
-          <Beacon2 reducedMotion={reducedMotion} position={[0, 5.75, -1.72]} />
-        </group>
-      )}
-      <mesh position={[0, 4.5, 0]} visible={false}>
-        <boxGeometry args={[9, 10, 8]} />
+      <group ref={azimuth}>
+        <primitive object={telescope} />
+        {/* red light riding the sweep */}
+        <Beacon2 reducedMotion={reducedMotion} position={[0, 7.6, 0]} />
+      </group>
+      {/* tight hit volume — group is scale 3, keep it off other portals */}
+      <mesh position={[0, 4, 0]} visible={false}>
+        <boxGeometry args={[4.5, 8.5, 4.5]} />
       </mesh>
-      {/* floodlight on the bowl — real observatories keep them lit */}
-      <pointLight position={[2, 8.5, 6]} color="#cfd8e8" intensity={hovered ? 220 : 150} distance={30} decay={2} />
-      <pointLight position={[0, 1.5, 0]} color="#7ea8e8" intensity={hovered ? 60 : 35} distance={30} decay={2} />
+      {/* night lighting: a cool key from behind-left rims the dish edge
+          while the bowl stays in soft shadow; a weak fill keeps the
+          pedestal legible. No frontal floodlight — that flattens the
+          bowl into a white disc. */}
+      <pointLight position={[-7, 9, -6]} color="#b8c4d8" intensity={hovered ? 600 : 340} distance={70} decay={2} />
+      <pointLight position={[0, 1.2, -2]} color="#8fa8d8" intensity={hovered ? 300 : 170} distance={50} decay={2} />
       <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={9.5} />
     </group>
   )
@@ -419,14 +428,12 @@ function Beacon2({ reducedMotion, position = [0, 10.5, 0] }: { reducedMotion: bo
   )
 }
 
-/* Thinking — a signpost at a fork (modeled in Blender): two arrow
-   boards pointing apart, two light paths actually diverging beneath it */
-function Fork({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean }) {
+/* Thinking — a weathered wooden trail signpost (Hyper3D-generated,
+   PBR): four finger boards pointing different ways, stones at the base,
+   lantern-lit at the fork where the marker-stone paths split */
+function Fork({ def, onEnter }: { def: PortalDef; onEnter: NightFieldProps['onEnter'] }) {
   const [hovered, handlers] = usePortalHover()
-  const parts = useGLBGeometries('/models/signpost.glb')
-  const post = Object.entries(parts).find(([k]) => k.endsWith('_post'))?.[1]
-  const boards = Object.entries(parts).find(([k]) => k.endsWith('_boards'))?.[1]
-  const boardEdges = useMemo(() => (boards ? new THREE.EdgesGeometry(boards, 12) : null), [boards])
+  const signpost = useGLBScene('/models/signpost-hd.glb')
   const suzParts = useGLBGeometries('/models/suzanne.glb')
   const suzanne = Object.entries(suzParts).find(([k]) => k.includes('suzanne'))?.[1]
   const plinth = Object.entries(suzParts).find(([k]) => k.includes('plinth'))?.[1]
@@ -442,41 +449,18 @@ function Fork({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
     return rows
   }, [])
 
-  const glow = hovered ? 2.2 : 1.2
-
   return (
     <group
       position={[6.5, 0, 4]}
       rotation-y={0.45}
-      scale={0.7}
+      scale={0.42}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
-      {post && (
-        <SteelAndWire
-          geometry={post}
-          edgeColor="#d9cba4"
-          edgeThreshold={12}
-          glow={glow}
-          breathe={1.3}
-          reducedMotion={reducedMotion}
-          mapUrl="/textures/wood-tile.webp"
-        />
-      )}
-      {/* the arrow boards, half-lit like a sign at the edge of firelight */}
-      {boards && (
-        <mesh geometry={boards}>
-          <meshBasicMaterial color={new THREE.Color('#0d1e26').multiplyScalar(hovered ? 1.5 : 1)} toneMapped={false} />
-        </mesh>
-      )}
-      {boardEdges && (
-        <lineSegments geometry={boardEdges}>
-          <lineBasicMaterial color={new THREE.Color('#d9cba4').multiplyScalar(glow)} toneMapped={false} />
-        </lineSegments>
-      )}
+      <primitive object={signpost} />
       {markers.map((m, i) => (
         <mesh key={i} position={[m.x, m.s * 0.6, m.z]} rotation-y={i * 1.7} scale={m.s}>
           <dodecahedronGeometry args={[1, 0]} />
@@ -502,7 +486,7 @@ function Fork({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
       <mesh position={[0, 2.4, 0]} visible={false}>
         <boxGeometry args={[6.5, 5.4, 3.5]} />
       </mesh>
-      <pointLight position={[0, 2.6, 0.8]} color="#d8c294" intensity={hovered ? 26 : 16} distance={10} decay={2} />
+      <pointLight position={[1.6, 3.4, 1.8]} color="#d8c294" intensity={hovered ? 20 : 9} distance={9} decay={2} />
       <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={5.6} />
     </group>
   )
@@ -545,15 +529,20 @@ void main() {
 
 function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: boolean }) {
   const mats = useRef<THREE.ShaderMaterial[]>([])
-  useFrame(({ clock }) => {
+  const grp = useRef<THREE.Group>(null)
+  useFrame(({ clock }, delta) => {
     const t = reducedMotion ? 8 : clock.elapsedTime
-    for (const m of mats.current) {
-      if (m) m.uniforms.uTime.value = t
+    // offset each plane's clock so the two sheets never flicker in lockstep
+    mats.current.forEach((m, i) => {
+      if (m) m.uniforms.uTime.value = t + i * 4.7
+    })
+    if (grp.current) {
+      grp.current.scale.setScalar(THREE.MathUtils.damp(grp.current.scale.x, hovered ? 1.15 : 1, 6, delta))
     }
   })
-  const uniforms = useMemo(() => [{ uTime: { value: 0 } }, { uTime: { value: 5 } }], [])
+  const uniforms = useMemo(() => [{ uTime: { value: 0 } }, { uTime: { value: 0 } }], [])
   return (
-    <group position={[0, 0.28, 0]} scale={hovered ? 1.15 : 1}>
+    <group ref={grp} position={[0, 0.28, 0]}>
       {[0, Math.PI / 2].map((ry, i) => (
         <mesh key={i} rotation-y={ry} position={[0, 0.85, 0]}>
           <planeGeometry args={[1.5, 1.9]} />
@@ -584,11 +573,13 @@ function Beacon({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: Nigh
   const core = useRef<THREE.Mesh>(null)
   const wood = useTexture('/textures/wood-tile.webp')
   const teapot = useGLBGeometry('/models/teapot.glb')
+  const bike = useGLBScene('/models/bike.glb')
 
   useFrame(({ clock }) => {
     if (reducedMotion) return
     const t = clock.elapsedTime
-    const flicker = 1 + Math.sin(t * 7.3) * 0.08 + Math.sin(t * 13.7) * 0.05
+    // three incommensurate frequencies + an amplitude-modulated term for occasional deep dips
+    const flicker = 1 + Math.sin(t * 7.3) * 0.06 + Math.sin(t * 11.9 + 1.7) * 0.05 + Math.sin(t * 0.7) * Math.sin(t * 23.1) * 0.045
     if (light.current) light.current.intensity = (hovered ? 100 : 60) * flicker
     if (core.current) core.current.scale.setScalar(1 + Math.sin(t * 2.1) * 0.06)
   })
@@ -659,6 +650,8 @@ function Beacon({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: Nigh
       <mesh geometry={teapot} position={[2.3, 0, 1.1]} rotation-y={-2.1} scale={0.9}>
         <meshStandardMaterial color="#7a7168" roughness={0.6} metalness={0.35} />
       </mesh>
+      {/* somebody's dusty cruiser, leaned where they left it */}
+      <primitive object={bike} position={[3.1, 0, -1.6]} rotation-y={0.85} rotation-z={0.06} scale={0.55} />
       {/* teepee of real logs, each one different, lit by their own fire */}
       {logs.map((l, i) => (
         <mesh key={i} position={l.pos} quaternion={l.quat} rotation-order="YXZ">
@@ -684,10 +677,11 @@ function Beacon({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: Nigh
       </mesh>
       {/* the flames themselves */}
       <Flame hovered={hovered} reducedMotion={reducedMotion} />
-      <LightPool position={[0, 0.025, 0]} scale={9} color="#ff9d4d" opacity={0.22} />
+      <LightPool position={[0, 0.025, 0]} scale={12} color="#ff9d4d" opacity={0.22} />
       <Embers hovered={hovered} reducedMotion={reducedMotion} />
-      <mesh position={[0, 1.2, 0]} visible={false}>
-        <sphereGeometry args={[2.8, 8, 8]} />
+      {/* tight hit volume so it can't shadow the garden behind it */}
+      <mesh position={[0, 1, 0]} visible={false}>
+        <sphereGeometry args={[2.2, 8, 8]} />
       </mesh>
       <pointLight ref={light} position={[0, 0.9, 0]} color="#ff9d4d" intensity={60} distance={16} decay={2} />
       <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={3.2} />
@@ -708,7 +702,7 @@ function Embers({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: b
     const t = reducedMotion ? 0 : clock.elapsedTime
     const dummy = new THREE.Object3D()
     for (let i = 0; i < N; i++) {
-      const cycle = (t * 0.5 + phases[i]) % 1
+      const cycle = (t * (0.38 + phases[i] * 0.3) + phases[i]) % 1
       dummy.position.set(
         Math.sin(i * 5.1 + cycle * 6) * 0.6 + Math.sin(t * 0.8 + i * 7) * 0.25,
         1.0 + cycle * 2.4,
@@ -735,6 +729,7 @@ function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter:
   const [hovered, handlers] = usePortalHover()
   const tips = useRef<THREE.InstancedMesh>(null)
   const orbs = useRef<THREE.InstancedMesh>(null)
+  const bed = useRef<THREE.Group>(null)
 
   const { stemGeo, plants, alliums } = useMemo(() => {
     const rnd = (i: number, salt: number) => {
@@ -789,10 +784,16 @@ function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter:
   useFrame(({ clock }) => {
     const t = reducedMotion ? 0 : clock.elapsedTime
     const dummy = new THREE.Object3D()
+    // wind over the whole bed: gusts lean everything from the ground up,
+    // two incommensurate periods so it swooshes instead of ticking
+    if (bed.current) {
+      bed.current.rotation.z = Math.sin(t * 0.55) * 0.014 + Math.sin(t * 1.31 + 2.1) * 0.011
+      bed.current.rotation.x = Math.sin(t * 0.43 + 1.2) * 0.008
+    }
     if (tips.current) {
       for (let i = 0; i < plants.length; i++) {
         const p = plants[i]
-        const sway = reducedMotion ? 0 : Math.sin(t * 1.4 + i * 1.9) * 0.05
+        const sway = reducedMotion ? 0 : Math.sin(t * (1.15 + (i % 7) * 0.09) + i * 1.9) * 0.05
         dummy.position.set(p.x + p.lean + sway, p.h, p.z)
         dummy.scale.setScalar((0.045 + (i % 4) * 0.014) * (hovered ? 1.5 : 1))
         dummy.updateMatrix()
@@ -803,7 +804,7 @@ function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter:
     if (orbs.current) {
       for (let i = 0; i < alliums.length; i++) {
         const p = alliums[i]
-        const bob = reducedMotion ? 0 : Math.sin(t * 0.9 + i * 2.6) * 0.04
+        const bob = reducedMotion ? 0 : Math.sin(t * (0.68 + (i % 3) * 0.11) + i * 2.6) * 0.04
         dummy.position.set(p.x, p.h + 0.16 + bob, p.z)
         dummy.scale.setScalar((0.16 + (i % 3) * 0.035) * (hovered ? 1.35 : 1))
         dummy.updateMatrix()
@@ -822,27 +823,29 @@ function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter:
         onEnter(def.href, def.external)
       }}
     >
-      {/* stems + leaves, one draw call */}
-      <lineSegments geometry={stemGeo}>
-        <lineBasicMaterial color={new THREE.Color('#6f8f6a').multiplyScalar(hovered ? 1.8 : 1)} toneMapped={false} />
-      </lineSegments>
-      {/* glowing bud tips */}
-      <instancedMesh ref={tips} args={[undefined, undefined, plants.length]}>
-        <sphereGeometry args={[1, 8, 8]} />
-        <meshBasicMaterial color={new THREE.Color('#d8e8cf').multiplyScalar(hovered ? 2.2 : 1.3)} toneMapped={false} />
-      </instancedMesh>
-      {/* allium orbs above the bed */}
-      <instancedMesh ref={orbs} args={[undefined, undefined, alliums.length]}>
-        <icosahedronGeometry args={[1, 1]} />
-        <meshBasicMaterial
-          color={new THREE.Color('#e8f0e0').multiplyScalar(hovered ? 2.4 : 1.5)}
-          wireframe
-          toneMapped={false}
-        />
-      </instancedMesh>
+      <group ref={bed}>
+        {/* stems + leaves, one draw call */}
+        <lineSegments geometry={stemGeo}>
+          <lineBasicMaterial color={new THREE.Color('#6f8f6a').multiplyScalar(hovered ? 1.8 : 1)} toneMapped={false} />
+        </lineSegments>
+        {/* glowing bud tips */}
+        <instancedMesh ref={tips} args={[undefined, undefined, plants.length]}>
+          <sphereGeometry args={[1, 8, 8]} />
+          <meshBasicMaterial color={new THREE.Color('#d8e8cf').multiplyScalar(hovered ? 2.2 : 1.3)} toneMapped={false} />
+        </instancedMesh>
+        {/* allium orbs above the bed */}
+        <instancedMesh ref={orbs} args={[undefined, undefined, alliums.length]}>
+          <icosahedronGeometry args={[1, 1]} />
+          <meshBasicMaterial
+            color={new THREE.Color('#e8f0e0').multiplyScalar(hovered ? 2.4 : 1.5)}
+            wireframe
+            toneMapped={false}
+          />
+        </instancedMesh>
+      </group>
       <LightPool position={[0, 0.03, 0]} scale={8} color="#9fcf9f" opacity={0.07} />
-      <mesh position={[0, 1.4, 0]} visible={false}>
-        <boxGeometry args={[8.5, 3.6, 6.5]} />
+      <mesh position={[0, 1.9, 0]} visible={false}>
+        <boxGeometry args={[8.5, 4.6, 6.5]} />
       </mesh>
       <pointLight position={[0, 1.2, 0]} color="#9fcf9f" intensity={hovered ? 22 : 14} distance={14} decay={2} />
       <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={3.8} />
@@ -869,7 +872,7 @@ function PinkTriangle({ def, onEnter }: { def: PortalDef; onEnter: NightFieldPro
   }, [])
   return (
     <group
-      position={[82, 13, -128]}
+      position={[82, 9, -128]}
       scale={1.7}
       {...handlers}
       onClick={(e) => {
@@ -877,11 +880,11 @@ function PinkTriangle({ def, onEnter }: { def: PortalDef; onEnter: NightFieldPro
         onEnter(def.href, def.external)
       }}
     >
-      <Line points={tri} color={new THREE.Color('#ff5fa2').multiplyScalar(hovered ? 2.4 : 1.4)} lineWidth={1.5} toneMapped={false} />
+      <Line points={tri} color={new THREE.Color('#ff5fa2').multiplyScalar(hovered ? 2.4 : 1.7)} lineWidth={1.5} toneMapped={false} />
       {/* faint pink wash inside the outline */}
       <mesh position={[0, 0, -0.05]}>
         <shapeGeometry args={[fill]} />
-        <meshBasicMaterial color="#ff5fa2" transparent opacity={hovered ? 0.14 : 0.05} toneMapped={false} side={THREE.DoubleSide} depthWrite={false} />
+        <meshBasicMaterial color="#ff5fa2" transparent opacity={hovered ? 0.14 : 0.09} toneMapped={false} side={THREE.DoubleSide} depthWrite={false} />
       </mesh>
       <mesh position={[0, 2.2, 0]} visible={false}>
         <boxGeometry args={[8, 6, 3]} />
@@ -891,24 +894,27 @@ function PinkTriangle({ def, onEnter }: { def: PortalDef; onEnter: NightFieldPro
   )
 }
 
-/* Cracked playa mud (FLORA, tileable) — the point lights reveal it */
+/* The playa itself — real terrain (Blender): near-flat where you stand,
+   swelling into dust drifts and berms toward the edges, flat pads under
+   every structure. FLORA cracked-mud tiles across it, revealed by the
+   pooled light. */
 function Ground() {
   const tex = useTexture('/textures/playa-tile.webp')
+  const terrain = useGLBGeometry('/models/terrain.glb')
   const configured = useMemo(() => {
     tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-    tex.repeat.set(26, 18)
+    tex.repeat.set(1, 1) // repeats are baked into the terrain UVs
     tex.anisotropy = 8
     return tex
   }, [tex])
   return (
-    <mesh rotation-x={-Math.PI / 2} position={[0, 0, -40]}>
-      <planeGeometry args={[600, 400]} />
+    <mesh geometry={terrain}>
       <meshStandardMaterial
         map={configured}
         bumpMap={configured}
-        bumpScale={0.6}
-        color="#c9ccd1"
-        roughness={0.95}
+        bumpScale={0.75}
+        color="#8e9194"
+        roughness={0.96}
         metalness={0}
       />
     </mesh>
@@ -921,7 +927,7 @@ function Ground() {
 function Horizon() {
   const tex = useTexture('/textures/horizon.webp')
   return (
-    <mesh position={[8, 26, -150]}>
+    <mesh position={[8, 20, -150]}>
       <planeGeometry args={[420, 224]} />
       <meshBasicMaterial map={tex} transparent depthWrite={false} fog={false} toneMapped={false} />
     </mesh>
@@ -934,8 +940,9 @@ function Horizon() {
 function MilkyWay() {
   const tex = useTexture('/textures/sky-pano.webp')
   return (
-    <mesh position={[0, 85, 0]} rotation-y={0.4}>
-      <cylinderGeometry args={[210, 210, 150, 48, 1, true]} />
+    // bottom rim dropped below the ground plane so no hard seam arcs across the sky
+    <mesh position={[0, 70, 0]} rotation-y={0.4}>
+      <cylinderGeometry args={[210, 210, 180, 48, 1, true]} />
       <meshBasicMaterial
         map={tex}
         side={THREE.BackSide}
@@ -951,29 +958,37 @@ function MilkyWay() {
 }
 
 function Rig({ reducedMotion }: { reducedMotion: boolean }) {
-  useFrame(({ camera, pointer, clock, size }) => {
+  useFrame(({ camera, pointer, clock, size }, delta) => {
     const aspect = size.width / size.height
     const targetZ = aspect < 0.75 ? 44 : aspect < 1.15 ? 30 : 22
-    camera.position.z += (targetZ - camera.position.z) * 0.08
+    camera.position.z += (targetZ - camera.position.z) * (1 - Math.exp(-5 * delta))
     if (reducedMotion) {
       camera.lookAt(aspect < 0.75 ? 3 : 0, 4.5, -30)
       return
     }
     const t = clock.elapsedTime
-    const targetX = pointer.x * 3 + Math.sin(t * 0.08) * 0.6
-    const targetY = 3.2 + pointer.y * 1.2
-    camera.position.x += (targetX - camera.position.x) * 0.04
-    camera.position.y += (targetY - camera.position.y) * 0.04
-    camera.lookAt(aspect < 0.75 ? 3 : 0, 4.5, -30)
+    // two incommensurate drift periods (~78s / ~217s) plus a faint vertical breath
+    const targetX = pointer.x * 3 + Math.sin(t * 0.08) * 0.45 + Math.sin(t * 0.029 + 1.7) * 0.3
+    const targetY = 3.2 + pointer.y * 1.2 + Math.sin(t * 0.047 + 0.8) * 0.12
+    const k = 1 - Math.exp(-2.5 * delta)
+    camera.position.x += (targetX - camera.position.x) * k
+    camera.position.y += (targetY - camera.position.y) * k
+    // gaze drifts on periods incommensurate with the position drift, so the
+    // viewpoint breathes instead of dollying on a rail
+    const lx = (aspect < 0.75 ? 3 : 0) + Math.sin(t * 0.021 + 3.1) * 0.8
+    const ly = 4.5 + Math.sin(t * 0.037 + 2.2) * 0.25
+    camera.lookAt(lx, ly, -30)
   })
   return null
 }
 
 useGLTF.preload('/models/them.glb')
-useGLTF.preload('/models/dish.glb')
-useGLTF.preload('/models/signpost.glb')
+useGLTF.preload('/models/telescope.glb?v=2')
+useGLTF.preload('/models/signpost-hd.glb')
 useGLTF.preload('/models/suzanne.glb')
 useGLTF.preload('/models/teapot.glb')
+useGLTF.preload('/models/bike.glb')
+useGLTF.preload('/models/terrain.glb')
 useTexture.preload('/textures/playa-tile.webp')
 useTexture.preload('/textures/horizon.webp')
 useTexture.preload('/textures/steel-tile.webp')
@@ -997,19 +1012,19 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       frameloop={reducedMotion ? 'demand' : 'always'}
       style={{ position: 'absolute', inset: 0 }}
     >
-      <color attach="background" args={['#08090b']} />
-      <fog attach="fog" args={['#08090b', 28, 115]} />
+      <color attach="background" args={['#0e1113']} />
+      <fog attach="fog" args={['#0e1113', 30, 145]} />
       <ambientLight intensity={0.06} />
-      <hemisphereLight args={['#141720', '#0a0908']} intensity={0.25} />
-      {/* the far glow behind the ridge throws the faintest warm light
-          across the playa — enough to give the steel bodies shape */}
-      <directionalLight position={[-6, 18, -120]} color="#8a7a68" intensity={0.4} />
+      <hemisphereLight args={['#1a2233', '#0a0908']} intensity={0.28} />
+      {/* the far glow behind the ridge throws a faint warm light across
+          the playa — enough to ghost the cracked mud in between pools */}
+      <directionalLight position={[-6, 18, -120]} color="#8a7a68" intensity={0.32} />
 
-      {/* the playa — flat base always present; the FLORA cracked-mud
-          texture suspends in on top, revealed by the pooled light */}
-      <mesh rotation-x={-Math.PI / 2} position={[0, -0.02, -40]}>
+      {/* flat base under the terrain so nothing shows through while the
+          terrain mesh suspends in */}
+      <mesh rotation-x={-Math.PI / 2} position={[0, -0.55, -40]}>
         <planeGeometry args={[600, 400]} />
-        <meshStandardMaterial color="#101114" roughness={0.95} metalness={0} />
+        <meshStandardMaterial color="#14161a" roughness={0.95} metalness={0} />
       </mesh>
       <Stars radius={220} depth={40} count={900} factor={3} saturation={0} fade speed={reducedMotion ? 0 : 0.4} />
 
@@ -1021,7 +1036,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
         <MilkyWay />
         <Them def={PORTALS.art} onEnter={onEnter} reducedMotion={reducedMotion} />
         <Constellation def={PORTALS.work} onEnter={onEnter} reducedMotion={reducedMotion} />
-        <Fork def={PORTALS.thinking} onEnter={onEnter} reducedMotion={reducedMotion} />
+        <Fork def={PORTALS.thinking} onEnter={onEnter} />
         <Beacon def={PORTALS.contact} onEnter={onEnter} reducedMotion={reducedMotion} />
         <GardenPatch def={PORTALS.garden} onEnter={onEnter} reducedMotion={reducedMotion} />
         <PinkTriangle def={PORTALS.triangle} onEnter={onEnter} />
@@ -1030,7 +1045,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       <Rig reducedMotion={reducedMotion} />
 
       <EffectComposer>
-        <Bloom intensity={0.85} luminanceThreshold={1} mipmapBlur radius={0.75} />
+        <Bloom intensity={0.65} luminanceThreshold={1.15} mipmapBlur radius={0.75} />
       </EffectComposer>
     </Canvas>
   )
