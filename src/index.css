@@ -103,6 +103,11 @@
 
 * { box-sizing: border-box; }
 
+/* The heaviest weight on this site is semibold. Anything that asks for
+   bold — Astryx's bold token, <strong>, UA defaults — lands on 600. */
+:root { --font-weight-bold: 600; }
+strong, b { font-weight: 600; }
+
 html {
   overflow-x: clip; /* .bleed bands are in-flow 100vw breakouts */
   background: var(--bg);

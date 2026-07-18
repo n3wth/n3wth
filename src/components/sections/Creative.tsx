@@ -1,5 +1,5 @@
 import { Button } from '@astryxdesign/core/Button'
-import { installations, siteConfig } from '../../data/content'
+import { installations } from '../../data/content'
 
 /** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
 function sentenceCase(type: string) {
@@ -112,16 +112,7 @@ export function Creative() {
         >
           The next one is already sketched.
         </p>
-        <div className="flex flex-wrap items-center gap-4">
-          <Button
-            label="More at newth.art"
-            variant="primary"
-            href={siteConfig.artSite}
-            target="_blank"
-            rel="noopener noreferrer"
-          />
-          <Button label="Build one with me" variant="ghost" href="/contact" />
-        </div>
+        <Button label="Build one with me" variant="primary" href="/contact" />
       </div>
     </section>
   )

@@ -10,7 +10,7 @@ export function Thinking() {
     <section id="thinking" aria-label="Thinking">
       <SectionHeader
         title="What I believe about production AI"
-        lede="Three positions I've arrived at from shipping AI at scale — and from running a team of autonomous agents in production — with the specific, hard-won reasons behind each."
+        lede="Three positions from shipping AI at scale and running an agent team in production. Open each one for the reasons."
       />
 
       <div className="section-pad pad-tight !pt-0">

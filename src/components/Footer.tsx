@@ -17,7 +17,6 @@ const legalLinks = [
 const connectLinks = [
   { label: 'GitHub', href: siteConfig.social.github },
   { label: 'LinkedIn', href: siteConfig.social.linkedin },
-  { label: 'newth.art', href: siteConfig.artSite },
   { label: 'Email', href: `mailto:${siteConfig.email}` },
 ]
 

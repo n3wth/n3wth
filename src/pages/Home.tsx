@@ -8,7 +8,7 @@ const chapters = [
   {
     href: '/work',
     title: 'Work',
-    blurb: 'A decade of AI in production — Google, Covariant, Meta, Microsoft — and five products shipped with an agent team.',
+    blurb: 'Ten years of AI in production at Google, Covariant, Meta, and Microsoft, and five products shipped with an agent team.',
   },
   {
     href: '/art',

@@ -11,7 +11,7 @@ export const thoughtPieces: ThoughtPiece[] = [
     id: 'agents-org-design',
     title: 'Agents Are an Org Design Problem',
     description:
-      'I don’t just build products for the agent era — I run on it. My products are engineered, reviewed, and shipped daily by a standing team of autonomous agents with named desks, real schedules, and hard rules about what stays human. The lessons that matter are organizational, not technical.',
+      'My products are engineered, reviewed, and shipped daily by a standing team of autonomous agents with named desks, real schedules, and hard rules about what stays human. The lessons that matter are organizational, not technical.',
     insights: [
       'Agents compound only when work leaves a trail. Every solved bug becomes a doc the next agent inherits, so the team gets faster every week instead of rediscovering the same failure.',
       'The trust boundary is the real design decision: agents own everything reversible — code, drafts, analysis — while a human makes every call that touches money, identity, or anything irreversible.',

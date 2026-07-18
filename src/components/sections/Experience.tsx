@@ -9,7 +9,7 @@ export function Experience() {
     <section id="work" aria-label="Experience">
       <SectionHeader
         title="A decade of AI, in production"
-        lede="Google, Covariant, Meta, Microsoft — taking systems from research demos to things billions of people rely on."
+        lede="Ten years taking AI from research demos to production at Google, Covariant, Meta, and Microsoft."
       />
 
       <div className="section-pad pad-tight !pt-0">

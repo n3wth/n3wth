@@ -27,7 +27,9 @@ npm run build    # tsc + vite build (verify before committing)
 - `src/lib/gsap.ts` - Centralized GSAP plugin registration (always import from here)
 
 ## Design
-- **Before any visual or design work, read `.claude/skills/frontend-design/SKILL.md`** (Anthropic's frontend-design skill) and design against it: ground choices in the subject (light art × agentic systems), spend boldness in one signature element, keep everything else quiet, respect reduced motion, and treat copy as design material.
+- Before any visual/design work, load `.claude/skills/frontend-design/SKILL.md` (Anthropic) and `.claude/skills/hallmark/SKILL.md` (anti-AI-slop design) and design against both.
+- Before writing or editing any user-facing copy, load `.claude/skills/anti-ai-slop-writing/SKILL.md` and follow its constraints (banned vocabulary, no detectable AI patterns).
+- Weights: this site's heaviest font weight is semibold (600) — never use bold/700.
 
 ## Key Conventions
 - **GSAP imports:** Always use `import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'` - never import gsap directly or re-register plugins

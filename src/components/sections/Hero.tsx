@@ -33,9 +33,8 @@ export function Hero() {
             style={{ color: 'var(--ink-dim)' }}
           >
             I've shipped AI to billions at Google, Meta, and Microsoft, and
-            spoke at Google I/O 2025. Now I work at the front of two crafts:
-            agentic systems — my products ship daily via a standing team of
-            autonomous agents — and the visual design of everything they build.
+            spoke at Google I/O 2025. These days a standing team of autonomous
+            agents ships my products while I design what they build.
           </p>
         </div>
 
