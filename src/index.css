@@ -738,6 +738,39 @@ body {
   }
 }
 
+/* ---------- Night-field home ---------- */
+.world-label {
+  position: absolute;
+  transform: translate(-50%, -170%);
+  pointer-events: none;
+  text-align: center;
+  z-index: 10;
+}
+.world-label-title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.world-label-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--ink-dim);
+}
+.world-door {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ink-dim);
+  transition: color 0.2s var(--ease);
+}
+.world-door:hover {
+  color: var(--ink);
+}
+
 /* The dilemma reveal (bars + the call) surfaces after choosing */
 @media (prefers-reduced-motion: no-preference) {
   .challenge-reveal {
