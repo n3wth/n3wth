@@ -1,6 +1,5 @@
 import { Button } from '@astryxdesign/core/Button'
 import { HeroBackdrop } from '../HeroBackdrop'
-import { heroStats } from '../../data/content'
 
 export function Hero() {
   return (
@@ -43,31 +42,9 @@ export function Hero() {
           <Button label="View work" variant="ghost" href="/work" />
         </div>
 
-        <div className="mt-12 md:mt-16">
-          <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-6">
-            {heroStats.map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col-reverse py-2"
-              >
-                {/* dt precedes dd in the DOM for valid <dl> semantics;
-                    flex-col-reverse keeps the value visually first. */}
-                <dt
-                  className="mt-1.5 text-[11px] uppercase tracking-[0.08em]"
-                  style={{ color: 'var(--ink-faint)' }}
-                >
-                  {stat.label}
-                </dt>
-                <dd
-                  className="text-sm font-semibold tracking-[-0.01em] m-0"
-                  style={{ color: 'var(--ink)' }}
-                >
-                  {stat.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <p className="mt-12 md:mt-16 meta" style={{ color: 'var(--ink-faint)' }}>
+          Google I/O 2025 speaker · Previously Covariant, Meta, Microsoft
+        </p>
       </div>
     </section>
   )
