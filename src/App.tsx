@@ -25,6 +25,8 @@ function ScrollToTop() {
 }
 
 function App() {
+  const { pathname } = useLocation()
+  const isHome = pathname === '/'
   const onKonami = useCallback(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const els = document.querySelectorAll('h1, h2, h3, .display')
@@ -53,7 +55,9 @@ function App() {
             </main>
           </div>
         </div>
-        <Footer />
+        {/* the home page is a single full-viewport scene — no footer,
+            nothing to scroll to */}
+        {!isHome && <Footer />}
       </LinkProvider>
     </Theme>
   )

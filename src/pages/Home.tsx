@@ -1,70 +1,102 @@
-import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
-import { Hero } from '../components/sections/Hero'
+import { Component, Suspense, lazy, useCallback, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../data/content'
 
-const chapters = [
-  {
-    href: '/work',
-    title: 'Work',
-    blurb: 'The ship log: ten years of production AI, and the five products my agent team keeps live.',
-  },
-  {
-    href: '/art',
-    title: 'After dark',
-    blurb: 'Three light installations, from Black Rock City to Twin Peaks.',
-  },
-  {
-    href: '/thinking',
-    title: 'Thinking',
-    blurb: 'What a decade of production AI taught me, including the calls with no clean answer.',
-  },
+/* The front door is a field at night (three.js, lazy so the rest of the
+   site never pays for it): every glowing structure is one of Oliver's
+   works standing in for a page, and colored light — the medium of the
+   art — is the only color on the site. The portal links below the scene
+   are real anchors, so keyboard, touch, and no-WebGL visitors get the
+   same doors. */
+
+const NightField = lazy(() => import('../components/NightField'))
+
+/* Static night: the FLORA playa photograph, for browsers without WebGL
+   or when the GL context dies. Same mood, zero JS. */
+function StaticNight() {
+  return (
+    <img
+      src="/images/hero-playa.webp"
+      alt=""
+      aria-hidden
+      className="absolute inset-0 h-full w-full object-cover"
+    />
+  )
+}
+
+function webglSupported(): boolean {
+  try {
+    const c = document.createElement('canvas')
+    return !!(c.getContext('webgl2') || c.getContext('webgl'))
+  } catch {
+    return false
+  }
+}
+
+/* Catches three.js/context crashes at runtime and swaps in the still. */
+class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+  render() {
+    return this.state.failed ? <StaticNight /> : this.props.children
+  }
+}
+
+const portals = [
+  { href: '/work', label: 'Work' },
+  { href: '/art', label: 'After dark' },
+  { href: '/thinking', label: 'Thinking' },
+  { href: '/contact', label: 'Contact' },
 ]
 
 export default function Home() {
   usePageMeta(siteConfig.title, siteConfig.description)
+  const navigate = useNavigate()
+
+  const reducedMotion = useMemo(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    []
+  )
+  const webglOk = useMemo(webglSupported, [])
+
+  const onEnter = useCallback(
+    (href: string, external?: boolean) => {
+      if (external) {
+        window.location.href = href
+      } else {
+        navigate(href, { viewTransition: true })
+      }
+    },
+    [navigate]
+  )
 
   return (
-    <>
-      <Hero />
+    <section className="bleed relative -mt-20" style={{ height: '100svh' }}>
+      {webglOk ? (
+        <SceneBoundary>
+          <Suspense
+            fallback={<div className="absolute inset-0" style={{ background: '#08090b' }} />}
+          >
+            <NightField onEnter={onEnter} reducedMotion={reducedMotion} />
+          </Suspense>
+        </SceneBoundary>
+      ) : (
+        <StaticNight />
+      )}
 
-      {/* Chapter index — the front door to the rest of the site */}
-      <nav aria-label="Site chapters" className="section-pad pad-air">
-        <ul className="grid gap-4 md:grid-cols-2 md:gap-5">
-          {chapters.map((chapter, i) => (
-            <li key={chapter.href} className={i === 0 ? 'md:col-span-2' : undefined}>
-              <Link
-                to={chapter.href}
-                viewTransition
-                className="cell group flex h-full flex-col p-6 md:p-7"
-              >
-                <span className="flex items-center justify-between">
-                  <span
-                    className="display text-xl md:text-2xl"
-                    style={{ letterSpacing: '-0.02em' }}
-                  >
-                    {chapter.title}
-                  </span>
-                  <ArrowRight
-                    size={18}
-                    strokeWidth={1.5}
-                    aria-hidden="true"
-                    className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"
-                    style={{ color: 'var(--ink-faint)' }}
-                  />
-                </span>
-                <span
-                  className="mt-3 text-sm leading-relaxed"
-                  style={{ color: 'var(--ink-dim)' }}
-                >
-                  {chapter.blurb}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {/* Screen-reader / no-WebGL doors — visually the lights are the nav */}
+      <nav aria-label="Site chapters" className="sr-only">
+        {portals.map((p) => (
+          <Link key={p.href} to={p.href} viewTransition>
+            {p.label}
+          </Link>
+        ))}
+        <a href="https://garden.n3wth.com">The garden</a>
       </nav>
-    </>
+    </section>
   )
 }
