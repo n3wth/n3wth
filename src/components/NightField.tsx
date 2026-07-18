@@ -974,6 +974,32 @@ function Ground() {
   )
 }
 
+/* Ambient sky base: the World Labs Marble 360 pano of this exact
+   scene, multiplied way down — it gives every azimuth a coherent sky
+   tone and far-off camp lights, while the crisp star/ridge layers
+   above carry the detail */
+function PanoSky() {
+  const tex = useTexture('/textures/marble-pano.webp')
+  const configured = useMemo(() => {
+    tex.colorSpace = THREE.SRGBColorSpace
+    tex.anisotropy = 8
+    return tex
+  }, [tex])
+  return (
+    <mesh position={[0, -4, 0]} rotation-y={2.2} renderOrder={-1}>
+      <sphereGeometry args={[430, 48, 32]} />
+      <meshBasicMaterial
+        map={configured}
+        color="#565c66"
+        side={THREE.BackSide}
+        fog={false}
+        toneMapped={false}
+        depthWrite={false}
+      />
+    </mesh>
+  )
+}
+
 /* The horizon itself is a photograph (FLORA): a real ridge silhouette
    with a far-off light dome — the glow of somewhere else out there.
    Alpha-faded on every edge so it dissolves into the scene's night. */
@@ -1097,6 +1123,7 @@ useTexture.preload('/textures/playa-tile.webp')
 useTexture.preload('/textures/horizon.webp')
 useTexture.preload('/textures/steel-tile.webp')
 useTexture.preload('/textures/wood-tile.webp')
+useTexture.preload('/textures/marble-pano.webp')
 
 const PORTALS: Record<string, PortalDef> = {
   art: { id: 'art', label: 'After dark', sub: 'Light installations', href: '/art' },
@@ -1140,6 +1167,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
           canvas — one boundary, so the GL context never remounts */}
       <Suspense fallback={null}>
         <Ground />
+        <PanoSky />
         <Horizon />
         <MilkyWay />
         <Them def={PORTALS.art} onEnter={onEnter} reducedMotion={reducedMotion} onLabel={setActive} />
