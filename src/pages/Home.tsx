@@ -1,4 +1,5 @@
-import { Suspense, lazy, useCallback, useMemo } from 'react'
+import { Component, Suspense, lazy, useCallback, useMemo } from 'react'
+import type { ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../data/content'
@@ -11,6 +12,39 @@ import { siteConfig } from '../data/content'
    same doors. */
 
 const NightField = lazy(() => import('../components/NightField'))
+
+/* Static night: the FLORA playa photograph, for browsers without WebGL
+   or when the GL context dies. Same mood, zero JS. */
+function StaticNight() {
+  return (
+    <img
+      src="/images/hero-playa.webp"
+      alt=""
+      aria-hidden
+      className="absolute inset-0 h-full w-full object-cover"
+    />
+  )
+}
+
+function webglSupported(): boolean {
+  try {
+    const c = document.createElement('canvas')
+    return !!(c.getContext('webgl2') || c.getContext('webgl'))
+  } catch {
+    return false
+  }
+}
+
+/* Catches three.js/context crashes at runtime and swaps in the still. */
+class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+  render() {
+    return this.state.failed ? <StaticNight /> : this.props.children
+  }
+}
 
 const portals = [
   { href: '/work', label: 'Work' },
@@ -27,6 +61,7 @@ export default function Home() {
     () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     []
   )
+  const webglOk = useMemo(webglSupported, [])
 
   const onEnter = useCallback(
     (href: string, external?: boolean) => {
@@ -41,9 +76,17 @@ export default function Home() {
 
   return (
     <section className="bleed relative -mt-20" style={{ height: '100svh' }}>
-      <Suspense fallback={<div className="absolute inset-0" style={{ background: '#08090b' }} />}>
-        <NightField onEnter={onEnter} reducedMotion={reducedMotion} />
-      </Suspense>
+      {webglOk ? (
+        <SceneBoundary>
+          <Suspense
+            fallback={<div className="absolute inset-0" style={{ background: '#08090b' }} />}
+          >
+            <NightField onEnter={onEnter} reducedMotion={reducedMotion} />
+          </Suspense>
+        </SceneBoundary>
+      ) : (
+        <StaticNight />
+      )}
 
       {/* Hero copy over the dark left field */}
       <div className="absolute left-6 md:left-12 top-28 md:top-32 z-10 max-w-md pointer-events-none">

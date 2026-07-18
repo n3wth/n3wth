@@ -1,6 +1,6 @@
-import { useMemo, useRef, useState } from 'react'
+import { Suspense, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Html, Line, Stars, useCursor } from '@react-three/drei'
+import { Html, Line, Stars, useCursor, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
@@ -186,8 +186,8 @@ function Fork({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
       new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p))).getPoints(40).map((v) => [v.x, v.y, v.z] as [number, number, number])
     return [
       mk([[-3.5, 0.06, 9], [-1.5, 0.06, 4], [0, 0.06, 0]]),
-      mk([[0, 0.06, 0], [1.6, 0.06, -3.4], [4.6, 0.06, -6.4]]),
-      mk([[0, 0.06, 0], [0.6, 0.06, -4], [0.4, 0.06, -8.5]]),
+      mk([[0, 0.06, 0], [1.3, 0.06, -2.6], [3.2, 0.06, -4.6]]),
+      mk([[0, 0.06, 0], [0.4, 0.06, -3.2], [0.2, 0.06, -6.6]]),
     ]
   }, [])
 
@@ -196,7 +196,7 @@ function Fork({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
 
   return (
     <group
-      position={[3, 0, -7]}
+      position={[0, 0, -5]}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -335,6 +335,30 @@ function PinkTriangle({ def, onEnter }: { def: PortalDef; onEnter: NightFieldPro
   )
 }
 
+/* Cracked playa mud (FLORA, tileable) — the point lights reveal it */
+function Ground() {
+  const tex = useTexture('/textures/playa-tile.webp')
+  const configured = useMemo(() => {
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping
+    tex.repeat.set(26, 18)
+    tex.anisotropy = 8
+    return tex
+  }, [tex])
+  return (
+    <mesh rotation-x={-Math.PI / 2} position={[0, 0, -40]}>
+      <planeGeometry args={[600, 400]} />
+      <meshStandardMaterial
+        map={configured}
+        bumpMap={configured}
+        bumpScale={0.35}
+        color="#c9ccd1"
+        roughness={0.95}
+        metalness={0}
+      />
+    </mesh>
+  )
+}
+
 /* Distant ridge silhouettes */
 function Ridge() {
   const geom = useMemo(() => {
@@ -356,14 +380,20 @@ function Ridge() {
 }
 
 function Rig({ reducedMotion }: { reducedMotion: boolean }) {
-  useFrame(({ camera, pointer, clock }) => {
-    if (reducedMotion) return
+  useFrame(({ camera, pointer, clock, size }) => {
+    const aspect = size.width / size.height
+    const targetZ = aspect < 0.75 ? 44 : aspect < 1.15 ? 30 : 22
+    camera.position.z += (targetZ - camera.position.z) * 0.08
+    if (reducedMotion) {
+      camera.lookAt(aspect < 0.75 ? 3 : 0, 2.5, -18)
+      return
+    }
     const t = clock.elapsedTime
     const targetX = pointer.x * 3 + Math.sin(t * 0.08) * 0.6
     const targetY = 5.2 + pointer.y * 1.2
     camera.position.x += (targetX - camera.position.x) * 0.04
     camera.position.y += (targetY - camera.position.y) * 0.04
-    camera.lookAt(0, 2.5, -18)
+    camera.lookAt(aspect < 0.75 ? 3 : 0, 2.5, -18)
   })
   return null
 }
@@ -390,11 +420,15 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       <fog attach="fog" args={['#08090b', 34, 140]} />
       <ambientLight intensity={0.06} />
 
-      {/* the playa */}
-      <mesh rotation-x={-Math.PI / 2} position={[0, 0, -40]}>
+      {/* the playa — flat base always present; the FLORA cracked-mud
+          texture suspends in on top, revealed by the pooled light */}
+      <mesh rotation-x={-Math.PI / 2} position={[0, -0.02, -40]}>
         <planeGeometry args={[600, 400]} />
         <meshStandardMaterial color="#101114" roughness={0.95} metalness={0} />
       </mesh>
+      <Suspense fallback={null}>
+        <Ground />
+      </Suspense>
       <Ridge />
       <Stars radius={220} depth={40} count={900} factor={3} saturation={0} fade speed={reducedMotion ? 0 : 0.4} />
 

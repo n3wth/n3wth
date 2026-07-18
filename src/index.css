@@ -761,6 +761,11 @@ body {
   color: var(--ink-dim);
 }
 .world-door {
+  /* inline-flex so the 44px touch floor actually applies (min-height is
+     ignored on inline display) */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.01em;
