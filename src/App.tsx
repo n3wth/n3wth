@@ -46,7 +46,9 @@ function App() {
         <ScrollToTop />
         <div className="pt-20">
           <div className="frame">
-            <main id="main">
+            {/* tabIndex so the skip link moves DOM focus here, not just
+                the scroll position */}
+            <main id="main" tabIndex={-1} style={{ outline: 'none' }}>
               <Outlet />
             </main>
           </div>

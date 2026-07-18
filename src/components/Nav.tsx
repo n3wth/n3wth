@@ -27,12 +27,19 @@ export function Nav() {
     }
   }, [open])
 
-  /* The sheet is a modal: focus moves to its close button on open and
-     Tab wraps at its edges instead of walking into the covered page. */
+  /* The sheet is a modal: focus moves to its close button on open, Tab
+     wraps at its edges instead of walking into the covered page, and
+     focus returns to the opener on close. */
   const menuRef = useRef<HTMLDivElement>(null)
   const closeWrapRef = useRef<HTMLSpanElement>(null)
+  const openerRef = useRef<HTMLElement | null>(null)
   useEffect(() => {
-    if (!open) return
+    if (!open) {
+      if (openerRef.current?.isConnected) openerRef.current.focus()
+      openerRef.current = null
+      return
+    }
+    openerRef.current = (document.activeElement as HTMLElement | null) ?? null
     const menu = menuRef.current
     closeWrapRef.current?.querySelector('button')?.focus()
     const onKeyDown = (e: KeyboardEvent) => {
