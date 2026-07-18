@@ -1,13 +1,13 @@
 export const siteConfig = {
   name: 'Oliver Newth',
   title: 'Oliver Newth - AI & Design Leader',
-  description: 'AI and design leader. Ships products with a standing team of autonomous agents; designs the systems, interfaces, and desert-scale light they run on. Google I/O 2025 speaker.',
+  description: 'AI and design leader in San Francisco. I build products with a team of autonomous agents and make large-scale light art. Google I/O 2025 speaker.',
   email: 'oliver@newth.ai',
   social: {
     github: 'https://github.com/n3wth',
     linkedin: 'https://linkedin.com/in/olivernewth',
   },
-  artSite: 'https://newth.art',
+  gardenSite: 'https://garden.n3wth.com',
 }
 
 /** Proof points surfaced in the hero — experience records + the live agent org. */

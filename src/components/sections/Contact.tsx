@@ -56,16 +56,6 @@ export function Contact() {
                   LinkedIn
                 </a>
               </li>
-              <li>
-                <a
-                  href={siteConfig.artSite}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-underline text-xs font-medium uppercase tracking-[0.16em]"
-                >
-                  newth.art
-                </a>
-              </li>
             </ul>
           </div>
 
