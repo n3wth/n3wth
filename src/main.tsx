@@ -8,6 +8,7 @@ import Work from './pages/Work'
 import Art from './pages/Art'
 import Thinking from './pages/Thinking'
 import Contact from './pages/Contact'
+import NotFound from './pages/NotFound'
 
 // CSS Studio — dev-only visual CSS editor. Dynamic import so it is NEVER bundled
 // into the production build. Removed entirely when import.meta.env.DEV is false.
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
       { path: 'art', element: <Art /> },
       { path: 'thinking', element: <Thinking /> },
       { path: 'contact', element: <Contact /> },
-      { path: '*', element: <Home /> },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ])

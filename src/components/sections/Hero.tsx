@@ -37,14 +37,12 @@ export function Hero() {
           </p>
         </div>
 
+        {/* The paragraph above already carries the credentials — repeating
+            them in a strapline said the same thing twice in one viewport. */}
         <div className="mt-10 md:mt-14 flex flex-wrap items-center gap-4">
           <Button label="Get in touch" variant="primary" href="/contact" />
           <Button label="View work" variant="ghost" href="/work" />
         </div>
-
-        <p className="mt-12 md:mt-16 meta" style={{ color: 'var(--ink-faint)' }}>
-          Google I/O 2025 speaker · Previously Covariant, Meta, Microsoft
-        </p>
       </div>
     </section>
   )

@@ -9,11 +9,6 @@ const ecosystemSites = [
   { name: 'n3wth/garden', href: 'https://garden.n3wth.com' },
 ]
 
-const legalLinks = [
-  { label: 'Terms', href: '/terms' },
-  { label: 'Privacy', href: '/privacy' },
-]
-
 const connectLinks = [
   { label: 'GitHub', href: siteConfig.social.github },
   { label: 'LinkedIn', href: siteConfig.social.linkedin },
@@ -42,13 +37,6 @@ export function Footer() {
             <p className="mt-6 text-[11px] uppercase tracking-[0.08em]" style={{ color: 'var(--ink-faint)' }}>
               © Oliver Newth 2026
             </p>
-            <nav className="mt-2 flex items-center gap-4" aria-label="Legal">
-              {legalLinks.map((link) => (
-                <a key={link.href} href={link.href} className="footer-link text-xs">
-                  {link.label}
-                </a>
-              ))}
-            </nav>
           </div>
 
           <nav aria-label="Connect">

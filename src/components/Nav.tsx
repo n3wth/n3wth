@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, X } from 'lucide-react'
@@ -25,6 +25,32 @@ export function Nav() {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', onKeyDown)
     }
+  }, [open])
+
+  /* The sheet is a modal: focus moves to its close button on open and
+     Tab wraps at its edges instead of walking into the covered page. */
+  const menuRef = useRef<HTMLDivElement>(null)
+  const closeWrapRef = useRef<HTMLSpanElement>(null)
+  useEffect(() => {
+    if (!open) return
+    const menu = menuRef.current
+    closeWrapRef.current?.querySelector('button')?.focus()
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !menu) return
+      const focusables = menu.querySelectorAll<HTMLElement>('a, button')
+      if (focusables.length === 0) return
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
   }, [open])
 
   return (
@@ -71,6 +97,10 @@ export function Nav() {
       {/* Full-screen mobile menu — app-style sheet with large tap targets */}
       {open && (
         <div
+          ref={menuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site navigation"
           className="mobile-menu fixed inset-0 z-[70] md:hidden flex flex-col"
           style={{
             background: 'var(--bg)',
@@ -85,13 +115,15 @@ export function Nav() {
               </span>
               <span>n3wth</span>
             </span>
-            <IconButton
-              label="Close navigation"
-              icon={<X size={20} />}
-              variant="ghost"
-              size="lg"
-              onClick={() => setOpen(false)}
-            />
+            <span ref={closeWrapRef}>
+              <IconButton
+                label="Close navigation"
+                icon={<X size={20} />}
+                variant="ghost"
+                size="lg"
+                onClick={() => setOpen(false)}
+              />
+            </span>
           </div>
           <nav className="flex flex-col gap-1 px-4 pt-2" aria-label="Mobile navigation">
             {navigation.map((item) => (

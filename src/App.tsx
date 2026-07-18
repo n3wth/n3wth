@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigationType } from 'react-router-dom'
 import { Theme } from '@astryxdesign/core/theme'
 import { LinkProvider } from '@astryxdesign/core/Link'
 import { RouterLink } from './components/RouterLink'
@@ -14,9 +14,13 @@ import { n3wthTheme } from './theme/n3wthTheme'
 /** Jump to the top on route change (browser back/forward keeps its position). */
 function ScrollToTop() {
   const { pathname } = useLocation()
+  const navigationType = useNavigationType()
   useEffect(() => {
+    // POP = back/forward: let the browser restore the previous position
+    // instead of clobbering it with the top of the page.
+    if (navigationType === 'POP') return
     window.scrollTo(0, 0)
-  }, [pathname])
+  }, [pathname, navigationType])
   return null
 }
 

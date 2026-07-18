@@ -21,27 +21,31 @@ export const ChallengeCard = memo(function ChallengeCard({
       data-challenge-card
       className="cell relative px-5 py-8 md:px-8 md:py-10"
     >
-      <div className="relative max-w-3xl">
+      {/* Prose stays at a readable measure; the trade-off bars — the data
+          display — get the card's full width for scale resolution. */}
+      <div className="relative">
         <div>
-          <h3
-            className="display text-xl md:text-2xl mb-4"
-            style={{ letterSpacing: '-0.02em' }}
-          >
-            {challenge.title}
-          </h3>
-          <p
-            className="text-sm md:text-base leading-relaxed max-w-2xl mb-8"
-            style={{ color: 'var(--ink-dim)' }}
-          >
-            {challenge.scenario}
-          </p>
+          <div className="max-w-3xl">
+            <h3
+              className="display text-xl md:text-2xl mb-4"
+              style={{ letterSpacing: '-0.02em' }}
+            >
+              {challenge.title}
+            </h3>
+            <p
+              className="text-sm md:text-base leading-relaxed max-w-2xl mb-8"
+              style={{ color: 'var(--ink-dim)' }}
+            >
+              {challenge.scenario}
+            </p>
 
-          <p className="index mb-4">Choose a path</p>
-          <ChoiceButtons
-            choices={challenge.choices}
-            onChoice={onChoice}
-            isAnimating={isAnimating}
-          />
+            <p className="index mb-4">Choose a path</p>
+            <ChoiceButtons
+              choices={challenge.choices}
+              onChoice={onChoice}
+              isAnimating={isAnimating}
+            />
+          </div>
 
           <TradeoffBars choices={challenge.choices} chosenMetrics={chosenMetrics} />
 
