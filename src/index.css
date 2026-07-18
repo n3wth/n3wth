@@ -738,6 +738,16 @@ body {
   }
 }
 
+/* The dilemma reveal (bars + the call) surfaces after choosing */
+@media (prefers-reduced-motion: no-preference) {
+  .challenge-reveal {
+    animation: reveal-rise 0.45s var(--ease) both;
+  }
+}
+@keyframes reveal-rise {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
 /* ---------- Press tactility ----------
    Taps get an immediate scale acknowledgment (the garden's .press
    pattern) instead of nothing until the route change lands. */
