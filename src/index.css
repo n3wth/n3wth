@@ -108,6 +108,11 @@
 :root { --font-weight-bold: 600; }
 strong, b { font-weight: 600; }
 
+/* Balanced line wrapping: headings never break into lopsided lines, and
+   paragraphs never orphan a single word onto the last line. */
+h1, h2, h3, .display { text-wrap: balance; }
+p { text-wrap: pretty; }
+
 html {
   overflow-x: clip; /* .bleed bands are in-flow 100vw breakouts */
   background: var(--bg);
@@ -242,19 +247,6 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .art-band-img { animation: none; }
-}
-
-/* Bottom text protection only — the top of every frame stays untouched. */
-.art-band-scrim {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    rgba(8, 9, 11, 0.78) 0%,
-    rgba(8, 9, 11, 0.38) 22%,
-    rgba(8, 9, 11, 0) 42%
-  );
 }
 
 /* Caption aligned to the frame's gutters even though the band is 100vw. */
