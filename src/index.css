@@ -744,6 +744,7 @@ body {
   transform: translate(-50%, -170%);
   pointer-events: none;
   text-align: center;
+  white-space: nowrap;
   z-index: 10;
 }
 .world-label-title {

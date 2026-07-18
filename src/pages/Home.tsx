@@ -88,32 +88,6 @@ export default function Home() {
         <StaticNight />
       )}
 
-      {/* Hero copy over the dark left field */}
-      <div className="absolute left-6 md:left-12 top-28 md:top-32 z-10 max-w-md pointer-events-none">
-        <h1
-          className="display text-[clamp(2.75rem,7vw,5.5rem)]"
-          style={{ lineHeight: 0.9 }}
-        >
-          Oliver
-          <br />
-          Newth
-        </h1>
-        <p
-          className="display mt-6 text-lg md:text-xl leading-snug"
-          style={{ letterSpacing: '-0.02em' }}
-        >
-          AI at Google. <span className="accent">Art in the desert.</span>
-        </p>
-        <p
-          className="mt-4 text-sm leading-relaxed max-w-sm"
-          style={{ color: 'var(--ink-dim)' }}
-        >
-          I ship AI products by day and build large-scale light art after
-          dark. This page is a field at night — everything glowing is
-          somewhere to go.
-        </p>
-      </div>
-
       {/* Real doors: the same portals as the lights */}
       <nav
         aria-label="Site chapters"
