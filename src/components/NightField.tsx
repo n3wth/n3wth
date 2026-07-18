@@ -124,6 +124,8 @@ function SteelAndWire({
   mapUrl,
   phase = 0,
   edgeFog = true,
+  bodyColor = '#e2e2e2',
+  bodyFog = true,
 }: {
   geometry: THREE.BufferGeometry
   edgeColor: string
@@ -134,6 +136,8 @@ function SteelAndWire({
   mapUrl: string
   phase?: number
   edgeFog?: boolean
+  bodyColor?: string
+  bodyFog?: boolean
 }) {
   const edges = useMemo(() => {
     const g = new THREE.EdgesGeometry(geometry, edgeThreshold)
@@ -174,9 +178,11 @@ function SteelAndWire({
           map={configured}
           bumpMap={configured}
           bumpScale={0.6}
-          color="#e2e2e2"
+          color={bodyColor}
           roughness={0.85}
           metalness={0.25}
+          fog={bodyFog}
+          side={THREE.DoubleSide}
         />
       </mesh>
       <lineSegments geometry={edges}>
@@ -356,11 +362,12 @@ function Constellation({ def, onEnter, reducedMotion }: { def: PortalDef; onEnte
           geometry={mount}
           edgeColor="#9fc4ff"
           edgeThreshold={12}
-          glow={hovered ? 2.2 : 1.2}
+          glow={hovered ? 2.0 : 1.0}
           breathe={0.8}
           reducedMotion={reducedMotion}
           mapUrl="/textures/steel-tile.webp"
           edgeFog={false}
+          bodyFog={false}
         />
       )}
       {head && (
@@ -369,12 +376,14 @@ function Constellation({ def, onEnter, reducedMotion }: { def: PortalDef; onEnte
             geometry={head}
             edgeColor="#9fc4ff"
             edgeThreshold={18}
-            glow={hovered ? 2.2 : 1.2}
+            glow={hovered ? 1.8 : 0.9}
             breathe={0.8}
             phase={1.2}
             reducedMotion={reducedMotion}
             mapUrl="/textures/steel-tile.webp"
             edgeFog={false}
+            bodyColor="#f4f4ee"
+            bodyFog={false}
           />
           {/* red light on the receiver, riding the sweep */}
           <Beacon2 reducedMotion={reducedMotion} position={[0, 5.75, -1.72]} />
@@ -383,6 +392,8 @@ function Constellation({ def, onEnter, reducedMotion }: { def: PortalDef; onEnte
       <mesh position={[0, 4.5, 0]} visible={false}>
         <boxGeometry args={[9, 10, 8]} />
       </mesh>
+      {/* floodlight on the bowl — real observatories keep them lit */}
+      <pointLight position={[2, 8.5, 6]} color="#cfd8e8" intensity={hovered ? 220 : 150} distance={30} decay={2} />
       <pointLight position={[0, 1.5, 0]} color="#7ea8e8" intensity={hovered ? 60 : 35} distance={30} decay={2} />
       <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={9.5} />
     </group>
@@ -917,6 +928,28 @@ function Horizon() {
   )
 }
 
+/* The Milky Way (FLORA astrophotography) wrapped on a far cylinder —
+   additive, so its black sky dissolves into ours and only the stars
+   and the galactic band remain */
+function MilkyWay() {
+  const tex = useTexture('/textures/sky-pano.webp')
+  return (
+    <mesh position={[0, 85, 0]} rotation-y={0.4}>
+      <cylinderGeometry args={[210, 210, 150, 48, 1, true]} />
+      <meshBasicMaterial
+        map={tex}
+        side={THREE.BackSide}
+        transparent
+        opacity={0.48}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        fog={false}
+        toneMapped={false}
+      />
+    </mesh>
+  )
+}
+
 function Rig({ reducedMotion }: { reducedMotion: boolean }) {
   useFrame(({ camera, pointer, clock, size }) => {
     const aspect = size.width / size.height
@@ -985,6 +1018,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       <Suspense fallback={null}>
         <Ground />
         <Horizon />
+        <MilkyWay />
         <Them def={PORTALS.art} onEnter={onEnter} reducedMotion={reducedMotion} />
         <Constellation def={PORTALS.work} onEnter={onEnter} reducedMotion={reducedMotion} />
         <Fork def={PORTALS.thinking} onEnter={onEnter} reducedMotion={reducedMotion} />
