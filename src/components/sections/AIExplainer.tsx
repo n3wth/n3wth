@@ -20,12 +20,11 @@ export function AIExplainer() {
 
       <div className="section-pad pad-tight !pt-0">
         <div className="space-y-4">
-          {aiChallenges.map((challenge, i) => {
+          {aiChallenges.map((challenge) => {
             const state = getChallengeState(challenge.id)
             return (
               <ChallengeCard
                 key={challenge.id}
-                index={i}
                 challenge={challenge}
                 onChoice={(metrics) => makeChoice(challenge.id, metrics)}
                 isAnimating={state.isAnimating}

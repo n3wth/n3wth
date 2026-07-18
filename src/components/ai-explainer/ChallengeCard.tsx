@@ -5,7 +5,6 @@ import { TradeoffBars } from './TradeoffBars'
 
 interface ChallengeCardProps {
   challenge: Challenge
-  index: number
   onChoice: (metrics: Record<string, number>) => void
   isAnimating: boolean
   chosenMetrics: Record<string, number> | null
@@ -13,7 +12,6 @@ interface ChallengeCardProps {
 
 export const ChallengeCard = memo(function ChallengeCard({
   challenge,
-  index,
   onChoice,
   isAnimating,
   chosenMetrics,
@@ -23,9 +21,7 @@ export const ChallengeCard = memo(function ChallengeCard({
       data-challenge-card
       className="cell relative px-5 py-8 md:px-8 md:py-10"
     >
-      <div className="relative grid gap-6 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
-        <span className="index md:pt-2">{String(index + 1).padStart(2, '0')}</span>
-
+      <div className="relative max-w-3xl">
         <div>
           <h3
             className="display text-xl md:text-2xl mb-4"

@@ -21,12 +21,9 @@ export function Thinking() {
               data-reveal
               className="cell relative px-5 py-7 md:px-8 md:py-8"
             >
-              <div className="grid gap-4 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
-                <div className="md:pt-1">
-                  <span className="eyebrow">{piece.category}</span>
-                </div>
-
-                <div className="max-w-3xl">
+              <div className="max-w-3xl">
+                <span className="eyebrow block mb-3">{piece.category}</span>
+                <div>
                   <h3
                     className="display text-xl md:text-2xl mb-3"
                     style={{ letterSpacing: '-0.02em' }}

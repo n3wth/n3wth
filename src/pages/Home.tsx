@@ -8,17 +8,17 @@ const chapters = [
   {
     href: '/work',
     title: 'Work',
-    blurb: 'Ten years of AI in production at Google, Covariant, Meta, and Microsoft, and five products shipped with an agent team.',
+    blurb: 'The ship log: ten years of production AI, and the five products my agent team keeps live.',
   },
   {
     href: '/art',
     title: 'After dark',
-    blurb: 'Large-scale light for the desert and the city: Burning Man sculpture and San Francisco memorials.',
+    blurb: 'Three light installations, from Black Rock City to Twin Peaks.',
   },
   {
     href: '/thinking',
     title: 'Thinking',
-    blurb: 'Positions on production AI, agents as an org design problem, and the real trade-offs in AI safety calls.',
+    blurb: 'What a decade of production AI taught me, including the calls with no clean answer.',
   },
 ]
 
@@ -31,9 +31,9 @@ export default function Home() {
 
       {/* Chapter index — the front door to the rest of the site */}
       <nav aria-label="Site chapters" className="section-pad pad-air">
-        <ul className="grid gap-4 md:grid-cols-3 md:gap-5">
-          {chapters.map((chapter) => (
-            <li key={chapter.href}>
+        <ul className="grid gap-4 md:grid-cols-2 md:gap-5">
+          {chapters.map((chapter, i) => (
+            <li key={chapter.href} className={i === 0 ? 'md:col-span-2' : undefined}>
               <Link
                 to={chapter.href}
                 className="cell group flex h-full flex-col p-6 md:p-7"

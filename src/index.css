@@ -32,6 +32,40 @@
   font-display: swap;
 }
 
+/* Satoshi — premium grotesque for display (Fontshare, self-hosted).
+   The Bold cut is registered at weight 600 so the site's semibold-max
+   rule maps to Satoshi's display drawing. */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Display serif candidates — headers only (kept as alternates) */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Geist Mono — literal machine output ONLY (code, coordinates, GitHub counts). Labels/eyebrows use Geist Sans. */
 @font-face {
   font-family: 'Geist Mono';
@@ -103,10 +137,20 @@
 
 * { box-sizing: border-box; }
 
+/* Display voice: Satoshi carries the headers — a premium grotesque with
+   its own drawing — while Geist stays on UI, body, and nav. Tight display
+   tracking per-element comes from the inline styles tuned for grotesques. */
+:root { --font-family-heading: 'Satoshi', 'Geist Sans', system-ui, sans-serif; }
+
 /* The heaviest weight on this site is semibold. Anything that asks for
    bold — Astryx's bold token, <strong>, UA defaults — lands on 600. */
 :root { --font-weight-bold: 600; }
 strong, b { font-weight: 600; }
+
+/* Balanced line wrapping: headings never break into lopsided lines, and
+   paragraphs never orphan a single word onto the last line. */
+h1, h2, h3, .display { text-wrap: balance; }
+p { text-wrap: pretty; }
 
 html {
   overflow-x: clip; /* .bleed bands are in-flow 100vw breakouts */
@@ -244,19 +288,6 @@ body {
   .art-band-img { animation: none; }
 }
 
-/* Bottom text protection only — the top of every frame stays untouched. */
-.art-band-scrim {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    rgba(8, 9, 11, 0.78) 0%,
-    rgba(8, 9, 11, 0.38) 22%,
-    rgba(8, 9, 11, 0) 42%
-  );
-}
-
 /* Caption aligned to the frame's gutters even though the band is 100vw. */
 .art-band-caption {
   position: absolute;
@@ -269,6 +300,17 @@ body {
 }
 @media (min-width: 768px) {
   .art-band-caption { padding-bottom: 3.25rem; }
+}
+
+/* Sky variant: the opener's caption lives in the open sky at the top of
+   the frame, set in dark ink against the pale sky — no scrim needed. */
+.art-band-caption--sky {
+  bottom: auto;
+  top: 0;
+  padding-top: calc(6.5rem + env(safe-area-inset-top));
+}
+@media (min-width: 768px) {
+  .art-band-caption--sky { padding-top: calc(8rem + env(safe-area-inset-top)); }
 }
 
 /* ---------- Scroll reveal (driven by useReveal) ---------- */

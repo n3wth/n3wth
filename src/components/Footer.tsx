@@ -36,8 +36,8 @@ export function Footer() {
               <span>n3wth</span>
             </span>
             <p className="mt-2 text-sm max-w-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-              I build AI products at Google and large LED art on the side. Based in San
-              Francisco.
+              I build AI products at Google and light installations after
+              hours. Based in San Francisco.
             </p>
             <p className="mt-6 text-[11px] uppercase tracking-[0.08em]" style={{ color: 'var(--ink-faint)' }}>
               © Oliver Newth 2026

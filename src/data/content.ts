@@ -10,14 +10,6 @@ export const siteConfig = {
   gardenSite: 'https://garden.n3wth.com',
 }
 
-/** Proof points surfaced in the hero — experience records + the live agent org. */
-export const heroStats: Metric[] = [
-  { value: '10+', label: 'Years shipping AI' },
-  { value: '750M', label: 'Daily users served' },
-  { value: '8', label: 'Autonomous agents on the team' },
-  { value: 'I/O 2025', label: 'Google speaker' },
-]
-
 export interface NavItem {
   name: string
   href: string
@@ -144,7 +136,7 @@ export const projects: Project[] = [
   {
     id: 'r3',
     name: 'r3',
-    description: 'Give any AI app persistent memory. Vector search, entity extraction, knowledge graphs -- zero config.',
+    description: 'Give any AI app persistent memory. Vector search, entity extraction, knowledge graphs — zero config.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
     url: 'https://r3.newth.ai',
     github: 'https://github.com/n3wth/r3',
@@ -160,7 +152,7 @@ export const projects: Project[] = [
   {
     id: 'hop-flights',
     name: 'hop.flights',
-    description: 'AI points-vs-cash flight optimizer and travel companion -- finds the cheapest way to fly, miles or money.',
+    description: 'Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.',
     tech: ['Next.js', 'AI SDK', 'Duffel'],
     url: 'https://hop.flights',
   },
@@ -175,7 +167,7 @@ export const projects: Project[] = [
   {
     id: 'garden',
     name: 'garden',
-    description: 'A digital garden of interconnected notes -- Obsidian-flavored markdown rendered as a living wiki.',
+    description: 'A digital garden of interconnected notes — Obsidian-flavored markdown rendered as a living wiki.',
     tech: ['Next.js', 'Astryx', 'Wikilinks'],
     url: 'https://garden.n3wth.com',
   },
