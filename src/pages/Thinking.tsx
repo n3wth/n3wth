@@ -1,5 +1,6 @@
 import { Thinking as Positions } from '../components/sections/Thinking'
 import { AIExplainer } from '../components/sections/AIExplainer'
+import { ForkLight } from '../components/ForkLight'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function ThinkingPage() {
@@ -12,19 +13,14 @@ export default function ThinkingPage() {
     <>
       <Positions />
       {/* A light path forking in the dark — the page's subject drawn once,
-          between the positions and the trade-off walkthroughs. */}
-      {/* data-reveal lives on the img, not the bleed wrapper — the reveal's
-          transform would override .bleed's translateX(-50%) centering */}
+          between the positions and the trade-off walkthroughs. Vector, so
+          it stays sharp and draws itself in on reveal. */}
+      {/* data-reveal lives on the inner div, not the bleed wrapper — the
+          reveal's transform would override .bleed's translateX(-50%) */}
       <div className="bleed" aria-hidden>
-        <img
-          data-reveal
-          src="/images/thinking-fork.webp"
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="w-full object-cover"
-          style={{ height: 'clamp(220px, 42svh, 420px)' }}
-        />
+        <div data-reveal className="w-full" style={{ height: 'clamp(220px, 42svh, 420px)' }}>
+          <ForkLight />
+        </div>
       </div>
       <AIExplainer />
     </>
