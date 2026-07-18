@@ -49,10 +49,7 @@ function buildPath(dir: -1 | 1, time: number): string {
   return pts.join(' ')
 }
 
-const LAYERS = [
-  { width: 5.5, cls: 'fork-l-glow' },
-  { width: 1.8, cls: 'fork-l-core' },
-] as const
+const LAYERS = [{ width: 2, cls: 'fork-l-core' }] as const
 
 export function ForkLight() {
   const upperRefs = useRef<(SVGPathElement | null)[]>([])
@@ -85,13 +82,6 @@ export function ForkLight() {
       focusable="false"
     >
       <defs>
-        {/* still filters (reduced motion) */}
-        <filter id="fork-haze" x="-10%" y="-300%" width="120%" height="700%">
-          <feGaussianBlur stdDeviation="12" />
-        </filter>
-        <filter id="fork-glow" x="-10%" y="-300%" width="120%" height="700%">
-          <feGaussianBlur stdDeviation="3.2" />
-        </filter>
         {/* tails fade in from the left edge; tips carry the temperature */}
         <linearGradient id="fork-grad-a" gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
           <stop offset="0" stopColor="#f2f0ec" stopOpacity="0" />
