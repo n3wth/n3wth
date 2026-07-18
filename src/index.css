@@ -743,24 +743,160 @@ body {
   stroke-dasharray: 1 1;
   stroke-dashoffset: 1;
 }
-[data-reveal].is-in .fork-trunk {
-  animation: fork-draw 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.fork-l-glow,
+.fork-l-haze {
+  opacity: 0;
 }
-[data-reveal].is-in .fork-branch {
-  animation: fork-draw 1.2s cubic-bezier(0.3, 0, 0.2, 1) 0.6s forwards;
+/* the shimmer lives in the filter; reduced motion gets the still ones */
+.fork-l-haze {
+  filter: url(#fork-haze-live);
+}
+.fork-l-glow {
+  filter: url(#fork-glow-live);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fork-l-haze {
+    filter: url(#fork-haze);
+  }
+  .fork-l-glow {
+    filter: url(#fork-glow);
+  }
+}
+/* the filament draws first; the glow blooms into it afterwards, the
+   way an exposure develops */
+[data-reveal].is-in .fork-path {
+  animation: fork-draw 3s cubic-bezier(0.16, 0, 0.1, 1) forwards;
 }
 [data-reveal].is-in .fork-branch-b {
-  animation-delay: 0.72s; /* the second path is taken a beat later */
+  animation-delay: 0.22s; /* the second path is taken a beat later */
+}
+[data-reveal].is-in .fork-l-glow {
+  animation:
+    fork-draw 3s cubic-bezier(0.16, 0, 0.1, 1) forwards,
+    fork-glow-in 2.8s cubic-bezier(0.3, 0, 0.3, 1) 0.5s forwards;
+}
+[data-reveal].is-in .fork-l-glow.fork-branch-b {
+  animation-delay: 0.22s, 0.75s;
+}
+[data-reveal].is-in .fork-l-haze {
+  animation:
+    fork-draw 3s cubic-bezier(0.16, 0, 0.1, 1) forwards,
+    fork-haze-in 3.4s cubic-bezier(0.3, 0, 0.3, 1) 0.7s forwards;
+}
+[data-reveal].is-in .fork-l-haze.fork-branch-b {
+  animation-delay: 0.22s, 0.95s;
 }
 @keyframes fork-draw {
   to {
     stroke-dashoffset: 0;
   }
 }
+@keyframes fork-glow-in {
+  to {
+    opacity: 0.5;
+  }
+}
+@keyframes fork-haze-in {
+  to {
+    opacity: 0.18;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .fork-path {
     stroke-dashoffset: 0;
-    animation: none;
+    animation: none !important;
+  }
+  .fork-l-glow {
+    opacity: 0.5;
+  }
+  .fork-l-haze {
+    opacity: 0.18;
+  }
+}
+
+/* ---------- Work: order becoming emergence ---------- */
+.work-dot {
+  opacity: 0;
+}
+[data-reveal].is-in .work-dot {
+  animation: work-dot-in 1.2s cubic-bezier(0.16, 0, 0.1, 1) var(--fd) forwards;
+}
+/* halos bloom in after their dots, the way the fork's glow develops */
+.work-halo {
+  opacity: 0;
+}
+[data-reveal].is-in .work-halo {
+  animation: work-halo-in 2.6s cubic-bezier(0.3, 0, 0.3, 1) var(--fd) forwards;
+}
+@keyframes work-halo-in {
+  to {
+    opacity: 0.3;
+  }
+}
+@keyframes work-dot-in {
+  to {
+    opacity: var(--fo);
+  }
+}
+.work-wisp {
+  opacity: 0;
+}
+[data-reveal].is-in .work-wisp {
+  stroke-dasharray: 5 9;
+  animation:
+    work-wisp-in 1.6s ease 1.1s forwards,
+    work-wisp-flow 3.2s linear infinite;
+}
+@keyframes work-wisp-flow {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+@keyframes work-wisp-in {
+  to {
+    opacity: 0.13;
+  }
+}
+[data-reveal].is-in .work-drift {
+  animation: work-drift var(--dd) ease-in-out var(--dl) infinite;
+}
+@keyframes work-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(var(--da, 3px));
+  }
+}
+[data-reveal].is-in .work-tw {
+  animation: work-tw var(--twd) ease-in-out var(--tw) infinite;
+}
+@keyframes work-tw {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .work-dot {
+    opacity: var(--fo);
+    animation: none !important;
+  }
+  .work-wisp {
+    opacity: 0.13;
+    animation: none !important;
+  }
+  .work-drift,
+  .work-tw {
+    animation: none !important;
+  }
+  .work-halo {
+    opacity: 0.3;
+    animation: none !important;
   }
 }
 
