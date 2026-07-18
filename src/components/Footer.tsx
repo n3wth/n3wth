@@ -34,7 +34,7 @@ export function Footer() {
               I build AI products at Google and light installations after
               hours. Based in San Francisco.
             </p>
-            <p className="mt-6 text-[11px] uppercase tracking-[0.08em]" style={{ color: 'var(--ink-faint)' }}>
+            <p className="mt-6 text-[11px] tracking-[0.04em]" style={{ color: 'var(--ink-faint)' }}>
               © Oliver Newth 2026
             </p>
           </div>
