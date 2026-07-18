@@ -36,6 +36,7 @@ export default function Home() {
             <li key={chapter.href} className={i === 0 ? 'md:col-span-2' : undefined}>
               <Link
                 to={chapter.href}
+                viewTransition
                 className="cell group flex h-full flex-col p-6 md:p-7"
               >
                 <span className="flex items-center justify-between">

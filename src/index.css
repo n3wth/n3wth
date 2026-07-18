@@ -152,6 +152,37 @@ strong, b { font-weight: 600; }
 h1, h2, h3, .display { text-wrap: balance; }
 p { text-wrap: pretty; }
 
+/* ---------- Page transitions (View Transitions API) ----------
+   Quiet dissolve between routes: the old page fades, the new one rises
+   8px into place. The floating nav lives on its own transition layer so
+   it stays perfectly still while pages change beneath it. Browsers
+   without the API (and reduced-motion users) get instant navigation. */
+.site-nav { view-transition-name: site-nav; }
+::view-transition-old(site-nav),
+::view-transition-new(site-nav) {
+  animation: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: vt-page-out 0.18s var(--ease) both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-page-in 0.32s var(--ease) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+@keyframes vt-page-out {
+  to { opacity: 0; }
+}
+@keyframes vt-page-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
 html {
   overflow-x: clip; /* .bleed bands are in-flow 100vw breakouts */
   background: var(--bg);

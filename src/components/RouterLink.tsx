@@ -14,7 +14,7 @@ export const RouterLink = forwardRef<
   const isInternal = href.startsWith('/') && !href.startsWith('//')
   if (isInternal) {
     return (
-      <Link to={href} ref={ref} {...rest}>
+      <Link to={href} ref={ref} viewTransition {...rest}>
         {children}
       </Link>
     )

@@ -31,11 +31,11 @@ export function Nav() {
     <>
       {/* Floating island nav */}
       <header
-        className="fixed inset-x-3 md:inset-x-4 z-50 flex md:justify-center pointer-events-none"
+        className="site-nav fixed inset-x-3 md:inset-x-4 z-50 flex md:justify-center pointer-events-none"
         style={{ top: 'calc(0.75rem + env(safe-area-inset-top))' }}
       >
         <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-1 pl-4 pr-2 md:w-auto md:pl-5">
-          <Link to="/" className="brand shrink-0" aria-label="n3wth — home">
+          <Link to="/" viewTransition className="brand shrink-0" aria-label="n3wth — home">
             <span className="brand-mark shrink-0" aria-hidden="true">
               <CursorMark size={18} />
             </span>
@@ -47,6 +47,7 @@ export function Nav() {
               <NavLink
                 key={item.href}
                 to={item.href}
+                viewTransition
                 className={({ isActive }) =>
                   `nav-link ${isActive ? 'nav-link-active' : ''}`
                 }
@@ -97,6 +98,7 @@ export function Nav() {
               <NavLink
                 key={item.href}
                 to={item.href}
+                viewTransition
                 onClick={() => setOpen(false)}
                 className="mobile-nav-link"
               >
