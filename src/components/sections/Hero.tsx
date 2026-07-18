@@ -1,5 +1,4 @@
 import { Button } from '@astryxdesign/core/Button'
-import { Rule } from '../Frame'
 import { HeroBackdrop } from '../HeroBackdrop'
 import { heroStats } from '../../data/content'
 
@@ -41,21 +40,16 @@ export function Hero() {
         </div>
 
         <div className="mt-10 md:mt-14 flex flex-wrap items-center gap-4">
-          <Button label="Get in touch" variant="primary" href="#contact" />
-          <Button label="View work" variant="ghost" href="#work" />
+          <Button label="Get in touch" variant="primary" href="/contact" />
+          <Button label="View work" variant="ghost" href="/work" />
         </div>
 
         <div className="mt-12 md:mt-16">
-          <Rule />
-          <dl
-            className="grid grid-cols-2 md:grid-cols-4 gap-px"
-            style={{ background: 'var(--rail)' }}
-          >
+          <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-6">
             {heroStats.map((stat) => (
               <div
                 key={stat.label}
-                className="flex flex-col-reverse px-4 py-4 md:px-5 md:py-5"
-                style={{ background: 'var(--bg)' }}
+                className="flex flex-col-reverse py-2"
               >
                 {/* dt precedes dd in the DOM for valid <dl> semantics;
                     flex-col-reverse keeps the value visually first. */}

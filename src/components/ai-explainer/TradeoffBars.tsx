@@ -30,7 +30,7 @@ export const TradeoffBars = memo(function TradeoffBars({
     : null
 
   return (
-    <div className="mt-8 p-5 md:p-7" style={{ border: '1px solid var(--rail)' }}>
+    <div className="mt-8 p-5 md:p-7 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.025)' }}>
       <div className="flex items-baseline justify-between gap-4 mb-1">
         <p className="index" style={{ color: 'var(--accent)' }}>
           Trade-off

@@ -9,20 +9,17 @@ export function Thinking() {
   return (
     <section id="thinking" aria-label="Thinking">
       <SectionHeader
-        index="04"
         title="What I believe about production AI"
         lede="Three positions I've arrived at from shipping AI at scale — and from running a team of autonomous agents in production — with the specific, hard-won reasons behind each."
-        lit
       />
 
       <div className="section-pad pad-tight !pt-0">
-        <div style={{ borderTop: '1px solid var(--rail)' }}>
+        <div className="space-y-4">
           {thoughtPieces.map((piece) => (
             <article
               key={piece.id}
               data-reveal
-              className="relative py-8 md:py-10"
-              style={{ borderBottom: '1px solid var(--rail)' }}
+              className="cell relative px-5 py-7 md:px-8 md:py-8"
             >
               <div className="grid gap-4 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-10">
                 <div className="md:pt-1">

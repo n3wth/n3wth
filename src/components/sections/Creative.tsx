@@ -1,7 +1,5 @@
-import { useState } from 'react'
-import { Lightbox, type LightboxMedia } from '@astryxdesign/core/Lightbox'
-import { SectionHeader } from '../Frame'
-import { installations } from '../../data/content'
+import { Button } from '@astryxdesign/core/Button'
+import { installations, siteConfig } from '../../data/content'
 
 /** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
 function sentenceCase(type: string) {
@@ -9,90 +7,122 @@ function sentenceCase(type: string) {
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
-const media: LightboxMedia[] = installations.map((inst) => ({
-  src: inst.image,
-  alt: inst.imageAlt,
-}))
+const [opener, ...works] = installations
 
-/* After dark: the art gets the same treatment as the hero — full-viewport
-   bands with a quiet caption rail beneath each, not thumbnails in a grid.
-   This is the visual counterweight to the dense ship log above. Clicking a
-   band opens the gallery in an Astryx Lightbox. */
+/* After dark as a walk through a night gallery: a full-viewport opening
+   work with the page title living on the image, a statement of intent,
+   then each remaining installation at near-viewport height with its
+   caption overlaid on the frame. Every image drifts slowly (CSS Ken
+   Burns, reduced-motion safe). */
 export function Creative() {
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [lightboxIndex, setLightboxIndex] = useState(0)
-
   return (
-    <section id="creative" aria-label="After dark">
-      <SectionHeader
-        index="03"
-        title="I build things that glow"
-        lede="Large-scale light for the desert and the city — Burning Man sculpture and San Francisco memorials. I spoke at Robot Heart about where art and technology meet."
-        lit
-      />
+    <section aria-label="After dark">
+      {/* Opening work: the page begins inside the art */}
+      <div className="-mt-20">
+        <div className="art-band bleed" style={{ height: '100svh' }}>
+          <img
+            src={opener.image}
+            alt={opener.imageAlt}
+            loading="eager"
+            decoding="async"
+            className="art-band-img"
+          />
+          <span className="art-band-scrim" aria-hidden="true" />
+          <span className="art-band-caption">
+            <span className="label block mb-5">After dark</span>
+            <h2
+              className="display text-[clamp(2.5rem,7vw,5.5rem)] mb-4"
+              style={{ letterSpacing: '-0.035em', lineHeight: 0.95 }}
+            >
+              I build things that glow
+            </h2>
+            <span
+              className="block max-w-md text-sm leading-relaxed"
+              style={{ color: 'var(--ink-dim)' }}
+            >
+              Large-scale light for the desert and the city — Burning Man
+              sculpture and San Francisco memorials.
+            </span>
+          </span>
+        </div>
+      </div>
 
-      <div className="pb-6 md:pb-10">
-        {installations.map((inst, i) => (
-          <figure key={inst.id} data-reveal className="mb-14 md:mb-20 last:mb-0">
-            <button
-              type="button"
-              className="bleed block overflow-hidden cursor-zoom-in p-0 border-0 bg-transparent"
-              onClick={() => {
-                setLightboxIndex(i)
-                setLightboxOpen(true)
-              }}
-              aria-label={`View ${inst.title} full screen`}
+      {/* Statement of intent */}
+      <div data-reveal className="section-pad pad-air">
+        <p
+          className="display max-w-3xl text-[clamp(1.6rem,3.4vw,2.6rem)]"
+          style={{ letterSpacing: '-0.025em', lineHeight: 1.15 }}
+        >
+          Software disappears into screens. Light stands thirty feet tall in
+          the desert and asks seventy thousand people to look up.
+        </p>
+      </div>
+
+      {/* The works */}
+      <div className="pb-4 md:pb-8">
+        {works.map((inst) => (
+          <figure key={inst.id} data-reveal className="mb-6 md:mb-10 last:mb-0 m-0">
+            <div
+              className="art-band bleed"
+              style={{ height: 'clamp(480px, 88svh, 900px)' }}
             >
               <img
                 src={inst.image}
                 alt={inst.imageAlt}
                 loading="lazy"
                 decoding="async"
-                className="w-full object-cover"
-                style={{
-                  height:
-                    i === 0
-                      ? 'clamp(420px, 78vh, 820px)'
-                      : 'clamp(360px, 62vh, 680px)',
-                }}
+                className="art-band-img"
               />
-            </button>
-            <figcaption className="section-pad !py-5 md:!py-6 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-              <h3
-                className="display text-xl md:text-2xl"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {inst.title}
-              </h3>
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: 'var(--ink-dim)' }}
-              >
-                {inst.tagline}
-              </p>
-              <p className="meta ml-auto whitespace-nowrap">
-                <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
-                <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>
-                  ·
+              <span className="art-band-scrim" aria-hidden="true" />
+              <span className="art-band-caption">
+                <span
+                  className="display block text-2xl md:text-3xl mb-2"
+                  style={{ letterSpacing: '-0.02em' }}
+                >
+                  {inst.title}
                 </span>
-                {inst.location}
-                <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>
-                  ·
+                <span
+                  className="block max-w-md text-sm leading-relaxed mb-3"
+                  style={{ color: 'var(--ink-dim)' }}
+                >
+                  {inst.tagline}
                 </span>
-                {sentenceCase(inst.type)}
-              </p>
-            </figcaption>
+                <span className="meta block">
+                  <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
+                  <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>
+                    ·
+                  </span>
+                  {inst.location}
+                  <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>
+                    ·
+                  </span>
+                  {sentenceCase(inst.type)}
+                </span>
+              </span>
+            </div>
           </figure>
         ))}
       </div>
 
-      <Lightbox
-        isOpen={lightboxOpen}
-        onOpenChange={setLightboxOpen}
-        media={media}
-        index={lightboxIndex}
-        onIndexChange={setLightboxIndex}
-      />
+      {/* Closing */}
+      <div data-reveal className="section-pad pad-air !pt-10 md:!pt-14">
+        <p
+          className="display max-w-2xl text-[clamp(1.4rem,2.8vw,2.1rem)] mb-8"
+          style={{ letterSpacing: '-0.02em', lineHeight: 1.2 }}
+        >
+          The next one is already sketched.
+        </p>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button
+            label="More at newth.art"
+            variant="primary"
+            href={siteConfig.artSite}
+            target="_blank"
+            rel="noopener noreferrer"
+          />
+          <Button label="Build one with me" variant="ghost" href="/contact" />
+        </div>
+      </div>
     </section>
   )
 }

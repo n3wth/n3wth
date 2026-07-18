@@ -25,12 +25,10 @@ export interface NavItem {
 }
 
 export const navigation: NavItem[] = [
-  { name: 'Work', href: '#work' },
-  { name: 'Building', href: '#building' },
-  { name: 'After dark', href: '#creative' },
-  { name: 'Thinking', href: '#thinking' },
-  { name: 'Alignment', href: '#ai-explainer' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Work', href: '/work' },
+  { name: 'After dark', href: '/art' },
+  { name: 'Thinking', href: '/thinking' },
+  { name: 'Contact', href: '/contact' },
 ]
 
 export interface Metric {

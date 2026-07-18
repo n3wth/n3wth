@@ -9,11 +9,7 @@ export function Contact() {
       aria-label="Contact"
       className="relative min-h-[85vh] flex items-center"
     >
-      <span className="tick tick-tl" aria-hidden="true" style={{ top: 0, left: -5 }} />
       <div className="section-pad pad-air w-full relative">
-        <span className="ghost-index ghost-index--lit" aria-hidden="true">
-          06
-        </span>
         <div className="flex items-start justify-between gap-6">
           <div className="max-w-3xl relative">
             <h2 className="display text-[clamp(3rem,12vw,9rem)]">

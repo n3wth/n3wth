@@ -9,7 +9,6 @@ export function AIExplainer() {
   return (
     <section id="ai-explainer" aria-label="Alignment">
       <SectionHeader
-        index="05"
         title={
           <>
             Most AI safety calls are <span className="accent">trade-offs</span>,
@@ -17,11 +16,10 @@ export function AIExplainer() {
           </>
         }
         lede="Each is a real dilemma I've worked through, and every option costs real people something. Pick a path, see exactly what it trades away, then read the call I actually made."
-        lit
       />
 
       <div className="section-pad pad-tight !pt-0">
-        <div style={{ borderTop: '1px solid var(--rail)' }}>
+        <div className="space-y-4">
           {aiChallenges.map((challenge, i) => {
             const state = getChallengeState(challenge.id)
             return (

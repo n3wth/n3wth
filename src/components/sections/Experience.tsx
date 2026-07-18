@@ -8,19 +8,17 @@ export function Experience() {
   return (
     <section id="work" aria-label="Experience">
       <SectionHeader
-        index="01"
         title="A decade of AI, in production"
         lede="Google, Covariant, Meta, Microsoft — taking systems from research demos to things billions of people rely on."
       />
 
       <div className="section-pad pad-tight !pt-0">
-        <ol style={{ borderTop: '1px solid var(--rail)' }}>
+        <ol className="space-y-2">
           {experiences.map((exp) => (
             <li
               key={exp.id}
               data-reveal
-              className="grid gap-x-8 gap-y-2 py-7 md:py-8 md:grid-cols-[6.5rem_13rem_minmax(0,1fr)_auto] md:items-baseline"
-              style={{ borderBottom: '1px solid var(--rail)' }}
+              className="cell grid gap-x-8 gap-y-2 px-5 py-6 md:px-7 md:py-7 md:grid-cols-[6.5rem_13rem_minmax(0,1fr)_auto] md:items-baseline"
             >
               <span className="meta" style={{ color: 'var(--ink-faint)' }}>
                 {exp.period}

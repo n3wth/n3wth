@@ -1,6 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import { Theme } from '@astryxdesign/core/theme'
+import { LinkProvider } from '@astryxdesign/core/Link'
+import { RouterLink } from './components/RouterLink'
 import './index.css'
 import App from './App.tsx'
 import { n3wthTheme } from './theme/n3wthTheme'
@@ -29,8 +32,12 @@ deferCallback(() => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Theme theme={n3wthTheme} mode="dark">
-      <App />
-    </Theme>
+    <BrowserRouter>
+      <Theme theme={n3wthTheme} mode="dark">
+        <LinkProvider component={RouterLink}>
+          <App />
+        </LinkProvider>
+      </Theme>
+    </BrowserRouter>
   </StrictMode>,
 )

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, X } from 'lucide-react'
 import { CursorMark } from './marks'
@@ -7,13 +8,11 @@ import { navigation } from '../data/content'
 export function Nav() {
   const [open, setOpen] = useState(false)
 
-  // Close the mobile menu after an anchor navigates
+  // Close the mobile menu after client-side navigation
+  const { pathname } = useLocation()
   useEffect(() => {
-    if (!open) return
-    const onHashChange = () => setOpen(false)
-    window.addEventListener('hashchange', onHashChange)
-    return () => window.removeEventListener('hashchange', onHashChange)
-  }, [open])
+    setOpen(false)
+  }, [pathname])
 
   // Lock body scroll while the full-screen menu is open; Escape closes it
   useEffect(() => {
@@ -36,18 +35,24 @@ export function Nav() {
         style={{ top: 'calc(0.75rem + env(safe-area-inset-top))' }}
       >
         <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-1 pl-4 pr-2 md:w-auto md:pl-5">
-          <a href="#top" className="brand shrink-0" aria-label="n3wth — home">
+          <Link to="/" className="brand shrink-0" aria-label="n3wth — home">
             <span className="brand-mark shrink-0" aria-hidden="true">
               <CursorMark size={18} />
             </span>
             <span>n3wth</span>
-          </a>
+          </Link>
 
           <nav aria-label="Primary" className="hidden md:flex items-center gap-0.5 ml-3">
             {navigation.map((item) => (
-              <a key={item.href} href={item.href} className="nav-link">
+              <NavLink
+                key={item.href}
+                to={item.href}
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? 'nav-link-active' : ''}`
+                }
+              >
                 {item.name}
-              </a>
+              </NavLink>
             ))}
           </nav>
 
@@ -89,17 +94,14 @@ export function Nav() {
           </div>
           <nav className="flex flex-col gap-1 px-4 pt-2" aria-label="Mobile navigation">
             {navigation.map((item) => (
-              <a
+              <NavLink
                 key={item.href}
-                href={item.href}
+                to={item.href}
                 onClick={() => setOpen(false)}
                 className="mobile-nav-link"
               >
-                <span className="index mr-3">
-                  {String(navigation.indexOf(item) + 1).padStart(2, '0')}
-                </span>
                 {item.name}
-              </a>
+              </NavLink>
             ))}
           </nav>
         </div>
