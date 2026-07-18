@@ -27,18 +27,19 @@ export function Creative() {
             decoding="async"
             className="art-band-img"
           />
-          <span className="art-band-scrim" aria-hidden="true" />
-          <span className="art-band-caption">
-            <span className="label block mb-5">After dark</span>
+          <span className="art-band-caption art-band-caption--sky">
+            <span className="label block mb-5" style={{ color: 'rgba(8, 9, 11, 0.62)' }}>
+              After dark
+            </span>
             <h2
               className="display text-[clamp(2.5rem,7vw,5.5rem)] mb-4"
-              style={{ letterSpacing: '-0.035em', lineHeight: 0.95 }}
+              style={{ letterSpacing: '-0.035em', lineHeight: 0.95, color: '#0b0c0e' }}
             >
               I build things that glow
             </h2>
             <span
               className="block max-w-md text-sm leading-relaxed"
-              style={{ color: 'var(--ink-dim)' }}
+              style={{ color: 'rgba(8, 9, 11, 0.72)' }}
             >
               Large-scale light for the desert and the city — Burning Man
               sculpture and San Francisco memorials.

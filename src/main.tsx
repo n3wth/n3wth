@@ -25,6 +25,7 @@ deferCallback(() => {
       capture_pageview: true,
       capture_pageleave: true,
       capture_performance: { web_vitals: true },
+      disable_surveys: true,
       disable_web_experiments: false,
     })
   })

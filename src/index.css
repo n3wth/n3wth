@@ -271,6 +271,17 @@ body {
   .art-band-caption { padding-bottom: 3.25rem; }
 }
 
+/* Sky variant: the opener's caption lives in the open sky at the top of
+   the frame, set in dark ink against the pale sky — no scrim needed. */
+.art-band-caption--sky {
+  bottom: auto;
+  top: 0;
+  padding-top: calc(6.5rem + env(safe-area-inset-top));
+}
+@media (min-width: 768px) {
+  .art-band-caption--sky { padding-top: calc(8rem + env(safe-area-inset-top)); }
+}
+
 /* ---------- Scroll reveal (driven by useReveal) ---------- */
 [data-reveal] {
   opacity: 0;
