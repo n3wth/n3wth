@@ -162,6 +162,11 @@ p { text-wrap: pretty; }
 ::view-transition-new(site-nav) {
   animation: none;
 }
+/* The transition overlay must never eat clicks — without this, taps on
+   the nav during the ~300ms page dissolve silently do nothing. */
+::view-transition {
+  pointer-events: none;
+}
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root) {
     animation: vt-page-out 0.18s var(--ease) both;
@@ -641,18 +646,14 @@ body {
    NOTE: declare only the standard backdrop-filter — writing the -webkit-
    prefix by hand makes the minifier merge the pair and emit only the
    prefixed form, which drops the effect entirely. */
+/* Glass, kept flat: one translucent fill, a strong gaussian backdrop
+   blur, a hairline border. No sheen gradient, no drop shadow. */
 .nav-island {
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.05),
-      rgba(255, 255, 255, 0.02)
-    ),
-    color-mix(in srgb, var(--bg) 84%, transparent);
-  backdrop-filter: blur(20px) saturate(1.6);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06) inset,
-    0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
 @media (min-width: 768px) {
@@ -661,8 +662,17 @@ body {
   }
 }
 
-/* Nav links — compact, medium weight, pill hover/active */
+/* Nav links — compact, medium weight, pill hover/active. The visual
+   pill is 32px; an invisible extension raises the true hit target to
+   the island's full 48px height so clicks land reliably. */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  inset: -8px -2px;
+}
+
 .nav-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   height: 32px;
@@ -743,14 +753,6 @@ body {
   stroke-dasharray: 1 1;
   stroke-dashoffset: 1;
 }
-.fork-l-glow,
-.fork-l-haze {
-  opacity: 0;
-}
-/* the shimmer lives in the filter; reduced motion gets the still ones */
-.fork-l-glow {
-  filter: url(#fork-glow-live);
-}
 /* the decision pulse: a short bright dash rides the path, slows to a
    near-stop at the fork (the deliberation), then commits. The two
    pulse paths alternate — same call, different day, different answer. */
@@ -758,17 +760,12 @@ body {
   stroke-dasharray: 0.045 0.955;
   stroke-dashoffset: 1.045;
   opacity: 0;
-  filter: url(#fork-glow);
 }
 [data-reveal].is-in .fork-pulse-a {
   animation: fork-pulse-run 13s cubic-bezier(0.3, 0, 0.7, 1) 1.2s infinite;
 }
 [data-reveal].is-in .fork-pulse-b {
   animation: fork-pulse-run 13s cubic-bezier(0.3, 0, 0.7, 1) 7.7s infinite;
-}
-/* converge (contact): both pulses set out together and meet */
-[data-reveal].is-in .conv-pulse {
-  animation: fork-pulse-run 13s cubic-bezier(0.3, 0, 0.7, 1) 1.6s infinite;
 }
 @keyframes fork-pulse-run {
   0% {
@@ -806,55 +803,21 @@ body {
     opacity: 0;
   }
 }
-/* the filament draws first; the glow blooms into it afterwards, the
-   way an exposure develops */
 [data-reveal].is-in .fork-path {
   animation: fork-draw 3s cubic-bezier(0.16, 0, 0.1, 1) forwards;
 }
 [data-reveal].is-in .fork-branch-b {
   animation-delay: 0.22s; /* the second path is taken a beat later */
 }
-[data-reveal].is-in .fork-l-glow {
-  animation:
-    fork-draw 3s cubic-bezier(0.16, 0, 0.1, 1) forwards,
-    fork-glow-in 2.8s cubic-bezier(0.3, 0, 0.3, 1) 0.5s forwards;
-}
-[data-reveal].is-in .fork-l-glow.fork-branch-b {
-  animation-delay: 0.22s, 0.75s;
-}
-[data-reveal].is-in .fork-l-haze {
-  animation:
-    fork-draw 3s cubic-bezier(0.16, 0, 0.1, 1) forwards,
-    fork-haze-in 3.4s cubic-bezier(0.3, 0, 0.3, 1) 0.7s forwards;
-}
-[data-reveal].is-in .fork-l-haze.fork-branch-b {
-  animation-delay: 0.22s, 0.95s;
-}
 @keyframes fork-draw {
   to {
     stroke-dashoffset: 0;
-  }
-}
-@keyframes fork-glow-in {
-  to {
-    opacity: 0.32;
-  }
-}
-@keyframes fork-haze-in {
-  to {
-    opacity: 0.18;
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .fork-path {
     stroke-dashoffset: 0;
     animation: none !important;
-  }
-  .fork-l-glow {
-    opacity: 0.5;
-  }
-  .fork-l-haze {
-    opacity: 0.18;
   }
 }
 

@@ -5,10 +5,8 @@ import { useEffect, useMemo, useRef } from 'react'
  * continue as one. A cool line and a warm one — the day work and the
  * after-dark work — meet and carry on together as white. The waver
  * phase drifts left to right, and the shared stretch past the merge
- * wobbles identically, one exposure again. Reuses the fork's CSS:
- * draw-in, glow bloom, and the traveling pulse (two set out together,
- * slow as they approach the meeting, and continue merged as one
- * brighter light).
+ * wobbles identically, one exposure again. Bare filaments, no glow:
+ * one clean line each, drawn in on reveal.
  */
 
 const N = 72
@@ -42,10 +40,7 @@ function buildPath(dir: -1 | 1, time: number): string {
   return pts.join(' ')
 }
 
-const LAYERS = [
-  { width: 5.5, cls: 'fork-l-glow' },
-  { width: 1.8, cls: 'fork-l-core' },
-] as const
+const LAYERS = [{ width: 2, cls: 'fork-l-core' }] as const
 
 export function ConvergeLight() {
   const upperRefs = useRef<(SVGPathElement | null)[]>([])
@@ -77,9 +72,6 @@ export function ConvergeLight() {
       focusable="false"
     >
       <defs>
-        <filter id="fork-glow" x="-10%" y="-300%" width="120%" height="700%">
-          <feGaussianBlur stdDeviation="3.2" />
-        </filter>
         {/* each line keeps its temperature until the meeting, then both
             carry on white */}
         <linearGradient id="conv-grad-a" gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
@@ -95,31 +87,6 @@ export function ConvergeLight() {
           <stop offset="1" stopColor="#f4f2ee" stopOpacity="0.95" />
         </linearGradient>
       </defs>
-      {/* two pulses set out together and arrive as one */}
-      <path
-        ref={(el) => {
-          upperRefs.current[LAYERS.length] = el
-        }}
-        d={initial.up}
-        pathLength={1}
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth={2.6}
-        strokeLinecap="round"
-        className="fork-pulse conv-pulse"
-      />
-      <path
-        ref={(el) => {
-          lowerRefs.current[LAYERS.length] = el
-        }}
-        d={initial.lo}
-        pathLength={1}
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth={2.6}
-        strokeLinecap="round"
-        className="fork-pulse conv-pulse"
-      />
       {LAYERS.map((l, i) => (
         <path
           key={`up-${l.cls}`}
