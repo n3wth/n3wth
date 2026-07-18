@@ -88,22 +88,14 @@ export default function Home() {
         <StaticNight />
       )}
 
-      {/* Real doors: the same portals as the lights */}
-      <nav
-        aria-label="Site chapters"
-        className="absolute inset-x-6 md:inset-x-12 bottom-6 md:bottom-8 z-10 flex flex-wrap items-center gap-x-7 gap-y-3"
-      >
+      {/* Screen-reader / no-WebGL doors — visually the lights are the nav */}
+      <nav aria-label="Site chapters" className="sr-only">
         {portals.map((p) => (
-          <Link key={p.href} to={p.href} viewTransition className="world-door">
+          <Link key={p.href} to={p.href} viewTransition>
             {p.label}
           </Link>
         ))}
-        <a href="https://garden.n3wth.com" className="world-door">
-          The garden
-        </a>
-        <span className="ml-auto hidden md:inline meta pointer-events-none">
-          Click a light to enter
-        </span>
+        <a href="https://garden.n3wth.com">The garden</a>
       </nav>
     </section>
   )

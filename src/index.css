@@ -747,6 +747,27 @@ body {
   white-space: nowrap;
   z-index: 10;
 }
+/* the one hover title: fixed spot at bottom center, eased in and out */
+.world-hud {
+  position: absolute;
+  left: 50%;
+  bottom: 56px;
+  transform: translateX(-50%) translateY(6px);
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  z-index: 10;
+}
+.world-hud[data-visible='true'] {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 .world-label-title {
   display: block;
   font-family: var(--font-display);
