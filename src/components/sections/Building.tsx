@@ -3,14 +3,33 @@ import { Github, Star, GitFork } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
 import { SectionHeader } from '../Frame'
 import { projects, type Project } from '../../data/content'
+import statsSnapshot from '../../data/github-stats.json'
 
 export interface GitHubStats {
   stars: number | string
   forks: number | string
 }
 
+/* Build-time snapshot (scripts/fetch-github-stats.mjs, npm prebuild) so
+   the counts are present on first paint even when the live API hiccups;
+   the client fetch below refreshes them. */
+function snapshotFor(github?: string): GitHubStats {
+  if (github) {
+    try {
+      const [, owner, repo] = new URL(github).pathname.split('/')
+      const entry = (statsSnapshot as Record<string, { stars: number; forks: number }>)[
+        `${owner}/${repo}`
+      ]
+      if (entry) return entry
+    } catch {
+      // malformed url — fall through to placeholder
+    }
+  }
+  return { stars: '—', forks: '—' }
+}
+
 export function ProjectCard({ project }: { project: Project }) {
-  const [stats, setStats] = useState<GitHubStats>({ stars: '—', forks: '—' })
+  const [stats, setStats] = useState<GitHubStats>(() => snapshotFor(project.github))
 
   useEffect(() => {
     if (!project.github) return
@@ -20,15 +39,11 @@ export function ProjectCard({ project }: { project: Project }) {
         const [, owner, repo] = url.pathname.split('/')
         if (!owner || !repo) return
         const response = await fetch(`/api/github-stats?owner=${owner}&repo=${repo}`)
-        if (!response.ok) {
-          setStats({ stars: '—', forks: '—' })
-          return
-        }
+        if (!response.ok) return // keep the build-time snapshot
         const data = await response.json()
         setStats({ stars: data.stars ?? '—', forks: data.forks ?? '—' })
       } catch (err) {
         console.error(`Error fetching stats for ${project.name}:`, err)
-        setStats({ stars: '—', forks: '—' })
       }
     }
     fetchStats()

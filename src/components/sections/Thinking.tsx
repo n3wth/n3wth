@@ -9,6 +9,7 @@ export function Thinking() {
   return (
     <section id="thinking" aria-label="Thinking">
       <SectionHeader
+        as="h1"
         title="What I believe about production AI"
         lede="Three positions from shipping AI at scale and running an agent team in production. Open each one for the reasons."
       />

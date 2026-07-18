@@ -1,12 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import { Theme } from '@astryxdesign/core/theme'
-import { LinkProvider } from '@astryxdesign/core/Link'
-import { RouterLink } from './components/RouterLink'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
-import { n3wthTheme } from './theme/n3wthTheme'
+import Home from './pages/Home'
+import Work from './pages/Work'
+import Art from './pages/Art'
+import Thinking from './pages/Thinking'
+import Contact from './pages/Contact'
+import NotFound from './pages/NotFound'
 
 // CSS Studio — dev-only visual CSS editor. Dynamic import so it is NEVER bundled
 // into the production build. Removed entirely when import.meta.env.DEV is false.
@@ -31,14 +33,25 @@ deferCallback(() => {
   })
 })
 
+/* Data router (createBrowserRouter): required for viewTransition —
+   declarative <BrowserRouter> never reaches document.startViewTransition. */
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'work', element: <Work /> },
+      { path: 'art', element: <Art /> },
+      { path: 'thinking', element: <Thinking /> },
+      { path: 'contact', element: <Contact /> },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+])
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Theme theme={n3wthTheme} mode="dark">
-        <LinkProvider component={RouterLink}>
-          <App />
-        </LinkProvider>
-      </Theme>
-    </BrowserRouter>
+    <RouterProvider router={router} />
   </StrictMode>,
 )

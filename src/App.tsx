@@ -1,28 +1,26 @@
-import { Suspense, lazy, useCallback, useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { useCallback, useEffect } from 'react'
+import { Outlet, useLocation, useNavigationType } from 'react-router-dom'
+import { Theme } from '@astryxdesign/core/theme'
+import { LinkProvider } from '@astryxdesign/core/Link'
+import { RouterLink } from './components/RouterLink'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
 import { useReveal } from './hooks/useReveal'
 import { gsap } from './lib/gsap'
-import Home from './pages/Home'
-
-const Work = lazy(() => import('./pages/Work'))
-const Art = lazy(() => import('./pages/Art'))
-const Thinking = lazy(() => import('./pages/Thinking'))
-const Contact = lazy(() => import('./pages/Contact'))
-
-function PageFallback() {
-  return <div className="min-h-[60vh]" aria-hidden="true" />
-}
+import { n3wthTheme } from './theme/n3wthTheme'
 
 /** Jump to the top on route change (browser back/forward keeps its position). */
 function ScrollToTop() {
   const { pathname } = useLocation()
+  const navigationType = useNavigationType()
   useEffect(() => {
+    // POP = back/forward: let the browser restore the previous position
+    // instead of clobbering it with the top of the page.
+    if (navigationType === 'POP') return
     window.scrollTo(0, 0)
-  }, [pathname])
+  }, [pathname, navigationType])
   return null
 }
 
@@ -42,27 +40,22 @@ function App() {
   useReveal()
 
   return (
-    <>
-      <Nav />
-      <ScrollToTop />
-      <div className="pt-20">
-        <div className="frame">
-          <main id="main">
-            <Suspense fallback={<PageFallback />}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/work" element={<Work />} />
-                <Route path="/art" element={<Art />} />
-                <Route path="/thinking" element={<Thinking />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="*" element={<Home />} />
-              </Routes>
-            </Suspense>
-          </main>
+    <Theme theme={n3wthTheme} mode="dark">
+      <LinkProvider component={RouterLink}>
+        <Nav />
+        <ScrollToTop />
+        <div className="pt-20">
+          <div className="frame">
+            {/* tabIndex so the skip link moves DOM focus here, not just
+                the scroll position */}
+            <main id="main" tabIndex={-1} style={{ outline: 'none' }}>
+              <Outlet />
+            </main>
+          </div>
         </div>
-      </div>
-      <Footer />
-    </>
+        <Footer />
+      </LinkProvider>
+    </Theme>
   )
 }
 
