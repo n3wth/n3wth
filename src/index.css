@@ -490,13 +490,19 @@ body {
 .cell {
   position: relative;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
+  /* Barely off the page black, edged by a hairline — the old 3% fill
+     read as gray slabs floating on the background instead of blending
+     with it. Hover restores the lift. */
+  background: rgba(255, 255, 255, 0.012);
+  border: 1px solid rgba(255, 255, 255, 0.055);
   transition:
     background 0.35s var(--ease),
+    border-color 0.35s var(--ease),
     transform 0.15s var(--ease);
 }
 .cell:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.09);
 }
 
 /* ---------- Buttons ---------- */
