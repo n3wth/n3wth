@@ -20,7 +20,7 @@ export function Contact() {
               className="mt-8 text-base md:text-xl leading-relaxed max-w-lg"
               style={{ color: 'var(--ink-dim)' }}
             >
-              Happy to talk AI safety or LED art, or to grab coffee in San
+              Happy to talk about AI safety or LED art, or grab coffee in San
               Francisco.
             </p>
 
