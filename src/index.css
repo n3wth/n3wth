@@ -766,6 +766,10 @@ body {
 [data-reveal].is-in .fork-pulse-b {
   animation: fork-pulse-run 13s cubic-bezier(0.3, 0, 0.7, 1) 7.7s infinite;
 }
+/* converge (contact): both pulses set out together and meet */
+[data-reveal].is-in .conv-pulse {
+  animation: fork-pulse-run 13s cubic-bezier(0.3, 0, 0.7, 1) 1.6s infinite;
+}
 @keyframes fork-pulse-run {
   0% {
     stroke-dashoffset: 1.045;
