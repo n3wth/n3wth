@@ -17,7 +17,7 @@ import { useEffect, useMemo, useRef } from 'react'
 const N = 72
 const X0 = -20
 const X1 = 1640
-const FLOW = 1.9 // waver phase speed — ripples travel +x
+const FLOW = 1.0 // waver phase speed — ripples travel +x
 
 function smooth(t: number) {
   const c = Math.min(1, Math.max(0, t))
@@ -50,8 +50,7 @@ function buildPath(dir: -1 | 1, time: number): string {
 }
 
 const LAYERS = [
-  { width: 20, cls: 'fork-l-haze' },
-  { width: 6.5, cls: 'fork-l-glow' },
+  { width: 5.5, cls: 'fork-l-glow' },
   { width: 1.8, cls: 'fork-l-core' },
 ] as const
 
@@ -93,31 +92,6 @@ export function ForkLight() {
         <filter id="fork-glow" x="-10%" y="-300%" width="120%" height="700%">
           <feGaussianBlur stdDeviation="3.2" />
         </filter>
-        {/* living filters: fine turbulence shimmer over the moving line */}
-        <filter id="fork-haze-live" x="-10%" y="-300%" width="120%" height="700%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.0022 0.028" numOctaves="2" seed="7" result="n">
-            <animate
-              attributeName="baseFrequency"
-              dur="17s"
-              values="0.0022 0.028;0.0032 0.022;0.0022 0.028"
-              repeatCount="indefinite"
-            />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="12" xChannelSelector="R" yChannelSelector="G" />
-          <feGaussianBlur stdDeviation="12" />
-        </filter>
-        <filter id="fork-glow-live" x="-10%" y="-300%" width="120%" height="700%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.003 0.035" numOctaves="2" seed="3" result="n">
-            <animate
-              attributeName="baseFrequency"
-              dur="13s"
-              values="0.003 0.035;0.0042 0.027;0.003 0.035"
-              repeatCount="indefinite"
-            />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G" />
-          <feGaussianBlur stdDeviation="3.2" />
-        </filter>
         {/* tails fade in from the left edge; tips carry the temperature */}
         <linearGradient id="fork-grad-a" gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
           <stop offset="0" stopColor="#f2f0ec" stopOpacity="0" />
@@ -147,6 +121,33 @@ export function ForkLight() {
           className={`fork-path ${l.cls} fork-branch`}
         />
       ))}
+      {/* decisions in motion: a pulse travels the trunk, hesitates at
+          the fork, then commits — alternating branches. The same call,
+          made differently at different times. */}
+      <path
+        ref={(el) => {
+          upperRefs.current[LAYERS.length] = el
+        }}
+        d={initial.up}
+        pathLength={1}
+        fill="none"
+        stroke="#ffffff"
+        strokeWidth={2.6}
+        strokeLinecap="round"
+        className="fork-pulse fork-pulse-a"
+      />
+      <path
+        ref={(el) => {
+          lowerRefs.current[LAYERS.length] = el
+        }}
+        d={initial.lo}
+        pathLength={1}
+        fill="none"
+        stroke="#ffffff"
+        strokeWidth={2.6}
+        strokeLinecap="round"
+        className="fork-pulse fork-pulse-b"
+      />
       {LAYERS.map((l, i) => (
         <path
           key={`lo-${l.cls}`}

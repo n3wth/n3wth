@@ -16,11 +16,11 @@ const W = 1600
 const H = 400
 
 const CLUSTERS: [number, number][] = [
-  [1130, 104],
-  [1286, 238],
-  [1424, 88],
-  [1352, 326],
-  [1524, 204],
+  [1128, 62],
+  [1286, 234],
+  [1430, 46],
+  [1348, 356],
+  [1528, 176],
 ]
 
 function rnd(i: number, salt: number) {
@@ -31,6 +31,11 @@ function rnd(i: number, salt: number) {
 function smooth(t: number) {
   const c = Math.min(1, Math.max(0, t))
   return c * c * (3 - 2 * c)
+}
+
+interface Traveler {
+  path: string
+  begin: number
 }
 
 interface Dot {
@@ -45,7 +50,11 @@ interface Dot {
 }
 
 export function EmergenceField() {
-  const { dots, wisps } = useMemo(() => {
+  const reduced = useMemo(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    []
+  )
+  const { dots, travelers } = useMemo(() => {
     const dots: Dot[] = []
     for (let c = 0; c < COLS; c++) {
       for (let row = 0; row < ROWS; row++) {
@@ -58,17 +67,17 @@ export function EmergenceField() {
         const k = Math.floor(rnd(i, 2) * CLUSTERS.length)
         const [cx, cy] = CLUSTERS[k]
         const tx = free
-          ? gx + (rnd(i, 3) - 0.5) * 190
-          : cx + (rnd(i, 4) - 0.5) * 150 * (0.4 + rnd(i, 5))
+          ? gx + (rnd(i, 3) - 0.3) * 230
+          : cx + (rnd(i, 4) - 0.5) * 170 * (0.4 + rnd(i, 5))
         const ty = free
-          ? gy + (rnd(i, 6) - 0.5) * 160
-          : cy + (rnd(i, 7) - 0.5) * 120 * (0.4 + rnd(i, 8))
-        const amt = disorder * (0.5 + rnd(i, 9) * 0.5)
+          ? gy + (rnd(i, 6) - 0.5) * 300
+          : cy + (rnd(i, 7) - 0.5) * 170 * (0.4 + rnd(i, 8))
+        const amt = disorder * (0.72 + rnd(i, 9) * 0.28)
         dots.push({
           x: gx + (tx - gx) * amt,
           y: gy + (ty - gy) * amt,
-          r: 1.5 + disorder * (rnd(i, 10) * 1.7 - 0.3),
-          fo: 0.32 + rnd(i, 11) * 0.3 + disorder * rnd(i, 12) * 0.38,
+          r: 1.6,
+          fo: 0.6,
           fd: t * 1.1 + rnd(i, 13) * 0.25,
           disorder,
           cluster: free ? -1 : k,
@@ -76,19 +85,21 @@ export function EmergenceField() {
         })
       }
     }
-    /* wisps: faint threads between near cluster-mates */
-    const wisps: string[] = []
-    for (let k = 0; k < CLUSTERS.length; k++) {
-      const members = dots.filter((d) => d.cluster === k && d.disorder > 0.55)
-      for (let j = 0; j + 1 < members.length && j < 8; j += 2) {
-        const a = members[j]
-        const b = members[j + 1]
-        const mx = (a.x + b.x) / 2 + (rnd(k * 31 + j, 15) - 0.5) * 46
-        const my = (a.y + b.y) / 2 + (rnd(k * 31 + j, 16) - 0.5) * 46
-        wisps.push(`M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${mx.toFixed(1)} ${my.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`)
-      }
+    /* the story beat: every few seconds one dot leaves the hand-made
+       grid, travels right, and is absorbed into a living cluster —
+       designed by hand, shipped by agents */
+    const travelers: Traveler[] = []
+    const sources = dots.filter((d) => d.disorder < 0.12 && d.x > 240)
+    const dests = dots.filter((d) => d.disorder > 0.6 && d.fo > 0.75)
+    for (let j = 0; j < 3 && j < sources.length && j < dests.length; j++) {
+      const a = sources[Math.floor(rnd(j, 21) * sources.length)]
+      const b = dests[Math.floor(rnd(j, 22) * dests.length)]
+      travelers.push({
+        path: `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} C ${(a.x + 240).toFixed(1)} ${(a.y - 20 - rnd(j, 23) * 40).toFixed(1)}, ${(b.x - 280).toFixed(1)} ${(b.y + 10 + rnd(j, 24) * 30).toFixed(1)}, ${b.x.toFixed(1)} ${b.y.toFixed(1)}`,
+        begin: j * 9 + rnd(j, 25) * 3,
+      })
     }
-    return { dots, wisps }
+    return { dots, travelers }
   }, [])
 
   return (
@@ -99,29 +110,33 @@ export function EmergenceField() {
       role="presentation"
       focusable="false"
     >
-      <defs>
-        <filter id="work-halo-blur" x="-150%" y="-150%" width="400%" height="400%">
-          <feGaussianBlur stdDeviation="6" />
-        </filter>
-      </defs>
-      {wisps.map((d, i) => (
-        <path key={i} d={d} fill="none" stroke="#dfe6f2" strokeWidth={0.7} className="work-wisp" />
-      ))}
+      {/* one dot at a time leaves the grid and joins a cluster */}
+      {!reduced &&
+        travelers.map((tr, i) => (
+          <circle key={`t${i}`} r={1.7} fill="#f4f7fc" opacity={0}>
+            <animateMotion
+              dur="27s"
+              begin={`${tr.begin.toFixed(1)}s`}
+              repeatCount="indefinite"
+              path={tr.path}
+              calcMode="spline"
+              keyTimes="0;0.35;1"
+              keyPoints="0;1;1"
+              keySplines="0.45 0 0.2 1;0 0 1 1"
+            />
+            <animate
+              attributeName="opacity"
+              values="0;0.95;0.95;0;0"
+              keyTimes="0;0.05;0.3;0.35;1"
+              dur="27s"
+              begin={`${tr.begin.toFixed(1)}s`}
+              repeatCount="indefinite"
+            />
+          </circle>
+        ))}
       {dots.map((d, i) => {
-        const halo = d.disorder > 0.55 && d.fo > 0.78
         const circle = (
           <g>
-            {halo && (
-              <circle
-                cx={d.x}
-                cy={d.y}
-                r={Math.max(0.7, d.r) * 4}
-                fill="#dfe7f4"
-                filter="url(#work-halo-blur)"
-                className="work-halo"
-                style={{ '--fd': `${(d.fd + 0.5).toFixed(2)}s` } as React.CSSProperties}
-              />
-            )}
             <circle
               cx={d.x}
               cy={d.y}
@@ -132,16 +147,23 @@ export function EmergenceField() {
             />
           </g>
         )
-        if (d.disorder > 0.3) {
-          /* emergent dots ride a slow drift wave that travels +x */
+        if (d.disorder > 0.15) {
+          /* gravity grows left to right: each freed dot breathes toward
+             the mass it belongs to, harder the deeper into emergence */
+          const [cx, cy] = CLUSTERS[d.cluster === -1 ? 0 : d.cluster]
+          const ddx = cx - d.x
+          const ddy = cy - d.y
+          const len = Math.hypot(ddx, ddy) || 1
+          const amp = Math.pow(d.disorder, 1.5) * (2.5 + rnd(i, 17) * 3)
           const drift = (
             <g
-              className="work-drift"
+              className="work-grav"
               style={
                 {
-                  '--dd': `${(8 + rnd(i, 17) * 5).toFixed(2)}s`,
-                  '--dl': `${(d.x / W) * 6 + rnd(i, 18)}s`,
-                  '--da': `${(2 + d.disorder * 4).toFixed(1)}px`,
+                  '--gvx': `${((ddx / len) * amp).toFixed(2)}px`,
+                  '--gvy': `${((ddy / len) * amp).toFixed(2)}px`,
+                  '--gd': `${(7 + rnd(i, 18) * 6).toFixed(2)}s`,
+                  '--gl': `${((d.x / W) * 5 + rnd(i, 19) * 2).toFixed(2)}s`,
                 } as React.CSSProperties
               }
             >
