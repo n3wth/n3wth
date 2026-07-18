@@ -62,16 +62,32 @@ function Them({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
   const mats = useRef<LineHandle[]>([])
 
   const segments = useMemo(() => {
+    /* A standing quadruped drawn in light: four legs with knees, a
+       faceted body, a raised neck and angular head — the vocabulary of
+       the real THEM creatures. */
     const v: [number, number, number][] = [
-      [-2.2, 0, 0.6], [0.4, 0, -0.8], [2.4, 0, 0.4],
-      [-1.4, 2.6, 0.2], [1.4, 2.9, -0.3],
-      [-2.5, 4.3, -0.2], [-0.1, 5.0, 0.3], [2.5, 4.1, -0.4],
-      [-1.2, 6.6, 0], [1.3, 6.4, 0.2],
-      [0.1, 7.9, -0.1],
+      // leg tips (ground): FL, FR, BL, BR
+      [2.3, 0, 1.2], [2.6, 0, -1.0], [-2.5, 0, 1.1], [-2.8, 0, -1.2],
+      // knees
+      [2.15, 2.1, 1.0], [2.4, 2.1, -0.9], [-2.35, 2.2, 0.9], [-2.6, 2.2, -1.0],
+      // shoulders / hips (body corners)
+      [1.9, 4.1, 0.85], [2.0, 4.1, -0.8], [-2.0, 4.3, 0.8], [-2.2, 4.3, -0.75],
+      // spine ridge (front, back)
+      [1.5, 5.1, 0], [-1.6, 5.3, 0],
+      // neck base -> head
+      [2.0, 4.8, 0], [3.4, 6.6, 0],
+      // muzzle, ears
+      [4.4, 6.3, 0], [3.5, 7.3, 0.35], [3.3, 7.3, -0.35],
     ]
     const e: [number, number][] = [
-      [0, 3], [1, 3], [1, 4], [2, 4], [3, 5], [3, 6], [4, 6], [4, 7],
-      [5, 8], [6, 8], [6, 9], [7, 9], [8, 10], [9, 10], [5, 6], [6, 7], [8, 9],
+      // legs
+      [0, 4], [4, 8], [1, 5], [5, 9], [2, 6], [6, 10], [3, 7], [7, 11],
+      // body box
+      [8, 9], [10, 11], [8, 10], [9, 11],
+      // spine ridge facets
+      [8, 12], [9, 12], [10, 13], [11, 13], [12, 13],
+      // neck + head
+      [12, 14], [14, 15], [15, 16], [15, 17], [15, 18], [16, 17], [16, 18],
     ]
     return e.map(([a, b]) => [v[a], v[b]] as [number, number, number][])
   }, [])
@@ -117,63 +133,82 @@ function Them({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
   )
 }
 
-/* Work — a grid of lights dissolving into a constellation */
+/* Work — a scaffold tower of light, mid-build: three lit levels and a
+   small crane arm still swinging. Building, as an object. */
 function Constellation({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean }) {
   const [hovered, handlers] = usePortalHover()
-  const inst = useRef<THREE.InstancedMesh>(null)
 
-  const pts = useMemo(() => {
-    const out: THREE.Vector3[] = []
-    for (let i = 0; i < 7; i++) {
-      for (let j = 0; j < 4; j++) {
-        const scatter = i > 3 ? (i - 3) * 0.9 : 0
-        out.push(
-          new THREE.Vector3(
-            i * 1.5 + (scatter ? Math.sin(i * 5 + j * 3) * scatter : 0),
-            1 + j * 1.5 + (scatter ? Math.cos(i * 3 + j * 7) * scatter : 0),
-            scatter ? Math.sin(i * 7 + j) * 1.4 : 0
-          )
-        )
-      }
+  const segments = useMemo(() => {
+    const segs: [number, number, number][][] = []
+    const w = 1.5
+    const levels = [0, 2.2, 4.4, 6.6]
+    const corners = (y: number): [number, number, number][] => [
+      [-w, y, -w], [w, y, -w], [w, y, w], [-w, y, w],
+    ]
+    // verticals
+    for (let c = 0; c < 4; c++) {
+      const bottom = corners(0)[c]
+      const top = corners(levels[3])[c]
+      segs.push([bottom, top])
     }
-    return out
+    // horizontal rings + one diagonal per level face
+    for (const y of levels.slice(1)) {
+      const ring = corners(y)
+      for (let c = 0; c < 4; c++) segs.push([ring[c], ring[(c + 1) % 4]])
+    }
+    for (let i = 0; i < 3; i++) {
+      const y0 = levels[i]
+      const y1 = levels[i + 1]
+      segs.push([[-w, y0, w], [w, y1, w]])
+      segs.push([[w, y0, -w], [-w, y1, -w]])
+    }
+    // crane arm on top
+    segs.push([[0, levels[3], 0], [0, 8.4, 0]])
+    segs.push([[0, 8.4, 0], [3.1, 8.0, 0]])
+    segs.push([[3.1, 8.0, 0], [3.1, 6.6, 0]])
+    return segs
   }, [])
-
-  useFrame(({ clock }) => {
-    const mesh = inst.current
-    if (!mesh) return
-    const t = reducedMotion ? 0 : clock.elapsedTime
-    const dummy = new THREE.Object3D()
-    for (let i = 0; i < pts.length; i++) {
-      const p = pts[i]
-      dummy.position.set(p.x, p.y + (reducedMotion ? 0 : Math.sin(t * 1.3 + i) * 0.05), p.z)
-      const s = 0.09 + (i % 5) * 0.015
-      dummy.scale.setScalar(s * (hovered ? 1.5 : 1))
-      dummy.updateMatrix()
-      mesh.setMatrixAt(i, dummy.matrix)
-    }
-    mesh.instanceMatrix.needsUpdate = true
-  })
 
   return (
     <group
-      position={[-25, 0, -27]}
+      position={[27, 0, -31]}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
-      <instancedMesh ref={inst} args={[undefined, undefined, pts.length]}>
-        <sphereGeometry args={[1, 10, 10]} />
-        <meshBasicMaterial color={new THREE.Color('#9fc4ff').multiplyScalar(hovered ? 4 : 2.4)} toneMapped={false} />
-      </instancedMesh>
-      <mesh position={[4.5, 3.2, 0]} visible={false}>
-        <boxGeometry args={[11, 7, 4]} />
+      {segments.map((seg, i) => (
+        <Line
+          key={i}
+          points={seg}
+          color={new THREE.Color('#9fc4ff').multiplyScalar(hovered ? 3.6 : 2.1)}
+          lineWidth={1.4}
+          toneMapped={false}
+        />
+      ))}
+      {/* the load on the crane hook, breathing */}
+      <CraneLoad hovered={hovered} reducedMotion={reducedMotion} />
+      <mesh position={[0.6, 4.2, 0]} visible={false}>
+        <boxGeometry args={[8, 9.5, 4.5]} />
       </mesh>
-      <pointLight position={[4.5, 2.5, 1]} color="#7ea8e8" intensity={hovered ? 26 : 14} distance={22} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={7.6} />
+      <pointLight position={[0, 3.4, 0]} color="#7ea8e8" intensity={hovered ? 28 : 16} distance={22} decay={2} />
+      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={9.2} />
     </group>
+  )
+}
+
+function CraneLoad({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: boolean }) {
+  const ref = useRef<THREE.Mesh>(null)
+  useFrame(({ clock }) => {
+    if (!ref.current || reducedMotion) return
+    ref.current.position.y = 5.6 + Math.sin(clock.elapsedTime * 0.7) * 0.5
+  })
+  return (
+    <mesh ref={ref} position={[3.1, 5.6, 0]}>
+      <boxGeometry args={[0.5, 0.5, 0.5]} />
+      <meshBasicMaterial color={new THREE.Color('#c3dcff').multiplyScalar(hovered ? 3.4 : 2.2)} toneMapped={false} />
+    </mesh>
   )
 }
 
@@ -181,14 +216,21 @@ function Constellation({ def, onEnter, reducedMotion }: { def: PortalDef; onEnte
 function Fork({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean }) {
   const [hovered, handlers] = usePortalHover()
 
-  const [stem, left, right] = useMemo(() => {
+  const shapes = useMemo(() => {
     const mk = (pts: [number, number, number][]) =>
-      new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p))).getPoints(40).map((v) => [v.x, v.y, v.z] as [number, number, number])
-    return [
-      mk([[-3.5, 0.06, 9], [-1.5, 0.06, 4], [0, 0.06, 0]]),
-      mk([[0, 0.06, 0], [1.3, 0.06, -2.6], [3.2, 0.06, -4.6]]),
-      mk([[0, 0.06, 0], [0.4, 0.06, -3.2], [0.2, 0.06, -6.6]]),
+      new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p))).getPoints(30).map((v) => [v.x, v.y, v.z] as [number, number, number])
+    /* A signpost at a fork: the post, two arrow boards pointing apart,
+       and the two paths actually diverging on the ground beneath it. */
+    const post: [number, number, number][] = [[0, 0, 0], [0, 4.6, 0]]
+    const arrowR: [number, number, number][] = [
+      [0, 4.1, 0], [2.0, 4.25, 0], [1.6, 4.55, 0], [2.0, 4.25, 0], [1.6, 3.95, 0],
     ]
+    const arrowL: [number, number, number][] = [
+      [0, 3.3, 0], [-1.9, 3.5, 0], [-1.5, 3.8, 0], [-1.9, 3.5, 0], [-1.5, 3.2, 0],
+    ]
+    const pathR = mk([[0, 0.06, 0.4], [1.6, 0.06, -1.8], [3.6, 0.06, -3.6]])
+    const pathL = mk([[0, 0.06, 0.4], [-1.4, 0.06, -1.9], [-3.2, 0.06, -3.9]])
+    return [post, arrowR, arrowL, pathR, pathL]
   }, [])
 
   const glow = hovered ? 3.6 : 2.1
@@ -196,21 +238,21 @@ function Fork({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightF
 
   return (
     <group
-      position={[0, 0, -5]}
+      position={[1, 0, -5]}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
-      {[stem, left, right].map((pts, i) => (
-        <Line key={i} points={pts} color={new THREE.Color('#8fdfff').multiplyScalar(glow)} lineWidth={2.2} toneMapped={false} />
+      {shapes.map((pts, i) => (
+        <Line key={i} points={pts} color={new THREE.Color('#8fdfff').multiplyScalar(glow)} lineWidth={2} toneMapped={false} />
       ))}
-      <mesh position={[0.5, 0.3, 0]} rotation-x={-Math.PI / 2} visible={false}>
-        <planeGeometry args={[10, 19]} />
+      <mesh position={[0, 2.4, 0]} visible={false}>
+        <boxGeometry args={[5.4, 5.4, 3]} />
       </mesh>
-      <pointLight position={[0, 1.2, -1]} color="#79c8ea" intensity={hovered ? 16 : 8} distance={14} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={2.6} />
+      <pointLight position={[0, 2.4, 0.6]} color="#79c8ea" intensity={hovered ? 18 : 9} distance={14} decay={2} />
+      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={5.6} />
     </group>
   )
 }
@@ -229,43 +271,92 @@ function Beacon({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: Nigh
     if (core.current) core.current.scale.setScalar(1 + Math.sin(t * 2.1) * 0.06)
   })
 
+  const logs = useMemo(() => {
+    const out: [number, number, number][][] = []
+    for (let i = 0; i < 5; i++) {
+      const a = (i / 5) * Math.PI * 2 + 0.4
+      out.push([
+        [Math.cos(a) * 1.5, 0.12, Math.sin(a) * 1.5],
+        [Math.cos(a + Math.PI) * 0.4, 0.95, Math.sin(a + Math.PI) * 0.4],
+      ])
+    }
+    return out
+  }, [])
+
   return (
     <group
-      position={[26, 0, -30]}
+      position={[-4.5, 0, -2]}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
-      <mesh ref={core} position={[0, 1.4, 0]}>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshBasicMaterial color={new THREE.Color('#ffb877').multiplyScalar(hovered ? 5 : 3.4)} toneMapped={false} />
+      {/* leaning logs */}
+      {logs.map((seg, i) => (
+        <Line key={i} points={seg} color="#3a2a1c" lineWidth={3} toneMapped={false} />
+      ))}
+      {/* flame core */}
+      <mesh ref={core} position={[0, 1.0, 0]}>
+        <coneGeometry args={[0.42, 1.3, 6]} />
+        <meshBasicMaterial color={new THREE.Color('#ffb877').multiplyScalar(hovered ? 5 : 3.6)} toneMapped={false} />
       </mesh>
-      <mesh position={[0, 0.4, 0]}>
-        <coneGeometry args={[0.9, 0.9, 4, 1, true]} />
-        <meshStandardMaterial color="#1a1410" roughness={1} />
-      </mesh>
-      <mesh position={[0, 1.6, 0]} visible={false}>
+      <Embers hovered={hovered} reducedMotion={reducedMotion} />
+      <mesh position={[0, 1.2, 0]} visible={false}>
         <sphereGeometry args={[2.6, 8, 8]} />
       </mesh>
-      <pointLight ref={light} position={[0, 1.8, 0]} color="#ff9d4d" intensity={26} distance={30} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={3.4} />
+      <pointLight ref={light} position={[0, 1.6, 0]} color="#ff9d4d" intensity={26} distance={30} decay={2} />
+      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={3.2} />
     </group>
   )
 }
 
-/* The garden — a patch of small green lights */
+function Embers({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: boolean }) {
+  const inst = useRef<THREE.InstancedMesh>(null)
+  const N = 7
+  useFrame(({ clock }) => {
+    const mesh = inst.current
+    if (!mesh) return
+    const t = reducedMotion ? 0 : clock.elapsedTime
+    const dummy = new THREE.Object3D()
+    for (let i = 0; i < N; i++) {
+      const cycle = (t * 0.55 + i / N) % 1
+      dummy.position.set(
+        Math.sin(i * 5.1 + cycle * 6) * 0.35,
+        1.2 + cycle * 2.6,
+        Math.cos(i * 3.7 + cycle * 5) * 0.35
+      )
+      dummy.scale.setScalar(0.05 * (1 - cycle) + 0.015)
+      dummy.updateMatrix()
+      mesh.setMatrixAt(i, dummy.matrix)
+    }
+    mesh.instanceMatrix.needsUpdate = true
+  })
+  return (
+    <instancedMesh ref={inst} args={[undefined, undefined, N]}>
+      <sphereGeometry args={[1, 6, 6]} />
+      <meshBasicMaterial color={new THREE.Color('#ffc490').multiplyScalar(hovered ? 4 : 3)} toneMapped={false} />
+    </instancedMesh>
+  )
+}
+
+/* The garden — glowing stems with light tips, the plant-glyph language
+   of garden.n3wth.com grown into the field */
 function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean }) {
   const [hovered, handlers] = usePortalHover()
   const inst = useRef<THREE.InstancedMesh>(null)
 
-  const pts = useMemo(() => {
-    const out: { x: number; z: number; h: number }[] = []
-    for (let i = 0; i < 34; i++) {
+  const stems = useMemo(() => {
+    const out: { x: number; z: number; h: number; lean: number }[] = []
+    for (let i = 0; i < 18; i++) {
       const a = i * 2.399
-      const r = 0.7 + (i % 9) * 0.42
-      out.push({ x: Math.cos(a) * r, z: Math.sin(a) * r * 0.8, h: 0.3 + (i % 5) * 0.28 })
+      const r = 0.6 + (i % 7) * 0.5
+      out.push({
+        x: Math.cos(a) * r,
+        z: Math.sin(a) * r * 0.8,
+        h: 0.7 + (i % 5) * 0.45,
+        lean: Math.sin(i * 3.3) * 0.18,
+      })
     }
     return out
   }, [])
@@ -275,11 +366,11 @@ function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter:
     if (!mesh) return
     const t = reducedMotion ? 0 : clock.elapsedTime
     const dummy = new THREE.Object3D()
-    for (let i = 0; i < pts.length; i++) {
-      const p = pts[i]
-      const sway = reducedMotion ? 0 : Math.sin(t * 1.6 + i * 1.9) * 0.05
-      dummy.position.set(p.x + sway, p.h, p.z)
-      dummy.scale.setScalar((0.05 + (i % 4) * 0.014) * (hovered ? 1.6 : 1))
+    for (let i = 0; i < stems.length; i++) {
+      const p = stems[i]
+      const sway = reducedMotion ? 0 : Math.sin(t * 1.4 + i * 1.9) * 0.06
+      dummy.position.set(p.x + p.lean + sway, p.h, p.z)
+      dummy.scale.setScalar((0.06 + (i % 4) * 0.016) * (hovered ? 1.6 : 1))
       dummy.updateMatrix()
       mesh.setMatrixAt(i, dummy.matrix)
     }
@@ -295,15 +386,29 @@ function GardenPatch({ def, onEnter, reducedMotion }: { def: PortalDef; onEnter:
         onEnter(def.href, def.external)
       }}
     >
-      <instancedMesh ref={inst} args={[undefined, undefined, pts.length]}>
+      {/* stems */}
+      {stems.map((p, i) => (
+        <Line
+          key={i}
+          points={[
+            [p.x, 0, p.z],
+            [p.x + p.lean, p.h, p.z],
+          ]}
+          color={new THREE.Color('#4fae78').multiplyScalar(hovered ? 2.6 : 1.6)}
+          lineWidth={1.1}
+          toneMapped={false}
+        />
+      ))}
+      {/* glowing tips */}
+      <instancedMesh ref={inst} args={[undefined, undefined, stems.length]}>
         <sphereGeometry args={[1, 8, 8]} />
-        <meshBasicMaterial color={new THREE.Color('#8fffbe').multiplyScalar(hovered ? 3.6 : 2.2)} toneMapped={false} />
+        <meshBasicMaterial color={new THREE.Color('#8fffbe').multiplyScalar(hovered ? 3.6 : 2.3)} toneMapped={false} />
       </instancedMesh>
-      <mesh position={[0, 0.9, 0]} visible={false}>
-        <boxGeometry args={[7, 2.4, 6]} />
+      <mesh position={[0, 1.2, 0]} visible={false}>
+        <boxGeometry args={[7.5, 3, 6]} />
       </mesh>
       <pointLight position={[0, 1.4, 0]} color="#5fe89a" intensity={hovered ? 18 : 10} distance={13} decay={2} />
-      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={2.8} />
+      <PortalLabel visible={hovered} label={def.label} sub={def.sub} y={3.4} />
     </group>
   )
 }
