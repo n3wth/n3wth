@@ -20,7 +20,7 @@ function TendedRecently() {
   return (
     <section aria-label="Recently tended garden notes" className="frame">
       <div className="section-pad">
-        <p className="text-xs uppercase tracking-widest" style={{ color: 'var(--ink-label)' }}>
+        <p className="text-xs tracking-wide" style={{ color: 'var(--ink-label)' }}>
           Tended recently
         </p>
         <p className="mt-3 max-w-xl text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>

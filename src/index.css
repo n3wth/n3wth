@@ -107,7 +107,7 @@
 /* Bare-name aliases for var() usage outside utilities. Values are sourced
    from Astryx design tokens (src/theme/n3wthTheme.ts, generated into
    src/theme/n3wth-theme.css) — no re-hardcoding.
-   --ink-label: accessible label tone for small uppercase meta;
+   --ink-label: accessible label tone for small meta;
    --ink-faint / --ink-ghost stay for decorative marks/separators only.
    --accent-rail has no Astryx token counterpart, so it's defined here. */
 :root {
@@ -689,12 +689,11 @@ body {
   }
 }
 
-/* Small uppercase section label (footer columns) — matches garden.n3wth.com */
+/* Small section label (footer columns) — matches garden.n3wth.com */
 .label {
   font-family: var(--font-sans);
   font-size: 11px;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--ink-dim);
 }
 
