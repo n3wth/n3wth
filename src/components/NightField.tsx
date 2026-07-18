@@ -561,8 +561,10 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       <Suspense fallback={null}>
         <Sculptures onEnter={onEnter} reducedMotion={reducedMotion} />
       </Suspense>
-      <GardenPatch def={PORTALS.garden} onEnter={onEnter} reducedMotion={reducedMotion} />
-      <PinkTriangle def={PORTALS.triangle} onEnter={onEnter} />
+      <Suspense fallback={null}>
+        <GardenPatch def={PORTALS.garden} onEnter={onEnter} reducedMotion={reducedMotion} />
+        <PinkTriangle def={PORTALS.triangle} onEnter={onEnter} />
+      </Suspense>
 
       <Rig reducedMotion={reducedMotion} />
 
