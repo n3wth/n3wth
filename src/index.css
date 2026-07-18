@@ -32,6 +32,22 @@
   font-display: swap;
 }
 
+/* Display serif candidates — headers only (prototype: Fraunces active) */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Geist Mono — literal machine output ONLY (code, coordinates, GitHub counts). Labels/eyebrows use Geist Sans. */
 @font-face {
   font-family: 'Geist Mono';
@@ -102,6 +118,13 @@
 }
 
 * { box-sizing: border-box; }
+
+/* Dual type voice: display serif carries the headers (the artist's voice),
+   Geist stays on UI/body/nav (the systems voice). Serif display wants
+   near-neutral tracking — the !important intentionally overrides the
+   tight inline letter-spacing tuned for Geist. */
+:root { --font-family-heading: 'Fraunces', 'Geist Sans', system-ui, serif; }
+h1, h2, h3, .display { letter-spacing: -0.01em !important; }
 
 /* The heaviest weight on this site is semibold. Anything that asks for
    bold — Astryx's bold token, <strong>, UA defaults — lands on 600. */
