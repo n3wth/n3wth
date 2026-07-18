@@ -1,13 +1,16 @@
-import { Link } from 'react-router-dom'
-import { WorldHome } from '../components/WorldHome'
+import { Suspense, lazy, useCallback, useMemo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../data/content'
 
-/* The front door is a field at night. Every glowing structure is one of
-   Oliver's works standing in for a page — colored light, the medium of
-   the art, is the only color on the site. The portal links below the
-   scene are real anchors, so keyboard, touch, and no-canvas visitors
-   get the same doors. */
+/* The front door is a field at night (three.js, lazy so the rest of the
+   site never pays for it): every glowing structure is one of Oliver's
+   works standing in for a page, and colored light — the medium of the
+   art — is the only color on the site. The portal links below the scene
+   are real anchors, so keyboard, touch, and no-WebGL visitors get the
+   same doors. */
+
+const NightField = lazy(() => import('../components/NightField'))
 
 const portals = [
   { href: '/work', label: 'Work' },
@@ -18,10 +21,29 @@ const portals = [
 
 export default function Home() {
   usePageMeta(siteConfig.title, siteConfig.description)
+  const navigate = useNavigate()
+
+  const reducedMotion = useMemo(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    []
+  )
+
+  const onEnter = useCallback(
+    (href: string, external?: boolean) => {
+      if (external) {
+        window.location.href = href
+      } else {
+        navigate(href, { viewTransition: true })
+      }
+    },
+    [navigate]
+  )
 
   return (
     <section className="bleed relative -mt-20" style={{ height: '100svh' }}>
-      <WorldHome />
+      <Suspense fallback={<div className="absolute inset-0" style={{ background: '#08090b' }} />}>
+        <NightField onEnter={onEnter} reducedMotion={reducedMotion} />
+      </Suspense>
 
       {/* Hero copy over the dark left field */}
       <div className="absolute left-6 md:left-12 top-28 md:top-32 z-10 max-w-md pointer-events-none">
@@ -55,12 +77,7 @@ export default function Home() {
         className="absolute inset-x-6 md:inset-x-12 bottom-6 md:bottom-8 z-10 flex flex-wrap items-center gap-x-7 gap-y-3"
       >
         {portals.map((p) => (
-          <Link
-            key={p.href}
-            to={p.href}
-            viewTransition
-            className="world-door"
-          >
+          <Link key={p.href} to={p.href} viewTransition className="world-door">
             {p.label}
           </Link>
         ))}
