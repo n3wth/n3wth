@@ -6,19 +6,15 @@ import { CursorMark } from './marks'
 import { navigation } from '../data/content'
 
 export function Nav() {
-  const [open, setOpen] = useState(false)
-
-  // Close the mobile menu after client-side navigation
   const { pathname } = useLocation()
-  useEffect(() => {
-    setOpen(false)
-  }, [pathname])
+  const [openPath, setOpenPath] = useState<string | null>(null)
+  const open = openPath === pathname
 
   // Lock body scroll while the full-screen menu is open; Escape closes it
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
+      if (e.key === 'Escape') setOpenPath(null)
     }
     window.addEventListener('keydown', onKeyDown)
     return () => {
@@ -95,7 +91,7 @@ export function Nav() {
               label={open ? 'Close menu' : 'Open menu'}
               icon={open ? <X size={18} /> : <Menu size={18} />}
               variant="ghost"
-              onClick={() => setOpen((v) => !v)}
+              onClick={() => setOpenPath((value) => value === pathname ? null : pathname)}
             />
           </span>
         </div>
@@ -128,7 +124,7 @@ export function Nav() {
                 icon={<X size={20} />}
                 variant="ghost"
                 size="lg"
-                onClick={() => setOpen(false)}
+                onClick={() => setOpenPath(null)}
               />
             </span>
           </div>
@@ -138,7 +134,7 @@ export function Nav() {
                 key={item.href}
                 to={item.href}
                 viewTransition
-                onClick={() => setOpen(false)}
+                onClick={() => setOpenPath(null)}
                 className="mobile-nav-link"
               >
                 {item.name}

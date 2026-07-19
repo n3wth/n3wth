@@ -1,7 +1,7 @@
-import { Suspense, useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame, type ThreeElements } from '@react-three/fiber'
-import { Line, Stars, useCursor, useGLTF, useTexture } from '@react-three/drei'
-import { Bloom, EffectComposer } from '@react-three/postprocessing'
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Canvas, useFrame, useThree, type ThreeElements } from '@react-three/fiber'
+import { Line, Stars, useCursor, useGLTF, useProgress, useTexture } from '@react-three/drei'
+import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
 /**
@@ -27,7 +27,11 @@ interface PortalDef {
   external?: boolean
 }
 
-type HoverLabel = (label: string | null) => void
+type HoverLabel = (portal: PortalDef | null) => void
+
+function usePortraitLayout() {
+  return useThree(({ size }) => size.width / size.height < 0.75)
+}
 
 /* 0..1 eased hover value — every hover response uses this so nothing
    in the scene ever snaps */
@@ -53,7 +57,7 @@ function EasedLight({
   return <pointLight ref={ref} intensity={off} {...props} />
 }
 
-function usePortalHover(label?: string, onLabel?: HoverLabel): [boolean, { onPointerOver: (e: THREE.Event) => void; onPointerOut: () => void }] {
+function usePortalHover(portal?: PortalDef, onLabel?: HoverLabel): [boolean, { onPointerOver: (e: THREE.Event) => void; onPointerOut: () => void }] {
   const [hovered, setHovered] = useState(false)
   useCursor(hovered)
   return [
@@ -62,7 +66,7 @@ function usePortalHover(label?: string, onLabel?: HoverLabel): [boolean, { onPoi
       onPointerOver: (e: THREE.Event) => {
         ;(e as unknown as { stopPropagation: () => void }).stopPropagation()
         setHovered(true)
-        if (label && onLabel) onLabel(label)
+        if (portal && onLabel) onLabel(portal)
       },
       onPointerOut: () => {
         setHovered(false)
@@ -127,6 +131,20 @@ function LightPool({ position, scale = 1, color, opacity }: { position: [number,
   )
 }
 
+function configureTiledTexture(tex: THREE.Texture) {
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping
+  tex.repeat.set(1, 1)
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.anisotropy = 8
+  tex.needsUpdate = true
+}
+
+function configurePanoTexture(tex: THREE.Texture) {
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.anisotropy = 8
+  tex.needsUpdate = true
+}
+
 /* Pull mesh geometries out of a GLB scene, keyed by lowercase node name */
 function useGLBGeometries(url: string): Record<string, THREE.BufferGeometry> {
   const { scene } = useGLTF(url)
@@ -171,7 +189,7 @@ function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): TH
       }
     })
     return scene
-  }, [scene, fogOff])
+  }, [scene, fogOff, tint])
 }
 
 /* A sculpture the way the real ones are built: a solid body wearing a
@@ -220,12 +238,7 @@ function SteelAndWire({
   }, [geometry, edgeThreshold])
   const mat = useRef<THREE.LineBasicMaterial>(null)
   const base = useMemo(() => new THREE.Color(edgeColor), [edgeColor])
-  const tex = useTexture(mapUrl)
-  const configured = useMemo(() => {
-    tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-    tex.colorSpace = THREE.SRGBColorSpace
-    return tex
-  }, [tex])
+  const configured = useTexture(mapUrl, configureTiledTexture)
 
   const eased = useRef(glow)
   useFrame(({ clock }, delta) => {
@@ -381,12 +394,13 @@ function Thylacine({
 }
 
 function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel: HoverLabel }) {
-  const [hovered, handlers] = usePortalHover(def.label, onLabel)
+  const [hovered, handlers] = usePortalHover(def, onLabel)
   const parts = useGLBGeometries('/models/them.glb')
+  const portrait = usePortraitLayout()
 
   return (
     <group
-      position={[27, 0, -46]}
+      position={portrait ? [10, 0, -50] : [27, 0, -46]}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -411,8 +425,9 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
    sky and slowly tracking something across it. Listening at production
    scale. */
 function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel: HoverLabel }) {
-  const [hovered, handlers] = usePortalHover(def.label, onLabel)
-  const telescope = useGLBScene('/models/telescope.glb?v=2', { fogOff: true, tint: '#7e848c' })
+  const [hovered, handlers] = usePortalHover(def, onLabel)
+  const portrait = usePortraitLayout()
+  const telescope = useGLBScene(portrait ? '/models/dish.glb' : '/models/telescope.glb?v=2', { fogOff: true, tint: '#7e848c' })
   const azimuth = useRef<THREE.Group>(null)
 
   useFrame(({ clock }) => {
@@ -424,9 +439,9 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
 
   return (
     <group
-      position={[-52, 0, -100]}
+      position={portrait ? [-18, 0, -94] : [-52, 0, -100]}
       rotation-y={0.35}
-      scale={2.2}
+      scale={portrait ? 2.45 : 2.2}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -454,8 +469,9 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
    PBR): four finger boards pointing different ways, stones at the base,
    lantern-lit at the fork where the marker-stone paths split */
 function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; onLabel: HoverLabel }) {
-  const [hovered, handlers] = usePortalHover(def.label, onLabel)
-  const signpost = useGLBScene('/models/signpost-hd.glb')
+  const [hovered, handlers] = usePortalHover(def, onLabel)
+  const portrait = usePortraitLayout()
+  const signpost = useGLBScene(portrait ? '/models/signpost.glb' : '/models/signpost-hd.glb')
   const rocks = useRocks()
   const suzParts = useGLBGeometries('/models/suzanne.glb')
   const suzanne = Object.entries(suzParts).find(([k]) => k.includes('suzanne'))?.[1]
@@ -474,9 +490,9 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
 
   return (
     <group
-      position={[6.5, 0, 4]}
+      position={portrait ? [4.2, 0, 1] : [6.5, 0, 4]}
       rotation-y={0.45}
-      scale={0.42}
+      scale={portrait ? 0.38 : 0.42}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -591,17 +607,32 @@ function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: bo
   )
 }
 
+function CampArtifacts() {
+  const teapot = useGLBGeometry('/models/teapot.glb')
+  const bike = useGLBScene('/models/bike.glb')
+
+  return (
+    <>
+      {/* the Utah teapot, waiting by the fire for whoever shows up */}
+      <mesh geometry={teapot} position={[2.3, 0, 1.1]} rotation-y={-2.1} scale={0.9}>
+        <meshStandardMaterial color="#7a7168" roughness={0.6} metalness={0.35} />
+      </mesh>
+      {/* somebody's dusty cruiser, leaned where they left it */}
+      <primitive object={bike} position={[3.1, 0, -1.6]} rotation-y={0.85} rotation-z={0.06} scale={0.55} />
+    </>
+  )
+}
+
 /* Contact — a real campfire: a teepee of wooden logs (FLORA wood, lit
    by its own flame), a ring of playa stones, embers rising */
 function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel: HoverLabel }) {
-  const [hovered, handlers] = usePortalHover(def.label, onLabel)
+  const [hovered, handlers] = usePortalHover(def, onLabel)
+  const portrait = usePortraitLayout()
   const light = useRef<THREE.PointLight>(null)
   const core = useRef<THREE.Mesh>(null)
   const hEased = useEased01(hovered)
   const wood = useTexture('/textures/wood-tile.webp')
   const rocks = useRocks()
-  const teapot = useGLBGeometry('/models/teapot.glb')
-  const bike = useGLBScene('/models/bike.glb')
 
   useFrame(({ clock }) => {
     if (reducedMotion) return
@@ -667,19 +698,15 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
 
   return (
     <group
-      position={[-8, 0, 9]}
+      position={portrait ? [-4.5, 0, 5] : [-8, 0, 9]}
+      scale={portrait ? 0.82 : 1}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
-      {/* the Utah teapot, waiting by the fire for whoever shows up */}
-      <mesh geometry={teapot} position={[2.3, 0, 1.1]} rotation-y={-2.1} scale={0.9}>
-        <meshStandardMaterial color="#7a7168" roughness={0.6} metalness={0.35} />
-      </mesh>
-      {/* somebody's dusty cruiser, leaned where they left it */}
-      <primitive object={bike} position={[3.1, 0, -1.6]} rotation-y={0.85} rotation-z={0.06} scale={0.55} />
+      {!portrait && <CampArtifacts />}
       {/* teepee of real logs, each one different, lit by their own fire */}
       {logs.map((l, i) => (
         <mesh key={i} position={l.pos} quaternion={l.quat} rotation-order="YXZ">
@@ -723,6 +750,7 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
 function Embers({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: boolean }) {
   const inst = useRef<THREE.InstancedMesh>(null)
   const N = 5
+  const dummy = useMemo(() => new THREE.Object3D(), [])
   const phases = useMemo(() => Array.from({ length: N }, (_, i) => {
     const s = Math.sin(i * 91.7 + 47.3) * 43758.5453
     return s - Math.floor(s)
@@ -731,7 +759,6 @@ function Embers({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: b
     const mesh = inst.current
     if (!mesh) return
     const t = reducedMotion ? 0 : clock.elapsedTime
-    const dummy = new THREE.Object3D()
     for (let i = 0; i < N; i++) {
       const cycle = (t * (0.38 + phases[i] * 0.3) + phases[i]) % 1
       dummy.position.set(
@@ -838,7 +865,8 @@ function Sprout({ reducedMotion }: { reducedMotion: boolean }) {
    blades, glowing bud tips, and a few tall alliums holding orbs of
    light over the rest. The plant-glyph language of garden.n3wth.com. */
 function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel: HoverLabel }) {
-  const [hovered, handlers] = usePortalHover(def.label, onLabel)
+  const [hovered, handlers] = usePortalHover(def, onLabel)
+  const portrait = usePortraitLayout()
   const tips = useRef<THREE.InstancedMesh>(null)
   const orbs = useRef<THREE.InstancedMesh>(null)
   const bed = useRef<THREE.Group>(null)
@@ -846,6 +874,7 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
   const tipsMat = useRef<THREE.MeshBasicMaterial>(null)
   const orbsMat = useRef<THREE.MeshBasicMaterial>(null)
   const h = useEased01(hovered)
+  const dummy = useMemo(() => new THREE.Object3D(), [])
 
   const { stemGeo, plants, alliums } = useMemo(() => {
     const rnd = (i: number, salt: number) => {
@@ -899,7 +928,6 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
 
   useFrame(({ clock }) => {
     const t = reducedMotion ? 0 : clock.elapsedTime
-    const dummy = new THREE.Object3D()
     // wind over the whole bed: gusts lean everything from the ground up,
     // two incommensurate periods so it swooshes instead of ticking
     if (bed.current) {
@@ -935,7 +963,8 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
 
   return (
     <group
-      position={[-6, 0, -16]}
+      position={portrait ? [-7, 0, -19] : [-6, 0, -16]}
+      scale={portrait ? 0.88 : 1}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -976,7 +1005,8 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
 
 /* Pink Triangle on the far ridge — the skyline */
 function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; onLabel: HoverLabel }) {
-  const [hovered, handlers] = usePortalHover(def.label, onLabel)
+  const [hovered, handlers] = usePortalHover(def, onLabel)
+  const portrait = usePortraitLayout()
   const lineMat = useRef<{ color: THREE.Color } | null>(null)
   const fillMat = useRef<THREE.MeshBasicMaterial>(null)
   const h = useEased01(hovered)
@@ -1000,8 +1030,8 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
   }, [])
   return (
     <group
-      position={[82, 9, -128]}
-      scale={1.7}
+      position={portrait ? [20, 10, -122] : [82, 9, -128]}
+      scale={portrait ? 1.35 : 1.7}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -1035,14 +1065,8 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
    every structure. FLORA cracked-mud tiles across it, revealed by the
    pooled light. */
 function Ground() {
-  const tex = useTexture('/textures/playa-tile.webp')
+  const configured = useTexture('/textures/playa-tile.webp', configureTiledTexture)
   const terrain = useGLBGeometry('/models/terrain.glb')
-  const configured = useMemo(() => {
-    tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-    tex.repeat.set(1, 1) // repeats are baked into the terrain UVs
-    tex.anisotropy = 8
-    return tex
-  }, [tex])
   return (
     <mesh geometry={terrain}>
       <meshStandardMaterial
@@ -1062,12 +1086,7 @@ function Ground() {
    tone and far-off camp lights, while the crisp star/ridge layers
    above carry the detail */
 function PanoSky() {
-  const tex = useTexture('/textures/marble-pano.webp')
-  const configured = useMemo(() => {
-    tex.colorSpace = THREE.SRGBColorSpace
-    tex.anisotropy = 8
-    return tex
-  }, [tex])
+  const configured = useTexture('/textures/marble-pano.webp', configurePanoTexture)
   return (
     <mesh position={[0, -4, 0]} rotation-y={2.2} renderOrder={-1}>
       <sphereGeometry args={[430, 48, 32]} />
@@ -1169,39 +1188,184 @@ function Meteors({ reducedMotion }: { reducedMotion: boolean }) {
   )
 }
 
-function Rig({ reducedMotion }: { reducedMotion: boolean }) {
+/* A low, cool pool follows the viewer across the playa. It is deliberately
+   weaker than every artwork's own light: the field is discovered, never
+   floodlit. */
+function SurveyLight({ reducedMotion }: { reducedMotion: boolean }) {
+  const group = useRef<THREE.Group>(null)
+  const light = useRef<THREE.PointLight>(null)
+  const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), [])
+  const hit = useMemo(() => new THREE.Vector3(), [])
+  const target = useRef(new THREE.Vector3(0, 0.04, -12))
+
+  useFrame(({ camera, clock, pointer, raycaster }, delta) => {
+    if (!reducedMotion) {
+      raycaster.setFromCamera(pointer, camera)
+      const intersection = raycaster.ray.intersectPlane(plane, hit)
+      if (intersection) {
+        target.current.set(
+          THREE.MathUtils.clamp(intersection.x, -42, 42),
+          0.04,
+          THREE.MathUtils.clamp(intersection.z, -72, 13)
+        )
+      }
+    }
+
+    const k = 1 - Math.exp(-3.2 * delta)
+    group.current?.position.lerp(target.current, k)
+    if (light.current) {
+      light.current.intensity = reducedMotion
+        ? 4
+        : 5.5 + Math.sin(clock.elapsedTime * 0.43) * 0.35
+    }
+  })
+
+  return (
+    <group ref={group} position={[0, 0.04, -12]}>
+      <mesh rotation-x={-Math.PI / 2} scale={15} renderOrder={1}>
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial
+          map={poolTexture()}
+          color="#a9bdd7"
+          transparent
+          opacity={0.035}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
+      </mesh>
+      <pointLight
+        ref={light}
+        position={[0, 4.5, 0]}
+        color="#9fb6d1"
+        intensity={4}
+        distance={18}
+        decay={2}
+      />
+    </group>
+  )
+}
+
+/* One draw call of near-ground dust gives the camera real parallax. The
+   points sit below the stars and disappear into the same scene fog. */
+function PlayaDust({ reducedMotion }: { reducedMotion: boolean }) {
+  const ref = useRef<THREE.Points>(null)
+  const positions = useMemo(() => {
+    const out = new Float32Array(150 * 3)
+    const rnd = (i: number, salt: number) => {
+      const n = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453
+      return n - Math.floor(n)
+    }
+    for (let i = 0; i < 150; i++) {
+      out[i * 3] = (rnd(i, 1) - 0.5) * 150
+      out[i * 3 + 1] = 0.2 + Math.pow(rnd(i, 2), 2) * 4.2
+      out[i * 3 + 2] = 14 - rnd(i, 3) * 122
+    }
+    return out
+  }, [])
+
+  useFrame(({ clock }) => {
+    if (!ref.current || reducedMotion) return
+    ref.current.position.x = Math.sin(clock.elapsedTime * 0.035) * 1.2
+    ref.current.rotation.y = Math.sin(clock.elapsedTime * 0.018) * 0.003
+  })
+
+  return (
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        color="#c8c0b2"
+        size={0.075}
+        sizeAttenuation
+        transparent
+        opacity={0.32}
+        depthWrite={false}
+        fog
+      />
+    </points>
+  )
+}
+
+const CAMERA_FOCUS: Record<string, { cameraX: number; lookX: number; lookY: number; lookZ: number }> = {
+  work: { cameraX: -1.5, lookX: -5.8, lookY: 4.9, lookZ: -34 },
+  art: { cameraX: 1.4, lookX: 4.8, lookY: 4.1, lookZ: -31 },
+  thinking: { cameraX: 1.1, lookX: 2.8, lookY: 3.5, lookZ: -25 },
+  contact: { cameraX: -1.2, lookX: -2.8, lookY: 3.2, lookZ: -24 },
+  garden: { cameraX: -0.7, lookX: -1.7, lookY: 3.8, lookZ: -28 },
+  triangle: { cameraX: 1.8, lookX: 6.4, lookY: 5.2, lookZ: -36 },
+}
+
+function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready: boolean; reducedMotion: boolean }) {
+  const lookAt = useRef(new THREE.Vector3(0, 4.5, -30))
+  const targetLook = useRef(new THREE.Vector3(0, 4.5, -30))
+  const introStarted = useRef<number | null>(null)
+
   useFrame(({ camera, pointer, clock, size }, delta) => {
     const aspect = size.width / size.height
-    const targetZ = aspect < 0.75 ? 44 : aspect < 1.15 ? 30 : 22
-    camera.position.z += (targetZ - camera.position.z) * (1 - Math.exp(-5 * delta))
+    const baseZ = aspect < 0.75 ? 38 : aspect < 1.15 ? 29 : 22
+    if (ready && introStarted.current === null) {
+      introStarted.current = clock.elapsedTime
+      camera.position.y = aspect < 0.75 ? 2.4 : 2.15
+      camera.position.z = baseZ + (aspect < 0.75 ? 8 : 11)
+    }
+
     if (reducedMotion) {
-      camera.lookAt(aspect < 0.75 ? 3 : 0, 4.5, -30)
+      camera.position.set(0, 3.2, baseZ)
+      camera.lookAt(aspect < 0.75 ? 2.2 : 0, 4.5, -30)
       return
     }
+
     const t = clock.elapsedTime
+    const introElapsed = introStarted.current === null ? 0 : t - introStarted.current
+    const intro = ready ? THREE.MathUtils.smoothstep(introElapsed, 0, 2.8) : 0
+    const introOffset = (1 - intro) * (aspect < 0.75 ? 8 : 11)
+    const focus = active ? CAMERA_FOCUS[active.id] : undefined
+    const pointerWeight = active ? 0.45 : 1
     // two incommensurate drift periods (~78s / ~217s) plus a faint vertical breath
-    const targetX = pointer.x * 3 + Math.sin(t * 0.08) * 0.45 + Math.sin(t * 0.029 + 1.7) * 0.3
-    const targetY = 3.2 + pointer.y * 1.2 + Math.sin(t * 0.047 + 0.8) * 0.12
+    const targetX = pointer.x * 3 * pointerWeight + (focus?.cameraX ?? 0) + Math.sin(t * 0.08) * 0.45 + Math.sin(t * 0.029 + 1.7) * 0.3
+    const targetY = 3.2 + pointer.y * 1.2 * pointerWeight - (1 - intro) * 0.75 + Math.sin(t * 0.047 + 0.8) * 0.12
+    const targetZ = baseZ + introOffset
     const k = 1 - Math.exp(-2.5 * delta)
     camera.position.x += (targetX - camera.position.x) * k
     camera.position.y += (targetY - camera.position.y) * k
+    camera.position.z += (targetZ - camera.position.z) * k
     // gaze drifts on periods incommensurate with the position drift, so the
     // viewpoint breathes instead of dollying on a rail
-    const lx = (aspect < 0.75 ? 3 : 0) + Math.sin(t * 0.021 + 3.1) * 0.8
-    const ly = 4.5 + Math.sin(t * 0.037 + 2.2) * 0.25
-    camera.lookAt(lx, ly, -30)
+    targetLook.current.set(
+      (focus?.lookX ?? (aspect < 0.75 ? 2.2 : 0)) + Math.sin(t * 0.021 + 3.1) * 0.8,
+      (focus?.lookY ?? 4.5) + Math.sin(t * 0.037 + 2.2) * 0.25,
+      focus?.lookZ ?? -30
+    )
+    lookAt.current.lerp(targetLook.current, 1 - Math.exp(-2.1 * delta))
+    camera.lookAt(lookAt.current)
+
+    if (camera instanceof THREE.PerspectiveCamera) {
+      const targetFov = (aspect < 0.75 ? 54 : 48) + (1 - intro) * 4
+      const nextFov = THREE.MathUtils.damp(camera.fov, targetFov, 3.5, delta)
+      if (Math.abs(nextFov - camera.fov) > 0.001) {
+        camera.fov = nextFov
+        camera.updateProjectionMatrix()
+      }
+    }
   })
   return null
 }
 
 useGLTF.preload('/models/them.glb')
-useGLTF.preload('/models/telescope.glb?v=2')
-useGLTF.preload('/models/signpost-hd.glb')
 useGLTF.preload('/models/suzanne.glb')
-useGLTF.preload('/models/teapot.glb')
-useGLTF.preload('/models/bike.glb')
 useGLTF.preload('/models/terrain.glb')
 useGLTF.preload('/models/rocks.glb')
+const portraitAtLoad = typeof window !== 'undefined' && window.matchMedia('(max-aspect-ratio: 3/4)').matches
+if (portraitAtLoad) {
+  useGLTF.preload('/models/dish.glb')
+  useGLTF.preload('/models/signpost.glb')
+} else {
+  useGLTF.preload('/models/telescope.glb?v=2')
+  useGLTF.preload('/models/signpost-hd.glb')
+  useGLTF.preload('/models/teapot.glb')
+  useGLTF.preload('/models/bike.glb')
+}
 useTexture.preload('/textures/playa-tile.webp')
 useTexture.preload('/textures/horizon.webp')
 useTexture.preload('/textures/steel-tile.webp')
@@ -1217,14 +1381,126 @@ const PORTALS: Record<string, PortalDef> = {
   triangle: { id: 'triangle', label: 'Art', sub: 'Pink Triangle, Twin Peaks', href: '/art' },
 }
 
+const FIELD_INDEX = [
+  PORTALS.work,
+  PORTALS.art,
+  PORTALS.thinking,
+  PORTALS.contact,
+  PORTALS.garden,
+]
+
+function SceneReady({ onReady }: { onReady: () => void }) {
+  const sent = useRef(false)
+  useFrame(() => {
+    if (sent.current) return
+    sent.current = true
+    onReady()
+  })
+  return null
+}
+
+function WorldInterface({
+  active,
+  progress,
+  ready,
+  onEnter,
+  onFocus,
+}: {
+  active: PortalDef | null
+  progress: number
+  ready: boolean
+  onEnter: NightFieldProps['onEnter']
+  onFocus: HoverLabel
+}) {
+  const shownProgress = Math.max(4, Math.min(100, Math.round(progress)))
+
+  return (
+    <>
+      <div className="night-field-loader" data-ready={ready ? 'true' : 'false'} aria-hidden={ready}>
+        <img src="/images/hero-playa.webp" alt="" className="night-field-loader-image" />
+        <div className="night-field-loader-tint" />
+        <div className="night-field-loader-status" role="status" aria-label="Loading the night field">
+          <span>Night field</span>
+          <span>{shownProgress}%</span>
+          <span className="night-field-loader-track" aria-hidden>
+            <span style={{ transform: `scaleX(${shownProgress / 100})` }} />
+          </span>
+        </div>
+      </div>
+
+      <div className="world-interface" data-ready={ready ? 'true' : 'false'}>
+        <header className="world-identity">
+          <p className="world-identity-kicker">n3wth / field at night</p>
+          <h1>Oliver Newth</h1>
+          <p>AI product leader + light artist</p>
+        </header>
+
+        <div className="world-atlas">
+          <div className="world-atlas-copy" aria-live="polite">
+            <p>{active?.label ?? 'Explore the field'}</p>
+            <span>{active?.sub ?? 'Each light opens a chapter.'}</span>
+          </div>
+          <nav
+            className="world-atlas-index"
+            aria-label="Explore the night field"
+            onPointerLeave={() => onFocus(null)}
+          >
+            {FIELD_INDEX.map((portal) => (
+              <button
+                key={portal.id}
+                type="button"
+                className="world-atlas-link"
+                data-active={active?.href === portal.href ? 'true' : 'false'}
+                aria-label={`${portal.label}: ${portal.sub}`}
+                onPointerEnter={() => onFocus(portal)}
+                onFocus={() => onFocus(portal)}
+                onBlur={() => onFocus(null)}
+                onClick={() => onEnter(portal.href, portal.external)}
+              >
+                <span aria-hidden>{portal.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </>
+  )
+}
+
 export default function NightField({ onEnter, reducedMotion }: NightFieldProps) {
-  const [active, setActive] = useState<string | null>(null)
+  const [active, setActive] = useState<PortalDef | null>(null)
+  const [ready, setReady] = useState(false)
+  const { progress } = useProgress()
+  const navigationTimer = useRef<number | null>(null)
+
+  useEffect(() => () => {
+    if (navigationTimer.current !== null) window.clearTimeout(navigationTimer.current)
+  }, [])
+
+  const handleFocus = useCallback<HoverLabel>((portal) => {
+    if (portal || navigationTimer.current === null) setActive(portal)
+  }, [])
+
+  const focusThenEnter = useCallback<NightFieldProps['onEnter']>((href, external) => {
+    const portal = Object.values(PORTALS).find((item) => item.href === href) ?? null
+    setActive(portal)
+    if (reducedMotion) {
+      onEnter(href, external)
+      return
+    }
+    if (navigationTimer.current !== null) window.clearTimeout(navigationTimer.current)
+    navigationTimer.current = window.setTimeout(() => {
+      navigationTimer.current = null
+      onEnter(href, external)
+    }, 360)
+  }, [onEnter, reducedMotion])
+
   return (
     <>
     <Canvas
-      dpr={[1, 2]}
+      dpr={portraitAtLoad ? [1, 1.25] : [1, 1.5]}
       camera={{ position: [0, 3.2, 22], fov: 48 }}
-      gl={{ antialias: true, powerPreference: 'high-performance' }}
+      gl={{ antialias: false, powerPreference: 'high-performance' }}
       frameloop={reducedMotion ? 'demand' : 'always'}
       style={{ position: 'absolute', inset: 0 }}
     >
@@ -1246,32 +1522,51 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       </mesh>
       <Stars radius={220} depth={40} count={900} factor={3} saturation={0} fade speed={reducedMotion ? 0 : 0.4} />
 
-      {/* everything that loads a texture or model suspends INSIDE the
-          canvas — one boundary, so the GL context never remounts */}
+      {/* The sky and terrain reveal first. Landmarks suspend separately,
+          so a slow model never holds the entire field behind black. */}
       <Suspense fallback={null}>
         <Ground />
         <PanoSky />
         <Horizon />
         <MilkyWay />
-        <Them def={PORTALS.art} onEnter={onEnter} reducedMotion={reducedMotion} onLabel={setActive} />
-        <Constellation def={PORTALS.work} onEnter={onEnter} reducedMotion={reducedMotion} onLabel={setActive} />
-        <Fork def={PORTALS.thinking} onEnter={onEnter} onLabel={setActive} />
-        <Beacon def={PORTALS.contact} onEnter={onEnter} reducedMotion={reducedMotion} onLabel={setActive} />
-        <GardenPatch def={PORTALS.garden} onEnter={onEnter} reducedMotion={reducedMotion} onLabel={setActive} />
-        <PinkTriangle def={PORTALS.triangle} onEnter={onEnter} onLabel={setActive} />
+        <SceneReady onReady={() => setReady(true)} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Them def={PORTALS.art} onEnter={focusThenEnter} reducedMotion={reducedMotion} onLabel={handleFocus} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Constellation def={PORTALS.work} onEnter={focusThenEnter} reducedMotion={reducedMotion} onLabel={handleFocus} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Fork def={PORTALS.thinking} onEnter={focusThenEnter} onLabel={handleFocus} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Beacon def={PORTALS.contact} onEnter={focusThenEnter} reducedMotion={reducedMotion} onLabel={handleFocus} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <GardenPatch def={PORTALS.garden} onEnter={focusThenEnter} reducedMotion={reducedMotion} onLabel={handleFocus} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <PinkTriangle def={PORTALS.triangle} onEnter={focusThenEnter} onLabel={handleFocus} />
       </Suspense>
 
       <Meteors reducedMotion={reducedMotion} />
-      <Rig reducedMotion={reducedMotion} />
+      <PlayaDust reducedMotion={reducedMotion} />
+      <SurveyLight reducedMotion={reducedMotion} />
+      <Rig active={active} ready={ready} reducedMotion={reducedMotion} />
 
-      <EffectComposer>
+      <EffectComposer multisampling={0}>
         <Bloom intensity={0.65} luminanceThreshold={1.15} mipmapBlur radius={0.75} />
+        <SMAA />
       </EffectComposer>
     </Canvas>
-    {/* one HUD title, always the same spot — eased in and out via CSS */}
-    <div className="world-hud" data-visible={active ? 'true' : 'false'} aria-hidden>
-      {active}
-    </div>
+    <WorldInterface
+      active={active}
+      progress={progress}
+      ready={ready}
+      onEnter={focusThenEnter}
+      onFocus={handleFocus}
+    />
     </>
   )
 }

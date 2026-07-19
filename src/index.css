@@ -939,63 +939,220 @@ body {
 }
 
 /* ---------- Night-field home ---------- */
-.world-label {
+.night-field-loader {
   position: absolute;
-  transform: translate(-50%, -170%);
-  pointer-events: none;
-  text-align: center;
-  white-space: nowrap;
-  z-index: 10;
-}
-/* the one hover title: fixed spot at bottom center, eased in and out */
-.world-hud {
-  position: absolute;
-  left: 50%;
-  bottom: 56px;
-  transform: translateX(-50%) translateY(6px);
-  pointer-events: none;
-  white-space: nowrap;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 21px;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  opacity: 0;
-  transition: opacity 0.28s ease, transform 0.28s ease;
-  z-index: 10;
-}
-.world-hud[data-visible='true'] {
+  inset: 0;
+  overflow: hidden;
+  background: #08090b;
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  pointer-events: none;
+  transition: opacity 0.7s var(--ease), visibility 0s linear 0.7s;
+  visibility: visible;
+  z-index: 30;
 }
-.world-label-title {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 17px;
-  letter-spacing: -0.01em;
-  color: var(--ink);
+.night-field-loader[data-ready='true'] {
+  opacity: 0;
+  visibility: hidden;
 }
-.world-label-sub {
-  display: block;
-  margin-top: 2px;
-  font-size: 12px;
-  color: var(--ink-dim);
+.night-field-loader-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.world-door {
-  /* inline-flex so the 44px touch floor actually applies (min-height is
-     ignored on inline display) */
-  display: inline-flex;
+.night-field-loader-tint {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 9, 11, 0.56);
+}
+.night-field-loader-status {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  left: var(--gutter);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 1rem;
   align-items: center;
-  min-height: 44px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--ink-dim);
-  transition: color 0.2s var(--ease);
-}
-.world-door:hover {
   color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.night-field-loader-track {
+  display: block;
+  grid-column: 1 / -1;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.18);
+}
+.night-field-loader-track > span {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.78);
+  transform-origin: left center;
+  transition: transform 0.22s linear;
+}
+
+.world-interface {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s var(--ease) 0.18s;
+  z-index: 12;
+}
+.world-interface[data-ready='true'] {
+  opacity: 1;
+}
+.world-identity {
+  position: absolute;
+  top: calc(6.75rem + env(safe-area-inset-top));
+  left: var(--gutter);
+  max-width: min(34rem, 72vw);
+}
+.world-identity-kicker {
+  margin: 0 0 0.55rem;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgba(242, 243, 245, 0.62);
+  letter-spacing: 0.025em;
+}
+.world-identity h1 {
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 4.5vw, 4.2rem);
+  font-weight: 600;
+  line-height: 0.95;
+  color: var(--ink);
+  letter-spacing: -0.045em;
+}
+.world-identity > p:last-child {
+  margin: 0.7rem 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(242, 243, 245, 0.68);
+}
+
+.world-atlas {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  left: var(--gutter);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+.world-atlas-copy {
+  min-width: 15rem;
+}
+.world-atlas-copy p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+}
+.world-atlas-copy span {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(242, 243, 245, 0.58);
+}
+.world-atlas-index {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(4.5rem, 1fr));
+  width: min(42rem, 58vw);
+}
+.world-atlas-link {
+  appearance: none;
+  min-height: 44px;
+  padding: 0.7rem 0.25rem 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--ink-dim);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: border-color 0.28s var(--ease), color 0.28s var(--ease);
+}
+.world-atlas-link:hover,
+.world-atlas-link[data-active='true'] {
+  border-color: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+}
+.world-atlas-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+@media (max-width: 767px) {
+  .world-identity {
+    top: calc(5.85rem + env(safe-area-inset-top));
+    max-width: calc(100vw - 2 * var(--gutter));
+  }
+  .world-identity-kicker {
+    margin-bottom: 0.4rem;
+    font-size: 10px;
+  }
+  .world-identity h1 {
+    font-size: clamp(2rem, 10vw, 2.65rem);
+  }
+  .world-identity > p:last-child {
+    margin-top: 0.55rem;
+    font-size: 13px;
+  }
+  .world-atlas {
+    bottom: calc(0.7rem + env(safe-area-inset-bottom));
+    display: block;
+  }
+  .world-atlas-copy {
+    min-width: 0;
+    margin-bottom: 0.75rem;
+  }
+  .world-atlas-copy p {
+    font-size: 1.25rem;
+  }
+  .world-atlas-copy span {
+    margin-top: 0.25rem;
+    font-size: 11px;
+  }
+  .world-atlas-index {
+    grid-template-columns: repeat(5, 1fr);
+    width: 100%;
+  }
+  .world-atlas-link {
+    padding-inline: 0;
+    font-size: 10px;
+    text-align: center;
+  }
+}
+
+@media (max-height: 620px) {
+  .world-identity-kicker,
+  .world-identity > p:last-child {
+    display: none;
+  }
+  .world-identity {
+    top: calc(5.2rem + env(safe-area-inset-top));
+  }
+  .world-atlas-copy {
+    display: none;
+  }
 }
 
 /* The dilemma reveal (bars + the call) surfaces after choosing */
