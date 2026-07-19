@@ -61,7 +61,7 @@ export default function Home() {
     () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     []
   )
-  const webglOk = useMemo(webglSupported, [])
+  const webglOk = useMemo(() => webglSupported(), [])
 
   const onEnter = useCallback(
     (href: string, external?: boolean) => {
@@ -79,7 +79,19 @@ export default function Home() {
       {webglOk ? (
         <SceneBoundary>
           <Suspense
-            fallback={<div className="absolute inset-0" style={{ background: '#08090b' }} />}
+            fallback={(
+              <div className="night-field-loader" data-ready="false">
+                <StaticNight />
+                <div className="night-field-loader-tint" />
+                <div className="night-field-loader-status" role="status">
+                  <span>Night field</span>
+                  <span>Loading</span>
+                  <span className="night-field-loader-track" aria-hidden>
+                    <span style={{ transform: 'scaleX(0.08)' }} />
+                  </span>
+                </div>
+              </div>
+            )}
           >
             <NightField onEnter={onEnter} reducedMotion={reducedMotion} />
           </Suspense>
@@ -88,14 +100,15 @@ export default function Home() {
         <StaticNight />
       )}
 
-      {/* Screen-reader / no-WebGL doors — visually the lights are the nav */}
-      <nav aria-label="Site chapters" className="sr-only">
+      {/* No-WebGL doors. The rendered field index owns these controls when
+          WebGL is active, so this fallback leaves the tab order then. */}
+      <nav aria-label="Site chapters" className="sr-only" aria-hidden={webglOk}>
         {portals.map((p) => (
-          <Link key={p.href} to={p.href} viewTransition>
+          <Link key={p.href} to={p.href} viewTransition tabIndex={webglOk ? -1 : undefined}>
             {p.label}
           </Link>
         ))}
-        <a href="https://garden.n3wth.com">The garden</a>
+        <a href="https://garden.n3wth.com" tabIndex={webglOk ? -1 : undefined}>The garden</a>
       </nav>
     </section>
   )
