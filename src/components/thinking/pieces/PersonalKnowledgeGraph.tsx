@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Blockquote } from '@astryxdesign/core/Blockquote'
 import { Beat } from '../kit/Beat'
+import { buildEdgePath } from '../kit/edgePath'
 
 /* "Personal knowledge graph" — the argument is that a knowledge base stops
    being a passive archive once its links become something a second party
@@ -71,14 +72,12 @@ function GraphExplorer() {
           const touchesSelected = selected && (e.from === selected || e.to === selected)
           const dim = selected !== null && !touchesSelected
           return (
-            <line
+            <path
               key={`${e.from}-${e.to}-${i}`}
-              x1={a.x}
-              y1={a.y}
-              x2={b.x}
-              y2={b.y}
-              stroke={touchesSelected ? 'var(--accent)' : 'var(--rail-strong)'}
-              strokeWidth={touchesSelected ? 2 : 1}
+              d={buildEdgePath(a.x, a.y, b.x, b.y, i)}
+              fill="none"
+              stroke={touchesSelected ? 'var(--accent)' : 'var(--ink-dim)'}
+              strokeWidth={touchesSelected ? 2 : 1.25}
               opacity={dim ? 0.25 : 1}
             />
           )
@@ -109,7 +108,7 @@ function GraphExplorer() {
                 cy={n.y}
                 r={isSelected ? 9 : isNeighbor ? 7 : 6}
                 fill={isSelected ? 'var(--accent)' : isNeighbor ? 'var(--ink)' : 'var(--bg)'}
-                stroke={dim ? 'var(--ink-faint)' : 'var(--rail-strong)'}
+                stroke={dim ? 'var(--ink-faint)' : 'var(--ink)'}
                 strokeWidth={1.5}
                 opacity={dim ? 0.4 : 1}
               />
@@ -118,7 +117,8 @@ function GraphExplorer() {
                 y={n.y - 16}
                 textAnchor="middle"
                 fontSize={13}
-                fill={dim ? 'var(--ink-faint)' : isSelected ? 'var(--ink)' : 'var(--ink-dim)'}
+                fontWeight={500}
+                fill={dim ? 'var(--ink-faint)' : 'var(--ink)'}
                 opacity={dim ? 0.5 : 1}
               >
                 {n.label}
