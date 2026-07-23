@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Work from './pages/Work'
 import Art from './pages/Art'
 import Thinking from './pages/Thinking'
+import ThinkingPiece from './pages/ThinkingPiece'
 import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
 
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
       { path: 'work', element: <Work /> },
       { path: 'art', element: <Art /> },
       { path: 'thinking', element: <Thinking /> },
+      { path: 'thinking/:slug', element: <ThinkingPiece /> },
       { path: 'contact', element: <Contact /> },
       { path: '*', element: <NotFound /> },
     ],
