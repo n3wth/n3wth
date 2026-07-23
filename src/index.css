@@ -1132,39 +1132,6 @@ body {
   line-height: 1.4;
   color: rgba(242, 243, 245, 0.58);
 }
-.world-atlas-index {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
-  width: min(42rem, 58vw);
-}
-.world-atlas-link {
-  appearance: none;
-  min-height: 44px;
-  padding: 0.7rem 0.25rem 0;
-  border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 0;
-  background: transparent;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.3;
-  text-align: left;
-  color: var(--ink-dim);
-  cursor: pointer;
-  pointer-events: auto;
-  transition: border-color 0.28s var(--ease), color 0.28s var(--ease);
-}
-.world-atlas-link:hover,
-.world-atlas-link[data-active='true'] {
-  border-color: rgba(255, 255, 255, 0.78);
-  color: var(--ink);
-}
-.world-atlas-link:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 4px;
-}
-
 @media (max-width: 767px) {
   .world-identity {
     top: calc(5.85rem + env(safe-area-inset-top));
@@ -1195,15 +1162,6 @@ body {
   .world-atlas-copy span {
     margin-top: 0.25rem;
     font-size: 11px;
-  }
-  .world-atlas-index {
-    grid-template-columns: repeat(5, 1fr);
-    width: 100%;
-  }
-  .world-atlas-link {
-    padding-inline: 0;
-    font-size: 10px;
-    text-align: center;
   }
 }
 

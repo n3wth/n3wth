@@ -15,6 +15,7 @@ dist
 dist-ssr
 *.local
 .worktrees
+.claude/worktrees/
 
 # Editor directories and files
 .vscode/*

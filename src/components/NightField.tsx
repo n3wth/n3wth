@@ -1383,11 +1383,6 @@ const PORTALS: Record<string, PortalDef> = {
   triangle: { id: 'triangle', label: 'Art', sub: 'Pink Triangle, Twin Peaks', href: '/art' },
 }
 
-/* Work/Art/Thinking/Contact already live in the persistent top Nav — listing
-   them again here duplicated it. The garden is the one destination that
-   doesn't, so it's the only one that needs a second door. */
-const FIELD_INDEX = [PORTALS.garden]
-
 function SceneReady({ onReady }: { onReady: () => void }) {
   const sent = useRef(false)
   useFrame(() => {
@@ -1402,14 +1397,10 @@ function WorldInterface({
   active,
   progress,
   ready,
-  onEnter,
-  onFocus,
 }: {
   active: PortalDef | null
   progress: number
   ready: boolean
-  onEnter: NightFieldProps['onEnter']
-  onFocus: HoverLabel
 }) {
   const shownProgress = Math.max(4, Math.min(100, Math.round(progress)))
 
@@ -1439,27 +1430,6 @@ function WorldInterface({
             <p>{active?.label ?? 'Explore the field'}</p>
             <span>{active?.sub ?? 'Each light opens a chapter.'}</span>
           </div>
-          <nav
-            className="world-atlas-index"
-            aria-label="Explore the night field"
-            onPointerLeave={() => onFocus(null)}
-          >
-            {FIELD_INDEX.map((portal) => (
-              <button
-                key={portal.id}
-                type="button"
-                className="world-atlas-link"
-                data-active={active?.href === portal.href ? 'true' : 'false'}
-                aria-label={`${portal.label}: ${portal.sub}`}
-                onPointerEnter={() => onFocus(portal)}
-                onFocus={() => onFocus(portal)}
-                onBlur={() => onFocus(null)}
-                onClick={() => onEnter(portal.href, portal.external)}
-              >
-                <span aria-hidden>{portal.label}</span>
-              </button>
-            ))}
-          </nav>
         </div>
       </div>
     </>
@@ -1563,8 +1533,6 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       active={active}
       progress={progress}
       ready={ready}
-      onEnter={focusThenEnter}
-      onFocus={handleFocus}
     />
     </>
   )
