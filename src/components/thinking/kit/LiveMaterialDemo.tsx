@@ -100,8 +100,17 @@ export default function LiveMaterialDemo() {
       <div className="mx-auto mt-8 w-full max-w-md">
         <AspectRatio ratio={1}>
           <Canvas camera={{ position: [0, 0.3, 4.4], fov: 40 }} dpr={[1, 1.5]} gl={{ alpha: true }}>
-            <ambientLight intensity={0.05} />
-            <pointLight position={[2, 2, 3]} intensity={broken ? 8 : 22} />
+            {/* Same lighting language as the homepage field (NightField.tsx):
+                a weak ambient + hemisphere base, plus key/fill point lights —
+                no HDRI, no bloom. Ambient/hemisphere barely touch the broken
+                state on purpose: metalness=1 collapses the diffuse term to
+                near-zero regardless of how much ambient light hits it, so the
+                black/wrong read stays intact while the fixed state gains real
+                falloff and a cool rim for dimension. */}
+            <ambientLight intensity={broken ? 0.05 : 0.14} />
+            <hemisphereLight args={['#1c2430', '#0a0908']} intensity={broken ? 0.05 : 0.24} />
+            <pointLight position={[2, 2.2, 3]} intensity={broken ? 8 : 17} />
+            <pointLight position={[-2.6, 1.1, -1.8]} intensity={broken ? 0 : 8} color="#dce6f2" />
             {/* The Suspense boundary for this GLTF load lives inside the
                 Canvas — see the paragraph above. */}
             <Suspense fallback={null}>

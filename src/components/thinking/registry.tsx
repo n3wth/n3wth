@@ -22,6 +22,10 @@ export interface RegisteredPiece {
 }
 
 const NightField = lazy(() => import('./pieces/NightField'))
+const AgentsOrgDesign = lazy(() => import('./pieces/AgentsOrgDesign'))
+const TrustProduction = lazy(() => import('./pieces/TrustProduction'))
+const AmbientAi = lazy(() => import('./pieces/AmbientAi'))
+const GtdMini = lazy(() => import('./pieces/GtdMini'))
 
 export const registeredPieces: RegisteredPiece[] = [
   {
@@ -32,5 +36,41 @@ export const registeredPieces: RegisteredPiece[] = [
       date: '2026-07-22',
     },
     Body: NightField,
+  },
+  {
+    meta: {
+      id: 'agents-org-design',
+      title: 'Agents are an org design problem',
+      dek: 'A standing team of coding agents with named desks and a boundary that does not move — the leverage is in the org chart, not the model card.',
+      date: '2026-07-22',
+    },
+    Body: AgentsOrgDesign,
+  },
+  {
+    meta: {
+      id: 'trust-production',
+      title: 'Trust is a runtime property',
+      dek: 'A policy that says harmful content never surfaces without review is enforced by a latency number, not by the document that states it. Drag the slider.',
+      date: '2026-07-22',
+    },
+    Body: TrustProduction,
+  },
+  {
+    meta: {
+      id: 'ambient-ai',
+      title: 'AI should be present, not summoned',
+      dek: 'The chat box makes you stop and decide what to ask. An ambient layer reads the room instead.',
+      date: '2026-07-22',
+    },
+    Body: AmbientAi,
+  },
+  {
+    meta: {
+      id: 'gtd-mini',
+      title: 'The machine that runs my todo list while I sleep',
+      dek: 'A headless Mac Mini, a cron job every fifteen minutes, and a timeline of what it actually did.',
+      date: '2026-07-22',
+    },
+    Body: GtdMini,
   },
 ]
