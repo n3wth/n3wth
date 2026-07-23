@@ -40,6 +40,12 @@ const AutonomousAgents = lazy(() => import('./pieces/AutonomousAgents'))
 const LlmInference = lazy(() => import('./pieces/LlmInference'))
 const EdgeTypescript = lazy(() => import('./pieces/EdgeTypescript'))
 const HopFlights = lazy(() => import('./pieces/HopFlights'))
+const KrootsMap = lazy(() => import('./pieces/KrootsMap'))
+const TollFreeMaze = lazy(() => import('./pieces/TollFreeMaze'))
+const AgentDesks = lazy(() => import('./pieces/AgentDesks'))
+const WorkingNotes2026 = lazy(() => import('./pieces/WorkingNotes2026'))
+const PdfCharspaceGotcha = lazy(() => import('./pieces/PdfCharspaceGotcha'))
+const ThisPage = lazy(() => import('./pieces/ThisPage'))
 
 export const registeredPieces: RegisteredPiece[] = [
   {
@@ -181,5 +187,65 @@ export const registeredPieces: RegisteredPiece[] = [
       group: 'system',
     },
     Body: HopFlights,
+  },
+  {
+    meta: {
+      id: 'kroots-map',
+      title: 'Kroots: mapping a graph nobody else could see',
+      dek: "A one-person kids'-media venture with no team still needed an org chart, so a single map-of-content page — four clusters of working documents around one hub — had to do the job instead. Trace the clusters back to the hub.",
+      date: '2026-07-22',
+      group: 'system',
+    },
+    Body: KrootsMap,
+  },
+  {
+    meta: {
+      id: 'twilio-compliance',
+      title: 'The toll-free verification maze',
+      dek: 'Twilio rejected the same toll-free application twice, for two different fields, before it explained why. The map of that maze, built one collision at a time.',
+      date: '2026-07-22',
+      group: 'system',
+    },
+    Body: TollFreeMaze,
+  },
+  {
+    meta: {
+      id: 'agent-desks',
+      title: 'A standing team with named desks',
+      dek: "A desk on an org chart isn't real until it has a trigger, a boundary, and a timestamp — click through four generic desks and see what each one actually shipped last.",
+      date: '2026-07-22',
+      group: 'position',
+    },
+    Body: AgentDesks,
+  },
+  {
+    meta: {
+      id: '2026-goals',
+      title: 'Working notes: 2026',
+      dek: 'Four generic goal categories, one review cadence each — except the one with no calendar entry at all.',
+      date: '2026-07-22',
+      group: 'system',
+    },
+    Body: WorkingNotes2026,
+  },
+  {
+    meta: {
+      id: 'pdf-charspace',
+      title: 'The PDF gotcha that cost an afternoon',
+      dek: "A hairline rule in a table looked wrong by 10 to 25 points, only on rows after a letterspaced date chip. The bug wasn't in the alignment math — it was in a PDF operator that survives past where you'd expect it to end. Drag the slider to leak it yourself.",
+      date: '2026-07-22',
+      group: 'system',
+    },
+    Body: PdfCharspaceGotcha,
+  },
+  {
+    meta: {
+      id: 'this-page',
+      title: 'How this backlog got built',
+      dek: "Twenty Thinking pieces, built by parallel agents in isolated worktrees and merged through one shared registry file — including the batch that got built twice and the draft that almost named a competitor's model by brand.",
+      date: '2026-07-22',
+      group: 'system',
+    },
+    Body: ThisPage,
   },
 ]
