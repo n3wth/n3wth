@@ -144,7 +144,7 @@ export const projects: Project[] = [
   {
     id: 'kit',
     name: 'kit',
-    description: '47 components with AI context packs. Ships your design system to v0, Cursor, and Claude Code.',
+    description: '47 components with AI context packs. Ships your design system straight to your editor and coding agents.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
     url: 'https://kit.newth.ai',
     github: 'https://github.com/n3wth/kit',
@@ -159,7 +159,7 @@ export const projects: Project[] = [
   {
     id: 'skills',
     name: 'skills',
-    description: 'A registry of markdown skills for Gemini CLI and Claude Code. Install with one command.',
+    description: 'A registry of markdown skills for Gemini CLI and other coding agents. Install with one command.',
     tech: ['Next.js', 'React', 'Supabase'],
     url: 'https://skills.n3wth.com',
     github: 'https://github.com/n3wth/skills',
