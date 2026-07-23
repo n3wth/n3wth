@@ -119,10 +119,9 @@ export default function LiveMaterialDemo() {
           </Canvas>
         </AspectRatio>
       </div>
-      <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-        This is the actual rock formation from the homepage — /models/rocks.glb,
-        Rodin-generated. Same mesh, same light, the real fix: material rebuilt on
-        load, not a lighting change.
+      <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+        The actual rock formation from the homepage — /models/rocks.glb, Rodin-generated.
+        Same mesh, same light. The fix rebuilds the material on load, before anything else runs.
       </p>
     </div>
   )

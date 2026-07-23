@@ -32,13 +32,13 @@ export default function ThinkingPiece() {
             at the top on both sides, so the dek's first line lands level
             with the title's first line instead of with the date. */}
         <div className="mb-10" data-reveal>
-          <p className="font-mono text-xs" style={{ color: 'var(--ink-faint)' }}>
+          <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
             {new Date(meta.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
-          <div className="mt-2 md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:items-start">
+          <div className="mt-3 md:grid md:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] md:gap-16 md:items-start">
             <h1
-              className="display text-[clamp(1.5rem,2.6vw,2.2rem)] max-w-[16ch]"
-              style={{ letterSpacing: '-0.025em', lineHeight: 1.08 }}
+              className="display text-[clamp(2rem,4vw,3rem)] max-w-[20ch]"
+              style={{ letterSpacing: '-0.03em', lineHeight: 1.04, fontWeight: 600 }}
             >
               {meta.title}
             </h1>

@@ -198,11 +198,10 @@ export default function AgentsOrgDesign() {
             are capable of. Same models, same tools, different desk structure, different trail
             discipline, different review loop, and the output quality moves significantly. This is
             the part that resists being shipped as a product, because the product people keep
-            reaching for is a better model or a better prompt interface. The actual leverage is in
-            the org chart, not the model card. Named accountability, explicit ownership boundaries,
+            reaching for is a better model or a better prompt interface. What actually moved the
+            needle for me was the org chart: named accountability, explicit ownership boundaries,
             trails that accumulate, a review process that separates generation from judgment. Those
-            are not features. They are decisions, and they have to be made deliberately, because
-            the default is to skip them.
+            are decisions I had to make deliberately, because the default is to skip them.
           </>
         }
       />

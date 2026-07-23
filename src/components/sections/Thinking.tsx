@@ -14,8 +14,8 @@ export function Thinking() {
     <section id="thinking" aria-label="Thinking">
       <SectionHeader
         as="h1"
-        title="What I believe about production AI"
-        lede="Three positions from shipping AI at scale and running an agent team in production — then three real dilemmas where you make the call."
+        title="What building this actually taught me"
+        lede="Every piece below started as a real bug, a real 3am page, or a real decision I had to make while building this site and the agents behind it."
       />
 
       <ThinkingIndex pieces={registeredPieces} />

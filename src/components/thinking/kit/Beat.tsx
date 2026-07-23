@@ -13,11 +13,6 @@ import type { ReactNode } from 'react'
  * beats are genuinely sequential (a real pipeline/build order); omit it
  * otherwise rather than forcing a fake sequence.
  *
- * `test`, when passed, closes the piece with an Every.to-style "The
- * test:" line that turns the argument into one concrete, applicable
- * question — pass it on whichever Beat is the piece's natural closer,
- * not every Beat. No box, no border: a label plus one line.
- *
  * No borderTop here: each piece now lives alone on its own route
  * (/thinking/:slug), so there's nothing beside a Beat to divide from —
  * vertical rhythm comes from the padding alone.
@@ -27,20 +22,18 @@ export function Beat({
   prose,
   margin,
   children,
-  test,
 }: {
   stage?: { n: string; label: string }
   prose: ReactNode
   margin?: ReactNode
   children?: ReactNode
-  test?: ReactNode
 }) {
   return (
     <div className="py-10" data-reveal>
       <div className="md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
         <div>
           {stage && (
-            <p className="font-mono text-xs" style={{ color: 'var(--ink-faint)' }}>
+            <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
               {stage.n} — {stage.label}
             </p>
           )}
@@ -54,14 +47,6 @@ export function Beat({
         {margin && <div className="mt-6 md:mt-0">{margin}</div>}
       </div>
       {children && <div className="mt-8">{children}</div>}
-      {test && (
-        <p className="mt-8 text-sm" style={{ color: 'var(--ink-dim)' }}>
-          <span className="font-mono text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
-            The test:
-          </span>{' '}
-          {test}
-        </p>
-      )}
     </div>
   )
 }
