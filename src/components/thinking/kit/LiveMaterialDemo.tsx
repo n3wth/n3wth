@@ -1,37 +1,68 @@
-import { useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { useGLTF } from '@react-three/drei'
+import { AspectRatio } from '@astryxdesign/core/AspectRatio'
 import * as THREE from 'three'
 
 /**
- * The actual bug from the night-field build, live: a generated mesh's
- * material shipping with metalness=1 and no env map renders black under
- * a point light. Toggling rebuilds the material the same way the real
- * fix does (src/components/NightField.tsx's GLB loaders) — roughness up,
- * metalness down, same geometry, same light. One Canvas, one mesh; only
- * the material changes, so the difference is real, not two screenshots.
+ * The actual bug, on the actual asset: /models/rocks.glb is the real
+ * Hyper3D Rodin rock formation from the homepage (src/components/
+ * NightField.tsx's useRocks). Toggling rebuilds its material the same
+ * way the real fix does — roughness up, metalness down, same geometry,
+ * same light. And the Suspense boundary for that GLTF load lives inside
+ * the Canvas, not outside it — the exact placement the piece is about.
+ *
+ * No frame, no card — transparent canvas straight on the page's own
+ * black, normalized to a comfortable size regardless of the source
+ * asset's real-world scale, with a small cursor-tilt so it reads as a
+ * held object rather than a screenshot.
  */
 
-function Knot({ broken }: { broken: boolean }) {
-  const ref = useRef<THREE.Mesh>(null)
+function RealRock({ broken }: { broken: boolean }) {
+  const { scene } = useGLTF('/models/rocks.glb')
+  const ref = useRef<THREE.Group>(null)
+  const { pointer } = useThree()
   const reduced = useMemo(
     () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     []
   )
+
+  const prepared = useMemo(() => {
+    const clone = scene.clone(true)
+    const box = new THREE.Box3().setFromObject(clone)
+    const size = new THREE.Vector3()
+    const center = new THREE.Vector3()
+    box.getSize(size)
+    box.getCenter(center)
+    const scale = 1.7 / Math.max(size.x, size.y, size.z, 0.001)
+    clone.children.forEach((c) => c.position.sub(center))
+    clone.scale.setScalar(scale)
+    return clone
+  }, [scene])
+
+  useEffect(() => {
+    prepared.traverse((o) => {
+      const m = o as THREE.Mesh
+      if (!m.isMesh) return
+      const old = (Array.isArray(m.material) ? m.material[0] : m.material) as THREE.MeshStandardMaterial
+      m.material = new THREE.MeshStandardMaterial({
+        map: old.map ?? null,
+        metalness: broken ? 1 : 0.15,
+        roughness: broken ? 0.1 : 0.7,
+      })
+    })
+  }, [prepared, broken])
+
   useFrame((_, delta) => {
     if (reduced || !ref.current) return
-    ref.current.rotation.y += delta * 0.35
-    ref.current.rotation.x += delta * 0.12
+    ref.current.rotation.y += delta * 0.28
+    const targetTiltX = pointer.y * 0.3
+    const targetTiltZ = -pointer.x * 0.3
+    ref.current.rotation.x += (targetTiltX - ref.current.rotation.x) * Math.min(1, delta * 2)
+    ref.current.rotation.z += (targetTiltZ - ref.current.rotation.z) * Math.min(1, delta * 2)
   })
-  return (
-    <mesh ref={ref}>
-      <torusKnotGeometry args={[0.85, 0.28, 128, 24]} />
-      {broken ? (
-        <meshStandardMaterial color="#d8dde3" metalness={1} roughness={0.1} />
-      ) : (
-        <meshStandardMaterial color="#d8dde3" metalness={0.15} roughness={0.7} />
-      )}
-    </mesh>
-  )
+
+  return <primitive object={prepared} ref={ref} />
 }
 
 export default function LiveMaterialDemo() {
@@ -54,7 +85,7 @@ export default function LiveMaterialDemo() {
             type="button"
             aria-pressed={broken === opt.value}
             onClick={() => setBroken(opt.value)}
-            className="rounded-full px-4 py-1.5 text-sm transition-colors"
+            className="kit-toggle-btn rounded-full px-4 py-1.5 text-sm"
             style={{
               color: broken === opt.value ? 'var(--accent-ink)' : 'var(--ink-dim)',
               background: broken === opt.value ? 'var(--accent)' : 'transparent',
@@ -64,20 +95,25 @@ export default function LiveMaterialDemo() {
           </button>
         ))}
       </div>
-      <div
-        className="mt-6 h-64 w-full overflow-hidden rounded-md"
-        style={{ border: '1px solid var(--rail)', background: '#08090b' }}
-      >
-        <Canvas camera={{ position: [0, 0, 3.2], fov: 45 }} dpr={[1, 1.5]}>
-          <ambientLight intensity={0.05} />
-          <pointLight position={[2, 2, 3]} intensity={broken ? 8 : 22} />
-          <Knot broken={broken} />
-        </Canvas>
+      {/* Square and centered, not full-width — a wide-short mount would
+          crop tall geometry top and bottom. */}
+      <div className="mx-auto mt-8 w-full max-w-md">
+        <AspectRatio ratio={1}>
+          <Canvas camera={{ position: [0, 0.3, 4.4], fov: 40 }} dpr={[1, 1.5]} gl={{ alpha: true }}>
+            <ambientLight intensity={0.05} />
+            <pointLight position={[2, 2, 3]} intensity={broken ? 8 : 22} />
+            {/* The Suspense boundary for this GLTF load lives inside the
+                Canvas — see the paragraph above. */}
+            <Suspense fallback={null}>
+              <RealRock broken={broken} />
+            </Suspense>
+          </Canvas>
+        </AspectRatio>
       </div>
       <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-        Same mesh, same light. Rodin/Hyper3D GLBs ship spec-gloss extensions and
-        metalness=1 — black under a point light with no environment map. The fix
-        is a material rebuild on load, not a lighting change.
+        This is the actual rock formation from the homepage — /models/rocks.glb,
+        Rodin-generated. Same mesh, same light, the real fix: material rebuilt on
+        load, not a lighting change.
       </p>
     </div>
   )

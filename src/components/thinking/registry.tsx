@@ -28,7 +28,7 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: 'night-field',
       title: 'What the night field broke',
-      dek: 'The homepage is a real 3D scene built by an agent team. Here is everything that went black, span around the wrong point, or skated across the ground before it worked.',
+      dek: 'The homepage is a real 3D scene built by an agent team. Here is everything that went black, spun around the wrong point, or skated across the ground before it worked.',
       date: '2026-07-22',
     },
     Body: NightField,

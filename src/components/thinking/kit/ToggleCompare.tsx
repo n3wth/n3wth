@@ -38,7 +38,7 @@ export function ToggleCompare({ beforeLabel, afterLabel, before, after, caption 
             id={`${groupId}-${opt.label}`}
             aria-pressed={opt.active}
             onClick={() => setShowAfter(opt.label === afterLabel)}
-            className="rounded-full px-4 py-1.5 text-sm transition-colors"
+            className="kit-toggle-btn rounded-full px-4 py-1.5 text-sm"
             style={{
               color: opt.active ? 'var(--accent-ink)' : 'var(--ink-dim)',
               background: opt.active ? 'var(--accent)' : 'transparent',
@@ -48,7 +48,7 @@ export function ToggleCompare({ beforeLabel, afterLabel, before, after, caption 
           </button>
         ))}
       </div>
-      <div className="mt-6" aria-live="polite">
+      <div className="kit-specimen-swap mt-6" aria-live="polite" key={showAfter ? 'after' : 'before'}>
         {showAfter ? after : before}
       </div>
       {caption && (
