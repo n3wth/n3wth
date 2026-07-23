@@ -9,12 +9,16 @@ import type { RegisteredPiece } from '../registry'
  * a build log), not by registration order. The only piece that ever
  * renders in full is the one someone actually opens.
  *
- * The curve behind each group's list reuses MarginNote's stem-and-leaf
- * bezier idiom, stretched to whatever height the list ends up rendering
- * at via absolute inset-y-0 (the parent's height comes from its normal
- * flow content, so the child fills it exactly). It's static — no rAF —
- * because this is the map, not the hero; ForkLight already owns the
- * page's motion budget.
+ * Each stop carries a big display numeral in the left gutter — an
+ * editorial index device (basement.studio, In Common With) rather than
+ * a card or a thumbnail: it gives the list rhythm and scale variety
+ * without introducing imagery this site doesn't have per piece, and it
+ * stays flat (no shadow, no fill box). A plain straight rail (a CSS
+ * border, not SVG) runs the length of the group for continuity — an
+ * earlier version tried to stretch one organic MarginNote-style curve
+ * the full height of the column via preserveAspectRatio="none", which
+ * non-uniformly distorted its two bezier segments across an arbitrary,
+ * much-taller-than-wide box and read as broken rather than flowing.
  */
 
 const GROUP_LABEL: Record<'position' | 'system', string> = {
@@ -22,38 +26,23 @@ const GROUP_LABEL: Record<'position' | 'system', string> = {
   system: 'Systems & build logs',
 }
 
-function IndexSpine() {
-  return (
-    <svg
-      viewBox="0 0 24 100"
-      preserveAspectRatio="none"
-      className="kit-line-draw absolute inset-y-0 left-0 h-full w-6"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M 12 0 C 4 16, 20 30, 9 46 C 1 60, 21 74, 12 100"
-        pathLength={1}
-        fill="none"
-        stroke="var(--rail-strong)"
-        strokeWidth={1}
-        vectorEffect="non-scaling-stroke"
-      />
-    </svg>
-  )
-}
-
 function IndexGroup({ group, pieces }: { group: 'position' | 'system'; pieces: RegisteredPiece[] }) {
   if (pieces.length === 0) return null
   return (
-    <div data-reveal className="relative pl-9 md:pl-10">
-      <IndexSpine />
+    <div data-reveal className="relative border-l pl-16 md:pl-20" style={{ borderColor: 'var(--rail)' }}>
       <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-label)' }}>
         {GROUP_LABEL[group]}
       </p>
-      <ul className="mt-6 space-y-9">
-        {pieces.map(({ meta }) => (
-          <li key={meta.id}>
+      <ul className="mt-6 space-y-10">
+        {pieces.map(({ meta }, i) => (
+          <li key={meta.id} className="relative">
+            <span
+              aria-hidden="true"
+              className="font-display absolute -left-16 top-0 text-[2.5rem] leading-none md:-left-20 md:text-[3rem]"
+              style={{ color: 'var(--rail-strong)', fontWeight: 600 }}
+            >
+              {String(i + 1).padStart(2, '0')}
+            </span>
             <p className="font-mono text-xs" style={{ color: 'var(--ink-faint)' }}>
               {new Date(meta.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </p>
@@ -68,7 +57,7 @@ function IndexGroup({ group, pieces }: { group: 'position' | 'system'; pieces: R
               {meta.dek}
             </p>
             {meta.test && (
-              <p className="mt-3 max-w-[46ch] text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+              <p className="mt-3 max-w-[46ch] text-sm leading-relaxed" style={{ color: 'var(--ink)' }}>
                 <span className="font-mono text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
                   The test:
                 </span>{' '}

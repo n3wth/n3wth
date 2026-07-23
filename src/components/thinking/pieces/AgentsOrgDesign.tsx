@@ -163,7 +163,7 @@ export default function AgentsOrgDesign() {
           </>
         }
       >
-        <div className="h-48 w-full max-w-3xl sm:h-56">
+        <div className="h-64 w-full max-w-3xl sm:h-72">
           <FlowDiagram nodes={TRAIL_NODES} edges={TRAIL_EDGES} width={940} height={220} />
         </div>
       </Beat>

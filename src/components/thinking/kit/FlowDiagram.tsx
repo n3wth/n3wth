@@ -97,8 +97,8 @@ export function FlowDiagram({ nodes, edges, width = 1000, height = 220, classNam
           d={p.d}
           pathLength={1}
           fill="none"
-          stroke="var(--rail-strong)"
-          strokeWidth={1}
+          stroke="var(--ink-dim)"
+          strokeWidth={1.5}
           className="kit-line-draw"
           style={{ animationDelay: `${p.drawDelay}s` }}
         />
@@ -107,7 +107,7 @@ export function FlowDiagram({ nodes, edges, width = 1000, height = 220, classNam
         paths.map((p, i) => {
           const begin = (p.drawDelay + 1.1 + i * 0.35).toFixed(2)
           return (
-            <circle key={`pulse-${p.key}`} r={2} fill="var(--ink)" opacity={0}>
+            <circle key={`pulse-${p.key}`} r={3} fill="var(--ink)" opacity={0}>
               <animateMotion dur="3.6s" begin={`${begin}s`} repeatCount="indefinite" path={p.d} />
               <animate
                 attributeName="opacity"
@@ -125,17 +125,18 @@ export function FlowDiagram({ nodes, edges, width = 1000, height = 220, classNam
           <circle
             cx={n.x}
             cy={n.y}
-            r={5}
+            r={7}
             fill={n.active ? 'var(--ink)' : 'var(--bg)'}
-            stroke="var(--rail-strong)"
-            strokeWidth={1}
+            stroke="var(--ink)"
+            strokeWidth={1.5}
           />
           <text
             x={n.x}
-            y={n.y - 14}
+            y={n.y - 16}
             textAnchor="middle"
-            fontSize={13}
-            fill="var(--ink-dim)"
+            fontSize={15}
+            fontWeight={500}
+            fill="var(--ink)"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
             {n.label}

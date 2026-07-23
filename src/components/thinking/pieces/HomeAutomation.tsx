@@ -90,8 +90,16 @@ export default function HomeAutomation() {
         <ToggleCompare
           beforeLabel="battery healthy"
           afterLabel="battery at 20%"
-          before={<FlowDiagram nodes={HEALTHY_NODES} edges={CHAIN_EDGES} width={780} height={220} />}
-          after={<FlowDiagram nodes={LOW_BATTERY_NODES} edges={CHAIN_EDGES} width={780} height={220} />}
+          before={
+            <div className="h-64 w-full max-w-3xl sm:h-72">
+              <FlowDiagram nodes={HEALTHY_NODES} edges={CHAIN_EDGES} width={780} height={220} />
+            </div>
+          }
+          after={
+            <div className="h-64 w-full max-w-3xl sm:h-72">
+              <FlowDiagram nodes={LOW_BATTERY_NODES} edges={CHAIN_EDGES} width={780} height={220} />
+            </div>
+          }
           caption="same wiring, same rule — the chain breaks at the first link, silently, with nothing downstream able to tell the difference."
         />
       </Beat>
