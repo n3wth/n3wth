@@ -168,7 +168,7 @@ export function ArrowMark({ className, size = 64 }: MarkProps) {
 
 /**
  * Agentic cursor / pointer glyph — the wordmark logo.
- * Rounded arrow-pointer (ChatGPT-agent-style). White via currentColor.
+ * Rounded arrow-pointer, agent-style. White via currentColor.
  */
 export function CursorMark({ className, size = 18, style }: MarkProps) {
   return (
