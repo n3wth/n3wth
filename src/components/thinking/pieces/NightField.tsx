@@ -1,5 +1,6 @@
-import { lazy, Suspense, type ReactNode } from 'react'
+import { lazy, Suspense } from 'react'
 import { Blockquote } from '@astryxdesign/core/Blockquote'
+import { Beat } from '../kit/Beat'
 import { ToggleCompare } from '../kit/ToggleCompare'
 import { FlowDiagram } from '../kit/FlowDiagram'
 import { MarginNote } from '../kit/MarginNote'
@@ -18,44 +19,11 @@ const LiveMaterialDemo = lazy(() => import('../kit/LiveMaterialDemo'))
 /* Five real bugs from building the night field (PR #56-#67), each with a
    live specimen instead of a screenshot. Prose drafted via Spiral from the
    git history + gbrain's 3d-worldgen-pipeline notes, in Oliver's voice.
+   Layout is the shared kit Beat (magazine column, not a card stack).
 
-   Layout: a magazine column, not a card stack. Each beat is prose plus an
-   optional margin note (side-by-side on desktop via grid-cols, stacked
-   footnote-style on mobile since there's no margin to put it in); the
-   specimen underneath spans the full column, wider than the prose measure,
-   so the page opens up at each one instead of staying boxed to text width. */
-
-/* Stage numbers double as the piece's spine: these are the real pipeline
+   Stage numbers double as the piece's spine: these are the real pipeline
    order (generation -> export -> runtime -> rigging -> the process that
    catches all four), not decoration — so the numbering is honest. */
-function Beat({
-  stage,
-  prose,
-  margin,
-  children,
-}: {
-  stage: { n: string; label: string }
-  prose: ReactNode
-  margin?: ReactNode
-  children?: ReactNode
-}) {
-  return (
-    <div className="py-10" style={{ borderTop: '1px solid var(--rail)' }} data-reveal>
-      <div className="md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
-        <div>
-          <p className="font-mono text-xs" style={{ color: 'var(--ink-faint)' }}>
-            {stage.n} — {stage.label}
-          </p>
-          <p className="mt-3 max-w-[62ch] text-base leading-relaxed md:text-lg" style={{ color: 'var(--ink)' }}>
-            {prose}
-          </p>
-        </div>
-        <div className="mt-6 md:mt-0">{margin}</div>
-      </div>
-      {children && <div className="mt-8">{children}</div>}
-    </div>
-  )
-}
 
 const CRITIQUE_NODES: FlowNode[] = [
   { id: 'actor', label: 'Actor generates', x: 60, y: 110 },
