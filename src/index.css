@@ -964,7 +964,34 @@ body {
     transform: translateY(0);
   }
 }
+/* A little bounce on selection — the one playful tell across every toggle
+   in the kit, so specimens read as toys, not instrument panels. */
+.kit-toggle-btn {
+  transition:
+    color 0.2s var(--ease),
+    background 0.2s var(--ease),
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.kit-toggle-btn[aria-pressed='true'] {
+  transform: scale(1.05);
+}
+.kit-specimen-swap {
+  animation: kit-specimen-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes kit-specimen-in {
+  from {
+    opacity: 0.4;
+    transform: scale(0.97);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
+  .kit-toggle-btn {
+    transition: color 0.2s var(--ease), background 0.2s var(--ease);
+    transform: none !important;
+  }
+  .kit-specimen-swap {
+    animation: none !important;
+  }
   .kit-line-draw {
     stroke-dashoffset: 0;
     animation: none !important;
