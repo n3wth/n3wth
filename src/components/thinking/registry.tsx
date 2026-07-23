@@ -40,6 +40,11 @@ const AiDesignSlop = lazy(() => import('./pieces/AiDesignSlop'))
 const LiveArtifacts = lazy(() => import('./pieces/LiveArtifacts'))
 const PersonalKnowledgeGraph = lazy(() => import('./pieces/PersonalKnowledgeGraph'))
 const HomeAutomation = lazy(() => import('./pieces/HomeAutomation'))
+const CompoundEngineering = lazy(() => import('./pieces/CompoundEngineering'))
+const AutonomousAgents = lazy(() => import('./pieces/AutonomousAgents'))
+const LlmInference = lazy(() => import('./pieces/LlmInference'))
+const EdgeTypescript = lazy(() => import('./pieces/EdgeTypescript'))
+const HopFlights = lazy(() => import('./pieces/HopFlights'))
 
 export const registeredPieces: RegisteredPiece[] = [
   {
@@ -140,5 +145,60 @@ export const registeredPieces: RegisteredPiece[] = [
       test: 'Pull the battery out of one sensor. Does anything tell you within the hour?',
     },
     Body: HomeAutomation,
+  },
+  {
+    meta: {
+      id: 'compound-engineering',
+      title: 'Compound engineering, applied to a personal site',
+      dek: "Five real pull requests from this site's own git history — a build, a review, a three-line fix, an extraction, and a compliance rule — show what compounding actually looks like when a fix from one PR gets applied automatically three PRs later without anyone repeating the instruction.",
+      date: '2026-07-22',
+      group: 'system',
+      test: 'Run git log --oneline in this repo and read PR #72, #73, #75, and #76 in order: #72 is a three-line style fix, #73 is the reason no later piece had to rewrite that layout logic, and #76 is the same compliance rule from #75 catching a new violation in unrelated files with zero new instructions given.',
+    },
+    Body: CompoundEngineering,
+  },
+  {
+    meta: {
+      id: 'autonomous-agents',
+      title: 'What "autonomous" actually means in production',
+      dek: 'Click through what an agent can take back and what it can’t — "autonomous" describes the self-correcting loop, not the boundary on what that loop is allowed to touch.',
+      date: '2026-07-22',
+      group: 'position',
+      test: "Before calling any agent setup \"autonomous\" in a design doc, write down the specific next action it would take that you would not let it undo alone. If you can't name one, the word is doing marketing work, not engineering work.",
+    },
+    Body: AutonomousAgents,
+  },
+  {
+    meta: {
+      id: 'llm-inference',
+      title: 'The toll booth is memory, not math',
+      dek: "Prefill runs once, in parallel, but every token after it is a separate round trip to memory to reload the model's weights and KV cache — which is why decode speed is a memory-bandwidth problem, not a compute one.",
+      date: '2026-07-22',
+      group: 'position',
+      test: 'Next time a service claims "fast inference," ask whether they mean time-to-first-token or tokens-per-second after that — they measure different phases of the request, and only one of them tells you how the reply will feel once it starts streaming.',
+    },
+    Body: LlmInference,
+  },
+  {
+    meta: {
+      id: 'edge-typescript',
+      title: 'TypeScript at the edge',
+      dek: 'Cloudflare Workers run TypeScript inside V8 isolates instead of VMs or containers — sub-millisecond starts, no cold-start boot cost, and a stack built around that same disposable unit of compute.',
+      date: '2026-07-22',
+      group: 'system',
+      test: "Pick any two Cloudflare edge locations far apart, fire the same request at both simultaneously, and compare first-byte time — if the isolate model holds, neither shows a cold-start tail, even the one that's never seen this Worker's traffic before.",
+    },
+    Body: EdgeTypescript,
+  },
+  {
+    meta: {
+      id: 'hop-flights',
+      title: 'A computed verdict can still be wrong',
+      dek: "hop.flights' whole pitch is a verdict that's computed, not guessed — for any search with more than one passenger, it was computing that verdict from two numbers that didn't describe the same trip.",
+      date: '2026-07-22',
+      group: 'system',
+      test: 'Search hop.flights for one passenger, note the verdict, then rerun the identical flight for a family of four — if the recommendation flips instead of holding steady, the arithmetic is still wrong.',
+    },
+    Body: HopFlights,
   },
 ]
