@@ -46,8 +46,8 @@ export default function LiveMaterialDemo() {
         style={{ border: '1px solid var(--rail)' }}
       >
         {[
-          { label: 'metalness: 1, no env map', value: true },
-          { label: 'roughness up, metalness down', value: false },
+          { label: 'renders black', value: true },
+          { label: 'renders lit', value: false },
         ].map((opt) => (
           <button
             key={String(opt.value)}

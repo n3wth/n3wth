@@ -121,10 +121,11 @@ export default function NightField() {
         for a while before you find the real one.
       </p>
       <ToggleCompare
-        beforeLabel="Suspense outside Canvas"
-        afterLabel="Suspense inside Canvas"
+        beforeLabel="goes black"
+        afterLabel="stays stable"
         before={<ContextLostSpecimen broken />}
         after={<ContextLostSpecimen broken={false} />}
+        caption="Suspense outside the Canvas remounts the WebGL context on every load; move it inside and the context survives."
       />
 
       <p className="text-base md:text-lg leading-relaxed" style={{ color: 'var(--ink)' }}>
