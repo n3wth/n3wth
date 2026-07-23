@@ -113,8 +113,7 @@ function ContextLostSpecimen({ broken }: { broken: boolean }) {
     <div className="flex h-40 w-full max-w-sm items-center font-mono text-sm">
       <span
         style={{
-          color: broken ? '#4a4d52' : 'var(--ink-dim)',
-          textShadow: broken ? '0 0 24px rgba(255,255,255,0.08)' : 'none',
+          color: broken ? 'var(--ink-faint)' : 'var(--ink-dim)',
           animation: broken ? 'kit-glitch 2.6s ease-in-out infinite' : undefined,
         }}
       >
