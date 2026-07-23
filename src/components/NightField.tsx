@@ -1322,11 +1322,13 @@ function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready
     const introOffset = (1 - intro) * (aspect < 0.75 ? 8 : 11)
     const focus = active ? CAMERA_FOCUS[active.id] : undefined
     const pointerWeight = active ? 0.45 : 1
-    // two incommensurate drift periods (~78s / ~217s) plus a faint vertical breath
-    const targetX = pointer.x * 3 * pointerWeight + (focus?.cameraX ?? 0) + Math.sin(t * 0.08) * 0.45 + Math.sin(t * 0.029 + 1.7) * 0.3
-    const targetY = 3.2 + pointer.y * 1.2 * pointerWeight - (1 - intro) * 0.75 + Math.sin(t * 0.047 + 0.8) * 0.12
+    // two incommensurate drift periods (~78s / ~217s) plus a faint vertical breath.
+    // Pointer contributes a subtle parallax nudge, not a pan — the ambient
+    // drift carries the motion; the cursor should barely tip the balance.
+    const targetX = pointer.x * 1.1 * pointerWeight + (focus?.cameraX ?? 0) + Math.sin(t * 0.08) * 0.45 + Math.sin(t * 0.029 + 1.7) * 0.3
+    const targetY = 3.2 + pointer.y * 0.45 * pointerWeight - (1 - intro) * 0.75 + Math.sin(t * 0.047 + 0.8) * 0.12
     const targetZ = baseZ + introOffset
-    const k = 1 - Math.exp(-2.5 * delta)
+    const k = 1 - Math.exp(-1.6 * delta)
     camera.position.x += (targetX - camera.position.x) * k
     camera.position.y += (targetY - camera.position.y) * k
     camera.position.z += (targetZ - camera.position.z) * k
@@ -1381,13 +1383,10 @@ const PORTALS: Record<string, PortalDef> = {
   triangle: { id: 'triangle', label: 'Art', sub: 'Pink Triangle, Twin Peaks', href: '/art' },
 }
 
-const FIELD_INDEX = [
-  PORTALS.work,
-  PORTALS.art,
-  PORTALS.thinking,
-  PORTALS.contact,
-  PORTALS.garden,
-]
+/* Work/Art/Thinking/Contact already live in the persistent top Nav — listing
+   them again here duplicated it. The garden is the one destination that
+   doesn't, so it's the only one that needs a second door. */
+const FIELD_INDEX = [PORTALS.garden]
 
 function SceneReady({ onReady }: { onReady: () => void }) {
   const sent = useRef(false)
