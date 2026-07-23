@@ -209,7 +209,7 @@ export default function NightField() {
           />
         }
       >
-        <div className="h-48 w-full max-w-2xl sm:h-56">
+        <div className="h-64 w-full max-w-3xl sm:h-72">
           <FlowDiagram nodes={CRITIQUE_NODES} edges={CRITIQUE_EDGES} width={860} height={220} />
         </div>
       </Beat>

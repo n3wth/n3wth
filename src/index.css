@@ -190,6 +190,7 @@ p { text-wrap: pretty; }
 
 html {
   overflow-x: clip; /* .bleed bands are in-flow 100vw breakouts */
+  scrollbar-gutter: stable; /* reserve the scrollbar track always, so short pages don't shift content when a taller page's scrollbar appears */
   background: var(--bg);
   color: var(--ink-dim);
   font-family: var(--font-sans);
