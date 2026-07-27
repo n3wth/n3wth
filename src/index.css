@@ -365,13 +365,19 @@ body {
 }
 
 /* ---------- Scroll reveal (driven by useReveal) ---------- */
+/* visibility (not just opacity) so un-revealed content is neither
+   hit-testable nor in the tab order — opacity:0 alone leaves invisible
+   links that swallow taps. visibility is excluded from the transition
+   list, so it flips instantly while opacity/transform ease in. */
 [data-reveal] {
   opacity: 0;
   transform: translateY(14px);
+  visibility: hidden;
 }
 [data-reveal].is-in {
   opacity: 1;
   transform: none;
+  visibility: visible;
   transition:
     opacity 0.7s var(--ease),
     transform 0.7s var(--ease);
@@ -380,6 +386,7 @@ body {
   [data-reveal] {
     opacity: 1;
     transform: none;
+    visibility: visible;
     transition: none;
   }
 }
@@ -615,6 +622,7 @@ body {
 /* Shared family treatment with agents.n3wth.com: boxed cursor glyph +
    wordmark. n3wth.com is the parent brand (no sub-brand word). */
 .brand {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -622,6 +630,15 @@ body {
   font-size: 1rem;
   letter-spacing: -0.02em;
   color: var(--ink);
+}
+
+/* Invisible hit extension: the wordmark is ~24px tall inside the 48px
+   island — same treatment as .nav-link::before so near-miss clicks
+   above/below the text still land. */
+.site-nav .brand::before {
+  content: '';
+  position: absolute;
+  inset: -12px -8px;
 }
 .brand-mark {
   display: inline-flex;
@@ -720,11 +737,14 @@ body {
 
 /* Nav links — compact, medium weight, pill hover/active. The visual
    pill is 32px; an invisible extension raises the true hit target to
-   the island's full 48px height so clicks land reliably. */
+   the island's full 48px height so clicks land reliably. Horizontal
+   extension is -1px — exactly half the 2px gap between pills — so
+   adjacent hit areas meet at the midpoint instead of overlapping and
+   sending gap clicks to the wrong neighbor. */
 .nav-link::before {
   content: '';
   position: absolute;
-  inset: -8px -2px;
+  inset: -8px -1px;
 }
 
 .nav-link {
@@ -738,20 +758,46 @@ body {
   font-weight: 500;
   letter-spacing: -0.006em;
   color: var(--ink-dim);
+  transition: color 0.15s var(--ease);
+}
+
+/* The pill visual lives on ::after so press feedback can scale it
+   without shrinking the link's real hit area under the pointer. */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 9999px;
   transition:
-    color 0.15s var(--ease),
     background 0.15s var(--ease),
     transform 0.15s var(--ease);
 }
 
 .nav-link:hover {
   color: var(--ink);
+}
+.nav-link:hover::after {
   background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-link-active {
   color: var(--ink);
+}
+.nav-link-active::after {
   background: rgba(255, 255, 255, 0.08);
+}
+
+/* Hamburger: extend the true hit area to the physical screen edge
+   (island pr-2 = 8px + header inset-x-3 = 12px) — one-handed thumbs
+   tap flush against the edge where the icon visually sits. */
+.nav-burger {
+  position: relative;
+}
+.nav-burger::after {
+  content: '';
+  position: absolute;
+  inset: -8px -20px -8px -8px;
 }
 
 /* Full-screen mobile menu */
@@ -762,6 +808,12 @@ body {
 
 .mobile-menu {
   animation: menu-in 0.25s var(--ease) both;
+  /* iOS ignores body overflow:hidden — stop scroll gestures that start
+     on the sheet from moving the page beneath. The link list overrides
+     this with touch-action: pan-y so it can still scroll on short
+     viewports. */
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -782,6 +834,11 @@ body {
 
 .mobile-nav-link:active {
   background: rgba(255, 255, 255, 0.06);
+}
+
+.mobile-nav-link-label {
+  display: inline-block;
+  transition: transform 0.15s var(--ease);
 }
 
 /* ---------- LED status pixel (static white square) ---------- */
@@ -1191,11 +1248,15 @@ body {
 
 /* ---------- Press tactility ----------
    Taps get an immediate scale acknowledgment (the garden's .press
-   pattern) instead of nothing until the route change lands. */
+   pattern) instead of nothing until the route change lands. Nav links
+   scale a visual layer, never the interactive element itself — shrinking
+   the hit target under a finger drops edge taps. */
 @media (prefers-reduced-motion: no-preference) {
-  .nav-link:active,
-  .mobile-nav-link:active {
+  .nav-link:active::after {
     transform: scale(0.96);
+  }
+  .mobile-nav-link:active .mobile-nav-link-label {
+    transform: scale(0.97);
   }
   a.cell:active,
   .cell:has(> a):active,

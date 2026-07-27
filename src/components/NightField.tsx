@@ -411,8 +411,10 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
       <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={0.95} theta0={1.7} phase={1.7} />
       <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={0.8} theta0={3.5} phase={3.1} />
       <LightPool position={[0, 0.03, 0]} scale={12} color="#ffce8a" opacity={0.10} />
-      {/* invisible hit volume covering the loop the pack walks */}
-      <mesh position={[0, 3, 0]} visible={false}>
+      {/* invisible hit volume covering the loop the pack walks; grows while
+          hovered so the camera glide can't slide it out from under the
+          cursor between press and release */}
+      <mesh position={[0, 3, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[19, 7, 13]} />
       </mesh>
       <EasedLight hovered={hovered} on={65} off={45} position={[0, 1.6, 0]} color="#ffce8a" distance={16} decay={2} />
@@ -451,8 +453,9 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
       <group ref={azimuth}>
         <primitive object={telescope} />
       </group>
-      {/* hit volume covering the full dish sweep so hover stays stable */}
-      <mesh position={[0, 5, 0]} visible={false}>
+      {/* hit volume covering the full dish sweep so hover stays stable;
+          hover hysteresis keeps it under the cursor through the camera pan */}
+      <mesh position={[0, 5, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[10.5, 10.5, 10.5]} />
       </mesh>
       {/* night lighting: a cool key from behind-left rims the dish edge
@@ -526,7 +529,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
         <pointLight position={[0.5, 2.6, 0.8]} color="#d8c294" intensity={4} distance={5} decay={2} />
       </group>
       <LightPool position={[0, 0.03, 0]} scale={5.5} color="#d9cba4" opacity={0.08} />
-      <mesh position={[0, 2.4, 0]} visible={false}>
+      <mesh position={[0, 2.4, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[6.5, 5.4, 3.5]} />
       </mesh>
       <EasedLight hovered={hovered} on={20} off={9} position={[1.6, 3.4, 1.8]} color="#d8c294" distance={9} decay={2} />
@@ -738,8 +741,9 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
       <Flame hovered={hovered} reducedMotion={reducedMotion} />
       <LightPool position={[0, 0.025, 0]} scale={12} color="#ff9d4d" opacity={0.22} />
       <Embers hovered={hovered} reducedMotion={reducedMotion} />
-      {/* tight hit volume so it can't shadow the garden behind it */}
-      <mesh position={[0, 1, 0]} visible={false}>
+      {/* tight hit volume so it can't shadow the garden behind it —
+          only grows once already hovered, so the garden stays reachable */}
+      <mesh position={[0, 1, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <sphereGeometry args={[2.2, 8, 8]} />
       </mesh>
       <pointLight ref={light} position={[0, 0.9, 0]} color="#ff9d4d" intensity={60} distance={16} decay={2} />
@@ -995,7 +999,7 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
         <Sprout reducedMotion={reducedMotion} />
       </group>
       <LightPool position={[0, 0.03, 0]} scale={8} color="#b9c9a8" opacity={0.07} />
-      <mesh position={[0, 1.9, 0]} visible={false}>
+      <mesh position={[0, 1.9, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[8.5, 4.6, 6.5]} />
       </mesh>
       <EasedLight hovered={hovered} on={22} off={14} position={[0, 1.2, 0]} color="#b9c9a8" distance={14} decay={2} />
@@ -1053,7 +1057,7 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
         <shapeGeometry args={[fill]} />
         <meshBasicMaterial ref={fillMat} color="#ff5fa2" transparent opacity={0.09} toneMapped={false} side={THREE.DoubleSide} depthWrite={false} />
       </mesh>
-      <mesh position={[0, 2.2, 0]} visible={false}>
+      <mesh position={[0, 2.2, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[8, 6, 3]} />
       </mesh>
     </group>
@@ -1441,6 +1445,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
   const [ready, setReady] = useState(false)
   const { progress } = useProgress()
   const navigationTimer = useRef<number | null>(null)
+  const pendingHref = useRef<string | null>(null)
 
   useEffect(() => () => {
     if (navigationTimer.current !== null) window.clearTimeout(navigationTimer.current)
@@ -1457,9 +1462,22 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       onEnter(href, external)
       return
     }
-    if (navigationTimer.current !== null) window.clearTimeout(navigationTimer.current)
+    if (navigationTimer.current !== null) {
+      window.clearTimeout(navigationTimer.current)
+      // An impatient repeat click on the same portal commits immediately —
+      // re-arming the timer would postpone navigation on every click,
+      // reading as "the click didn't work".
+      if (pendingHref.current === href) {
+        navigationTimer.current = null
+        pendingHref.current = null
+        onEnter(href, external)
+        return
+      }
+    }
+    pendingHref.current = href
     navigationTimer.current = window.setTimeout(() => {
       navigationTimer.current = null
+      pendingHref.current = null
       onEnter(href, external)
     }, 360)
   }, [onEnter, reducedMotion])
