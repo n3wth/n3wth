@@ -13,14 +13,17 @@ import { n3wthTheme } from './theme/n3wthTheme'
 
 /** Jump to the top on route change (browser back/forward keeps its position). */
 function ScrollToTop() {
-  const { pathname } = useLocation()
+  // location.key changes on every navigation, including same-path replaces
+  // (re-clicking the active nav tab) — pathname alone misses those, leaving
+  // the click a silent no-op.
+  const { key } = useLocation()
   const navigationType = useNavigationType()
   useEffect(() => {
     // POP = back/forward: let the browser restore the previous position
     // instead of clobbering it with the top of the page.
     if (navigationType === 'POP') return
     window.scrollTo(0, 0)
-  }, [pathname, navigationType])
+  }, [key, navigationType])
   return null
 }
 

@@ -64,6 +64,16 @@ function TimelineScrubber() {
   const active = hovered ?? selected
   const run = active !== null ? RUNS[active] : null
 
+  /* On phones each tick is ~7px wide — far too small to tap. Treat the
+     whole strip as a scrubber for touch: a drag (or tap) resolves to the
+     run under the finger. touch-pan-y keeps vertical page scrolling
+     intact while horizontal drags scrub. */
+  const scrubTo = (e: React.PointerEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const i = Math.floor(((e.clientX - rect.left) / rect.width) * RUNS.length)
+    setHovered(Math.min(RUNS.length - 1, Math.max(0, i)))
+  }
+
   return (
     <div data-reveal>
       <p className="font-mono text-xs" style={{ color: 'var(--ink-faint)' }}>
@@ -73,8 +83,14 @@ function TimelineScrubber() {
       <div
         role="group"
         aria-label="Cron runs through the day, one tick per fifteen minutes"
-        className="mt-4 flex items-stretch gap-[3px]"
+        className="mt-4 flex touch-pan-y items-stretch gap-[3px]"
         onMouseLeave={() => setHovered(null)}
+        onPointerDown={(e) => {
+          if (e.pointerType === 'touch') scrubTo(e)
+        }}
+        onPointerMove={(e) => {
+          if (e.pointerType === 'touch' && e.buttons > 0) scrubTo(e)
+        }}
       >
         {RUNS.map((r, i) => {
           const isActive = active === i
@@ -86,10 +102,21 @@ function TimelineScrubber() {
               style={{ '--kn-delay': `${i * 0.015}s` } as React.CSSProperties}
               aria-pressed={selected === i}
               aria-label={`${r.time} — ${r.changed ? 'changed something' : 'passed through unchanged'}`}
-              onMouseEnter={() => setHovered(i)}
+              onPointerEnter={(e) => {
+                // Emulated hover from a tap would stick until focus moves,
+                // making the dismissing second tap look like a dead click.
+                if (e.pointerType !== 'touch') setHovered(i)
+              }}
               onFocus={() => setHovered(i)}
               onBlur={() => setHovered(null)}
-              onClick={() => setSelected(selected === i ? null : i)}
+              onClick={() => {
+                if (selected === i) {
+                  setSelected(null)
+                  setHovered(null)
+                } else {
+                  setSelected(i)
+                }
+              }}
             >
               <span
                 className="block h-9 w-full transition-transform duration-150"

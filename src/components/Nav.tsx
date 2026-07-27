@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { MouseEvent } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, X } from 'lucide-react'
@@ -7,14 +8,34 @@ import { navigation } from '../data/content'
 
 export function Nav() {
   const { pathname } = useLocation()
-  const [openPath, setOpenPath] = useState<string | null>(null)
-  const open = openPath === pathname
+  const [open, setOpen] = useState(false)
+
+  // Any navigation closes the sheet — including back/forward gestures and
+  // programmatic navigations that never touch the menu's own links.
+  // (State adjusted during render, per React's derived-state-reset pattern.)
+  const [prevPathname, setPrevPathname] = useState(pathname)
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname)
+    setOpen(false)
+  }
+
+  // The sheet and its toggle are md:hidden — if the viewport crosses into
+  // the desktop layout while open (rotation, window resize), close it so
+  // the body scroll lock can't outlive its only visible way out.
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)')
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setOpen(false)
+    }
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
 
   // Lock body scroll while the full-screen menu is open; Escape closes it
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpenPath(null)
+      if (e.key === 'Escape') setOpen(false)
     }
     window.addEventListener('keydown', onKeyDown)
     return () => {
@@ -56,6 +77,17 @@ export function Nav() {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [open])
 
+  /* Clicking the link for the page you're already on used to run a full
+     view transition of identical content — a flicker that read as a dead
+     click. Skip the navigation and give the click a real result instead:
+     scroll back to the top. */
+  const sameRouteClick = (href: string) => (e: MouseEvent<HTMLAnchorElement>) => {
+    if (href !== pathname) return
+    e.preventDefault()
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
+  }
+
   return (
     <>
       {/* Floating island nav */}
@@ -64,7 +96,13 @@ export function Nav() {
         style={{ top: 'calc(0.75rem + env(safe-area-inset-top))' }}
       >
         <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-1 pl-4 pr-2 md:w-auto md:pl-5">
-          <Link to="/" viewTransition className="brand shrink-0" aria-label="n3wth — home">
+          <Link
+            to="/"
+            viewTransition
+            className="brand shrink-0"
+            aria-label="n3wth — home"
+            onClick={sameRouteClick('/')}
+          >
             <span className="brand-mark shrink-0" aria-hidden="true">
               <CursorMark size={18} />
             </span>
@@ -77,6 +115,7 @@ export function Nav() {
                 key={item.href}
                 to={item.href}
                 viewTransition
+                onClick={sameRouteClick(item.href)}
                 className={({ isActive }) =>
                   `nav-link ${isActive ? 'nav-link-active' : ''}`
                 }
@@ -88,10 +127,11 @@ export function Nav() {
 
           <span className="md:hidden ml-auto inline-flex items-center">
             <IconButton
+              className="nav-burger"
               label={open ? 'Close menu' : 'Open menu'}
               icon={open ? <X size={18} /> : <Menu size={18} />}
               variant="ghost"
-              onClick={() => setOpenPath((value) => value === pathname ? null : pathname)}
+              onClick={() => setOpen((value) => !value)}
             />
           </span>
         </div>
@@ -124,20 +164,26 @@ export function Nav() {
                 icon={<X size={20} />}
                 variant="ghost"
                 size="lg"
-                onClick={() => setOpenPath(null)}
+                onClick={() => setOpen(false)}
               />
             </span>
           </div>
-          <nav className="flex flex-col gap-1 px-4 pt-2" aria-label="Mobile navigation">
+          {/* Scrollable on short (landscape) viewports so the last link is
+              always reachable; overscroll-contain + touch-pan-y keep iOS
+              from rubber-banding the locked page beneath. */}
+          <nav
+            className="flex flex-1 min-h-0 flex-col gap-1 overflow-y-auto overscroll-contain touch-pan-y px-4 pt-2 pb-4"
+            aria-label="Mobile navigation"
+          >
             {navigation.map((item) => (
               <NavLink
                 key={item.href}
                 to={item.href}
                 viewTransition
-                onClick={() => setOpenPath(null)}
+                onClick={() => setOpen(false)}
                 className="mobile-nav-link"
               >
-                {item.name}
+                <span className="mobile-nav-link-label">{item.name}</span>
               </NavLink>
             ))}
           </nav>

@@ -103,6 +103,11 @@ function GraphExplorer() {
               }}
               style={{ cursor: 'pointer' }}
             >
+              {/* Invisible hit halo: the visible dot is r=6-9, ~12px on a
+                  phone once the SVG scales down — far below a usable tap
+                  target. r=48 lands ~44px at the smallest render width and
+                  never overlaps a neighbor (closest pair is ~132 units). */}
+              <circle className="pkg-hit" cx={n.x} cy={n.y} r={48} fill="transparent" />
               <circle
                 cx={n.x}
                 cy={n.y}
@@ -134,7 +139,7 @@ function GraphExplorer() {
       </p>
       <style>{`
         .pkg-node { outline: none; }
-        .pkg-node:focus-visible circle { stroke: var(--accent); stroke-width: 2.5; }
+        .pkg-node:focus-visible circle:not(.pkg-hit) { stroke: var(--accent); stroke-width: 2.5; }
       `}</style>
     </div>
   )

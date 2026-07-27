@@ -48,7 +48,10 @@ export default function ThinkingPiece() {
           </div>
         </div>
 
-        <Suspense fallback={<div className="h-40" aria-hidden />}>
+        {/* Tall fallback keeps the footer out of the initially tappable
+            region while the piece chunk loads — a 160px placeholder put
+            footer links exactly where the article lands when it resolves. */}
+        <Suspense fallback={<div className="min-h-[70vh]" aria-hidden />}>
           <Body />
         </Suspense>
       </div>

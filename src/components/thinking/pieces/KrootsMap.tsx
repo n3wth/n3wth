@@ -90,10 +90,21 @@ function KrootsGraph() {
             type="button"
             aria-pressed={selected === c.id}
             aria-label={`${c.label}, ${c.leaves.length} documents`}
-            onMouseEnter={() => setHovered(c.id)}
+            onPointerEnter={(e) => {
+              // Emulated hover from a tap sticks until focus moves — the
+              // dismissing second tap would look like a dead click.
+              if (e.pointerType !== 'touch') setHovered(c.id)
+            }}
             onFocus={() => setHovered(c.id)}
             onBlur={() => setHovered(null)}
-            onClick={() => setSelected(selected === c.id ? null : c.id)}
+            onClick={() => {
+              if (selected === c.id) {
+                setSelected(null)
+                setHovered(null)
+              } else {
+                setSelected(c.id)
+              }
+            }}
             className="kit-toggle-btn rounded-full px-3 py-1.5 text-xs"
             style={{
               border: '1px solid var(--rail)',
