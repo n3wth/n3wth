@@ -46,6 +46,7 @@ const AgentDesks = lazy(() => import('./pieces/AgentDesks'))
 const WorkingNotes2026 = lazy(() => import('./pieces/WorkingNotes2026'))
 const PdfCharspaceGotcha = lazy(() => import('./pieces/PdfCharspaceGotcha'))
 const ThisPage = lazy(() => import('./pieces/ThisPage'))
+const FieldGuide = lazy(() => import('./pieces/FieldGuide/FieldGuide'))
 
 export const registeredPieces: RegisteredPiece[] = [
   {
@@ -247,5 +248,15 @@ export const registeredPieces: RegisteredPiece[] = [
       group: 'system',
     },
     Body: ThisPage,
+  },
+  {
+    meta: {
+      id: 'field-guide',
+      title: 'Tell it as a place',
+      dek: 'A field guide to a site that tells your story instead of listing it: find the spine, build the world in Blender and FLORA, then hand the playhead to the reader’s scroll. Every technique it teaches, it performs.',
+      date: '2026-07-29',
+      group: 'system',
+    },
+    Body: FieldGuide,
   },
 ]
