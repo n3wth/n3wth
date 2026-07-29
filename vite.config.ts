@@ -26,7 +26,13 @@ export default defineConfig(({ command }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // GSAP and its plugins in one chunk (loaded together, cached together)
+          // Scroll plugins ride with the lazy pieces that use them
+          // (src/lib/scroll.ts), not the eager gsap chunk below —
+          // ScrollTrigger pulls in Observer, so it goes here too.
+          if (id.includes('gsap') && /ScrollTrigger|ScrollToPlugin|SplitText|Observer/.test(id)) {
+            return 'gsap-scroll'
+          }
+          // GSAP core in one chunk (loaded together, cached together)
           if (id.includes('gsap') || id.includes('@gsap/react')) {
             return 'gsap'
           }

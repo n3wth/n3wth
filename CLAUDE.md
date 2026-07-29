@@ -32,7 +32,7 @@ npm run build    # tsc + vite build (verify before committing)
 - Weights: this site's heaviest font weight is semibold (600) — never use bold/700.
 
 ## Key Conventions
-- **GSAP imports:** Always use `import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'` - never import gsap directly or re-register plugins
+- **GSAP imports:** Always use `import { gsap, useGSAP } from '../../lib/gsap'` - never import gsap directly or re-register plugins. Scroll-driven pieces import `{ gsap, useGSAP, ScrollTrigger, SplitText }` from `src/lib/scroll.ts` instead (registers scroll plugins once, ships in a lazy `gsap-scroll` chunk). Official GSAP skills are vendored in `.claude/skills/gsap-*` - load the relevant ones before writing animation code
 - **Reduced motion:** Every animation block must check `prefers-reduced-motion` and bail early
 - **Lazy loading:** Below-fold sections use `React.lazy()` + `Suspense`
 - **CSS variables:** Use `var(--color-grey-400)` etc. from index.css, not hardcoded colors
