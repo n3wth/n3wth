@@ -381,6 +381,7 @@ button.act:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
   <div class="actions">
     <button class="act" id="pauseBtn">Pause</button>
     <button class="act" id="reseedBtn">Reseed</button>
+    <button class="act" id="exportBtn" hidden>PNG</button>
   </div>
 </section>
 
@@ -606,6 +607,25 @@ button.act:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
     if (reduced.matches) drawStatic();
     else { ctx.fillStyle = bgColor; ctx.fillRect(0, 0, canvas.width, canvas.height); }
   });
+
+  // ---- export (artifact `downloads` capability) -----------------------
+  const exportBtn = $('exportBtn');
+  if (window.claude && window.claude.downloads) {
+    exportBtn.hidden = false;
+    exportBtn.addEventListener('click', () => {
+      canvas.toBlob(blob => {
+        if (!blob) return;
+        window.claude.downloads
+          .save({ filename: 'drift-' + seed.toString(16).padStart(8, '0') + '.png', data: blob })
+          .then(() => { exportBtn.textContent = 'Saved'; })
+          .catch(err => {
+            if (err && (err.code === 'declined' || err.code === 'rate_limited')) return;
+            exportBtn.hidden = true; // unusable in this view
+          })
+          .finally(() => setTimeout(() => { exportBtn.textContent = 'PNG'; }, 1500));
+      }, 'image/png');
+    });
+  }
 
   // ---- pointer --------------------------------------------------------
   canvas.addEventListener('pointerdown', e => {
