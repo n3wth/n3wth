@@ -57,23 +57,28 @@ function Marker({
   cameo?: ReactNode
 }) {
   return (
-    <div className="pt-14 md:pt-20" data-reveal>
+    <div className="pt-14 md:pt-20">
       <div className="md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:items-center md:gap-12">
         <div>
           <span
             className="index inline-flex h-10 w-10 items-center justify-center rounded-full"
             style={{ border: '1px solid var(--rail-strong)', color: 'var(--ink-dim)' }}
             aria-hidden
+            data-reveal
           >
             {numeral}
           </span>
+          {/* No data-reveal here: the title animates by SplitText line
+              mask on enter, and textWrap must not be `balance` while
+              split (it fights the line measurement). */}
           <h2
-            className="display mt-5 text-[clamp(1.8rem,3.6vw,2.7rem)]"
-            style={{ letterSpacing: '-0.03em', lineHeight: 1.05 }}
+            data-marker-title
+            className="display mt-5 text-[clamp(2rem,4.4vw,3.4rem)]"
+            style={{ letterSpacing: '-0.03em', lineHeight: 1.05, textWrap: 'initial' }}
           >
             {title}
           </h2>
-          <p className="mt-3 max-w-[52ch] text-base md:text-lg" style={{ color: 'var(--ink-dim)' }}>
+          <p className="mt-3 max-w-[52ch] text-base md:text-lg" style={{ color: 'var(--ink-dim)' }} data-reveal>
             {dek}
           </p>
         </div>
@@ -112,6 +117,27 @@ export default function FieldGuide() {
         },
       })
 
+      // Chapter titles arrive the same way the opener does, one masked
+      // line at a time, each on its own enter trigger.
+      const titleSplits: SplitText[] = []
+      gsap.utils.toArray<HTMLElement>('[data-marker-title]', root).forEach((h) => {
+        titleSplits.push(
+          SplitText.create(h, {
+            type: 'lines',
+            mask: 'lines',
+            autoSplit: true,
+            onSplit: (self) =>
+              gsap.from(self.lines, {
+                yPercent: 110,
+                duration: 0.8,
+                stagger: 0.08,
+                ease: 'power4.out',
+                scrollTrigger: { trigger: h, start: 'top 84%' },
+              }),
+          })
+        )
+      })
+
       // Photograph parallax: the images ride a little slower than the
       // page, scrubbed, transform-only.
       gsap.utils.toArray<HTMLElement>('[data-parallax]', root).forEach((fig) => {
@@ -127,6 +153,49 @@ export default function FieldGuide() {
           }
         )
       })
+
+      // The prologue photograph opens from a framed column to the full
+      // viewport as it approaches — the first hint the page can expand.
+      const openFig = root.querySelector<HTMLElement>('[data-expand-clip]')
+      if (openFig) {
+        gsap.fromTo(
+          openFig,
+          { clipPath: 'inset(0% 13% round 16px)' },
+          {
+            clipPath: 'inset(0% 0% round 0px)',
+            ease: 'none',
+            scrollTrigger: { trigger: openFig, start: 'top 92%', end: 'top 30%', scrub: true },
+          }
+        )
+      }
+
+      // Each chapter lends the page a whisper of its own temperature:
+      // violet-black for the story, ember-black for the build, a colder
+      // star-black for the scroll chapter, then back to base. Scrubbed
+      // crossfades on the body color, reverted with the context.
+      const baseBg = getComputedStyle(document.body).backgroundColor
+      const TINTS = [
+        { sel: '#ch-story', color: '#0b0a10' },
+        { sel: '#ch-world', color: '#0e0b08' },
+        { sel: '#ch-scroll', color: '#080c11' },
+      ]
+      TINTS.forEach(({ sel, color }) => {
+        const el = root.querySelector(sel)
+        if (!el) return
+        gsap.to(document.body, {
+          backgroundColor: color,
+          ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top 75%', end: 'top 25%', scrub: true },
+        })
+      })
+      const colophon = root.querySelector('#colophon')
+      if (colophon) {
+        gsap.to(document.body, {
+          backgroundColor: baseBg,
+          ease: 'none',
+          scrollTrigger: { trigger: colophon, start: 'top 90%', end: 'top 40%', scrub: true },
+        })
+      }
 
       // Texture swatches settle in once, staggered.
       const swatches = gsap.utils.toArray<HTMLElement>('[data-swatch]', root)
@@ -149,6 +218,7 @@ export default function FieldGuide() {
       return () => {
         anim?.kill()
         split.revert()
+        titleSplits.forEach((s) => s.revert())
       }
     },
     { scope: rootRef, dependencies: [reduced], revertOnUpdate: true }
@@ -175,7 +245,7 @@ export default function FieldGuide() {
       </p>
 
       <figure className="bleed mt-14" data-parallax>
-        <div className="h-[52svh] w-full overflow-hidden md:h-[64svh]">
+        <div className="h-[56svh] w-full overflow-hidden md:h-[74svh]" data-expand-clip>
           <img
             src="/images/empty-playa.webp"
             alt="The Black Rock Desert playa, empty to the horizon under a pale sky"
@@ -211,11 +281,11 @@ export default function FieldGuide() {
           title="Figure out the story"
           dek="Not the resume. The one sequence of events that explains why the rest exists."
           cameo={
-            <div className="mx-auto mt-8 w-full max-w-[220px] md:mt-0 md:justify-self-end">
+            <div className="mx-auto mt-8 w-full max-w-[300px] md:mt-0 md:justify-self-end">
               <Cameo
                 url="/models/signpost.glb"
                 label="The homepage trail signpost, low-poly version, slowly turning"
-                fit={2.3}
+                fit={2.6}
                 spin={0.18}
                 reduced={reduced}
               />
@@ -251,11 +321,11 @@ export default function FieldGuide() {
             </>
           }
         >
-          <div className="max-w-[260px]">
+          <div className="max-w-[360px]">
             <Cameo
               url="/models/dish.glb"
               label="The homepage radio dish, turned toward the reader"
-              fit={2.2}
+              fit={2.5}
               tint="#7e848c"
               spin={0.12}
               reduced={reduced}
@@ -369,7 +439,8 @@ export default function FieldGuide() {
           }
         />
 
-        <div className="mt-4 grid gap-6 md:grid-cols-2">
+        <div className="bleed mt-4" style={{ paddingInline: 'var(--gutter)' }}>
+          <div className="mx-auto grid gap-6 md:grid-cols-2" style={{ maxWidth: '1600px' }}>
           <figure data-parallax>
             <div className="aspect-[4/3] w-full overflow-hidden">
               <img
@@ -392,6 +463,7 @@ export default function FieldGuide() {
             </div>
             <figcaption className="meta mt-2">Pink Triangle, Twin Peaks. On the homepage it holds the far ridge.</figcaption>
           </figure>
+          </div>
         </div>
       </section>
 
@@ -466,13 +538,13 @@ export default function FieldGuide() {
         </div>
       </div>
 
-      <aside className="mt-20 border-t pt-8" style={{ borderColor: 'var(--rail)' }} data-reveal>
+      <aside id="colophon" className="mt-20 border-t pt-8" style={{ borderColor: 'var(--rail)' }} data-reveal>
         <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
           Used on this page
         </p>
         <ul className="meta mt-4 flex flex-col gap-2">
           <li>
-            SplitText line masks · <a href="#field-guide-article" className="link-underline">the opening line</a>
+            SplitText line masks · <a href="#field-guide-article" className="link-underline">the opening line</a> and every chapter title
           </li>
           <li>
             pin + scrub + labels + snap · <a href="#spine" className="link-underline">the story spine</a>

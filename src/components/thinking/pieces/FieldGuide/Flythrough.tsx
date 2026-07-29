@@ -31,7 +31,7 @@ const CAPTIONS = [
   {
     label: 'descend',
     text:
-      'This scene is one GSAP timeline with four labels. Nothing here plays on its own clock: your scroll is the playhead, scrub: 1 gives it a second of catch-up, and the section stays pinned until the timeline runs out.',
+      'This scene is one GSAP timeline with four labels. Your scroll is the playhead, scrub: 1 gives it a second of catch-up, and the section stays pinned until the timeline runs out. The one free agent is a breath of camera sway; a perfectly rigid camera reads as a screen recording.',
   },
   {
     label: 'signpost',
@@ -50,12 +50,78 @@ const CAPTIONS = [
   },
 ]
 
-function Rig({ cam }: { cam: CamState }) {
-  useFrame(({ camera }) => {
-    camera.position.set(cam.x, cam.y, cam.z)
-    camera.lookAt(cam.tx, cam.ty, cam.tz)
+function Rig({ cam, reduced }: { cam: CamState; reduced: boolean }) {
+  useFrame(({ camera, clock }) => {
+    // A slow two-frequency drift on top of the scrubbed path — the one
+    // motion in this scene that runs on the page's clock, admitted to
+    // in the first caption. Off under reduced motion.
+    const t = reduced ? 0 : clock.elapsedTime
+    const bx = Math.sin(t * 0.31) * 0.16
+    const by = Math.sin(t * 0.23 + 1.3) * 0.11
+    camera.position.set(cam.x + bx, cam.y + by, cam.z)
+    camera.lookAt(cam.tx, cam.ty + by * 0.4, cam.tz)
   })
   return null
+}
+
+/** Dust hanging in the pooled light — a few dozen slow motes cycling
+    upward around each station, seeded deterministically. */
+function Motes({ reduced }: { reduced: boolean }) {
+  const inst = useRef<THREE.InstancedMesh>(null)
+  const CENTERS: [number, number, number][] = [
+    [0, 0, 0],
+    [-16.5, 0, -10.5],
+    [-34, 0, -18],
+  ]
+  const PER = 9
+  const N = CENTERS.length * PER
+  const dummy = useMemo(() => new THREE.Object3D(), [])
+  const seeds = useMemo(
+    () =>
+      Array.from({ length: N }, (_, i) => {
+        const r = (salt: number) => {
+          const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453
+          return x - Math.floor(x)
+        }
+        return { a: r(1) * Math.PI * 2, rad: 1.2 + r(2) * 3.4, speed: 0.02 + r(3) * 0.05, phase: r(4), size: 0.028 + r(5) * 0.03 }
+      }),
+    [N]
+  )
+
+  useFrame(({ clock }) => {
+    const mesh = inst.current
+    if (!mesh) return
+    const t = reduced ? 40 : clock.elapsedTime
+    for (let i = 0; i < N; i++) {
+      const c = CENTERS[Math.floor(i / PER)]
+      const s = seeds[i]
+      const cycle = (t * s.speed + s.phase) % 1
+      dummy.position.set(
+        c[0] + Math.cos(s.a + t * 0.05) * s.rad,
+        0.25 + cycle * 3.4,
+        c[2] + Math.sin(s.a + t * 0.05) * s.rad
+      )
+      const fade = Math.sin(cycle * Math.PI)
+      dummy.scale.setScalar(s.size * (0.4 + 0.6 * fade))
+      dummy.updateMatrix()
+      mesh.setMatrixAt(i, dummy.matrix)
+    }
+    mesh.instanceMatrix.needsUpdate = true
+  })
+
+  return (
+    <instancedMesh ref={inst} args={[undefined, undefined, N]}>
+      <sphereGeometry args={[1, 6, 6]} />
+      <meshBasicMaterial
+        color={new THREE.Color('#b9c2cc').multiplyScalar(1.4)}
+        transparent
+        opacity={0.3}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        toneMapped={false}
+      />
+    </instancedMesh>
+  )
 }
 
 function Terrain() {
@@ -211,7 +277,7 @@ function LightPool({
   )
 }
 
-function FieldCorner() {
+function FieldCorner({ reduced }: { reduced: boolean }) {
   return (
     <>
       <fog attach="fog" args={['#0a0a0c', 26, 150]} />
@@ -221,22 +287,25 @@ function FieldCorner() {
       <Sky />
 
       {/* the fork in the path */}
-      <Station url="/models/signpost.glb" fit={4.4} position={[0, 0, 0]} rotationY={0.45} />
-      <pointLight position={[1.4, 3.2, 1.6]} color="#d8c294" intensity={9} distance={11} decay={2} />
-      <LightPool position={[0, 0.03, 0]} scale={6} color="#d9cba4" opacity={0.09} />
+      <Station url="/models/signpost.glb" fit={5.4} position={[0, 0, 0]} rotationY={0.45} />
+      <pointLight position={[1.6, 3.8, 1.8]} color="#d8c294" intensity={11} distance={13} decay={2} />
+      <LightPool position={[0, 0.03, 0]} scale={7.5} color="#d9cba4" opacity={0.09} />
 
       {/* the pack, paused mid-amble */}
-      <StillThylacine position={[-16, 0, -10]} rotationY={0.9} scale={1.05} />
-      <StillThylacine position={[-19.5, 0, -7.5]} rotationY={2.1} scale={0.9} />
-      <StillThylacine position={[-14, 0, -14.2]} rotationY={-0.4} scale={0.78} />
-      <pointLight position={[-16.5, 1.8, -10.5]} color="#ffce8a" intensity={50} distance={17} decay={2} />
-      <LightPool position={[-16.5, 0.035, -10.5]} scale={13} color="#ffce8a" opacity={0.11} />
+      <StillThylacine position={[-16, 0, -10]} rotationY={0.9} scale={1.25} />
+      <StillThylacine position={[-20.2, 0, -7.2]} rotationY={2.1} scale={1.08} />
+      <StillThylacine position={[-13.6, 0, -14.8]} rotationY={-0.4} scale={0.92} />
+      <pointLight position={[-16.5, 2.2, -10.5]} color="#ffce8a" intensity={62} distance={19} decay={2} />
+      <LightPool position={[-16.5, 0.035, -10.5]} scale={15} color="#ffce8a" opacity={0.11} />
 
       {/* the dish, listening */}
-      <Station url="/models/dish.glb" fit={5.6} tint="#7e848c" position={[-34, 0, -18]} rotationY={0.7} />
-      <pointLight position={[-39, 7, -23]} color="#b8c4d8" intensity={260} distance={60} decay={2} />
-      <pointLight position={[-34, 1, -16]} color="#8fa8d8" intensity={90} distance={40} decay={2} />
-      <LightPool position={[-34, 0.03, -18]} scale={10} color="#b8c4d8" opacity={0.07} />
+      <Station url="/models/dish.glb" fit={6.6} tint="#7e848c" position={[-34, 0, -18]} rotationY={0.7} />
+      <pointLight position={[-39, 8, -23]} color="#b8c4d8" intensity={300} distance={64} decay={2} />
+      <pointLight position={[-34, 1, -16]} color="#8fa8d8" intensity={100} distance={42} decay={2} />
+      <LightPool position={[-34, 0.03, -18]} scale={11} color="#b8c4d8" opacity={0.07} />
+
+      {/* dust hanging in the light */}
+      <Motes reduced={reduced} />
     </>
   )
 }
@@ -325,9 +394,9 @@ export function Flythrough({ reduced }: { reduced: boolean }) {
       gl={{ alpha: true }}
       frameloop={frameloopFor(visible, reduced)}
     >
-      <Rig cam={pose} />
+      <Rig cam={pose} reduced={reduced} />
       <Suspense fallback={null}>
-        <FieldCorner />
+        <FieldCorner reduced={reduced} />
       </Suspense>
     </Canvas>
   )

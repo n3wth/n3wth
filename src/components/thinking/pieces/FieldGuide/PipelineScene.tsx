@@ -74,7 +74,7 @@ function BikeStates({
       const center = new THREE.Vector3()
       box.getSize(size)
       box.getCenter(center)
-      const scale = 2.6 / Math.max(size.x, size.y, size.z, 0.001)
+      const scale = 3.1 / Math.max(size.x, size.y, size.z, 0.001)
       root.children.forEach((c) => c.position.sub(center))
       root.scale.setScalar(scale)
     }
@@ -224,6 +224,7 @@ export function PipelineScene({ reduced }: { reduced: boolean }) {
       const root = rootRef.current
       if (!root) return
       const captions = gsap.utils.toArray<HTMLElement>('[data-stage-caption]', root)
+      const clip = root.querySelector<HTMLElement>('[data-stage-clip]')
 
       const mm = gsap.matchMedia()
       mm.add(
@@ -259,6 +260,18 @@ export function PipelineScene({ reduced }: { reduced: boolean }) {
           // fromTo, not to: after a reduced-motion round trip prog may
           // hold a stale value, and the scrub must map from 0.
           tl.fromTo(prog, { p: 0 }, { p: 1, duration: 1 }, 0)
+
+          // The stage opens as the wireframe forms: a framed column of
+          // scene widening to the full viewport over the first beat.
+          // clip-path interpolates on the compositor; no layout runs.
+          if (clip) {
+            tl.fromTo(
+              clip,
+              { clipPath: mobile ? 'inset(4% 7% round 14px)' : 'inset(7% 16% round 18px)' },
+              { clipPath: 'inset(0% 0% round 0px)', duration: 0.16 },
+              0
+            )
+          }
           const marks = [0, 0.25, 0.5, 0.8]
           STAGES.forEach((s, i) => {
             tl.addLabel(s.name, marks[i])
@@ -313,7 +326,7 @@ export function PipelineScene({ reduced }: { reduced: boolean }) {
   }
 
   return (
-    <section ref={rootRef} aria-label="The pipeline, on the homepage bike" className="relative h-svh">
+    <section ref={rootRef} aria-label="The pipeline, on the homepage bike" className="bleed relative h-svh">
       {/* Complete stage list for assistive tech: the animated captions
           below live at visibility:hidden except the active one, so AT
           gets this linear copy instead. */}
@@ -325,7 +338,15 @@ export function PipelineScene({ reduced }: { reduced: boolean }) {
         ))}
       </ol>
 
-      <div ref={wrapRef} className="absolute inset-0" role="img" aria-label="The homepage bike model rebuilding itself from wireframe to textured and lit">
+      {/* data-stage-clip: the scrubbed timeline opens this window from a
+          framed column to the full viewport as the wireframe forms. */}
+      <div
+        ref={wrapRef}
+        data-stage-clip
+        className="absolute inset-0"
+        role="img"
+        aria-label="The homepage bike model rebuilding itself from wireframe to textured and lit"
+      >
         {near && (
           <Canvas
             camera={{ position: [0, 0.5, camZ], fov: 36 }}
@@ -340,11 +361,13 @@ export function PipelineScene({ reduced }: { reduced: boolean }) {
         )}
       </div>
 
-      <p aria-hidden className="absolute right-0 top-8 text-right text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
-        stage · <span ref={stageNameRef}>geometry</span>
-      </p>
+      <div className="pointer-events-none absolute inset-x-0 top-8" style={{ paddingInline: 'var(--gutter)' }}>
+        <p aria-hidden className="text-right text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
+          stage · <span ref={stageNameRef}>geometry</span>
+        </p>
+      </div>
 
-      <div className="absolute inset-x-0 bottom-8">
+      <div className="absolute inset-x-0 bottom-8" style={{ paddingInline: 'var(--gutter)' }}>
         <div aria-hidden className="relative min-h-[7.5rem] max-w-[46ch] md:min-h-[6rem]">
           {STAGES.map((s) => (
             <p
