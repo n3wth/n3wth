@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/fetch-github-stats.mjs && node scripts/fetch-garden-notes.mjs",
+    "prebuild": "node scripts/fetch-github-stats.mjs && node scripts/fetch-garden-notes.mjs && node scripts/fetch-garden-index.mjs && node scripts/fetch-ui-meta.mjs",
     "build": "tsc -b && vite build",
     "postbuild": "node scripts/prerender-meta.mjs",
     "lint": "eslint .",
