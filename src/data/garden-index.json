@@ -1,0 +1,81 @@
+{
+  "noteCount": 248,
+  "indexedCount": 245,
+  "topics": [
+    {
+      "name": "books",
+      "href": "https://garden.n3wth.com/tags/books",
+      "count": 67
+    },
+    {
+      "name": "references",
+      "href": "https://garden.n3wth.com/tags/references",
+      "count": 56
+    },
+    {
+      "name": "to-read",
+      "href": "https://garden.n3wth.com/tags/to-read",
+      "count": 42
+    },
+    {
+      "name": "career",
+      "href": "https://garden.n3wth.com/tags/career",
+      "count": 31
+    },
+    {
+      "name": "health",
+      "href": "https://garden.n3wth.com/tags/health",
+      "count": 28
+    },
+    {
+      "name": "learning",
+      "href": "https://garden.n3wth.com/tags/learning",
+      "count": 27
+    },
+    {
+      "name": "productivity",
+      "href": "https://garden.n3wth.com/tags/productivity",
+      "count": 18
+    },
+    {
+      "name": "wellness",
+      "href": "https://garden.n3wth.com/tags/wellness",
+      "count": 18
+    },
+    {
+      "name": "development",
+      "href": "https://garden.n3wth.com/tags/development",
+      "count": 17
+    },
+    {
+      "name": "strategy",
+      "href": "https://garden.n3wth.com/tags/strategy",
+      "count": 15
+    },
+    {
+      "name": "read",
+      "href": "https://garden.n3wth.com/tags/read",
+      "count": 15
+    },
+    {
+      "name": "knowledge-management",
+      "href": "https://garden.n3wth.com/tags/knowledge-management",
+      "count": 11
+    },
+    {
+      "name": "skills",
+      "href": "https://garden.n3wth.com/tags/skills",
+      "count": 9
+    },
+    {
+      "name": "gardening",
+      "href": "https://garden.n3wth.com/tags/gardening",
+      "count": 9
+    },
+    {
+      "name": "planning",
+      "href": "https://garden.n3wth.com/tags/planning",
+      "count": 8
+    }
+  ]
+}

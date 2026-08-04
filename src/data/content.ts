@@ -20,6 +20,7 @@ export const navigation: NavItem[] = [
   { name: 'Work', href: '/work' },
   { name: 'Art', href: '/art' },
   { name: 'Thinking', href: '/thinking' },
+  { name: 'Library', href: '/library' },
   { name: 'Contact', href: '/contact' },
 ]
 

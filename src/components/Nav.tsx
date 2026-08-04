@@ -2,11 +2,17 @@ import { useEffect, useRef, useState } from 'react'
 import type { MouseEvent } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IconButton } from '@astryxdesign/core/IconButton'
-import { Menu, X } from 'lucide-react'
+import { Menu, Search, X } from 'lucide-react'
 import { CursorMark } from './marks'
 import { navigation } from '../data/content'
+import { SHORTCUT_HINT } from '../lib/shortcut'
 
-export function Nav() {
+export interface NavProps {
+  /** Opens the ⌘K palette. The layout owns its state, so Nav only asks. */
+  onOpenSearch?: () => void
+}
+
+export function Nav({ onOpenSearch }: NavProps) {
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
 
@@ -125,7 +131,34 @@ export function Nav() {
             ))}
           </nav>
 
-          <span className="md:hidden ml-auto inline-flex items-center">
+          {/* Desktop: a labelled target, because a shortcut nobody can see is
+              a shortcut nobody uses. Mobile: the same action as an icon, since
+              there is no ⌘K on a phone. */}
+          {onOpenSearch && (
+            <button
+              type="button"
+              onClick={onOpenSearch}
+              className="nav-search hidden md:inline-flex items-center gap-2 ml-auto"
+              aria-label="Search this site and the garden"
+            >
+              <Search size={14} aria-hidden="true" />
+              <span>Search</span>
+              <kbd className="nav-kbd font-mono" aria-hidden="true">
+                {SHORTCUT_HINT}
+              </kbd>
+            </button>
+          )}
+
+          <span className="md:hidden ml-auto inline-flex items-center gap-1">
+            {onOpenSearch && (
+              <IconButton
+                className="nav-burger"
+                label="Search this site and the garden"
+                icon={<Search size={18} />}
+                variant="ghost"
+                onClick={onOpenSearch}
+              />
+            )}
             <IconButton
               className="nav-burger"
               label={open ? 'Close menu' : 'Open menu'}

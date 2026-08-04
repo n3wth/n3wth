@@ -69,6 +69,32 @@ const routes = [
       </section>`,
   },
   {
+    path: 'library',
+    title: 'Library — Oliver Newth',
+    description:
+      'Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, a 248-note digital garden, and agent skills.',
+    ogImage: '/og-image.png',
+    body: `
+      <h1>Library — Oliver Newth</h1>
+      <p>The components and systems behind n3wth.com and the sites next to it, with the install instructions that work today.</p>
+      <section>
+        <h2>The essay kit</h2>
+        <p>Eight layout primitives that lay out every Thinking piece on this site: Beat, MarginNote, ToggleCompare, FlowDiagram, AssembleField, LiveConstellationDemo, LiveMaterialDemo, and ThinkingIndex.</p>
+      </section>
+      <section>
+        <h2>@n3wth/ui</h2>
+        <p>An atomic React design system published to npm as @n3wth/ui: 36 components across 20 atoms, 12 molecules and 4 organisms, plus 11 hooks. Install it with <code>npm install @n3wth/ui</code>. Full documentation at ui.n3wth.com.</p>
+      </section>
+      <section>
+        <h2>The garden</h2>
+        <p>248 interconnected notes at garden.n3wth.com, sorted by growth stage (seedling, budding, evergreen) and gathered into groves. 1,056 internal links across 210 tag collections.</p>
+      </section>
+      <section>
+        <h2>Agent skills</h2>
+        <p>Skills for coding assistants at skills.n3wth.com covering development, documents, creative work, productivity and business. They run locally and work offline.</p>
+      </section>`,
+  },
+  {
     path: 'contact',
     title: 'Contact — Oliver Newth',
     description:
