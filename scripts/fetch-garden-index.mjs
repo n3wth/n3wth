@@ -10,7 +10,14 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
-const OUT = join(dirname(fileURLToPath(import.meta.url)), '../src/data/garden-index.json')
+/* Two files, on purpose. The shape of the garden (its note count and its
+   fifteen topics) renders immediately on /library, so it's a static import.
+   The note list is ~50KB and only the ⌘K palette ever reads it, so it lives
+   apart and is pulled in on first open — a single file statically imported
+   anywhere would drag all 245 notes into the main bundle. */
+const DIR = join(dirname(fileURLToPath(import.meta.url)), '../src/data')
+const OUT = join(DIR, 'garden-index.json')
+const OUT_SEARCH = join(DIR, 'garden-search.json')
 const SOURCE = 'https://garden.n3wth.com/llms.txt'
 
 // Pages that show up in llms.txt but aren't notes.
@@ -88,15 +95,25 @@ try {
 
   const noteCount = countMatch ? Number(countMatch[1]) : notes.length
 
-  const snapshot = { noteCount, topics, notes }
-  writeFileSync(OUT, JSON.stringify(snapshot, null, 2) + '\n')
-  console.log(`[garden-index] snapshot updated: ${noteCount} notes counted, ${notes.length} indexed, ${topics.length} topics`)
+  // noteCount is the garden's own headline number; indexedCount is how many
+  // real notes survived filtering, and the two differ by the handful of index
+  // pages llms.txt lists alongside the notes.
+  writeFileSync(
+    OUT,
+    JSON.stringify({ noteCount, indexedCount: notes.length, topics }, null, 2) + '\n'
+  )
+  writeFileSync(OUT_SEARCH, JSON.stringify({ notes }, null, 2) + '\n')
+  console.log(
+    `[garden-index] snapshot updated: ${noteCount} notes counted, ${notes.length} indexed, ${topics.length} topics`
+  )
 } catch (err) {
   try {
     readFileSync(OUT, 'utf8')
+    readFileSync(OUT_SEARCH, 'utf8')
     console.warn(`[garden-index] fetch failed (${err.message}); keeping committed snapshot`)
   } catch {
-    writeFileSync(OUT, JSON.stringify({ noteCount: 0, topics: [], notes: [] }, null, 2) + '\n')
+    writeFileSync(OUT, JSON.stringify({ noteCount: 0, indexedCount: 0, topics: [] }, null, 2) + '\n')
+    writeFileSync(OUT_SEARCH, JSON.stringify({ notes: [] }, null, 2) + '\n')
     console.warn(`[garden-index] fetch failed (${err.message}); wrote empty snapshot`)
   }
 }

@@ -1,0 +1,105 @@
+import { Shelf, CodeBlock } from './Shelf'
+import { uiTiers, uiHooks, uiQuickStart } from '../../data/library'
+import uiMeta from '../../data/ui-meta.json'
+
+/**
+ * @n3wth/ui: install line, quick start, then the whole export surface as
+ * a dense index rather than a wall of component cards. Component names are
+ * code identifiers, so they're set in Geist Mono; the tier labels beside
+ * them are not, so they're not.
+ *
+ * Version and install line come from src/data/ui-meta.json (fetched at
+ * build time by scripts/fetch-ui-meta.mjs) and the totals are summed from
+ * the tiers, so nothing on this shelf is a number typed by hand.
+ */
+
+const componentTotal = uiTiers.reduce((total, tier) => total + tier.count, 0)
+
+function IndexRow({ label, count, items }: { label: string; count: number; items: string[] }) {
+  return (
+    <div
+      className="border-t py-5 md:grid md:grid-cols-[minmax(0,8rem)_minmax(0,1fr)] md:gap-8"
+      style={{ borderColor: 'var(--rail)' }}
+    >
+      <div className="flex items-baseline gap-2.5">
+        <span className="text-sm font-medium" style={{ color: 'var(--ink)' }}>
+          {label}
+        </span>
+        <span className="mono">{count}</span>
+      </div>
+      <ul className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1.5 md:mt-0">
+        {items.map((item) => (
+          <li key={item} className="font-mono text-xs" style={{ color: 'var(--ink-dim)' }}>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+export function UiShelf() {
+  return (
+    <Shelf
+      id="ui"
+      meta={`v${uiMeta.version} · ${componentTotal} components`}
+      title="@n3wth/ui"
+      intro={
+        <>
+          A component library on npm, MIT, shipped with the theme tokens and the Tailwind preset
+          that give it its look. React 18 or 19, React DOM, and GSAP 3.12 are the peer dependencies;
+          there is nothing else to install.
+        </>
+      }
+    >
+      <div data-reveal className="mt-10">
+        <CodeBlock code={uiMeta.install} className="max-w-[34ch]" />
+        {/* 62ch, not 52: the import line is 55 characters and the block is
+            border-box, so a tighter cap clips it behind a scrollbar on the
+            one snippet people are most likely to copy. */}
+        <CodeBlock code={uiQuickStart} className="mt-3 max-w-[62ch]" />
+      </div>
+
+      <div data-reveal className="mt-12">
+        <p className="index">Everything it exports</p>
+        <div className="mt-5">
+          {uiTiers.map((tier) => (
+            <IndexRow
+              key={tier.name}
+              label={tier.name}
+              count={tier.count}
+              items={tier.components}
+            />
+          ))}
+          <IndexRow label="Hooks" count={uiHooks.length} items={uiHooks} />
+        </div>
+      </div>
+
+      <div data-reveal className="mt-10 md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
+        <p className="max-w-[62ch] text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+          The docs site's component table currently lists a smaller set than this one. The list above
+          is read off the package's own exports, so where the two disagree, go with what npm actually
+          ships.
+        </p>
+        <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm md:mt-0">
+          <a
+            href="https://ui.n3wth.com"
+            target="_blank"
+            rel="noreferrer"
+            className="link-underline"
+          >
+            Docs
+          </a>
+          <a
+            href="https://github.com/n3wth/ui"
+            target="_blank"
+            rel="noreferrer"
+            className="link-underline"
+          >
+            Source
+          </a>
+        </p>
+      </div>
+    </Shelf>
+  )
+}

@@ -5,6 +5,8 @@ import { LinkProvider } from '@astryxdesign/core/Link'
 import { RouterLink } from './components/RouterLink'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
+import { CommandPalette } from './components/CommandPalette'
+import { useCommandPalette } from './hooks/useCommandPalette'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
 import { useReveal } from './hooks/useReveal'
@@ -44,10 +46,16 @@ function App() {
   useKeyboardNav()
   useReveal()
 
+  // Lives in the shell, not on a page: the shortcut has to work from anywhere,
+  // and the palette is how the four n3wth sites are searchable as one.
+  const { open: searchOpen, setOpen: setSearchOpen, toggle: toggleSearch } = useCommandPalette()
+  const closeSearch = useCallback(() => setSearchOpen(false), [setSearchOpen])
+
   return (
     <Theme theme={n3wthTheme} mode="dark">
       <LinkProvider component={RouterLink}>
-        <Nav />
+        <Nav onOpenSearch={toggleSearch} />
+        <CommandPalette open={searchOpen} onClose={closeSearch} />
         <ScrollToTop />
         <div className="pt-20">
           <div className="frame">
