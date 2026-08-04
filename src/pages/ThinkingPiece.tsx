@@ -26,7 +26,11 @@ export default function ThinkingPiece() {
 
   return (
     <section aria-label={meta.title}>
-      <div className="section-pad pad-tight">
+      {/* Plain section-pad, not pad-tight: its top matches the SectionHeader
+          that opens every index page, so the first ink on a piece lands level
+          with the first ink on /thinking, and its bottom matches the rhythm
+          every other page ends on before the footer. */}
+      <div className="section-pad">
         {/* Date sits on its own line above the title/dek row instead of
             stacked inside the title's column — the row below starts flush
             at the top on both sides, so the dek's first line lands level

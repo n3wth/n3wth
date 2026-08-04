@@ -129,7 +129,10 @@ export function Building() {
         lede="Five products in production. I design the systems; my agent team keeps them shipping."
       />
 
-      <div className="section-pad pad-tight !pt-0">
+      {/* Last block on /work, so it carries the page's gap to the footer:
+          section-pad's bottom rather than pad-tight's, matching how /thinking,
+          /library and /contact end. */}
+      <div className="section-pad !pt-0">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
           {projects.map((project, i) => (
             <div key={project.id} className={i === 0 ? 'md:col-span-2' : undefined}>

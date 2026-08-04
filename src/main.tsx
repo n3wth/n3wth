@@ -11,6 +11,12 @@ import ThinkingPiece from './pages/ThinkingPiece'
 import Library from './pages/Library'
 import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
+import { syncScrollbarWidth } from './lib/layout'
+
+// Before first paint: full-bleed bands need the reserved scrollbar width to
+// span the layout viewport rather than overshoot it. /art opens on one, so
+// this runs here rather than in a component effect.
+syncScrollbarWidth()
 
 // CSS Studio — dev-only visual CSS editor. Dynamic import so it is NEVER bundled
 // into the production build. Removed entirely when import.meta.env.DEV is false.

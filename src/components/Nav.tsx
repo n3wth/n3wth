@@ -101,7 +101,14 @@ export function Nav({ onOpenSearch }: NavProps) {
         className="site-nav fixed inset-x-3 md:inset-x-4 z-50 flex md:justify-center pointer-events-none"
         style={{ top: 'calc(0.75rem + env(safe-area-inset-top))' }}
       >
-        <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-1 pl-4 pr-2 md:w-auto md:pl-5">
+        {/* md:pr-4 balances the island. The right padding is small so the
+            mobile icon buttons' own inner padding does the optical work, but
+            on desktop the rightmost child is the bordered Search pill, whose
+            edge is visible — at pr-2 it sat 9px from the island edge against
+            the brand's 21px on the left, which read as the nav being pushed
+            right. Still slightly tighter than the left, since a drawn border
+            reads closer to the edge than a text baseline does. */}
+        <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-1 pl-4 pr-2 md:w-auto md:pl-5 md:pr-4">
           <Link
             to="/"
             viewTransition
