@@ -27,9 +27,18 @@ function IndexRow({ label, count, items }: { label: string; count: number; items
         </span>
         <span className="mono">{count}</span>
       </div>
+      {/* Each name carries its own anchor: the command palette lists all 36
+          components individually and links to /library#ui-<name>, so without
+          these the fragment resolves to nothing and the result just dumps you
+          at the top of the page. scroll-mt-24 clears the fixed nav. */}
       <ul className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1.5 md:mt-0">
         {items.map((item) => (
-          <li key={item} className="font-mono text-xs" style={{ color: 'var(--ink-dim)' }}>
+          <li
+            key={item}
+            id={`ui-${item.toLowerCase()}`}
+            className="scroll-mt-24 font-mono text-xs"
+            style={{ color: 'var(--ink-dim)' }}
+          >
             {item}
           </li>
         ))}
