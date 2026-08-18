@@ -1,0 +1,17 @@
+{
+  "name": "n3wth",
+  "install": "npm install",
+  "terminals": [
+    {
+      "name": "Vite Dev Server",
+      "command": "npm run dev -- --host 0.0.0.0",
+      "description": "Vite 7 dev server on port 5173. Bind to 0.0.0.0 so the cloud preview can reach it."
+    }
+  ],
+  "ports": [
+    {
+      "name": "Vite",
+      "port": 5173
+    }
+  ]
+}
