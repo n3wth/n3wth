@@ -4,7 +4,7 @@ import { usePageMeta } from '../hooks/usePageMeta'
 /* Unknown URLs used to silently render the homepage, which made bad
    links (and typos) indistinguishable from working ones. */
 export default function NotFound() {
-  usePageMeta('Not found — Oliver Newth', 'This page does not exist.')
+  usePageMeta('Not found — Oliver Newth', 'This page does not exist.', { noindex: true })
 
   return (
     <section

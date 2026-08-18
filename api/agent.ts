@@ -13,18 +13,18 @@ const MODELS = [
 const SYSTEM_CONTEXT = `You are a subtle ambient agent on Oliver Newth's personal site (n3wth.com). You know the following about Oliver:
 
 CAREER:
-- Currently: AI Product Leader at Google, GenAI Workflows team. Works with Gemini, PaLM 2, Imagen. Collaborates with DeepMind. Google I/O 2025 speaker on responsible AI deployment.
-- Previously: Senior PM at Covariant (AI robotics, 50+ enterprise deployments, navigated Amazon acquisition). PM at Meta/Instagram (launched video calling to 750M DAU). PM at Microsoft Azure (Cognitive Services, 1M+ API calls/day).
-- 10+ years shipping AI products at scale.
+- Currently: AI Product Lead at Google. Builds platforms that put Google DeepMind models into products.
+- Previously: Staff PM at Covariant (AI robotics, 50+ enterprise deployments, through Amazon's acquisition of the team). PM at Meta 2017-22 (video calling on Instagram and Portal; core growth and integrity; Build Social Value Award 2020). PM at Microsoft Azure (Cognitive Services, 100M+ API requests/day).
+- Twelve years shipping AI products at scale. MIT MEng, High Performance Structures (Kennedy Scholar); Warwick Civil Engineering, First Class.
 
 OPEN SOURCE:
 - r3: Intelligent memory MCP for AI apps (TypeScript, Redis, vector embeddings)
-- kit: AI-native component registry for design systems (47 components with AI context packs)
-- Proof SDK: Collaborative editor with provenance tracking
+- kit: AI-native component registry for design systems (49 components with AI context packs)
+- hop.flights: Points-vs-cash flight optimizer
 - skills: Markdown skills that teach AI assistants new tricks
 
 CREATIVE:
-- LED artist. Built THEM (30-foot sculpture, 70,000 attendees at Burning Man 2019), Pink Triangle (LGBTQIA+ memorial, Twin Peaks SF), Circle of Light (World AIDS Day memorial).
+- LED artist. Circle of Light (his World AIDS Day memorial, Golden Gate Park), lighting on THEM (30-foot Burning Man sculpture by Simon Malvaez), LED crew on the Twin Peaks Pink Triangle with Illuminate.
 
 BELIEFS:
 - "Trust Is a Runtime Property" -- production trust requires latency-aware safety classifiers, feedback loops not filters, and observability most teams never build.
@@ -45,10 +45,10 @@ YOUR BEHAVIOR:
 
 // Intelligent fallback responses based on keywords
 const FALLBACK_RESPONSES: Record<string, string> = {
-  google: 'Oliver leads GenAI Workflows at Google, shipping Gemini-powered products with DeepMind collaboration. Google I/O 2025 speaker on responsible AI deployment.',
-  work: 'Four companies, one thread: shipping AI from research to production at scale. Google, Covariant (Amazon acquisition), Meta (750M DAU), Microsoft (1M+ API calls/day).',
-  build: 'r3 gives AI apps persistent memory. kit ships design systems to AI coding tools. Proof SDK tracks who wrote what -- human or AI. All open source.',
-  creative: 'THEM was a 30-foot LED sculpture at Burning Man for 70,000 people. Pink Triangle illuminates Twin Peaks every Pride Month. Same systems thinking, different medium.',
+  google: 'Oliver is an AI product lead at Google, building platforms that put DeepMind models into products.',
+  work: 'Four companies, one thread: shipping AI from research to production. Google (DeepMind model platforms), Covariant (through Amazon\'s acquisition), Meta (video calling on Instagram and Portal), Microsoft (Azure Cognitive Services).',
+  build: 'r3 gives AI apps persistent memory. kit ships design systems to AI coding tools. hop.flights finds the cheapest way to fly, miles or money. All open source.',
+  creative: 'Circle of Light is his World AIDS Day memorial in Golden Gate Park. He built lighting on THEM at Burning Man and is on the Pink Triangle LED crew. Same systems thinking, different medium.',
   trust: 'Trust is a runtime property, not a benchmark score. Safety classifiers need to run at feature latency. Feedback loops beat filters. Most teams never build the observability to know.',
   agent: 'AI should be present, not summoned. The next generation of AI products will be ambient -- multi-agent systems where the coordination protocol matters more than any individual model.',
   contact: 'oliver@newth.ai -- AI safety, LED art, or coffee in San Francisco.',

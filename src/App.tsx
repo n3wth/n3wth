@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { Suspense, useCallback, useEffect } from 'react'
 import { Outlet, useLocation, useNavigationType } from 'react-router-dom'
 import { Theme } from '@astryxdesign/core/theme'
 import { LinkProvider } from '@astryxdesign/core/Link'
@@ -84,7 +84,9 @@ function App() {
             {/* tabIndex so the skip link moves DOM focus here, not just
                 the scroll position */}
             <main id="main" tabIndex={-1} style={{ outline: 'none' }}>
-              <Outlet />
+              <Suspense fallback={null}>
+                <Outlet />
+              </Suspense>
             </main>
           </div>
         </div>

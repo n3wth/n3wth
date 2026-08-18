@@ -1,12 +1,12 @@
 # Oliver Newth (n3wth.com)
 
-> Oliver Newth is an AI and design leader in San Francisco. He builds AI products for Trust & Safety at Google (working with DeepMind on Gemini-powered products), previously led product at Covariant (acquired by Amazon), Meta (Instagram video calling, 750M daily users), and Microsoft (Azure Cognitive Services). He spoke at Google I/O 2025 on responsible AI in production. After dark he builds large-scale light installations for Burning Man and San Francisco memorials.
+> Oliver Newth is an AI product lead at Google in San Francisco, building platforms that put Google DeepMind models into products. He previously built product at Covariant (acquired by Amazon), Meta (video calling on Instagram and Portal), and Microsoft (Azure Cognitive Services), and holds an MEng from MIT (Kennedy Scholar). A standing team of coding agents ships his five live products. After dark he builds large-scale light installations for Burning Man and San Francisco memorials.
 
 ## Pages
 
 - [Home](https://n3wth.com/): Who Oliver is — AI at Google, art in the desert.
 - [Work](https://n3wth.com/work/): A decade of AI in production (Google, Covariant, Meta, Microsoft) and five products designed by hand, shipped by an autonomous agent team (r3, kit, hop.flights).
-- [After dark](https://n3wth.com/art/): Light installations — THEM (Burning Man), Pink Triangle (Twin Peaks Pride memorial), Circle of Light (World AIDS Day memorial).
+- [After dark](https://n3wth.com/art/): Light installations — Circle of Light (his World AIDS Day memorial, Golden Gate Park), THEM (Burning Man, lighting with artist Simon Malvaez), Pink Triangle (LED crew on the Twin Peaks Pride memorial).
 - [Thinking](https://n3wth.com/thinking/): Positions on production AI and agents as an org-design problem, with interactive AI-safety trade-off walkthroughs.
 - [Library](https://n3wth.com/library/): The installable pieces. The essay kit that lays out every Thinking piece, the @n3wth/ui component library, the garden's structure, and agent skills, each with getting-started instructions.
 - [Contact](https://n3wth.com/contact/): oliver@newth.ai — AI safety, LED art, or coffee in San Francisco.

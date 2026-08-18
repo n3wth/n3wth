@@ -1,27 +1,30 @@
 import { useEffect } from 'react'
 import { gsap } from '../lib/gsap'
 
-const SECTION_KEYS: Record<string, string> = {
-  '1': '#work',
-  '2': '#building',
-  '3': '#thinking',
-  '4': '#ai-explainer',
-  '5': '#creative',
-  '6': '#contact',
+/* Keyed by KeyboardEvent.code: on macOS Option+digit mutates e.key to
+   '¡™£…', so an e.key lookup with altKey held can never match. Only ids
+   that exist in the DOM — the old '#ai-explainer' and '#creative'
+   bindings pointed at sections removed long ago. */
+const SECTION_CODES: Record<string, string> = {
+  Digit1: '#work',
+  Digit2: '#building',
+  Digit3: '#thinking',
+  Digit4: '#contact',
 }
 
 /**
- * Press 1-6 to jump to sections. Shows a brief flash indicator.
- * Only active when no input/textarea is focused.
+ * Option+1-4 jumps to sections, with a brief flash on the heading.
+ * The modifier keeps bare digits free for speech input and normal typing
+ * (WCAG 2.1.4); input/textarea focus still bails.
  */
 export function useKeyboardNav() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      // Skip if typing in an input
+      if (!e.altKey || e.metaKey || e.ctrlKey) return
       const tag = (e.target as HTMLElement).tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA') return
 
-      const target = SECTION_KEYS[e.key]
+      const target = SECTION_CODES[e.code]
       if (!target) return
 
       const el = document.querySelector(target)
@@ -33,8 +36,8 @@ export function useKeyboardNav() {
 
       el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
 
-      // Brief flash on the section header
-      const header = el.querySelector('h2')
+      // Brief flash on the section header (h1 on route-lead sections)
+      const header = el.querySelector('h1, h2')
       if (header && !prefersReducedMotion) {
         gsap.fromTo(
           header,

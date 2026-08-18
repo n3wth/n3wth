@@ -40,6 +40,7 @@ export function SkillsShelf() {
             className="link-underline"
           >
             Browse the catalogue
+          <span className="sr-only"> (opens in new tab)</span>
           </a>
         </p>
       </div>

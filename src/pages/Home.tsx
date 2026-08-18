@@ -100,15 +100,17 @@ export default function Home() {
         <StaticNight />
       )}
 
-      {/* No-WebGL doors. The rendered field index owns these controls when
-          WebGL is active, so this fallback leaves the tab order then. */}
-      <nav aria-label="Site chapters" className="sr-only" aria-hidden={webglOk}>
+      {/* Real anchors for keyboard, AT, and no-WebGL visitors — the canvas
+          portals are pointer-only onClick meshes, so these must stay in the
+          tab order and the accessibility tree even when the field renders. */}
+      {!webglOk && <h1 className="sr-only">Oliver Newth</h1>}
+      <nav aria-label="Site chapters" className="field-doors">
         {portals.map((p) => (
-          <Link key={p.href} to={p.href} viewTransition tabIndex={webglOk ? -1 : undefined}>
+          <Link key={p.href} to={p.href} viewTransition>
             {p.label}
           </Link>
         ))}
-        <a href="https://garden.n3wth.com" tabIndex={webglOk ? -1 : undefined}>The garden</a>
+        <a href="https://garden.n3wth.com">The garden</a>
       </nav>
     </section>
   )

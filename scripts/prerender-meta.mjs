@@ -21,23 +21,24 @@ const routes = [
     path: 'work',
     title: 'Work — Oliver Newth',
     description:
-      'A decade of AI in production across Google, Covariant, Meta, and Microsoft — and five products designed by hand, shipped by an agent team.',
+      'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft — and five products designed by hand, shipped by an agent team.',
     ogImage: '/og/work.png',
     body: `
       <h1>Work — Oliver Newth</h1>
       <section>
-        <h2>A decade of AI, in production</h2>
-        <p>Ten years taking AI from research demos to production at Google, Covariant, Meta, and Microsoft.</p>
+        <h2>Twelve years of AI, in production</h2>
+        <p>From Azure Cognitive Services in 2014 to DeepMind model platforms today, by way of Meta and Covariant.</p>
         <ul>
-          <li>Google (2024–): AI Product Leader — Gemini-powered products across Google's GenAI platform, working with DeepMind. Spoke at I/O 2025 on responsible AI in production.</li>
-          <li>Covariant (2022–24): Senior Product Manager — computer vision from research demos to warehouse floors running 24/7, through Amazon's acquisition.</li>
-          <li>Meta (2019–22): Product Manager, Instagram — launched video calling on Instagram at 750M daily users.</li>
-          <li>Microsoft (2016–19): Product Manager, Azure — built Azure Cognitive Services and the playbook for enterprise AI adoption.</li>
+          <li>Google (2025–): AI Product Lead — platforms that put Google DeepMind models into products.</li>
+          <li>Covariant (2022–24): Staff Product Manager — computer vision from research demos to warehouse floors running 24/7, through Amazon's acquisition of the team.</li>
+          <li>Meta (2017–22): Product Manager — video calling across Instagram and Portal; core growth and integrity. Build Social Value Award, 2020.</li>
+          <li>Microsoft (2014–17): Product Manager, Azure — Azure Cognitive Services, 100M+ API requests a day.</li>
         </ul>
+        <p>MEng in High Performance Structures, MIT (Kennedy Scholar); Civil Engineering, First Class, Warwick.</p>
       </section>
       <section>
         <h2>Designed by hand, shipped by agents</h2>
-        <p>Five products in production, designed by Oliver and kept shipping by a standing team of autonomous agents: r3 (persistent memory for AI apps), kit (47 components with AI context packs), hop.flights (points-vs-cash flight optimizer), and more.</p>
+        <p>Five live products, designed by Oliver and kept shipping by a standing team of autonomous agents: r3 (persistent memory for AI apps), kit (49 components with AI context packs), hop.flights (points-vs-cash flight optimizer), and more.</p>
       </section>`,
   },
   {
@@ -50,9 +51,9 @@ const routes = [
       <h1>After dark — light installations by Oliver Newth</h1>
       <p>I build things that glow: large-scale light art in the desert and for San Francisco memorials.</p>
       <ul>
-        <li>THEM — monumental light sculpture, Burning Man, Black Rock Desert.</li>
-        <li>Pink Triangle — illuminated LGBTQIA+ memorial on Twin Peaks during Pride Month, San Francisco.</li>
-        <li>Circle of Light — World AIDS Day memorial installation, San Francisco (2021).</li>
+        <li>THEM — lighting on the 30-foot Burning Man sculpture by artist Simon Malvaez, Black Rock Desert.</li>
+        <li>Pink Triangle — LED crew on Patrick Carney's illuminated Pride memorial, Twin Peaks, San Francisco.</li>
+        <li>Circle of Light — World AIDS Day memorial of light, Golden Gate Park, San Francisco (2021).</li>
       </ul>`,
   },
   {
@@ -106,6 +107,55 @@ const routes = [
   },
 ]
 
+/* Per-piece pages: parse the literal meta objects out of the registry
+   source so every /thinking/:slug ships its own title, description,
+   canonical, OG tags, and CreativeWork structured data. The metas are
+   uniform string literals; a parse miss throws here instead of silently
+   serving the homepage head on 21 routes. */
+const registrySrc = readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), '../src/components/thinking/registry.tsx'),
+  'utf8'
+)
+const metaRe =
+  /meta:\s*\{\s*id:\s*'([^']+)',\s*title:\s*(['"])((?:(?!\2)[\s\S])*?)\2,\s*dek:\s*(['"])((?:(?!\4)[\s\S])*?)\4,\s*date:\s*'([^']+)'/g
+const pieceMetas = []
+let pieceMatch
+while ((pieceMatch = metaRe.exec(registrySrc))) {
+  pieceMetas.push({
+    id: pieceMatch[1],
+    title: pieceMatch[3],
+    dek: pieceMatch[5],
+    date: pieceMatch[6],
+  })
+}
+const registeredCount = (registrySrc.match(/meta:\s*\{/g) ?? []).length
+if (pieceMetas.length === 0 || pieceMetas.length !== registeredCount) {
+  throw new Error(
+    `prerender-meta: parsed ${pieceMetas.length} of ${registeredCount} thinking piece metas`
+  )
+}
+for (const p of pieceMetas) {
+  routes.push({
+    path: `thinking/${p.id}`,
+    title: `${p.title} — Oliver Newth`,
+    description: p.dek.length > 160 ? `${p.dek.slice(0, 157).trimEnd()}…` : p.dek,
+    ogImage: '/og/thinking.png',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      headline: p.title,
+      description: p.dek,
+      datePublished: p.date,
+      author: { '@type': 'Person', name: 'Oliver Newth' },
+      url: `https://n3wth.com/thinking/${p.id}/`,
+    },
+    body: `
+      <h1>${p.title}</h1>
+      <p>${p.dek}</p>
+      <p><a href="/thinking">All Thinking pieces</a></p>`,
+  })
+}
+
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
 const template = readFileSync(join(dist, 'index.html'), 'utf8')
@@ -137,6 +187,12 @@ for (const r of routes) {
     `$1${ORIGIN}${r.ogImage}$2`
   )
   // Swap the home fallback content for this route's summary
+  if (r.jsonLd) {
+    html = html.replace(
+      '</head>',
+      `  <script type="application/ld+json">${JSON.stringify(r.jsonLd)}</script>\n  </head>`
+    )
+  }
   html = html.replace(
     /<main id="main" class="seo-fallback">[\s\S]*?<\/main>/,
     `<main id="main" class="seo-fallback">${r.body}\n      </main>`

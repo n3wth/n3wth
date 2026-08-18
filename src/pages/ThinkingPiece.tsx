@@ -32,8 +32,10 @@ export default function ThinkingPiece() {
             at the top on both sides, so the dek's first line lands level
             with the title's first line instead of with the date. */}
         <div className="mb-10" data-reveal>
-          <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
-            {new Date(meta.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-dim)' }}>
+            {/* Parse as local time: bare YYYY-MM-DD parses as UTC midnight
+                and renders a day early in every US timezone. */}
+            {new Date(`${meta.date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
           <div className="mt-3 md:grid md:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] md:gap-16 md:items-start">
             <h1

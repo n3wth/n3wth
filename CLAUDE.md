@@ -13,15 +13,14 @@ npm run build    # tsc + vite build (verify before committing)
 - **Animation:** GSAP 3 (ScrollTrigger, SplitText) - always import from `src/lib/gsap.ts`
 - **UI Library:** `@n3wth/ui` (shared component library - Nav, Footer, NoiseOverlay)
 - **Analytics:** PostHog (deferred load via `requestIdleCallback`)
-- **Fonts:** Mona Sans (display), Geist Sans (body), Geist Mono (code)
+- **Fonts:** Satoshi (display), Geist Sans (body), Geist Mono (code)
 - **Deploy:** Vercel
 
 ## Architecture
 - `src/App.tsx` - Layout shell, lazy loads all sections except Hero
-- `src/components/sections/` - Page sections (Hero, Experience, Thinking, Frameworks, Creative, Contact)
-- `src/components/shapes/` - Decorative SVG shapes per section (ExperienceShapes, CreativeShapes, ContactShapes)
-- `src/components/FloatingShapes.tsx` - Hero floating shape animations
-- `src/components/BackgroundElements.tsx` - Fixed background grid/shapes
+- `src/components/sections/` - Page sections (Experience, Building, Thinking, Creative, Contact)
+- `src/components/NightField.tsx` - Homepage 3D night field (three.js portals; identity layer paints above the loader)
+- `src/components/thinking/` - Thinking piece registry, kit, and pieces (one route per piece)
 - `src/data/content.ts` - All site content (experiences, frameworks, installations)
 - `src/data/thinking.ts` - Thought pieces content
 - `src/lib/gsap.ts` - Centralized GSAP plugin registration (always import from here)
@@ -36,18 +35,18 @@ npm run build    # tsc + vite build (verify before committing)
 - **Reduced motion:** Every animation block must check `prefers-reduced-motion` and bail early
 - **Lazy loading:** Below-fold sections use `React.lazy()` + `Suspense`
 - **CSS variables:** Use `var(--color-grey-400)` etc. from index.css, not hardcoded colors
-- **Font classes:** `font-display` (Mona Sans), `font-sans` (Geist), `font-mono` (Geist Mono)
+- **Font classes:** `font-display` (Satoshi), `font-sans` (Geist Sans), `font-mono` (Geist Mono)
 - **Mobile:** All interactive elements have min 44px touch targets. Use responsive classes (sm/md/lg breakpoints)
 - **SEO:** Static HTML fallback in index.html for crawlers. Structured data (JSON-LD Person schema)
 
 ## Performance Notes
 - PostHog deferred via `requestIdleCallback` - not in critical path
 - Creative section background images only mount when section approaches viewport (IntersectionObserver)
-- FloatingShapes entrance animations complete before starting idle floating tweens
+- NightField garnish models (teapot, bike, suzanne) share the scene Suspense boundary; deferring them needs a nested boundary
 - Animated fixed elements use `will-change: transform` for GPU compositing
-- Font preloads in index.html head for Mona Sans and Geist Regular
+- Font preloads in index.html head for Geist Sans (Regular + SemiBold)
 
 ## File Naming
-- Components: PascalCase (`FloatingShapes.tsx`)
+- Components: PascalCase (`NightField.tsx`)
 - Data files: camelCase (`content.ts`)
 - Section components live in `src/components/sections/`

@@ -41,7 +41,7 @@ function TendedRecently() {
                   {n.description}
                 </p>
               )}
-              <p className="mt-2 font-mono text-xs" style={{ color: 'var(--ink-faint)' }}>
+              <p className="mt-2 font-mono text-xs" style={{ color: 'var(--ink-dim)' }}>
                 {new Date(n.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </p>
             </li>

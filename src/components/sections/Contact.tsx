@@ -47,7 +47,7 @@ export function Contact() {
       <div className="frame w-full">
         <div className="section-pad w-full">
           <div className="max-w-3xl">
-            <h1 className="display text-[clamp(3rem,10vw,7.5rem)]">Let's talk</h1>
+            <h1 className="display text-[length:var(--display-h1)]">Let's talk</h1>
 
             <p className="mt-6 text-base md:text-xl leading-relaxed max-w-lg" style={{ color: 'var(--ink-dim)' }}>
               AI safety, LED art, or coffee in San Francisco.
@@ -63,7 +63,7 @@ export function Contact() {
               />
             </div>
 
-            <p className="mt-8 font-mono text-xs" style={{ color: 'var(--ink-faint)' }}>
+            <p className="mt-8 font-mono text-xs" style={{ color: 'var(--ink-dim)' }}>
               San Francisco&ensp;·&ensp;
               <LocalTime />
             </p>

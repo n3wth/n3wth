@@ -15,14 +15,16 @@ export function Thinking() {
       <SectionHeader
         as="h1"
         title="What building this actually taught me"
-        lede="Every piece below started as a real bug, a real 3am page, or a real decision I had to make while building this site and the agents behind it."
+        lede="Every piece below started as a real bug, a tradeoff, or a decision made while building this site and the agents behind it. The last one explains how the batch got built."
       />
 
       <ThinkingIndex pieces={registeredPieces} />
 
       {/* Plain description+insights pieces that haven't graduated to a
           full registered piece yet — currently none; kept for when
-          thoughtPieces gains an entry again. */}
+          thoughtPieces gains an entry again. Gated so the empty state
+          doesn't leave a dead padded band before the fork graphic. */}
+      {thoughtPieces.length > 0 && (
       <div className="section-pad pad-tight !pt-0">
         {thoughtPieces.map((piece) => (
           <article
@@ -63,6 +65,7 @@ export function Thinking() {
           </article>
         ))}
       </div>
+      )}
     </section>
   )
 }

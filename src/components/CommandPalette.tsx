@@ -420,7 +420,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               autoCorrect="off"
               spellCheck={false}
               placeholder="Search everything"
-              className="command-palette-input min-w-0 flex-1 bg-transparent font-sans text-sm outline-none placeholder:text-[color:var(--ink-faint)]"
+              className="command-palette-input min-w-0 flex-1 bg-transparent font-sans text-sm outline-none placeholder:text-[color:var(--ink-dim)]"
               style={{ color: 'var(--ink)', height: '52px' }}
             />
             <span className="font-mono shrink-0" style={chipStyle} aria-hidden="true">
@@ -530,7 +530,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             </span>
             <span
               className="hidden shrink-0 font-mono sm:inline"
-              style={{ color: 'var(--ink-faint)', fontSize: '11px', letterSpacing: '0.02em' }}
+              style={{ color: 'var(--ink-dim)', fontSize: '11px', letterSpacing: '0.02em' }}
             >
               ↑↓ move · ↵ open · esc close
             </span>

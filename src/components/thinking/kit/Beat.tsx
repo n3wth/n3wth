@@ -33,9 +33,11 @@ export function Beat({
       <div className="md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
         <div>
           {stage && (
-            <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
+            /* h2 so heading nav works inside long pieces; font-sans keeps
+               the visual identical (headings otherwise inherit Satoshi). */
+            <h2 className="font-sans text-xs uppercase tracking-wide" style={{ color: 'var(--ink-dim)' }}>
               {stage.n} — {stage.label}
-            </p>
+            </h2>
           )}
           <p
             className={`max-w-[62ch] text-base leading-relaxed md:text-lg ${stage ? 'mt-3' : ''}`}
