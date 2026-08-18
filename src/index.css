@@ -50,22 +50,6 @@
   font-display: swap;
 }
 
-/* Display serif candidates — headers only (kept as alternates) */
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/Fraunces-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Instrument Serif';
-  src: url('/fonts/InstrumentSerif-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* Geist Mono — literal machine output ONLY (code, coordinates, GitHub counts). Labels/eyebrows use Geist Sans. */
 @font-face {
   font-family: 'Geist Mono';
@@ -129,6 +113,10 @@
   --frame-max: 1280px;
   --gutter: 1.5rem;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* One display size for every route's h1, so scale tracks meaning
+     instead of page mood. The name on the homepage shares it. */
+  --display-h1: clamp(2.6rem, 5vw, 4.5rem);
 }
 
 @media (min-width: 768px) {
@@ -208,86 +196,6 @@ body {
 }
 
 #root { min-height: 100vh; }
-.hero-placeholder { display: none !important; }
-
-/* ---------- Hero backdrop ---------- */
-/* Full-bleed crossfading installation photos behind the hero content.
-   Layers are stacked absolutely; opacity/scale are driven by GSAP in
-   HeroBackdrop.tsx. The scrim + fade sit above the photos and below the
-   hero text (z-index 1), keeping CTAs/text AAA-crisp over any frame. */
-.hero-backdrop {
-  /* Full-bleed breakout: the hero lives inside the 1280px .frame, but the
-     art should span the whole viewport. */
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.hero-backdrop-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  will-change: opacity, transform;
-}
-
-/* Pre-hydration baseline so only the first (eager) frame paints before
-   GSAP takes over — avoids a flash of every layer stacked at opacity 1. */
-.hero-backdrop-layer:first-child { opacity: 1; }
-
-/* Light text-protection scrim only: gentle over the text column, a whisper
-   of darkening along the very top so the floating nav reads over the
-   brightest frames, fully transparent elsewhere — the art stays vivid. */
-.hero-backdrop-scrim {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(8, 9, 11, 0.5) 0%,
-      rgba(8, 9, 11, 0) 16%
-    ),
-    radial-gradient(
-      110% 90% at 12% 78%,
-      rgba(8, 9, 11, 0.72) 0%,
-      rgba(8, 9, 11, 0.42) 42%,
-      rgba(8, 9, 11, 0) 72%
-    ),
-    linear-gradient(
-      to right,
-      rgba(8, 9, 11, 0.6) 0%,
-      rgba(8, 9, 11, 0.32) 36%,
-      rgba(8, 9, 11, 0.06) 62%,
-      rgba(8, 9, 11, 0) 100%
-    );
-}
-
-/* Bottom fade so the hero blends into the stats band / page background —
-   starts earlier and carries some weight so the lede, CTAs, and stats sit
-   on solid ground even over the brightest frame. */
-.hero-backdrop-fade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 58%,
-    rgba(8, 9, 11, 0.45) 82%,
-    var(--bg) 100%
-  );
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-backdrop-layer { transition: none !important; }
-}
 
 ::selection {
   background: rgba(255, 255, 255, 0.18);
@@ -333,7 +241,7 @@ body {
 }
 @keyframes art-drift {
   from { transform: scale(1); }
-  to { transform: scale(1.05); }
+  to { transform: scale(1.02); }
 }
 @media (prefers-reduced-motion: reduce) {
   .art-band-img { animation: none; }
@@ -379,8 +287,8 @@ body {
   transform: none;
   visibility: visible;
   transition:
-    opacity 0.7s var(--ease),
-    transform 0.7s var(--ease);
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease);
 }
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
@@ -597,6 +505,32 @@ body {
   transition: top 0.2s;
 }
 .skip-link:focus { top: 0; }
+
+/* Home's chapter doors: hidden offscreen (still focusable, unlike
+   display:none), revealed as a bottom-left strip while any door holds
+   focus — the skip-link pattern, sized for five links. */
+.field-doors {
+  position: fixed;
+  left: -100vw;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 40;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.6rem 0.9rem;
+  background: var(--bg);
+  border: 1px solid var(--rail-strong);
+  border-radius: 8px;
+}
+.field-doors:focus-within { left: var(--gutter); }
+.field-doors a {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
 
 /* ---------- Focus ---------- */
 :focus-visible {
@@ -1183,6 +1117,15 @@ body {
   transition: transform 0.22s linear;
 }
 
+/* Identity above the loader (z 30): name and credentials paint with the
+   first frame instead of waiting out the progress bar. */
+.world-identity-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 31;
+}
+
 .world-interface {
   position: absolute;
   inset: 0;
@@ -1212,7 +1155,7 @@ body {
   margin: 0;
   max-width: none;
   font-family: var(--font-display);
-  font-size: clamp(2.1rem, 4.5vw, 4.2rem);
+  font-size: var(--display-h1);
   font-weight: 600;
   line-height: 0.95;
   color: var(--ink);
@@ -1261,7 +1204,7 @@ body {
   }
   .world-identity-kicker {
     margin-bottom: 0.4rem;
-    font-size: 10px;
+    font-size: 11px;
   }
   .world-identity h1 {
     font-size: clamp(2rem, 10vw, 2.65rem);

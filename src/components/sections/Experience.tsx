@@ -1,5 +1,5 @@
 import { SectionHeader } from '../Frame'
-import { experiences } from '../../data/content'
+import { education, experiences } from '../../data/content'
 
 /* Ship log: a decade of work as a dense, confident index — one line per
    chapter, no résumé prose. Density here earns the breathing room the
@@ -9,8 +9,8 @@ export function Experience() {
     <section id="work" aria-label="Experience">
       <SectionHeader
         as="h1"
-        title="A decade of AI, in production"
-        lede="Ten years taking AI from research demos to production at Google, Covariant, Meta, and Microsoft."
+        title="Twelve years of AI, in production"
+        lede="From Azure Cognitive Services in 2014 to DeepMind model platforms today, by way of Meta and Covariant."
       />
 
       <div className="section-pad pad-tight !pt-0">
@@ -26,18 +26,18 @@ export function Experience() {
               </span>
 
               <div>
-                <h3
+                <h2
                   className="display text-xl"
                   style={{ letterSpacing: '-0.02em', lineHeight: 1.1 }}
                 >
                   {exp.company}
-                </h3>
+                </h2>
                 <p className="meta mt-1">{exp.role}</p>
               </div>
 
               <p
-                className="text-sm leading-relaxed max-w-xl"
-                style={{ color: 'var(--ink-dim)' }}
+                className="text-base leading-relaxed max-w-xl"
+                style={{ color: 'var(--ink)' }}
               >
                 {exp.summary}
               </p>
@@ -53,6 +53,9 @@ export function Experience() {
             </li>
           ))}
         </ol>
+        <p className="meta mt-8" style={{ color: 'var(--ink-dim)' }}>
+          {education}
+        </p>
       </div>
     </section>
   )

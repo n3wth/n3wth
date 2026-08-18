@@ -19,6 +19,8 @@ export interface ThinkingPieceMeta {
   /** Which spine this piece's index stop sits on: a belief vs. a build
       story, assigned by what the piece actually is, not registration order. */
   group: 'position' | 'system'
+  /** 'note' pieces drop to the compact working-notes list in the index. */
+  tier?: 'note'
 }
 
 export interface RegisteredPiece {
@@ -63,7 +65,7 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: 'agents-org-design',
       title: 'Agents are an org design problem',
-      dek: 'A standing team of coding agents, each with a named desk and a real schedule — and one boundary that has never moved, no matter how good the model got.',
+      dek: 'A standing team of coding agents, each with a named desk and a real schedule. One boundary has never moved, no matter how good the model got.',
       date: '2026-07-22',
       group: 'position',
     },
@@ -96,6 +98,7 @@ export const registeredPieces: RegisteredPiece[] = [
       dek: 'A headless Mac Mini, a cron job every fifteen minutes, and a timeline of what it actually did.',
       date: '2026-07-22',
       group: 'system',
+      tier: 'note',
     },
     Body: GtdMini,
   },
@@ -116,6 +119,7 @@ export const registeredPieces: RegisteredPiece[] = [
       dek: 'A sandboxed page with a versioned link, a full dev environment in a browser tab, and real production component code all get called the same thing, and each trades control against containment differently.',
       date: '2026-07-22',
       group: 'position',
+      tier: 'note',
     },
     Body: LiveArtifacts,
   },
@@ -126,6 +130,7 @@ export const registeredPieces: RegisteredPiece[] = [
       dek: 'PARA and Zettelkasten pushed back on hierarchy for a human reader. The graph shape only starts to matter once an agent can traverse it multiple hops and audit what it finds.',
       date: '2026-07-22',
       group: 'position',
+      tier: 'note',
     },
     Body: PersonalKnowledgeGraph,
   },
@@ -136,6 +141,7 @@ export const registeredPieces: RegisteredPiece[] = [
       dek: 'A sensor reports, a hub decides, an actuator acts. From inside the house, each of those three roles fails silently in its own way.',
       date: '2026-07-22',
       group: 'position',
+      tier: 'note',
     },
     Body: HomeAutomation,
   },
@@ -153,7 +159,7 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: 'autonomous-agents',
       title: 'What "autonomous" actually means in production',
-      dek: 'Click through what an agent can take back and what it can’t — the two lists have almost nothing in common, and that gap is the entire job of designing one.',
+      dek: 'Click through what an agent can take back and what it can’t: the two lists have almost nothing in common, and that gap is the entire job of designing one.',
       date: '2026-07-22',
       group: 'position',
     },
@@ -163,9 +169,10 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: 'llm-inference',
       title: 'The toll booth is memory, not math',
-      dek: "Prefill runs once, in parallel. Every token after that is its own round trip to memory to reload the model's weights and KV cache — which is why decode speed lives or dies on memory bandwidth.",
+      dek: "Prefill runs once, in parallel. Every token after that is its own round trip to memory to reload the model's weights and KV cache, which is why decode speed lives or dies on memory bandwidth.",
       date: '2026-07-22',
       group: 'position',
+      tier: 'note',
     },
     Body: LlmInference,
   },
@@ -176,6 +183,7 @@ export const registeredPieces: RegisteredPiece[] = [
       dek: 'Cloudflare Workers run TypeScript inside V8 isolates instead of VMs or containers: sub-millisecond starts, no cold-start boot cost, and a stack built around that same disposable unit of compute.',
       date: '2026-07-22',
       group: 'system',
+      tier: 'note',
     },
     Body: EdgeTypescript,
   },
@@ -186,6 +194,7 @@ export const registeredPieces: RegisteredPiece[] = [
       dek: "hop.flights' whole pitch is a verdict that's computed, not guessed. For any search with more than one passenger, it was computing that verdict from two numbers that didn't describe the same trip.",
       date: '2026-07-22',
       group: 'system',
+      tier: 'note',
     },
     Body: HopFlights,
   },
@@ -193,9 +202,10 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: 'kroots-map',
       title: 'Kroots: mapping a graph nobody else could see',
-      dek: "A one-person kids'-media venture with no team still needed an org chart, so a single map-of-content page — four clusters of working documents around one hub — had to do the job instead. Trace the clusters back to the hub.",
+      dek: "A one-person kids'-media venture with no team still needed an org chart, so a single map-of-content page (four clusters of working documents around one hub) had to do the job instead. Trace the clusters back to the hub.",
       date: '2026-07-22',
       group: 'system',
+      tier: 'note',
     },
     Body: KrootsMap,
   },
@@ -206,6 +216,7 @@ export const registeredPieces: RegisteredPiece[] = [
       dek: 'Twilio rejected the same toll-free application twice, for two different fields, before it explained why. The map of that maze, built one collision at a time.',
       date: '2026-07-22',
       group: 'system',
+      tier: 'note',
     },
     Body: TollFreeMaze,
   },
@@ -213,7 +224,7 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: 'agent-desks',
       title: 'A standing team with named desks',
-      dek: "A desk on an org chart isn't real until it has a trigger, a boundary, and a timestamp — click through four generic desks and see what each one actually shipped last.",
+      dek: "A desk on an org chart isn't real until it has a trigger, a boundary, and a timestamp. Click through four generic desks and see what each one actually shipped last.",
       date: '2026-07-22',
       group: 'position',
     },
@@ -223,9 +234,10 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: '2026-goals',
       title: 'Working notes: 2026',
-      dek: 'Four generic goal categories, one review cadence each — except the one with no calendar entry at all.',
+      dek: 'Four generic goal categories, one review cadence each, except the one with no calendar entry at all.',
       date: '2026-07-22',
       group: 'system',
+      tier: 'note',
     },
     Body: WorkingNotes2026,
   },
@@ -233,9 +245,10 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: 'pdf-charspace',
       title: 'The PDF gotcha that cost an afternoon',
-      dek: "A hairline rule in a table looked wrong by 10 to 25 points, only on rows after a letterspaced date chip. The bug wasn't in the alignment math — it was in a PDF operator that survives past where you'd expect it to end. Drag the slider to leak it yourself.",
+      dek: "A hairline rule in a table looked wrong by 10 to 25 points, only on rows after a letterspaced date chip. The bug wasn't in the alignment math; it was in a PDF operator that survives past where you'd expect it to end. Drag the slider to leak it yourself.",
       date: '2026-07-22',
       group: 'system',
+      tier: 'note',
     },
     Body: PdfCharspaceGotcha,
   },
@@ -243,7 +256,7 @@ export const registeredPieces: RegisteredPiece[] = [
     meta: {
       id: 'this-page',
       title: 'How this backlog got built',
-      dek: "Twenty Thinking pieces, built by parallel agents in isolated worktrees and merged through one shared registry file — including the batch that got built twice and the draft that almost named a competitor's model by brand.",
+      dek: "Twenty Thinking pieces, built by parallel agents in isolated worktrees and merged through one shared registry file, including the batch that got built twice and the draft that almost named a competitor's model by brand.",
       date: '2026-07-22',
       group: 'system',
     },

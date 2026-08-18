@@ -49,7 +49,9 @@ export function ProjectCard({ project }: { project: Project }) {
     fetchStats()
   }, [project.github, project.name])
 
-  const hasStars = Number(stats.stars) > 0
+  /* Counts of one or two quantify obscurity instead of proving traction;
+     the star row earns its place at 25. */
+  const hasStars = Number(stats.stars) >= 25
 
   return (
     <article data-build-card className="cell group p-6 sm:p-8">
@@ -61,7 +63,7 @@ export function ProjectCard({ project }: { project: Project }) {
               target="_blank"
               rel="noopener noreferrer"
               className="link-underline"
-              aria-label={`Visit ${project.name}`}
+              aria-label={`Visit ${project.name} (opens in new tab)`}
             >
               {project.name}
             </a>
@@ -126,7 +128,7 @@ export function Building() {
     <section id="building" aria-label="Building">
       <SectionHeader
         title="Designed by hand, shipped by agents"
-        lede="Five products in production. I design the systems; my agent team keeps them shipping."
+        lede="Five live products. I design the systems; my agent team keeps them shipping. The Thinking pieces carry the receipts."
       />
 
       <div className="section-pad pad-tight !pt-0">

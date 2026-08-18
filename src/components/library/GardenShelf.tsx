@@ -41,6 +41,7 @@ export function GardenShelf() {
             >
               <a href={topic.href} target="_blank" rel="noreferrer" className="link-underline text-sm">
                 {topic.name}
+              <span className="sr-only"> (opens in new tab)</span>
               </a>
               <span className="mono">{topic.count}</span>
             </li>
@@ -68,6 +69,7 @@ export function GardenShelf() {
             className="link-underline"
           >
             Read it
+          <span className="sr-only"> (opens in new tab)</span>
           </a>
           <a
             href="https://garden.n3wth.com/feed.xml"
@@ -76,6 +78,7 @@ export function GardenShelf() {
             className="link-underline"
           >
             RSS
+          <span className="sr-only"> (opens in new tab)</span>
           </a>
           <a
             href="https://garden.n3wth.com/llms.txt"
@@ -84,6 +87,7 @@ export function GardenShelf() {
             className="link-underline"
           >
             llms.txt
+          <span className="sr-only"> (opens in new tab)</span>
           </a>
         </p>
       </div>

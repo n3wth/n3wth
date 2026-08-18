@@ -35,12 +35,13 @@ function IndexGroup({ group, pieces }: { group: 'position' | 'system'; pieces: R
       <ul className="mt-6 space-y-10">
         {pieces.map(({ meta }) => (
           <li key={meta.id} className="relative">
-            <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
-              {new Date(meta.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-            </p>
+            {/* No per-row date: most of the backlog landed in one batch
+                build (the colophon owns that story), so a date column
+                here would repeat one value twenty times. Dates live on
+                the piece pages. */}
             <RouterLink
               href={`/thinking/${meta.id}`}
-              className="link-underline display mt-2 inline-block text-[clamp(1.3rem,2.2vw,1.75rem)] max-w-[26ch]"
+              className="link-underline display inline-block text-[clamp(1.3rem,2.2vw,1.75rem)] max-w-[26ch]"
               style={{ letterSpacing: '-0.02em', lineHeight: 1.12, fontWeight: 600 }}
             >
               {meta.title}
@@ -56,14 +57,40 @@ function IndexGroup({ group, pieces }: { group: 'position' | 'system'; pieces: R
 }
 
 export function ThinkingIndex({ pieces }: { pieces: RegisteredPiece[] }) {
-  const positions = pieces.filter((p) => p.meta.group === 'position')
-  const systems = pieces.filter((p) => p.meta.group === 'system')
+  const main = pieces.filter((p) => !p.meta.tier)
+  const positions = main.filter((p) => p.meta.group === 'position')
+  const systems = main.filter((p) => p.meta.group === 'system')
+  const notes = pieces.filter((p) => p.meta.tier === 'note')
   return (
     <nav aria-label="Thinking index" className="section-pad pad-tight !pt-0">
       <div className="grid gap-14 md:grid-cols-2 md:gap-16">
         <IndexGroup group="position" pieces={positions} />
         <IndexGroup group="system" pieces={systems} />
       </div>
+
+      {/* The rest of the backlog, demoted to titles: curation is the
+          point of the index, and twenty-one equal cards buried the eight
+          that matter. Every piece keeps its full route. */}
+      {notes.length > 0 && (
+        <div className="mt-16 border-t pt-8" style={{ borderColor: 'var(--rail)' }}>
+          <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-label)' }}>
+            Working notes
+          </p>
+          <ul className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
+            {notes.map(({ meta }) => (
+              <li key={meta.id}>
+                <RouterLink
+                  href={`/thinking/${meta.id}`}
+                  className="link-underline text-sm"
+                  style={{ color: 'var(--ink-dim)' }}
+                >
+                  {meta.title}
+                </RouterLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   )
 }

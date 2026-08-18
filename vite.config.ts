@@ -36,8 +36,15 @@ export default defineConfig(({ command }) => ({
           if (id.includes('gsap') || id.includes('@gsap/react')) {
             return 'gsap'
           }
-          // React vendor bundle
-          if (id.includes('react-dom') || (id.includes('react') && !id.includes('react-router'))) {
+          // React vendor bundle. Path-segment matches only: a bare
+          // id.includes('react') also caught @react-three/fiber, drei, and
+          // postprocessing, dragging all of three.js into this eagerly
+          // preloaded chunk on every route.
+          if (
+            id.includes('/node_modules/react-dom/') ||
+            id.includes('/node_modules/react/') ||
+            id.includes('/node_modules/scheduler/')
+          ) {
             return 'vendor'
           }
         },

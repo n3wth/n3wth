@@ -32,7 +32,7 @@ export function Creative() {
               After dark
             </span>
             <h1
-              className="display text-[clamp(2.5rem,7vw,5.5rem)] mb-4"
+              className="display text-[length:var(--display-h1)] mb-4"
               style={{ letterSpacing: '-0.035em', lineHeight: 0.95, color: '#0b0c0e' }}
             >
               I build things that glow
@@ -55,7 +55,7 @@ export function Creative() {
           style={{ letterSpacing: '-0.025em', lineHeight: 1.15 }}
         >
           Software disappears into screens. Light stands thirty feet tall in
-          the desert and asks seventy thousand people to look up.
+          the desert and asks strangers to look up.
         </p>
       </div>
 
@@ -79,12 +79,12 @@ export function Creative() {
                 the stacked-left version left the rail's right half empty */}
             <figcaption className="section-pad !py-5 md:!py-6 md:flex md:items-baseline md:justify-between md:gap-16">
               <div className="min-w-0">
-                <h3
+                <h2
                   className="display text-2xl md:text-3xl mb-2"
                   style={{ letterSpacing: '-0.02em' }}
                 >
                   {inst.title}
-                </h3>
+                </h2>
                 <p
                   className="max-w-md text-sm leading-relaxed m-0"
                   style={{ color: 'var(--ink-dim)' }}

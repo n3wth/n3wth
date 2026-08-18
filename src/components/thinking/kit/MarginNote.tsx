@@ -49,7 +49,7 @@ export function MarginNote({ href, title, description }: MarginNoteProps) {
         rel="noreferrer"
         className="link-underline block max-w-[26ch]"
       >
-        <p className="text-[11px] uppercase tracking-wide" style={{ color: 'var(--ink-faint)' }}>
+        <p className="text-[11px] uppercase tracking-wide" style={{ color: 'var(--ink-dim)' }}>
           From the garden
         </p>
         <p className="mt-1 text-sm font-medium leading-snug" style={{ color: 'var(--ink)' }}>
@@ -60,6 +60,7 @@ export function MarginNote({ href, title, description }: MarginNoteProps) {
             {description}
           </p>
         )}
+      <span className="sr-only"> (opens in new tab)</span>
       </a>
     </aside>
   )

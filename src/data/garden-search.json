@@ -33,7 +33,7 @@
     {
       "title": "Actual Gardening Costs",
       "href": "https://garden.n3wth.com/actual-gardening-costs",
-      "description": "",
+      "description": "A line-item breakdown of what a San Francisco garden actually cost: irrigation, beds, soil, tools",
       "section": null
     },
     {
@@ -51,7 +51,7 @@
     {
       "title": "An Unquiet Mind: A Memoir of Moods and Madness",
       "href": "https://garden.n3wth.com/references/books/an-unquiet-mind",
-      "description": "",
+      "description": "Reading list entry for Kay Redfield Jamison's memoir on living with bipolar illness as a doctor",
       "section": "references"
     },
     {
@@ -87,13 +87,13 @@
     {
       "title": "Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones",
       "href": "https://garden.n3wth.com/references/books/atomic-habits",
-      "description": "",
+      "description": "Summary and quotes from Atomic Habits, with notes linking its habit framework to other reading and goals",
       "section": "references"
     },
     {
       "title": "Atomic Notes",
       "href": "https://garden.n3wth.com/atomic-notess",
-      "description": "",
+      "description": "Defines atomic notes as self-contained, concise building blocks for a Zettelkasten system",
       "section": null
     },
     {
@@ -105,7 +105,13 @@
     {
       "title": "Autism",
       "href": "https://garden.n3wth.com/autism",
-      "description": "",
+      "description": "Strengths and challenges of autism spectrum conditions, covering focus, pattern recognition, sensory needs and social communication",
+      "section": null
+    },
+    {
+      "title": "Award Flight Hacking & Sweet Spots",
+      "href": "https://garden.n3wth.com/award-flight-hacking",
+      "description": "Practical strategies for finding saver award seats, transferring flexible points, and using partner award charts",
       "section": null
     },
     {
@@ -117,7 +123,7 @@
     {
       "title": "Behavior Change",
       "href": "https://garden.n3wth.com/behavior-change",
-      "description": "",
+      "description": "How self-awareness, motivation, and habit formation combine to change behavior, linked to book notes",
       "section": null
     },
     {
@@ -147,7 +153,7 @@
     {
       "title": "Book Reviews",
       "href": "https://garden.n3wth.com/book-reviews",
-      "description": "",
+      "description": "Reading log with ratings, currently-reading list, 2024 stats, and a full backlog of book notes",
       "section": null
     },
     {
@@ -159,7 +165,7 @@
     {
       "title": "Boy Parts",
       "href": "https://garden.n3wth.com/references/books/boy-parts",
-      "description": "",
+      "description": "Book blurb for Eliza Clark's dark comedy about a photographer's self-destructive spiral",
       "section": "references"
     },
     {
@@ -327,13 +333,13 @@
     {
       "title": "Cracking the PM Career: The Skills, Frameworks, and Practices to Become a Great Product Manager",
       "href": "https://garden.n3wth.com/references/books/cracking-the-pm-career",
-      "description": "",
+      "description": "Book note on Bavaro's guide to product manager skills, frameworks, and career progression",
       "section": "references"
     },
     {
       "title": "Creation Lake",
       "href": "https://garden.n3wth.com/references/books/creation-lake",
-      "description": "",
+      "description": "Publisher blurb for Rachel Kushner's Creation Lake, a novel about a spy infiltrating a French anarchist commune",
       "section": "references"
     },
     {
@@ -345,25 +351,25 @@
     {
       "title": "Cultish: The Language of Fanaticism",
       "href": "https://garden.n3wth.com/references/books/cultish",
-      "description": "",
+      "description": "Reading list entry for Amanda Montell's book on how language creates and sustains cult influence",
       "section": "references"
     },
     {
       "title": "Daring Greatly: How the Courage to Be Vulnerable Transforms the Way We Live, Love, Parent, and Lead",
       "href": "https://garden.n3wth.com/references/books/daring-greatly",
-      "description": "",
+      "description": "Summary and key themes from Daring Greatly, on vulnerability, shame resilience and wholehearted living",
       "section": "references"
     },
     {
       "title": "Dark Matter",
       "href": "https://garden.n3wth.com/references/books/dark-matter",
-      "description": "",
+      "description": "Synopsis of Blake Crouch's thriller about a physicist waking into an alternate version of his life",
       "section": "references"
     },
     {
       "title": "Deep Learning",
       "href": "https://garden.n3wth.com/references/books/deep-learning",
-      "description": "",
+      "description": "Notes on Goodfellow's deep learning textbook, covering core concepts and links to related skills",
       "section": "references"
     },
     {
@@ -423,19 +429,19 @@
     {
       "title": "Favorite Blogs",
       "href": "https://garden.n3wth.com/favorite-blogs",
-      "description": "",
+      "description": "A shortlist of blogs on writing, software, note-taking, digital gardens, and tech strategy",
       "section": null
     },
     {
       "title": "Feel-Good Productivity: How to Do More of What Matters to You",
       "href": "https://garden.n3wth.com/references/books/feel-good-productivity",
-      "description": "",
+      "description": "Reading list entry for Ali Abdaal's book linking productivity to joy, play, and connection",
       "section": "references"
     },
     {
       "title": "First Lie Wins",
       "href": "https://garden.n3wth.com/references/books/first-lie-wins",
-      "description": "",
+      "description": "Publisher blurb for the thriller First Lie Wins, about a woman living under a false identity",
       "section": "references"
     },
     {
@@ -477,7 +483,7 @@
     {
       "title": "Funny Story",
       "href": "https://garden.n3wth.com/references/books/funny-story",
-      "description": "",
+      "description": "Synopsis of Emily Henry's novel about two exes' roommates who fake a rebound romance",
       "section": "references"
     },
     {
@@ -519,13 +525,13 @@
     {
       "title": "Good Material",
       "href": "https://garden.n3wth.com/references/books/good-material",
-      "description": "",
+      "description": "Book note on Dolly Alderton's novel about heartbreak, friendship, and starting over at 35",
       "section": "references"
     },
     {
       "title": "Grit: The Power of Passion and Perseverance",
       "href": "https://garden.n3wth.com/references/books/grit",
-      "description": "",
+      "description": "Notes on Angela Duckworth's Grit, its four components, and links to related career and habit pages",
       "section": "references"
     },
     {
@@ -549,7 +555,7 @@
     {
       "title": "Happy: Why More or Less Everything is Absolutely Fine",
       "href": "https://garden.n3wth.com/references/books/happy",
-      "description": "",
+      "description": "Reading list entry for Derren Brown's book on stoic philosophy and the nature of happiness",
       "section": "references"
     },
     {
@@ -585,7 +591,7 @@
     {
       "title": "Hello Beautiful",
       "href": "https://garden.n3wth.com/references/books/hello-beautiful",
-      "description": "",
+      "description": "Publisher blurb for the novel Hello Beautiful, about a family fractured by loyalty and tragedy",
       "section": "references"
     },
     {
@@ -597,7 +603,7 @@
     {
       "title": "Him",
       "href": "https://garden.n3wth.com/references/books/him",
-      "description": "",
+      "description": "Book blurb for Sarina Bowen's romance about two former hockey teammates reuniting years later",
       "section": "references"
     },
     {
@@ -613,6 +619,12 @@
       "section": "frameworks"
     },
     {
+      "title": "Hotel Loyalty & Points Optimization",
+      "href": "https://garden.n3wth.com/hotel-loyalty-optimization",
+      "description": "Strategic transfers and points splicing for World of Hyatt and luxury hotel redemptions",
+      "section": null
+    },
+    {
       "title": "How OpenClaw Dreaming Works",
       "href": "https://garden.n3wth.com/how-openclaw-dreaming-works",
       "description": "A detailed research report exploring the inner workings of OpenClaw's autonomous background memory consolidation sweeps, sleep-inspired phases, scoring logic, and operational tuning.",
@@ -621,7 +633,7 @@
     {
       "title": "How to End a Love Story",
       "href": "https://garden.n3wth.com/references/books/how-to-end-a-love-story",
-      "description": "",
+      "description": "Book note on Yulin Kuang's enemies-to-lovers romance between two writers with a shared past",
       "section": "references"
     },
     {
@@ -633,13 +645,13 @@
     {
       "title": "I'll Be Gone in the Dark: One Woman's Obsessive Search for the Golden State Killer",
       "href": "https://garden.n3wth.com/references/books/ill-be-gone-in-the-dark",
-      "description": "",
+      "description": "Publisher blurb for Michelle McNamara's true crime book chasing the Golden State Killer",
       "section": "references"
     },
     {
       "title": "I'm Starting to Worry About This Black Box of Doom",
       "href": "https://garden.n3wth.com/references/books/im-starting-to-worry-about-this-black-box-of-doom",
-      "description": "",
+      "description": "Reading list entry for Jason Pargin's thriller about a cross-country trip with a mysterious sealed box",
       "section": "references"
     },
     {
@@ -651,7 +663,7 @@
     {
       "title": "Immunization",
       "href": "https://garden.n3wth.com/health/immunization",
-      "description": "",
+      "description": "Notes on tracking a personal vaccination schedule and finding travel vaccine guidance",
       "section": "health"
     },
     {
@@ -717,25 +729,25 @@
     {
       "title": "Kazuo Ishiguro",
       "href": "https://garden.n3wth.com/kazuo-ishiguro",
-      "description": "",
+      "description": "A stub author page with a dataview query meant to list books by Kazuo Ishiguro",
       "section": null
     },
     {
       "title": "Kill for Me Kill for You",
       "href": "https://garden.n3wth.com/references/books/kill-for-me-kill-for-you",
-      "description": "",
+      "description": "Publisher blurb for the thriller Kill for Me Kill for You, about two women's revenge pact",
       "section": "references"
     },
     {
       "title": "Klara and the Sun",
       "href": "https://garden.n3wth.com/references/books/klara-and-the-sun",
-      "description": "",
+      "description": "Synopsis of Kazuo Ishiguro's novel narrated by an artificial companion waiting to be chosen",
       "section": "references"
     },
     {
       "title": "Knowledge Graph Linking Strategy",
       "href": "https://garden.n3wth.com/knowledge-graph-linking-strategy",
-      "description": "",
+      "description": "A strategy document on link density, connection types, and maintenance workflows for an Obsidian knowledge graph",
       "section": null
     },
     {
@@ -783,7 +795,7 @@
     {
       "title": "Leadership Skills",
       "href": "https://garden.n3wth.com/leadership-skills",
-      "description": "",
+      "description": "A list of core leadership skills, ways to develop them and links to related growth notes",
       "section": null
     },
     {
@@ -795,7 +807,7 @@
     {
       "title": "Learning Atlas",
       "href": "https://garden.n3wth.com/learning-atlas",
-      "description": "",
+      "description": "How to structure a personal knowledge base for organization, access, and linked concepts",
       "section": null
     },
     {
@@ -813,7 +825,7 @@
     {
       "title": "Let's Explore Diabetes with Owls",
       "href": "https://garden.n3wth.com/references/books/lets-explore-diabetes-with-owls",
-      "description": "",
+      "description": "Book note on David Sedaris's essay collection, from family memories to offbeat encounters",
       "section": "references"
     },
     {
@@ -825,7 +837,7 @@
     {
       "title": "Madwoman",
       "href": "https://garden.n3wth.com/references/books/madwoman",
-      "description": "",
+      "description": "Publisher blurb for Chelsea Bieker's Madwoman, a novel about a mother's buried past resurfacing",
       "section": "references"
     },
     {
@@ -849,7 +861,7 @@
     {
       "title": "Mindset: The New Psychology of Success",
       "href": "https://garden.n3wth.com/references/books/mindset",
-      "description": "",
+      "description": "Reading list entry for Carol Dweck's book on fixed versus growth mindsets, with personal synthesis notes",
       "section": "references"
     },
     {
@@ -873,7 +885,7 @@
     {
       "title": "Motivation Techniques",
       "href": "https://garden.n3wth.com/motivation-techniques",
-      "description": "",
+      "description": "Ten motivation techniques, from goal setting and visualization to habit stacking and accountability partners",
       "section": null
     },
     {
@@ -885,13 +897,13 @@
     {
       "title": "Never Let Me Go",
       "href": "https://garden.n3wth.com/never-let-me-go",
-      "description": "",
+      "description": "Reading notes on Ishiguro's Never Let Me Go, covering its themes of memory, identity, and mortality",
       "section": null
     },
     {
       "title": "Never Let Me Go",
       "href": "https://garden.n3wth.com/references/books/never-let-me-go",
-      "description": "",
+      "description": "Publisher blurb for Kazuo Ishiguro's Never Let Me Go, about students raised at a secretive boarding school",
       "section": "references"
     },
     {
@@ -909,19 +921,19 @@
     {
       "title": "None of This Is True",
       "href": "https://garden.n3wth.com/none-of-this-is-true",
-      "description": "",
+      "description": "A review of Lisa Jewell's meta-thriller about a true crime podcaster who becomes the story's subject",
       "section": null
     },
     {
       "title": "None of This Is True",
       "href": "https://garden.n3wth.com/references/books/none-of-this-is-true",
-      "description": "",
+      "description": "Synopsis of Lisa Jewell's thriller about a podcaster drawn into a stranger's dark secrets",
       "section": "references"
     },
     {
       "title": "Note Linking",
       "href": "https://garden.n3wth.com/note-linking",
-      "description": "",
+      "description": "What note linking means in a zettelkasten system, its benefits and best practices for connecting notes",
       "section": null
     },
     {
@@ -957,7 +969,7 @@
     {
       "title": "People We Meet on Vacation",
       "href": "https://garden.n3wth.com/references/books/people-we-meet-on-vacation",
-      "description": "",
+      "description": "Book note on Emily Henry's novel about two best friends and a decade of shared vacations",
       "section": "references"
     },
     {
@@ -969,7 +981,7 @@
     {
       "title": "Personal Development",
       "href": "https://garden.n3wth.com/personal-development",
-      "description": "",
+      "description": "Overview of personal development areas: self-awareness, goal setting, habits, mindset, and related notes",
       "section": null
     },
     {
@@ -999,13 +1011,13 @@
     {
       "title": "Presence",
       "href": "https://garden.n3wth.com/presence",
-      "description": "",
+      "description": "Notes on Amy Cuddy's Presence, on mindfulness, personal power, and staying grounded under pressure",
       "section": null
     },
     {
       "title": "Presence: Bringing Your Boldest Self to Your Biggest Challenges",
       "href": "https://garden.n3wth.com/references/books/presence",
-      "description": "",
+      "description": "Publisher blurb for Amy Cuddy's Presence, on power poses and facing high-pressure moments with confidence",
       "section": "references"
     },
     {
@@ -1119,7 +1131,7 @@
     {
       "title": "RICE",
       "href": "https://garden.n3wth.com/health/rice",
-      "description": "",
+      "description": "Rest, ice, compression, and elevation protocol for treating sprains and soft tissue injuries",
       "section": "health"
     },
     {
@@ -1137,19 +1149,25 @@
     {
       "title": "Setting Up My Smart Home",
       "href": "https://garden.n3wth.com/setting-up-my-smart-home",
-      "description": "",
+      "description": "A short rundown of the smart home setup: Home Assistant hub, Hue lighting, Sonos, and Synology surveillance",
       "section": null
     },
     {
       "title": "SF Terraced Garden Transformation Guide",
       "href": "https://garden.n3wth.com/sf-terraced-garden-transformation-guide",
-      "description": "",
+      "description": "Detailed plan for terracing a sloped San Francisco garden: decking, beds, irrigation, budget, and phasing",
       "section": null
     },
     {
       "title": "Short Term Disability Insurance",
       "href": "https://garden.n3wth.com/short-term-disability",
-      "description": "",
+      "description": "Explains how short term disability insurance works, required documentation, and California-specific resources",
+      "section": null
+    },
+    {
+      "title": "Short-Haul Flight Hacks",
+      "href": "https://garden.n3wth.com/short-haul-flight-hacks",
+      "description": "High-cpp regional flight redemptions, JetBlue TrueBlue partner tricks, and British Airways Avios short-hauls",
       "section": null
     },
     {
@@ -1161,7 +1179,7 @@
     {
       "title": "Sing, Unburied, Sing",
       "href": "https://garden.n3wth.com/references/books/sing-unburied-sing",
-      "description": "",
+      "description": "Reading list entry for Jesmyn Ward's novel about a family road trip across Mississippi's past and present",
       "section": "references"
     },
     {
@@ -1191,13 +1209,13 @@
     {
       "title": "Skin Cleanse: The Simple, All-Natural Program for Clear, Calm, Happy Skin",
       "href": "https://garden.n3wth.com/references/books/skin-cleanse",
-      "description": "",
+      "description": "Publisher blurb for Skin Cleanse, a holistic guide to clearer skin through diet and simplified routines",
       "section": "references"
     },
     {
       "title": "Skincare",
       "href": "https://garden.n3wth.com/health/skincare",
-      "description": "",
+      "description": "Daily and weekly skincare checklist covering sunscreen, moisturizer, exfoliation, and a breakout protocol",
       "section": "health"
     },
     {
@@ -1209,7 +1227,7 @@
     {
       "title": "Smart Brevity: The Power of Saying More with Less",
       "href": "https://garden.n3wth.com/references/books/smart-brevity",
-      "description": "",
+      "description": "Book blurb for Smart Brevity, the Axios formula for writing clear, concise communication",
       "section": "references"
     },
     {
@@ -1221,19 +1239,19 @@
     {
       "title": "Someday Is Today: 22 Simple, Actionable Ways to Propel Your Creative Life",
       "href": "https://garden.n3wth.com/references/books/someday-is-today",
-      "description": "",
+      "description": "Book note on Matthew Dicks's guide to turning creative dreams into daily action",
       "section": "references"
     },
     {
       "title": "Something in the Water",
       "href": "https://garden.n3wth.com/references/books/something-in-the-water",
-      "description": "",
+      "description": "Publisher blurb for Catherine Steadman's thriller about newlyweds who find something dangerous on their honeymoon",
       "section": "references"
     },
     {
       "title": "Something in the Water",
       "href": "https://garden.n3wth.com/something-in-the-water",
-      "description": "",
+      "description": "Personal review of the thriller Something in the Water, on greed, trust and moral choices",
       "section": null
     },
     {
@@ -1257,7 +1275,7 @@
     {
       "title": "Storyworthy: Engage, Teach, Persuade, and Change Your Life through the Power of Storytelling",
       "href": "https://garden.n3wth.com/references/books/storyworthy",
-      "description": "",
+      "description": "Reading list entry for Matthew Dicks' book on storytelling technique from a Moth GrandSLAM champion",
       "section": "references"
     },
     {
@@ -1269,19 +1287,19 @@
     {
       "title": "SWOT",
       "href": "https://garden.n3wth.com/frameworks/swot",
-      "description": "",
+      "description": "Explains the SWOT framework and its four components for strategic and career planning",
       "section": "frameworks"
     },
     {
       "title": "System Design",
       "href": "https://garden.n3wth.com/system-design",
-      "description": "",
+      "description": "Overview of system design concepts: architecture patterns, scalability, reliability, and the design process",
       "section": null
     },
     {
       "title": "Technical Skills",
       "href": "https://garden.n3wth.com/technical-skills",
-      "description": "",
+      "description": "Outline of technical skill areas: programming, system design, tools, and product management",
       "section": null
     },
     {
@@ -1299,19 +1317,19 @@
     {
       "title": "Test Cards",
       "href": "https://garden.n3wth.com/anki/test-cards",
-      "description": "",
+      "description": "Sample Anki flashcards testing trivia questions and notes on the Obsidian-to-Anki plugin's internals",
       "section": "anki"
     },
     {
       "title": "The Body Keeps the Score: Brain, Mind, and Body in the Healing of Trauma",
       "href": "https://garden.n3wth.com/references/books/the-body-keeps-the-score",
-      "description": "",
+      "description": "Summary and quotes from The Body Keeps the Score, on how trauma reshapes the body and brain",
       "section": "references"
     },
     {
       "title": "The Courage to Be Disliked: The Japanese Philosophy That Will Transform Your Life",
       "href": "https://garden.n3wth.com/references/books/the-courage-to-be-disliked",
-      "description": "",
+      "description": "Reading notes on Adlerian psychology, task separation, and self-acceptance, linked to other personal development books",
       "section": "references"
     },
     {
@@ -1323,97 +1341,97 @@
     {
       "title": "The Guest List",
       "href": "https://garden.n3wth.com/references/books/the-guest-list",
-      "description": "",
+      "description": "Book note on Lucy Foley's wedding-thriller about a remote island celebration gone wrong",
       "section": "references"
     },
     {
       "title": "The Hidden Economics of Grocery Delivery",
       "href": "https://garden.n3wth.com/the-hidden-economics-of-grocery-delivery",
-      "description": "",
+      "description": "An analysis comparing the true costs of grocery delivery versus in-store shopping, including time value",
       "section": null
     },
     {
       "title": "The Housemaid",
       "href": "https://garden.n3wth.com/references/books/the-housemaid",
-      "description": "",
+      "description": "Publisher blurb for Freida McFadden's thriller about a housemaid uncovering her employers' dark secrets",
       "section": "references"
     },
     {
       "title": "The Housemaid's Secret",
       "href": "https://garden.n3wth.com/references/books/the-housemaids-secret",
-      "description": "",
+      "description": "Reading list entry for Freida McFadden's thriller about a housemaid uncovering her employer's dark secret",
       "section": "references"
     },
     {
       "title": "The Housemaid's Secret",
       "href": "https://garden.n3wth.com/the-housemaids-secret",
-      "description": "",
+      "description": "A personal review of Freida McFadden's thriller about a housemaid entangled in a wealthy family's secrets",
       "section": null
     },
     {
       "title": "The Paris Apartment",
       "href": "https://garden.n3wth.com/references/books/the-paris-apartment",
-      "description": "",
+      "description": "Publisher blurb for the mystery The Paris Apartment, about a missing brother and suspicious neighbors",
       "section": "references"
     },
     {
       "title": "The Perfect Couple",
       "href": "https://garden.n3wth.com/references/books/the-perfect-couple",
-      "description": "",
+      "description": "Synopsis of Elin Hilderbrand's mystery about a body found before a lavish Nantucket wedding",
       "section": "references"
     },
     {
       "title": "The Remains of the Day",
       "href": "https://garden.n3wth.com/references/books/the-remains-of-the-day",
-      "description": "",
+      "description": "Book note on Ishiguro's novel about an English butler reflecting on duty and regret",
       "section": "references"
     },
     {
       "title": "The Remains of the Day",
       "href": "https://garden.n3wth.com/the-remains-of-the-day",
-      "description": "",
+      "description": "Personal review of The Remains of the Day, on duty, repression and regret in Ishiguro's novel",
       "section": null
     },
     {
       "title": "The Seven Husbands of Evelyn Hugo",
       "href": "https://garden.n3wth.com/references/books/the-seven-husbands-of-evelyn-hugo",
-      "description": "",
+      "description": "Publisher blurb for Taylor Jenkins Reid's novel about a reclusive Hollywood icon telling her life story",
       "section": "references"
     },
     {
       "title": "The Surrender Experiment: My Journey into Life's Perfection",
       "href": "https://garden.n3wth.com/references/books/the-surrender-experiment",
-      "description": "",
+      "description": "Reading list entry for Michael Singer's memoir on letting go of control and spiritual surrender",
       "section": "references"
     },
     {
       "title": "The Winner",
       "href": "https://garden.n3wth.com/references/books/the-winner",
-      "description": "",
+      "description": "Synopsis of Teddy Wayne's thriller about a tennis instructor's affair in a wealthy enclave",
       "section": "references"
     },
     {
       "title": "The Winner",
       "href": "https://garden.n3wth.com/the-winner",
-      "description": "",
+      "description": "Personal review of Teddy Wayne's The Winner, rated three stars for its social commentary",
       "section": null
     },
     {
       "title": "The Winner Effect: The Neuroscience of Success and Failure",
       "href": "https://garden.n3wth.com/references/books/the-winner-effect",
-      "description": "",
+      "description": "Publisher blurb for The Winner Effect, on how winning changes brain chemistry and behavior",
       "section": "references"
     },
     {
       "title": "Thinking, Fast and Slow",
       "href": "https://garden.n3wth.com/references/books/thinking-fast-and-slow",
-      "description": "",
+      "description": "Book note on Kahneman's account of the mind's two systems of fast and slow thinking",
       "section": "references"
     },
     {
       "title": "This Book Is Full of Spiders: Seriously, Dude, Don't Touch It",
       "href": "https://garden.n3wth.com/references/books/this-book-is-full-of-spiders",
-      "description": "",
+      "description": "Publisher blurb for David Wong's horror comedy sequel to John Dies at the End",
       "section": "references"
     },
     {
@@ -1429,6 +1447,12 @@
       "section": null
     },
     {
+      "title": "Travel & Award Hacking",
+      "href": "https://garden.n3wth.com/travel",
+      "description": "Navigation hub for points optimization, award flights, hotel loyalty, and short-haul travel strategies",
+      "section": null
+    },
+    {
       "title": "Wellness Journal",
       "href": "https://garden.n3wth.com/health/wellness-journal",
       "description": "Guide to maintaining a comprehensive health and wellness journal",
@@ -1437,13 +1461,13 @@
     {
       "title": "What the Hell Did I Just Read: A Novel of Cosmic Horror",
       "href": "https://garden.n3wth.com/references/books/what-the-hell-did-i-just-read",
-      "description": "",
+      "description": "Publisher blurb for the comic horror novel What the Hell Did I Just Read",
       "section": "references"
     },
     {
       "title": "What We Owe the Future",
       "href": "https://garden.n3wth.com/references/books/what-we-owe-the-future",
-      "description": "",
+      "description": "Reading list entry for William MacAskill's book arguing for longtermism and moral responsibility to the future",
       "section": "references"
     },
     {
@@ -1455,13 +1479,13 @@
     {
       "title": "Yellowface",
       "href": "https://garden.n3wth.com/references/books/yellowface",
-      "description": "",
+      "description": "Synopsis of R.F. Kuang's novel about a writer who steals her dead friend's manuscript",
       "section": "references"
     },
     {
       "title": "Yellowface",
       "href": "https://garden.n3wth.com/yellowface",
-      "description": "",
+      "description": "Book note on R.F. Kuang's satire about a writer who steals a dead friend's manuscript",
       "section": null
     },
     {

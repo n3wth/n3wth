@@ -98,6 +98,7 @@ export function UiShelf() {
             className="link-underline"
           >
             Docs
+          <span className="sr-only"> (opens in new tab)</span>
           </a>
           <a
             href="https://github.com/n3wth/ui"
@@ -106,6 +107,7 @@ export function UiShelf() {
             className="link-underline"
           >
             Source
+          <span className="sr-only"> (opens in new tab)</span>
           </a>
         </p>
       </div>

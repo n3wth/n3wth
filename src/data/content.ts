@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Oliver Newth',
-  title: 'Oliver Newth - AI & Design Leader',
-  description: 'AI and design leader in San Francisco. I build products with a team of autonomous agents and make large-scale light art. Google I/O 2025 speaker.',
+  title: 'Oliver Newth — AI Product Lead at Google',
+  description: 'AI product lead at Google. Ex-Covariant (acquired by Amazon), Meta, Microsoft. Ships with a standing agent team; builds large-scale light art.',
   email: 'oliver@newth.ai',
   social: {
     github: 'https://github.com/n3wth',
@@ -43,40 +43,43 @@ export const experiences: Experience[] = [
   {
     id: 'google',
     company: 'Google',
-    role: 'AI Product Leader',
-    period: '2024 —',
+    role: 'AI Product Lead',
+    period: '2025 —',
     summary:
-      'Gemini-powered products across Google’s GenAI platform, working with DeepMind. Spoke at I/O 2025 on responsible AI in production.',
-    metric: { value: 'I/O 2025', label: 'Speaker' },
+      'Platforms that put Google DeepMind models into products.',
   },
   {
     id: 'covariant',
     company: 'Covariant',
-    role: 'Senior Product Manager',
+    role: 'Staff Product Manager',
     period: '2022 – 24',
     summary:
-      'Computer vision from research demos to warehouse floors running 24/7 — then through Amazon’s acquisition.',
+      'Took computer vision from research demos to warehouse floors running 24/7, through Amazon’s acquisition of the team in 2024.',
     metric: { value: '50+', label: 'Enterprise deployments' },
   },
   {
     id: 'meta',
     company: 'Meta',
-    role: 'Product Manager, Instagram',
-    period: '2019 – 22',
+    role: 'Product Manager',
+    period: '2017 – 22',
     summary:
-      'Launched video calling on Instagram. At that scale, latency and reliability are the product.',
-    metric: { value: '750M', label: 'Daily users' },
+      'Ran video calling across Instagram and Portal; before that, core growth and integrity.',
+    metric: { value: '2020', label: 'Build Social Value Award' },
   },
   {
     id: 'microsoft',
     company: 'Microsoft',
     role: 'Product Manager, Azure',
-    period: '2016 – 19',
+    period: '2014 – 17',
     summary:
-      'Built Azure Cognitive Services and the playbook for enterprise AI adoption — trust as the thing being shipped.',
-    metric: { value: '1M+', label: 'API calls / day' },
+      'Product on Azure Cognitive Services, writing the playbook for enterprise AI adoption: trust as the thing being shipped.',
+    metric: { value: '100M+', label: 'API requests / day' },
   },
 ]
+
+/** One quiet line under the ship log — the foundation before it. */
+export const education =
+  'Before the ship log: MIT MEng in High Performance Structures (Kennedy Scholar); Warwick Civil Engineering, First Class.'
 
 export interface Installation {
   id: string
@@ -94,7 +97,7 @@ export const installations: Installation[] = [
   {
     id: 'them',
     title: 'THEM',
-    tagline: '30-foot interactive light sculpture for 70,000 attendees',
+    tagline: '30-foot interactive light sculpture, in collaboration with artist Simon Malvaez',
     year: '2019',
     location: 'Black Rock City, Nevada',
     type: 'burning-man',
@@ -105,7 +108,7 @@ export const installations: Installation[] = [
   {
     id: 'pink-triangle',
     title: 'Pink Triangle',
-    tagline: 'Illuminated LGBTQIA+ memorial on Twin Peaks during Pride Month',
+    tagline: 'On the LED crew for Patrick Carney’s illuminated Pride memorial, with Illuminate',
     year: '2022',
     location: 'San Francisco, California',
     type: 'memorial',
@@ -115,7 +118,7 @@ export const installations: Installation[] = [
   {
     id: 'circle-of-light',
     title: 'Circle of Light',
-    tagline: 'World AIDS Day memorial installation',
+    tagline: 'World AIDS Day memorial of light in Golden Gate Park',
     year: '2021',
     location: 'San Francisco, California',
     type: 'memorial',
@@ -145,7 +148,7 @@ export const projects: Project[] = [
   {
     id: 'kit',
     name: 'kit',
-    description: '47 components with AI context packs. Ships your design system straight to your editor and coding agents.',
+    description: '49 components with AI context packs. Ships your design system straight to your editor and coding agents.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
     url: 'https://kit.newth.ai',
     github: 'https://github.com/n3wth/kit',

@@ -1,4 +1,3 @@
-export { Hero } from './Hero'
 export { Experience } from './Experience'
 export { Building } from './Building'
 export { Thinking } from './Thinking'

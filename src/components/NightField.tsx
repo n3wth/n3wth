@@ -476,9 +476,6 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
   const portrait = usePortraitLayout()
   const signpost = useGLBScene(portrait ? '/models/signpost.glb' : '/models/signpost-hd.glb')
   const rocks = useRocks()
-  const suzParts = useGLBGeometries('/models/suzanne.glb')
-  const suzanne = Object.entries(suzParts).find(([k]) => k.includes('suzanne'))?.[1]
-  const plinth = Object.entries(suzParts).find(([k]) => k.includes('plinth'))?.[1]
 
   /* two rows of dim marker stones diverging where the paths split */
   const markers = useMemo(() => {
@@ -513,21 +510,12 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
           scale={m.s * 1.3}
         />
       ))}
-      {/* Suzanne on a plinth beside the fork, thinking it over */}
-      <group position={[-1.9, 0, 1.1]} rotation-y={0.9}>
-        {plinth && (
-          <mesh geometry={plinth}>
-            <meshStandardMaterial color="#57524a" roughness={0.95} />
-          </mesh>
-        )}
-        {suzanne && (
-          <mesh geometry={suzanne}>
-            <meshStandardMaterial color="#8a8078" roughness={0.85} metalness={0.15} />
-          </mesh>
-        )}
-        {/* her own little reading lamp */}
-        <pointLight position={[0.5, 2.6, 0.8]} color="#d8c294" intensity={4} distance={5} decay={2} />
-      </group>
+      {/* Suzanne on a plinth beside the fork, thinking it over — garnish,
+          so she streams in behind her own Suspense instead of holding up
+          the field's first frame */}
+      <Suspense fallback={null}>
+        <ForkSuzanne />
+      </Suspense>
       <LightPool position={[0, 0.03, 0]} scale={5.5} color="#d9cba4" opacity={0.08} />
       <mesh position={[0, 2.4, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[6.5, 5.4, 3.5]} />
@@ -606,6 +594,28 @@ function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: bo
           />
         </mesh>
       ))}
+    </group>
+  )
+}
+
+function ForkSuzanne() {
+  const suzParts = useGLBGeometries('/models/suzanne.glb')
+  const suzanne = Object.entries(suzParts).find(([k]) => k.includes('suzanne'))?.[1]
+  const plinth = Object.entries(suzParts).find(([k]) => k.includes('plinth'))?.[1]
+  return (
+    <group position={[-1.9, 0, 1.1]} rotation-y={0.9}>
+      {plinth && (
+        <mesh geometry={plinth}>
+          <meshStandardMaterial color="#57524a" roughness={0.95} />
+        </mesh>
+      )}
+      {suzanne && (
+        <mesh geometry={suzanne}>
+          <meshStandardMaterial color="#8a8078" roughness={0.85} metalness={0.15} />
+        </mesh>
+      )}
+      {/* her own little reading lamp */}
+      <pointLight position={[0.5, 2.6, 0.8]} color="#d8c294" intensity={4} distance={5} decay={2} />
     </group>
   )
 }
@@ -709,7 +719,11 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
         onEnter(def.href, def.external)
       }}
     >
-      {!portrait && <CampArtifacts />}
+      {!portrait && (
+        <Suspense fallback={null}>
+          <CampArtifacts />
+        </Suspense>
+      )}
       {/* teepee of real logs, each one different, lit by their own fire */}
       {logs.map((l, i) => (
         <mesh key={i} position={l.pos} quaternion={l.quat} rotation-order="YXZ">
@@ -1358,8 +1372,10 @@ function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready
   return null
 }
 
+/* Portals and terrain preload; garnish (suzanne, teapot, bike — ~2.5MB)
+   deliberately does not. Those stream in behind nested Suspense after
+   the field's first frame instead of gating it. */
 useGLTF.preload('/models/them.glb')
-useGLTF.preload('/models/suzanne.glb')
 useGLTF.preload('/models/terrain.glb')
 useGLTF.preload('/models/rocks.glb')
 const portraitAtLoad = typeof window !== 'undefined' && window.matchMedia('(max-aspect-ratio: 3/4)').matches
@@ -1369,8 +1385,6 @@ if (portraitAtLoad) {
 } else {
   useGLTF.preload('/models/telescope.glb?v=2')
   useGLTF.preload('/models/signpost-hd.glb')
-  useGLTF.preload('/models/teapot.glb')
-  useGLTF.preload('/models/bike.glb')
 }
 useTexture.preload('/textures/playa-tile.webp')
 useTexture.preload('/textures/horizon.webp')
@@ -1422,13 +1436,17 @@ function WorldInterface({
         </div>
       </div>
 
-      <div className="world-interface" data-ready={ready ? 'true' : 'false'}>
+      {/* Identity sits above the loader so the visitor learns whose site
+          this is on first paint, not after the field finishes loading. */}
+      <div className="world-identity-layer">
         <header className="world-identity">
           <p className="world-identity-kicker">n3wth / field at night</p>
           <h1>Oliver Newth</h1>
-          <p>AI product leader + light artist</p>
+          <p>AI product lead at Google · ex-Covariant, Meta, Microsoft · light artist</p>
         </header>
+      </div>
 
+      <div className="world-interface" data-ready={ready ? 'true' : 'false'}>
         <div className="world-atlas">
           <div className="world-atlas-copy" aria-live="polite">
             <p>{active?.label ?? 'Explore the field'}</p>
@@ -1479,7 +1497,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       navigationTimer.current = null
       pendingHref.current = null
       onEnter(href, external)
-    }, 360)
+    }, 200)
   }, [onEnter, reducedMotion])
 
   return (

@@ -20,7 +20,7 @@ export function SectionHeader({
           left the whole upper-right of every page as dead space. */}
       <div className="relative min-w-0 md:flex md:items-end md:justify-between md:gap-16">
         <Heading
-          className="display text-[clamp(1.85rem,3.8vw,3.1rem)] max-w-[18ch] shrink-0"
+          className="display text-[length:var(--display-h1)] max-w-[18ch] shrink-0"
           style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
         >
           {title}

@@ -3,9 +3,8 @@
 
   If you're reading this, you're my kind of person.
 
-  This site has an ambient AI agent that observes, connects dots,
-  and answers questions -- not because it's useful, but because
-  AI should be present, not summoned.
+  Designed by hand, shipped by a standing team of coding agents.
+  The last Thinking piece explains how the whole thing got built.
 
   The source is at github.com/n3wth/n3wth
   Let's talk: oliver@newth.ai
@@ -16,8 +15,8 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oliver Newth - AI & Design Leader | n3wth.com</title>
-    <meta name="description" content="Oliver Newth is an AI and design leader in San Francisco. He builds products with a team of autonomous agents and makes large-scale light art. Google I/O 2025 speaker." />
+    <title>Oliver Newth — AI Product Lead at Google</title>
+    <meta name="description" content="AI product lead at Google. Ex-Covariant (acquired by Amazon), Meta, Microsoft. Ships with a standing agent team; builds large-scale light art." />
     <meta name="author" content="Oliver Newth" />
 
     <!-- Canonical -->
@@ -25,30 +24,27 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Oliver Newth - AI & Design Leader" />
-    <meta property="og:description" content="Oliver Newth is an AI and design leader in San Francisco. He builds products with a team of autonomous agents and makes large-scale light art. Google I/O 2025 speaker." />
+    <meta property="og:title" content="Oliver Newth — AI Product Lead at Google" />
+    <meta property="og:description" content="AI product lead at Google. Ex-Covariant (acquired by Amazon), Meta, Microsoft. Ships with a standing agent team; builds large-scale light art." />
     <meta property="og:url" content="https://n3wth.com/" />
     <meta property="og:image" content="https://n3wth.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
-    <!-- Twitter -->
+    <!-- Twitter card (no handle: not on the platform) -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@olivernewth" />
-    <meta name="twitter:creator" content="@olivernewth" />
     <meta name="twitter:image" content="https://n3wth.com/og-image.png" />
 
     <!-- Theme -->
     <meta name="theme-color" content="#08090b" />
 
-    <!-- Preload the /art opener so its first navigation transitions onto a
-         painted image instead of a decode pop -->
+    <!-- Preload Home's night backdrop (also the loader/no-WebGL still) -->
     <link rel="preload" href="/images/hero-playa.webp" as="image" type="image/webp" fetchpriority="high" />
-    <link rel="preload" href="/images/installations/them.webp" as="image" type="image/webp" />
 
-    <!-- Preload critical fonts to improve FCP/LCP - display font first for hero -->
+    <!-- Preload critical fonts to improve FCP/LCP - body first, then display -->
     <link rel="preload" href="/fonts/Geist-SemiBold.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
     <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -57,19 +53,26 @@
       "@type": "Person",
       "name": "Oliver Newth",
       "url": "https://n3wth.com",
-      "jobTitle": "AI & Design Leader",
+      "jobTitle": "AI Product Lead",
       "worksFor": {
         "@type": "Organization",
         "name": "Google"
       },
-      "description": "AI and design leader in San Francisco. Builds products with a team of autonomous agents and makes large-scale light art. Google I/O 2025 speaker.",
+      "description": "AI product lead at Google. Ex-Covariant (acquired by Amazon), Meta, Microsoft. Ships with a standing agent team; builds large-scale light art.",
       "sameAs": [
         "https://github.com/n3wth",
-        "https://linkedin.com/in/olivernewth",
-        "https://twitter.com/olivernewth"
+        "https://linkedin.com/in/newth"
       ],
       "knowsAbout": ["Artificial Intelligence", "AI Agents", "Product Management", "Design Systems", "Trust and Safety", "Machine Learning", "Light Art"],
       "alumniOf": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "Massachusetts Institute of Technology"
+        },
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "University of Warwick"
+        },
         {
           "@type": "Organization",
           "name": "Covariant"
@@ -97,7 +100,7 @@
         margin: 0;
         background: #08090b;
         color: #9aa0a8;
-        font-family: 'Geist', system-ui, -apple-system, sans-serif;
+        font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
         -webkit-font-smoothing: antialiased;
       }
       /* Show content immediately - CSS will enhance when loaded */
@@ -105,27 +108,6 @@
       #root > .seo-fallback { display: none; }
       /* Show SEO fallback if JS fails */
       noscript + .seo-fallback { display: block !important; }
-      /* Minimal hero placeholder to prevent layout shift */
-      .hero-placeholder {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 2rem;
-      }
-      .hero-placeholder h1 {
-        font-family: 'Geist', system-ui, sans-serif;
-        font-size: clamp(2.5rem, 8vw, 5rem);
-        font-weight: 600;
-        color: #fff;
-        margin: 0;
-        line-height: 1.1;
-      }
-      /* Critical: Ensure hero LCP element is visible before JS loads */
-      /* This prevents opacity:0 from GSAP animation blocking LCP */
-      [data-hero-tagline], [data-hero-subtitle] {
-        opacity: 1;
-      }
     </style>
 
   </head>
@@ -137,59 +119,65 @@
       </noscript>
       <!-- Static content for SEO crawlers (hidden when JS loads, shown via noscript) -->
       <main id="main" class="seo-fallback">
-        <h1>Oliver Newth - AI & Design Leader</h1>
+        <h1>Oliver Newth — AI Product Lead at Google</h1>
 
         <section>
           <h2>About</h2>
-          <p>Oliver Newth builds AI products for Trust & Safety at Google, protecting billions of users. He has led product teams at Covariant, Meta, and Microsoft, applying artificial intelligence to solve problems at billion-user scale.</p>
+          <p>Oliver Newth is an AI product lead at Google, building platforms that put Google DeepMind models into products. He previously built product at Covariant (acquired by Amazon), Meta, and Microsoft, and holds an MEng from MIT (Kennedy Scholar).</p>
         </section>
 
         <section>
           <h2>Experience</h2>
           <article>
-            <h3>Google - Trust & Safety</h3>
-            <p>Leads AI product initiatives that protect users across Google's ecosystem, serving billions of people worldwide.</p>
+            <h3>Google - AI Product Lead</h3>
+            <p>Platforms that put Google DeepMind models into products.</p>
           </article>
           <article>
-            <h3>Covariant - Director of Product</h3>
-            <p>Led product strategy for AI-powered robotics systems that transformed warehouse automation. <a href="https://techcrunch.com/2024/08/31/amazon-hires-the-founders-of-robotics-ai-startup-covariant/" rel="noopener">Amazon acquired</a> the company in 2024.</p>
+            <h3>Covariant - Staff Product Manager</h3>
+            <p>Took computer vision from research demos to warehouse floors running 24/7, through <a href="https://techcrunch.com/2024/08/31/amazon-hires-the-founders-of-robotics-ai-startup-covariant/" rel="noopener">Amazon's acquisition</a> of the team in 2024.</p>
           </article>
           <article>
-            <h3>Meta - Lead Product Manager</h3>
-            <p>Managed products reaching billions of users across Facebook's family of applications, building AI-driven features and content systems.</p>
+            <h3>Meta - Product Manager</h3>
+            <p>Ran video calling across Instagram and Portal; before that, core growth and integrity. Meta Build Social Value Award, 2020.</p>
           </article>
           <article>
-            <h3>Microsoft - Senior Product Manager</h3>
-            <p>Built enterprise productivity tools and cloud services for large-scale product development.</p>
+            <h3>Microsoft - Product Manager, Azure</h3>
+            <p>Product on Azure Cognitive Services (100M+ API requests a day), writing the playbook for enterprise AI adoption: trust as the thing being shipped.</p>
           </article>
         </section>
 
         <section>
+          <h2>Education</h2>
+          <p>MEng in High Performance Structures, Massachusetts Institute of Technology (Kennedy Scholar). Civil Engineering, First Class, University of Warwick.</p>
+        </section>
+
+        <section>
           <h2>Expertise</h2>
-          <p>Oliver works across artificial intelligence, machine learning, robotics, and billion-user scale product development. He builds trust and safety systems, AI-powered automation, and consumer-facing AI products.</p>
+          <p>Oliver works across GenAI platforms, autonomous coding agents, robotics, and trust and safety systems. A standing team of coding agents ships and maintains his five live products.</p>
           <ul>
             <li>AI Product Strategy</li>
+            <li>GenAI Platforms</li>
+            <li>Autonomous Coding Agents</li>
             <li>Trust & Safety Systems</li>
-            <li>Machine Learning Applications</li>
             <li>Robotics and Automation</li>
-            <li>Large-scale Product Development</li>
           </ul>
         </section>
 
         <section>
           <h2>Creative Work</h2>
-          <p>Oliver creates algorithmic installations and generative design projects, combining technology and art.</p>
+          <p>Oliver builds large-scale light installations: Circle of Light, a World AIDS Day memorial in Golden Gate Park; lighting on the 30-foot sculpture THEM at Burning Man with artist Simon Malvaez; and LED crew on the Twin Peaks Pink Triangle with Illuminate.</p>
         </section>
 
         <nav aria-label="Main navigation">
           <a href="/work">Work</a>
           <a href="/art">Art</a>
           <a href="/thinking">Thinking</a>
+          <a href="/library">Library</a>
           <a href="/contact">Contact</a>
         </nav>
 
         <footer>
-          <p>Connect with Oliver on <a href="https://github.com/n3wth" rel="noopener">GitHub</a> or <a href="https://linkedin.com/in/olivernewth" rel="noopener">LinkedIn</a>.</p>
+          <p>Connect with Oliver on <a href="https://github.com/n3wth" rel="noopener">GitHub</a> or <a href="https://linkedin.com/in/newth" rel="noopener">LinkedIn</a>.</p>
         </footer>
       </main>
     </div>
