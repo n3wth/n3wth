@@ -10,9 +10,6 @@ export default function Logout() {
     <section aria-label="Signed out" className="relative min-h-[70vh] flex items-center">
       <div className="frame relative w-full">
         <div className="section-pad pad-air w-full">
-          <p className="label mb-5" style={{ color: 'var(--ink-dim)' }}>
-            Signed out
-          </p>
           <h1
             className="display text-[clamp(2.5rem,7vw,5.5rem)] max-w-[18ch]"
             style={{ letterSpacing: '-0.03em', lineHeight: 1 }}

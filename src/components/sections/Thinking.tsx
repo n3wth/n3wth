@@ -15,7 +15,7 @@ export function Thinking() {
       <SectionHeader
         as="h1"
         title="What building this actually taught me"
-        lede="Every piece below started as a real bug, a tradeoff, or a decision made while building this site and the agents behind it. The last one explains how the batch got built."
+        lede="Each piece started as a real bug, tradeoff, or decision from building this site."
       />
 
       <ThinkingIndex pieces={registeredPieces} />

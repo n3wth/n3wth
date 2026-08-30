@@ -1,37 +1,7 @@
-import { useEffect, useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
 import { ConvergeLight } from '../ConvergeLight'
 import { siteConfig } from '../../data/content'
-
-/* His clock, not yours: a small honest detail about who you're writing
-   to. Machine output, so it sets in mono. */
-function LocalTime() {
-  const [time, setTime] = useState(() =>
-    new Intl.DateTimeFormat('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-      timeZone: 'America/Los_Angeles',
-    }).format(new Date())
-  )
-  useEffect(() => {
-    const id = setInterval(
-      () =>
-        setTime(
-          new Intl.DateTimeFormat('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-            timeZone: 'America/Los_Angeles',
-          }).format(new Date())
-        ),
-      30_000
-    )
-    return () => clearInterval(id)
-  }, [])
-  return <>{time}</>
-}
 
 export function Contact() {
   return (
@@ -62,11 +32,6 @@ export function Contact() {
                 endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
               />
             </div>
-
-            <p className="mt-8 font-mono text-xs" style={{ color: 'var(--ink-dim)' }}>
-              San Francisco&ensp;·&ensp;
-              <LocalTime />
-            </p>
           </div>
         </div>
       </div>

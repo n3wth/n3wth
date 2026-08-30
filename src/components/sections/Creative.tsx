@@ -28,9 +28,6 @@ export function Creative() {
             className="art-band-img"
           />
           <div className="art-band-caption art-band-caption--sky">
-            <span className="label block mb-5" style={{ color: 'rgba(8, 9, 11, 0.62)' }}>
-              After dark
-            </span>
             <h1
               className="display text-[length:var(--display-h1)] mb-4"
               style={{ letterSpacing: '-0.035em', lineHeight: 0.95, color: '#0b0c0e' }}

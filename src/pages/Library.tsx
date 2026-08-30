@@ -33,7 +33,7 @@ export default function Library() {
       <SectionHeader
         as="h1"
         title="Help yourself"
-        lede="Components, notes, agent skills, and the layout kit behind every essay here. Each entry links out to wherever the thing actually lives."
+        lede="The components, notes, and agent skills behind this site."
       />
 
       <KitShelf />

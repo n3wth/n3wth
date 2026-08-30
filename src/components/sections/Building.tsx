@@ -128,7 +128,7 @@ export function Building() {
     <section id="building" aria-label="Building">
       <SectionHeader
         title="Designed by hand, shipped by agents"
-        lede="Five live products. I design the systems; my agent team keeps them shipping. The Thinking pieces carry the receipts."
+        lede="Five live products. I design the systems; my agent team keeps them shipping."
       />
 
       <div className="section-pad pad-tight !pt-0">
