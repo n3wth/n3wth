@@ -5,10 +5,9 @@ import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, Search, X } from 'lucide-react'
 import { CursorMark } from './marks'
 import { navigation } from '../data/content'
-import { SHORTCUT_HINT } from '../lib/shortcut'
 
 export interface NavProps {
-  /** Opens the ⌘K palette. The layout owns its state, so Nav only asks. */
+  /** Opens site search. The layout owns its state, so Nav only asks. */
   onOpenSearch?: () => void
 }
 
@@ -131,9 +130,7 @@ export function Nav({ onOpenSearch }: NavProps) {
             ))}
           </nav>
 
-          {/* Desktop: a labelled target, because a shortcut nobody can see is
-              a shortcut nobody uses. Mobile: the same action as an icon, since
-              there is no ⌘K on a phone. */}
+          {/* Desktop: a labelled target. Mobile: the same action as an icon. */}
           {onOpenSearch && (
             <button
               type="button"
@@ -143,9 +140,6 @@ export function Nav({ onOpenSearch }: NavProps) {
             >
               <Search size={14} aria-hidden="true" />
               <span>Search</span>
-              <kbd className="nav-kbd font-mono" aria-hidden="true">
-                {SHORTCUT_HINT}
-              </kbd>
             </button>
           )}
 

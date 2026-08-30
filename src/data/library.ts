@@ -1,5 +1,5 @@
 /**
- * The typed registry behind /library and the ⌘K palette: what exists across
+ * The typed registry behind /library and site search: what exists across
  * n3wth.com, garden, @n3wth/ui, and skills, what each thing is for, and how
  * to start using it. Data only, no JSX. See CONTRACT.md (consolidation
  * planning doc) for the verified facts this file is built from; don't add
