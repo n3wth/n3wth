@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import { searchItems } from '../lib/search'
 import type { ResultGroup, SearchItem } from '../lib/search'
 import { registeredPieces } from './thinking/registry'
@@ -365,6 +365,11 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
            maxHeight instead. */
         className="absolute inset-0 flex items-start justify-center overflow-hidden px-3 sm:px-4"
         style={{ paddingTop: '14vh', paddingBottom: '6vh' }}
+        /* This wrapper sits above the backdrop, so clicks in the space
+           around the panel land here — treat them as clicks off. */
+        onClick={(event) => {
+          if (event.target === event.currentTarget) onClose()
+        }}
       >
         <div
           ref={panelRef}
@@ -410,6 +415,15 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               className="command-palette-input min-w-0 flex-1 bg-transparent font-sans text-sm outline-none placeholder:text-[color:var(--ink-dim)]"
               style={{ color: 'var(--ink)', height: '52px' }}
             />
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close search"
+              className="inline-flex shrink-0 items-center justify-center"
+              style={{ color: 'var(--ink-dim)', width: '28px', height: '28px' }}
+            >
+              <X size={16} strokeWidth={1.5} aria-hidden="true" />
+            </button>
           </div>
 
           {/* Results */}
