@@ -31,6 +31,18 @@ interface CFResponse {
   chunks?: CFChunk[]
 }
 
+const HTML_ENTITIES: Record<string, string> = {
+  '&quot;': '"',
+  '&#39;': "'",
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+}
+
+function decodeEntities(text: string): string {
+  return text.replace(/&quot;|&#39;|&amp;|&lt;|&gt;/g, (m) => HTML_ENTITIES[m])
+}
+
 function titleFromKey(key: string): string {
   try {
     const url = new URL(key)
@@ -48,7 +60,7 @@ function buildCitations(chunks: CFChunk[]): string {
     const key = chunk.item?.key
     if (!key || seen.has(key)) continue
     seen.add(key)
-    const title = chunk.item.metadata?.title ?? titleFromKey(key)
+    const title = decodeEntities(chunk.item.metadata?.title ?? titleFromKey(key))
     links.push(`[${title}](${key})`)
     if (links.length >= 4) break
   }
