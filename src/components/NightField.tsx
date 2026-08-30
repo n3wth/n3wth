@@ -1442,7 +1442,7 @@ function WorldInterface({
       <div className="world-identity-layer">
         <header className="world-identity">
           <h1>Oliver Newth</h1>
-          <p>AI product lead at Google · ex-Covariant, Meta, Microsoft · light artist</p>
+          <p>AI product lead at Google · light artist</p>
         </header>
       </div>
 
