@@ -197,10 +197,9 @@ export function Nav({ onOpenSearch }: NavProps) {
                   setOpen(false)
                   onOpenSearch()
                 }}
-                className="mobile-nav-link mobile-nav-row"
+                className="mobile-nav-link mobile-nav-row w-full"
                 style={{ '--row-i': 0 } as CSSProperties}
               >
-                <Search size={17} strokeWidth={1.75} aria-hidden="true" />
                 <span className="mobile-nav-link-label">Search</span>
               </button>
             )}
