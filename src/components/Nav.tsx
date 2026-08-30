@@ -130,31 +130,19 @@ export function Nav({ onOpenSearch }: NavProps) {
             ))}
           </nav>
 
-          {/* Desktop: a labelled target. Mobile: the same action as an icon. */}
-          {onOpenSearch && (
-            <button
-              type="button"
-              onClick={onOpenSearch}
-              className="nav-search hidden md:inline-flex items-center gap-2 ml-auto"
-              aria-label="Search this site and the garden"
-            >
-              <Search size={14} aria-hidden="true" />
-              <span>Search</span>
-            </button>
-          )}
-
-          <span className="md:hidden ml-auto inline-flex items-center gap-1">
+          <span className="ml-auto inline-flex items-center gap-1">
             {onOpenSearch && (
-              <IconButton
-                className="nav-burger"
-                label="Search this site and the garden"
-                icon={<Search size={18} />}
-                variant="ghost"
+              <button
+                type="button"
                 onClick={onOpenSearch}
-              />
+                className="nav-search"
+                aria-label="Search"
+              >
+                <Search size={16} aria-hidden="true" />
+              </button>
             )}
             <IconButton
-              className="nav-burger"
+              className="nav-burger md:hidden"
               label={open ? 'Close menu' : 'Open menu'}
               icon={open ? <X size={18} /> : <Menu size={18} />}
               variant="ghost"
