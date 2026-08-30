@@ -1,4 +1,3 @@
-import { Button } from '@astryxdesign/core/Button'
 import { installations } from '../../data/content'
 
 /** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
@@ -101,16 +100,6 @@ export function Creative() {
         ))}
       </div>
 
-      {/* Closing — centered coda, the one symmetric moment on the page */}
-      <div data-reveal className="section-pad pad-air !pt-10 md:!pt-14 flex flex-col items-center text-center">
-        <p
-          className="display max-w-2xl text-[clamp(1.4rem,2.8vw,2.1rem)] mb-8"
-          style={{ letterSpacing: '-0.02em', lineHeight: 1.2 }}
-        >
-          The next one is already sketched.
-        </p>
-        <Button label="Build one with me" variant="primary" href="/contact" />
-      </div>
     </section>
   )
 }
