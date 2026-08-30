@@ -345,8 +345,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
   if (!open) return null
 
-  const truncated = matches.length > flat.length
-
   return (
     <div className="fixed inset-0 z-[80]">
       <div
@@ -489,38 +487,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             )}
           </div>
 
-          {/* Footer */}
-          <div
-            className="flex shrink-0 items-center justify-between gap-3 px-4 py-2.5"
-            style={{ borderTop: '1px solid var(--rail)' }}
-          >
-            <span
-              aria-live="polite"
-              className="truncate font-sans text-xs"
-              style={{ color: 'var(--ink-dim)' }}
-            >
-              {trimmed.length === 0 ? (
-                'Start here'
-              ) : (
-                <>
-                  <span className="font-mono">{matches.length}</span>{' '}
-                  {matches.length === 1 ? 'match' : 'matches'}
-                  {truncated && (
-                    <>
-                      , showing <span className="font-mono">{flat.length}</span>
-                    </>
-                  )}
-                  {!gardenReady && ', garden still loading'}
-                </>
-              )}
-            </span>
-            <span
-              className="hidden shrink-0 font-mono sm:inline"
-              style={{ color: 'var(--ink-dim)', fontSize: '11px', letterSpacing: '0.02em' }}
-            >
-              ↑↓ move · ↵ open · esc close
-            </span>
-          </div>
         </div>
       </div>
     </div>

@@ -76,9 +76,6 @@ function App() {
   return (
     <Theme theme={n3wthTheme} mode="dark">
       <LinkProvider component={RouterLink}>
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
         <Nav onOpenSearch={toggleSearch} />
         <CommandPalette open={searchOpen} onClose={closeSearch} />
         <ScrollToTop />
