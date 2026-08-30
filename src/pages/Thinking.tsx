@@ -55,7 +55,7 @@ function TendedRecently() {
 export default function ThinkingPage() {
   usePageMeta(
     'Thinking — Oliver Newth',
-    'Positions on production AI and agents as an org design problem, plus the working notes they grow from.'
+    'Positions on production AI and agents as an org design problem, plus interactive walk-throughs of real AI safety trade-offs.'
   )
 
   return (

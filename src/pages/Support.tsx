@@ -25,7 +25,11 @@ const projects = [
 ]
 
 export default function Support() {
-  usePageMeta('Support — Oliver Newth', 'Support for n3wth projects.', { noindex: false })
+  usePageMeta(
+    'Support — Oliver Newth',
+    'Support for n3wth projects — n3wth.com, hop.flights, and theywontshutup.com. Email support@n3wth.com.',
+    { noindex: false }
+  )
 
   return (
     <section aria-label="Support">

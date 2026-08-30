@@ -6,7 +6,7 @@ import { usePageMeta } from '../hooks/usePageMeta'
 export default function Work() {
   usePageMeta(
     'Work — Oliver Newth',
-    'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft — and five products designed by hand, shipped by agents.'
+    'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft — and five products designed by hand, shipped by an agent team.'
   )
 
   return (
