@@ -53,7 +53,6 @@ export function Nav({ onOpenSearch }: NavProps) {
      wraps at its edges instead of walking into the covered page, and
      focus returns to the opener on close. */
   const menuRef = useRef<HTMLDivElement>(null)
-  const closeWrapRef = useRef<HTMLSpanElement>(null)
   const openerRef = useRef<HTMLElement | null>(null)
   useEffect(() => {
     if (!open) {
@@ -63,7 +62,10 @@ export function Nav({ onOpenSearch }: NavProps) {
     }
     openerRef.current = (document.activeElement as HTMLElement | null) ?? null
     const menu = menuRef.current
-    closeWrapRef.current?.querySelector('button')?.focus()
+    // Focus the sheet's first row rather than leaving it on the burger
+    // button — sighted keyboard users otherwise see a new panel appear
+    // while focus stays put on a control that's now off to the side.
+    menu?.querySelector<HTMLElement>('.mobile-nav-row')?.focus()
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key !== 'Tab' || !menu) return
       const focusables = menu.querySelectorAll<HTMLElement>('a, button')
@@ -94,8 +96,12 @@ export function Nav({ onOpenSearch }: NavProps) {
   }
 
   return (
-    <>
-      {/* Floating island nav */}
+    <div ref={menuRef}>
+      {/* Floating island nav. Stays mounted and on top (z-50) even while
+          the mobile sheet is open — it used to sit *under* the sheet's
+          own z-70 layer, hidden but still in the tab order. Now the
+          island is the sheet's only close control (its burger already
+          swaps to an X), so there's one header, not two. */}
       <header
         className="site-nav fixed inset-x-3 md:inset-x-4 z-50 flex md:justify-center pointer-events-none"
         style={{ top: 'calc(0.75rem + env(safe-area-inset-top))' }}
@@ -152,37 +158,22 @@ export function Nav({ onOpenSearch }: NavProps) {
         </div>
       </header>
 
-      {/* Full-screen mobile menu — app-style sheet with large tap targets */}
+      {/* Full-screen mobile menu — app-style sheet with large tap targets.
+          Sits below the island (z-40 < site-nav's z-50), so the island's
+          wordmark/search/burger-as-X stay visible and reachable instead
+          of being covered by a second, redundant header row. */}
       {open && (
         <div
-          ref={menuRef}
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className="mobile-menu fixed inset-0 z-[70] md:hidden flex flex-col"
+          className="mobile-menu fixed inset-0 z-40 md:hidden flex flex-col"
           style={{
             background: 'var(--bg)',
-            paddingTop: 'env(safe-area-inset-top)',
+            paddingTop: 'calc(5rem + env(safe-area-inset-top))',
             paddingBottom: 'env(safe-area-inset-bottom)',
           }}
         >
-          <div className="flex items-center justify-between h-16 px-4">
-            <span className="brand" aria-hidden="true">
-              <span className="brand-mark shrink-0">
-                <CursorMark size={18} />
-              </span>
-              <span>n3wth</span>
-            </span>
-            <span ref={closeWrapRef}>
-              <IconButton
-                label="Close navigation"
-                icon={<X size={20} />}
-                variant="ghost"
-                size="lg"
-                onClick={() => setOpen(false)}
-              />
-            </span>
-          </div>
           {/* Scrollable on short (landscape) viewports so the last link is
               always reachable; overscroll-contain + touch-pan-y keep iOS
               from rubber-banding the locked page beneath. */}
@@ -220,6 +211,6 @@ export function Nav({ onOpenSearch }: NavProps) {
           </nav>
         </div>
       )}
-    </>
+    </div>
   )
 }
