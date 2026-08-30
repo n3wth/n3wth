@@ -737,6 +737,13 @@ body {
    tap flush against the edge where the icon visually sits. */
 .nav-burger {
   position: relative;
+  /* Astryx's ghost variant defaults to full-contrast ink; every other
+     icon in the island (nav-search, nav-link at rest) sits at ink-dim
+     until hover. !important beats the component's stylex atomics. */
+  color: var(--ink-dim) !important;
+}
+.nav-burger:hover {
+  color: var(--ink) !important;
 }
 .nav-burger::after {
   content: '';
@@ -1121,8 +1128,18 @@ body {
 .world-identity {
   position: absolute;
   top: calc(6.75rem + env(safe-area-inset-top));
-  left: var(--gutter);
+  /* Below md the nav-island is pinned left (inset-x-3 + its own pl-4),
+     not centered — line the name up under it instead of the page
+     gutter, which sat 5px further left than the wordmark. At md+ the
+     island centers itself, decoupled from the left edge, so the page
+     gutter is the only reference left and takes back over. */
+  left: 1.75rem;
   max-width: min(34rem, 72vw);
+}
+@media (min-width: 768px) {
+  .world-identity {
+    left: var(--gutter);
+  }
 }
 .world-identity h1 {
   margin: 0;
