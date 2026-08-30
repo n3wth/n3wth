@@ -24,6 +24,16 @@ export function usePageMeta(
     if (ogUrl) ogUrl.content = url
     const ogTitle = document.querySelector<HTMLMetaElement>('meta[property="og:title"]')
     if (ogTitle) ogTitle.content = title
+    const ogDescription = document.querySelector<HTMLMetaElement>(
+      'meta[property="og:description"]'
+    )
+    if (ogDescription && description) ogDescription.content = description
+    const twitterTitle = document.querySelector<HTMLMetaElement>('meta[name="twitter:title"]')
+    if (twitterTitle) twitterTitle.content = title
+    const twitterDescription = document.querySelector<HTMLMetaElement>(
+      'meta[name="twitter:description"]'
+    )
+    if (twitterDescription && description) twitterDescription.content = description
     if (!noindex) return
     let robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]')
     const created = !robots
