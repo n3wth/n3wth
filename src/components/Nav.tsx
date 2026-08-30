@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, Search, X } from 'lucide-react'
 import { CursorMark } from './marks'
-import { navigation, siteConfig } from '../data/content'
+import { navigation } from '../data/content'
 
 export interface NavProps {
   /** Opens site search. The layout owns its state, so Nav only asks. */
@@ -219,29 +219,6 @@ export function Nav({ onOpenSearch }: NavProps) {
               </NavLink>
             ))}
           </nav>
-
-          <div className="mobile-nav-footer">
-            <a href={`mailto:${siteConfig.email}`} className="footer-link text-sm">
-              {siteConfig.email}
-            </a>
-            <span className="mobile-nav-footer-sep" aria-hidden="true" />
-            <a
-              href={siteConfig.social.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="footer-link-muted text-sm"
-            >
-              GitHub
-            </a>
-            <a
-              href={siteConfig.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="footer-link-muted text-sm"
-            >
-              LinkedIn
-            </a>
-          </div>
         </div>
       )}
     </>
