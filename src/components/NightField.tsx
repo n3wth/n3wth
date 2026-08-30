@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree, type ThreeElements } from '@react-three/fib
 import { Line, Stars, useCursor, useGLTF, useProgress, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
+import { useOptionalTexture } from '../lib/optionalTexture'
 
 /**
  * The front door as a real night field (three.js): every glowing
@@ -1083,7 +1084,7 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
    every structure. FLORA cracked-mud tiles across it, revealed by the
    pooled light. */
 function Ground() {
-  const configured = useTexture('/textures/playa-tile.webp', configureTiledTexture)
+  const configured = useOptionalTexture('/textures/playa-tile.webp', configureTiledTexture)
   const terrain = useGLBGeometry('/models/terrain.glb')
   return (
     <mesh geometry={terrain}>
@@ -1446,12 +1447,14 @@ function WorldInterface({
       </div>
 
       <div className="world-interface" data-ready={ready ? 'true' : 'false'}>
-        <div className="world-atlas">
-          <div className="world-atlas-copy" aria-live="polite">
-            <p>{active?.label ?? 'Explore the field'}</p>
-            <span>{active?.sub ?? ''}</span>
+        {active && (
+          <div className="world-atlas">
+            <div className="world-atlas-copy" aria-live="polite">
+              <p>{active.label}</p>
+              <span>{active.sub}</span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   )

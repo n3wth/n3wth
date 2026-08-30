@@ -538,7 +538,7 @@ body {
   outline-offset: 3px;
 }
 
-/* The ⌘K field takes focus the instant the palette opens and is the only
+/* The search field takes focus the instant the palette opens and is the only
    input in the dialog, so the ring draws a hard white box across the panel
    head and tells the user nothing the caret hasn't. Focus is never in doubt
    here: the dialog traps it, and every other control keeps its ring.
@@ -744,52 +744,33 @@ body {
   inset: -8px -20px -8px -8px;
 }
 
-/* ⌘K trigger. Flat hairline pill, same rail language as the rest of the
-   island; it sits quietly until you look for it. The visible label is the
-   point — a shortcut with no on-screen target only serves people who
-   already knew about it. */
+/* Search trigger. A lone icon — no label, no pill. The island is only
+   48px tall, so the hit area is widened rather than drawing chrome. */
 .nav-search {
-  min-height: 32px;
-  padding: 0 0.5rem 0 0.625rem;
-  border: 1px solid var(--rail);
-  border-radius: 9999px;
-  color: var(--ink-dim);
-  font-size: 13px;
-  line-height: 1;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
   background: transparent;
+  color: var(--ink-dim);
   cursor: pointer;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  transition: color 0.15s var(--ease);
 }
 .nav-search:hover {
   color: var(--ink);
-  border-color: var(--rail-strong);
 }
 .nav-search:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
-/* The island is only 44px tall, so the hit area is widened rather than the
-   button — same trick as .nav-burger. */
 .nav-search::after {
   content: '';
   position: absolute;
   inset: -6px;
-}
-.nav-search {
-  position: relative;
-}
-
-.nav-kbd {
-  padding: 0.125rem 0.3rem;
-  border: 1px solid var(--rail);
-  border-radius: 4px;
-  color: var(--ink-faint);
-  font-size: 11px;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-.nav-search:hover .nav-kbd {
-  color: var(--ink-dim);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1117,7 +1098,7 @@ body {
   transition: transform 0.22s linear;
 }
 
-/* Identity above the loader (z 30): name and credentials paint with the
+/* Identity above the loader: name and credentials paint with the
    first frame instead of waiting out the progress bar. */
 .world-identity-layer {
   position: absolute;
@@ -1142,14 +1123,6 @@ body {
   top: calc(6.75rem + env(safe-area-inset-top));
   left: var(--gutter);
   max-width: min(34rem, 72vw);
-}
-.world-identity-kicker {
-  margin: 0 0 0.55rem;
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: rgba(242, 243, 245, 0.62);
-  letter-spacing: 0.025em;
 }
 .world-identity h1 {
   margin: 0;
@@ -1202,10 +1175,6 @@ body {
     top: calc(5.85rem + env(safe-area-inset-top));
     max-width: calc(100vw - 2 * var(--gutter));
   }
-  .world-identity-kicker {
-    margin-bottom: 0.4rem;
-    font-size: 11px;
-  }
   .world-identity h1 {
     font-size: clamp(2rem, 10vw, 2.65rem);
   }
@@ -1231,7 +1200,6 @@ body {
 }
 
 @media (max-height: 620px) {
-  .world-identity-kicker,
   .world-identity > p:last-child {
     display: none;
   }

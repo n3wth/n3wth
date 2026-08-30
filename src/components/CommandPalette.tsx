@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react'
+import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search } from 'lucide-react'
-import { SHORTCUT_HINT } from '../lib/shortcut'
 import { searchItems } from '../lib/search'
 import type { ResultGroup, SearchItem } from '../lib/search'
 import { registeredPieces } from './thinking/registry'
@@ -155,16 +154,6 @@ interface RenderGroup {
 
 const LIST_ID = 'command-palette-results'
 const optionId = (index: number) => `command-palette-option-${index}`
-
-const chipStyle: CSSProperties = {
-  border: '1px solid var(--rail)',
-  borderRadius: '6px',
-  color: 'var(--ink-dim)',
-  fontSize: '11px',
-  lineHeight: 1.6,
-  padding: '1px 6px',
-  letterSpacing: '0.02em',
-}
 
 export interface CommandPaletteProps {
   open: boolean
@@ -423,9 +412,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               className="command-palette-input min-w-0 flex-1 bg-transparent font-sans text-sm outline-none placeholder:text-[color:var(--ink-dim)]"
               style={{ color: 'var(--ink)', height: '52px' }}
             />
-            <span className="font-mono shrink-0" style={chipStyle} aria-hidden="true">
-              {SHORTCUT_HINT}
-            </span>
           </div>
 
           {/* Results */}
