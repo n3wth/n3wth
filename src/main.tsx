@@ -15,6 +15,8 @@ const Library = lazy(() => import('./pages/Library'))
 const Contact = lazy(() => import('./pages/Contact'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const ErrorPage = lazy(() => import('./pages/ErrorPage'))
+const Login = lazy(() => import('./pages/Login'))
+const Logout = lazy(() => import('./pages/Logout'))
 
 // CSS Studio — dev-only visual CSS editor. Dynamic import so it is NEVER bundled
 // into the production build. Removed entirely when import.meta.env.DEV is false.
@@ -54,6 +56,8 @@ const router = createBrowserRouter([
       { path: 'library', element: <Library /> },
       { path: 'contact', element: <Contact /> },
       { path: 'error', element: <ErrorPage /> },
+      { path: 'login', element: <Login /> },
+      { path: 'logout', element: <Logout /> },
       { path: '*', element: <NotFound /> },
     ],
   },
