@@ -1440,7 +1440,6 @@ function WorldInterface({
           this is on first paint, not after the field finishes loading. */}
       <div className="world-identity-layer">
         <header className="world-identity">
-          <p className="world-identity-kicker">n3wth / field at night</p>
           <h1>Oliver Newth</h1>
           <p>AI product lead at Google · ex-Covariant, Meta, Microsoft · light artist</p>
         </header>
@@ -1450,7 +1449,7 @@ function WorldInterface({
         <div className="world-atlas">
           <div className="world-atlas-copy" aria-live="polite">
             <p>{active?.label ?? 'Explore the field'}</p>
-            <span>{active?.sub ?? 'Each light opens a chapter.'}</span>
+            <span>{active?.sub ?? ''}</span>
           </div>
         </div>
       </div>
