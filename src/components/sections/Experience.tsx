@@ -19,7 +19,7 @@ export function Experience() {
             <li
               key={exp.id}
               data-reveal
-              className="cell grid gap-x-8 gap-y-2 px-5 py-6 md:px-7 md:py-7 md:grid-cols-[6.5rem_13rem_minmax(0,1fr)_auto] md:items-baseline"
+              className="cell grid gap-x-8 gap-y-2 px-5 py-6 md:px-7 md:py-7 md:grid-cols-[6.5rem_13rem_minmax(0,1fr)] md:items-baseline"
             >
               <span className="meta" style={{ color: 'var(--ink-dim)' }}>
                 {exp.period}
@@ -42,14 +42,6 @@ export function Experience() {
                 {exp.summary}
               </p>
 
-              {exp.metric && (
-                <p className="meta md:text-right md:justify-self-end whitespace-nowrap">
-                  <span className="font-semibold" style={{ color: 'var(--ink)' }}>
-                    {exp.metric.value}
-                  </span>{' '}
-                  {exp.metric.label}
-                </p>
-              )}
             </li>
           ))}
         </ol>

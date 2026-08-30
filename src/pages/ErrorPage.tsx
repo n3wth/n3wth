@@ -36,11 +36,11 @@ export default function ErrorPage() {
             {headline}
           </h1>
           <p className="mt-6 t-lead max-w-lg" style={{ color: 'var(--ink-dim)' }}>
-            Trying again usually clears it. If it keeps happening, email{' '}
-            <a href="mailto:support@n3wth.com" className="underline underline-offset-4">
-              support@n3wth.com
+            Trying again usually clears it. If it keeps happening,{' '}
+            <a href="/support" className="underline underline-offset-4">
+              get support
             </a>{' '}
-            with the details below.
+            and include the details below.
           </p>
           {(code || description) && (
             <div

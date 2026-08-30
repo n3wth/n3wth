@@ -21,7 +21,7 @@ export default function Logout() {
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Button label="Go home" variant="primary" href="/" />
-            <Button label="Get support" variant="ghost" href="https://support.n3wth.com" />
+            <Button label="Get support" variant="ghost" href="/support" />
           </div>
         </div>
       </div>
