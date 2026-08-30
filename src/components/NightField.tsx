@@ -1507,7 +1507,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
     <Canvas
       dpr={portraitAtLoad ? [1, 1.25] : [1, 1.5]}
       camera={{ position: [0, 3.2, 22], fov: 48 }}
-      gl={{ antialias: false, powerPreference: 'high-performance' }}
+      gl={{ antialias: true, powerPreference: 'high-performance' }}
       frameloop={reducedMotion ? 'demand' : 'always'}
       style={{ position: 'absolute', inset: 0 }}
     >
