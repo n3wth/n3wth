@@ -19,7 +19,7 @@ export default function Login() {
     <section aria-label="Redirecting" className="relative min-h-[70vh] flex items-center">
       <div className="frame relative w-full">
         <div className="section-pad pad-air w-full">
-          <p className="label" style={{ color: 'var(--ink-dim)' }}>
+          <p className="label" role="status" aria-live="polite" style={{ color: 'var(--ink-dim)' }}>
             Redirecting to sign-in…
           </p>
         </div>

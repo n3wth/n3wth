@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import { flushAnalytics } from './lib/analytics'
 import Home from './pages/Home'
 
 // Route-level splitting: Home stays eager (it's the index route); every
@@ -32,13 +33,16 @@ deferCallback(() => {
     posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
       api_host: 'https://elephant.n3wth.com',
       ui_host: 'https://us.i.posthog.com',
+      defaults: '2026-01-30',
       person_profiles: 'identified_only',
-      capture_pageview: true,
+      // Explicit: SPA route changes are the pageviews on this site.
+      capture_pageview: 'history_change',
       capture_pageleave: true,
       capture_performance: { web_vitals: true },
       disable_surveys: true,
       disable_web_experiments: false,
     })
+    flushAnalytics()
   })
 })
 

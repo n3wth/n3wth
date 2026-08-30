@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { track } from '../lib/analytics'
 import { Button } from '@astryxdesign/core/Button'
 import { usePageMeta } from '../hooks/usePageMeta'
 
@@ -22,15 +24,22 @@ export default function ErrorPage() {
 
   const [params] = useSearchParams()
   const code = params.get('error') ?? params.get('code') ?? ''
-  const description = params.get('error_description') ?? params.get('message') ?? ''
+  /* Shown verbatim on a trusted domain, so strip anything that could turn
+     a crafted link into a phishing lure: URLs and unbounded length. */
+  const rawDescription = params.get('error_description') ?? params.get('message') ?? ''
+  const description = rawDescription.replace(/https?:\/\/\S+/g, '').slice(0, 240)
   const headline = HEADLINES[code] ?? 'Something went wrong'
+
+  useEffect(() => {
+    track('error_page_viewed', { code })
+  }, [code])
 
   return (
     <section aria-label="Error" className="relative min-h-[70vh] flex items-center">
       <div className="frame relative w-full">
         <div className="section-pad pad-air w-full">
           <h1
-            className="display text-[clamp(2.5rem,7vw,5.5rem)] max-w-[18ch]"
+            className="display text-[length:var(--display-h1)] max-w-[18ch]"
             style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
           >
             {headline}
@@ -45,14 +54,23 @@ export default function ErrorPage() {
           {(code || description) && (
             <div
               className="mt-8 max-w-lg border p-4 font-mono text-sm"
-              style={{ borderColor: 'var(--rail, rgba(242,243,245,0.15))', color: 'var(--ink-dim)' }}
+              style={{ borderColor: 'var(--rail)', color: 'var(--ink-dim)' }}
             >
               {code && <p>error: {code}</p>}
               {description && <p className="mt-1">{description}</p>}
             </div>
           )}
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Button label="Try again" variant="primary" clickAction={() => history.back()} />
+            <Button
+              label="Try again"
+              variant="primary"
+              clickAction={() => {
+                /* Auth0 redirects often land in a fresh browsing context
+                   where back() is a no-op — fall through to home. */
+                if (window.history.length > 1) history.back()
+                else window.location.assign('/')
+              }}
+            />
             <Button label="Go home" variant="ghost" href="/" />
           </div>
         </div>

@@ -73,7 +73,7 @@ const routes = [
     path: 'library',
     title: 'Library — Oliver Newth',
     description:
-      'Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, a 248-note digital garden, and agent skills.',
+      'Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, the digital garden, and agent skills.',
     ogImage: '/og-image.png',
     body: `
       <h1>Library — Oliver Newth</h1>
@@ -88,7 +88,7 @@ const routes = [
       </section>
       <section>
         <h2>The garden</h2>
-        <p>248 interconnected notes at garden.n3wth.com, sorted by growth stage (seedling, budding, evergreen) and gathered into groves. 1,056 internal links across 210 tag collections.</p>
+        <p>Working notes at garden.n3wth.com, sorted by growth stage (seedling, budding, evergreen) and gathered into groves.</p>
       </section>
       <section>
         <h2>Agent skills</h2>

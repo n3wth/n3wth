@@ -72,7 +72,7 @@ export const experiences: Experience[] = [
     role: 'Product Manager, Azure',
     period: '2014 – 17',
     summary:
-      'Product on Azure Cognitive Services, writing the playbook for enterprise AI adoption: trust as the thing being shipped.',
+      'Product on Azure Cognitive Services; the job was getting enterprises to trust AI enough to adopt it.',
     metric: { value: '100M+', label: 'API requests / day' },
   },
 ]
@@ -140,7 +140,7 @@ export const projects: Project[] = [
   {
     id: 'r3',
     name: 'r3',
-    description: 'Give any AI app persistent memory. Vector search, entity extraction, knowledge graphs — zero config.',
+    description: 'Give any AI app persistent memory. Vector search and knowledge graphs, no config.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
     url: 'https://r3.newth.ai',
     github: 'https://github.com/n3wth/r3',
@@ -171,7 +171,7 @@ export const projects: Project[] = [
   {
     id: 'garden',
     name: 'garden',
-    description: 'A digital garden of interconnected notes — Obsidian-flavored markdown rendered as a living wiki.',
+    description: 'A digital garden: Obsidian-flavored markdown rendered as a wiki, every note linked.',
     tech: ['Next.js', 'Astryx', 'Wikilinks'],
     url: 'https://garden.n3wth.com',
   },

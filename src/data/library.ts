@@ -76,7 +76,7 @@ export const kitPrimitives: KitPrimitive[] = [
     id: 'flow-diagram',
     name: 'FlowDiagram',
     blurb:
-      "Labelled nodes and curved edges for something that's genuinely a pipeline: a build order, a request path, an org chart. Lines draw in, a pulse travels each edge once it's settled, and reduced motion drops the pulse and leaves the diagram in its end state.",
+      "Labelled nodes and curved edges for something that's genuinely a pipeline: a build order, say, or a request path. Lines draw in, a pulse travels each edge once it's settled, and reduced motion drops the pulse and leaves the diagram in its end state.",
     signature: `interface FlowNode {
   id: string
   label: string
@@ -239,15 +239,10 @@ export interface EcosystemProperty {
   href: string
   /** What it is FOR, one line. Not a description of its contents. */
   purpose: string
-  /** Real, verified counts only. Omit when unverified. */
-  stat?: string
 }
 
 /**
- * The four properties. n3wth.com's own `stat` is left off on purpose: the
- * honest number is `${registeredPieces.length} pieces`, and hardcoding it
- * here would just be a second place for it to go stale. Derive it at render
- * time from src/components/thinking/registry.tsx's registeredPieces.length.
+ * The four properties: what each is for, no counts.
  */
 export const ecosystem: EcosystemProperty[] = [
   {
@@ -263,14 +258,12 @@ export const ecosystem: EcosystemProperty[] = [
     href: 'https://garden.n3wth.com',
     purpose:
       "For working out an idea before it's finished enough to defend, then finding it again later through links instead of folders.",
-    stat: '248 notes · 1,056 links',
   },
   {
     id: 'ui',
     name: '@n3wth/ui',
     href: 'https://ui.n3wth.com',
     purpose: 'For dropping a themed Button, Card, or Nav into a new project without rebuilding it from scratch.',
-    stat: '36 components · 11 hooks',
   },
   {
     id: 'skills',

@@ -14,8 +14,8 @@ export function Thinking() {
     <section id="thinking" aria-label="Thinking">
       <SectionHeader
         as="h1"
-        title="What building this actually taught me"
-        lede="Each piece started as a real bug, tradeoff, or decision from building this site."
+        title="What building this taught me"
+        lede="Each piece started as a bug or a tradeoff from building this site."
       />
 
       <ThinkingIndex pieces={registeredPieces} />

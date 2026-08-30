@@ -32,7 +32,7 @@ export default function ThinkingPiece() {
             at the top on both sides, so the dek's first line lands level
             with the title's first line instead of with the date. */}
         <div className="mb-10" data-reveal>
-          <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-dim)' }}>
+          <p className="text-xs tracking-wide" style={{ color: 'var(--ink-dim)' }}>
             {/* Parse as local time: bare YYYY-MM-DD parses as UTC midnight
                 and renders a day early in every US timezone. */}
             {new Date(`${meta.date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
