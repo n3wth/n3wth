@@ -49,7 +49,7 @@ export default function Support() {
         </div>
       </header>
 
-      <div data-reveal className="section-pad pb-20">
+      <div data-reveal className="section-pad !pt-0 pb-20">
         <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <li
