@@ -32,3 +32,5 @@ dist-ssr
 # Internal docs (contains SIDs, API references, playbooks)
 docs/
 claudedocs/
+.env*
+.vercel

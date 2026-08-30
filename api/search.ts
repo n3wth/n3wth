@@ -12,7 +12,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
 
-const MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash']
+const MODELS = ['gemini-3.5-flash-lite', 'gemini-3.7-flash', 'gemini-pro-latest']
 
 interface Candidate {
   title: string
