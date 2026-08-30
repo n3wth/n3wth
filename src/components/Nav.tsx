@@ -5,10 +5,9 @@ import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, Search, X } from 'lucide-react'
 import { CursorMark } from './marks'
 import { navigation } from '../data/content'
-import { SHORTCUT_HINT } from '../lib/shortcut'
 
 export interface NavProps {
-  /** Opens the ⌘K palette. The layout owns its state, so Nav only asks. */
+  /** Opens site search. The layout owns its state, so Nav only asks. */
   onOpenSearch?: () => void
 }
 
@@ -131,36 +130,19 @@ export function Nav({ onOpenSearch }: NavProps) {
             ))}
           </nav>
 
-          {/* Desktop: a labelled target, because a shortcut nobody can see is
-              a shortcut nobody uses. Mobile: the same action as an icon, since
-              there is no ⌘K on a phone. */}
-          {onOpenSearch && (
-            <button
-              type="button"
-              onClick={onOpenSearch}
-              className="nav-search hidden md:inline-flex items-center gap-2 ml-auto"
-              aria-label="Search this site and the garden"
-            >
-              <Search size={14} aria-hidden="true" />
-              <span>Search</span>
-              <kbd className="nav-kbd font-mono" aria-hidden="true">
-                {SHORTCUT_HINT}
-              </kbd>
-            </button>
-          )}
-
-          <span className="md:hidden ml-auto inline-flex items-center gap-1">
+          <span className="ml-auto inline-flex items-center gap-1">
             {onOpenSearch && (
-              <IconButton
-                className="nav-burger"
-                label="Search this site and the garden"
-                icon={<Search size={18} />}
-                variant="ghost"
+              <button
+                type="button"
                 onClick={onOpenSearch}
-              />
+                className="nav-search"
+                aria-label="Search"
+              >
+                <Search size={16} aria-hidden="true" />
+              </button>
             )}
             <IconButton
-              className="nav-burger"
+              className="nav-burger md:hidden"
               label={open ? 'Close menu' : 'Open menu'}
               icon={open ? <X size={18} /> : <Menu size={18} />}
               variant="ghost"

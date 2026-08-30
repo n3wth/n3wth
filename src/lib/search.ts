@@ -1,5 +1,5 @@
 /**
- * The matcher behind the ⌘K palette. Deliberately tiny and dependency-free:
+ * The matcher behind site search. Deliberately tiny and dependency-free:
  * a fuzzy-search library would be more forgiving about typos, but it would
  * also reorder results in ways that are hard to explain, and the corpus here
  * is a few hundred short titles rather than a document store.

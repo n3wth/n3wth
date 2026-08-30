@@ -1,6 +1,5 @@
 import { Shelf } from './Shelf'
 import gardenIndex from '../../data/garden-index.json'
-import { SHORTCUT_HINT } from '../../lib/shortcut'
 
 /**
  * The garden shelf. Note count comes from src/data/garden-index.json,
@@ -51,15 +50,9 @@ export function GardenShelf() {
 
       <div data-reveal className="mt-11 md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
         <p className="max-w-[62ch] text-base leading-relaxed" style={{ color: 'var(--ink)' }}>
-          Every one of those notes is in this site's search. Press{' '}
-          <kbd
-            className="rounded border px-1.5 py-0.5 font-mono text-xs"
-            style={{ borderColor: 'var(--rail-strong)', color: 'var(--ink)' }}
-          >
-            {SHORTCUT_HINT}
-          </kbd>{' '}
-          on any page of n3wth.com and you're querying the garden, every essay, and every entry on
-          this page from one input. That's the whole reason this page exists.
+          Every one of those notes is in this site's search. Open Search from any page of n3wth.com
+          and you're querying the garden, every essay, and every entry on this page from one input.
+          That's the whole reason this page exists.
         </p>
         <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm md:mt-0">
           <a

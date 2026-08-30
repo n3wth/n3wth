@@ -68,7 +68,7 @@ function App() {
   useKeyboardNav()
   useReveal()
 
-  // Lives in the shell, not on a page: the shortcut has to work from anywhere,
+  // Lives in the shell, not on a page: search has to open from anywhere,
   // and the palette is how the four n3wth sites are searchable as one.
   const { open: searchOpen, setOpen: setSearchOpen, toggle: toggleSearch } = useCommandPalette()
   const closeSearch = useCallback(() => setSearchOpen(false), [setSearchOpen])
