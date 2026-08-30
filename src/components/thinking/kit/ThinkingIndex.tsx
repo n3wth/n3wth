@@ -29,7 +29,7 @@ function IndexGroup({ group, pieces }: { group: 'position' | 'system'; pieces: R
   if (pieces.length === 0) return null
   return (
     <div data-reveal className="relative border-l pl-9 md:pl-10" style={{ borderColor: 'var(--rail)' }}>
-      <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-label)' }}>
+      <p className="index">
         {GROUP_LABEL[group]}
       </p>
       <ul className="mt-6 space-y-10">
@@ -73,7 +73,7 @@ export function ThinkingIndex({ pieces }: { pieces: RegisteredPiece[] }) {
           that matter. Every piece keeps its full route. */}
       {notes.length > 0 && (
         <div className="mt-16 border-t pt-8" style={{ borderColor: 'var(--rail)' }}>
-          <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--ink-label)' }}>
+          <p className="index">
             Working notes
           </p>
           <ul className="mt-4 flex flex-wrap gap-x-8 gap-y-3">

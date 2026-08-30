@@ -125,7 +125,6 @@ export function KitShelf() {
   return (
     <Shelf
       id="kit"
-      meta={`${kitPrimitives.length} primitives`}
       title="The essay kit"
       intro={
         <>

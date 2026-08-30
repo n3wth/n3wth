@@ -3,9 +3,10 @@ import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent
 import { useNavigate } from 'react-router-dom'
 import { Search, X } from 'lucide-react'
 import { searchItems } from '../lib/search'
+import { track } from '../lib/analytics'
 import type { ResultGroup, SearchItem } from '../lib/search'
 import { registeredPieces } from './thinking/registry'
-import { ecosystem, kitPrimitives, uiTiers } from '../data/library'
+import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
 
 /**
  * One input over four properties: this site's routes, every Thinking piece,
@@ -26,6 +27,9 @@ import { ecosystem, kitPrimitives, uiTiers } from '../data/library'
 /** How many results are drawn at once. The true match count is still shown. */
 const MAX_RESULTS = 40
 
+/* Mirrors the route table in src/main.tsx minus the utility routes
+   (/error, /login, /logout, 404), which nobody searches for.
+   A new user-facing route must be added here too. */
 const PAGES: SearchItem[] = [
   {
     id: 'page-home',
@@ -69,6 +73,13 @@ const PAGES: SearchItem[] = [
     href: '/contact',
     group: 'Pages',
   },
+  {
+    id: 'page-support',
+    title: 'Support',
+    subtitle: 'One inbox for n3wth.com, hop.flights and theywontshutup.com',
+    href: '/support',
+    group: 'Pages',
+  },
 ]
 
 const THINKING: SearchItem[] = registeredPieces.map(({ meta }) => ({
@@ -93,6 +104,14 @@ const KIT: SearchItem[] = kitPrimitives.map((primitive) => ({
   group: 'Library',
 }))
 
+const HOOKS: SearchItem[] = uiHooks.map((name) => ({
+  id: `ui-hook-${name.toLowerCase()}`,
+  title: name,
+  subtitle: '@n3wth/ui hook',
+  href: `/library#ui-hook-${name.toLowerCase()}`,
+  group: 'Library' as ResultGroup,
+}))
+
 const UI: SearchItem[] = uiTiers.flatMap((tier) => {
   const tierLabel = tier.name.replace(/s$/, '').toLowerCase()
   return tier.components.map((name) => ({
@@ -109,13 +128,13 @@ const UI: SearchItem[] = uiTiers.flatMap((tier) => {
 const ELSEWHERE: SearchItem[] = ecosystem.map((property) => ({
   id: `elsewhere-${property.id}`,
   title: property.name,
-  subtitle: property.stat ? `${property.stat} · ${property.purpose}` : property.purpose,
+  subtitle: property.purpose,
   href: property.href,
   external: property.href.startsWith('http'),
   group: 'Elsewhere',
 }))
 
-const STATIC_ITEMS: SearchItem[] = [...PAGES, ...THINKING, ...KIT, ...UI, ...ELSEWHERE]
+const STATIC_ITEMS: SearchItem[] = [...PAGES, ...THINKING, ...KIT, ...UI, ...HOOKS, ...ELSEWHERE]
 
 const page = (id: string): SearchItem => {
   const found = PAGES.find((item) => item.id === id)
@@ -193,7 +212,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           index.notes.map((note) => ({
             id: `garden-${note.href}`,
             title: note.title,
-            subtitle: note.description.length > 0 ? note.description : undefined,
+            subtitle:
+              [note.description, note.section]
+                .filter((part): part is string => Boolean(part && part.length > 0))
+                .join(' · ') || undefined,
             href: note.href,
             external: true,
             group: 'Garden' as ResultGroup,
@@ -216,6 +238,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       return
     }
     openerRef.current = (document.activeElement as HTMLElement | null) ?? null
+    track('command_palette_opened')
     setQuery('')
     setActiveIndex(0)
     setReduceMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
@@ -281,6 +304,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
   const activate = useCallback(
     (item: SearchItem) => {
+      track('command_palette_result_selected', { href: item.href, group: item.group })
       onClose()
       if (item.external) {
         window.open(item.href, '_blank', 'noopener,noreferrer')
@@ -296,7 +320,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       const panel = panelRef.current
       if (!panel) return
       const focusables = panel.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'
+        'a[href]:not([tabindex="-1"]), button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'
       )
       if (focusables.length === 0) {
         event.preventDefault()
@@ -420,11 +444,17 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               onClick={onClose}
               aria-label="Close search"
               className="inline-flex shrink-0 items-center justify-center"
-              style={{ color: 'var(--ink-dim)', width: '28px', height: '28px' }}
+              style={{ color: 'var(--ink-dim)', width: '44px', height: '44px', margin: '0 -12px 0 0' }}
             >
               <X size={16} strokeWidth={1.5} aria-hidden="true" />
             </button>
           </div>
+
+          <p role="status" aria-live="polite" className="sr-only">
+            {flat.length === 0
+              ? 'No results'
+              : `${matches.length} result${matches.length === 1 ? '' : 's'}`}
+          </p>
 
           {/* Results */}
           <div

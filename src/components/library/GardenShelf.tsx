@@ -17,7 +17,6 @@ export function GardenShelf() {
   return (
     <Shelf
       id="garden"
-      meta={`${gardenIndex.noteCount} notes · 1,056 links · 210 groves`}
       title="The garden"
       intro={
         <>

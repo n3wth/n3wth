@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
 import { usePageMeta } from '../hooks/usePageMeta'
+import { track } from '../lib/analytics'
 
 const projects = [
   {
@@ -44,12 +45,13 @@ export default function Support() {
             label="support@n3wth.com"
             variant="primary"
             href="mailto:support@n3wth.com"
+            clickAction={() => track('support_contact_clicked', { project: 'all', channel: 'email' })}
             endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
           />
         </div>
       </header>
 
-      <div data-reveal className="section-pad !pt-0 pb-20">
+      <div data-reveal className="section-pad !pt-0">
         <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <li
@@ -67,8 +69,9 @@ export default function Support() {
               </p>
               <a
                 href={`mailto:${project.contact}`}
-                className="mono mt-4 inline-block"
+                className="mono link-underline mt-4 inline-block py-3"
                 style={{ color: 'var(--ink-dim)' }}
+                onClick={() => track('support_contact_clicked', { project: project.name, channel: 'email' })}
               >
                 {project.contact}
               </a>

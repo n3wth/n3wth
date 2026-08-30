@@ -13,8 +13,6 @@ import uiMeta from '../../data/ui-meta.json'
  * the tiers, so nothing on this shelf is a number typed by hand.
  */
 
-const componentTotal = uiTiers.reduce((total, tier) => total + tier.count, 0)
-
 function IndexRow({ label, count, items }: { label: string; count: number; items: string[] }) {
   return (
     <div
@@ -51,7 +49,6 @@ export function UiShelf() {
   return (
     <Shelf
       id="ui"
-      meta={`v${uiMeta.version} · ${componentTotal} components`}
       title="@n3wth/ui"
       intro={
         <>

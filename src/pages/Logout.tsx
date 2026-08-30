@@ -11,7 +11,7 @@ export default function Logout() {
       <div className="frame relative w-full">
         <div className="section-pad pad-air w-full">
           <h1
-            className="display text-[clamp(2.5rem,7vw,5.5rem)] max-w-[18ch]"
+            className="display text-[length:var(--display-h1)] max-w-[18ch]"
             style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
           >
             You&rsquo;re signed out

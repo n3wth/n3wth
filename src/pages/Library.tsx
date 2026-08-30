@@ -25,7 +25,7 @@ import { EcosystemStrip } from '../components/library/EcosystemStrip'
 export default function Library() {
   usePageMeta(
     'Library — Oliver Newth',
-    "The essay kit behind every piece here, the @n3wth/ui component library, 248 garden notes, and a catalogue of agent skills. What each one's for, and how to start."
+    "The essay kit behind every piece here, the @n3wth/ui component library, the garden's working notes, and a catalogue of agent skills. What each one's for, and how to start."
   )
 
   return (
@@ -33,7 +33,7 @@ export default function Library() {
       <SectionHeader
         as="h1"
         title="Help yourself"
-        lede="The components, notes, and agent skills behind this site."
+        lede="The essay kit, UI components, garden notes, and agent skills behind this site."
       />
 
       <KitShelf />
