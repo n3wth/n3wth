@@ -25,7 +25,7 @@ import { EcosystemStrip } from '../components/library/EcosystemStrip'
 export default function Library() {
   usePageMeta(
     'Library — Oliver Newth',
-    "The essay kit behind every piece here, the @n3wth/ui component library, the garden's working notes, and a catalogue of agent skills. What each one's for, and how to start."
+    'Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, the digital garden, and agent skills.'
   )
 
   return (

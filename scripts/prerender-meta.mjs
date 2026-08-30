@@ -106,7 +106,7 @@ const routes = [
   },
   {
     path: 'support',
-    title: 'Support — n3wth projects',
+    title: 'Support — Oliver Newth',
     description:
       'Support for n3wth projects — n3wth.com, hop.flights, and theywontshutup.com. Email support@n3wth.com.',
     ogImage: '/og-image.png',
