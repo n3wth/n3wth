@@ -1098,7 +1098,7 @@ body {
   transition: transform 0.22s linear;
 }
 
-/* Identity above the loader (z 30): name and credentials paint with the
+/* Identity above the loader: name and credentials paint with the
    first frame instead of waiting out the progress bar. */
 .world-identity-layer {
   position: absolute;
@@ -1123,14 +1123,6 @@ body {
   top: calc(6.75rem + env(safe-area-inset-top));
   left: var(--gutter);
   max-width: min(34rem, 72vw);
-}
-.world-identity-kicker {
-  margin: 0 0 0.55rem;
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: rgba(242, 243, 245, 0.62);
-  letter-spacing: 0.025em;
 }
 .world-identity h1 {
   margin: 0;
@@ -1183,10 +1175,6 @@ body {
     top: calc(5.85rem + env(safe-area-inset-top));
     max-width: calc(100vw - 2 * var(--gutter));
   }
-  .world-identity-kicker {
-    margin-bottom: 0.4rem;
-    font-size: 11px;
-  }
   .world-identity h1 {
     font-size: clamp(2rem, 10vw, 2.65rem);
   }
@@ -1212,7 +1200,6 @@ body {
 }
 
 @media (max-height: 620px) {
-  .world-identity-kicker,
   .world-identity > p:last-child {
     display: none;
   }
