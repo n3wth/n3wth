@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import type { MouseEvent } from 'react'
+import type { CSSProperties, MouseEvent } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, Search, X } from 'lucide-react'
 import { CursorMark } from './marks'
-import { navigation } from '../data/content'
+import { navigation, siteConfig } from '../data/content'
 
 export interface NavProps {
   /** Opens site search. The layout owns its state, so Nav only asks. */
@@ -187,21 +187,61 @@ export function Nav({ onOpenSearch }: NavProps) {
               always reachable; overscroll-contain + touch-pan-y keep iOS
               from rubber-banding the locked page beneath. */}
           <nav
-            className="flex flex-1 min-h-0 flex-col gap-1 overflow-y-auto overscroll-contain touch-pan-y px-4 pt-2 pb-4"
+            className="mobile-nav flex flex-1 min-h-0 flex-col overflow-y-auto overscroll-contain touch-pan-y px-4 pt-2 pb-4"
             aria-label="Mobile navigation"
           >
-            {navigation.map((item) => (
+            {onOpenSearch && (
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false)
+                  onOpenSearch()
+                }}
+                className="mobile-nav-link mobile-nav-row"
+                style={{ '--row-i': 0 } as CSSProperties}
+              >
+                <Search size={17} strokeWidth={1.75} aria-hidden="true" />
+                <span className="mobile-nav-link-label">Search</span>
+              </button>
+            )}
+            {navigation.map((item, i) => (
               <NavLink
                 key={item.href}
                 to={item.href}
                 viewTransition
                 onClick={() => setOpen(false)}
-                className="mobile-nav-link"
+                className={({ isActive }) =>
+                  `mobile-nav-link mobile-nav-row ${isActive ? 'mobile-nav-link-active' : ''}`
+                }
+                style={{ '--row-i': i + 1 } as CSSProperties}
               >
                 <span className="mobile-nav-link-label">{item.name}</span>
               </NavLink>
             ))}
           </nav>
+
+          <div className="mobile-nav-footer">
+            <a href={`mailto:${siteConfig.email}`} className="footer-link text-sm">
+              {siteConfig.email}
+            </a>
+            <span className="mobile-nav-footer-sep" aria-hidden="true" />
+            <a
+              href={siteConfig.social.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link-muted text-sm"
+            >
+              GitHub
+            </a>
+            <a
+              href={siteConfig.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link-muted text-sm"
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
       )}
     </>
