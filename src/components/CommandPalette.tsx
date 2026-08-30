@@ -136,6 +136,23 @@ const ELSEWHERE: SearchItem[] = ecosystem.map((property) => ({
 
 const STATIC_ITEMS: SearchItem[] = [...PAGES, ...THINKING, ...KIT, ...UI, ...HOOKS, ...ELSEWHERE]
 
+/** The answer endpoint returns markdown links only ([text](href)) — this
+    splits on that one pattern rather than pulling in a markdown parser
+    for a single construct. */
+function renderAnswerLinks(text: string): Array<string | { label: string; href: string }> {
+  const parts: Array<string | { label: string; href: string }> = []
+  const linkRe = /\[([^\]]+)\]\(([^)]+)\)/g
+  let last = 0
+  let match: RegExpExecArray | null
+  while ((match = linkRe.exec(text))) {
+    if (match.index > last) parts.push(text.slice(last, match.index))
+    parts.push({ label: match[1], href: match[2] })
+    last = match.index + match[0].length
+  }
+  if (last < text.length) parts.push(text.slice(last))
+  return parts
+}
+
 const page = (id: string): SearchItem => {
   const found = PAGES.find((item) => item.id === id)
   if (!found) throw new Error(`Unknown page in the command palette: ${id}`)
@@ -187,6 +204,8 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const [gardenReady, setGardenReady] = useState(false)
   const [entered, setEntered] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
+  const [askState, setAskState] = useState<'idle' | 'loading' | 'answered' | 'error'>('idle')
+  const [askAnswer, setAskAnswer] = useState('')
 
   const panelRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -293,7 +312,35 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
   useEffect(() => {
     setActiveIndex(0)
+    setAskState('idle')
+    setAskAnswer('')
   }, [trimmed])
+
+  const askAi = useCallback(async () => {
+    if (trimmed.length === 0 || askState === 'loading') return
+    setAskState('loading')
+    track('ai_search_asked', { query_length: trimmed.length })
+    try {
+      const response = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: trimmed,
+          candidates: flat.slice(0, 15).map((item) => ({
+            title: item.title,
+            subtitle: item.subtitle,
+            href: item.href,
+          })),
+        }),
+      })
+      const data = (await response.json()) as { answer?: string }
+      if (!data.answer) throw new Error('empty answer')
+      setAskAnswer(data.answer)
+      setAskState('answered')
+    } catch {
+      setAskState('error')
+    }
+  }, [trimmed, flat, askState])
 
   useEffect(() => {
     if (safeIndex < 0) return
@@ -449,6 +496,63 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               <X size={16} strokeWidth={1.5} aria-hidden="true" />
             </button>
           </div>
+
+          {trimmed.length > 0 && (
+            <div className="shrink-0 px-4 py-2.5" style={{ borderBottom: '1px solid var(--rail)' }}>
+              {askState === 'idle' && (
+                <button
+                  type="button"
+                  onClick={askAi}
+                  className="font-sans text-sm underline underline-offset-4"
+                  style={{ color: 'var(--ink-dim)' }}
+                >
+                  Ask AI about &ldquo;{trimmed}&rdquo;
+                </button>
+              )}
+              {askState === 'loading' && (
+                <p className="font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
+                  Thinking…
+                </p>
+              )}
+              {askState === 'error' && (
+                <p className="font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
+                  Couldn&rsquo;t reach the answering service — the results below still work.
+                </p>
+              )}
+              {askState === 'answered' && (
+                <p
+                  className="font-sans text-sm leading-relaxed"
+                  style={{ color: 'var(--ink)' }}
+                  aria-live="polite"
+                >
+                  {renderAnswerLinks(askAnswer).map((part, i) =>
+                    typeof part === 'string' ? (
+                      <span key={i}>{part}</span>
+                    ) : (
+                      <a
+                        key={i}
+                        href={part.href}
+                        className="underline underline-offset-4"
+                        style={{ color: 'var(--ink)' }}
+                        {...(part.href.startsWith('http')
+                          ? { target: '_blank', rel: 'noopener noreferrer' }
+                          : {})}
+                        onClick={(event) => {
+                          if (part.href.startsWith('http')) return
+                          if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return
+                          event.preventDefault()
+                          onClose()
+                          navigate(part.href)
+                        }}
+                      >
+                        {part.label}
+                      </a>
+                    )
+                  )}
+                </p>
+              )}
+            </div>
+          )}
 
           <p role="status" aria-live="polite" className="sr-only">
             {flat.length === 0
