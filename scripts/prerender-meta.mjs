@@ -274,6 +274,26 @@ const renderRoute = (r, outPath) => {
     /(<meta property="og:image" content=")[^"]*(")/,
     `$1${ORIGIN}${r.ogImage}$2`
   )
+  html = html.replace(
+    /(<meta property="og:image:alt" content=")[^"]*(")/,
+    `$1${esc(r.title)}$2`
+  )
+  html = html.replace(
+    /(<meta name="twitter:title" content=")[^"]*(")/,
+    `$1${esc(r.title)}$2`
+  )
+  html = html.replace(
+    /(<meta name="twitter:description" content=")[^"]*(")/,
+    `$1${esc(r.description)}$2`
+  )
+  html = html.replace(
+    /(<meta name="twitter:image" content=")[^"]*(")/,
+    `$1${ORIGIN}${r.ogImage}$2`
+  )
+  html = html.replace(
+    /(<meta name="twitter:image:alt" content=")[^"]*(")/,
+    `$1${esc(r.title)}$2`
+  )
   if (r.article) {
     html = html.replace(
       /(<meta property="og:type" content=")[^"]*(")/,
