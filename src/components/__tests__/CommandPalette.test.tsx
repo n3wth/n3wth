@@ -15,7 +15,13 @@ describe('CommandPalette smoke', () => {
     const input = screen.getByRole('combobox')
     expect(document.activeElement).toBe(input)
     expect(screen.getAllByRole('option').length).toBe(5)
-    expect(screen.getByText('Start here')).toBeTruthy()
+    /* The curated empty state files its five rows under their own group
+       headings. The "Start here" heading it used to carry was dropped with
+       the rest of the search chrome in #94, and 'Start here' was never a
+       ResultGroup, so there is no label of that name to find. */
+    expect(
+      screen.getAllByRole('group').map((g) => g.getAttribute('aria-labelledby'))
+    ).toEqual(['command-palette-group-pages', 'command-palette-group-thinking'])
 
     // garden arrives via dynamic import
     await waitFor(() => {
