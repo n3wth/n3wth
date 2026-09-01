@@ -97,8 +97,8 @@ export const installations: Installation[] = [
   {
     id: 'them',
     title: 'THEM',
-    tagline: '30-foot interactive light sculpture, in collaboration with artist Simon Malvaez',
-    year: '2019',
+    tagline: "Lighting system and Circle of Light ring on Simón Malvaez's 30-foot sculpture, fabricated by Brenden Blaine Darby's team",
+    year: '2022',
     location: 'Black Rock City, Nevada',
     type: 'burning-man',
     image: '/images/installations/them.webp',
@@ -108,7 +108,7 @@ export const installations: Installation[] = [
   {
     id: 'pink-triangle',
     title: 'Pink Triangle',
-    tagline: 'On the LED crew for Patrick Carney’s illuminated Pride memorial, with Illuminate',
+    tagline: 'Project coordination as part of Illuminate on Patrick Carney’s Pride memorial, Twin Peaks',
     year: '2022',
     location: 'San Francisco, California',
     type: 'memorial',
@@ -118,7 +118,7 @@ export const installations: Installation[] = [
   {
     id: 'circle-of-light',
     title: 'Circle of Light',
-    tagline: 'World AIDS Day memorial of light in Golden Gate Park',
+    tagline: 'World AIDS Day memorial for the National AIDS Memorial, AIDS Memorial Grove, Golden Gate Park',
     year: '2021',
     location: 'San Francisco, California',
     type: 'memorial',

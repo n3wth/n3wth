@@ -20,4 +20,4 @@ npm run build    # tsc + vite build
 
 ## Links
 
-[n3wth.com](https://n3wth.com) | [newth.art](https://newth.art) | [LinkedIn](https://linkedin.com/in/newth)
+[n3wth.com](https://n3wth.com) | [n3wth.com/art](https://n3wth.com/art) | [LinkedIn](https://linkedin.com/in/newth)

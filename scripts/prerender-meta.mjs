@@ -63,9 +63,9 @@ const routes = [
       <h1>After dark — light installations by Oliver Newth</h1>
       <p>I build things that glow: large-scale light art in the desert and for San Francisco memorials.</p>
       <ul>
-        <li>THEM — lighting on the 30-foot Burning Man sculpture by artist Simon Malvaez, Black Rock Desert.</li>
-        <li>Pink Triangle — LED crew on Patrick Carney's illuminated Pride memorial, Twin Peaks, San Francisco.</li>
-        <li>Circle of Light — World AIDS Day memorial of light, Golden Gate Park, San Francisco (2021).</li>
+        <li>THEM — lighting system and Circle of Light ring on Simón Malvaez's 30-foot sculpture, fabricated by Brenden Blaine Darby's team, Black Rock City (2022).</li>
+        <li>Pink Triangle — project coordination as part of Illuminate on Patrick Carney's Pride memorial, Twin Peaks, 2022.</li>
+        <li>Circle of Light — World AIDS Day memorial for the National AIDS Memorial, AIDS Memorial Grove, Golden Gate Park (2021).</li>
       </ul>`,
   },
   {

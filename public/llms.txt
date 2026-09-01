@@ -6,7 +6,7 @@
 
 - [Home](https://n3wth.com/): Who Oliver is — AI at Google, art in the desert.
 - [Work](https://n3wth.com/work/): A decade of AI in production (Google, Covariant, Meta, Microsoft) and five products designed by hand, shipped by an autonomous agent team.
-- [After dark](https://n3wth.com/art/): Light installations — Circle of Light (World AIDS Day memorial, Golden Gate Park), THEM (Burning Man, lighting with artist Simon Malvaez), Pink Triangle (LED crew on the Twin Peaks Pride memorial).
+- [After dark](https://n3wth.com/art/): Light installations — Circle of Light (World AIDS Day memorial for the National AIDS Memorial, AIDS Memorial Grove, Golden Gate Park, 2021), THEM (lighting system and Circle of Light ring on Simón Malvaez's sculpture, Burning Man, 2022), Pink Triangle (project coordination as part of Illuminate on Patrick Carney's Pride memorial, Twin Peaks, 2022).
 - [Thinking](https://n3wth.com/thinking/): Positions on production AI and agents as an org-design problem, with interactive AI-safety trade-off walkthroughs.
 - [Library](https://n3wth.com/library/): The installable pieces — the essay kit, the @n3wth/ui component library, the garden's structure, and agent skills, each with getting-started instructions.
 - [Contact](https://n3wth.com/contact/): oliver@newth.ai — product, AI safety, LED art, or coffee in San Francisco.
