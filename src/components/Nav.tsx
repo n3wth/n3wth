@@ -3,7 +3,6 @@ import type { CSSProperties, MouseEvent } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { IconButton } from '@astryxdesign/core/IconButton'
 import { Menu, Search, X } from 'lucide-react'
-import { CursorMark } from './marks'
 import { navigation } from '../data/content'
 
 export interface NavProps {
@@ -114,9 +113,6 @@ export function Nav({ onOpenSearch }: NavProps) {
             aria-label="n3wth — home"
             onClick={sameRouteClick('/')}
           >
-            <span className="brand-mark shrink-0" aria-hidden="true">
-              <CursorMark size={18} />
-            </span>
             <span>n3wth</span>
           </Link>
 
