@@ -46,7 +46,7 @@ const routes = [
         <p>Live products, designed by Oliver and kept shipping by a standing team of autonomous agents:</p>
         <ul>
           <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — points-vs-cash flight optimizer.</li>
-          <li><a href="https://r3.newth.ai" rel="noopener">r3</a> — persistent memory for AI apps: vector search and knowledge graphs, no config.</li>
+          <li><a href="https://r3.n3wth.com" rel="noopener">r3</a> — persistent memory for AI apps: vector search and knowledge graphs, no config.</li>
           <li><a href="https://kit.n3wth.com" rel="noopener">kit</a> — 49 components with AI context packs.</li>
           <li><a href="https://theywontshutup.com" rel="noopener">theywontshutup.com</a> — AI voice hotline.</li>
           <li><a href="https://garden.n3wth.com" rel="noopener">garden</a> — a digital garden of working notes.</li>
