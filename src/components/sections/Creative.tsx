@@ -1,4 +1,9 @@
-import { installations, type Installation } from '../../data/content'
+import { Fragment } from 'react'
+import {
+  installations,
+  type CreditLink,
+  type Installation,
+} from '../../data/content'
 
 /** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
 function sentenceCase(type: string) {
@@ -7,6 +12,24 @@ function sentenceCase(type: string) {
 }
 
 const [opener, ...works] = installations
+
+/* Institutions named in a credit line become inline links at the credit's
+   own type size. Each link's text has to appear verbatim in the tagline; a
+   miss leaves that phrase as plain text rather than dropping the credit. */
+function taglineParts(inst: Installation) {
+  let parts: (string | CreditLink)[] = [inst.tagline]
+
+  for (const link of inst.creditLinks ?? []) {
+    parts = parts.flatMap((part) => {
+      if (typeof part !== 'string') return [part]
+      const at = part.indexOf(link.text)
+      if (at === -1) return [part]
+      return [part.slice(0, at), link, part.slice(at + link.text.length)]
+    })
+  }
+
+  return parts.filter((part) => part !== '')
+}
 
 /* Balanced rail: title + credit left, provenance right — the stacked-left
    version left the rail's right half empty. Shared with the opening work,
@@ -29,7 +52,21 @@ function WorkCredit({ inst }: { inst: Installation }) {
           className="max-w-md text-sm leading-relaxed m-0"
           style={{ color: 'var(--ink-dim)' }}
         >
-          {inst.tagline}
+          {taglineParts(inst).map((part, i) =>
+            typeof part === 'string' ? (
+              <Fragment key={i}>{part}</Fragment>
+            ) : (
+              <a
+                key={i}
+                href={part.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline"
+              >
+                {part.text}
+              </a>
+            )
+          )}
         </p>
       </div>
       <p className="meta m-0 mt-3 md:mt-0 shrink-0 md:text-right">
