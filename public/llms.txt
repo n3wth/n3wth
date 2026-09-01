@@ -1,21 +1,28 @@
 # Oliver Newth (n3wth.com)
 
-> Oliver Newth is an AI product lead at Google in San Francisco, building platforms that put Google DeepMind models into products. He previously built product at Covariant (acquired by Amazon), Meta (video calling on Instagram and Portal), and Microsoft (Azure Cognitive Services), and holds an MEng from MIT (Kennedy Scholar). A standing team of coding agents ships his five live products. After dark he builds large-scale light installations for Burning Man and San Francisco memorials.
+> Oliver Newth is an AI Product Lead at Google (2025 —) in San Francisco, building platforms that put Google DeepMind models into products. Previously: Covariant (acquired by Amazon), Meta (video calling on Instagram and Portal), Microsoft (Azure Cognitive Services). MEng from MIT (Kennedy Scholar). After dark he builds large-scale light installations for Burning Man and San Francisco memorials.
 
 ## Pages
 
 - [Home](https://n3wth.com/): Who Oliver is — AI at Google, art in the desert.
-- [Work](https://n3wth.com/work/): A decade of AI in production (Google, Covariant, Meta, Microsoft) and five products designed by hand, shipped by an autonomous agent team (r3, kit, hop.flights).
-- [After dark](https://n3wth.com/art/): Light installations — Circle of Light (his World AIDS Day memorial, Golden Gate Park), THEM (Burning Man, lighting with artist Simon Malvaez), Pink Triangle (LED crew on the Twin Peaks Pride memorial).
+- [Work](https://n3wth.com/work/): A decade of AI in production (Google, Covariant, Meta, Microsoft) and five products designed by hand, shipped by an autonomous agent team.
+- [After dark](https://n3wth.com/art/): Light installations — Circle of Light (World AIDS Day memorial, Golden Gate Park), THEM (Burning Man, lighting with artist Simon Malvaez), Pink Triangle (LED crew on the Twin Peaks Pride memorial).
 - [Thinking](https://n3wth.com/thinking/): Positions on production AI and agents as an org-design problem, with interactive AI-safety trade-off walkthroughs.
-- [Library](https://n3wth.com/library/): The installable pieces. The essay kit that lays out every Thinking piece, the @n3wth/ui component library, the garden's structure, and agent skills, each with getting-started instructions.
+- [Library](https://n3wth.com/library/): The installable pieces — the essay kit, the @n3wth/ui component library, the garden's structure, and agent skills, each with getting-started instructions.
 - [Contact](https://n3wth.com/contact/): oliver@newth.ai — product, AI safety, LED art, or coffee in San Francisco.
+
+## Live products
+
+Products designed by Oliver, kept shipping by an autonomous agent team:
+
+- [hop.flights](https://hop.flights/): Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.
+- [r3](https://r3.n3wth.com/): Persistent memory for AI apps — vector search and knowledge graphs, no config.
+- [kit](https://kit.n3wth.com/): 49 components with AI context packs. Ships your design system straight to your editor and coding agents.
+- [skills](https://skills.n3wth.com/): A registry of markdown skills for coding agents. Install with one command, run locally, work offline.
+- [garden](https://garden.n3wth.com/): A digital garden of interconnected working notes. Notes carry growth stages (seedling, budding, evergreen) and are gathered into groves. Has its own llms.txt.
 
 ## Ecosystem
 
-These four sites are one body of work. n3wth.com search covers all of them at once; https://n3wth.com/library/ is the index.
-
-- [n3wth/garden](https://garden.n3wth.com/): Digital garden of 248 interconnected notes on careers, learning, health, and building things. Notes carry a growth stage (seedling, budding, evergreen), 1,056 internal links, 210 tag collections called groves. Has its own llms.txt.
-- [n3wth/ui](https://ui.n3wth.com/): Atomic React design system, published as `@n3wth/ui` on npm. 36 components (20 atoms, 12 molecules, 4 organisms) and 11 hooks. Install: `npm install @n3wth/ui`.
-- [n3wth/skills](https://skills.n3wth.com/): Skills for coding assistants, covering development, documents, creative work, productivity, and business. They run locally and work offline.
 - [GitHub](https://github.com/n3wth): Open source.
+- newth.ai redirects to n3wth.com.
+- here.n3wth.com is a host for here.now pages, not a product homepage.
