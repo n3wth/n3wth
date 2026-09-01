@@ -9,11 +9,11 @@
 - [After dark](https://n3wth.com/art/): Light installations — Circle of Light (his World AIDS Day memorial, Golden Gate Park), THEM (Burning Man, lighting with artist Simon Malvaez), Pink Triangle (LED crew on the Twin Peaks Pride memorial).
 - [Thinking](https://n3wth.com/thinking/): Positions on production AI and agents as an org-design problem, with interactive AI-safety trade-off walkthroughs.
 - [Library](https://n3wth.com/library/): The installable pieces. The essay kit that lays out every Thinking piece, the @n3wth/ui component library, the garden's structure, and agent skills, each with getting-started instructions.
-- [Contact](https://n3wth.com/contact/): oliver@newth.ai — AI safety, LED art, or coffee in San Francisco.
+- [Contact](https://n3wth.com/contact/): oliver@newth.ai — product, AI safety, LED art, or coffee in San Francisco.
 
 ## Ecosystem
 
-These four sites are one body of work. n3wth.com's ⌘K search covers all of them at once; https://n3wth.com/library/ is the index.
+These four sites are one body of work. n3wth.com search covers all of them at once; https://n3wth.com/library/ is the index.
 
 - [n3wth/garden](https://garden.n3wth.com/): Digital garden of 248 interconnected notes on careers, learning, health, and building things. Notes carry a growth stage (seedling, budding, evergreen), 1,056 internal links, 210 tag collections called groves. Has its own llms.txt.
 - [n3wth/ui](https://ui.n3wth.com/): Atomic React design system, published as `@n3wth/ui` on npm. 36 components (20 atoms, 12 molecules, 4 organisms) and 11 hooks. Install: `npm install @n3wth/ui`.
