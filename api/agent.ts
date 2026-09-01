@@ -24,7 +24,7 @@ OPEN SOURCE:
 - skills: Markdown skills that teach AI assistants new tricks
 
 CREATIVE:
-- LED artist. Circle of Light (his World AIDS Day memorial, Golden Gate Park), lighting on THEM (30-foot Burning Man sculpture by Simon Malvaez), LED crew on the Twin Peaks Pink Triangle with Illuminate.
+- LED artist. THEM — Lighting and Circle of Light ring. Design: Simón Malvaez. Fabrication: Brenden Blaine Darby. Fractured Atlas. Black Rock City, Nevada, 2022. Pink Triangle — Project coordination as part of Illuminate on Patrick Carney’s Pride memorial. Twin Peaks, San Francisco, 2022. Circle of Light — World AIDS Day memorial for the National AIDS Memorial. AIDS Memorial Grove, San Francisco, 2021.
 
 BELIEFS:
 - "Trust Is a Runtime Property" -- production trust requires latency-aware safety classifiers, feedback loops not filters, and observability most teams never build.
@@ -48,7 +48,7 @@ const FALLBACK_RESPONSES: Record<string, string> = {
   google: 'Oliver is an AI product lead at Google, building platforms that put DeepMind models into products.',
   work: 'Four companies, one thread: shipping AI from research to production. Google (DeepMind model platforms), Covariant (through Amazon\'s acquisition), Meta (video calling on Instagram and Portal), Microsoft (Azure Cognitive Services).',
   build: 'r3 gives AI apps persistent memory. kit ships design systems to AI coding tools. hop.flights finds the cheapest way to fly, miles or money. All open source.',
-  creative: 'Circle of Light is his World AIDS Day memorial in Golden Gate Park. He built lighting on THEM at Burning Man and is on the Pink Triangle LED crew. Same systems thinking, different medium.',
+  creative: "Circle of Light is his World AIDS Day memorial for the National AIDS Memorial, in the AIDS Memorial Grove (2021). On THEM he did the lighting and the Circle of Light ring, design by Simón Malvaez and fabrication by Brenden Blaine Darby (2022). Pink Triangle was project coordination as part of Illuminate (2022).",
   trust: 'Trust is a runtime property, not a benchmark score. Safety classifiers need to run at feature latency. Feedback loops beat filters. Most teams never build the observability to know.',
   agent: 'AI should be present, not summoned. The next generation of AI products will be ambient -- multi-agent systems where the coordination protocol matters more than any individual model.',
   contact: 'hey@n3wth.com -- AI safety, LED art, or coffee in San Francisco.',

@@ -81,10 +81,19 @@ export const experiences: Experience[] = [
 export const education =
   'Before the ship log: MIT MEng in High Performance Structures (Kennedy Scholar); Warwick Civil Engineering, First Class.'
 
+export interface CreditLink {
+  /** Must appear verbatim in the installation's tagline. */
+  text: string
+  href: string
+}
+
 export interface Installation {
   id: string
   title: string
+  /** Credits only — place detail belongs in `location`. */
   tagline: string
+  /** Institutions named in the tagline that have a public URL to point at. */
+  creditLinks?: CreditLink[]
   year: string
   location: string
   type: 'burning-man' | 'public-art' | 'memorial' | 'interactive'
@@ -97,8 +106,15 @@ export const installations: Installation[] = [
   {
     id: 'them',
     title: 'THEM',
-    tagline: '30-foot interactive light sculpture, in collaboration with artist Simon Malvaez',
-    year: '2019',
+    tagline:
+      'Lighting and Circle of Light ring. Design: Simón Malvaez. Fabrication: Brenden Blaine Darby. Fractured Atlas',
+    creditLinks: [
+      {
+        text: 'Fractured Atlas',
+        href: 'https://fundraising.fracturedatlas.org/them-a-burning-man-art-piece',
+      },
+    ],
+    year: '2022',
     location: 'Black Rock City, Nevada',
     type: 'burning-man',
     image: '/images/installations/them.webp',
@@ -108,9 +124,16 @@ export const installations: Installation[] = [
   {
     id: 'pink-triangle',
     title: 'Pink Triangle',
-    tagline: 'On the LED crew for Patrick Carney’s illuminated Pride memorial, with Illuminate',
+    tagline:
+      'Project coordination as part of Illuminate on Patrick Carney’s Pride memorial.',
+    creditLinks: [
+      {
+        text: 'Illuminate',
+        href: 'https://illuminate.org/projects/the-pink-triangle/',
+      },
+    ],
     year: '2022',
-    location: 'San Francisco, California',
+    location: 'Twin Peaks, San Francisco',
     type: 'memorial',
     image: '/images/installations/pink-triangle.webp',
     imageAlt: 'Pink Triangle LED installation illuminating Twin Peaks during Pride Month',
@@ -118,9 +141,15 @@ export const installations: Installation[] = [
   {
     id: 'circle-of-light',
     title: 'Circle of Light',
-    tagline: 'World AIDS Day memorial of light in Golden Gate Park',
+    tagline: 'World AIDS Day memorial for the National AIDS Memorial.',
+    creditLinks: [
+      {
+        text: 'National AIDS Memorial',
+        href: 'https://www.aidsmemorial.org/grove',
+      },
+    ],
     year: '2021',
-    location: 'San Francisco, California',
+    location: 'AIDS Memorial Grove, San Francisco',
     type: 'memorial',
     image: '/images/installations/circle-of-light.webp',
     imageAlt: 'Circle of Light illuminated memorial in Golden Gate Park',
