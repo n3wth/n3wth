@@ -20,7 +20,7 @@ export function Contact() {
             <h1 className="display text-[length:var(--display-h1)]">Let's talk</h1>
 
             <p className="mt-6 text-base md:text-xl leading-relaxed max-w-lg" style={{ color: 'var(--ink-dim)' }}>
-              AI safety or LED art. Coffee if you're in San Francisco.
+              Product, AI safety, or LED art. Coffee if you're in San Francisco.
             </p>
 
             {/* One action. The footer below already carries the rest. */}
