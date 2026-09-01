@@ -4,6 +4,7 @@ import {
   type CreditLink,
   type Installation,
 } from '../../data/content'
+import { SectionHeader } from '../Frame'
 
 /** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
 function sentenceCase(type: string) {
@@ -80,17 +81,26 @@ function WorkCredit({ inst }: { inst: Installation }) {
   )
 }
 
-/* After dark as a walk through a night gallery: a full-viewport opening
-   work with the page title living on the image, a statement of intent,
-   then each remaining installation at near-viewport height. Every work
-   carries a credit rail under its frame. Every image drifts slowly (CSS
-   Ken Burns, reduced-motion safe). */
+/* After dark as a walk through a night gallery: standard page header,
+   a full-viewport opening work, a statement of intent, then each
+   remaining installation at near-viewport height with its caption below
+   the frame. Every image drifts slowly (CSS Ken Burns, reduced-motion
+   safe). */
 export function Creative() {
   return (
     <section aria-label="After dark">
-      {/* Opening work: the page begins inside the art */}
-      <div className="-mt-20">
-        <div className="art-band bleed" style={{ height: '100svh' }}>
+      <SectionHeader
+        as="h1"
+        title="I build things that glow"
+        lede="Large-scale light for the desert and the city — Burning Man sculpture and San Francisco memorials."
+      />
+
+      {/* Opening work */}
+      <figure data-reveal className="m-0">
+        <div
+          className="art-band bleed"
+          style={{ height: 'clamp(480px, 88svh, 900px)' }}
+        >
           <img
             src={opener.image}
             alt={opener.imageAlt}
@@ -98,26 +108,11 @@ export function Creative() {
             decoding="async"
             className="art-band-img"
           />
-          <div className="art-band-caption art-band-caption--sky">
-            <h1
-              className="display text-[length:var(--display-h1)] mb-4"
-              style={{ letterSpacing: '-0.035em', lineHeight: 0.95, color: '#0b0c0e' }}
-            >
-              I build things that glow
-            </h1>
-            <p
-              className="max-w-md text-sm leading-relaxed m-0"
-              style={{ color: 'rgba(8, 9, 11, 0.72)' }}
-            >
-              Large-scale light for the desert and the city — Burning Man
-              sculpture and San Francisco memorials.
-            </p>
-          </div>
         </div>
-        <div className={railClass}>
+        <figcaption className={railClass}>
           <WorkCredit inst={opener} />
-        </div>
-      </div>
+        </figcaption>
+      </figure>
 
       {/* Statement of intent */}
       <div data-reveal className="section-pad pad-air">
