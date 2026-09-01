@@ -1,4 +1,4 @@
-import { installations } from '../../data/content'
+import { installations, type Installation } from '../../data/content'
 
 /** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
 function sentenceCase(type: string) {
@@ -8,11 +8,46 @@ function sentenceCase(type: string) {
 
 const [opener, ...works] = installations
 
+/* Balanced rail: title + credit left, provenance right — the stacked-left
+   version left the rail's right half empty. Shared with the opening work,
+   which otherwise showed its photograph with no title, collaborators, or
+   year anywhere on the page. */
+const railClass =
+  'section-pad !py-5 md:!py-6 md:flex md:items-baseline md:justify-between md:gap-16'
+
+function WorkCredit({ inst }: { inst: Installation }) {
+  return (
+    <>
+      <div className="min-w-0">
+        <h2
+          className="display text-2xl md:text-3xl mb-2"
+          style={{ letterSpacing: '-0.02em' }}
+        >
+          {inst.title}
+        </h2>
+        <p
+          className="max-w-md text-sm leading-relaxed m-0"
+          style={{ color: 'var(--ink-dim)' }}
+        >
+          {inst.tagline}
+        </p>
+      </div>
+      <p className="meta m-0 mt-3 md:mt-0 shrink-0 md:text-right">
+        <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
+        <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
+        {inst.location}
+        <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
+        {sentenceCase(inst.type)}
+      </p>
+    </>
+  )
+}
+
 /* After dark as a walk through a night gallery: a full-viewport opening
    work with the page title living on the image, a statement of intent,
-   then each remaining installation at near-viewport height with its
-   caption overlaid on the frame. Every image drifts slowly (CSS Ken
-   Burns, reduced-motion safe). */
+   then each remaining installation at near-viewport height. Every work
+   carries a credit rail under its frame. Every image drifts slowly (CSS
+   Ken Burns, reduced-motion safe). */
 export function Creative() {
   return (
     <section aria-label="After dark">
@@ -41,6 +76,9 @@ export function Creative() {
               sculpture and San Francisco memorials.
             </p>
           </div>
+        </div>
+        <div className={railClass}>
+          <WorkCredit inst={opener} />
         </div>
       </div>
 
@@ -71,30 +109,8 @@ export function Creative() {
                 className="art-band-img"
               />
             </div>
-            {/* Balanced rail: title + tagline left, provenance right —
-                the stacked-left version left the rail's right half empty */}
-            <figcaption className="section-pad !py-5 md:!py-6 md:flex md:items-baseline md:justify-between md:gap-16">
-              <div className="min-w-0">
-                <h2
-                  className="display text-2xl md:text-3xl mb-2"
-                  style={{ letterSpacing: '-0.02em' }}
-                >
-                  {inst.title}
-                </h2>
-                <p
-                  className="max-w-md text-sm leading-relaxed m-0"
-                  style={{ color: 'var(--ink-dim)' }}
-                >
-                  {inst.tagline}
-                </p>
-              </div>
-              <p className="meta m-0 mt-3 md:mt-0 shrink-0 md:text-right">
-                <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
-                <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
-                {inst.location}
-                <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
-                {sentenceCase(inst.type)}
-              </p>
+            <figcaption className={railClass}>
+              <WorkCredit inst={inst} />
             </figcaption>
           </figure>
         ))}
