@@ -36,6 +36,13 @@ npm run build    # tsc + vite build (verify before committing)
 - Before writing or editing any user-facing copy, load `.agents/skills/anti-ai-slop-writing/SKILL.md` and follow its constraints (banned vocabulary, no detectable AI patterns).
 - Weights: this site's heaviest font weight is semibold (600) - never use bold/700.
 
+## Voice
+
+- The homepage, /work, and /thinking share one quiet voice: plain declarative sentences, lowercase-calm, no hype, no exclamation points, no marketing adjectives ("innovative", "cutting-edge", "passionate"). Facts stated once, then left alone. When editing copy on these pages, match what's already there rather than raising the temperature.
+- Contact email is `hey@n3wth.com` everywhere (already in `src/data/content.ts` as `siteConfig.email` — use that, never hardcode a different address). `support@n3wth.com` on /support is intentional and separate.
+- **Do not change art credits.** The credit lines and credit links on installations (`src/data/content.ts` installations, rendered by `src/components/sections/Creative.tsx`) are factual attributions — never reword, trim, or "improve" them.
+- **Do not change OG/social meta.** The `og:*` and `twitter:*` tags and `og-image.png` in `index.html` stay as-is unless the user explicitly asks.
+
 ## Key Conventions
 
 - **GSAP imports:** Always use `import { gsap, useGSAP } from '../../lib/gsap'` - never import gsap directly or re-register plugins. Scroll-driven pieces import `{ gsap, useGSAP, ScrollTrigger, SplitText }` from `src/lib/scroll.ts` instead (registers scroll plugins once, ships in a lazy `gsap-scroll` chunk). Official GSAP skills are vendored in `.agents/skills/gsap-*` - load the relevant ones before writing animation code
