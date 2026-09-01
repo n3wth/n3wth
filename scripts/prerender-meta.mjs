@@ -98,11 +98,11 @@ const routes = [
     path: 'contact',
     title: 'Contact — Oliver Newth',
     description:
-      "Get in touch with Oliver Newth — AI safety or LED art. Coffee if you're in San Francisco.",
+      "Get in touch with Oliver Newth — product, AI safety, or LED art. Coffee if you're in San Francisco.",
     ogImage: '/og/contact.png',
     body: `
       <h1>Contact Oliver Newth</h1>
-      <p>Happy to talk about AI safety or LED art. Coffee if you're in San Francisco. Email: oliver@newth.ai</p>`,
+      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: oliver@newth.ai</p>`,
   },
   {
     path: 'support',
@@ -351,13 +351,14 @@ console.log('[prerender-meta] dist/404.html')
    drift when a piece is added. lastmod only; Google ignores
    changefreq/priority. */
 const latestPieceDate = pieceMetas.map((p) => p.date).sort().at(-1)
+const buildDate = new Date().toISOString().slice(0, 10)
 const sitemapEntries = [
-  { loc: `${ORIGIN}/`, lastmod: latestPieceDate },
+  { loc: `${ORIGIN}/`, lastmod: buildDate },
   ...routes
     .filter((r) => !r.noindex)
     .map((r) => ({
       loc: `${ORIGIN}/${r.path}`,
-      lastmod: r.article?.published ?? latestPieceDate,
+      lastmod: r.article?.published ?? buildDate,
     })),
 ]
 writeFileSync(

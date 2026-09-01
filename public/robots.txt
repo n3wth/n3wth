@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://n3wth.com/sitemap.xml
+
+# AI crawlers: https://n3wth.com/llms.txt
