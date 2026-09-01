@@ -1,5 +1,42 @@
 # AGENTS.md
 
+## Directory map
+
+```
+src/
+├── main.tsx              # Router setup (createBrowserRouter)
+├── App.tsx               # Layout shell: Nav, Footer, Suspense outlet
+├── pages/                # Route components (one per public path)
+│   ├── Home.tsx          # /
+│   ├── Work.tsx          # /work
+│   ├── Art.tsx           # /art         (renders Creative section)
+│   ├── Thinking.tsx      # /thinking
+│   ├── ThinkingPiece.tsx # /thinking/:slug
+│   ├── Library.tsx       # /library
+│   ├── Contact.tsx       # /contact
+│   └── ...               # Support, Login, Logout, NotFound, ErrorPage
+├── components/
+│   ├── Nav.tsx           # Top nav bar (uses navigation from data/content.ts)
+│   ├── Footer.tsx        # Site footer (uses siteConfig from data/content.ts)
+│   ├── sections/         # Page sections (Experience, Building, Thinking, Creative, Contact)
+│   └── thinking/         # Thinking pieces + kit components
+├── data/
+│   ├── content.ts        # siteConfig, navigation[], experiences[], installations[]
+│   ├── thinking.ts       # Thought pieces metadata
+│   └── library.ts        # Library shelf data
+├── hooks/                # usePageMeta, useReveal, useCommandPalette, etc.
+└── lib/
+    ├── gsap.ts           # GSAP plugin registration (always import from here)
+    └── scroll.ts         # Scroll-driven GSAP (ScrollTrigger, SplitText)
+```
+
+## Quick reference
+
+- **Contact:** hey@n3wth.com
+- **Nav links:** `src/data/content.ts` → `navigation[]`
+- **Footer links:** `src/components/Footer.tsx` (hardcoded `links[]`)
+- **Art credits:** Do not edit — installations data lives in `src/data/content.ts` → `installations[]`
+
 ## Cursor Cloud specific instructions
 
 This is a **React + TypeScript SPA** (personal portfolio site) built with Vite 7, Tailwind CSS 4, and GSAP for scroll-driven animations. No backend, no database.
