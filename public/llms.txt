@@ -9,7 +9,7 @@
 - [After dark](https://n3wth.com/art/): Light installations — Circle of Light (World AIDS Day memorial, Golden Gate Park), THEM (Burning Man, lighting with artist Simon Malvaez), Pink Triangle (LED crew on the Twin Peaks Pride memorial).
 - [Thinking](https://n3wth.com/thinking/): Positions on production AI and agents as an org-design problem, with interactive AI-safety trade-off walkthroughs.
 - [Library](https://n3wth.com/library/): The installable pieces — the essay kit, the @n3wth/ui component library, the garden's structure, and agent skills, each with getting-started instructions.
-- [Contact](https://n3wth.com/contact/): oliver@newth.ai — product, AI safety, LED art, or coffee in San Francisco.
+- [Contact](https://n3wth.com/contact/): hey@n3wth.com — product, AI safety, LED art, or coffee in San Francisco.
 
 ## Live products
 

@@ -41,7 +41,7 @@ YOUR BEHAVIOR:
 - Be specific, not generic. Reference actual projects, numbers, beliefs.
 - Never use emojis. Never use exclamation marks. Never be sycophantic.
 - If asked something you don't know, say so plainly.
-- Suggest reaching out to Oliver directly: oliver@newth.ai`
+- Suggest reaching out to Oliver directly: hey@n3wth.com`
 
 // Intelligent fallback responses based on keywords
 const FALLBACK_RESPONSES: Record<string, string> = {
@@ -51,8 +51,8 @@ const FALLBACK_RESPONSES: Record<string, string> = {
   creative: 'Circle of Light is his World AIDS Day memorial in Golden Gate Park. He built lighting on THEM at Burning Man and is on the Pink Triangle LED crew. Same systems thinking, different medium.',
   trust: 'Trust is a runtime property, not a benchmark score. Safety classifiers need to run at feature latency. Feedback loops beat filters. Most teams never build the observability to know.',
   agent: 'AI should be present, not summoned. The next generation of AI products will be ambient -- multi-agent systems where the coordination protocol matters more than any individual model.',
-  contact: 'oliver@newth.ai -- AI safety, LED art, or coffee in San Francisco.',
-  default: 'Oliver ships AI products at Google, builds open-source tools, and creates LED art installations. Ask about any of these, or reach out at oliver@newth.ai.',
+  contact: 'hey@n3wth.com -- AI safety, LED art, or coffee in San Francisco.',
+  default: 'Oliver ships AI products at Google, builds open-source tools, and creates LED art installations. Ask about any of these, or reach out at hey@n3wth.com.',
 }
 
 function getFallbackReply(message: string): string {

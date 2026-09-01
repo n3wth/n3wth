@@ -73,9 +73,9 @@
       "section": null
     },
     {
-      "title": "Astryx vs shadcn vs Angular Material for LLM Development",
+      "title": "Astryx vs shadcn: which design system for LLM-written UI",
       "href": "https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material",
-      "description": "Field notes from rebuilding this garden with Astryx — how three design systems compare when an LLM is the one writing the UI, and which makes accessible design easiest",
+      "description": "Astryx vs shadcn (and Angular Material): field notes from rebuilding this garden with an LLM writing the UI, and which system makes accessible design easiest.",
       "section": null
     },
     {

@@ -102,7 +102,7 @@ const routes = [
     ogImage: '/og/contact.png',
     body: `
       <h1>Contact Oliver Newth</h1>
-      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: oliver@newth.ai</p>`,
+      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: hey@n3wth.com</p>`,
   },
   {
     path: 'support',
