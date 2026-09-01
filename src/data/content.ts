@@ -2,7 +2,7 @@ export const siteConfig = {
   name: 'Oliver Newth',
   title: 'Oliver Newth — AI Product Lead at Google',
   description: 'AI product lead at Google. Ex-Covariant (acquired by Amazon), Meta, Microsoft. Ships with a standing agent team; builds large-scale light art.',
-  email: 'oliver@newth.ai',
+  email: 'hey@n3wth.com',
   social: {
     github: 'https://github.com/n3wth',
     linkedin: 'https://linkedin.com/in/newth',
