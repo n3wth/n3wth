@@ -7,8 +7,10 @@ const links = [
   { label: 'LinkedIn', href: siteConfig.social.linkedin, external: true },
   { label: 'Email', href: `mailto:${siteConfig.email}`, external: false },
   { label: 'garden', href: 'https://garden.n3wth.com', external: true },
-  { label: 'ui', href: 'https://ui.n3wth.com', external: true },
+  { label: 'kit', href: 'https://kit.n3wth.com', external: true },
   { label: 'skills', href: 'https://skills.n3wth.com', external: true },
+  { label: 'r3', href: 'https://r3.n3wth.com', external: true },
+  { label: 'hop', href: 'https://hop.flights', external: true },
 ]
 
 export function Footer() {

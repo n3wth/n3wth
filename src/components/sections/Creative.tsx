@@ -100,6 +100,19 @@ export function Creative() {
         ))}
       </div>
 
+      <div data-reveal className="section-pad pad-tight">
+        <p className="meta" style={{ color: 'var(--ink-dim)' }}>
+          <a
+            href="https://newth.art"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-underline"
+          >
+            newth.art
+          </a>
+        </p>
+      </div>
+
     </section>
   )
 }
