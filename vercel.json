@@ -6,12 +6,27 @@
       "permanent": true
     },
     {
+      "source": "/blog/",
+      "destination": "/thinking",
+      "permanent": true
+    },
+    {
       "source": "/news",
       "destination": "/thinking",
       "permanent": true
     },
     {
+      "source": "/news/",
+      "destination": "/thinking",
+      "permanent": true
+    },
+    {
       "source": "/press",
+      "destination": "/thinking",
+      "permanent": true
+    },
+    {
+      "source": "/press/",
       "destination": "/thinking",
       "permanent": true
     }
