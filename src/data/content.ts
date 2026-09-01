@@ -142,7 +142,7 @@ export const projects: Project[] = [
     name: 'r3',
     description: 'Give any AI app persistent memory. Vector search and knowledge graphs, no config.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
-    url: 'https://r3.newth.ai',
+    url: 'https://r3.n3wth.com',
     github: 'https://github.com/n3wth/r3',
   },
   {
@@ -150,7 +150,7 @@ export const projects: Project[] = [
     name: 'kit',
     description: '49 components with AI context packs. Ships your design system straight to your editor and coding agents.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
-    url: 'https://kit.newth.ai',
+    url: 'https://kit.n3wth.com',
     github: 'https://github.com/n3wth/kit',
   },
   {
