@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
+import { useOptionalGLTF } from '../../../../lib/optionalGLTF'
 import { gsap, useGSAP } from '../../../../lib/scroll'
 import { countTriangles, frameloopFor, poolTexture, ramp, rebuildMaterials, useNear } from './support'
 
@@ -58,7 +58,7 @@ function BikeStates({
   reduced: boolean
   onStats: (tris: number) => void
 }) {
-  const { scene } = useGLTF('/models/bike.glb')
+  const scene = useOptionalGLTF('/models/bike.glb')?.scene
   const spinRef = useRef<THREE.Group>(null)
   const wireRef = useRef<THREE.Group>(null)
   const clayRef = useRef<THREE.Group>(null)
@@ -68,6 +68,7 @@ function BikeStates({
   const poolRef = useRef<THREE.MeshBasicMaterial>(null)
 
   const built = useMemo(() => {
+    if (!scene) return null
     const normalize = (root: THREE.Object3D) => {
       const box = new THREE.Box3().setFromObject(root)
       const size = new THREE.Vector3()
@@ -139,15 +140,17 @@ function BikeStates({
   }, [scene])
 
   useEffect(() => {
-    onStats(built.tris)
+    if (built) onStats(built.tris)
   }, [built, onStats])
 
   useEffect(() => {
+    if (!built) return
     const { disposables } = built
     return () => disposables.forEach((d) => d.dispose())
   }, [built])
 
   useFrame((_, delta) => {
+    if (!built) return
     const p = prog.p
     const w = 1 - ramp(p, 0.2, 0.34)
     const c = ramp(p, 0.18, 0.32) * (1 - ramp(p, 0.52, 0.66))
@@ -174,6 +177,8 @@ function BikeStates({
 
     if (!reduced && spinRef.current) spinRef.current.rotation.y += delta * 0.16
   })
+
+  if (!built) return null
 
   return (
     <>
