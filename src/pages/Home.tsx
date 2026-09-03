@@ -2,7 +2,7 @@ import { Component, Suspense, lazy, useCallback, useMemo } from 'react'
 import type { ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
-import { siteConfig } from '../data/content'
+import { siteConfig, familySites } from '../data/content'
 
 /* The front door is a field at night (three.js, lazy so the rest of the
    site never pays for it): every glowing structure is one of Oliver's
@@ -112,7 +112,12 @@ export default function Home() {
             {p.label}
           </Link>
         ))}
-        <a href="https://garden.n3wth.com">The garden</a>
+        <span className="field-doors-sep" aria-hidden>·</span>
+        {familySites.map((s) => (
+          <a key={s.href} href={s.href} rel="noopener">
+            {s.name}
+          </a>
+        ))}
       </nav>
     </section>
   )
