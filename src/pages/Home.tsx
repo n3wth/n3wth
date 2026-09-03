@@ -54,7 +54,9 @@ const portals = [
 ]
 
 export default function Home() {
-  usePageMeta(siteConfig.title, siteConfig.description)
+  usePageMeta(siteConfig.title, siteConfig.description, {
+    ogImage: '/og-image.png',
+  })
   const navigate = useNavigate()
 
   const reducedMotion = useMemo(
