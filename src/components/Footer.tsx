@@ -15,7 +15,7 @@ const links = [
 
 export function Footer() {
   return (
-    <footer className="mt-auto" style={{ borderTop: '1px solid var(--rail)' }}>
+    <footer className="mt-auto" style={{ borderTop: '1px solid var(--rail)' }} data-nosnippet>
       {/* Same column + gutters as page content so text edges align */}
       <div className="frame" style={{ paddingInline: 'var(--gutter)' }}>
         <div className="py-8 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3">

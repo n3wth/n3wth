@@ -100,10 +100,12 @@ export function Nav({ onOpenSearch }: NavProps) {
           the mobile sheet is open — it used to sit *under* the sheet's
           own z-70 layer, hidden but still in the tab order. Now the
           island is the sheet's only close control (its burger already
-          swaps to an X), so there's one header, not two. */}
+          swaps to an X), so there's one header, not two.
+          data-nosnippet: prevent Google from using nav chrome as the snippet. */}
       <header
         className="site-nav fixed inset-x-3 md:inset-x-4 z-50 flex md:justify-center pointer-events-none"
         style={{ top: 'calc(0.75rem + env(safe-area-inset-top))' }}
+        data-nosnippet
       >
         <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-1 pl-4 pr-2 md:w-auto md:pl-5">
           <Link
