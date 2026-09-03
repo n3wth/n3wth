@@ -668,13 +668,25 @@ body {
    prefix by hand makes the minifier merge the pair and emit only the
    prefixed form, which drops the effect entirely. */
 /* Glass, kept flat: one translucent fill, a strong gaussian backdrop
-   blur, a hairline border. No sheen gradient, no drop shadow. */
+   blur, a hairline border. No sheen gradient, no drop shadow.
+   transform: translate3d(0,0,0) forces GPU compositing for the blur. */
 .nav-island {
-  background: color-mix(in srgb, var(--bg) 72%, transparent);
-  backdrop-filter: blur(24px) saturate(1.4);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  position: relative;
+  z-index: 1;
+  transform: translate3d(0, 0, 0);
+  background: rgba(8, 9, 11, 0.65);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
+}
+
+/* Users who prefer reduced transparency: solid background, no blur. */
+@media (prefers-reduced-transparency: reduce) {
+  .nav-island {
+    background: rgb(8, 9, 11);
+    backdrop-filter: none;
+  }
 }
 
 @media (min-width: 768px) {
