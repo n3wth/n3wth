@@ -21,7 +21,16 @@ export const navigation: NavItem[] = [
   { name: 'Art', href: '/art' },
   { name: 'Thinking', href: '/thinking' },
   { name: 'Library', href: '/library' },
-  { name: 'Contact', href: '/contact' },
+]
+
+/** Family sites for quiet access in the scene or keyboard nav */
+export const familySites = [
+  { name: 'hop.flights', href: 'https://hop.flights' },
+  { name: 'r3', href: 'https://r3.n3wth.com' },
+  { name: 'kit', href: 'https://kit.n3wth.com' },
+  { name: 'garden', href: 'https://garden.n3wth.com' },
+  { name: 'skills', href: 'https://skills.n3wth.com' },
+  { name: 'ui', href: 'https://ui.n3wth.com' },
 ]
 
 export interface Metric {

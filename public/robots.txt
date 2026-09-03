@@ -1,10 +1,55 @@
+# n3wth.com robots.txt
+# Welcome, crawlers. This site is public and meant to be indexed.
+
 User-agent: *
 Allow: /
 
+# Sitemap
 Sitemap: https://n3wth.com/sitemap.xml
+
+# AI crawlers: full access, see llms.txt for structured context
+# GPTBot (OpenAI), ClaudeBot (Anthropic), Google-Extended (Google AI),
+# PerplexityBot, YouBot, CCBot, FacebookBot, and others are welcome.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# LLM context files for AI crawlers
+# llms.txt: concise summary for quick context
+# llms-full.txt: comprehensive details for deeper understanding
+# See: https://llmstxt.org/
+# AI crawlers: https://n3wth.com/llms.txt
+# AI crawlers: https://n3wth.com/llms-full.txt
 
 # Sister sitemaps (separate hosts, same family)
 # See also: https://garden.n3wth.com/sitemap.xml
 # See also: https://skills.n3wth.com/sitemap.xml
-
-# AI crawlers: https://n3wth.com/llms.txt
