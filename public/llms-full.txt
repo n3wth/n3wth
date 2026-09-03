@@ -1,0 +1,139 @@
+# Oliver Newth (n3wth.com) — Full Context for LLMs
+
+> This file provides comprehensive context about Oliver Newth and n3wth.com for language models. For a shorter summary, see llms.txt.
+
+## About Oliver Newth
+
+Oliver Newth is an AI Product Lead at Google (2025 —) in San Francisco, building platforms that put Google DeepMind models into products.
+
+### Contact
+- Email: hey@n3wth.com
+- Location: San Francisco, CA
+
+### Professional Background
+- **Google** (2025 —): AI Product Lead. Platforms that put Google DeepMind models into products.
+- **Covariant** (2022 – 24): Staff Product Manager. Took computer vision from research demos to warehouse floors running 24/7, through Amazon's acquisition of the team in 2024. 50+ enterprise deployments.
+- **Meta** (2017 – 22): Product Manager. Ran video calling across Instagram and Portal; before that, core growth and integrity. Meta Build Social Value Award, 2020.
+- **Microsoft** (2014 – 17): Product Manager, Azure. Product on Azure Cognitive Services (100M+ API requests/day), writing the playbook for enterprise AI adoption.
+
+### Education
+- MEng in High Performance Structures, Massachusetts Institute of Technology (Kennedy Scholar)
+- Civil Engineering, First Class, University of Warwick
+
+### Expertise
+- AI Product Strategy
+- GenAI Platforms
+- Autonomous Coding Agents
+- Trust & Safety Systems
+- Robotics and Automation
+
+## Site Structure
+
+### Main Pages
+
+#### Home (https://n3wth.com/)
+Who Oliver is — AI at Google, art in the desert. A 3D night field scene built by an agent team.
+
+#### Work (https://n3wth.com/work/)
+A decade of AI in production (Google, Covariant, Meta, Microsoft) and five products designed by hand, shipped by an autonomous agent team.
+
+#### After Dark / Art (https://n3wth.com/art/)
+Large-scale light installations for Burning Man and San Francisco memorials:
+- **THEM** (2022): Lighting and Circle of Light ring. Black Rock City, Nevada. Design: Simón Malvaez. Fabrication: Brenden Blaine Darby. Fractured Atlas.
+- **Pink Triangle** (2022): Project coordination as part of Illuminate on Patrick Carney's Pride memorial. Twin Peaks, San Francisco.
+- **Circle of Light** (2021): World AIDS Day memorial for the National AIDS Memorial. AIDS Memorial Grove, San Francisco.
+
+#### Thinking (https://n3wth.com/thinking/)
+Positions on production AI and agents as an org-design problem, with interactive AI-safety trade-off walkthroughs.
+
+##### Featured Thinking Pieces:
+- **Agents are an org design problem** (/thinking/agents-org-design): A standing team of coding agents, each with a named desk and a real schedule. One boundary has never moved, no matter how good the model got.
+- **Trust is a runtime property** (/thinking/trust-production): A policy that says harmful content never surfaces without review is enforced by a latency number, not by the document that states it.
+- **AI should be present, not summoned** (/thinking/ambient-ai): The chat box makes you stop and decide what to ask. An ambient layer reads the room instead.
+- **What "autonomous" actually means in production** (/thinking/autonomous-agents): Click through what an agent can take back and what it can't.
+- **Why every AI-generated UI looks the same** (/thinking/ai-design-slop): Purple-to-blue gradient cards, a centered icon grid, low-contrast dark mode.
+- **What the night field broke** (/thinking/night-field): The homepage's 3D scene built by an agent team — everything that went black, spun around the wrong point, or skated across the ground before it worked.
+- **Compound engineering, applied to a personal site** (/thinking/compound-engineering): Five real pull requests from this site's git history showing what compounding actually looks like.
+- **Tell it as a place** (/thinking/field-guide): A field guide to a site that tells your story instead of listing it.
+- **A standing team with named desks** (/thinking/agent-desks): A desk on an org chart isn't real until it has a trigger, a boundary, and a timestamp.
+- **How this backlog got built** (/thinking/this-page): Twenty Thinking pieces, built by parallel agents in isolated worktrees.
+- **The machine that runs my todo list while I sleep** (/thinking/gtd-mini): A headless Mac Mini, a cron job every fifteen minutes, and a timeline of what it actually did.
+- **Live artifacts are three different architectures** (/thinking/live-artifacts): A sandboxed page with a versioned link, a full dev environment in a browser tab, and real production component code.
+- **A knowledge base becomes a graph once something else can query it** (/thinking/personal-knowledge-graph): PARA and Zettelkasten pushed back on hierarchy for a human reader. The graph shape only starts to matter once an agent can traverse it.
+- **Automation is arbitration plumbing** (/thinking/home-automation): A sensor reports, a hub decides, an actuator acts.
+- **The toll booth is memory, not math** (/thinking/llm-inference): Prefill runs once, in parallel. Every token after that is its own round trip to memory.
+- **TypeScript at the edge** (/thinking/edge-typescript): Cloudflare Workers run TypeScript inside V8 isolates instead of VMs or containers.
+- **A computed verdict can still be wrong** (/thinking/hop-flights): hop.flights' whole pitch is a verdict that's computed, not guessed.
+- **Kroots: mapping a graph nobody else could see** (/thinking/kroots-map): A one-person kids'-media venture with no team still needed an org chart.
+- **The toll-free verification maze** (/thinking/twilio-compliance): Twilio rejected the same toll-free application twice, for two different fields.
+- **Working notes: 2026** (/thinking/2026-goals): Four generic goal categories, one review cadence each.
+- **The PDF gotcha that cost an afternoon** (/thinking/pdf-charspace): A hairline rule in a table looked wrong by 10 to 25 points.
+
+#### Library (https://n3wth.com/library/)
+Installable pieces from across the n3wth properties:
+- The essay kit behind the Thinking pieces
+- The @n3wth/ui component library
+- The digital garden structure
+- Agent skills
+
+#### Contact (https://n3wth.com/contact/)
+hey@n3wth.com — product, AI safety, LED art, or coffee in San Francisco.
+
+## Live Products
+
+Products designed by Oliver, kept shipping by an autonomous agent team:
+
+### hop.flights (https://hop.flights/)
+Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.
+- Tech: Next.js, AI SDK, Duffel
+
+### r3 (https://r3.n3wth.com/)
+Persistent memory for AI apps — vector search and knowledge graphs, no config.
+- Tech: TypeScript, Redis, Vector Embeddings, MCP
+- GitHub: https://github.com/n3wth/r3
+
+### kit (https://kit.n3wth.com/)
+49 components with AI context packs. Ships your design system straight to your editor and coding agents.
+- Tech: React, Tailwind v4, Radix, shadcn
+- GitHub: https://github.com/n3wth/kit
+
+### skills (https://skills.n3wth.com/)
+A registry of markdown skills for coding agents. Install with one command, run locally, work offline.
+- Tech: Next.js, React, Supabase
+- GitHub: https://github.com/n3wth/skills
+
+### garden (https://garden.n3wth.com/)
+A digital garden of interconnected working notes. Notes carry growth stages (seedling, budding, evergreen) and are gathered into groves.
+- Tech: Next.js, Astryx, Wikilinks
+- Has its own llms.txt
+
+## Ecosystem
+
+- **GitHub**: https://github.com/n3wth (Open source)
+- **LinkedIn**: https://linkedin.com/in/newth
+- **Peerlist Resume**: https://peerlist.io/newth/resume
+- **Contra**: https://contra.com/olivernewth
+- **newth.ai** redirects to n3wth.com
+- **here.n3wth.com** is a host for here.now pages, not a product homepage
+
+## Technical Stack (n3wth.com)
+
+- **Framework**: React 19 + TypeScript + Vite 7
+- **Styling**: Tailwind CSS v4
+- **Animation**: GSAP 3 (ScrollTrigger, SplitText)
+- **UI Library**: @n3wth/ui (shared component library)
+- **Fonts**: Satoshi (display), Geist Sans (body), Geist Mono (code)
+- **Analytics**: PostHog (deferred load)
+- **Deploy**: Vercel
+
+## Agent Team
+
+Oliver ships with a standing team of coding agents. Each agent has a named desk and a real schedule. The site itself was built by this agent team.
+
+## Additional Resources
+
+- Sitemap: https://n3wth.com/sitemap.xml
+- RSS/Atom: https://n3wth.com/feed.xml
+- Sister sites:
+  - https://garden.n3wth.com/sitemap.xml
+  - https://skills.n3wth.com/sitemap.xml
