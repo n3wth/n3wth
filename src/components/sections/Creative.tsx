@@ -91,7 +91,7 @@ export function Creative() {
       <SectionHeader
         as="h1"
         title="I build things that glow"
-        lede="Large-scale light for the desert and the city — Burning Man sculpture and San Francisco memorials."
+        lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials."
       />
 
       {/* Opening work */}

@@ -4,7 +4,7 @@ import { EmergenceField } from '../components/EmergenceField'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Work — Oliver Newth'
-const DESCRIPTION = 'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft — and five products designed by hand, shipped by an agent team.'
+const DESCRIPTION = 'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft. Five products designed by hand, shipped by an agent team.'
 
 export default function Work() {
   usePageMeta(TITLE, DESCRIPTION, {
