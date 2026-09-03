@@ -2,7 +2,7 @@ import { Creative } from '../components/sections/Creative'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'After dark — Oliver Newth'
-const DESCRIPTION = 'Large-scale light installations for Burning Man and San Francisco memorials — THEM, Pink Triangle, and Circle of Light.'
+const DESCRIPTION = 'Large-scale light installations for Burning Man and San Francisco memorials. THEM, Pink Triangle, and Circle of Light.'
 
 export default function Art() {
   usePageMeta(TITLE, DESCRIPTION, {

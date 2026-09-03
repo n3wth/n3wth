@@ -2,7 +2,7 @@ import { Contact } from '../components/sections/Contact'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Contact — Oliver Newth'
-const DESCRIPTION = "Get in touch — product, AI safety, or LED art. Coffee if you're in San Francisco."
+const DESCRIPTION = "Product, AI safety, or LED art. Coffee if you're in San Francisco."
 
 export default function ContactPage() {
   usePageMeta(TITLE, DESCRIPTION, {

@@ -88,7 +88,7 @@ export const experiences: Experience[] = [
 
 /** One quiet line under the ship log — the foundation before it. */
 export const education =
-  'Before the ship log: MIT MEng in High Performance Structures (Kennedy Scholar); Warwick Civil Engineering, First Class.'
+  'MIT MEng, High Performance Structures (Kennedy Scholar). Warwick Civil Engineering, First Class.'
 
 export interface CreditLink {
   /** Must appear verbatim in the installation's tagline. */
@@ -194,7 +194,7 @@ export const projects: Project[] = [
   {
     id: 'hop-flights',
     name: 'hop.flights',
-    description: 'Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.',
+    description: 'Points-vs-cash flight optimizer. Finds the cheapest way to fly, miles or money.',
     tech: ['Next.js', 'AI SDK', 'Duffel'],
     url: 'https://hop.flights',
   },
