@@ -26,6 +26,7 @@ export function Building() {
   return (
     <section id="building" aria-labelledby="selected-projects" className="section-pad !pt-0 scroll-mt-24">
       <h2 id="selected-projects" className="meta mb-5">Selected independent projects</h2>
+      <p className="mb-8 max-w-xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>I build and operate these projects independently with coding agents. They are separate from my work at Google.</p>
       {selected.map((project) => <ProjectCard key={project.id} project={project} />)}
       <div className="border-t border-[var(--rail-strong)] pt-8">
         <h2 className="meta mb-6">Other explorations</h2>
