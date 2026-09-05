@@ -1,9 +1,10 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree, type ThreeElements, type ThreeEvent } from '@react-three/fiber'
-import { Html, Line, Stars, useCursor, useGLTF, useProgress, useTexture } from '@react-three/drei'
+import { Html, Line, Stars, useCursor, useProgress, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { useOptionalTexture } from '../lib/optionalTexture'
+import { preloadOptionalGLTF, useOptionalGLTF } from '../lib/optionalGLTF'
 
 /**
  * The front door as a real night field (three.js): every glowing
@@ -122,10 +123,10 @@ function usePortalHover(portal?: PortalDef, onLabel?: HoverLabel): [boolean, { o
 
 /* Real rocks (Hyper3D): two weathered variants shared by every stone */
 function useRocks(): { geometry: THREE.BufferGeometry; material: THREE.Material }[] {
-  const { scene } = useGLTF('/models/rocks.glb')
+  const scene = useOptionalGLTF('/models/rocks.glb')?.scene
   return useMemo(() => {
     const out: { geometry: THREE.BufferGeometry; material: THREE.Material }[] = []
-    scene.traverse((o) => {
+    scene?.traverse((o) => {
       const m = o as THREE.Mesh
       if (m.isMesh) {
         const old = (Array.isArray(m.material) ? m.material[0] : m.material) as THREE.MeshStandardMaterial
@@ -191,10 +192,10 @@ function configurePanoTexture(tex: THREE.Texture) {
 
 /* Pull mesh geometries out of a GLB scene, keyed by lowercase node name */
 function useGLBGeometries(url: string): Record<string, THREE.BufferGeometry> {
-  const { scene } = useGLTF(url)
+  const scene = useOptionalGLTF(url)?.scene
   return useMemo(() => {
     const out: Record<string, THREE.BufferGeometry> = {}
-    scene.traverse((o) => {
+    scene?.traverse((o) => {
       const m = o as THREE.Mesh
       if (m.isMesh) out[m.name.toLowerCase()] = m.geometry
     })
@@ -202,18 +203,17 @@ function useGLBGeometries(url: string): Record<string, THREE.BufferGeometry> {
   }, [scene])
 }
 
-/* Pull the first mesh geometry out of a GLB scene */
-function useGLBGeometry(url: string): THREE.BufferGeometry {
+/* Pull the first mesh geometry out of a GLB scene, or null if it dropped */
+function useGLBGeometry(url: string): THREE.BufferGeometry | null {
   const geos = useGLBGeometries(url)
-  const first = Object.values(geos)[0]
-  if (!first) throw new Error(`no mesh in ${url}`)
-  return first
+  return Object.values(geos)[0] ?? null
 }
 
 /* A whole GLB with its own PBR materials (Rodin-generated heroes) */
-function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): THREE.Group {
-  const { scene } = useGLTF(url)
+function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): THREE.Group | null {
+  const scene = useOptionalGLTF(url)?.scene
   return useMemo(() => {
+    if (!scene) return null
     scene.traverse((o) => {
       const m = o as THREE.Mesh
       if (m.isMesh) {
@@ -538,9 +538,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
       }}
     >
       <PortalLabel def={def} onEnter={onEnter} hovered={hovered} />
-      <group ref={azimuth}>
-        <primitive object={telescope} />
-      </group>
+      <group ref={azimuth}>{telescope && <primitive object={telescope} />}</group>
       {/* hit volume covering the full dish sweep so hover stays stable;
           hover hysteresis keeps it under the cursor through the camera pan */}
       <mesh position={[0, 5, 0]} scale={hovered ? 1.5 : 1} visible={false}>
@@ -589,8 +587,8 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
       }}
     >
       <PortalLabel def={def} onEnter={onEnter} hovered={hovered} />
-      <primitive object={signpost} />
-      {markers.map((m, i) => (
+      {signpost && <primitive object={signpost} />}
+      {rocks.length > 0 && markers.map((m, i) => (
         <mesh
           key={i}
           geometry={rocks[i % rocks.length].geometry}
@@ -717,11 +715,13 @@ function CampArtifacts() {
   return (
     <>
       {/* the Utah teapot, waiting by the fire for whoever shows up */}
-      <mesh geometry={teapot} position={[2.3, 0, 1.1]} rotation-y={-2.1} scale={0.9}>
-        <meshStandardMaterial color="#7a7168" roughness={0.6} metalness={0.35} />
-      </mesh>
+      {teapot && (
+        <mesh geometry={teapot} position={[2.3, 0, 1.1]} rotation-y={-2.1} scale={0.9}>
+          <meshStandardMaterial color="#7a7168" roughness={0.6} metalness={0.35} />
+        </mesh>
+      )}
       {/* somebody's dusty cruiser, leaned where they left it */}
-      <primitive object={bike} position={[3.1, 0, -1.6]} rotation-y={0.85} rotation-z={0.06} scale={0.55} />
+      {bike && <primitive object={bike} position={[3.1, 0, -1.6]} rotation-y={0.85} rotation-z={0.06} scale={0.55} />}
     </>
   )
 }
@@ -828,7 +828,7 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
         </mesh>
       ))}
       {/* stone ring, kicked slightly out of true */}
-      {stones.map((s, i) => (
+      {rocks.length > 0 && stones.map((s, i) => (
         <mesh
           key={i}
           geometry={rocks[i % rocks.length].geometry}
@@ -1181,6 +1181,7 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
 function Ground() {
   const configured = useOptionalTexture('/textures/playa-tile.webp', configureTiledTexture)
   const terrain = useGLBGeometry('/models/terrain.glb')
+  if (!terrain) return null
   return (
     <mesh geometry={terrain}>
       <meshStandardMaterial
@@ -1457,16 +1458,16 @@ function Rig({ ready, reducedMotion, onSettled }: { ready: boolean; reducedMotio
 /* Portals and terrain preload; garnish (suzanne, teapot, bike — ~2.5MB)
    deliberately does not. Those stream in behind nested Suspense after
    the field's first frame instead of gating it. */
-useGLTF.preload('/models/them.glb')
-useGLTF.preload('/models/terrain.glb')
-useGLTF.preload('/models/rocks.glb')
+preloadOptionalGLTF('/models/them.glb')
+preloadOptionalGLTF('/models/terrain.glb')
+preloadOptionalGLTF('/models/rocks.glb')
 const portraitAtLoad = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < COMPACT_ASPECT
 if (portraitAtLoad) {
-  useGLTF.preload('/models/dish.glb')
-  useGLTF.preload('/models/signpost.glb')
+  preloadOptionalGLTF('/models/dish.glb')
+  preloadOptionalGLTF('/models/signpost.glb')
 } else {
-  useGLTF.preload('/models/telescope.glb?v=2')
-  useGLTF.preload('/models/signpost-hd.glb')
+  preloadOptionalGLTF('/models/telescope.glb?v=2')
+  preloadOptionalGLTF('/models/signpost-hd.glb')
 }
 useTexture.preload('/textures/playa-tile.webp')
 useTexture.preload('/textures/horizon.webp')
