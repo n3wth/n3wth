@@ -32,7 +32,7 @@ export const kitPrimitives: KitPrimitive[] = [
     id: 'beat',
     name: 'Beat',
     blurb:
-      'The grid unit every piece runs on: prose in the main column, an optional note in the margin, and space underneath for a specimen that wants the full width. Stage numbers are optional; use them only when the beats form a real sequence, not just a list.',
+      'A prose column, an optional margin note, and a full-width area for diagrams or demos. Supports numbered stages.',
     signature: `{
   stage?: { n: string; label: string }
   prose: ReactNode
@@ -47,7 +47,7 @@ export const kitPrimitives: KitPrimitive[] = [
     id: 'margin-note',
     name: 'MarginNote',
     blurb:
-      "A sidenote that points at a real note on garden.n3wth.com. The connector is a small stem-and-leaf line, not a card or a border. Skip it when there's no note worth linking; a MarginNote invented to fill space reads exactly like that.",
+      'A margin link to a garden note, with a title and optional description.',
     signature: `interface MarginNoteProps {
   href: string
   title: string
@@ -60,7 +60,7 @@ export const kitPrimitives: KitPrimitive[] = [
     id: 'toggle-compare',
     name: 'ToggleCompare',
     blurb:
-      'Two states, one button group, no crossfade. The point is the visible difference between before and after, not a transition, so the swap is instant and keyboard-reachable, aria-pressed and all.',
+      'Switches between two views using keyboard-accessible buttons. Supports labels and an optional caption.',
     signature: `interface ToggleCompareProps {
   beforeLabel: string
   afterLabel: string
@@ -76,7 +76,7 @@ export const kitPrimitives: KitPrimitive[] = [
     id: 'flow-diagram',
     name: 'FlowDiagram',
     blurb:
-      "Labelled nodes and curved edges for something that's genuinely a pipeline: a build order, say, or a request path. Lines draw in, a pulse travels each edge once it's settled, and reduced motion drops the pulse and leaves the diagram in its end state.",
+      'A diagram of labelled nodes and curved edges. Edges animate in sequence; reduced motion shows the completed diagram.',
     signature: `interface FlowNode {
   id: string
   label: string
@@ -105,7 +105,7 @@ interface FlowDiagramProps {
     id: 'assemble-field',
     name: 'AssembleField',
     blurb:
-      'A grid of dots that gives up its order past a threshold and drifts into the shapes you hand it. Same seeded randomness and drift CSS as the homepage field, so every piece that uses this looks related without importing one fixed layout twice.',
+      'Animates a grid of dots into supplied clusters, with a configurable seed, grid size, and transition range.',
     signature: `interface AssembleFieldProps {
   seed?: number
   cols?: number
@@ -126,7 +126,7 @@ interface FlowDiagramProps {
     id: 'live-constellation-demo',
     name: 'LiveConstellationDemo',
     blurb:
-      "The actual radio telescope model from the homepage, dropped into its own canvas with cursor tilt. No props needed; it's the one demo that's just 'here's the real asset, go touch it.'",
+      'The homepage telescope model in a standalone canvas with cursor tilt.',
     signature: '// no props (reads /models/telescope.glb and the cursor directly)',
     source: 'src/components/thinking/kit/LiveConstellationDemo.tsx',
     usedIn: 'night-field',
@@ -135,7 +135,7 @@ interface FlowDiagramProps {
     id: 'live-material-demo',
     name: 'LiveMaterialDemo',
     blurb:
-      'The bug and the fix on the same rock mesh from the homepage. Toggle between metalness 1, which renders black, and the corrected material, and watch the model change under identical light.',
+      'Compares two materials on the homepage rock mesh under the same light: metalness 1 and the corrected setting.',
     signature: '// no props (reads /models/rocks.glb and toggles its own state)',
     source: 'src/components/thinking/kit/LiveMaterialDemo.tsx',
     usedIn: 'night-field',
@@ -144,7 +144,7 @@ interface FlowDiagramProps {
     id: 'thinking-index',
     name: 'ThinkingIndex',
     blurb:
-      "The map above all the pieces: date, title, one line of dek, grouped by whether it's a position or a build log. It takes the registered pieces array directly, so it can't drift out of sync with what's actually published.",
+      'Lists registered essays by date, title, and summary, grouped into positions and build logs.',
     signature: '{ pieces: RegisteredPiece[] }',
     source: 'src/components/thinking/kit/ThinkingIndex.tsx',
   },
@@ -250,26 +250,26 @@ export const ecosystem: EcosystemProperty[] = [
     name: 'n3wth.com',
     href: '/',
     purpose:
-      'The front door: the writing and the tools behind it, gathered here instead of scattered across three separate sites.',
+      'Work, art, essays, and source code.',
   },
   {
     id: 'garden',
     name: 'n3wth/garden',
     href: 'https://garden.n3wth.com',
     purpose:
-      "For working out an idea before it's finished enough to defend, then finding it again later through links instead of folders.",
+      'Working notes, connected by topic and links.',
   },
   {
     id: 'ui',
     name: '@n3wth/ui',
     href: 'https://ui.n3wth.com',
-    purpose: 'For dropping a themed Button, Card, or Nav into a new project without rebuilding it from scratch.',
+    purpose: 'React components and theme tokens.',
   },
   {
     id: 'skills',
     name: 'n3wth/skills',
     href: 'https://skills.n3wth.com',
-    purpose: "For giving a coding agent a skill it didn't ship with, installed locally and usable offline.",
+    purpose: 'Skills to install locally for coding agents.',
   },
 ]
 

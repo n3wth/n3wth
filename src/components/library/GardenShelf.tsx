@@ -20,11 +20,8 @@ export function GardenShelf() {
       title="The garden"
       intro={
         <>
-          Notes go in unfinished. Each one carries a growth stage, seedling through budding to
-          evergreen, so a half-formed thought can sit in public without having to pretend it's a
-          conclusion. Filing is by link rather than folder. There are 1,056 of those links across{' '}
-          {gardenIndex.noteCount} notes, collected into 210 groves and drawn as a graph where a
-          note's size is the number of things pointing at it.
+          {gardenIndex.noteCount} working notes, grouped by topic and connected by links.
+          Notes are marked seedling, budding, or evergreen to indicate how developed they are.
         </>
       }
     >
@@ -49,9 +46,7 @@ export function GardenShelf() {
 
       <div data-reveal className="mt-11 md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
         <p className="max-w-[62ch] text-base leading-relaxed" style={{ color: 'var(--ink)' }}>
-          Every one of those notes is in this site's search. Open Search from any page of n3wth.com
-          and you're querying the garden, every essay, and every entry on this page from one input.
-          That's the whole reason this page exists.
+          Site search includes garden notes, essays, and the resources on this page.
         </p>
         <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm md:mt-0">
           <a
@@ -60,7 +55,7 @@ export function GardenShelf() {
             rel="noreferrer"
             className="link-underline"
           >
-            Read it
+            Browse notes
           <span className="sr-only"> (opens in new tab)</span>
           </a>
           <a

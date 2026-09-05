@@ -1,13 +1,24 @@
 import { Experience } from '../components/sections/Experience'
 import { Building } from '../components/sections/Building'
 import { EmergenceField } from '../components/EmergenceField'
-import { usePageMeta } from '../hooks/usePageMeta'
+import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
+
+const TITLE = 'Work — Oliver Newth'
+const DESCRIPTION = 'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft. Five products designed by hand, shipped by an agent team.'
 
 export default function Work() {
-  usePageMeta(
-    'Work — Oliver Newth',
-    'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft — and five products designed by hand, shipped by an agent team.'
-  )
+  usePageMeta(TITLE, DESCRIPTION, {
+    ogImage: '/og/work.png',
+    jsonLd: buildWebPageSchema({
+      url: 'https://n3wth.com/work',
+      title: TITLE,
+      description: DESCRIPTION,
+      breadcrumbs: [
+        { name: 'Home', url: 'https://n3wth.com/' },
+        { name: 'Work', url: 'https://n3wth.com/work' },
+      ],
+    }),
+  })
 
   return (
     <>

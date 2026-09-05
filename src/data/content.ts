@@ -21,7 +21,16 @@ export const navigation: NavItem[] = [
   { name: 'Art', href: '/art' },
   { name: 'Thinking', href: '/thinking' },
   { name: 'Library', href: '/library' },
-  { name: 'Contact', href: '/contact' },
+]
+
+/** Family sites for quiet access in the scene or keyboard nav */
+export const familySites = [
+  { name: 'hop.flights', href: 'https://hop.flights' },
+  { name: 'r3', href: 'https://r3.n3wth.com' },
+  { name: 'kit', href: 'https://kit.n3wth.com' },
+  { name: 'garden', href: 'https://garden.n3wth.com' },
+  { name: 'skills', href: 'https://skills.n3wth.com' },
+  { name: 'ui', href: 'https://ui.n3wth.com' },
 ]
 
 export interface Metric {
@@ -79,7 +88,7 @@ export const experiences: Experience[] = [
 
 /** One quiet line under the ship log — the foundation before it. */
 export const education =
-  'Before the ship log: MIT MEng in High Performance Structures (Kennedy Scholar); Warwick Civil Engineering, First Class.'
+  'MIT MEng, High Performance Structures (Kennedy Scholar). Warwick Civil Engineering, First Class.'
 
 export interface CreditLink {
   /** Must appear verbatim in the installation's tagline. */
@@ -185,7 +194,7 @@ export const projects: Project[] = [
   {
     id: 'hop-flights',
     name: 'hop.flights',
-    description: 'Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.',
+    description: 'Points-vs-cash flight optimizer. Finds the cheapest way to fly, miles or money.',
     tech: ['Next.js', 'AI SDK', 'Duffel'],
     url: 'https://hop.flights',
   },

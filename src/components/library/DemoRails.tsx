@@ -9,9 +9,9 @@ import { ToggleCompare } from '../thinking/kit/ToggleCompare'
  */
 
 const ROWS = [
-  { name: 'Beat', note: 'grid unit' },
-  { name: 'MarginNote', note: 'stem and leaf' },
-  { name: 'ToggleCompare', note: 'hard swap' },
+  { name: 'Beat', note: 'layout' },
+  { name: 'MarginNote', note: 'related note' },
+  { name: 'ToggleCompare', note: 'two views' },
 ]
 
 function Boxed() {
@@ -56,7 +56,7 @@ export default function DemoRails() {
         afterLabel="Rails"
         before={<Boxed />}
         after={<Railed />}
-        caption="Press either label. The swap lands in one frame with no crossfade, so what registers is the difference between the two states rather than the animation between them. Same three rows either way; this site keeps deleting the first one."
+        caption="Switch between two layouts of the same three components."
       />
     </div>
   )

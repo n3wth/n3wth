@@ -128,14 +128,12 @@ export function KitShelf() {
       title="The essay kit"
       intro={
         <>
-          Every Thinking piece on this site is laid out by the same eight components. They never had
-          a page of their own; the essays just imported them, so this is the first place the whole
-          set is written down. Each row carries the props and the file it lives in. Four of them run
-          live below, and the two that load a 3D scene stay over on{' '}
+          Eight components used in the Thinking essays, with props, source links, and four live demos.
+          The two 3D demos are in{' '}
           <RouterLink href="/thinking/night-field" className="link-underline">
             What the night field broke
           </RouterLink>
-          , where they already have one.
+          .
         </>
       }
     >

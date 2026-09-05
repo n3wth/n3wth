@@ -33,7 +33,7 @@ export function useReveal() {
           }
         }
       },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+      { rootMargin: '0px 0px 0px 0px', threshold: 0.01 }
     )
 
     const observe = (root: ParentNode) =>

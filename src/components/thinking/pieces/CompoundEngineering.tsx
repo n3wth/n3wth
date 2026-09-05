@@ -27,9 +27,9 @@ const STAGES = [
 ]
 
 const COMPOUND_NODES: FlowNode[] = [
-  { id: 'rule', label: 'Rule written — PR #75', x: 70, y: 130 },
-  { id: 'batch', label: 'Next batch built in parallel — PR #76', x: 380, y: 60 },
-  { id: 'caught', label: 'Violation caught, no new instruction', x: 700, y: 130, active: true },
+  { id: 'rule', label: 'Rule written in PR #75', x: 70, y: 130 },
+  { id: 'batch', label: 'Next batch built in parallel in PR #76', x: 380, y: 60 },
+  { id: 'caught', label: 'Violation caught without new instruction', x: 700, y: 130, active: true },
   { id: 'fixed', label: 'Fixed before merge', x: 980, y: 60 },
 ]
 const COMPOUND_EDGES: FlowEdge[] = [

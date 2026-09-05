@@ -1,8 +1,10 @@
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { registeredPieces } from '../components/thinking/registry'
-import { usePageMeta } from '../hooks/usePageMeta'
+import { usePageMeta, buildWebPageSchema, buildArticleSchema } from '../hooks/usePageMeta'
 import NotFound from './NotFound'
+
+const SITE_URL = 'https://n3wth.com'
 
 /* The full render of a single registered piece — everything the index on
    /thinking collapses to one stop now lives here, on its own route, so
@@ -13,12 +15,39 @@ export default function ThinkingPiece() {
   const { slug } = useParams()
   const piece = registeredPieces.find((p) => p.meta.id === slug)
 
-  // Matches NotFound's own usePageMeta call exactly when there's no piece,
-  // so effect ordering (child-before-parent) can't leave a mismatched title.
-  usePageMeta(
-    piece ? `${piece.meta.title} — Oliver Newth` : 'Not found — Oliver Newth',
-    piece ? piece.meta.dek : 'This page does not exist.'
-  )
+  const title = piece ? `${piece.meta.title} — Oliver Newth` : 'Not found — Oliver Newth'
+  const description = piece ? piece.meta.dek : 'This page does not exist.'
+  const url = `${SITE_URL}/thinking/${slug}`
+
+  // Build JSON-LD schemas for the piece
+  const jsonLd = useMemo(() => {
+    if (!piece) return undefined
+    const schemas = buildWebPageSchema({
+      url,
+      title,
+      description,
+      datePublished: piece.meta.date,
+      breadcrumbs: [
+        { name: 'Home', url: `${SITE_URL}/` },
+        { name: 'Thinking', url: `${SITE_URL}/thinking` },
+        { name: piece.meta.title, url },
+      ],
+    })
+    // Add Article schema for the piece
+    schemas.push(buildArticleSchema({
+      url,
+      title: piece.meta.title,
+      description: piece.meta.dek,
+      datePublished: piece.meta.date,
+      image: `${SITE_URL}/og/thinking/${piece.meta.id}.png`,
+    }))
+    return schemas
+  }, [piece, title, description, url])
+
+  usePageMeta(title, description, {
+    ogImage: piece ? `/og/thinking/${piece.meta.id}.png` : '/og/thinking.png',
+    jsonLd,
+  })
 
   if (!piece) return <NotFound />
 
@@ -39,7 +68,7 @@ export default function ThinkingPiece() {
           </p>
           <div className="mt-3 md:grid md:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] md:gap-16 md:items-start">
             <h1
-              className="display text-[clamp(2rem,4vw,3rem)] max-w-[20ch]"
+              className="display page-title max-w-[20ch]"
               style={{ letterSpacing: '-0.03em', lineHeight: 1.04, fontWeight: 600 }}
             >
               {meta.title}

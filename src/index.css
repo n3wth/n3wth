@@ -145,7 +145,7 @@ p { text-wrap: pretty; }
    8px into place. The floating nav lives on its own transition layer so
    it stays perfectly still while pages change beneath it. Browsers
    without the API (and reduced-motion users) get instant navigation. */
-.site-nav { view-transition-name: site-nav; }
+.nav-island { view-transition-name: site-nav; }
 ::view-transition-old(site-nav),
 ::view-transition-new(site-nav) {
   animation: none;
@@ -395,6 +395,15 @@ body {
   line-height: 1;
   color: var(--ink);
 }
+.page-title {
+  font-size: 2.25rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .page-title { font-size: 3.75rem; }
+}
 .t-lead {
   font-size: 1.125rem;
   font-weight: 400;
@@ -506,30 +515,10 @@ body {
 }
 .skip-link:focus { top: 0; }
 
-/* Home's chapter doors: hidden offscreen (still focusable, unlike
-   display:none), revealed as a bottom-left strip while any door holds
-   focus — the skip-link pattern, sized for five links. */
-.field-doors {
-  position: fixed;
-  left: -100vw;
-  bottom: calc(1rem + env(safe-area-inset-bottom));
-  z-index: 40;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  padding: 0.6rem 0.9rem;
-  background: var(--bg);
-  border: 1px solid var(--rail-strong);
-  border-radius: 8px;
-}
-.field-doors:focus-within { left: var(--gutter); }
-.field-doors a {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink);
-  text-decoration: none;
-  white-space: nowrap;
+@media (max-width: 767px) {
+  .site-nav .nav-link::before {
+    inset: 0;
+  }
 }
 
 /* ---------- Focus ---------- */
@@ -664,13 +653,24 @@ body {
    prefix by hand makes the minifier merge the pair and emit only the
    prefixed form, which drops the effect entirely. */
 /* Glass, kept flat: one translucent fill, a strong gaussian backdrop
-   blur, a hairline border. No sheen gradient, no drop shadow. */
+   blur, a hairline border. No sheen gradient, no drop shadow.
+   transform: translate3d(0,0,0) forces GPU compositing for the blur. */
 .nav-island {
+  position: relative;
+  z-index: 1;
+  transform: translate3d(0, 0, 0);
   background: color-mix(in srgb, var(--bg) 72%, transparent);
-  backdrop-filter: blur(24px) saturate(1.4);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(28px) saturate(1.4);
+  border: 1px solid var(--rail-strong);
   border-radius: 16px;
+}
+
+/* Users who prefer reduced transparency: solid background, no blur. */
+@media (prefers-reduced-transparency: reduce) {
+  .nav-island {
+    background: var(--bg);
+    backdrop-filter: none;
+  }
 }
 
 @media (min-width: 768px) {
@@ -751,8 +751,42 @@ body {
   inset: -8px -20px -8px -8px;
 }
 
-/* Search trigger. A lone icon — no label, no pill. The island is only
+/* Icon buttons in nav island — GitHub, mail, search. The island is only
    48px tall, so the hit area is widened rather than drawing chrome. */
+.nav-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: color 0.15s var(--ease);
+}
+.nav-icon:hover {
+  color: var(--ink);
+}
+.nav-icon:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.nav-icon::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-icon {
+    transition: none;
+  }
+}
+
+/* Search trigger (legacy class, now uses nav-icon) */
 .nav-search {
   position: relative;
   display: inline-flex;
@@ -1091,6 +1125,61 @@ body {
 }
 
 /* ---------- Night-field home ---------- */
+.night-field-stage:not(.is-settled) .world-portal-link {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.world-portal-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--ink-dim);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+  text-decoration: none;
+  opacity: 1;
+  transition: opacity 0.7s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-portal-link {
+    transition: none;
+  }
+}
+.world-portal-description {
+  display: none;
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 50%;
+  width: max-content;
+  max-width: 160px;
+  transform: translateX(-50%);
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  color: var(--ink-dim);
+  pointer-events: none;
+}
+.world-portal-link:focus-visible {
+  color: var(--ink);
+}
+@media (hover: hover) and (pointer: fine) {
+  .world-portal-link[data-hovered='true'] .world-portal-description,
+  .world-portal-link:hover .world-portal-description,
+  .world-portal-link:focus-visible .world-portal-description {
+    display: block;
+  }
+  .world-portal-link:hover {
+    color: var(--ink);
+  }
+}
 .night-field-loader {
   position: absolute;
   inset: 0;
