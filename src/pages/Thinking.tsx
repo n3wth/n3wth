@@ -1,7 +1,10 @@
 import { Thinking as Positions } from '../components/sections/Thinking'
 import { ForkLight } from '../components/ForkLight'
-import { usePageMeta } from '../hooks/usePageMeta'
+import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import gardenNotes from '../data/garden-notes.json'
+
+const TITLE = 'Thinking — Oliver Newth'
+const DESCRIPTION = 'Positions on production AI and agents as an org design problem, plus interactive walk-throughs of real AI safety trade-offs.'
 
 interface GardenNote {
   title: string
@@ -53,10 +56,18 @@ function TendedRecently() {
 }
 
 export default function ThinkingPage() {
-  usePageMeta(
-    'Thinking — Oliver Newth',
-    'Positions on production AI and agents as an org design problem, plus interactive walk-throughs of real AI safety trade-offs.'
-  )
+  usePageMeta(TITLE, DESCRIPTION, {
+    ogImage: '/og/thinking.png',
+    jsonLd: buildWebPageSchema({
+      url: 'https://n3wth.com/thinking',
+      title: TITLE,
+      description: DESCRIPTION,
+      breadcrumbs: [
+        { name: 'Home', url: 'https://n3wth.com/' },
+        { name: 'Thinking', url: 'https://n3wth.com/thinking' },
+      ],
+    }),
+  })
 
   return (
     <>

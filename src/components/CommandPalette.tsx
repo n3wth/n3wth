@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, X } from 'lucide-react'
+import { Search, X, RotateCcw } from 'lucide-react'
 import { searchItems } from '../lib/search'
 import { track } from '../lib/analytics'
 import type { ResultGroup, SearchItem } from '../lib/search'
 import { registeredPieces } from './thinking/registry'
 import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
+
+/** Minimum query length before auto-triggering AI search */
+const AI_MIN_CHARS = 2
+/** Debounce delay for auto-triggering AI search (ms) */
+const AI_DEBOUNCE_MS = 300
 
 /**
  * One input over four properties: this site's routes, every Thinking piece,
@@ -213,6 +218,11 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const openerRef = useRef<HTMLElement | null>(null)
   const requestedGarden = useRef(false)
 
+  /** Tracks the current AI request; increments on each new query to detect stale responses */
+  const aiRequestVersion = useRef(0)
+  /** AbortController for the current AI request */
+  const aiAbortController = useRef<AbortController | null>(null)
+
   /* The garden lands on first open and stays for the session. A failed fetch
      clears the latch so the next open tries again; the other four groups are
      already on screen either way.
@@ -254,12 +264,19 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       setEntered(false)
       if (openerRef.current?.isConnected) openerRef.current.focus()
       openerRef.current = null
+      // Abort any in-flight AI request when palette closes
+      if (aiAbortController.current) {
+        aiAbortController.current.abort()
+        aiAbortController.current = null
+      }
       return
     }
     openerRef.current = (document.activeElement as HTMLElement | null) ?? null
     track('command_palette_opened')
     setQuery('')
     setActiveIndex(0)
+    setAskState('idle')
+    setAskAnswer('')
     setReduceMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
     inputRef.current?.focus()
     const frame = requestAnimationFrame(() => setEntered(true))
@@ -310,37 +327,142 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const flat = useMemo(() => rendered.flatMap((group) => group.items), [rendered])
   const safeIndex = flat.length === 0 ? -1 : Math.min(activeIndex, flat.length - 1)
 
+  /** Reset active index and AI state when query changes */
   useEffect(() => {
     setActiveIndex(0)
-    setAskState('idle')
-    setAskAnswer('')
   }, [trimmed])
 
-  const askAi = useCallback(async () => {
-    if (trimmed.length === 0 || askState === 'loading') return
-    setAskState('loading')
-    track('ai_search_asked', { query_length: trimmed.length })
-    try {
-      const response = await fetch('/api/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: trimmed,
-          candidates: flat.slice(0, 15).map((item) => ({
-            title: item.title,
-            subtitle: item.subtitle,
-            href: item.href,
-          })),
-        }),
-      })
-      const data = (await response.json()) as { answer?: string }
-      if (!data.answer) throw new Error('empty answer')
-      setAskAnswer(data.answer)
-      setAskState('answered')
-    } catch {
-      setAskState('error')
+  /**
+   * Runs AI search with streaming support. Aborts any previous in-flight request.
+   * Uses a version number to discard stale responses that arrive after a newer query.
+   */
+  const askAi = useCallback(
+    async (immediate = false) => {
+      if (trimmed.length < AI_MIN_CHARS) return
+
+      // Abort any previous request
+      if (aiAbortController.current) {
+        aiAbortController.current.abort()
+      }
+
+      const version = ++aiRequestVersion.current
+      const controller = new AbortController()
+      aiAbortController.current = controller
+
+      setAskState('loading')
+      setAskAnswer('')
+      track('ai_search_asked', { query_length: trimmed.length, immediate })
+
+      try {
+        const response = await fetch('/api/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: trimmed, stream: true }),
+          signal: controller.signal,
+        })
+
+        // Stale response check
+        if (version !== aiRequestVersion.current) return
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`)
+        }
+
+        // Handle streaming response
+        if (response.body) {
+          const reader = response.body.getReader()
+          const decoder = new TextDecoder()
+          let buffer = ''
+          let accumulated = ''
+
+          try {
+            while (true) {
+              const { done, value } = await reader.read()
+              if (done) break
+
+              // Stale response check during streaming
+              if (version !== aiRequestVersion.current) {
+                reader.cancel()
+                return
+              }
+
+              buffer += decoder.decode(value, { stream: true })
+              const lines = buffer.split('\n')
+              buffer = lines.pop() ?? ''
+
+              for (const line of lines) {
+                if (!line.startsWith('data: ')) continue
+                const data = line.slice(6)
+                if (data === '[DONE]') continue
+
+                try {
+                  const parsed = JSON.parse(data) as { delta?: string }
+                  if (parsed.delta) {
+                    accumulated += parsed.delta
+                    // Update answer progressively
+                    if (version === aiRequestVersion.current) {
+                      setAskAnswer(accumulated)
+                      if (askState !== 'answered') setAskState('answered')
+                    }
+                  }
+                } catch {
+                  // Skip malformed JSON
+                }
+              }
+            }
+          } finally {
+            reader.releaseLock()
+          }
+
+          if (version === aiRequestVersion.current && accumulated) {
+            setAskAnswer(accumulated)
+            setAskState('answered')
+          } else if (version === aiRequestVersion.current && !accumulated) {
+            throw new Error('empty answer')
+          }
+        } else {
+          // Fallback for non-streaming response
+          const data = (await response.json()) as { answer?: string }
+          if (version !== aiRequestVersion.current) return
+          if (!data.answer) throw new Error('empty answer')
+          setAskAnswer(data.answer)
+          setAskState('answered')
+        }
+      } catch (err) {
+        // Ignore abort errors (they're intentional)
+        if (err instanceof Error && err.name === 'AbortError') return
+        // Only update state if this is still the current request
+        if (version === aiRequestVersion.current) {
+          setAskState('error')
+        }
+      }
+    },
+    [trimmed, askState]
+  )
+
+  /**
+   * Auto-trigger AI search when the query changes, with debouncing.
+   * Fires immediately on Enter via the separate keyboard handler.
+   */
+  useEffect(() => {
+    // Reset AI state when query becomes too short or empty
+    if (trimmed.length < AI_MIN_CHARS) {
+      if (aiAbortController.current) {
+        aiAbortController.current.abort()
+        aiAbortController.current = null
+      }
+      setAskState('idle')
+      setAskAnswer('')
+      return
     }
-  }, [trimmed, flat, askState])
+
+    // Debounce the AI request
+    const timeout = setTimeout(() => {
+      askAi(false)
+    }, AI_DEBOUNCE_MS)
+
+    return () => clearTimeout(timeout)
+  }, [trimmed]) // eslint-disable-line react-hooks/exhaustive-deps -- askAi is intentionally excluded to avoid re-triggering
 
   useEffect(() => {
     if (safeIndex < 0) return
@@ -401,6 +523,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       setActiveIndex(flat.length - 1)
     } else if (event.key === 'Enter') {
       event.preventDefault()
+      // If AI is loading or hasn't started yet and we have a valid query, fire immediately
+      if (trimmed.length >= AI_MIN_CHARS && askState !== 'answered') {
+        askAi(true)
+      }
       const item = flat[safeIndex]
       if (item) activate(item)
     }
@@ -497,26 +623,26 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             </button>
           </div>
 
-          {trimmed.length > 0 && (
+          {trimmed.length >= AI_MIN_CHARS && (
             <div className="shrink-0 px-4 py-2.5" style={{ borderBottom: '1px solid var(--rail)' }}>
-              {askState === 'idle' && (
-                <button
-                  type="button"
-                  onClick={askAi}
-                  className="font-sans text-sm underline underline-offset-4"
-                  style={{ color: 'var(--ink-dim)' }}
-                >
-                  Ask AI about &ldquo;{trimmed}&rdquo;
-                </button>
-              )}
               {askState === 'loading' && (
                 <p className="font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
                   Thinking…
                 </p>
               )}
               {askState === 'error' && (
-                <p className="font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
-                  Couldn&rsquo;t reach the answering service — the results below still work.
+                <p className="flex items-center gap-2 font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
+                  <span>Couldn&rsquo;t reach the answering service.</span>
+                  <button
+                    type="button"
+                    onClick={() => askAi(true)}
+                    className="inline-flex items-center gap-1 underline underline-offset-4"
+                    style={{ color: 'var(--ink-dim)' }}
+                    aria-label="Retry AI search"
+                  >
+                    <RotateCcw size={12} strokeWidth={1.5} aria-hidden="true" />
+                    Retry
+                  </button>
                 </p>
               )}
               {askState === 'answered' && (

@@ -2,7 +2,7 @@ export const siteConfig = {
   name: 'Oliver Newth',
   title: 'Oliver Newth — AI Product Lead at Google',
   description: 'AI product lead at Google. Ex-Covariant (acquired by Amazon), Meta, Microsoft. Ships with a standing agent team; builds large-scale light art.',
-  email: 'oliver@newth.ai',
+  email: 'hey@n3wth.com',
   social: {
     github: 'https://github.com/n3wth',
     linkedin: 'https://linkedin.com/in/newth',
@@ -21,7 +21,16 @@ export const navigation: NavItem[] = [
   { name: 'Art', href: '/art' },
   { name: 'Thinking', href: '/thinking' },
   { name: 'Library', href: '/library' },
-  { name: 'Contact', href: '/contact' },
+]
+
+/** Family sites for quiet access in the scene or keyboard nav */
+export const familySites = [
+  { name: 'hop.flights', href: 'https://hop.flights' },
+  { name: 'r3', href: 'https://r3.n3wth.com' },
+  { name: 'kit', href: 'https://kit.n3wth.com' },
+  { name: 'garden', href: 'https://garden.n3wth.com' },
+  { name: 'skills', href: 'https://skills.n3wth.com' },
+  { name: 'ui', href: 'https://ui.n3wth.com' },
 ]
 
 export interface Metric {
@@ -79,12 +88,21 @@ export const experiences: Experience[] = [
 
 /** One quiet line under the ship log — the foundation before it. */
 export const education =
-  'Before the ship log: MIT MEng in High Performance Structures (Kennedy Scholar); Warwick Civil Engineering, First Class.'
+  'MIT MEng, High Performance Structures (Kennedy Scholar). Warwick Civil Engineering, First Class.'
+
+export interface CreditLink {
+  /** Must appear verbatim in the installation's tagline. */
+  text: string
+  href: string
+}
 
 export interface Installation {
   id: string
   title: string
+  /** Credits only — place detail belongs in `location`. */
   tagline: string
+  /** Institutions named in the tagline that have a public URL to point at. */
+  creditLinks?: CreditLink[]
   year: string
   location: string
   type: 'burning-man' | 'public-art' | 'memorial' | 'interactive'
@@ -97,8 +115,15 @@ export const installations: Installation[] = [
   {
     id: 'them',
     title: 'THEM',
-    tagline: '30-foot interactive light sculpture, in collaboration with artist Simon Malvaez',
-    year: '2019',
+    tagline:
+      'Lighting and Circle of Light ring. Design: Simón Malvaez. Fabrication: Brenden Blaine Darby. Fractured Atlas',
+    creditLinks: [
+      {
+        text: 'Fractured Atlas',
+        href: 'https://fundraising.fracturedatlas.org/them-a-burning-man-art-piece',
+      },
+    ],
+    year: '2022',
     location: 'Black Rock City, Nevada',
     type: 'burning-man',
     image: '/images/installations/them.webp',
@@ -108,9 +133,16 @@ export const installations: Installation[] = [
   {
     id: 'pink-triangle',
     title: 'Pink Triangle',
-    tagline: 'On the LED crew for Patrick Carney’s illuminated Pride memorial, with Illuminate',
+    tagline:
+      'Project coordination as part of Illuminate on Patrick Carney’s Pride memorial.',
+    creditLinks: [
+      {
+        text: 'Illuminate',
+        href: 'https://illuminate.org/projects/the-pink-triangle/',
+      },
+    ],
     year: '2022',
-    location: 'San Francisco, California',
+    location: 'Twin Peaks, San Francisco',
     type: 'memorial',
     image: '/images/installations/pink-triangle.webp',
     imageAlt: 'Pink Triangle LED installation illuminating Twin Peaks during Pride Month',
@@ -118,9 +150,15 @@ export const installations: Installation[] = [
   {
     id: 'circle-of-light',
     title: 'Circle of Light',
-    tagline: 'World AIDS Day memorial of light in Golden Gate Park',
+    tagline: 'World AIDS Day memorial for the National AIDS Memorial.',
+    creditLinks: [
+      {
+        text: 'National AIDS Memorial',
+        href: 'https://www.aidsmemorial.org/grove',
+      },
+    ],
     year: '2021',
-    location: 'San Francisco, California',
+    location: 'AIDS Memorial Grove, San Francisco',
     type: 'memorial',
     image: '/images/installations/circle-of-light.webp',
     imageAlt: 'Circle of Light illuminated memorial in Golden Gate Park',
@@ -156,7 +194,7 @@ export const projects: Project[] = [
   {
     id: 'hop-flights',
     name: 'hop.flights',
-    description: 'Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.',
+    description: 'Points-vs-cash flight optimizer. Finds the cheapest way to fly, miles or money.',
     tech: ['Next.js', 'AI SDK', 'Duffel'],
     url: 'https://hop.flights',
   },

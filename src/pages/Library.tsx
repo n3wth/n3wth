@@ -1,11 +1,14 @@
 import { SectionHeader } from '../components/Frame'
-import { usePageMeta } from '../hooks/usePageMeta'
+import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { KitShelf } from '../components/library/KitShelf'
 import { AssembleBand } from '../components/library/AssembleBand'
 import { UiShelf } from '../components/library/UiShelf'
 import { GardenShelf } from '../components/library/GardenShelf'
 import { SkillsShelf } from '../components/library/SkillsShelf'
 import { EcosystemStrip } from '../components/library/EcosystemStrip'
+
+const TITLE = 'Library — Oliver Newth'
+const DESCRIPTION = 'Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, the digital garden, and agent skills.'
 
 /**
  * /library — the one page here that exists to be taken from rather than
@@ -23,10 +26,18 @@ import { EcosystemStrip } from '../components/library/EcosystemStrip'
  * them and clear the fixed nav on the way.
  */
 export default function Library() {
-  usePageMeta(
-    'Library — Oliver Newth',
-    'Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, the digital garden, and agent skills.'
-  )
+  usePageMeta(TITLE, DESCRIPTION, {
+    ogImage: '/og/library.png',
+    jsonLd: buildWebPageSchema({
+      url: 'https://n3wth.com/library',
+      title: TITLE,
+      description: DESCRIPTION,
+      breadcrumbs: [
+        { name: 'Home', url: 'https://n3wth.com/' },
+        { name: 'Library', url: 'https://n3wth.com/library' },
+      ],
+    }),
+  })
 
   return (
     <>
