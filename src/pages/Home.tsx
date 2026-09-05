@@ -105,20 +105,28 @@ export default function Home() {
       {/* Real anchors for keyboard, AT, and no-WebGL visitors — the canvas
           portals are pointer-only onClick meshes, so these must stay in the
           tab order and the accessibility tree even when the field renders. */}
-      {!webglOk && <h1 className="sr-only">Oliver Newth</h1>}
-      <nav aria-label="Site chapters" className="field-doors">
-        {portals.map((p) => (
-          <Link key={p.href} to={p.href} viewTransition>
-            {p.label}
-          </Link>
-        ))}
-        <span className="field-doors-sep" aria-hidden>·</span>
-        {familySites.map((s) => (
-          <a key={s.href} href={s.href} rel="noopener">
-            {s.name}
-          </a>
-        ))}
-      </nav>
+      <header className="world-identity-layer">
+        <hgroup className="world-identity">
+          <h1>Oliver Newth</h1>
+          <p>AI product lead at Google · light artist</p>
+        </hgroup>
+      </header>
+      <footer className="field-navigation">
+        <nav aria-label="Site chapters" className="field-doors">
+          {portals.map((p) => (
+            <Link key={p.href} to={p.href} viewTransition>
+              {p.label}
+            </Link>
+          ))}
+        </nav>
+        <nav aria-label="Projects" className="field-doors field-doors--projects">
+          {familySites.map((s) => (
+            <a key={s.href} href={s.href} rel="noopener">
+              {s.name}
+            </a>
+          ))}
+        </nav>
+      </footer>
     </section>
   )
 }
