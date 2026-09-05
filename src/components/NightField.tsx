@@ -34,8 +34,16 @@ function useHoverQuery() {
   return useMemo(() => window.matchMedia('(hover: hover) and (pointer: fine)'), [])
 }
 
+const COMPACT_ASPECT = 1.35
+
 function usePortraitLayout() {
-  return useThree(({ size }) => size.width / size.height < 0.75)
+  return useThree(({ size }) => size.width / size.height < COMPACT_ASPECT)
+}
+
+function useCompactSpread() {
+  // Keep the phone's depth staging, while spreading the landmark centers
+  // across the extra width of tablets. Model proportions stay untouched.
+  return useThree(({ size }) => Math.max(1, Math.min(COMPACT_ASPECT, size.width / size.height) / 0.5))
 }
 
 function PortalLabel({ def, onEnter, position = [0, -0.8, 0] }: {
@@ -443,10 +451,11 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const parts = useGLBGeometries('/models/them.glb')
   const portrait = usePortraitLayout()
+  const spread = useCompactSpread()
 
   return (
     <group
-      position={portrait ? [3.2, 0, -35] : [27, 0, -46]}
+      position={portrait ? [3.2 * spread, 0, -35] : [27, 0, -46]}
       scale={portrait ? 1.05 : 1}
       {...handlers}
       onClick={(e) => {
@@ -477,6 +486,7 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
 function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel: HoverLabel }) {
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
+  const spread = useCompactSpread()
   const telescope = useGLBScene(portrait ? '/models/dish.glb' : '/models/telescope.glb?v=2', { fogOff: true, tint: '#7e848c' })
   const azimuth = useRef<THREE.Group>(null)
 
@@ -489,7 +499,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
 
   return (
     <group
-      position={portrait ? [-14, 0, -85] : [-52, 0, -100]}
+      position={portrait ? [-14 * spread, 0, -85] : [-52, 0, -100]}
       rotation-y={0.35}
       scale={portrait ? 2.45 : 2.2}
       {...handlers}
@@ -523,6 +533,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
 function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; onLabel: HoverLabel }) {
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
+  const spread = useCompactSpread()
   const signpost = useGLBScene(portrait ? '/models/signpost.glb' : '/models/signpost-hd.glb')
   const rocks = useRocks()
 
@@ -539,7 +550,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
 
   return (
     <group
-      position={portrait ? [3.6, 0, 3] : [6.5, 0, 4]}
+      position={portrait ? [3.6 * spread, 0, 3] : [6.5, 0, 4]}
       rotation-y={0.45}
       scale={portrait ? 0.85 : 0.42}
       {...handlers}
@@ -691,6 +702,7 @@ function CampArtifacts() {
 function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel: HoverLabel }) {
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
+  const spread = useCompactSpread()
   const light = useRef<THREE.PointLight>(null)
   const core = useRef<THREE.Mesh>(null)
   const hEased = useEased01(hovered)
@@ -761,7 +773,7 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
 
   return (
     <group
-      position={portrait ? [-2.8, 0, 7] : [-8, 0, 9]}
+      position={portrait ? [-2.8 * spread, 0, 7] : [-8, 0, 9]}
       scale={portrait ? 1.4 : 1}
       {...handlers}
       onClick={(e) => {
@@ -936,6 +948,7 @@ function Sprout({ reducedMotion }: { reducedMotion: boolean }) {
 function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel: HoverLabel }) {
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
+  const spread = useCompactSpread()
   const tips = useRef<THREE.InstancedMesh>(null)
   const orbs = useRef<THREE.InstancedMesh>(null)
   const bed = useRef<THREE.Group>(null)
@@ -1032,7 +1045,7 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
 
   return (
     <group
-      position={portrait ? [-4.2, 0, -13] : [-6, 0, -16]}
+      position={portrait ? [-4.2 * spread, 0, -13] : [-6, 0, -16]}
       scale={portrait ? 1.3 : 1}
       {...handlers}
       onClick={(e) => {
@@ -1077,6 +1090,7 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
 function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; onLabel: HoverLabel }) {
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
+  const spread = useCompactSpread()
   const lineMat = useRef<{ color: THREE.Color } | null>(null)
   const fillMat = useRef<THREE.MeshBasicMaterial>(null)
   const h = useEased01(hovered)
@@ -1100,7 +1114,7 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
   }, [])
   return (
     <group
-      position={portrait ? [20, 10, -122] : [82, 9, -128]}
+      position={portrait ? [20 * spread, 10, -122] : [82, 9, -128]}
       scale={portrait ? 1.35 : 1.7}
       {...handlers}
       onClick={(e) => {
@@ -1376,12 +1390,19 @@ function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready
 
   useFrame(({ camera, pointer, clock, size }, delta) => {
     const aspect = size.width / size.height
-    const portrait = aspect < 0.75
+    const portrait = aspect < COMPACT_ASPECT
     // Looking down across the near field separates the installations in
     // depth on a phone, instead of squeezing them onto one horizon line.
-    const baseZ = portrait ? 26 : aspect < 1.15 ? 29 : 22
+    const baseZ = portrait ? 26 : 22 + Math.max(0, 1.8 - aspect) * 14
     const baseY = portrait ? 14 : 3.2
     const gazeY = portrait ? 1 : 4.5
+    // A minimum horizontal angle protects the outer artwork and label
+    // bounds on tall phones and narrower desktop windows. A vertical
+    // floor retains the ground/sky composition on wide landscape screens.
+    const fittedFov = Math.max(
+      portrait ? 54 : 48,
+      THREE.MathUtils.radToDeg(2 * Math.atan((portrait ? 0.25 : 0.68) / aspect))
+    )
     if (ready && introStarted.current === null) {
       introStarted.current = clock.elapsedTime
       camera.position.y = baseY - (portrait ? 1 : 1.05)
@@ -1392,8 +1413,8 @@ function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready
     if (reducedMotion) {
       camera.position.set(0, baseY, baseZ)
       camera.lookAt(0, gazeY, -30)
-      if (camera instanceof THREE.PerspectiveCamera && camera.fov !== (portrait ? 54 : 48)) {
-        camera.fov = portrait ? 54 : 48
+      if (camera instanceof THREE.PerspectiveCamera && camera.fov !== fittedFov) {
+        camera.fov = fittedFov
         camera.updateProjectionMatrix()
       }
       return
@@ -1428,7 +1449,7 @@ function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready
     camera.lookAt(lookAt.current)
 
     if (camera instanceof THREE.PerspectiveCamera) {
-      const targetFov = (aspect < 0.75 ? 54 : 48) + (1 - intro) * 4
+      const targetFov = fittedFov + (1 - intro) * 4
       const nextFov = THREE.MathUtils.damp(camera.fov, targetFov, 3.5, delta)
       if (Math.abs(nextFov - camera.fov) > 0.001) {
         camera.fov = nextFov
@@ -1445,7 +1466,7 @@ function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready
 useGLTF.preload('/models/them.glb')
 useGLTF.preload('/models/terrain.glb')
 useGLTF.preload('/models/rocks.glb')
-const portraitAtLoad = typeof window !== 'undefined' && window.matchMedia('(max-aspect-ratio: 3/4)').matches
+const portraitAtLoad = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < COMPACT_ASPECT
 if (portraitAtLoad) {
   useGLTF.preload('/models/dish.glb')
   useGLTF.preload('/models/signpost.glb')
@@ -1464,7 +1485,7 @@ const PORTALS: Record<string, PortalDef> = {
   work: { id: 'work', label: 'Work', sub: 'A decade of AI in production', href: '/work' },
   thinking: { id: 'thinking', label: 'Thinking', sub: 'Trade-offs, not clean answers', href: '/thinking' },
   contact: { id: 'contact', label: "Let's talk", sub: 'hey@n3wth.com', href: '/contact' },
-  garden: { id: 'garden', label: 'The garden', sub: '250+ notes, growing', href: 'https://garden.n3wth.com', external: true },
+  garden: { id: 'garden', label: 'Garden', sub: '250+ notes, growing', href: 'https://garden.n3wth.com', external: true },
   triangle: { id: 'triangle', label: 'Art', sub: 'Pink Triangle, Twin Peaks', href: '/art' },
 }
 
