@@ -56,7 +56,7 @@ function PortalLabel({ def, onEnter, hovered, position = [0, -0.8, 0] }: {
     <Html center position={position} zIndexRange={[20, 10]}>
       <a
         className="world-portal-link"
-        style={def.id === 'triangle' ? { transform: 'translateY(-52px)' } : undefined}
+        style={def.id === 'triangle' ? { transform: 'translateY(-28px)' } : undefined}
         data-hovered={hovered}
         href={def.href}
         aria-label={def.id === 'triangle' ? 'Pink Triangle' : def.id === 'contact' ? 'Contact' : def.label}
