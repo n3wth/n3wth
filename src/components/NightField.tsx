@@ -1,6 +1,6 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame, useThree, type ThreeElements } from '@react-three/fiber'
-import { Line, Stars, useCursor, useGLTF, useProgress, useTexture } from '@react-three/drei'
+import { Canvas, useFrame, useThree, type ThreeElements, type ThreeEvent } from '@react-three/fiber'
+import { Html, Line, Stars, useCursor, useGLTF, useProgress, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { useOptionalTexture } from '../lib/optionalTexture'
@@ -30,8 +30,35 @@ interface PortalDef {
 
 type HoverLabel = (portal: PortalDef | null) => void
 
+function useHoverQuery() {
+  return useMemo(() => window.matchMedia('(hover: hover) and (pointer: fine)'), [])
+}
+
 function usePortraitLayout() {
   return useThree(({ size }) => size.width / size.height < 0.75)
+}
+
+function PortalLabel({ def, onEnter, position = [0, -0.8, 0] }: {
+  def: PortalDef
+  onEnter: NightFieldProps['onEnter']
+  position?: [number, number, number]
+}) {
+  return (
+    <Html center position={position} zIndexRange={[20, 10]}>
+      <a
+        className="world-portal-link"
+        href={def.href}
+        onClick={(event) => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+          event.preventDefault()
+          event.stopPropagation()
+          onEnter(def.href, def.external)
+        }}
+      >
+        {def.id === 'triangle' ? 'Pink Triangle' : def.id === 'contact' ? 'Contact' : def.label}
+      </a>
+    </Html>
+  )
 }
 
 /* 0..1 eased hover value — every hover response uses this so nothing
@@ -58,14 +85,16 @@ function EasedLight({
   return <pointLight ref={ref} intensity={off} {...props} />
 }
 
-function usePortalHover(portal?: PortalDef, onLabel?: HoverLabel): [boolean, { onPointerOver: (e: THREE.Event) => void; onPointerOut: () => void }] {
+function usePortalHover(portal?: PortalDef, onLabel?: HoverLabel): [boolean, { onPointerOver: (e: ThreeEvent<PointerEvent>) => void; onPointerOut: () => void }] {
   const [hovered, setHovered] = useState(false)
+  const hoverQuery = useHoverQuery()
   useCursor(hovered)
   return [
     hovered,
     {
-      onPointerOver: (e: THREE.Event) => {
-        ;(e as unknown as { stopPropagation: () => void }).stopPropagation()
+      onPointerOver: (e: ThreeEvent<PointerEvent>) => {
+        if (!hoverQuery.matches || e.pointerType === 'touch') return
+        e.stopPropagation()
         setHovered(true)
         if (portal && onLabel) onLabel(portal)
       },
@@ -223,13 +252,13 @@ function SteelAndWire({
 }) {
   const edges = useMemo(() => {
     const g = new THREE.EdgesGeometry(geometry, edgeThreshold)
-    /* real LED rope has bright runs, dim runs, dead edges — give every
-       segment its own seeded brightness so nothing glows uniformly */
+    /* Keep the silhouette continuous, with only a slight variation in
+       the LED runs so a small animal never reads as disconnected wire. */
     const count = g.getAttribute('position').count
     const colors = new Float32Array(count * 3)
     for (let seg = 0; seg < count / 2; seg++) {
       const s = Math.sin(seg * 127.1 + 311.7) * 43758.5453
-      const b = 0.35 + 0.65 * (s - Math.floor(s))
+      const b = 0.8 + 0.2 * (s - Math.floor(s))
       for (const vi of [seg * 2, seg * 2 + 1]) {
         colors[vi * 3] = colors[vi * 3 + 1] = colors[vi * 3 + 2] = b
       }
@@ -257,10 +286,12 @@ function SteelAndWire({
         <meshStandardMaterial
           map={configured}
           bumpMap={configured}
-          bumpScale={0.6}
+          bumpScale={0.12}
           color={bodyColor}
-          roughness={0.85}
-          metalness={0.25}
+          emissive="#b99567"
+          emissiveIntensity={0.2}
+          roughness={0.72}
+          metalness={0.35}
           fog={bodyFog}
           side={THREE.DoubleSide}
         />
@@ -294,6 +325,7 @@ function Thylacine({
   scale,
   theta0,
   phase,
+  portrait = false,
 }: {
   parts: Record<string, THREE.BufferGeometry>
   hovered: boolean
@@ -301,6 +333,7 @@ function Thylacine({
   scale: number
   theta0: number
   phase: number
+  portrait?: boolean
 }) {
   const walker = useRef<THREE.Group>(null)
   const bodyGroup = useRef<THREE.Group>(null)
@@ -320,13 +353,21 @@ function Thylacine({
     g.position.set(Math.cos(th) * RX, 0, Math.sin(th) * RZ)
     // face along the direction of travel (ellipse tangent)
     g.rotation.y = Math.atan2(Math.cos(th) * RZ, Math.sin(th) * RX)
+    if (portrait) {
+      // Three staggered profiles read as a pack in a narrow frame. The
+      // distant animal faces back into the group; none vanishes end-on.
+      const lead = phase === 0
+      const middle = phase > 0 && phase < 2
+      g.position.set(lead ? -3.8 : middle ? 3.4 : -1.6, 0, lead ? 5.5 : middle ? 0 : -7)
+      g.rotation.y = lead ? -0.22 : middle ? 0.22 : Math.PI - 0.2
+    }
     const w = 2.3 / Math.sqrt(scale) // stride cadence tuned so feet plant instead of skate
     for (const [name, pivot] of Object.entries(LEG_PIVOTS)) {
       const leg = legRefs.current[name]
       if (leg) {
         // asymmetric gait: quick swing, slow stance
         const a = t * w + LEG_PHASE[name] + phase
-        leg.rotation.z = reducedMotion ? 0 : Math.sin(a) * 0.115 + Math.sin(2 * a + 0.6) * 0.022
+        leg.rotation.z = reducedMotion ? 0 : (Math.sin(a) * 0.115 + Math.sin(2 * a + 0.6) * 0.022) * (portrait ? 0.18 : 1)
       }
       void pivot
     }
@@ -350,12 +391,14 @@ function Thylacine({
           <SteelAndWire
             geometry={body}
             edgeColor="#ffdda8"
-            edgeThreshold={20}
-            glow={hovered ? 1.9 : 1.0}
+            edgeThreshold={38}
+            glow={hovered ? 1.5 : 0.85}
             breathe={1.1}
             phase={phase}
             reducedMotion={reducedMotion}
             mapUrl="/textures/steel-tile.webp"
+            bodyColor="#cbb896"
+            bodyFog={false}
           />
         )}
         {stripes && (
@@ -363,7 +406,6 @@ function Thylacine({
             <meshBasicMaterial ref={stripesMat} color={new THREE.Color('#ffdda8').multiplyScalar(1.35)} toneMapped={false} />
           </mesh>
         )}
-      </group>
       {Object.entries(LEG_PIVOTS).map(([name, pivot]) => {
         const geo = parts[name]
         if (!geo) return null
@@ -379,17 +421,20 @@ function Thylacine({
               <SteelAndWire
                 geometry={geo}
                 edgeColor="#ffdda8"
-                edgeThreshold={20}
-                glow={hovered ? 1.7 : 0.9}
+                edgeThreshold={38}
+                glow={hovered ? 1.3 : 0.75}
                 breathe={1.1}
                 phase={phase + 2}
                 reducedMotion={reducedMotion}
                 mapUrl="/textures/steel-tile.webp"
+                bodyColor="#cbb896"
+                bodyFog={false}
               />
             </group>
           </group>
         )
       })}
+      </group>
     </group>
   )
 }
@@ -401,16 +446,18 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
 
   return (
     <group
-      position={portrait ? [10, 0, -50] : [27, 0, -46]}
+      position={portrait ? [3.2, 0, -35] : [27, 0, -46]}
+      scale={portrait ? 1.05 : 1}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
-      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={1.1} theta0={0} phase={0} />
-      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={0.95} theta0={1.7} phase={1.7} />
-      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} scale={0.8} theta0={3.5} phase={3.1} />
+      <PortalLabel def={def} onEnter={onEnter} position={[0, -1.5, 0]} />
+      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} portrait={portrait} scale={1.1} theta0={1.2} phase={0} />
+      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} portrait={portrait} scale={0.95} theta0={3.6} phase={1.7} />
+      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} portrait={portrait} scale={0.8} theta0={5.4} phase={3.1} />
       <LightPool position={[0, 0.03, 0]} scale={12} color="#ffce8a" opacity={0.10} />
       {/* invisible hit volume covering the loop the pack walks; grows while
           hovered so the camera glide can't slide it out from under the
@@ -442,7 +489,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
 
   return (
     <group
-      position={portrait ? [-18, 0, -94] : [-52, 0, -100]}
+      position={portrait ? [-14, 0, -85] : [-52, 0, -100]}
       rotation-y={0.35}
       scale={portrait ? 2.45 : 2.2}
       {...handlers}
@@ -451,6 +498,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
         onEnter(def.href, def.external)
       }}
     >
+      <PortalLabel def={def} onEnter={onEnter} />
       <group ref={azimuth}>
         <primitive object={telescope} />
       </group>
@@ -491,15 +539,16 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
 
   return (
     <group
-      position={portrait ? [4.2, 0, 1] : [6.5, 0, 4]}
+      position={portrait ? [3.6, 0, 3] : [6.5, 0, 4]}
       rotation-y={0.45}
-      scale={portrait ? 0.38 : 0.42}
+      scale={portrait ? 0.85 : 0.42}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
+      <PortalLabel def={def} onEnter={onEnter} />
       <primitive object={signpost} />
       {markers.map((m, i) => (
         <mesh
@@ -514,9 +563,9 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
       {/* Suzanne on a plinth beside the fork, thinking it over — garnish,
           so she streams in behind her own Suspense instead of holding up
           the field's first frame */}
-      <Suspense fallback={null}>
+      {!portrait && <Suspense fallback={null}>
         <ForkSuzanne />
-      </Suspense>
+      </Suspense>}
       <LightPool position={[0, 0.03, 0]} scale={5.5} color="#d9cba4" opacity={0.08} />
       <mesh position={[0, 2.4, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[6.5, 5.4, 3.5]} />
@@ -712,14 +761,15 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
 
   return (
     <group
-      position={portrait ? [-4.5, 0, 5] : [-8, 0, 9]}
-      scale={portrait ? 0.82 : 1}
+      position={portrait ? [-2.8, 0, 7] : [-8, 0, 9]}
+      scale={portrait ? 1.4 : 1}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
+      <PortalLabel def={def} onEnter={onEnter} position={portrait ? [1.5, 2.5, 0] : [0, -0.8, 0]} />
       {!portrait && (
         <Suspense fallback={null}>
           <CampArtifacts />
@@ -982,14 +1032,15 @@ function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef;
 
   return (
     <group
-      position={portrait ? [-7, 0, -19] : [-6, 0, -16]}
-      scale={portrait ? 0.88 : 1}
+      position={portrait ? [-4.2, 0, -13] : [-6, 0, -16]}
+      scale={portrait ? 1.3 : 1}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
         onEnter(def.href, def.external)
       }}
     >
+      <PortalLabel def={def} onEnter={onEnter} />
       <group ref={bed}>
         {/* stems + leaves, one draw call */}
         <lineSegments geometry={stemGeo}>
@@ -1057,6 +1108,7 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
         onEnter(def.href, def.external)
       }}
     >
+      <PortalLabel def={def} onEnter={onEnter} position={[0, -2, 0]} />
       <Line
         ref={(el: unknown) => {
           const line = el as { material?: { color: THREE.Color } } | null
@@ -1211,6 +1263,7 @@ function Meteors({ reducedMotion }: { reducedMotion: boolean }) {
    weaker than every artwork's own light: the field is discovered, never
    floodlit. */
 function SurveyLight({ reducedMotion }: { reducedMotion: boolean }) {
+  const hoverQuery = useHoverQuery()
   const group = useRef<THREE.Group>(null)
   const light = useRef<THREE.PointLight>(null)
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), [])
@@ -1218,7 +1271,7 @@ function SurveyLight({ reducedMotion }: { reducedMotion: boolean }) {
   const target = useRef(new THREE.Vector3(0, 0.04, -12))
 
   useFrame(({ camera, clock, pointer, raycaster }, delta) => {
-    if (!reducedMotion) {
+    if (!reducedMotion && hoverQuery.matches) {
       raycaster.setFromCamera(pointer, camera)
       const intersection = raycaster.ray.intersectPlane(plane, hit)
       if (intersection) {
@@ -1316,36 +1369,49 @@ const CAMERA_FOCUS: Record<string, { cameraX: number; lookX: number; lookY: numb
 }
 
 function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready: boolean; reducedMotion: boolean }) {
+  const hoverQuery = useHoverQuery()
   const lookAt = useRef(new THREE.Vector3(0, 4.5, -30))
   const targetLook = useRef(new THREE.Vector3(0, 4.5, -30))
   const introStarted = useRef<number | null>(null)
 
   useFrame(({ camera, pointer, clock, size }, delta) => {
     const aspect = size.width / size.height
-    const baseZ = aspect < 0.75 ? 38 : aspect < 1.15 ? 29 : 22
+    const portrait = aspect < 0.75
+    // Looking down across the near field separates the installations in
+    // depth on a phone, instead of squeezing them onto one horizon line.
+    const baseZ = portrait ? 26 : aspect < 1.15 ? 29 : 22
+    const baseY = portrait ? 14 : 3.2
+    const gazeY = portrait ? 1 : 4.5
     if (ready && introStarted.current === null) {
       introStarted.current = clock.elapsedTime
-      camera.position.y = aspect < 0.75 ? 2.4 : 2.15
-      camera.position.z = baseZ + (aspect < 0.75 ? 8 : 11)
+      camera.position.y = baseY - (portrait ? 1 : 1.05)
+      camera.position.z = baseZ + (portrait ? 3 : 11)
+      lookAt.current.set(0, gazeY, -30)
     }
 
     if (reducedMotion) {
-      camera.position.set(0, 3.2, baseZ)
-      camera.lookAt(aspect < 0.75 ? 2.2 : 0, 4.5, -30)
+      camera.position.set(0, baseY, baseZ)
+      camera.lookAt(0, gazeY, -30)
+      if (camera instanceof THREE.PerspectiveCamera && camera.fov !== (portrait ? 54 : 48)) {
+        camera.fov = portrait ? 54 : 48
+        camera.updateProjectionMatrix()
+      }
       return
     }
 
     const t = clock.elapsedTime
     const introElapsed = introStarted.current === null ? 0 : t - introStarted.current
     const intro = ready ? THREE.MathUtils.smoothstep(introElapsed, 0, 2.8) : 0
-    const introOffset = (1 - intro) * (aspect < 0.75 ? 8 : 11)
-    const focus = active ? CAMERA_FOCUS[active.id] : undefined
-    const pointerWeight = active ? 0.45 : 1
+    const introOffset = (1 - intro) * (portrait ? 3 : 11)
+    const focus = active && hoverQuery.matches ? CAMERA_FOCUS[active.id] : undefined
+    // Touch leaves a pointer behind after release; it must not keep tilting
+    // the camera or pull foreground objects away from the next tap.
+    const pointerWeight = portrait || !hoverQuery.matches ? 0 : active ? 0.45 : 1
     // two incommensurate drift periods (~78s / ~217s) plus a faint vertical breath.
     // Pointer contributes a subtle parallax nudge, not a pan — the ambient
     // drift carries the motion; the cursor should barely tip the balance.
-    const targetX = pointer.x * 1.1 * pointerWeight + (focus?.cameraX ?? 0) + Math.sin(t * 0.08) * 0.45 + Math.sin(t * 0.029 + 1.7) * 0.3
-    const targetY = 3.2 + pointer.y * 0.45 * pointerWeight - (1 - intro) * 0.75 + Math.sin(t * 0.047 + 0.8) * 0.12
+    const targetX = pointer.x * 1.1 * pointerWeight + (portrait ? 0 : focus?.cameraX ?? 0) + Math.sin(t * 0.08) * 0.45 + Math.sin(t * 0.029 + 1.7) * 0.3
+    const targetY = baseY + pointer.y * 0.45 * pointerWeight - (1 - intro) * 0.75 + Math.sin(t * 0.047 + 0.8) * 0.12
     const targetZ = baseZ + introOffset
     const k = 1 - Math.exp(-1.6 * delta)
     camera.position.x += (targetX - camera.position.x) * k
@@ -1354,9 +1420,9 @@ function Rig({ active, ready, reducedMotion }: { active: PortalDef | null; ready
     // gaze drifts on periods incommensurate with the position drift, so the
     // viewpoint breathes instead of dollying on a rail
     targetLook.current.set(
-      (focus?.lookX ?? (aspect < 0.75 ? 2.2 : 0)) + Math.sin(t * 0.021 + 3.1) * 0.8,
-      (focus?.lookY ?? 4.5) + Math.sin(t * 0.037 + 2.2) * 0.25,
-      focus?.lookZ ?? -30
+      (portrait ? 0 : focus?.lookX ?? 0) + Math.sin(t * 0.021 + 3.1) * (portrait ? 0.25 : 0.8),
+      (portrait ? gazeY : focus?.lookY ?? gazeY) + Math.sin(t * 0.037 + 2.2) * 0.25,
+      portrait ? -30 : focus?.lookZ ?? -30
     )
     lookAt.current.lerp(targetLook.current, 1 - Math.exp(-2.1 * delta))
     camera.lookAt(lookAt.current)
@@ -1437,15 +1503,6 @@ function WorldInterface({
         </div>
       </div>
 
-      {/* Identity sits above the loader so the visitor learns whose site
-          this is on first paint, not after the field finishes loading. */}
-      <div className="world-identity-layer">
-        <header className="world-identity">
-          <h1>Oliver Newth</h1>
-          <p>AI product lead at Google · light artist</p>
-        </header>
-      </div>
-
       <div className="world-interface" data-ready={ready ? 'true' : 'false'}>
         {active && (
           <div className="world-atlas">
@@ -1461,6 +1518,7 @@ function WorldInterface({
 }
 
 export default function NightField({ onEnter, reducedMotion }: NightFieldProps) {
+  const hoverQuery = useHoverQuery()
   const [active, setActive] = useState<PortalDef | null>(null)
   const [ready, setReady] = useState(false)
   const { progress } = useProgress()
@@ -1476,12 +1534,12 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
   }, [])
 
   const focusThenEnter = useCallback<NightFieldProps['onEnter']>((href, external) => {
-    const portal = Object.values(PORTALS).find((item) => item.href === href) ?? null
-    setActive(portal)
-    if (reducedMotion) {
+    if (!hoverQuery.matches || reducedMotion) {
       onEnter(href, external)
       return
     }
+    const portal = Object.values(PORTALS).find((item) => item.href === href) ?? null
+    setActive(portal)
     if (navigationTimer.current !== null) {
       window.clearTimeout(navigationTimer.current)
       // An impatient repeat click on the same portal commits immediately —
@@ -1500,7 +1558,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       pendingHref.current = null
       onEnter(href, external)
     }, 200)
-  }, [onEnter, reducedMotion])
+  }, [onEnter, reducedMotion, hoverQuery])
 
   return (
     <>

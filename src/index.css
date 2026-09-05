@@ -506,34 +506,10 @@ body {
 }
 .skip-link:focus { top: 0; }
 
-/* Home's chapter doors: hidden offscreen (still focusable, unlike
-   display:none), revealed as a bottom-left strip while any door holds
-   focus — the skip-link pattern, sized for five links. */
-.field-doors {
-  position: fixed;
-  left: -100vw;
-  bottom: calc(1rem + env(safe-area-inset-bottom));
-  z-index: 40;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  padding: 0.6rem 0.9rem;
-  background: var(--bg);
-  border: 1px solid var(--rail-strong);
-  border-radius: 8px;
-}
-.field-doors:focus-within { left: var(--gutter); }
-.field-doors a {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.field-doors-sep {
-  color: var(--ink-dim);
-  margin: 0 0.25rem;
+@media (max-width: 767px) {
+  .site-nav .nav-link::before {
+    inset: 0;
+  }
 }
 
 /* ---------- Focus ---------- */
@@ -1141,6 +1117,21 @@ body {
 }
 
 /* ---------- Night-field home ---------- */
+.world-portal-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .night-field-loader {
   position: absolute;
   inset: 0;

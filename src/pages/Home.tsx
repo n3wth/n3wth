@@ -1,15 +1,14 @@
 import { Component, Suspense, lazy, useCallback, useMemo } from 'react'
 import type { ReactNode } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
-import { siteConfig, familySites } from '../data/content'
+import { siteConfig } from '../data/content'
 
 /* The front door is a field at night (three.js, lazy so the rest of the
    site never pays for it): every glowing structure is one of Oliver's
    works standing in for a page, and colored light — the medium of the
-   art — is the only color on the site. The portal links below the scene
-   are real anchors, so keyboard, touch, and no-WebGL visitors get the
-   same doors. */
+   art — is the only color on the site. The header provides ordinary
+   navigation for keyboard, touch, and no-WebGL visitors. */
 
 const NightField = lazy(() => import('../components/NightField'))
 
@@ -45,13 +44,6 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
     return this.state.failed ? <StaticNight /> : this.props.children
   }
 }
-
-const portals = [
-  { href: '/work', label: 'Work' },
-  { href: '/art', label: 'Art' },
-  { href: '/thinking', label: 'Thinking' },
-  { href: '/contact', label: 'Contact' },
-]
 
 export default function Home() {
   usePageMeta(siteConfig.title, siteConfig.description, {
@@ -102,23 +94,11 @@ export default function Home() {
         <StaticNight />
       )}
 
-      {/* Real anchors for keyboard, AT, and no-WebGL visitors — the canvas
-          portals are pointer-only onClick meshes, so these must stay in the
-          tab order and the accessibility tree even when the field renders. */}
-      {!webglOk && <h1 className="sr-only">Oliver Newth</h1>}
-      <nav aria-label="Site chapters" className="field-doors">
-        {portals.map((p) => (
-          <Link key={p.href} to={p.href} viewTransition>
-            {p.label}
-          </Link>
-        ))}
-        <span className="field-doors-sep" aria-hidden>·</span>
-        {familySites.map((s) => (
-          <a key={s.href} href={s.href} rel="noopener">
-            {s.name}
-          </a>
-        ))}
-      </nav>
+      {/* Keep a semantic heading without covering the scene. */}
+      <header className="sr-only">
+        <h1>{siteConfig.name}</h1>
+        <p>AI product lead at Google · light artist</p>
+      </header>
     </section>
   )
 }
