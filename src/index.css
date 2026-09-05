@@ -145,7 +145,7 @@ p { text-wrap: pretty; }
    8px into place. The floating nav lives on its own transition layer so
    it stays perfectly still while pages change beneath it. Browsers
    without the API (and reduced-motion users) get instant navigation. */
-.site-nav { view-transition-name: site-nav; }
+.nav-island { view-transition-name: site-nav; }
 ::view-transition-old(site-nav),
 ::view-transition-new(site-nav) {
   animation: none;
@@ -394,6 +394,15 @@ body {
   letter-spacing: -0.03em;
   line-height: 1;
   color: var(--ink);
+}
+.page-title {
+  font-size: 2.25rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .page-title { font-size: 3.75rem; }
 }
 .t-lead {
   font-size: 1.125rem;
@@ -650,17 +659,16 @@ body {
   position: relative;
   z-index: 1;
   transform: translate3d(0, 0, 0);
-  background: rgba(8, 9, 11, 0.65);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  backdrop-filter: blur(16px) saturate(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(28px) saturate(1.4);
+  border: 1px solid var(--rail-strong);
   border-radius: 16px;
 }
 
 /* Users who prefer reduced transparency: solid background, no blur. */
 @media (prefers-reduced-transparency: reduce) {
   .nav-island {
-    background: rgb(8, 9, 11);
+    background: var(--bg);
     backdrop-filter: none;
   }
 }
@@ -1117,7 +1125,13 @@ body {
 }
 
 /* ---------- Night-field home ---------- */
+.night-field-stage:not(.is-settled) .world-portal-link {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
 .world-portal-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1130,11 +1144,38 @@ body {
   font-weight: 400;
   white-space: nowrap;
   text-decoration: none;
+  opacity: 1;
+  transition: opacity 0.7s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-portal-link {
+    transition: none;
+  }
+}
+.world-portal-description {
+  display: none;
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 50%;
+  width: max-content;
+  max-width: 160px;
+  transform: translateX(-50%);
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  color: var(--ink-dim);
+  pointer-events: none;
 }
 .world-portal-link:focus-visible {
   color: var(--ink);
 }
 @media (hover: hover) and (pointer: fine) {
+  .world-portal-link[data-hovered='true'] .world-portal-description,
+  .world-portal-link:hover .world-portal-description,
+  .world-portal-link:focus-visible .world-portal-description {
+    display: block;
+  }
   .world-portal-link:hover {
     color: var(--ink);
   }

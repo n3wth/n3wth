@@ -59,4 +59,13 @@ describe('Navigation disclosure', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
     expect(onOpenSearch).toHaveBeenCalledOnce()
   })
+
+  it('opens the contact page and closes the mobile navigation', () => {
+    const { trigger } = renderNav()
+    fireEvent.click(trigger)
+    const contact = screen.getByRole('link', { name: 'Contact' })
+    expect(contact).toHaveAttribute('href', '/contact')
+    fireEvent.click(contact)
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+  })
 })

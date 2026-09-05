@@ -1,7 +1,7 @@
 import { useRef, useState, type MouseEvent } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Github, Mail, Menu, Search, X } from 'lucide-react'
-import { navigation, siteConfig } from '../data/content'
+import { navigation } from '../data/content'
 
 export interface NavProps {
   /** Opens site search. The layout owns its state, so Nav only asks. */
@@ -79,13 +79,15 @@ export function Nav({ onOpenSearch }: NavProps) {
               <Github size={16} aria-hidden="true" />
             </a>
           </span>
-          <a
-            href={`mailto:${siteConfig.email}`}
+          <Link
+            to="/contact"
+            viewTransition
+            onClick={sameRouteClick('/contact')}
             className="nav-icon"
             aria-label="Contact"
           >
             <Mail size={16} aria-hidden="true" />
-          </a>
+          </Link>
           {onOpenSearch && (
             <button
               type="button"

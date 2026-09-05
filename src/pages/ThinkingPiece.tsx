@@ -68,7 +68,7 @@ export default function ThinkingPiece() {
           </p>
           <div className="mt-3 md:grid md:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] md:gap-16 md:items-start">
             <h1
-              className="display text-[clamp(2rem,4vw,3rem)] max-w-[20ch]"
+              className="display page-title max-w-[20ch]"
               style={{ letterSpacing: '-0.03em', lineHeight: 1.04, fontWeight: 600 }}
             >
               {meta.title}

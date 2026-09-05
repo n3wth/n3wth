@@ -43,7 +43,7 @@ export default function Library() {
     <>
       <SectionHeader
         as="h1"
-        title="Help yourself"
+        title="Library"
         lede="The essay kit, UI components, garden notes, and agent skills behind this site."
       />
 

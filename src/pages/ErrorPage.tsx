@@ -39,7 +39,7 @@ export default function ErrorPage() {
       <div className="frame relative w-full">
         <div className="section-pad pad-air w-full">
           <h1
-            className="display text-[length:var(--display-h1)] max-w-[18ch]"
+          className="display page-title max-w-[18ch]"
             style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
           >
             {headline}

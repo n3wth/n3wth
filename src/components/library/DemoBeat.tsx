@@ -15,7 +15,7 @@ export default function DemoBeat() {
     <figure className="m-0">
       <Beat
         stage={{ n: '01', label: 'Layout' }}
-        prose="Prose runs in the wide column and holds a 62-character measure no matter how much room the viewport gives it. The note sits in the narrow column beside the paragraph that earned it. On a phone there is no margin to sit in, so it drops underneath instead."
+        prose="The main column holds the text. A related note sits alongside it on wider screens and below it on phones."
         margin={
           <MarginNote
             href="https://garden.n3wth.com/frameworks/5-whys"
@@ -25,8 +25,7 @@ export default function DemoBeat() {
         }
       />
       <figcaption className="mt-1 max-w-[62ch] text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-        Watch the connector draw itself in, then narrow the window: past the medium breakpoint the
-        note stops being a margin note and becomes a footnote.
+        Resize the window to see the note move below the text.
       </figcaption>
     </figure>
   )
