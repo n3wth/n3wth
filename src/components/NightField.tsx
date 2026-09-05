@@ -1437,15 +1437,6 @@ function WorldInterface({
         </div>
       </div>
 
-      {/* Identity sits above the loader so the visitor learns whose site
-          this is on first paint, not after the field finishes loading. */}
-      <div className="world-identity-layer">
-        <header className="world-identity">
-          <h1>Oliver Newth</h1>
-          <p>AI product lead at Google · light artist</p>
-        </header>
-      </div>
-
       <div className="world-interface" data-ready={ready ? 'true' : 'false'}>
         {active && (
           <div className="world-atlas">

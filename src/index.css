@@ -506,34 +506,69 @@ body {
 }
 .skip-link:focus { top: 0; }
 
-/* Home's chapter doors: hidden offscreen (still focusable, unlike
-   display:none), revealed as a bottom-left strip while any door holds
-   focus — the skip-link pattern, sized for five links. */
-.field-doors {
-  position: fixed;
-  left: -100vw;
-  bottom: calc(1rem + env(safe-area-inset-bottom));
+/* Visible, ordinary links complement the field's spatial navigation.
+   Desktop separates chapters and projects; narrow screens stack the two
+   groups and let projects wrap without hiding any destinations. */
+.field-navigation {
+  position: absolute;
+  inset-inline: var(--gutter);
+  bottom: calc(var(--spacing-6) + env(safe-area-inset-bottom));
   z-index: 40;
   display: flex;
-  gap: 1rem;
-  align-items: center;
-  padding: 0.6rem 0.9rem;
-  background: var(--bg);
-  border: 1px solid var(--rail-strong);
-  border-radius: 8px;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-4);
+  pointer-events: none;
 }
-.field-doors:focus-within { left: var(--gutter); }
+.field-doors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+  align-items: center;
+  padding: var(--spacing-1);
+  margin: 0;
+  background: var(--bg);
+  border: var(--border-width) solid var(--rail-strong);
+  border-radius: var(--radius-element);
+  pointer-events: auto;
+}
 .field-doors a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--spacing-11);
+  min-width: var(--spacing-11);
+  padding-inline: var(--spacing-3);
+  border-radius: var(--radius-inner);
   font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
 }
-.field-doors-sep {
+.field-doors--projects a {
+  font-size: var(--text-xs);
   color: var(--ink-dim);
-  margin: 0 0.25rem;
+}
+.field-doors a:hover,
+.field-doors a:focus-visible {
+  background: var(--bg-raise);
+  color: var(--ink);
+}
+.field-doors a:focus-visible { outline-offset: 0; }
+@media (max-width: 1023px) {
+  .field-navigation {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+  }
+}
+@media (max-width: 479px) {
+  .field-navigation { inset-inline: var(--spacing-4); }
+  .field-doors { width: 100%; }
+  .field-doors a { flex: 1 0 auto; padding-inline: var(--spacing-2); }
+  .field-doors--projects a { padding-inline: var(--spacing-2); }
 }
 
 /* ---------- Focus ---------- */
@@ -679,6 +714,40 @@ body {
   backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
+}
+
+@media (max-width: 767px) {
+  .nav-island {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 100%;
+    height: auto;
+    padding: var(--spacing-1) var(--spacing-3);
+    gap: 0;
+  }
+  .nav-island > .brand { min-height: var(--spacing-11); }
+  .nav-island > nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0;
+    justify-content: space-between;
+  }
+  .nav-island > nav .nav-link {
+    flex: 1;
+    justify-content: center;
+    height: var(--spacing-11);
+    padding-inline: var(--spacing-2);
+  }
+  .nav-island .nav-link::before { inset: 0; }
+  .nav-island > span {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+  }
+  .nav-island .nav-icon {
+    width: var(--spacing-11);
+    height: var(--spacing-11);
+  }
 }
 
 /* Users who prefer reduced transparency: solid background, no blur. */
@@ -1245,16 +1314,16 @@ body {
   letter-spacing: -0.045em;
 }
 .world-identity > p:last-child {
-  margin: 0.7rem 0 0;
-  font-size: 14px;
-  line-height: 1.45;
-  color: rgba(242, 243, 245, 0.68);
+  margin: var(--spacing-3) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--ink);
 }
 
 .world-atlas {
   position: absolute;
   right: var(--gutter);
-  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  bottom: calc(var(--spacing-12) * 2 + env(safe-area-inset-bottom));
   left: var(--gutter);
   display: flex;
   align-items: flex-end;
@@ -1280,20 +1349,24 @@ body {
   line-height: 1.4;
   color: rgba(242, 243, 245, 0.58);
 }
+@media (max-width: 1023px) {
+  .world-atlas {
+    bottom: calc(var(--spacing-12) * 4 + env(safe-area-inset-bottom));
+  }
+}
 @media (max-width: 767px) {
   .world-identity {
-    top: calc(5.85rem + env(safe-area-inset-top));
+    top: calc(var(--spacing-12) * 3 + env(safe-area-inset-top));
     max-width: calc(100vw - 2 * var(--gutter));
   }
   .world-identity h1 {
     font-size: clamp(2rem, 10vw, 2.65rem);
   }
   .world-identity > p:last-child {
-    margin-top: 0.55rem;
-    font-size: 13px;
+    margin-top: var(--spacing-3);
+    font-size: var(--text-sm);
   }
   .world-atlas {
-    bottom: calc(0.7rem + env(safe-area-inset-bottom));
     display: block;
   }
   .world-atlas-copy {
@@ -1314,7 +1387,7 @@ body {
     display: none;
   }
   .world-identity {
-    top: calc(5.2rem + env(safe-area-inset-top));
+    top: calc(var(--spacing-12) * 3 + env(safe-area-inset-top));
   }
   .world-atlas-copy {
     display: none;
