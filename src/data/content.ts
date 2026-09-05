@@ -173,13 +173,15 @@ export interface Project {
   url: string
   github?: string
   question?: string
+  focus?: string
 }
 
 export const projects: Project[] = [
   {
     id: 'r3',
     name: 'r3',
-    question: 'How can an agent carry useful context from one task to the next?',
+    focus: 'Personal agents',
+    question: 'Useful context beyond a single conversation',
     description: 'A memory service for AI apps with semantic search and a knowledge graph. An MCP interface makes that context available across tools.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
     url: 'https://r3.n3wth.com',
@@ -188,7 +190,8 @@ export const projects: Project[] = [
   {
     id: 'kit',
     name: 'kit',
-    question: 'How can generated software follow a design system?',
+    focus: 'Creating software',
+    question: 'A design system that coding agents can use',
     description: 'A component registry that pairs reusable UI with context for coding agents. The design rules travel with the components.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
     url: 'https://kit.n3wth.com',
@@ -204,7 +207,8 @@ export const projects: Project[] = [
   {
     id: 'skills',
     name: 'skills',
-    question: 'How can a useful way of working be reused by another agent?',
+    focus: 'Reusable skills',
+    question: 'Turn a way of working into something others can use',
     description: 'A registry of installable markdown skills for coding agents. Each skill packages instructions for a specific task.',
     tech: ['Next.js', 'React', 'Supabase'],
     url: 'https://skills.n3wth.com',
