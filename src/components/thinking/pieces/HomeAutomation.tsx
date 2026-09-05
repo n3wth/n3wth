@@ -18,11 +18,11 @@ import type { FlowEdge, FlowNode } from '../kit/FlowDiagram'
 const HEALTHY_NODES: FlowNode[] = [
   { id: 'sensor', label: 'Leak sensor reports', x: 70, y: 110, active: true },
   { id: 'hub', label: 'Hub evaluates the rule', x: 340, y: 110, active: true },
-  { id: 'actuator', label: 'Valve shuts, alert sent', x: 610, y: 110, active: true },
+  { id: 'actuator', label: 'Valve shuts and sends alert', x: 610, y: 110, active: true },
 ]
 const LOW_BATTERY_NODES: FlowNode[] = [
-  { id: 'sensor', label: 'Sensor — battery at 20%', x: 70, y: 110 },
-  { id: 'hub', label: 'Hub — no report arrives', x: 340, y: 110 },
+  { id: 'sensor', label: 'Sensor battery at 20%', x: 70, y: 110 },
+  { id: 'hub', label: 'Hub receives no report', x: 340, y: 110 },
   { id: 'actuator', label: 'Nothing fires', x: 610, y: 110 },
 ]
 const CHAIN_EDGES: FlowEdge[] = [

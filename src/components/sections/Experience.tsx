@@ -9,7 +9,7 @@ export function Experience() {
     <section id="work" aria-label="Experience">
       <SectionHeader
         as="h1"
-        title="Twelve years of AI, in production"
+        title="Twelve years of AI in production"
         lede="From Azure Cognitive Services in 2014 to DeepMind model platforms today, by way of Meta and Covariant."
       />
 

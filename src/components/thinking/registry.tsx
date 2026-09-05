@@ -84,7 +84,7 @@ export const registeredPieces: RegisteredPiece[] = [
   {
     meta: {
       id: 'ambient-ai',
-      title: 'AI should be present, not summoned',
+      title: 'AI should be present without being summoned',
       dek: 'The chat box makes you stop and decide what to ask. An ambient layer reads the room instead.',
       date: '2026-07-22',
       group: 'position',
@@ -148,7 +148,7 @@ export const registeredPieces: RegisteredPiece[] = [
   {
     meta: {
       id: 'compound-engineering',
-      title: 'Compound engineering, applied to a personal site',
+      title: 'Compound engineering applied to a personal site',
       dek: "Five real pull requests from this site's own git history (a build, a review, a three-line fix, an extraction, and a compliance rule) show what compounding actually looks like when a fix from one PR gets applied automatically three PRs later without anyone repeating the instruction.",
       date: '2026-07-22',
       group: 'system',
@@ -168,7 +168,7 @@ export const registeredPieces: RegisteredPiece[] = [
   {
     meta: {
       id: 'llm-inference',
-      title: 'The toll booth is memory, not math',
+      title: 'Memory is the toll booth',
       dek: "Prefill runs once, in parallel. Every token after that is its own round trip to memory to reload the model's weights and KV cache, which is why decode speed lives or dies on memory bandwidth.",
       date: '2026-07-22',
       group: 'position',
