@@ -1,6 +1,7 @@
 import { Experience } from '../components/sections/Experience'
 import { Building } from '../components/sections/Building'
 import { EmergenceField } from '../components/EmergenceField'
+import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Work — Oliver Newth'
@@ -22,7 +23,8 @@ export default function Work() {
 
   return (
     <>
-      <Experience />
+      <SectionHeader as="h1" title="Work" lede="I choose a problem, build an early version, and put it in front of people. What I learn shapes what comes next." />
+      <Building />
       {/* A dot grid dissolving into constellations — hand-designed order
           becoming agent-shipped emergence, between the two halves of the
           story. Procedural vector: reveals left to right, the emergent
@@ -33,7 +35,7 @@ export default function Work() {
           <EmergenceField />
         </div>
       </div>
-      <Building />
+      <Experience />
     </>
   )
 }

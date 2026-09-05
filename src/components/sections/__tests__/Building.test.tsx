@@ -1,77 +1,16 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
 import { Building } from '../Building'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
 
-// Mock the projects data to have a predictable set
-vi.mock('../../../data/content', async () => {
-  const actual = await vi.importActual('../../../data/content')
-  return {
-    ...actual,
-    projects: [
-      {
-        id: 'test-project',
-        name: 'Test Project',
-        description: 'A test project',
-        tech: ['React'],
-        url: 'https://example.com',
-        github: 'https://github.com/test/repo',
-      },
-    ],
-  }
-})
-
-// Mock GSAP to avoid animation issues in tests
-vi.mock('../../../lib/gsap', () => ({
-  gsap: {
-    from: vi.fn(),
-    fromTo: vi.fn(),
-    set: vi.fn(),
-    registerPlugin: vi.fn(),
-    quickTo: vi.fn(() => vi.fn()),
-    context: vi.fn(() => ({ revert: vi.fn() })),
-  },
-  ScrollTrigger: { refresh: vi.fn() },
-  useGSAP: vi.fn(),
-}))
-
-describe('Building Component', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    // Mock global fetch
-    vi.stubGlobal('fetch', vi.fn())
+describe('Project portfolio', () => {
+  it('leads with the three connected projects and retains other explorations', () => {
+    render(<Building />)
+    expect(screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent)).toEqual(['r3', 'kit', 'skills', 'hop.flights', 'garden'])
   })
 
-  it('hides stats when GitHub API fails', async () => {
-    // Mock a failed API response
-    vi.mocked(fetch).mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-      json: async () => ({ error: 'Internal Server Error' }),
-    } as Response)
-
+  it('provides live projects and public source links', () => {
     render(<Building />)
-
-    // Wait for the fetch to be called and state to update
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalled()
-    }, { timeout: 2000 })
-
-    // Stats row only renders with a positive star count, so failure shows nothing
-    expect(screen.queryByText('—')).toBeNull()
-  })
-
-  it('shows actual stats when GitHub API succeeds', async () => {
-    // Mock a successful API response
-    vi.mocked(fetch).mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ stars: 42, forks: 12 }),
-    } as Response)
-
-    render(<Building />)
-
-    await waitFor(() => {
-      expect(screen.getByText('42')).toBeDefined()
-      expect(screen.getByText('12')).toBeDefined()
-    }, { timeout: 2000 })
+    expect(screen.getByRole('link', { name: 'Explore r3' })).toHaveAttribute('href', 'https://r3.n3wth.com')
+    expect(screen.getAllByRole('link', { name: 'Read the source' }).map((link) => link.getAttribute('href'))).toEqual(['https://github.com/n3wth/r3', 'https://github.com/n3wth/kit', 'https://github.com/n3wth/skills'])
   })
 })

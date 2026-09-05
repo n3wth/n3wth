@@ -1,6 +1,6 @@
 import { Component, Suspense, lazy, useCallback, useMemo } from 'react'
 import type { ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../data/content'
 
@@ -69,7 +69,8 @@ export default function Home() {
   )
 
   return (
-    <section className="bleed relative -mt-20" style={{ height: '100svh' }}>
+    <>
+    <section aria-label="Explore the night scene" className="bleed relative -mt-20" style={{ height: '100svh' }}>
       {webglOk ? (
         <SceneBoundary>
           <Suspense
@@ -94,11 +95,18 @@ export default function Home() {
         <StaticNight />
       )}
 
-      {/* Keep a semantic heading without covering the scene. */}
-      <header className="sr-only">
-        <h1>{siteConfig.name}</h1>
-        <p>AI product lead at Google · light artist</p>
-      </header>
     </section>
+    <section className="section-pad" aria-labelledby="product-introduction">
+      <p className="meta mb-5">{siteConfig.name}</p>
+      <h1 id="product-introduction" className="display page-title max-w-[18ch]">I build new ways to work with AI.</h1>
+      <p className="t-lead mt-6 max-w-xl" style={{ color: 'var(--ink-dim)', textWrap: 'balance' }}>
+        I’m a product leader who spots opportunities, builds early versions, and learns by putting them in people’s hands.
+      </p>
+      <p className="mt-5 max-w-xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+        My independent projects explore personal agents, tools for creating software, and skills that help people use both.
+      </p>
+      <Link to="/work#building" className="btn mt-8 min-h-11" viewTransition>Explore my projects</Link>
+    </section>
+    </>
   )
 }

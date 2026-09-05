@@ -18,8 +18,9 @@ describe('Homepage without a ready scene', () => {
 
     render(<MemoryRouter><Home /></MemoryRouter>)
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Oliver Newth' })).toBeInTheDocument()
-    expect(screen.getByText('AI product lead at Google · light artist')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'I build new ways to work with AI.' })).toBeInTheDocument()
+    expect(screen.getByText('Oliver Newth')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Explore my projects' })).toHaveAttribute('href', '/work#building')
     expect(screen.queryByRole('navigation', { name: 'Site chapters' })).toBeNull()
   })
 })
