@@ -16,8 +16,8 @@ import type { FlowEdge, FlowNode } from '../kit/FlowDiagram'
    schematic rather than inventing numbers that were never measured. */
 
 const ROOT_CAUSE_NODES: FlowNode[] = [
-  { id: 'seats', label: 'Seats.aero — miles + taxes, per seat', x: 90, y: 50 },
-  { id: 'duffel', label: 'Duffel — cash total, whole party', x: 90, y: 180 },
+  { id: 'seats', label: 'Seats.aero miles + taxes per seat', x: 90, y: 50 },
+  { id: 'duffel', label: 'Duffel cash total for whole party', x: 90, y: 180 },
   { id: 'join', label: 'assembleSearch joins them', x: 420, y: 115, active: true },
   { id: 'cpp', label: 'cpp computed', x: 700, y: 115 },
   { id: 'verdict', label: 'verdict shown', x: 920, y: 115 },
