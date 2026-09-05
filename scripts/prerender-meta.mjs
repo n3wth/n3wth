@@ -26,29 +26,29 @@ const routes = [
     path: 'work',
     title: 'Work — Oliver Newth',
     description:
-      'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft — and five products designed by hand, shipped by an agent team.',
+      'Independent AI projects by Oliver Newth and product roles at Google, Covariant, Meta, and Microsoft.',
     ogImage: '/og/work.png',
     body: `
       <h1>Work — Oliver Newth</h1>
       <section>
-        <h2>Twelve years of AI, in production</h2>
-        <p>From Azure Cognitive Services in 2014 to DeepMind model platforms today, by way of Meta and Covariant.</p>
+        <h2>Experience</h2>
         <ul>
-          <li>Google (2025–): AI Product Lead — platforms that put Google DeepMind models into products.</li>
-          <li>Covariant (2022–24): Staff Product Manager — computer vision from research demos to warehouse floors running 24/7, through Amazon's acquisition of the team.</li>
+          <li>Google (2025 to present): AI Product Lead. Product development for AI platforms that integrate DeepMind models into production software.</li>
+          <li>Covariant (2022–24): Staff Product Manager. Product work on computer vision for warehouse robotics.</li>
           <li>Meta (2017–22): Product Manager — video calling across Instagram and Portal; core growth and integrity. Build Social Value Award, 2020.</li>
-          <li>Microsoft (2014–17): Product Manager, Azure — Azure Cognitive Services, 100M+ API requests a day.</li>
+          <li>Microsoft (2014–17): Product Manager, Azure. Product on Azure Cognitive Services; the job was getting enterprises to trust AI enough to adopt it.</li>
         </ul>
         <p>MEng in High Performance Structures, MIT (Kennedy Scholar); Civil Engineering, First Class, Warwick.</p>
       </section>
       <section>
-        <h2>Designed by hand, shipped by agents</h2>
-        <p>Live products, designed by Oliver and kept shipping by a standing team of autonomous agents:</p>
+        <h2>Independent projects</h2>
+        <p>I build and operate these projects independently with coding agents. They are separate from my work at Google.</p>
         <ul>
           <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — points-vs-cash flight optimizer.</li>
-          <li><a href="https://r3.n3wth.com" rel="noopener">r3</a> — persistent memory for AI apps: vector search and knowledge graphs, no config.</li>
-          <li><a href="https://kit.n3wth.com" rel="noopener">kit</a> — 49 components with AI context packs.</li>
-          <li><a href="https://theywontshutup.com" rel="noopener">theywontshutup.com</a> — AI voice hotline.</li>
+          <li><a href="https://r3.n3wth.com" rel="noopener">r3</a>: memory for AI apps using vector search and knowledge graphs.</li>
+          <li><a href="https://kit.n3wth.com" rel="noopener">kit</a>: a design system with context for coding agents.</li>
+          <li><a href="https://skills.n3wth.com" rel="noopener">skills</a>: reusable instructions for coding agents.</li>
+          <li><a href="https://github.com/n3wth/markup" rel="noopener">markup</a>: an independent prototype exploring personal AI agents in shared documents and chat.</li>
           <li><a href="https://garden.n3wth.com" rel="noopener">garden</a> — a digital garden of working notes.</li>
         </ul>
       </section>`,

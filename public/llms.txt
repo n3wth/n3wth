@@ -1,6 +1,6 @@
 # Oliver Newth (n3wth.com)
 
-> Oliver Newth is an AI Product Lead at Google (2025 —) in San Francisco, building platforms that put Google DeepMind models into products. Previously: Covariant (acquired by Amazon), Meta (video calling on Instagram and Portal), Microsoft (Azure Cognitive Services). MEng from MIT (Kennedy Scholar). After dark he builds large-scale light installations for Burning Man and San Francisco memorials.
+> Oliver Newth is an AI Product Lead at Google (2025 to present), developing AI platforms that integrate DeepMind models into production software. Previously at Covariant, Meta, and Microsoft. MEng from MIT (Kennedy Scholar). His independent AI projects are separate from his work at Google. He also builds large-scale light installations for Burning Man and San Francisco memorials.
 
 ## Pages
 
@@ -16,7 +16,7 @@
 Products designed by Oliver, kept shipping by an autonomous agent team:
 
 - [hop.flights](https://hop.flights/): Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.
-- [r3](https://r3.n3wth.com/): Persistent memory for AI apps — vector search and knowledge graphs, no config.
+- [r3](https://r3.n3wth.com/): Memory for AI apps using vector search and knowledge graphs.
 - [kit](https://kit.n3wth.com/): 49 components with AI context packs. Ships your design system straight to your editor and coding agents.
 - [skills](https://skills.n3wth.com/): A registry of markdown skills for coding agents. Install with one command, run locally, work offline.
 - [garden](https://garden.n3wth.com/): A digital garden of interconnected working notes. Notes carry growth stages (seedling, budding, evergreen) and are gathered into groves. Has its own llms.txt.

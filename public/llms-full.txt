@@ -4,17 +4,17 @@
 
 ## About Oliver Newth
 
-Oliver Newth is an AI Product Lead at Google (2025 —) in San Francisco, building platforms that put Google DeepMind models into products.
+Oliver Newth is an AI Product Lead at Google (2025 to present), developing AI platforms that integrate DeepMind models into production software.
 
 ### Contact
 - Email: hey@n3wth.com
 - Location: San Francisco, CA
 
 ### Professional Background
-- **Google** (2025 —): AI Product Lead. Platforms that put Google DeepMind models into products.
-- **Covariant** (2022 – 24): Staff Product Manager. Took computer vision from research demos to warehouse floors running 24/7, through Amazon's acquisition of the team in 2024. 50+ enterprise deployments.
+- **Google** (2025 to present): AI Product Lead. Product development for AI platforms that integrate DeepMind models into production software.
+- **Covariant** (2022 – 24): Staff Product Manager. Product work on computer vision for warehouse robotics.
 - **Meta** (2017 – 22): Product Manager. Ran video calling across Instagram and Portal; before that, core growth and integrity. Meta Build Social Value Award, 2020.
-- **Microsoft** (2014 – 17): Product Manager, Azure. Product on Azure Cognitive Services (100M+ API requests/day), writing the playbook for enterprise AI adoption.
+- **Microsoft** (2014 – 17): Product Manager, Azure. Product on Azure Cognitive Services; the job was getting enterprises to trust AI enough to adopt it.
 
 ### Education
 - MEng in High Performance Structures, Massachusetts Institute of Technology (Kennedy Scholar)
@@ -35,7 +35,7 @@ Oliver Newth is an AI Product Lead at Google (2025 —) in San Francisco, buildi
 Who Oliver is — AI at Google, art in the desert. A 3D night field scene built by an agent team.
 
 #### Work (https://n3wth.com/work/)
-A decade of AI in production (Google, Covariant, Meta, Microsoft) and five products designed by hand, shipped by an autonomous agent team.
+Independent AI projects and product roles at Google, Covariant, Meta, and Microsoft.
 
 #### After Dark / Art (https://n3wth.com/art/)
 Large-scale light installations for Burning Man and San Francisco memorials:
@@ -88,7 +88,7 @@ Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or mone
 - Tech: Next.js, AI SDK, Duffel
 
 ### r3 (https://r3.n3wth.com/)
-Persistent memory for AI apps — vector search and knowledge graphs, no config.
+Memory for AI apps using vector search and knowledge graphs.
 - Tech: TypeScript, Redis, Vector Embeddings, MCP
 - GitHub: https://github.com/n3wth/r3
 
@@ -128,7 +128,7 @@ A digital garden of interconnected working notes. Notes carry growth stages (see
 
 ## Agent Team
 
-Oliver ships with a standing team of coding agents. Each agent has a named desk and a real schedule. The site itself was built by this agent team.
+Oliver builds and operates independent projects with coding agents. These projects are separate from his work at Google.
 
 ## Additional Resources
 
