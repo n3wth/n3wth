@@ -110,7 +110,7 @@ A digital garden of interconnected working notes. Notes carry growth stages (see
 ## Ecosystem
 
 - **GitHub**: https://github.com/n3wth (Open source)
-- **LinkedIn**: https://linkedin.com/in/newth
+- **LinkedIn**: https://linkedin.com/in/n3wth
 - **Peerlist Resume**: https://peerlist.io/newth/resume
 - **Contra**: https://contra.com/olivernewth
 - **newth.ai** redirects to n3wth.com

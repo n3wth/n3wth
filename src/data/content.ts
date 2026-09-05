@@ -5,7 +5,7 @@ export const siteConfig = {
   email: 'hey@n3wth.com',
   social: {
     github: 'https://github.com/n3wth',
-    linkedin: 'https://linkedin.com/in/newth',
+    linkedin: 'https://linkedin.com/in/n3wth',
   },
   gardenSite: 'https://garden.n3wth.com',
 }
