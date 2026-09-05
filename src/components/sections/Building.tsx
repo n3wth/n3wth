@@ -83,6 +83,7 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
       </div>
 
+      {project.question && <p className="text-base leading-relaxed mb-3 max-w-xl" style={{ textWrap: 'balance' }}>{project.question}</p>}
       <p
         className="text-sm sm:text-base leading-relaxed mb-6"
         style={{ color: 'var(--ink-dim)' }}
@@ -109,7 +110,7 @@ export function ProjectCard({ project }: { project: Project }) {
         />
         {project.github && (
           <Button
-            label="GitHub"
+            label="Explore the source"
             variant="ghost"
             size="sm"
             icon={<Github size={14} strokeWidth={1.5} aria-hidden="true" />}
@@ -127,7 +128,8 @@ export function Building() {
   return (
     <section id="building" aria-label="Building">
       <SectionHeader
-        title="Projects"
+        title="Independent projects"
+        lede="Experiments in giving agents context, making software easier to create, and sharing useful ways of working."
       />
 
       <div className="section-pad pad-tight !pt-0">

@@ -172,13 +172,15 @@ export interface Project {
   tech: string[]
   url: string
   github?: string
+  question?: string
 }
 
 export const projects: Project[] = [
   {
     id: 'r3',
     name: 'r3',
-    description: 'Give any AI app persistent memory. Vector search and knowledge graphs, no config.',
+    question: 'How can an agent carry useful context from one task to the next?',
+    description: 'A memory service for AI apps with semantic search and a knowledge graph. An MCP interface makes that context available across tools.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
     url: 'https://r3.n3wth.com',
     github: 'https://github.com/n3wth/r3',
@@ -186,7 +188,8 @@ export const projects: Project[] = [
   {
     id: 'kit',
     name: 'kit',
-    description: '49 components with AI context packs. Ships your design system straight to your editor and coding agents.',
+    question: 'How can generated software follow a design system?',
+    description: 'A component registry that pairs reusable UI with context for coding agents. The design rules travel with the components.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
     url: 'https://kit.n3wth.com',
     github: 'https://github.com/n3wth/kit',
@@ -194,14 +197,15 @@ export const projects: Project[] = [
   {
     id: 'hop-flights',
     name: 'hop.flights',
-    description: 'Points-vs-cash flight optimizer. Finds the cheapest way to fly, miles or money.',
+    description: 'A flight comparison tool that weighs cash fares against points and taxes.',
     tech: ['Next.js', 'AI SDK', 'Duffel'],
     url: 'https://hop.flights',
   },
   {
     id: 'skills',
     name: 'skills',
-    description: 'A registry of markdown skills for Gemini CLI and other coding agents. Install with one command.',
+    question: 'How can a useful way of working be reused by another agent?',
+    description: 'A registry of installable markdown skills for coding agents. Each skill packages instructions for a specific task.',
     tech: ['Next.js', 'React', 'Supabase'],
     url: 'https://skills.n3wth.com',
     github: 'https://github.com/n3wth/skills',
