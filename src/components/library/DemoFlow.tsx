@@ -30,9 +30,8 @@ export default function DemoFlow() {
         <FlowDiagram nodes={NODES} edges={EDGES} width={720} height={120} />
       </div>
       <figcaption className="mt-2 max-w-[62ch] text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-        The edges draw in left to right, then a pulse rides each one on a loop; the filled node is the
-        one marked active. Reduced motion drops the pulses and leaves the diagram settled. This
-        particular chain is where the grove counts under <a href="#garden" className="link-underline">#garden</a> come from.
+        The build script fetches garden data, saves it as JSON, and supplies the{' '}
+        <a href="#garden" className="link-underline">topic counts below</a>.
       </figcaption>
     </figure>
   )

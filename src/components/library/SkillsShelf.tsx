@@ -15,14 +15,12 @@ export function SkillsShelf() {
       id="skills"
       meta="skills.n3wth.com"
       title="Agent skills"
-      intro="A catalogue of skills you can hand a coding agent."
+      intro="Skills for coding agents, organised by task."
     >
       <div data-reveal className="mt-10 md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
         <div>
           <p className="max-w-[62ch] text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-            They install on your own machine and keep working with the network off. The catalogue
-            splits by what you're doing, with a separate set written against Cursor's own skill
-            format.
+            Install skills locally. The catalogue includes a separate set for Cursor.
           </p>
           <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5">
             {CATEGORIES.map((category) => (

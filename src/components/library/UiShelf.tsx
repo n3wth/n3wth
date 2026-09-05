@@ -52,9 +52,8 @@ export function UiShelf() {
       title="@n3wth/ui"
       intro={
         <>
-          A component library on npm, MIT, shipped with the theme tokens and the Tailwind preset
-          that give it its look. React 18 or 19, React DOM, and GSAP 3.12 are the peer dependencies;
-          there is nothing else to install.
+          An MIT-licensed React component library with theme tokens and a Tailwind preset.
+          Peer dependencies: React 18 or 19, React DOM, and GSAP 3.12.
         </>
       }
     >
@@ -67,7 +66,7 @@ export function UiShelf() {
       </div>
 
       <div data-reveal className="mt-12">
-        <p className="index">Everything it exports</p>
+        <p className="index">Components and hooks</p>
         <div className="mt-5">
           {uiTiers.map((tier) => (
             <IndexRow
@@ -83,9 +82,7 @@ export function UiShelf() {
 
       <div data-reveal className="mt-10 md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
         <p className="max-w-[62ch] text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-          The docs site's component table currently lists a smaller set than this one. The list above
-          is read off the package's own exports, so where the two disagree, go with what npm actually
-          ships.
+          This list follows the package exports. The documentation covers a smaller selection.
         </p>
         <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm md:mt-0">
           <a

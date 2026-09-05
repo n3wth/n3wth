@@ -30,10 +30,7 @@ export default function DemoField() {
         />
       </div>
       <figcaption className="mt-3 max-w-[62ch] text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-        The lattice keeps its rows on the left and stops holding them somewhere around the middle,
-        which is the envelope doing its job. Both the shape and the drift are seeded, so this is the
-        same field on every visit. The wide band a little further down the page is this component
-        again, at four clusters and a different seed.
+        A grid transitions into two clusters. The seed keeps the arrangement consistent between visits.
       </figcaption>
     </figure>
   )

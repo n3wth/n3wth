@@ -35,7 +35,7 @@ export default function Support() {
     <section aria-label="Support">
       <header data-reveal className="section-pad pb-8 md:pb-12">
         <h1
-          className="display text-[length:var(--display-h1)] max-w-[18ch]"
+          className="display page-title max-w-[18ch]"
           style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
         >
           Need a hand with something I built?

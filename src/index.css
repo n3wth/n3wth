@@ -145,7 +145,7 @@ p { text-wrap: pretty; }
    8px into place. The floating nav lives on its own transition layer so
    it stays perfectly still while pages change beneath it. Browsers
    without the API (and reduced-motion users) get instant navigation. */
-.site-nav { view-transition-name: site-nav; }
+.nav-island { view-transition-name: site-nav; }
 ::view-transition-old(site-nav),
 ::view-transition-new(site-nav) {
   animation: none;
@@ -395,6 +395,15 @@ body {
   line-height: 1;
   color: var(--ink);
 }
+.page-title {
+  font-size: 2.25rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .page-title { font-size: 3.75rem; }
+}
 .t-lead {
   font-size: 1.125rem;
   font-weight: 400;
@@ -506,69 +515,10 @@ body {
 }
 .skip-link:focus { top: 0; }
 
-/* Visible, ordinary links complement the field's spatial navigation.
-   Desktop separates chapters and projects; narrow screens stack the two
-   groups and let projects wrap without hiding any destinations. */
-.field-navigation {
-  position: absolute;
-  inset-inline: var(--gutter);
-  bottom: calc(var(--spacing-6) + env(safe-area-inset-bottom));
-  z-index: 40;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--spacing-4);
-  pointer-events: none;
-}
-.field-doors {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-1);
-  align-items: center;
-  padding: var(--spacing-1);
-  margin: 0;
-  background: var(--bg);
-  border: var(--border-width) solid var(--rail-strong);
-  border-radius: var(--radius-element);
-  pointer-events: auto;
-}
-.field-doors a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--spacing-11);
-  min-width: var(--spacing-11);
-  padding-inline: var(--spacing-3);
-  border-radius: var(--radius-inner);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--ink);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.field-doors--projects a {
-  font-size: var(--text-xs);
-  color: var(--ink-dim);
-}
-.field-doors a:hover,
-.field-doors a:focus-visible {
-  background: var(--bg-raise);
-  color: var(--ink);
-}
-.field-doors a:focus-visible { outline-offset: 0; }
-@media (max-width: 1023px) {
-  .field-navigation {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-2);
+@media (max-width: 767px) {
+  .site-nav .nav-link::before {
+    inset: 0;
   }
-}
-@media (max-width: 479px) {
-  .field-navigation { inset-inline: var(--spacing-4); }
-  .field-doors { width: 100%; }
-  .field-doors a { flex: 1 0 auto; padding-inline: var(--spacing-2); }
-  .field-doors--projects a { padding-inline: var(--spacing-2); }
 }
 
 /* ---------- Focus ---------- */
@@ -709,51 +659,16 @@ body {
   position: relative;
   z-index: 1;
   transform: translate3d(0, 0, 0);
-  background: rgba(8, 9, 11, 0.65);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  backdrop-filter: blur(16px) saturate(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(28px) saturate(1.4);
+  border: 1px solid var(--rail-strong);
   border-radius: 16px;
-}
-
-@media (max-width: 767px) {
-  .nav-island {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    width: 100%;
-    height: auto;
-    padding: var(--spacing-1) var(--spacing-3);
-    gap: 0;
-  }
-  .nav-island > .brand { min-height: var(--spacing-11); }
-  .nav-island > nav {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    margin: 0;
-    justify-content: space-between;
-  }
-  .nav-island > nav .nav-link {
-    flex: 1;
-    justify-content: center;
-    height: var(--spacing-11);
-    padding-inline: var(--spacing-2);
-  }
-  .nav-island .nav-link::before { inset: 0; }
-  .nav-island > span {
-    grid-column: 2;
-    grid-row: 1;
-    margin: 0;
-  }
-  .nav-island .nav-icon {
-    width: var(--spacing-11);
-    height: var(--spacing-11);
-  }
 }
 
 /* Users who prefer reduced transparency: solid background, no blur. */
 @media (prefers-reduced-transparency: reduce) {
   .nav-island {
-    background: rgb(8, 9, 11);
+    background: var(--bg);
     backdrop-filter: none;
   }
 }
@@ -1210,6 +1125,61 @@ body {
 }
 
 /* ---------- Night-field home ---------- */
+.night-field-stage:not(.is-settled) .world-portal-link {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.world-portal-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--ink-dim);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+  text-decoration: none;
+  opacity: 1;
+  transition: opacity 0.7s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-portal-link {
+    transition: none;
+  }
+}
+.world-portal-description {
+  display: none;
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 50%;
+  width: max-content;
+  max-width: 160px;
+  transform: translateX(-50%);
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  color: var(--ink-dim);
+  pointer-events: none;
+}
+.world-portal-link:focus-visible {
+  color: var(--ink);
+}
+@media (hover: hover) and (pointer: fine) {
+  .world-portal-link[data-hovered='true'] .world-portal-description,
+  .world-portal-link:hover .world-portal-description,
+  .world-portal-link:focus-visible .world-portal-description {
+    display: block;
+  }
+  .world-portal-link:hover {
+    color: var(--ink);
+  }
+}
 .night-field-loader {
   position: absolute;
   inset: 0;
@@ -1314,16 +1284,16 @@ body {
   letter-spacing: -0.045em;
 }
 .world-identity > p:last-child {
-  margin: var(--spacing-3) 0 0;
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--ink);
+  margin: 0.7rem 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(242, 243, 245, 0.68);
 }
 
 .world-atlas {
   position: absolute;
   right: var(--gutter);
-  bottom: calc(var(--spacing-12) * 2 + env(safe-area-inset-bottom));
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
   left: var(--gutter);
   display: flex;
   align-items: flex-end;
@@ -1349,24 +1319,20 @@ body {
   line-height: 1.4;
   color: rgba(242, 243, 245, 0.58);
 }
-@media (max-width: 1023px) {
-  .world-atlas {
-    bottom: calc(var(--spacing-12) * 4 + env(safe-area-inset-bottom));
-  }
-}
 @media (max-width: 767px) {
   .world-identity {
-    top: calc(var(--spacing-12) * 3 + env(safe-area-inset-top));
+    top: calc(5.85rem + env(safe-area-inset-top));
     max-width: calc(100vw - 2 * var(--gutter));
   }
   .world-identity h1 {
     font-size: clamp(2rem, 10vw, 2.65rem);
   }
   .world-identity > p:last-child {
-    margin-top: var(--spacing-3);
-    font-size: var(--text-sm);
+    margin-top: 0.55rem;
+    font-size: 13px;
   }
   .world-atlas {
+    bottom: calc(0.7rem + env(safe-area-inset-bottom));
     display: block;
   }
   .world-atlas-copy {
@@ -1387,7 +1353,7 @@ body {
     display: none;
   }
   .world-identity {
-    top: calc(var(--spacing-12) * 3 + env(safe-area-inset-top));
+    top: calc(5.2rem + env(safe-area-inset-top));
   }
   .world-atlas-copy {
     display: none;

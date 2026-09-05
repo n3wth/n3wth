@@ -17,13 +17,13 @@ export function SectionHeader({
   return (
     <header data-reveal className="section-pad pb-8 md:pb-12 relative">
       <Heading
-        className="display text-[length:var(--display-h1)] max-w-[18ch]"
+        className={`display ${Heading === 'h1' ? 'page-title' : 'text-[length:var(--display-h1)]'} max-w-[18ch]`}
         style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
       >
         {title}
       </Heading>
       {lede && (
-        <p className="t-lead mt-6 max-w-xl" style={{ color: 'var(--ink-dim)' }}>
+        <p className="t-lead mt-6 max-w-xl" style={{ color: 'var(--ink-dim)', textWrap: 'balance' }}>
           {lede}
         </p>
       )}
