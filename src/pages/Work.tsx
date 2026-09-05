@@ -5,7 +5,7 @@ import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Work — Oliver Newth'
-const DESCRIPTION = 'Twelve years of AI in production across Google, Covariant, Meta, and Microsoft. Five products designed by hand, shipped by an agent team.'
+const DESCRIPTION = 'Independent AI projects by Oliver Newth and product roles at Google, Covariant, Meta, and Microsoft.'
 
 export default function Work() {
   usePageMeta(TITLE, DESCRIPTION, {

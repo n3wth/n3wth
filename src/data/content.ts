@@ -53,9 +53,9 @@ export const experiences: Experience[] = [
     id: 'google',
     company: 'Google',
     role: 'AI Product Lead',
-    period: '2025 —',
+    period: '2025 to present',
     summary:
-      'Platforms that put Google DeepMind models into products.',
+      'Product development for AI platforms that integrate DeepMind models into production software.',
   },
   {
     id: 'covariant',
@@ -63,8 +63,7 @@ export const experiences: Experience[] = [
     role: 'Staff Product Manager',
     period: '2022 – 24',
     summary:
-      'Took computer vision from research demos to warehouse floors running 24/7, through Amazon’s acquisition of the team in 2024.',
-    metric: { value: '50+', label: 'Enterprise deployments' },
+      'Product work on computer vision for warehouse robotics.',
   },
   {
     id: 'meta',
@@ -82,7 +81,6 @@ export const experiences: Experience[] = [
     period: '2014 – 17',
     summary:
       'Product on Azure Cognitive Services; the job was getting enterprises to trust AI enough to adopt it.',
-    metric: { value: '100M+', label: 'API requests / day' },
   },
 ]
 
@@ -177,6 +175,14 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    id: 'markup',
+    name: 'markup',
+    description: 'An independent prototype I built to explore personal AI agents working alongside people in shared documents and chat. Visible cursors and edits make agent activity easier to follow.',
+    tech: ['TypeScript', 'React', 'Tiptap'],
+    url: 'https://github.com/n3wth/markup',
+    github: 'https://github.com/n3wth/markup',
+  },
   {
     id: 'r3',
     name: 'r3',

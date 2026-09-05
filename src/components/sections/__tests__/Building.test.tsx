@@ -5,7 +5,7 @@ import { Building } from '../Building'
 describe('Project portfolio', () => {
   it('leads with the three connected projects and retains other explorations', () => {
     render(<Building />)
-    expect(screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent)).toEqual(['r3', 'kit', 'skills', 'hop.flights', 'garden'])
+    expect(screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent)).toEqual(['r3', 'kit', 'skills', 'markup', 'hop.flights', 'garden'])
   })
 
   it('provides live projects and public source links', () => {
