@@ -344,9 +344,56 @@ button:focus-visible,
   transform: none;
 }
 
-/* Family strip: quiet row of n3wth ecosystem links, fades into the 3D scene */
+/* Hero, scene, instructions and links each own their space. */
+.home-immersive {
+  background: var(--color-background-body);
+  margin-top: -5rem;
+  padding-top: 5rem;
+  min-height: 100svh;
+}
+.home-introduction {
+  display: grid;
+  gap: 1rem;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 1rem 1.5rem 0.5rem;
+}
+.home-introduction h1 { min-width: 0; }
+@media (min-width: 600px) {
+  .home-introduction {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 2rem;
+  }
+  .home-actions { grid-column: 2; grid-row: 1; justify-content: end; }
+  .home-description { grid-column: 1 / -1; }
+}
+.home-garden-stage {
+  height: clamp(540px, 78svh, 900px);
+  overflow: clip;
+  isolation: isolate;
+  mask-image: linear-gradient(to bottom, transparent, black 3%, black 97%, transparent);
+}
+.home-garden-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding: 1.25rem 1.5rem 0.5rem;
+}
 .family-strip {
-  background: linear-gradient(to top, rgba(8, 9, 11, 0.7) 0%, transparent 100%);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+@media (min-width: 768px) {
+  .home-introduction {
+    padding: 1.25rem 2.5rem 0.5rem;
+  }
+  .home-garden-caption { padding-inline: 2.5rem; }
+}
+@media (max-width: 600px) {
+  .home-introduction { padding: 2.5rem 1.25rem 0.5rem; }
+  .home-garden-caption { flex-direction: column; text-align: center; }
 }
 
 /* Pointer-conditional copy (graph instructions) */

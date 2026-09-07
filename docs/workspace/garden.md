@@ -2,6 +2,8 @@
 
 Source: n3wth/newth-garden main d29f51dca83cf3fc5707c6664a8d9b478f1637a9. Snapshot imported into apps/garden without content, public asset or theme changes. Original source history remains in its repository.
 
+Homepage improvements also preserved from clean feat/3d-fidelity commit 6208264: ground texture assets, GardenSurface, responsive scene framing, fixed camera position, charcoal ground, compact hero and family links in document flow. Its equivalent 480px navigation adjustment is superseded by the migration's tested 600px responsive layout; homepage top spacing uses the same breakpoint. The original worktree was not modified. Eight browser/HTTP checks now cover home, note listing and nested notes at 320/390/600/1440px, including heading clearance below the nav.
+
 Node24/npm11 root npm ci installs the graph. `npm run check -w @n3wth/garden` runs history regression tests, typecheck and the webpack production build. Generic affected-workspace discovery includes Garden automatically. Canonical origins consume site-config; Astryx remains app-local.
 
 The historical note dates are retained. The history generator now handles repository-relative prefixes and ignores initial imported adds for previously recorded notes, while preserving later modification dates. Content and OG fonts require app cwd; output tracing root is the workspace root and existing explicit OG font tracing is retained.

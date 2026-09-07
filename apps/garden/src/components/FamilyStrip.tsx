@@ -11,10 +11,10 @@ const familyLinks = [
 
 export function FamilyStrip() {
   return (
-    <div className="family-strip absolute bottom-0 inset-x-0 z-10 pointer-events-none">
+    <div className="family-strip">
       <nav
         aria-label="n3wth sites"
-        className="flex justify-center items-center gap-4 py-3 pointer-events-auto"
+        className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 px-5 py-3"
       >
         {familyLinks.map((link) => (
           <a
@@ -22,7 +22,7 @@ export function FamilyStrip() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[11px] tracking-[0.04em] text-[var(--color-text-disabled)] hover:text-[var(--color-text-secondary)] transition-colors"
+            className="inline-flex min-h-11 items-center whitespace-nowrap text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-secondary)] transition-colors"
           >
             {link.label}
           </a>

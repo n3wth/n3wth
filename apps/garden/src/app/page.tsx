@@ -35,43 +35,43 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="home-immersive relative w-full -mt-20 h-screen overflow-hidden">
-        {/* The world is the whole page; hide the global footer */}
+      <div className="home-immersive relative w-full">
         <style>{`footer { display: none }`}</style>
 
-        {/* 3D world: every note a light above the ground grid */}
-        {graphData.nodes.length > 0 && (
-          <WorldGardenClient nodes={graphData.nodes} edges={graphData.edges} />
-        )}
-
         {/* Hero */}
-        <div data-world-exclude className="home-overlay absolute left-6 md:left-10 top-24 md:top-28 max-w-md pr-6 z-10 pointer-events-none">
-          <h1 className="font-display text-[2.4rem] md:text-[4rem] leading-[1.02] font-semibold tracking-[-0.035em] text-[var(--color-text-primary)] mb-5 text-balance pointer-events-auto">
+        <div data-world-exclude className="home-overlay home-introduction">
+          <h1 className="font-display text-[2rem] md:text-[2.75rem] leading-[1.05] font-semibold tracking-[-0.035em] text-[var(--color-text-primary)] text-balance">
             <ShimmerText sweepOnMount sweepDelay={1.6}>
               A garden of growing ideas
             </ShimmerText>
           </h1>
-          <p className="text-sm text-[var(--color-text-secondary)] leading-7 mb-8 max-w-sm">
-            {noteCount} interconnected notes on careers, learning, health, and
-            building things. Each light is a note — the taller it grows, the more
-            evergreen the idea.
-          </p>
-          <div className="flex flex-wrap items-center gap-3 pointer-events-auto">
-            <Button label="Browse all notes" variant="primary" href="/notes" />
-            <Button label="Random note" variant="ghost" href="/random" />
-          </div>
+            <p className="home-description text-sm text-[var(--color-text-secondary)] leading-6 max-w-[52ch]">
+              {noteCount} interconnected notes on careers, learning, health, and
+              building things. Each light is a note — the taller it grows, the more
+              evergreen the idea.
+            </p>
+            <div className="home-actions flex flex-wrap items-center gap-3">
+              <Button label="Browse all notes" variant="primary" href="/notes" />
+              <Button label="Random note" variant="ghost" href="/random" />
+            </div>
         </div>
 
-        {/* Interaction hint */}
-        <p data-world-exclude className="absolute bottom-5 inset-x-6 z-10 text-center text-xs text-[var(--color-text-secondary)] pointer-events-none">
-          <span className="md:hidden">Tap a light to see its note</span>
-          <span className="max-md:hidden">Move to look around &middot; Click a light to see its note</span>
-        </p>
+        <div className="home-garden-stage relative">
+          {graphData.nodes.length > 0 && (
+            <WorldGardenClient nodes={graphData.nodes} edges={graphData.edges} />
+          )}
+        </div>
 
-        {/* Garden stats: only the figure the hero doesn't already give */}
-        <div data-world-exclude className="home-overlay absolute bottom-6 left-6 md:left-10 z-10 max-md:hidden">
-          <div className="glass-panel px-4 py-2.5">
-            <p className="text-[11px] tracking-[0.08em] text-[var(--color-text-disabled)]">
+        <div className="home-garden-caption">
+          {/* Interaction hint */}
+          <p data-world-exclude className="text-xs text-[var(--color-text-secondary)]">
+            <span className="md:hidden">Tap a light to see its note</span>
+            <span className="max-md:hidden">Move to look around &middot; Click a light to see its note</span>
+          </p>
+
+          {/* Garden stats: only the figure the hero doesn't already give */}
+          <div data-world-exclude>
+            <p className="text-xs text-[var(--color-text-disabled)]">
               {graphData.edges.length} links between notes
             </p>
           </div>

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import * as THREE from 'three'
 import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
+import { GardenSurface } from './GardenSurface'
 import { type WorldNode, type WorldEdge, type SimNode, layoutWorld } from '@/lib/worldLayout'
 
 interface WorldGarden3DProps {
@@ -34,16 +35,17 @@ const SCALE = 1 / 40 // world units -> three.js scene units
 /* The one resting camera. Every path — the intro flight, the pointer
    parallax, and the reduced-motion still — has to land on exactly these
    numbers, or the hand-off between them reads as a jump-cut. */
-const REST_RADIUS = 19
-const REST_HEIGHT = 5.2
-const LOOK_AT_Y = 1.9
+const REST_RADIUS = 15
+const REST_HEIGHT = 4.4
+const LOOK_AT_Y = 1.2
 
 /* ── The garden has a time of day ──────────────────────────────────────
    The one place this site spends colour. Everything else — every page,
    every control, the plants themselves — stays on the grayscale ramp, so
    maturity is still the only thing brightness ever means. What changes
    here is the light: the visitor's own clock picks the hour, and the
-   ground, fog and sun shift with it. Saturation stays low on purpose;
+   ground and sun shift with it; the background and fog stay charcoal.
+   Saturation stays low on purpose;
    the aim is that the garden is never quite the same colour twice, not
    that the homepage becomes colourful.
 
@@ -72,8 +74,8 @@ const HOURS: { until: number; light: DayLight }[] = [
   { until: 16, light: { air: '#0d0e10', ground: '#111214', sun: '#ffffff', sunIntensity: 0.28, ambient: 0.6, label: 'midday' } },
   // late afternoon — the light goes long and amber
   { until: 19, light: { air: '#23160d', ground: '#15110e', sun: '#ffb877', sunIntensity: 0.36, ambient: 0.52, label: 'afternoon' } },
-  // dusk — rose in the air, ground cooling first
-  { until: 21, light: { air: '#20101a', ground: '#100e13', sun: '#e3859b', sunIntensity: 0.26, ambient: 0.46, label: 'dusk' } },
+  // dusk — neutral light and charcoal soil
+  { until: 21, light: { air: BG, ground: '#101113', sun: '#d0d2d6', sunIntensity: 0.26, ambient: 0.46, label: 'dusk' } },
   // night again
   { until: 24, light: { air: '#0a0d18', ground: '#0b0d13', sun: '#8fa6c8', sunIntensity: 0.16, ambient: 0.45, label: 'night' } },
 ]
@@ -100,6 +102,9 @@ function Scene({
   onSelect: (id: string | null) => void
 }) {
   const gl = useThree((s) => s.gl)
+  const aspect = useThree((s) => s.size.width / Math.max(1, s.size.height))
+  const restRadius = REST_RADIUS * Math.max(1, Math.min(1.15, 0.9 / aspect))
+  const restHeight = REST_HEIGHT + (restRadius - REST_RADIUS) * 0.18
 
   /* Midday until the client tells us otherwise — the hour has to come from
      the visitor's own clock, and guessing it during render would hydrate
@@ -127,10 +132,10 @@ function Scene({
     return map
   }, [world])
 
-  // ── plants: one LineSegments, per-vertex stage color * growth ────────
-  const plantsGeometry = useMemo(() => {
-    const positions: number[] = []
-    const colors: number[] = []
+  // Tapered stems share one draw call, while retaining the data's exact
+  // branch positions, growth, and maturity ramp.
+  const plants = useMemo(() => {
+    const segments: { a: THREE.Vector3; b: THREE.Vector3; radius: number; color: THREE.Color }[] = []
     const c = new THREE.Color()
     for (let i = 0; i < world.sim.length; i++) {
       const n = world.sim[i]
@@ -144,15 +149,75 @@ function Scene({
         const bx = (n.x + (s.bx - n.x) * g) * SCALE
         const by = s.by * g * SCALE
         const bz = (n.z + (s.bz - n.z) * g) * SCALE
-        positions.push(ax, ay, az, bx, by, bz)
-        colors.push(c.r, c.g, c.b, c.r, c.g, c.b)
+        segments.push({
+          a: new THREE.Vector3(ax, ay, az),
+          b: new THREE.Vector3(bx, by, bz),
+          radius: (s.detail ? 0.008 : 0.022) * (1 - s.fa * 0.55),
+          color: c.clone(),
+        })
       }
     }
-    const geom = new THREE.BufferGeometry()
-    geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-    geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-    return geom
+    const mesh = new THREE.InstancedMesh(
+      new THREE.CylinderGeometry(0.65, 1, 1, 5, 1, true),
+      new THREE.MeshStandardMaterial({ roughness: 0.72, metalness: 0.12 }),
+      segments.length,
+    )
+    const dummy = new THREE.Object3D()
+    const up = new THREE.Vector3(0, 1, 0)
+    const direction = new THREE.Vector3()
+    segments.forEach(({ a, b, radius, color }, i) => {
+      direction.subVectors(b, a)
+      dummy.position.copy(a).add(b).multiplyScalar(0.5)
+      dummy.scale.set(radius, direction.length(), radius)
+      dummy.quaternion.setFromUnitVectors(up, direction.normalize())
+      dummy.updateMatrix()
+      mesh.setMatrixAt(i, dummy.matrix)
+      mesh.setColorAt(i, color)
+    })
+    mesh.computeBoundingSphere()
+    return mesh
   }, [world, gById])
+
+  useEffect(() => () => {
+    plants.geometry.dispose()
+    ;(plants.material as THREE.Material).dispose()
+    plants.dispose()
+  }, [plants])
+
+  const leaves = useMemo(() => {
+    const transforms: { matrix: THREE.Matrix4; color: THREE.Color }[] = []
+    const dummy = new THREE.Object3D()
+    world.sim.forEach((n, i) => {
+      const g = gById.get(n.id) ?? 0
+      if (g < 0.6 || n.stage === 'seedling') return
+      world.plants[i].forEach((segment, j) => {
+        if (!segment.detail || j % 2 !== 0) return
+        dummy.position.set(
+          (n.x + (segment.bx - n.x) * g) * SCALE,
+          segment.by * g * SCALE,
+          (n.z + (segment.bz - n.z) * g) * SCALE,
+        )
+        dummy.rotation.set(0.4, i * 2.4 + j, -0.6)
+        dummy.scale.set(0.07 * g, 0.018 * g, 0.2 * g)
+        dummy.updateMatrix()
+        transforms.push({ matrix: dummy.matrix.clone(), color: new THREE.Color(stageColors[n.stage]).multiplyScalar(0.55) })
+      })
+    })
+    const mesh = new THREE.InstancedMesh(
+      new THREE.SphereGeometry(1, 6, 4),
+      new THREE.MeshStandardMaterial({ roughness: 0.8, metalness: 0 }),
+      transforms.length,
+    )
+    transforms.forEach(({ matrix, color }, i) => { mesh.setMatrixAt(i, matrix); mesh.setColorAt(i, color) })
+    mesh.computeBoundingSphere()
+    return mesh
+  }, [world, gById])
+
+  useEffect(() => () => {
+    leaves.geometry.dispose()
+    ;(leaves.material as THREE.Material).dispose()
+    leaves.dispose()
+  }, [leaves])
 
   /* The forest floor. layoutWorld has always produced this undergrowth and
      the 3D world simply never drew it, so the trees stood on bare ground.
@@ -195,15 +260,26 @@ function Scene({
       if (a === undefined || b === undefined) continue
       const na = world.sim[a]
       const nb = world.sim[b]
-      positions.push(na.x * SCALE, 0.015, na.z * SCALE, nb.x * SCALE, 0.015, nb.z * SCALE)
-      colors.push(EDGE_BASE.r, EDGE_BASE.g, EDGE_BASE.b, EDGE_BASE.r, EDGE_BASE.g, EDGE_BASE.b)
-      push(edgeVertsByNode, a, v)
-      push(edgeVertsByNode, a, v + 1)
-      push(edgeVertsByNode, b, v)
-      push(edgeVertsByNode, b, v + 1)
+      // Roots follow a low arch instead of a dense straight-line grid.
+      const start = new THREE.Vector3(na.x * SCALE, 0.025, na.z * SCALE)
+      const end = new THREE.Vector3(nb.x * SCALE, 0.025, nb.z * SCALE)
+      const mid = start.clone().lerp(end, 0.5)
+      mid.y = 0.1
+      mid.x += (end.z - start.z) * 0.06
+      mid.z -= (end.x - start.x) * 0.06
+      const curve = new THREE.QuadraticBezierCurve3(start, mid, end)
+      const points = curve.getPoints(6)
+      for (let j = 0; j < 6; j++) {
+        positions.push(...points[j].toArray(), ...points[j + 1].toArray())
+        colors.push(EDGE_BASE.r, EDGE_BASE.g, EDGE_BASE.b, EDGE_BASE.r, EDGE_BASE.g, EDGE_BASE.b)
+        for (const node of [a, b]) {
+          push(edgeVertsByNode, node, v)
+          push(edgeVertsByNode, node, v + 1)
+        }
+        v += 2
+      }
       push(neighborsByNode, a, b)
       push(neighborsByNode, b, a)
-      v += 2
     }
     const geom = new THREE.BufferGeometry()
     geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
@@ -370,54 +446,40 @@ function Scene({
     lastTrigger: 0,
   })
 
-  // ── camera + wind + sprout, all per-frame, everything else static ─────
-  const swayGroupRef = useRef<THREE.Group>(null)
-  const swayAmpRef = useRef(1)
+  // ── camera + sprout, all per-frame, everything else static ──────────
   const yawRef = useRef(0)
-  const heightRef = useRef(REST_HEIGHT)
+  const heightRef = useRef(restHeight)
   const introRef = useRef({ active: intro, t: 0 })
+
+  useEffect(() => { heightRef.current = restHeight }, [restHeight])
 
   useFrame((state, delta) => {
     const camera = state.camera
 
     if (reducedMotion) {
-      camera.position.set(0, REST_HEIGHT, REST_RADIUS)
+      camera.position.set(0, restHeight, restRadius)
       camera.lookAt(0, LOOK_AT_Y, 0)
     } else if (introRef.current.active) {
       introRef.current.t = Math.min(1, introRef.current.t + delta / 2.5)
       const e = easeOutCubic(introRef.current.t)
-      camera.position.set(0, THREE.MathUtils.lerp(26, REST_HEIGHT, e), THREE.MathUtils.lerp(44, REST_RADIUS, e))
+      camera.position.set(0, THREE.MathUtils.lerp(26, restHeight, e), THREE.MathUtils.lerp(44, restRadius, e))
       camera.lookAt(0, LOOK_AT_Y, 0)
       if (introRef.current.t >= 1) {
         // hand the resting loop the exact state the flight ended on
-        heightRef.current = REST_HEIGHT
+        heightRef.current = restHeight
         yawRef.current = 0
         introRef.current.active = false
       }
     } else {
       const targetYaw = state.pointer.x * 0.35
-      const targetHeight = REST_HEIGHT - state.pointer.y * 1.8
+      const targetHeight = restHeight - state.pointer.y * 1.8
       const k = 1 - Math.exp(-delta * 4)
       yawRef.current += (targetYaw - yawRef.current) * k
       heightRef.current += (targetHeight - heightRef.current) * k
-      camera.position.x = Math.sin(yawRef.current) * REST_RADIUS
-      camera.position.z = Math.cos(yawRef.current) * REST_RADIUS
+      camera.position.x = Math.sin(yawRef.current) * restRadius
+      camera.position.z = Math.cos(yawRef.current) * restRadius
       camera.position.y = heightRef.current
       camera.lookAt(0, LOOK_AT_Y, 0)
-    }
-
-    if (swayGroupRef.current) {
-      /* The wind stills while you are looking at something. This is not
-         only manners: the hit spheres sway with the plants, so a cursor
-         parked on a light had the target rotate out from under it and
-         the label blinked off while the pointer had not moved. */
-      const target = hoverIndexRef.current !== null ? 0 : 1
-      swayAmpRef.current += (target - swayAmpRef.current) * 0.08
-      swayGroupRef.current.rotation.z = reducedMotion
-        ? 0
-        : (Math.sin(state.clock.elapsedTime * 0.5) * 0.012 +
-            Math.sin(state.clock.elapsedTime * 1.31 + 2) * 0.009) *
-          swayAmpRef.current
     }
 
     if (!reducedMotion && recentNodes.length > 0) {
@@ -461,30 +523,28 @@ function Scene({
       {/* The hour reaches the scene through the air and the soil, never
           through the plants: their grayscale ramp still has to read as
           maturity and nothing else. */}
-      <fog attach="fog" args={[day.air, 9, 34]} />
+      <fog attach="fog" args={[BG, 30, 85]} />
       <ambientLight intensity={day.ambient} />
-      <directionalLight position={[10, 20, 10]} intensity={day.sunIntensity} color={day.sun} />
+      <directionalLight position={[10, 12, 4]} intensity={day.sunIntensity * 2.8} color={day.sun} />
+      <hemisphereLight args={[stageColors.evergreen, BG, 0.35]} />
+      <directionalLight position={[-8, 6, -12]} intensity={0.7} color={stageColors.budding} />
 
       {/* ground */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[90, 64]} />
-        <meshStandardMaterial color={day.ground} roughness={1} metalness={0} />
-      </mesh>
+      <GardenSurface tint={day.ground} />
       {/* the link network: ideas connected at the root */}
       <lineSegments geometry={network.geom}>
-        <lineBasicMaterial vertexColors toneMapped={false} fog />
+        <lineBasicMaterial vertexColors toneMapped={false} fog transparent opacity={0.55} />
       </lineSegments>
 
-      {/* plants + tips + hit targets sway together in the wind */}
-      <group ref={swayGroupRef}>
+      {/* Plants, tips and hit targets share fixed world coordinates. */}
+      <group>
         {/* forest floor, under everything and dimmer than any note */}
         <lineSegments geometry={undergrowthGeometry}>
           <lineBasicMaterial color="#31353c" toneMapped={false} fog transparent opacity={0.55} />
         </lineSegments>
 
-        <lineSegments geometry={plantsGeometry}>
-          <lineBasicMaterial vertexColors toneMapped={false} fog transparent opacity={1} />
-        </lineSegments>
+        <primitive object={plants} />
+        <primitive object={leaves} />
 
         <instancedMesh
           ref={tipsRef}
@@ -503,10 +563,7 @@ function Scene({
 
         <primitive object={sproutLine} />
 
-        {/* hover label: rides the hovered tip; content and position set in
-            setHover. It lives INSIDE the sway group on purpose — the plants
-            and hit targets rotate with the wind, so a label parked at the
-            node's static coordinates drifted off the plant it named.
+        {/* Hover label: content and position are set in setHover.
             pointer-events must be killed on the wrapper via style — the prop
             only applies in transform mode, and an invisible div would eat
             tip clicks */}
@@ -573,7 +630,7 @@ export function WorldGarden3D({ nodes, edges, intro = true, onSelect }: WorldGar
       aria-label="3D map of the garden. Each point of light is a note; links between notes are drawn as lines. A list of all notes follows this map."
     >
       <Canvas
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
         camera={{ fov: 55, position: [0, REST_HEIGHT, REST_RADIUS] }}
         gl={{ antialias: true }}
         onPointerMissed={() => onSelect(null)}
