@@ -1,4 +1,4 @@
-name: Skills installer
+name: macOS installer
 on:
   push:
     branches: [main]
@@ -9,10 +9,7 @@ permissions:
   contents: read
 jobs:
   installer:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

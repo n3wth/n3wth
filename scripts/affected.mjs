@@ -22,7 +22,7 @@ function linkedDependency(workspace, name, packages, byPath) {
   }
 }
 
-export function affectedWorkspaces(workspaces, files, all = false, lockfile) {
+export function affectedWorkspaces(workspaces, files, all = false, lockfile, deployment = false) {
   const byName = new Map(workspaces.map(workspace => [workspace.name, workspace]))
   const byPath = new Map(workspaces.map(workspace => [workspace.path, workspace]))
   const dependencies = workspace => Object.keys({ ...workspace.dependencies, ...workspace.devDependencies, ...workspace.optionalDependencies, ...workspace.peerDependencies }).flatMap(name => {
@@ -34,6 +34,16 @@ export function affectedWorkspaces(workspaces, files, all = false, lockfile) {
   })
   const selected = new Set()
   for (const file of files) {
+    // Root validation assets do not change deployed output. Unknown configuration
+    // remains conservative; application files (including public docs) still build.
+    if (deployment && /^(\.github\/|tests\/|playwright[^/]*\.config\.|scripts\/.*\.test\.mjs$)/.test(file)) continue
+    const browserTarget = file.match(/^tests\/browser\/(portfolio|ui-docs|kit|r3-web)\.spec\.ts$/)?.[1]
+      || (/^(tests\/garden\/|playwright\.garden\.config\.ts$)/.test(file) ? 'garden' : undefined)
+      || (file === 'playwright.r3.config.ts' ? 'r3-web' : undefined)
+    if (browserTarget && byName.has(`@n3wth/${browserTarget}`)) {
+      selected.add(`@n3wth/${browserTarget}`)
+      continue
+    }
     // Manifest edits can remove dependency edges. Validate the complete graph.
     if (file.endsWith('/package.json') || file === 'package.json' || file === 'package-lock.json') all = true
     const workspace = workspaces.find(item => file.startsWith(`${item.path}/`))
@@ -102,7 +112,7 @@ function main() {
     console.warn('Unable to read workspace lockfile; checking every workspace.')
     all = true
   }
-  const selected = affectedWorkspaces(readWorkspaces(root), files, all, lockfile)
+  const selected = affectedWorkspaces(readWorkspaces(root), files, all, lockfile, args.includes('--deployment'))
   console.log(JSON.stringify(selected))
   if (args.includes('--list')) return
   for (const workspace of selected) {

@@ -70,6 +70,17 @@ test('deleted manifest checks all even when no longer in current graph', () => a
 test('root documentation alone needs no app checks', () => assert.deepEqual(select(['docs/pilot.md', 'README.md']), []))
 test('unknown configuration changes conservatively check all', () => assert.equal(select(['.github/workflows/site-check.yml']).length, 4))
 test('unchanged comparison needs no checks', () => assert.deepEqual(select([]), []))
+test('browser-only changes validate only their app and prerequisites', () => {
+  assert.deepEqual(select(['tests/browser/portfolio.spec.ts']), ['@n3wth/site-config', '@n3wth/portfolio'])
+})
+test('validation-only changes do not deploy applications', () => {
+  assert.deepEqual(affectedWorkspaces(graph, ['.github/workflows/site-check.yml', 'tests/browser/portfolio.spec.ts', 'playwright.config.ts', 'scripts/affected.test.mjs'], false, undefined, true), [])
+})
+test('deployment filtering preserves mixed source changes and root dependency changes', () => {
+  assert.deepEqual(affectedWorkspaces(graph, ['tests/browser/portfolio.spec.ts', 'apps/portfolio/src/App.tsx'], false, undefined, true), ['@n3wth/site-config', '@n3wth/portfolio'])
+  assert.equal(affectedWorkspaces(graph, ['package-lock.json'], false, undefined, true).length, 4)
+  assert.equal(affectedWorkspaces(graph, ['scripts/affected.mjs'], false, undefined, true).length, 4)
+})
 test('cycles fail instead of producing an invalid build order', () => {
   assert.throws(() => affectedWorkspaces([
     { name: 'a', path: 'packages/a', dependencies: { b: '*' } },

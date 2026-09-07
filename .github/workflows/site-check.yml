@@ -17,9 +17,7 @@ jobs:
   check:
     name: check / check
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    outputs:
-      affected: ${{ steps.affected.outputs.workspaces }}
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,8 +26,6 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - run: npm install --global npm@11.19.1
-      - run: npm ci
       - name: Verify affected workspace selection
         run: node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs
       - name: Select affected workspaces
@@ -37,44 +33,32 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: echo "workspaces=$(node scripts/affected.mjs --base "$BASE_SHA" --list)" >> "$GITHUB_OUTPUT"
+      - run: npm install --global npm@11.19.1
+        if: steps.affected.outputs.workspaces != '[]'
+      - run: npm ci
+        if: steps.affected.outputs.workspaces != '[]'
       - name: Check affected workspaces
+        if: steps.affected.outputs.workspaces != '[]'
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: node scripts/affected.mjs --base "$BASE_SHA"
-      - name: Save built browser targets
+      - name: Check Linux installer
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/skills')
+        run: node --test apps/skills/scripts/install.test.mjs
+      - name: Install browser
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/kit') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
+        run: npx playwright install --with-deps chromium
+      - name: Check portfolio UI and Kit browsers
         if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/kit')
-        uses: actions/upload-artifact@v4
-        with:
-          name: browser-targets
-          path: |
-            apps/portfolio/dist
-            apps/ui-docs/dist
-            apps/kit/.next
-            !apps/kit/.next/cache
-          include-hidden-files: true
-          if-no-files-found: error
-
-  browser:
-    needs: check
-    if: contains(needs.check.outputs.affected, '@n3wth/portfolio') || contains(needs.check.outputs.affected, '@n3wth/ui-docs') || contains(needs.check.outputs.affected, '@n3wth/kit')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm install --global npm@11.19.1
-      - run: npm ci
-      - uses: actions/download-artifact@v4
-        with:
-          name: browser-targets
-          path: apps
-      - run: npx playwright install --with-deps chromium
-      - run: npm run check:browser
+        run: npm run check:browser -- --output=test-results/sites
         env:
-          AFFECTED_WORKSPACES: ${{ needs.check.outputs.affected }}
+          AFFECTED_WORKSPACES: ${{ steps.affected.outputs.workspaces }}
+      - name: Check Garden browser
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/garden')
+        run: npx playwright test --config playwright.garden.config.ts --output=test-results/garden
+      - name: Check r3 browser
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
+        run: npx playwright test --config playwright.r3.config.ts --output=test-results/r3
       - uses: actions/upload-artifact@v4
         if: always()
         with:
