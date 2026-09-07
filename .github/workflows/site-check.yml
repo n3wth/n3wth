@@ -1,0 +1,20 @@
+name: Site CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    uses: n3wth/ui/.github/workflows/site-check.yml@62839d33ae0a439901b9515339e6259ce6dcf274
+    with:
+      check-command: npm run check

@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": { "node": "24.x" },
   "scripts": {
     "dev": "vite",
     "prebuild": "node scripts/fetch-github-stats.mjs && node scripts/fetch-garden-notes.mjs && node scripts/fetch-garden-index.mjs && node scripts/fetch-ui-meta.mjs",
@@ -11,6 +12,7 @@
     "og:cards": "node scripts/generate-og-images.mjs",
     "og:plates": "node scripts/extract-og-plates.mjs",
     "lint": "eslint .",
+    "check": "npm run lint && npm test -- --run && npm run build",
     "test": "vitest",
     "preview": "vite preview"
   },
