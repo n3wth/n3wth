@@ -2,7 +2,7 @@ import type { NextConfig } from 'next'
 import { withAxiom } from 'next-axiom'
 import { fileURLToPath } from 'node:url'
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   // Transpile the declared @n3wth/ui package consistently in development and CI.
   transpilePackages: ['@n3wth/ui'],
 
@@ -22,6 +22,6 @@ const nextConfig: NextConfig = {
 
   // Allow local network dev access
   allowedDevOrigins: ['http://192.168.1.212:3000'],
-}
+} satisfies NextConfig
 
 export default withAxiom(nextConfig)
