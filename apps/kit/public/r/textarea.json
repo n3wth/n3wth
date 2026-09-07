@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "title": "Textarea",
+  "description": "Textarea with resize control and error state.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/textarea/textarea.tsx",
+      "content": "import { forwardRef, type TextareaHTMLAttributes } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {\n  resize?: 'none' | 'vertical' | 'both'\n  error?: boolean\n  className?: string\n}\n\nexport const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(\n  (\n    {\n      resize = 'vertical',\n      error = false,\n      className,\n      ...props\n    },\n    ref\n  ) => {\n    const resizeStyles = {\n      none: 'resize-none',\n      vertical: 'resize-y',\n      both: 'resize',\n    }\n\n    return (\n      <textarea\n        ref={ref}\n        className={cn(\n          'min-h-[80px] w-full',\n          'bg-transparent',\n          'border rounded-lg px-3 py-2',\n          'text-sm text-[var(--color-white)]',\n          'placeholder:text-[var(--color-grey-400)]',\n          'transition-[border-color] duration-200 ease-out',\n          'focus:outline-none focus-visible:outline-none',\n          'focus-ring',\n          error\n            ? 'border-[var(--color-coral)]'\n            : 'border-[var(--glass-border)] hover:border-[var(--glass-highlight)] focus:border-[var(--glass-highlight)]',\n          resizeStyles[resize],\n          className\n        )}\n        aria-invalid={error || undefined}\n        {...props}\n      />\n    )\n  }\n)\n\nTextarea.displayName = 'Textarea'\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

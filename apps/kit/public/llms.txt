@@ -1,0 +1,119 @@
+# n3wth/kit
+
+> Component registry for React, built on shadcn's registry protocol.
+
+## Quick Start
+
+Install any component via shadcn CLI:
+
+```
+npx shadcn add https://kit.n3wth.com/r/button.json
+```
+
+Add AI context pack for Cursor:
+
+```
+curl -o .cursorrules https://kit.n3wth.com/ai/cursorrules
+```
+
+## Registry
+
+**Base URL:** https://kit.n3wth.com/r/
+**Manifest:** https://kit.n3wth.com/r/registry.json
+
+49 items total:
+- 1 design system style (n3wth)
+- 1 utility (cn)
+- 32 UI components
+- 4 blocks (nav, footer, hero, section)
+- 11 hooks
+
+## UI Components
+
+accordion, animated-text, avatar, badge, button, card, character, code-block, command-box, composite-shape, dropdown, error-boundary, hamburger-icon, icon, input, label, mobile-drawer, modal, nav-link, noise-overlay, progress, scroll-indicator, separator, shape, skeleton, speech-bubble, switch, tabs, textarea, theme-toggle, toast, tooltip
+
+## Blocks
+
+footer, hero, nav, section
+
+## Hooks
+
+use-button-pulse, use-count-up, use-keyboard-shortcuts, use-media-query, use-page-transition, use-reduced-motion, use-scroll-reveal, use-stagger-list, use-text-reveal, use-theme, use-toast
+
+## Install Patterns
+
+Single component:
+```
+npx shadcn add https://kit.n3wth.com/r/button.json
+```
+
+Multiple components:
+```
+npx shadcn add https://kit.n3wth.com/r/button.json https://kit.n3wth.com/r/card.json https://kit.n3wth.com/r/input.json
+```
+
+Design system style (installs color tokens + cn utility):
+```
+npx shadcn add https://kit.n3wth.com/r/n3wth.json
+```
+
+## AI Context Packs
+
+Context packs teach AI coding tools about this design system:
+
+- **Cursor:** https://kit.n3wth.com/ai/cursorrules
+- **AGENTS.md:** https://kit.n3wth.com/ai/AGENTS.md
+- **MCP config:** https://kit.n3wth.com/ai/mcp.json
+- **Structured JSON:** https://kit.n3wth.com/ai/components.json
+
+## MCP Server
+
+For tools supporting Model Context Protocol:
+
+```json
+{
+  "mcpServers": {
+    "n3wth-kit": {
+      "command": "npx",
+      "args": ["-y", "shadcn@latest", "registry:mcp"],
+      "env": {
+        "REGISTRY_URL": "https://kit.n3wth.com/r/registry.json"
+      }
+    }
+  }
+}
+```
+
+## Design System
+
+Flat, minimal, iOS-inspired. No shadows or gradients unless specified. Ships with light and dark themes via CSS custom properties.
+
+Key tokens:
+- Primary: White buttons with dark text
+- Background: Near-black (#08090b dark, #ffffff light)
+- Text: High contrast, 3 levels (ink, ink-dim, ink-faint)
+- Borders: Subtle rails (rail, rail-strong)
+- Radius: 0.625rem default
+
+## Supported AI Tools
+
+- v0 (Vercel)
+- Cursor
+- Windsurf
+- Lovable
+- Cline
+- Any MCP-compatible tool
+
+## Documentation
+
+- Getting Started: https://kit.n3wth.com/docs/getting-started
+- Cursor Integration: https://kit.n3wth.com/docs/cursor
+- AI Context Pack: https://kit.n3wth.com/docs/agents
+- v0 Integration: https://kit.n3wth.com/docs/v0
+- Lovable Integration: https://kit.n3wth.com/docs/lovable
+
+## Source
+
+GitHub: https://github.com/n3wth/kit
+License: MIT
+Contact: hey@n3wth.com

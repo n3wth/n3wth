@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hamburger-icon",
+  "title": "Hamburger Icon",
+  "description": "Animated hamburger-to-X SVG icon for mobile menu toggles.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/hamburger-icon/hamburger-icon.tsx",
+      "content": "import { type SVGProps } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface HamburgerIconProps extends SVGProps<SVGSVGElement> {\n  /** Whether the menu is open (shows X) or closed (shows hamburger) */\n  isOpen: boolean\n  /** Size of the icon */\n  size?: number\n}\n\nexport function HamburgerIcon({\n  isOpen,\n  size = 24,\n  className,\n  ...props\n}: HamburgerIconProps) {\n  return (\n    <svg\n      xmlns=\"http://www.w3.org/2000/svg\"\n      width={size}\n      height={size}\n      viewBox=\"0 0 24 24\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      strokeWidth=\"2\"\n      strokeLinecap=\"round\"\n      strokeLinejoin=\"round\"\n      className={cn('transition-transform duration-300', className)}\n      aria-hidden=\"true\"\n      {...props}\n    >\n      <path\n        d={isOpen ? 'M18 6L6 18' : 'M4 6h16'}\n        className=\"origin-center transition-all duration-300\"\n      />\n      <path\n        d={isOpen ? 'M6 6l12 12' : 'M4 12h16'}\n        className={cn(\n          'origin-center transition-all duration-300',\n          isOpen && 'opacity-0'\n        )}\n      />\n      {!isOpen && <path d=\"M4 18h16\" />}\n    </svg>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

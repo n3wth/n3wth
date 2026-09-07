@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-page-transition",
+  "description": "Page entrance/exit fade-and-slide animations.",
+  "dependencies": [
+    "gsap"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-page-transition/use-page-transition.ts",
+      "content": "import { useEffect, useRef } from 'react'\nimport gsap from 'gsap'\n\nexport interface UsePageTransitionOptions {\n  /** Entrance animation duration in seconds */\n  duration?: number\n  /** Exit animation duration in seconds */\n  exitDuration?: number\n}\n\n/**\n * Hook for page entrance/exit animations\n * Creates smooth transitions when navigating between pages\n */\nexport function usePageTransition(options: UsePageTransitionOptions = {}) {\n  const { duration = 0.5, exitDuration = 0.25 } = options\n  const pageRef = useRef<HTMLDivElement>(null)\n\n  useEffect(() => {\n    const page = pageRef.current\n    if (!page) return\n\n    const prefersReducedMotion = window.matchMedia(\n      '(prefers-reduced-motion: reduce)'\n    ).matches\n\n    if (prefersReducedMotion) {\n      page.style.opacity = '1'\n      return\n    }\n\n    // Entrance animation\n    gsap.fromTo(\n      page,\n      {\n        opacity: 0,\n        y: 16,\n      },\n      {\n        opacity: 1,\n        y: 0,\n        duration,\n        ease: 'cubic.out',\n      }\n    )\n\n    // Exit animation on unmount\n    return () => {\n      if (page) {\n        gsap.to(page, {\n          opacity: 0,\n          y: -8,\n          duration: exitDuration,\n          ease: 'cubic.in',\n        })\n      }\n    }\n  }, [duration, exitDuration])\n\n  return pageRef\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

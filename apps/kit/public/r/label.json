@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "title": "Label",
+  "description": "Form label with required indicator and disabled state.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/label/label.tsx",
+      "content": "import { forwardRef, type LabelHTMLAttributes, type ReactNode } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {\n  required?: boolean\n  disabled?: boolean\n  children: ReactNode\n}\n\nexport const Label = forwardRef<HTMLLabelElement, LabelProps>(\n  (\n    {\n      required = false,\n      disabled = false,\n      children,\n      className,\n      ...props\n    },\n    ref\n  ) => {\n    return (\n      <label\n        ref={ref}\n        className={cn(\n          'text-sm font-medium text-[var(--color-white)]',\n          disabled && 'opacity-50 cursor-not-allowed',\n          className\n        )}\n        {...props}\n      >\n        {children}\n        {required && (\n          <span className=\"text-[var(--color-coral)] ml-0.5\" aria-hidden=\"true\">\n            *\n          </span>\n        )}\n      </label>\n    )\n  }\n)\n\nLabel.displayName = 'Label'\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

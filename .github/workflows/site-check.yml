@@ -42,18 +42,21 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: node scripts/affected.mjs --base "$BASE_SHA"
       - name: Save built browser targets
-        if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs')
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/kit')
         uses: actions/upload-artifact@v4
         with:
           name: browser-targets
           path: |
             apps/portfolio/dist
             apps/ui-docs/dist
+            apps/kit/.next
+            !apps/kit/.next/cache
+          include-hidden-files: true
           if-no-files-found: error
 
   browser:
     needs: check
-    if: contains(needs.check.outputs.affected, '@n3wth/portfolio') || contains(needs.check.outputs.affected, '@n3wth/ui-docs')
+    if: contains(needs.check.outputs.affected, '@n3wth/portfolio') || contains(needs.check.outputs.affected, '@n3wth/ui-docs') || contains(needs.check.outputs.affected, '@n3wth/kit')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

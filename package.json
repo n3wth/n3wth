@@ -9,7 +9,8 @@
     "dev": "npm run dev -w @n3wth/portfolio",
     "dev:portfolio": "npm run dev -w @n3wth/portfolio",
     "dev:ui": "node scripts/dev-ui.mjs",
-    "build": "npm run build:portfolio && npm run build:ui",
+    "build": "npm run build:portfolio && npm run build:ui && npm run build:kit",
+    "build:kit": "npm run build -w @n3wth/kit",
     "build:portfolio": "npm run build -w @n3wth/portfolio",
     "build:ui": "npm run build -w @n3wth/ui && npm run build -w @n3wth/ui-docs",
     "check": "node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs && node scripts/affected.mjs --all",
@@ -17,5 +18,5 @@
     "check:browser": "playwright test",
     "preview": "npm run preview -w @n3wth/portfolio"
   },
-  "devDependencies": { "@playwright/test": "1.63.0" }
+  "devDependencies": { "@playwright/test": "1.63.0", "@types/react": "19.2.9" }
 }

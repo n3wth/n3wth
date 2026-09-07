@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "title": "Separator",
+  "description": "Horizontal or vertical visual separator.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/separator/separator.tsx",
+      "content": "import { forwardRef, type HTMLAttributes } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {\n  orientation?: 'horizontal' | 'vertical'\n  className?: string\n}\n\nexport const Separator = forwardRef<HTMLDivElement, SeparatorProps>(\n  (\n    {\n      orientation = 'horizontal',\n      className,\n      ...props\n    },\n    ref\n  ) => {\n    return (\n      <div\n        ref={ref}\n        role=\"separator\"\n        aria-orientation={orientation}\n        className={cn(\n          'bg-[var(--glass-border)]',\n          orientation === 'horizontal' ? 'h-px w-full' : 'w-px h-full',\n          className\n        )}\n        {...props}\n      />\n    )\n  }\n)\n\nSeparator.displayName = 'Separator'\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

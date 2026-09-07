@@ -1,0 +1,373 @@
+{
+  "registry": "https://kit.n3wth.com/r",
+  "install": "npx shadcn add https://kit.n3wth.com/r/{name}.json",
+  "components": [
+    {
+      "name": "button",
+      "description": "Multi-variant button with responsive sizes, loading state, icon slots, and polymorphic rendering via asChild.",
+      "props": [
+        { "name": "variant", "type": "'primary' | 'secondary' | 'ghost' | 'glass'", "default": "'primary'" },
+        { "name": "size", "type": "'sm' | 'md' | 'lg' | { base?: 'sm'|'md'|'lg', md?: 'sm'|'md'|'lg', lg?: 'sm'|'md'|'lg' }", "default": "'md'" },
+        { "name": "children", "type": "ReactNode", "default": null },
+        { "name": "isLoading", "type": "boolean", "default": "false" },
+        { "name": "leftIcon", "type": "ReactNode", "default": "undefined" },
+        { "name": "rightIcon", "type": "ReactNode", "default": "undefined" },
+        { "name": "asChild", "type": "boolean", "default": "false" },
+        { "name": "touchTarget", "type": "boolean", "default": "false" },
+        { "name": "disabled", "type": "boolean", "default": "false" }
+      ],
+      "usage": "<Button variant=\"primary\" size=\"lg\" leftIcon={<Icon name=\"star\" />}>Get Started</Button>",
+      "a11y": "Uses native <button> element. disabled prop sets disabled attribute. isLoading disables the button and shows a spinner. touchTarget ensures WCAG 2.5.5 minimum 44px hit area."
+    },
+    {
+      "name": "badge",
+      "description": "Inline badge with semantic color variants for status indicators and tags.",
+      "props": [
+        { "name": "variant", "type": "'default' | 'sage' | 'coral' | 'mint' | 'gold' | 'outline'", "default": "'default'" },
+        { "name": "size", "type": "'sm' | 'md'", "default": "'sm'" },
+        { "name": "children", "type": "ReactNode", "default": null }
+      ],
+      "usage": "<Badge variant=\"sage\" size=\"md\">Active</Badge>",
+      "a11y": "Renders as a <span>. For status meaning, ensure surrounding context or aria-label provides semantic info."
+    },
+    {
+      "name": "input",
+      "description": "Text input with glass variant, icon slots, and inline error message support.",
+      "props": [
+        { "name": "variant", "type": "'default' | 'glass'", "default": "'default'" },
+        { "name": "inputSize", "type": "'sm' | 'md' | 'lg'", "default": "'md'" },
+        { "name": "leftIcon", "type": "ReactNode", "default": "undefined" },
+        { "name": "rightIcon", "type": "ReactNode", "default": "undefined" },
+        { "name": "error", "type": "boolean | string", "default": "false" },
+        { "name": "labelId", "type": "string", "default": "undefined" }
+      ],
+      "usage": "<Input variant=\"glass\" inputSize=\"lg\" leftIcon={<Icon name=\"search\" />} placeholder=\"Search...\" error=\"Required field\" />",
+      "a11y": "Sets aria-invalid when error is truthy. String error renders a message with role=\"alert\" and links via aria-describedby. Use labelId or <Label htmlFor> for labeling."
+    },
+    {
+      "name": "icon",
+      "description": "Icon wrapper around iconoir-react with a named icon map and size presets.",
+      "props": [
+        { "name": "name", "type": "IconName (50+ named icons)", "default": null },
+        { "name": "size", "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number", "default": "'md'" }
+      ],
+      "usage": "<Icon name=\"github\" size=\"lg\" />",
+      "a11y": "Renders with aria-hidden=\"true\" by default. Wrap in a button or link with an aria-label for interactive use."
+    },
+    {
+      "name": "switch",
+      "description": "Toggle switch with controlled/uncontrolled modes, three sizes, and proper ARIA switch role.",
+      "props": [
+        { "name": "checked", "type": "boolean", "default": "undefined" },
+        { "name": "defaultChecked", "type": "boolean", "default": "false" },
+        { "name": "onChange", "type": "(checked: boolean) => void", "default": "undefined" },
+        { "name": "disabled", "type": "boolean", "default": "false" },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "default": "'md'" },
+        { "name": "label", "type": "string", "default": "undefined" }
+      ],
+      "usage": "<Switch checked={enabled} onChange={setEnabled} label=\"Notifications\" />",
+      "a11y": "Uses role=\"switch\" with aria-checked. label prop sets aria-label. Supports keyboard toggle via Enter key."
+    },
+    {
+      "name": "avatar",
+      "description": "Circular avatar with image source, fallback initials, and five size presets.",
+      "props": [
+        { "name": "src", "type": "string", "default": "undefined" },
+        { "name": "alt", "type": "string", "default": "''" },
+        { "name": "fallback", "type": "string", "default": "undefined" },
+        { "name": "size", "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'", "default": "'md'" }
+      ],
+      "usage": "<Avatar src=\"/photo.jpg\" alt=\"Oliver Newth\" fallback=\"ON\" size=\"lg\" />",
+      "a11y": "Image has alt text. Fallback initials are aria-hidden when alt is provided."
+    },
+    {
+      "name": "separator",
+      "description": "Horizontal or vertical visual separator line.",
+      "props": [
+        { "name": "orientation", "type": "'horizontal' | 'vertical'", "default": "'horizontal'" }
+      ],
+      "usage": "<Separator orientation=\"horizontal\" />",
+      "a11y": "Uses role=\"separator\" with aria-orientation."
+    },
+    {
+      "name": "progress",
+      "description": "Animated progress bar with value label and semantic color variants.",
+      "props": [
+        { "name": "value", "type": "number", "default": null },
+        { "name": "max", "type": "number", "default": "100" },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "default": "'md'" },
+        { "name": "variant", "type": "'default' | 'success' | 'warning' | 'error'", "default": "'default'" },
+        { "name": "label", "type": "string", "default": "undefined" },
+        { "name": "showValue", "type": "boolean", "default": "false" }
+      ],
+      "usage": "<Progress value={75} variant=\"success\" showValue label=\"Upload progress\" />",
+      "a11y": "Uses role=\"progressbar\" with aria-valuenow, aria-valuemin, aria-valuemax, and aria-label."
+    },
+    {
+      "name": "label",
+      "description": "Form label with required indicator and disabled state.",
+      "props": [
+        { "name": "required", "type": "boolean", "default": "false" },
+        { "name": "disabled", "type": "boolean", "default": "false" },
+        { "name": "children", "type": "ReactNode", "default": null }
+      ],
+      "usage": "<Label htmlFor=\"email\" required>Email Address</Label>",
+      "a11y": "Native <label> element. required adds a visual asterisk (aria-hidden). Use htmlFor to associate with an input."
+    },
+    {
+      "name": "textarea",
+      "description": "Textarea with configurable resize behavior and error state.",
+      "props": [
+        { "name": "resize", "type": "'none' | 'vertical' | 'both'", "default": "'vertical'" },
+        { "name": "error", "type": "boolean", "default": "false" }
+      ],
+      "usage": "<Textarea placeholder=\"Write your message...\" resize=\"vertical\" error={hasError} />",
+      "a11y": "Sets aria-invalid when error is true. Pair with <Label> for accessible labeling."
+    },
+    {
+      "name": "skeleton",
+      "description": "Skeleton loading placeholder with text, circular, and rectangular variants. Includes a CardSkeleton preset.",
+      "props": [
+        { "name": "variant", "type": "'text' | 'circular' | 'rectangular'", "default": "'text'" },
+        { "name": "width", "type": "string | number", "default": "undefined" },
+        { "name": "height", "type": "string | number", "default": "undefined" },
+        { "name": "animate", "type": "boolean", "default": "true" }
+      ],
+      "usage": "<Skeleton variant=\"rectangular\" width={300} height={200} />",
+      "a11y": "Decorative element. Use aria-busy=\"true\" on the parent container while loading."
+    },
+    {
+      "name": "code-block",
+      "description": "Lightweight syntax-highlighting code block with built-in tokenizer. No external highlighting dependency.",
+      "props": [
+        { "name": "code", "type": "string", "default": null },
+        { "name": "language", "type": "'javascript' | 'typescript' | 'json' | 'bash' | 'css'", "default": "'javascript'" },
+        { "name": "showLineNumbers", "type": "boolean", "default": "false" }
+      ],
+      "usage": "<CodeBlock code=\"const x = 42\" language=\"typescript\" showLineNumbers />",
+      "a11y": "Renders as <pre><code>. Content is selectable and copyable."
+    },
+    {
+      "name": "card",
+      "description": "Card container with default, glass, and interactive variants. Compound sub-components for structured content.",
+      "props": [
+        { "name": "variant", "type": "'default' | 'glass' | 'interactive'", "default": "'default'" },
+        { "name": "padding", "type": "'none' | 'sm' | 'md' | 'lg'", "default": "'md'" },
+        { "name": "children", "type": "ReactNode", "default": null }
+      ],
+      "subComponents": ["CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter"],
+      "usage": "<Card variant=\"glass\" padding=\"lg\">\n  <CardHeader>\n    <CardTitle>Title</CardTitle>\n    <CardDescription>Description</CardDescription>\n  </CardHeader>\n  <CardContent>Body content</CardContent>\n</Card>",
+      "a11y": "Interactive variant adds cursor-pointer. Wrap in <a> or add onClick with appropriate role for clickable cards."
+    },
+    {
+      "name": "modal",
+      "description": "Accessible modal dialog with portal rendering, focus trap, backdrop blur, and compound sub-components.",
+      "props": [
+        { "name": "isOpen", "type": "boolean", "default": null },
+        { "name": "onClose", "type": "() => void", "default": null },
+        { "name": "size", "type": "'sm' | 'md' | 'lg' | 'full'", "default": "'md'" },
+        { "name": "closeOnBackdropClick", "type": "boolean", "default": "true" },
+        { "name": "closeOnEscape", "type": "boolean", "default": "true" },
+        { "name": "ariaLabel", "type": "string", "default": "undefined" },
+        { "name": "children", "type": "ReactNode", "default": null }
+      ],
+      "subComponents": ["ModalHeader", "ModalTitle", "ModalDescription", "ModalBody", "ModalFooter", "ModalCloseButton"],
+      "usage": "<Modal isOpen={open} onClose={() => setOpen(false)} size=\"md\">\n  <ModalHeader>\n    <ModalTitle>Confirm</ModalTitle>\n    <ModalCloseButton onClick={() => setOpen(false)} />\n  </ModalHeader>\n  <ModalBody>Are you sure?</ModalBody>\n  <ModalFooter>\n    <Button variant=\"ghost\" onClick={() => setOpen(false)}>Cancel</Button>\n    <Button>Confirm</Button>\n  </ModalFooter>\n</Modal>",
+      "a11y": "role=\"dialog\" with aria-modal. Focus trapped within modal. Escape key closes. Body scroll locked. Focus restored on close."
+    },
+    {
+      "name": "tabs",
+      "description": "Accessible tabs with underline and pill variants, animated indicator, and keyboard navigation.",
+      "props": [
+        { "name": "value", "type": "string", "default": "undefined" },
+        { "name": "defaultValue", "type": "string", "default": "undefined" },
+        { "name": "onChange", "type": "(value: string) => void", "default": "undefined" },
+        { "name": "variant", "type": "'underline' | 'pill'", "default": "'underline'" },
+        { "name": "children", "type": "ReactNode", "default": null }
+      ],
+      "subComponents": ["TabsList", "TabsTab", "TabsPanel"],
+      "usage": "<Tabs defaultValue=\"overview\" variant=\"pill\">\n  <TabsList>\n    <TabsTab value=\"overview\">Overview</TabsTab>\n    <TabsTab value=\"code\">Code</TabsTab>\n  </TabsList>\n  <TabsPanel value=\"overview\">Overview content</TabsPanel>\n  <TabsPanel value=\"code\">Code content</TabsPanel>\n</Tabs>",
+      "a11y": "Uses role=\"tablist\", role=\"tab\", role=\"tabpanel\". Arrow keys navigate between tabs. Home/End jump to first/last tab. aria-selected tracks active tab."
+    },
+    {
+      "name": "toast",
+      "description": "Toast notification with semantic variant styling, auto-dismiss timer, and slide-in animation.",
+      "props": [
+        { "name": "variant", "type": "'default' | 'success' | 'error' | 'warning' | 'info'", "default": "'default'" },
+        { "name": "title", "type": "string", "default": "undefined" },
+        { "name": "description", "type": "string", "default": "undefined" },
+        { "name": "duration", "type": "number", "default": "5000" },
+        { "name": "icon", "type": "ReactNode", "default": "auto (variant icon)" },
+        { "name": "onDismiss", "type": "() => void", "default": "undefined" },
+        { "name": "open", "type": "boolean", "default": "true" }
+      ],
+      "subComponents": ["ToastContainer"],
+      "usage": "<ToastContainer position=\"top-right\">\n  <Toast variant=\"success\" title=\"Saved\" description=\"Changes saved successfully.\" />\n</ToastContainer>",
+      "a11y": "Uses role=\"alert\" with aria-live=\"polite\". Dismiss button has aria-label. Duration=0 disables auto-dismiss for persistent toasts."
+    },
+    {
+      "name": "dropdown",
+      "description": "Accessible dropdown select with single/multi-select, search/filter, portal rendering, and compound API.",
+      "props": [
+        { "name": "options", "type": "Array<{ value: string, label: string, disabled?: boolean }>", "default": "[]" },
+        { "name": "value", "type": "string", "default": "undefined" },
+        { "name": "values", "type": "string[]", "default": "undefined" },
+        { "name": "defaultValue", "type": "string", "default": "undefined" },
+        { "name": "defaultValues", "type": "string[]", "default": "undefined" },
+        { "name": "onChange", "type": "(value: string) => void", "default": "undefined" },
+        { "name": "onMultiChange", "type": "(values: string[]) => void", "default": "undefined" },
+        { "name": "multi", "type": "boolean", "default": "false" },
+        { "name": "searchable", "type": "boolean", "default": "false" },
+        { "name": "placeholder", "type": "string", "default": "'Select...'" },
+        { "name": "searchPlaceholder", "type": "string", "default": "'Search...'" },
+        { "name": "disabled", "type": "boolean", "default": "false" },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "default": "'md'" },
+        { "name": "variant", "type": "'default' | 'glass'", "default": "'default'" },
+        { "name": "portal", "type": "boolean", "default": "false" }
+      ],
+      "subComponents": ["Dropdown.Trigger", "Dropdown.Menu", "Dropdown.Item"],
+      "usage": "<Dropdown\n  options={[\n    { value: 'react', label: 'React' },\n    { value: 'vue', label: 'Vue' },\n  ]}\n  value={framework}\n  onChange={setFramework}\n  searchable\n/>",
+      "a11y": "Trigger uses role=\"combobox\" with aria-expanded/aria-haspopup. Menu uses role=\"listbox\". Items use role=\"option\" with aria-selected. Full keyboard navigation: Arrow keys, Enter, Escape, Home, End, type-ahead."
+    },
+    {
+      "name": "accordion",
+      "description": "Accessible accordion with single/multiple open modes, collapsible option, and animated content reveal.",
+      "props": [
+        { "name": "type", "type": "'single' | 'multiple'", "default": "'single'" },
+        { "name": "value", "type": "string[]", "default": "undefined" },
+        { "name": "defaultValue", "type": "string[]", "default": "[]" },
+        { "name": "onChange", "type": "(value: string[]) => void", "default": "undefined" },
+        { "name": "collapsible", "type": "boolean", "default": "false" },
+        { "name": "children", "type": "ReactNode", "default": null }
+      ],
+      "subComponents": ["AccordionItem", "AccordionTrigger", "AccordionContent"],
+      "usage": "<Accordion type=\"single\" collapsible>\n  <AccordionItem value=\"faq-1\">\n    <AccordionTrigger>What is this?</AccordionTrigger>\n    <AccordionContent>A component library.</AccordionContent>\n  </AccordionItem>\n</Accordion>",
+      "a11y": "Triggers use aria-expanded and aria-controls. Content uses role=\"region\" with aria-labelledby. Arrow key navigation between triggers. Home/End support."
+    },
+    {
+      "name": "nav",
+      "description": "Responsive navigation bar with logo, desktop link row, mobile drawer, theme toggle, and hide-on-scroll behavior.",
+      "props": [
+        { "name": "logo", "type": "ReactNode", "default": "undefined" },
+        { "name": "logoHref", "type": "string", "default": "'/'" },
+        { "name": "items", "type": "Array<{ label: string, href: string, isActive?: boolean, external?: boolean }>", "default": "[]" },
+        { "name": "theme", "type": "'dark' | 'light'", "default": "'dark'" },
+        { "name": "onThemeToggle", "type": "() => void", "default": "undefined" },
+        { "name": "showThemeToggle", "type": "boolean", "default": "true" },
+        { "name": "fixed", "type": "boolean", "default": "false" },
+        { "name": "hideOnScroll", "type": "boolean", "default": "false" }
+      ],
+      "usage": "<Nav\n  logo=\"Kit\"\n  items={[\n    { label: 'Components', href: '/components' },\n    { label: 'GitHub', href: 'https://github.com/...', external: true },\n  ]}\n  theme={theme}\n  onThemeToggle={toggleTheme}\n  fixed\n/>",
+      "a11y": "Uses <nav> element. Mobile menu button has aria-label and aria-expanded. External links get target=\"_blank\" with rel=\"noopener noreferrer\". Mobile drawer has focus trap."
+    },
+    {
+      "name": "hero",
+      "description": "Hero section with optional badge, gradient title text, description, and CTA button row.",
+      "props": [
+        { "name": "badge", "type": "string", "default": "undefined" },
+        { "name": "title", "type": "ReactNode", "default": null },
+        { "name": "description", "type": "ReactNode", "default": "undefined" },
+        { "name": "ctas", "type": "Array<{ label: string, href: string, variant?: 'primary'|'secondary'|'ghost' }>", "default": "[]" },
+        { "name": "align", "type": "'left' | 'center'", "default": "'center'" },
+        { "name": "size", "type": "'default' | 'large'", "default": "'default'" },
+        { "name": "gradient", "type": "boolean", "default": "true" }
+      ],
+      "usage": "<Hero\n  badge=\"New Release\"\n  title=\"Ship components faster\"\n  description=\"A registry of production-ready React components.\"\n  ctas={[{ label: 'Install', href: '/install' }]}\n/>",
+      "a11y": "Title renders as <h1>. CTA links render inside <Button asChild> for proper semantics. Uses <section> element."
+    },
+    {
+      "name": "section",
+      "description": "Layout section wrapper with size constraints, vertical spacing presets, and optional container.",
+      "props": [
+        { "name": "size", "type": "'sm' | 'md' | 'lg' | 'full'", "default": "'md'" },
+        { "name": "spacing", "type": "'none' | 'sm' | 'md' | 'lg'", "default": "'md'" },
+        { "name": "container", "type": "boolean", "default": "true" },
+        { "name": "children", "type": "ReactNode", "default": null }
+      ],
+      "subComponents": ["SectionHeader"],
+      "usage": "<Section size=\"lg\" spacing=\"lg\" id=\"features\">\n  <SectionHeader title=\"Features\" description=\"Everything you need.\" align=\"center\" />\n  {children}\n</Section>",
+      "a11y": "Uses <section> element. When id is provided, adds scroll-margin-top for anchor link offset. SectionHeader title renders as <h2>."
+    },
+    {
+      "name": "footer",
+      "description": "Site footer with ecosystem site links, optional section columns, social icons, and copyright bar.",
+      "props": [
+        { "name": "sites", "type": "Array<{ name: string, href: string }>", "default": "n3wth ecosystem defaults" },
+        { "name": "currentSite", "type": "string", "default": "undefined" },
+        { "name": "legalLinks", "type": "Array<{ label: string, href: string }>", "default": "[Terms, Privacy]" },
+        { "name": "copyright", "type": "string", "default": "current year + Oliver Newth" },
+        { "name": "logo", "type": "ReactNode", "default": "undefined" },
+        { "name": "description", "type": "string", "default": "undefined" },
+        { "name": "sections", "type": "Array<{ title: string, links: Array<{ label: string, href: string }> }>", "default": "[]" },
+        { "name": "socialLinks", "type": "Array<{ label: string, href: string, icon: ReactNode }>", "default": "[]" }
+      ],
+      "usage": "<Footer\n  currentSite=\"n3wth/kit\"\n  sections={[{ title: 'Product', links: [{ label: 'Docs', href: '/docs' }] }]}\n  logo={<span>Kit</span>}\n/>",
+      "a11y": "Uses <footer> element. Social links have aria-label. External links open in new tab with noopener noreferrer."
+    },
+    {
+      "name": "tooltip",
+      "description": "Portal-based tooltip with auto-positioning, configurable delays, and optional arrow.",
+      "props": [
+        { "name": "content", "type": "ReactNode", "default": null },
+        { "name": "children", "type": "ReactNode", "default": null },
+        { "name": "position", "type": "'top' | 'right' | 'bottom' | 'left'", "default": "'top'" },
+        { "name": "showDelay", "type": "number", "default": "200" },
+        { "name": "hideDelay", "type": "number", "default": "0" },
+        { "name": "disabled", "type": "boolean", "default": "false" },
+        { "name": "arrow", "type": "boolean", "default": "true" }
+      ],
+      "usage": "<Tooltip content=\"Copy to clipboard\" position=\"top\">\n  <Button variant=\"ghost\"><Icon name=\"copy\" /></Button>\n</Tooltip>",
+      "a11y": "Uses role=\"tooltip\" with aria-describedby on trigger. Shows on hover and focus. Auto-repositions to stay in viewport."
+    },
+    {
+      "name": "theme-toggle",
+      "description": "Dark/light theme toggle button that shows sun or moon icon based on current theme.",
+      "props": [
+        { "name": "theme", "type": "'dark' | 'light'", "default": null },
+        { "name": "onToggle", "type": "() => void", "default": null },
+        { "name": "size", "type": "'sm' | 'md'", "default": "'md'" }
+      ],
+      "usage": "<ThemeToggle theme={theme} onToggle={toggleTheme} size=\"sm\" />",
+      "a11y": "Uses aria-label describing the action (e.g. 'Switch to light mode')."
+    },
+    {
+      "name": "command-box",
+      "description": "Copyable terminal command display with clipboard integration and visual copy confirmation.",
+      "props": [
+        { "name": "command", "type": "string", "default": null },
+        { "name": "variant", "type": "'default' | 'primary'", "default": "'default'" },
+        { "name": "showCopyButton", "type": "boolean", "default": "true" },
+        { "name": "onCopy", "type": "() => void", "default": "undefined" }
+      ],
+      "usage": "<CommandBox command=\"npx shadcn add https://kit.n3wth.com/r/button.json\" variant=\"primary\" />",
+      "a11y": "Copy button has aria-label. Copied state announced via aria-live=\"polite\" region for screen readers."
+    },
+    {
+      "name": "mobile-drawer",
+      "description": "Slide-in drawer panel for mobile navigation with backdrop, focus trap, and escape-to-close.",
+      "props": [
+        { "name": "isOpen", "type": "boolean", "default": null },
+        { "name": "onClose", "type": "() => void", "default": null },
+        { "name": "children", "type": "ReactNode", "default": null },
+        { "name": "width", "type": "string", "default": "'280px'" },
+        { "name": "position", "type": "'left' | 'right'", "default": "'right'" },
+        { "name": "zIndex", "type": "number", "default": "50" },
+        { "name": "ariaLabel", "type": "string", "default": "'Navigation menu'" }
+      ],
+      "usage": "<MobileDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} position=\"right\">\n  <nav>Menu content</nav>\n</MobileDrawer>",
+      "a11y": "Uses role=\"dialog\" with aria-modal. Focus trapped inside drawer. Escape key closes. Body scroll locked when open. Focus restored on close."
+    },
+    {
+      "name": "error-boundary",
+      "description": "React error boundary that catches JavaScript errors in child components and displays fallback UI with retry option.",
+      "props": [
+        { "name": "children", "type": "ReactNode", "default": null },
+        { "name": "fallback", "type": "ReactNode", "default": "built-in error UI" },
+        { "name": "onError", "type": "(error: Error, errorInfo: React.ErrorInfo) => void", "default": "undefined" }
+      ],
+      "subComponents": ["ErrorFallback"],
+      "usage": "<ErrorBoundary onError={(err) => logError(err)}>\n  <App />\n</ErrorBoundary>",
+      "a11y": "Default fallback has heading structure and a retry button. ErrorFallback sub-component provides full-page error display with reload and home link options."
+    }
+  ]
+}

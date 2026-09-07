@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-button-pulse",
+  "description": "Subtle hover/press scale animations for buttons.",
+  "dependencies": [
+    "gsap"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-button-pulse/use-button-pulse.ts",
+      "content": "import { useEffect, useRef } from 'react'\nimport gsap from 'gsap'\n\nexport interface UseButtonPulseOptions {\n  /** Scale on hover */\n  hoverScale?: number\n  /** Scale on press */\n  pressScale?: number\n  /** Animation duration in seconds */\n  duration?: number\n}\n\n/**\n * Hook for subtle button interaction animations\n * Creates depth-aware scale interactions on hover and press\n */\nexport function useButtonPulse(options: UseButtonPulseOptions = {}) {\n  const { hoverScale = 1.02, pressScale = 0.96, duration = 0.2 } = options\n\n  const ref = useRef<HTMLButtonElement>(null)\n\n  useEffect(() => {\n    const button = ref.current\n    if (!button) return\n\n    const prefersReducedMotion = window.matchMedia(\n      '(prefers-reduced-motion: reduce)'\n    ).matches\n\n    if (prefersReducedMotion) return\n\n    const handleMouseEnter = () => {\n      gsap.to(button, {\n        scale: hoverScale,\n        duration,\n        ease: 'cubic.out',\n      })\n    }\n\n    const handleMouseLeave = () => {\n      gsap.to(button, {\n        scale: 1,\n        duration,\n        ease: 'cubic.out',\n      })\n    }\n\n    const handleMouseDown = () => {\n      gsap.to(button, {\n        scale: pressScale,\n        duration: duration / 2,\n        ease: 'cubic.out',\n      })\n    }\n\n    const handleMouseUp = () => {\n      gsap.to(button, {\n        scale: hoverScale,\n        duration: duration / 2,\n        ease: 'cubic.out',\n      })\n    }\n\n    button.addEventListener('mouseenter', handleMouseEnter)\n    button.addEventListener('mouseleave', handleMouseLeave)\n    button.addEventListener('mousedown', handleMouseDown)\n    button.addEventListener('mouseup', handleMouseUp)\n\n    return () => {\n      button.removeEventListener('mouseenter', handleMouseEnter)\n      button.removeEventListener('mouseleave', handleMouseLeave)\n      button.removeEventListener('mousedown', handleMouseDown)\n      button.removeEventListener('mouseup', handleMouseUp)\n    }\n  }, [hoverScale, pressScale, duration])\n\n  return ref\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

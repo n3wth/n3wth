@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "noise-overlay",
+  "title": "Noise Overlay",
+  "description": "SVG noise texture overlay for visual grain effect.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/noise-overlay/noise-overlay.tsx",
+      "content": "import { type HTMLAttributes } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface NoiseOverlayProps extends HTMLAttributes<HTMLDivElement> {\n  /** Opacity of the noise texture (0-1) */\n  opacity?: number\n  /** Whether to use a fixed position overlay */\n  fixed?: boolean\n}\n\nconst noiseSvg = `url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")`\n\nexport function NoiseOverlay({\n  opacity = 0.03,\n  fixed = true,\n  className,\n  style,\n  ...props\n}: NoiseOverlayProps) {\n  return (\n    <div\n      className={cn(\n        'inset-0 pointer-events-none z-50',\n        fixed ? 'fixed' : 'absolute',\n        className\n      )}\n      style={{\n        backgroundImage: noiseSvg,\n        opacity,\n        ...style,\n      }}\n      aria-hidden=\"true\"\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
