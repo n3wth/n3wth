@@ -65,10 +65,10 @@ export async function generateMetadata({
 const components = {
   ...MDXComponents,
   h1: ({ children }: any) => (
-    <h1 className="text-4xl font-normal text-ink mb-6">{children}</h1>
+    <h1 className="text-4xl sm:text-5xl font-semibold text-ink mb-6">{children}</h1>
   ),
   h2: ({ children }: any) => (
-    <h2 className="text-2xl font-normal text-ink mt-12 mb-4">{children}</h2>
+    <h2 className="text-2xl font-semibold text-ink mt-12 mb-4">{children}</h2>
   ),
   h3: ({ children }: any) => (
     <h3 className="text-lg font-medium text-ink mt-8 mb-3">{children}</h3>

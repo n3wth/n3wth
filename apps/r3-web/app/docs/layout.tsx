@@ -12,10 +12,10 @@ export default function DocsLayout({
     <div className="min-h-screen bg-bg flex flex-col">
       <Navigation />
 
-      <div className="mx-auto max-w-[1600px] w-full px-6 pt-20 pb-8 lg:px-8 flex-1">
+      <div className="mx-auto max-w-[1440px] w-full px-6 pt-28 pb-14 lg:px-10 flex-1">
         <div className="flex gap-8">
           {/* Sidebar */}
-          <aside className="hidden lg:block w-[260px] flex-shrink-0">
+          <aside className="hidden lg:block w-[220px] flex-shrink-0">
             <div className="sticky top-20">
               <DocsSidebar />
             </div>
@@ -27,7 +27,7 @@ export default function DocsLayout({
           </main>
 
           {/* Table of Contents */}
-          <aside className="hidden xl:block w-[240px] flex-shrink-0">
+          <aside className="hidden xl:block w-[200px] flex-shrink-0">
             <div className="sticky top-20">
               <TableOfContents />
             </div>

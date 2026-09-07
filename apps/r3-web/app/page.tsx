@@ -92,21 +92,19 @@ gemini mcp list`,
 
       <main id="main-content" className="flex-1 pt-20">
         {/* Hero */}
-        <section className="mx-auto max-w-5xl px-6 pt-8 pb-14">
-          <div className="grid items-center gap-12 sm:grid-cols-2">
+        <section className="mx-auto max-w-5xl px-6 pt-12 pb-16 md:pt-16 md:pb-20">
+          <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12">
             <div>
               <h1
                 className="text-ink tracking-tight"
                 style={{
                   fontSize: "clamp(2.25rem, 5vw, 3.5rem)",
-                  lineHeight: 1.15,
+                  lineHeight: 1.08,
                 }}
               >
-                Persistent memory
-                <br />
-                for AI assistants
+                Persistent memory for AI assistants
               </h1>
-              <p className="mt-5 text-base leading-relaxed text-ink-dim">
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-dim text-pretty">
                 An MCP server that gives AI assistants memory that survives
                 between sessions. Local Redis, vector search, and knowledge
                 graphs with zero configuration.
