@@ -1,11 +1,37 @@
 import { readFileSync, readdirSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { resolve, posix } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 
-export function affectedWorkspaces(workspaces, files, all = false) {
+function linkedDependency(workspace, name, packages, byPath) {
+  if (!packages || !packages[workspace.path]) return undefined
+  let directory = workspace.path
+  while (true) {
+    const entry = packages[posix.join(directory, 'node_modules', name)]
+    if (entry) {
+      if (entry.link && typeof entry.resolved === 'string') {
+        return byPath.get(posix.normalize(entry.resolved))?.name
+      }
+      // A registry package shadows the root workspace link.
+      if (typeof entry.version === 'string') return null
+      return undefined
+    }
+    if (!directory) return undefined
+    directory = posix.dirname(directory)
+    if (directory === '.') directory = ''
+  }
+}
+
+export function affectedWorkspaces(workspaces, files, all = false, lockfile) {
   const byName = new Map(workspaces.map(workspace => [workspace.name, workspace]))
-  const dependencies = workspace => Object.keys({ ...workspace.dependencies, ...workspace.devDependencies, ...workspace.peerDependencies }).filter(name => byName.has(name))
+  const byPath = new Map(workspaces.map(workspace => [workspace.path, workspace]))
+  const dependencies = workspace => Object.keys({ ...workspace.dependencies, ...workspace.devDependencies, ...workspace.optionalDependencies, ...workspace.peerDependencies }).flatMap(name => {
+    const linked = linkedDependency(workspace, name, lockfile?.packages, byPath)
+    if (linked === null) return []
+    if (linked !== undefined) return [linked]
+    // Missing or incomplete lock data must never suppress a possible consumer.
+    return byName.has(name) ? [name] : []
+  })
   const selected = new Set()
   for (const file of files) {
     // Manifest edits can remove dependency edges. Validate the complete graph.
@@ -69,7 +95,14 @@ function main() {
       all = true
     } else files = diff.stdout.split('\0').filter(Boolean)
   }
-  const selected = affectedWorkspaces(readWorkspaces(root), files, all)
+  let lockfile
+  try {
+    lockfile = JSON.parse(readFileSync(resolve(root, 'package-lock.json'), 'utf8'))
+  } catch {
+    console.warn('Unable to read workspace lockfile; checking every workspace.')
+    all = true
+  }
+  const selected = affectedWorkspaces(readWorkspaces(root), files, all, lockfile)
   console.log(JSON.stringify(selected))
   if (args.includes('--list')) return
   for (const workspace of selected) {

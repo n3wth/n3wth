@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteUrls } from "@n3wth/site-config";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
@@ -31,7 +32,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://r3.n3wth.com"),
+  metadataBase: new URL(siteUrls.r3),
   title: {
     default: "n3wth/r3 - Persistent memory for AI assistants",
     template: "%s - n3wth/r3",
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
     title: "n3wth/r3 - Persistent memory for AI assistants",
     description:
       "An MCP server that gives AI assistants persistent memory. Local Redis, vector search, knowledge graphs. Install with npx @n3wth/r3.",
-    url: "https://r3.n3wth.com",
+    url: siteUrls.r3,
     siteName: "n3wth/r3",
     type: "website",
     locale: "en_US",

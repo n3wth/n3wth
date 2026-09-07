@@ -1,4 +1,5 @@
 import { getPackageVersion } from "@/lib/version";
+import { siteUrls } from "@n3wth/site-config";
 
 interface JsonLdProps {
   type: "WebSite" | "SoftwareApplication" | "WebPage";
@@ -12,7 +13,7 @@ interface JsonLdProps {
 export function JsonLd({ type, data }: JsonLdProps) {
   const version = getPackageVersion();
 
-  const baseUrl = "https://r3.n3wth.com";
+  const baseUrl = siteUrls.r3;
 
   const schemas: Record<string, object> = {
     WebSite: {

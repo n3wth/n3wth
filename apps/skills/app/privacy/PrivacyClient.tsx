@@ -174,7 +174,7 @@ export default function PrivacyClient() {
               >
                 For privacy-related questions, please open an issue on our{' '}
                 <a
-                  href="https://github.com/n3wth/newth-skills"
+                  href="https://github.com/n3wth/n3wth/tree/main/apps/skills"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white hover:opacity-70 transition-opacity"

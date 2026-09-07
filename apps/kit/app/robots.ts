@@ -1,3 +1,4 @@
+import { siteUrls } from '@n3wth/site-config'
 import type { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
@@ -9,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/_next/', '/checkout/'],
       },
     ],
-    sitemap: 'https://kit.n3wth.com/sitemap.xml',
-    host: 'https://kit.n3wth.com',
+    sitemap: `${siteUrls.kit}/sitemap.xml`,
+    host: siteUrls.kit,
   }
 }

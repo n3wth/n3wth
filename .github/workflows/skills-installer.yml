@@ -1,0 +1,21 @@
+name: Skills installer
+on:
+  push:
+    branches: [main]
+    paths: ['apps/skills/public/install.sh', 'apps/skills/skills/**', 'apps/skills/scripts/install.test.mjs', '.github/workflows/skills-installer.yml']
+  pull_request:
+    paths: ['apps/skills/public/install.sh', 'apps/skills/skills/**', 'apps/skills/scripts/install.test.mjs', '.github/workflows/skills-installer.yml']
+permissions:
+  contents: read
+jobs:
+  installer:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --test apps/skills/scripts/install.test.mjs

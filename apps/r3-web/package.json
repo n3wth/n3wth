@@ -12,6 +12,7 @@
     "check": "npm run typecheck && npm run build"
   },
   "dependencies": {
+    "@n3wth/site-config": "*",
     "@mdx-js/loader": "3.1.1",
     "@mdx-js/react": "3.1.1",
     "@n3wth/ui": "0.9.1",

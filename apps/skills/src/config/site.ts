@@ -1,3 +1,4 @@
+import { siteUrls } from '@n3wth/site-config'
 // Site-wide configuration
 export const siteConfig = {
   name: 'n3wth/skills',
@@ -5,10 +6,10 @@ export const siteConfig = {
   tagline: 'One install, local, offline.',
   author: 'Oliver Newth',
   links: {
-    about: 'https://n3wth.com',
-    github: 'https://github.com/n3wth/skills',
+    about: siteUrls.home,
+    github: 'https://github.com/n3wth/n3wth/tree/main/apps/skills',
     twitter: 'https://twitter.com/olivernewth',
-    docs: 'https://github.com/n3wth/skills#readme',
+    docs: 'https://github.com/n3wth/n3wth/tree/main/apps/skills#readme',
   },
   hero: {
     title: ['Skills for', 'coding agents'],

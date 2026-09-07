@@ -1,7 +1,8 @@
 import { docsConfig } from "@/lib/docs-config";
+import { siteUrls } from "@n3wth/site-config";
 
 export async function GET() {
-  const baseUrl = "https://r3.n3wth.com";
+  const baseUrl = siteUrls.r3;
   const now = new Date().toISOString();
 
   const staticPages = [

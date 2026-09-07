@@ -40,6 +40,7 @@
     ]
   },
   "dependencies": {
+    "@n3wth/site-config": "*",
     "@ai-sdk/google": "3.0.24",
     "@ai-sdk/openai": "3.0.19",
     "@gsap/react": "2.1.2",

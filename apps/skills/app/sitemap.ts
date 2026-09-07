@@ -1,10 +1,11 @@
+import { siteUrls } from '@n3wth/site-config'
 import { MetadataRoute } from 'next'
 import { skills } from '@/src/data/skills'
 import { bundles } from '@/src/data/bundles'
 import { workflowTemplates } from '@/src/data/workflows'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://skills.n3wth.com'
+  const baseUrl = siteUrls.skills
 
   const staticPages: MetadataRoute.Sitemap = [
     {

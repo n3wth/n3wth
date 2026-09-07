@@ -17,7 +17,7 @@ export default defineConfig({
   retries: 0,
   workers: 2,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
-  use: { browserName: 'chromium', reducedMotion: 'reduce', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
+  use: { browserName: 'chromium', contextOptions: { reducedMotion: 'reduce' }, trace: 'retain-on-failure', screenshot: 'only-on-failure' },
   projects: apps.flatMap(app => [390, 852, 1440].map(width => ({
     name: `${app.name}-${width}`,
     testMatch: `${app.name}.spec.ts`,

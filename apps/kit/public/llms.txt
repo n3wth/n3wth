@@ -114,6 +114,6 @@ Key tokens:
 
 ## Source
 
-GitHub: https://github.com/n3wth/kit
+GitHub: https://github.com/n3wth/n3wth/tree/main/apps/kit
 License: MIT
 Contact: hey@n3wth.com

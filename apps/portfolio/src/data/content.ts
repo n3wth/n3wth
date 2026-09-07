@@ -203,7 +203,7 @@ export const projects: Project[] = [
     description: 'A component registry that pairs reusable UI with context for coding agents. The design rules travel with the components.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
     url: siteUrls.kit,
-    github: 'https://github.com/n3wth/kit',
+    github: 'https://github.com/n3wth/n3wth/tree/main/apps/kit',
   },
   {
     id: 'hop-flights',
@@ -220,7 +220,7 @@ export const projects: Project[] = [
     description: 'A registry of installable markdown skills for coding agents. Each skill packages instructions for a specific task.',
     tech: ['Next.js', 'React', 'Supabase'],
     url: siteUrls.skills,
-    github: 'https://github.com/n3wth/skills',
+    github: 'https://github.com/n3wth/n3wth/tree/main/apps/skills',
   },
   {
     id: 'garden',
