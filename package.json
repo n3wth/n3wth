@@ -18,5 +18,5 @@
     "check:browser": "playwright test",
     "preview": "npm run preview -w @n3wth/portfolio"
   },
-  "devDependencies": { "@playwright/test": "1.63.0" }
+  "devDependencies": { "@playwright/test": "1.63.0", "@types/react": "19.2.9" }
 }
