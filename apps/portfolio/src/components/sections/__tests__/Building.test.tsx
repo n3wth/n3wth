@@ -11,6 +11,6 @@ describe('Project portfolio', () => {
   it('provides live projects and public source links', () => {
     render(<Building />)
     expect(screen.getByRole('link', { name: 'Explore r3' })).toHaveAttribute('href', 'https://r3.n3wth.com')
-    expect(screen.getAllByRole('link', { name: 'Read the source' }).map((link) => link.getAttribute('href'))).toEqual(['https://github.com/n3wth/r3', 'https://github.com/n3wth/kit', 'https://github.com/n3wth/skills'])
+    expect(screen.getAllByRole('link', { name: 'Read the source' }).map((link) => link.getAttribute('href'))).toEqual(['https://github.com/n3wth/r3', 'https://github.com/n3wth/n3wth/tree/main/apps/kit', 'https://github.com/n3wth/n3wth/tree/main/apps/skills'])
   })
 })
