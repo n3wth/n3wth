@@ -190,6 +190,11 @@ function configurePanoTexture(tex: THREE.Texture) {
   tex.needsUpdate = true
 }
 
+function configureSurfaceData(tex: THREE.Texture) {
+  configureTiledTexture(tex)
+  tex.colorSpace = THREE.NoColorSpace
+}
+
 /* Pull mesh geometries out of a GLB scene, keyed by lowercase node name */
 function useGLBGeometries(url: string): Record<string, THREE.BufferGeometry> {
   const scene = useOptionalGLTF(url)?.scene
@@ -223,6 +228,11 @@ function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): TH
         const old = (Array.isArray(m.material) ? m.material[0] : m.material) as THREE.MeshStandardMaterial
         m.material = new THREE.MeshStandardMaterial({
           map: old.map ?? null,
+          normalMap: old.normalMap ?? null,
+          normalScale: old.normalScale?.clone(),
+          roughnessMap: old.roughnessMap ?? null,
+          aoMap: old.aoMap ?? null,
+          aoMapIntensity: 0.7,
           color: old.map ? new THREE.Color(tint) : (old.color ?? new THREE.Color(0x888888)),
           roughness: 0.7,
           metalness: 0.15,
@@ -230,6 +240,8 @@ function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): TH
           side: THREE.DoubleSide,
         })
         m.frustumCulled = false
+        m.castShadow = true
+        m.receiveShadow = true
       }
     })
     return scene
@@ -320,11 +332,11 @@ function SteelAndWire({
 
   return (
     <>
-      <mesh geometry={smoothGeometry}>
+      <mesh geometry={smoothGeometry} castShadow receiveShadow>
         <meshStandardMaterial
           map={configured}
           bumpMap={configured}
-          bumpScale={0.12}
+          bumpScale={0.035}
           color={bodyColor}
           emissive="#b99567"
           emissiveIntensity={0.2}
@@ -1176,18 +1188,21 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
 
 /* The playa itself — real terrain (Blender): near-flat where you stand,
    swelling into dust drifts and berms toward the edges, flat pads under
-   every structure. FLORA cracked-mud tiles across it, revealed by the
-   pooled light. */
+   every structure. Baked soil color, normal and roughness maps reveal
+   surface relief under the pooled light. */
 function Ground() {
-  const configured = useOptionalTexture('/textures/playa-tile.webp', configureTiledTexture)
+  const configured = useOptionalTexture('/textures/soil-color.webp', configureTiledTexture)
+  const normal = useOptionalTexture('/textures/soil-normal.webp', configureSurfaceData)
+  const roughness = useOptionalTexture('/textures/soil-roughness.webp', configureSurfaceData)
   const terrain = useGLBGeometry('/models/terrain.glb')
   if (!terrain) return null
   return (
-    <mesh geometry={terrain}>
+    <mesh geometry={terrain} receiveShadow>
       <meshStandardMaterial
         map={configured}
-        bumpMap={configured}
-        bumpScale={0.75}
+        normalMap={normal}
+        normalScale={[0.8, 0.8]}
+        roughnessMap={roughness}
         color="#8e9194"
         roughness={0.96}
         metalness={0}
@@ -1577,6 +1592,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       dpr={portraitAtLoad ? [1, 1.25] : [1, 1.5]}
       camera={{ position: [0, 3.2, 22], fov: 48 }}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
+      shadows={portraitAtLoad ? false : 'percentage'}
       frameloop={reducedMotion ? 'demand' : 'always'}
       style={{ position: 'absolute', inset: 0 }}
     >
@@ -1586,7 +1602,11 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       <hemisphereLight args={['#161c28', '#0a0908']} intensity={0.18} />
       {/* one consistent moon: cool, high, from the Milky Way side — it
           shades the terrain undulation so the ground reads as ground */}
-      <directionalLight position={[40, 60, -25]} color="#a8b8d0" intensity={0.22} />
+      <directionalLight position={[40, 60, -25]} color="#a8b8d0" intensity={0.45}
+        castShadow={!portraitAtLoad} shadow-mapSize={[1024, 1024]}
+        shadow-camera-left={-100} shadow-camera-right={100}
+        shadow-camera-top={100} shadow-camera-bottom={-100}
+        shadow-camera-far={220} shadow-normalBias={0.08} shadow-bias={-0.0001} />
       {/* the far glow behind the ridge, barely */}
       <directionalLight position={[-6, 18, -120]} color="#8a7a68" intensity={0.14} />
 
