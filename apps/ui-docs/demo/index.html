@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@n3wth/ui — Flat, Minimal Design System for React</title>
+  <meta name="description" content="Atomic design system for React applications. Flat, minimal, iOS-inspired components with no shadows or glows — just clean glass morphism. Built on Tailwind CSS 4." />
+  <meta name="author" content="Oliver Newth" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://ui.n3wth.com/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="@n3wth/ui — Flat, Minimal Design System for React" />
+  <meta property="og:description" content="Atomic design system for React applications. Flat, minimal, iOS-inspired components — just clean glass morphism. Built on Tailwind CSS 4." />
+  <meta property="og:url" content="https://ui.n3wth.com/" />
+  <meta property="og:image" content="https://ui.n3wth.com/og/home.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="@n3wth/ui — flat, minimal design system for React" />
+  <meta property="og:site_name" content="@n3wth/ui" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@olivernewth" />
+  <meta name="twitter:creator" content="@olivernewth" />
+  <meta name="twitter:title" content="@n3wth/ui — Flat, Minimal Design System for React" />
+  <meta name="twitter:description" content="Atomic design system for React applications. Flat, minimal, iOS-inspired components — just clean glass morphism." />
+  <meta name="twitter:image" content="https://ui.n3wth.com/og/home.png" />
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#08090b" />
+
+  <!-- Structured Data: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "@n3wth/ui",
+    "url": "https://ui.n3wth.com",
+    "description": "Atomic design system for React applications. Flat, minimal, iOS-inspired components built on Tailwind CSS 4.",
+    "author": {
+      "@type": "Person",
+      "name": "Oliver Newth",
+      "url": "https://n3wth.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "n3wth",
+      "url": "https://n3wth.com"
+    }
+  }
+  </script>
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "@n3wth/ui",
+    "description": "Atomic design system for React applications. Flat, minimal, iOS-inspired components built on Tailwind CSS 4 and Astryx primitives.",
+    "url": "https://ui.n3wth.com",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Cross-platform",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Oliver Newth",
+      "url": "https://n3wth.com"
+    },
+    "license": "https://opensource.org/licenses/MIT",
+    "codeRepository": "https://github.com/n3wth/ui",
+    "programmingLanguage": ["TypeScript", "React", "CSS"]
+  }
+  </script>
+
+  <!-- Critical CSS -->
+  <style>
+    html, body { background: #08090b; color: #f2f3f5; margin: 0; }
+    noscript { display: block; padding: 2rem; max-width: 72ch; margin: 0 auto; line-height: 1.6; }
+    noscript h1 { font-size: 2rem; margin-bottom: 1rem; }
+    noscript p { margin-bottom: 1rem; color: #86868b; }
+    noscript a { color: #fff; }
+  </style>
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4QRMSG5HXK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4QRMSG5HXK');
+  </script>
+
+  <!-- PostHog Analytics -->
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture identify".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
+      api_host: 'https://us.i.posthog.com',
+      person_profiles: 'identified_only',
+    })
+  </script>
+</head>
+<body>
+  <div id="root">
+    <noscript>
+      <h1>@n3wth/ui</h1>
+      <p>Atomic design system for React applications. Flat, minimal, iOS-inspired components with no shadows or glows — just clean glass morphism. Built on Tailwind CSS 4.</p>
+      <p>This site requires JavaScript to run. Please enable JavaScript or visit the <a href="https://github.com/n3wth/ui">GitHub repository</a> for documentation.</p>
+    </noscript>
+  </div>
+  <script type="module" src="./main.tsx"></script>
+</body>
+</html>

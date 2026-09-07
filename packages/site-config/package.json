@@ -1,0 +1,13 @@
+{
+  "name": "@n3wth/site-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "check": "node --check index.js" },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  }
+}

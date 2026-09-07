@@ -1,0 +1,75 @@
+{
+  "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/blog",
+      "destination": "/thinking",
+      "permanent": true
+    },
+    {
+      "source": "/blog/",
+      "destination": "/thinking",
+      "permanent": true
+    },
+    {
+      "source": "/news",
+      "destination": "/thinking",
+      "permanent": true
+    },
+    {
+      "source": "/news/",
+      "destination": "/thinking",
+      "permanent": true
+    },
+    {
+      "source": "/press",
+      "destination": "/thinking",
+      "permanent": true
+    },
+    {
+      "source": "/press/",
+      "destination": "/thinking",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/consent",
+      "destination": "/consent.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "trailingSlash": false
+}

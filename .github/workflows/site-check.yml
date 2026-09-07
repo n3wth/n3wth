@@ -15,6 +15,68 @@ concurrency:
 
 jobs:
   check:
-    uses: n3wth/ui/.github/workflows/site-check.yml@62839d33ae0a439901b9515339e6259ce6dcf274
-    with:
-      check-command: npm run check
+    name: check / check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      affected: ${{ steps.affected.outputs.workspaces }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.19.1
+      - run: npm ci
+      - name: Verify affected workspace selection
+        run: node --test scripts/affected.test.mjs
+      - name: Select affected workspaces
+        id: affected
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: echo "workspaces=$(node scripts/affected.mjs --base "$BASE_SHA" --list)" >> "$GITHUB_OUTPUT"
+      - name: Check affected workspaces
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: node scripts/affected.mjs --base "$BASE_SHA"
+      - name: Save built browser targets
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs')
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-targets
+          path: |
+            apps/portfolio/dist
+            apps/ui-docs/dist
+          if-no-files-found: error
+
+  browser:
+    needs: check
+    if: contains(needs.check.outputs.affected, '@n3wth/portfolio') || contains(needs.check.outputs.affected, '@n3wth/ui-docs')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.19.1
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: browser-targets
+          path: apps
+      - run: npx playwright install --with-deps chromium
+      - run: npm run check:browser
+        env:
+          AFFECTED_WORKSPACES: ${{ needs.check.outputs.affected }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          retention-days: 7
+          path: |
+            playwright-report
+            test-results

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ui.n3wth.com/sitemap.xml
+
+# LLM context
+LLMs.txt: https://ui.n3wth.com/llms.txt
