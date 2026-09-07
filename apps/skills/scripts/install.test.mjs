@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 
 const installer = fileURLToPath(new URL('../public/install.sh', import.meta.url))
-for (const platform of ['claude', 'gemini', 'cursor', 'windsurf', 'cody', 'copilot']) {
+for (const platform of ['gemini']) {
   test(`installer resolves monorepo skills for ${platform}`, () => {
     const temporary = mkdtempSync(join(tmpdir(), 'skills-installer-'))
     try {
@@ -65,15 +65,15 @@ printf 'unselected' > "$5/apps/skills/skills/other.md"
   }
 }
 
-test('bundle selection installs only requested flat and directory skills for all assistants', () => {
+test('bundle selection installs only requested flat and directory skills for Gemini CLI', () => {
   withSelectionFixture(({ home, run }) => {
-    mkdirSync(join(home, '.claude/skills'), { recursive: true })
-    writeFileSync(join(home, '.claude/skills/flat.md'), 'user content')
+    mkdirSync(join(home, '.gemini/skills'), { recursive: true })
+    writeFileSync(join(home, '.gemini/skills/flat.md'), 'user content')
     const result = run(['all', 'flat', 'folder'])
     assert.equal(result.status, 0, result.stdout + result.stderr)
-    for (const assistant of ['gemini', 'claude', 'cursor', 'windsurf', 'cody', 'copilot']) {
+    for (const assistant of ['gemini']) {
       const dir = join(home, `.${assistant}/skills`)
-      assert.equal(readFileSync(join(dir, 'flat.md'), 'utf8'), assistant === 'claude' ? 'user content' : 'flat content')
+      assert.equal(readFileSync(join(dir, 'flat.md'), 'utf8'), assistant === 'gemini' ? 'user content' : 'flat content')
       assert.equal(readFileSync(join(dir, 'folder/SKILL.md'), 'utf8'), 'folder content')
       assert.equal(readFileSync(join(dir, 'folder/references/example.md'), 'utf8'), 'reference')
       assert.equal(existsSync(join(dir, 'other.md')), false)
@@ -84,19 +84,27 @@ test('bundle selection installs only requested flat and directory skills for all
 test('invalid or missing selections fail before writing any skills', () => {
   for (const invalid of ['missing', '../folder']) {
     withSelectionFixture(({ home, run }) => {
-      const result = run(['claude', 'flat', invalid])
+      const result = run(['gemini', 'flat', invalid])
       assert.notEqual(result.status, 0)
-      assert.equal(existsSync(join(home, '.claude')), false)
+      assert.equal(existsSync(join(home, '.gemini')), false)
     })
   }
 })
 
-test('unfiltered all-assistant install preserves directory skills when linking', () => {
+test('unfiltered Gemini install preserves directory skills', () => {
   withSelectionFixture(({ home, run }) => {
     const result = run(['all'])
     assert.equal(result.status, 0, result.stdout + result.stderr)
-    for (const assistant of ['gemini', 'claude', 'cursor', 'windsurf', 'cody', 'copilot']) {
+    for (const assistant of ['gemini']) {
       assert.equal(readFileSync(join(home, `.${assistant}/skills/folder/SKILL.md`), 'utf8'), 'folder content')
     }
+  })
+})
+
+test('unsupported assistant targets fail without modifying the destination', () => {
+  withSelectionFixture(({ home, run }) => {
+    const result = run(['unsupported', 'flat'])
+    assert.notEqual(result.status, 0)
+    assert.equal(existsSync(join(home, '.gemini')), false)
   })
 })

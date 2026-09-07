@@ -123,7 +123,7 @@ export function SkillDetailClient({ skillId }: Props) {
             </span>
             {skill.compatibility && skill.compatibility.length > 0 && (
               <div className="flex items-center gap-2 sm:ml-auto flex-wrap">
-                {skill.compatibility.filter(id => id !== 'claude').map(assistantId => (
+                {skill.compatibility.map(assistantId => (
                   <AssistantBadge key={assistantId} assistantId={assistantId} size="md" />
                 ))}
               </div>
@@ -386,7 +386,7 @@ export function SkillDetailClient({ skillId }: Props) {
                 : 'A downloadable file is not available for this skill yet.'}
             </p>
             <div className="space-y-3">
-              {skill.skillFile && (skill.compatibility || ['gemini'] as AssistantId[]).filter(id => id !== 'claude').map((assistantId, index) => {
+              {skill.skillFile && (skill.compatibility || ['gemini'] as AssistantId[]).map((assistantId, index) => {
                 const assistant = assistants[assistantId]
                 const command = getSkillInstallCommand(assistantId, skill.id, skill.skillFile)
                 return (

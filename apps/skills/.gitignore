@@ -43,8 +43,6 @@ coverage/
 .env.production
 !.env.example
 
-# Claude-generated docs
-claudedocs/
 .automation/
 IMPLEMENTATION_SUMMARY.md
 TESTING.md

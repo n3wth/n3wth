@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Drift — flow field study</title>
 <style>
 @font-face {
@@ -608,24 +609,20 @@ button.act:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
     else { ctx.fillStyle = bgColor; ctx.fillRect(0, 0, canvas.width, canvas.height); }
   });
 
-  // ---- export (artifact `downloads` capability) -----------------------
+  // ---- PNG export ----------------------------------------------------
   const exportBtn = $('exportBtn');
-  if (window.claude && window.claude.downloads) {
-    exportBtn.hidden = false;
-    exportBtn.addEventListener('click', () => {
-      canvas.toBlob(blob => {
-        if (!blob) return;
-        window.claude.downloads
-          .save({ filename: 'drift-' + seed.toString(16).padStart(8, '0') + '.png', data: blob })
-          .then(() => { exportBtn.textContent = 'Saved'; })
-          .catch(err => {
-            if (err && (err.code === 'declined' || err.code === 'rate_limited')) return;
-            exportBtn.hidden = true; // unusable in this view
-          })
-          .finally(() => setTimeout(() => { exportBtn.textContent = 'PNG'; }, 1500));
-      }, 'image/png');
-    });
-  }
+  exportBtn.hidden = false;
+  exportBtn.addEventListener('click', () => {
+    canvas.toBlob(blob => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'drift-' + seed.toString(16).padStart(8, '0') + '.png';
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }, 'image/png');
+  });
 
   // ---- pointer --------------------------------------------------------
   canvas.addEventListener('pointerdown', e => {

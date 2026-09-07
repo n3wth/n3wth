@@ -7,7 +7,7 @@ import { Footer } from '@/src/components/Footer'
 import { CategoryShape } from '@/src/components/CategoryShape'
 
 // Types
-type Compatibility = 'gemini' | 'claude'
+type Compatibility = 'gemini'
 type Category = 'development' | 'documents' | 'creative' | 'business'
 
 interface SkillDraft {
@@ -54,7 +54,7 @@ const INITIAL_DRAFT: SkillDraft = {
   color: '#30d158',
   features: '',
   useCases: '',
-  compatibility: ['claude'],
+  compatibility: ['gemini'],
   skillContent: ''
 }
 
@@ -509,7 +509,7 @@ function BasicsStep({ draft, updateDraft }: BasicsStepProps) {
           <div>
             <label className="block text-sm font-medium text-white mb-2">Compatibility</label>
             <div className="flex gap-2">
-              {(['claude', 'gemini'] as Compatibility[]).map(platform => (
+              {(['gemini'] as Compatibility[]).map(platform => (
                 <button
                   key={platform}
                   type="button"
@@ -526,25 +526,19 @@ function BasicsStep({ draft, updateDraft }: BasicsStepProps) {
                   }`}
                   style={{
                     backgroundColor: draft.compatibility.includes(platform)
-                      ? platform === 'claude'
-                        ? 'rgba(255, 214, 10, 0.15)'
-                        : 'rgba(100, 210, 255, 0.15)'
+                      ? 'rgba(100, 210, 255, 0.15)'
                       : 'var(--glass-bg)',
                     border: `1px solid ${
                       draft.compatibility.includes(platform)
-                        ? platform === 'claude'
-                          ? 'rgba(255, 214, 10, 0.3)'
-                          : 'rgba(100, 210, 255, 0.3)'
+                        ? 'rgba(100, 210, 255, 0.3)'
                         : 'var(--glass-border)'
                     }`,
                     color: draft.compatibility.includes(platform)
-                      ? platform === 'claude'
-                        ? '#ffd60a'
-                        : '#64d2ff'
+                      ? '#64d2ff'
                       : 'var(--color-grey-300)'
                   }}
                 >
-                  {platform === 'claude' ? 'Claude Code' : 'Gemini CLI'}
+                  {'Gemini CLI'}
                 </button>
               ))}
             </div>
@@ -692,18 +686,7 @@ function SkillPreview({ draft }: SkillPreviewProps) {
               Gemini
             </span>
           )}
-          {draft.compatibility.includes('claude') && (
-            <span
-              className="text-[9px] px-2 py-0.5 rounded-full"
-              style={{
-                backgroundColor: 'rgba(255, 214, 10, 0.15)',
-                color: '#ffd60a',
-                border: '1px solid rgba(255, 214, 10, 0.3)'
-              }}
-            >
-              Claude
-            </span>
-          )}
+
         </div>
       </div>
     </div>
@@ -716,7 +699,7 @@ interface ExportSectionProps {
 }
 
 function ExportSection({ draft }: ExportSectionProps) {
-  const [copied, setCopied] = useState<'gemini' | 'claude' | 'json' | null>(null)
+  const [copied, setCopied] = useState<'gemini' | 'json' | null>(null)
 
   const skillId = generateSkillId(draft.name)
   const tags = draft.tags.split(',').map(t => t.trim()).filter(Boolean)
@@ -728,13 +711,6 @@ function ExportSection({ draft }: ExportSectionProps) {
     .replace(/\{\{description\}\}/g, draft.description)
 
   const geminiFormat = `# ${draft.name}
-
-${draft.description}
-
-${processedContent}
-`
-
-  const claudeFormat = `# ${draft.name}
 
 ${draft.description}
 
@@ -757,7 +733,7 @@ ${processedContent}
     lastUpdated: new Date().toISOString().split('T')[0]
   }, null, 2)
 
-  const handleCopy = async (content: string, type: 'gemini' | 'claude' | 'json') => {
+  const handleCopy = async (content: string, type: 'gemini' | 'json') => {
     try {
       await navigator.clipboard.writeText(content)
       setCopied(type)
@@ -813,42 +789,7 @@ ${processedContent}
         </div>
       )}
 
-      {draft.compatibility.includes('claude') && (
-        <div className="glass-card p-4">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <span
-                className="text-xs px-2 py-1 rounded-full"
-                style={{
-                  backgroundColor: 'rgba(255, 214, 10, 0.15)',
-                  color: '#ffd60a',
-                  border: '1px solid rgba(255, 214, 10, 0.3)'
-                }}
-              >
-                Claude Code
-              </span>
-              <span className="text-xs" style={{ color: 'var(--color-grey-400)' }}>
-                {skillId}.md
-              </span>
-            </div>
-            <button
-              onClick={() => handleCopy(claudeFormat, 'claude')}
-              className={`copy-btn px-3 py-1.5 rounded-lg text-xs ${copied === 'claude' ? 'copied' : ''}`}
-            >
-              {copied === 'claude' ? 'Copied!' : 'Copy'}
-            </button>
-          </div>
-          <pre
-            className="text-xs overflow-x-auto p-3 rounded-lg max-h-48"
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
-              color: 'var(--color-grey-200)'
-            }}
-          >
-            {claudeFormat.slice(0, 500)}{claudeFormat.length > 500 ? '...' : ''}
-          </pre>
-        </div>
-      )}
+
 
       <div className="glass-card p-4">
         <div className="flex items-center justify-between mb-3">

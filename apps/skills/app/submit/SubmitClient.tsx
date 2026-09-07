@@ -38,7 +38,7 @@ export function SubmitClient() {
     tags: '',
     features: '',
     useCases: '',
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     contributorName: '',
     contributorGithub: '',
   })
@@ -111,7 +111,7 @@ export function SubmitClient() {
         tags: '',
         features: '',
         useCases: '',
-        compatibility: ['gemini', 'claude'],
+        compatibility: ['gemini'],
         contributorName: '',
         contributorGithub: '',
       })
@@ -474,15 +474,7 @@ export function SubmitClient() {
                   />
                   <span style={{ color: 'var(--color-grey-200)' }}>Gemini CLI</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.compatibility.includes('claude')}
-                    onChange={() => handleCompatibilityChange('claude')}
-                    className="w-4 h-4 rounded"
-                  />
-                  <span style={{ color: 'var(--color-grey-200)' }}>Claude Code</span>
-                </label>
+
               </div>
             </div>
 

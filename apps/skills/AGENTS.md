@@ -9,11 +9,11 @@
 ```
 skills/                          # Skill markdown files (YAML frontmatter + content)
   ├── gsap-animations/SKILL.md   # Skill in folder format
-  └── mcp-builder.md             # Skill as single file
+  └── pdf.md             # Skill as single file
 
 src/data/skills.ts               # Catalog array — add new entries here
 src/config/categories.ts         # Category IDs: development | documents | creative | productivity | business
-src/config/assistants.ts         # Assistant IDs: gemini | claude | cursor | windsurf | copilot
+src/config/assistants.ts         # Assistant IDs: gemini
 ```
 
 ---
@@ -35,7 +35,7 @@ interface Skill {
   color: string                   // oklch(0.70 0.15 200)
   features?: string[]             // Bullet points
   useCases?: string[]             // Example applications
-  compatibility?: ('gemini' | 'claude' | 'cursor' | 'windsurf' | 'copilot')[]
+  compatibility?: ('gemini')[]
   version: string                 // semver
   lastUpdated: string             // YYYY-MM-DD
   contributor?: { name: string; github?: string; url?: string }
@@ -69,7 +69,7 @@ Insert into the `skills` array:
       'Use case one',
       'Use case two',
     ],
-    compatibility: ['claude', 'cursor'],
+    compatibility: ['gemini'],
     version: '1.0.0',
     lastUpdated: '2026-09-01',
   },

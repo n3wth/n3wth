@@ -9,6 +9,12 @@ import { assistants } from '../config/assistants'
 const rawBase = 'https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills/'
 
 describe('advertised skill downloads', () => {
+  it('only advertises Gemini CLI compatibility', () => {
+    expect(Object.keys(assistants)).toEqual(['gemini'])
+    for (const skill of [...skills, ...getAllSkills()]) {
+      expect(skill.compatibility, skill.id).toEqual(['gemini'])
+    }
+  })
   for (const [name, catalog] of [['web', skills], ['cli', getAllSkills()]] as const) {
     it(`${name} downloads resolve to committed skill files`, () => {
       const local = catalog.flatMap(skill => skill.skillFile?.startsWith(rawBase)
@@ -21,10 +27,6 @@ describe('advertised skill downloads', () => {
     })
   }
 
-  it('preserves the independently hosted Canvas download', () => {
-    expect(skills.find(skill => skill.id === 'canvas')?.skillFile)
-      .toBe('https://raw.githubusercontent.com/n3wth/canvas/main/skills/canvas/SKILL.md')
-  })
 
   it('creates missing assistant directories and never substitutes an all-skills install', () => {
     for (const assistant of Object.values(assistants)) {

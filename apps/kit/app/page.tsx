@@ -16,7 +16,7 @@ const webPageJsonLd = {
   '@id': 'https://kit.n3wth.com/#webpage',
   url: 'https://kit.n3wth.com',
   name: 'n3wth/kit — shadcn registry with AI context packs',
-  description: 'A shadcn component registry with AI context packs. Install components via npx shadcn add, then drop in .cursorrules or AGENTS.md so AI tools generate code that uses them correctly.',
+  description: 'A shadcn component registry with AI context packs. Install components via npx shadcn add, then drop in GEMINI.md so AI tools generate code that uses them correctly.',
   isPartOf: { '@id': 'https://kit.n3wth.com/#website' },
   primaryImageOfPage: {
     '@type': 'ImageObject',
@@ -45,9 +45,8 @@ export default function Home() {
             <p className="mt-5 text-base leading-relaxed text-ink-dim">
               Install components with{' '}
               <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-sm">npx shadcn add</code>.
-              Drop in the <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-sm">.cursorrules</code>{' '}
-              or <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-sm">AGENTS.md</code> context pack
-              so AI tools generate code that uses them correctly.
+              Drop in the <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-sm">GEMINI.md</code>{' '}
+              context pack to give Gemini CLI the component guidance.
             </p>
             <div className="mt-8">
               <InstallCommand command="npx shadcn add https://kit.n3wth.com/r/button.json" />
@@ -96,19 +95,16 @@ export default function Home() {
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-dim">
             A context pack is a file you drop into your project that tells AI coding tools
-            about your components. Cursor reads{' '}
-            <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-xs">.cursorrules</code>,
-            other AI tools read{' '}
-            <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-xs">AGENTS.md</code>.
-            With these files in place, generated code uses your Button instead of inline styles,
-            your Card instead of raw divs.
+            about your components. Gemini CLI reads{' '}
+            <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-xs">GEMINI.md</code>.
+            Merge the guidance with your existing instructions and review generated changes.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a
-              href="/ai/cursorrules"
+              href="/ai/GEMINI.md"
               className="inline-flex items-center gap-2 rounded-md border border-rail px-3 py-1.5 text-xs font-medium text-ink-dim transition-colors hover:border-rail-strong hover:text-ink"
             >
-              <span>.cursorrules</span>
+              <span>GEMINI.md</span>
             </a>
             <a
               href="/ai/AGENTS.md"
@@ -172,7 +168,7 @@ export default function Home() {
                 Download the file for your AI tool. It teaches the tool how to use the components.
               </p>
               <div className="mt-4">
-                <InstallCommand command="curl -o .cursorrules https://kit.n3wth.com/ai/cursorrules" />
+                <InstallCommand command="curl -o GEMINI.md https://kit.n3wth.com/ai/GEMINI.md" />
               </div>
             </div>
           </div>

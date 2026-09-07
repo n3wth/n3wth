@@ -11,7 +11,6 @@ const SKILL_CATALOG = [
   { id: 'pdf', name: 'PDF Toolkit', keywords: 'PDF extraction, forms, merge, split, text extraction' },
   { id: 'xlsx', name: 'Spreadsheets', keywords: 'Excel, spreadsheets, formulas, data analysis, CSV' },
   { id: 'pptx', name: 'Presentations', keywords: 'PowerPoint, slides, speaker notes, presentations' },
-  { id: 'mcp-builder', name: 'MCP Builder', keywords: 'MCP servers, API integration, tool development, AI tools' },
   { id: 'skill-creator', name: 'Skill Creator', keywords: 'create skills, skill development, AI coding skills' },
   { id: 'business-panel', name: 'Business Panel', keywords: 'business strategy, analysis, Porter, Christensen, consulting' },
   { id: 'algorithmic-art', name: 'Algorithmic Art', keywords: 'generative art, p5.js, creative coding, particles, flow fields' },
@@ -21,9 +20,6 @@ const SKILL_CATALOG = [
   { id: 'webapp-testing', name: 'Web App Testing', keywords: 'Playwright, E2E testing, browser testing, automation' },
   { id: 'internal-comms', name: 'Internal Comms', keywords: 'status reports, newsletters, FAQs, incident reports' },
   { id: 'typography-selector', name: 'Typography Selector', keywords: 'fonts, Google Fonts, typography, font pairing' },
-  { id: 'imessage', name: 'iMessage', keywords: 'iMessage, texts, contacts, messaging, Apple Messages' },
-  { id: 'things', name: 'Things 3', keywords: 'tasks, todos, GTD, task management, Things app' },
-  { id: 'home-assistant', name: 'Home Assistant', keywords: 'smart home, IoT, home automation, lights, energy' }
 ]
 
 const RecommendationSchema = z.object({

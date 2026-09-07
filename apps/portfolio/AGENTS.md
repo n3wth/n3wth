@@ -111,7 +111,7 @@ npm run build    # tsc + vite build (verify before committing)
 - Data files: camelCase (`content.ts`)
 - Section components live in `src/components/sections/`
 
-## Cursor Cloud specific instructions
+## Development environment
 
 This is a **React + TypeScript SPA** (personal portfolio site) built with Vite 7, Tailwind CSS 4, and GSAP for scroll-driven animations. No backend, no database.
 
@@ -140,4 +140,4 @@ This is a **React + TypeScript SPA** (personal portfolio site) built with Vite 7
 - No "The test:" callout lines, no big display numerals as an index device — both were tried on the /thinking index and explicitly rejected by the user ("i hate these bits", "i dislike the big numbers").
 - SVG `preserveAspectRatio="none"` on a multi-segment bezier curve stretched into an arbitrary tall box distorts it into a kinked, broken-looking line. Use a fixed-aspect motif (see `MarginNote.tsx`) or a plain CSS border instead.
 - For node/edge diagrams, use the shared organic bezier curve (`src/components/thinking/kit/edgePath.ts`, consumed by `FlowDiagram.tsx`) rather than straight `<line>` elements — straight grey lines read as a static wiring diagram, not something flowing.
-- Compliance, non-negotiable: never mention Claude, Anthropic, GPT, ChatGPT, OpenAI, or any other LLM brand anywhere on this site (or garden.n3wth.com, or hop) — the user works at Google and is not permitted to. Grep for `claude|anthropic|gpt|chatgpt|openai|sonnet|opus|grok|llama|copilot|qwen|mistral|deepmind` before committing any new copy.
+- Keep personal-site copy free of model and assistant brands.

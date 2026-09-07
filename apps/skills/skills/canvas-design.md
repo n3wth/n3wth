@@ -10,7 +10,6 @@ tags:
   - canvas
 compatibility:
   - gemini
-  - claude
 ---
 
 # Canvas Design

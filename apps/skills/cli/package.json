@@ -1,7 +1,7 @@
 {
   "name": "newth-skills",
   "version": "1.0.0",
-  "description": "CLI tool for managing AI coding skills for Gemini CLI and Claude Code",
+  "description": "CLI tool for managing AI coding skills for Gemini CLI",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -18,7 +18,6 @@
     "ai",
     "skills",
     "gemini",
-    "claude",
     "cli",
     "coding-assistant"
   ],

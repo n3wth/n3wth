@@ -9,7 +9,6 @@ tags:
   - office
 compatibility:
   - gemini
-  - claude
 ---
 
 # Word Documents

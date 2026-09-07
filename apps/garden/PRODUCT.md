@@ -40,7 +40,7 @@ The garden is the interface, not a metaphor bolted onto a blog. Every note has a
 - Prose styling is custom CSS in `src/app/globals.css`, not `@tailwindcss/typography`. Tailwind v4.
 - No test runner and no linter are configured. `npm run build` is the only gate.
 - Telemetry: Axiom (`next-axiom`) and PostHog web vitals, production only.
-- **Compliance, non-negotiable:** no mention anywhere in shipped output of Claude, Anthropic, GPT, ChatGPT, OpenAI, or any other LLM brand. The owner works at Google and is not permitted to.
+- Keep shipped site copy free of model and assistant brands.
 - The 3D world homepage is a fixed product decision: it stays as the front door.
 
 ## Brand Commitments

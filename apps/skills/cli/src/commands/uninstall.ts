@@ -10,7 +10,6 @@ import {
   removeInstalledSkill,
   isSkillInstalled,
   getGeminiSkillsDir,
-  getClaudeSkillsDir,
 } from '../utils/config.js'
 import { createSpinner } from '../utils/spinner.js'
 
@@ -37,7 +36,7 @@ export async function uninstallCommand(skillId: string): Promise<void> {
   console.log(divider())
   console.log()
 
-  const platforms: ('gemini' | 'claude')[] = ['gemini', 'claude']
+  const platforms: ('gemini')[] = ['gemini']
 
   for (const platform of platforms) {
     await uninstallFromPlatform(skillId, platform)
@@ -56,9 +55,9 @@ export async function uninstallCommand(skillId: string): Promise<void> {
   }
 }
 
-async function uninstallFromPlatform(skillId: string, platform: 'gemini' | 'claude'): Promise<void> {
-  const platformName = platform === 'gemini' ? 'Gemini CLI' : 'Claude Code'
-  const skillsDir = platform === 'gemini' ? getGeminiSkillsDir() : getClaudeSkillsDir()
+async function uninstallFromPlatform(skillId: string, platform: 'gemini'): Promise<void> {
+  const platformName = 'Gemini CLI'
+  const skillsDir = getGeminiSkillsDir()
   const skillPath = join(skillsDir, `${skillId}.md`)
 
   const spinner = createSpinner(`Removing from ${platformName}...`)

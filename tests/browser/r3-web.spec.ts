@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-for (const path of ['/', '/docs', '/docs/getting-started/installation']) {
+for (const path of ['/', '/docs', '/docs/getting-started/installation', '/docs/integrations']) {
   test(`${path} renders after direct navigation`, async ({ page }, testInfo) => {
     const errors: string[] = []
     page.on('pageerror', error => errors.push(error.message))
@@ -19,4 +19,11 @@ test('discovery endpoints and generated image remain available', async ({ reques
     expect(response.status(), path).toBe(200)
     expect((await response.body()).length).toBeGreaterThan(0)
   }
+})
+
+test('integration guide documents Gemini MCP configuration', async ({ page }) => {
+  await page.goto('/docs/integrations')
+  await expect(page.getByRole('heading', { name: 'Connect Gemini CLI', exact: true })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Gemini CLI MCP documentation', exact: true })).toHaveAttribute('href', 'https://geminicli.com/docs/tools/mcp-server/')
+  await expect(page.locator('main')).toContainText('mcpServers')
 })

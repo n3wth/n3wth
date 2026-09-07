@@ -9,7 +9,6 @@ tags:
   - design-system
 compatibility:
   - gemini
-  - claude
 ---
 
 # Theme Factory

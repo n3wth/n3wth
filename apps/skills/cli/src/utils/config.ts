@@ -6,7 +6,7 @@ export interface InstalledSkill {
   id: string
   version: string
   installedAt: string
-  platform: 'gemini' | 'claude' | 'both'
+  platform: 'gemini'
 }
 
 export interface Config {
@@ -90,12 +90,9 @@ export function getGeminiSkillsDir(): string {
   return join(homedir(), '.gemini', 'skills')
 }
 
-export function getClaudeSkillsDir(): string {
-  return join(homedir(), '.claude', 'skills')
-}
 
-export function ensureSkillsDir(platform: 'gemini' | 'claude'): string {
-  const dir = platform === 'gemini' ? getGeminiSkillsDir() : getClaudeSkillsDir()
+export function ensureSkillsDir(platform: 'gemini'): string {
+  const dir = getGeminiSkillsDir()
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true })
   }

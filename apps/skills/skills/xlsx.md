@@ -9,7 +9,6 @@ tags:
   - data
 compatibility:
   - gemini
-  - claude
 ---
 
 # Spreadsheets

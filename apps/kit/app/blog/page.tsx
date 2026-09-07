@@ -42,28 +42,10 @@ const posts = [
     excerpt: 'How the JSON schema, dependency resolution, and install flow work under the hood — and how to build your own custom component registry.',
   },
   {
-    slug: 'why-every-ai-tool-generates-same-ui',
-    title: 'Why Every AI Tool Generates the Same Looking UI',
-    date: 'April 6, 2026',
-    excerpt: 'AI coding tools default to shadcn\'s visual style because of training data bias. Design system packaging is the fix — not better prompting.',
-  },
-  {
-    slug: 'why-ai-tools-generate-ugly-code',
-    title: 'Why AI Tools Generate Ugly Code',
-    date: 'February 15, 2026',
-    excerpt: 'AI coding tools produce functional but generic code because they lack context about your design system. Here\'s how AI context packs fix that.',
-  },
-  {
     slug: 'shadcn-registry-protocol',
     title: 'The shadcn Registry Protocol',
     date: 'February 12, 2026',
     excerpt: 'How the shadcn registry protocol works.',
-  },
-  {
-    slug: 'ai-context-packs-explained',
-    title: 'AI Context Packs Explained',
-    date: 'February 10, 2026',
-    excerpt: 'What are AI context packs? How .cursorrules, AGENTS.md, and MCP configs teach AI coding tools to use your design system.',
   },
 ]
 

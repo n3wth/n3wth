@@ -545,7 +545,7 @@ registry/
       </p>
 
       <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`# Button component context (in .cursorrules / AGENTS.md)
+{`# Button component context (in GEMINI.md / AGENTS.md)
 
 ## Button
 Props: variant, size, isLoading, leftIcon, rightIcon, asChild, touchTarget

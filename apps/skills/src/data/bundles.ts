@@ -46,7 +46,6 @@ export const bundles: Bundle[] = [
     description: 'APIs, microservices, and server infrastructure. MCP servers, SQL, CI/CD.',
     longDescription: 'Backend systems: MCP servers, SQL optimization, API design, CI/CD pipelines, infrastructure. For full-stack and backend engineers.',
     skillIds: [
-      'mcp-builder',
       'sql-optimizer',
       'api-docs-generator',
       'ci-cd-builder',

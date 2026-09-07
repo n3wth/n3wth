@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: '%s | n3wth/skills',
   },
   description:
-    'Markdown skills for Gemini CLI, Cursor, Windsurf, and Copilot. 46 skills. One install, works offline.',
+    'Markdown skills for Gemini CLI. One install, works offline.',
   authors: [{ name: 'Oliver Newth', url: siteUrls.home }],
   creator: 'n3wth',
   publisher: 'n3wth',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: 'n3wth/skills',
     title: 'n3wth/skills',
     description:
-      'Markdown skills for Gemini CLI, Cursor, Windsurf, and Copilot. 46 skills. One install, works offline.',
+      'Markdown skills for Gemini CLI. One install, works offline.',
     images: [
       {
         url: '/opengraph-image',

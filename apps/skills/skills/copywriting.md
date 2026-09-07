@@ -9,7 +9,6 @@ tags:
   - conversion
 compatibility:
   - gemini
-  - claude
 ---
 
 # Copywriting

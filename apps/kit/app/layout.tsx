@@ -15,21 +15,18 @@ export const metadata: Metadata = {
     template: '%s — n3wth/kit',
   },
   description:
-    'A shadcn component registry with AI context packs. Install components via npx shadcn add, then drop in .cursorrules or AGENTS.md so AI tools generate code that uses them correctly.',
+    'A shadcn component registry with AI context packs. Install components via npx shadcn add, then drop in GEMINI.md so AI tools generate code that uses them correctly.',
   keywords: [
     'design system',
     'AI components',
     'shadcn',
     'React',
     'Tailwind CSS',
-    'v0',
-    'Cursor',
-    'Windsurf',
-    'Lovable',
+    'Gemini CLI',
     'component registry',
     'AI code generation',
     'context packs',
-    'cursorrules',
+    'GEMINI.md',
   ],
   authors: [{ name: 'Oliver Newth' }],
   alternates: {
@@ -37,7 +34,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'n3wth/kit — shadcn registry with AI context packs',
-    description: 'A shadcn component registry with AI context packs. Install via npx shadcn add, then drop in .cursorrules or AGENTS.md.',
+    description: 'A shadcn component registry with AI context packs. Install via npx shadcn add, then drop in GEMINI.md.',
     url: siteUrls.kit,
     siteName: 'n3wth/kit',
     type: 'website',
@@ -46,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'n3wth/kit — shadcn registry with AI context packs',
-    description: 'A shadcn component registry with AI context packs. Install via npx shadcn add, then drop in .cursorrules or AGENTS.md.',
+    description: 'A shadcn component registry with AI context packs. Install via npx shadcn add, then drop in GEMINI.md.',
   },
   robots: {
     index: true,
@@ -60,7 +57,7 @@ const websiteJsonLd = {
   '@id': `${siteUrls.kit}/#website`,
   name: 'n3wth/kit',
   url: siteUrls.kit,
-  description: 'A shadcn component registry with AI context packs for v0, Cursor, Windsurf, Lovable, and Cline.',
+  description: 'A shadcn component registry with AI context packs for Gemini CLI.',
   publisher: {
     '@type': 'Organization',
     name: 'n3wth',

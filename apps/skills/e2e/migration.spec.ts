@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-for (const route of ['/', '/skill/mcp-builder', '/about', '/bundles']) {
+for (const route of ['/', '/skill/pdf', '/about', '/bundles']) {
   test(`${route} renders from the production build`, async ({ page }, testInfo) => {
     const errors: string[] = []
     page.on('pageerror', error => errors.push(error.message))
@@ -29,7 +29,7 @@ test('public installer remains available', async ({ request }) => {
 test('curated bundle command selects only available downloads', async ({ page }) => {
   await page.goto('/curated-bundles/frontend-starter')
   const command = page.locator('code').filter({ hasText: 'install.sh' }).first()
-  await expect(command).toContainText('bash -s -- all ')
+  await expect(command).toContainText('bash -s -- gemini ')
   await expect(command).not.toContainText('code-reviewer')
   await expect(page.getByText(/do not yet have downloads/)).toBeVisible()
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)

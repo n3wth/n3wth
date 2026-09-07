@@ -10,7 +10,6 @@ tags:
   - automation
 compatibility:
   - gemini
-  - claude
 ---
 
 # Webapp Testing

@@ -17,7 +17,7 @@ interface CommandBoxProps {
 
 function getVerificationCommand(assistantId: AssistantId | 'all' | undefined): string {
   if (!assistantId || assistantId === 'all') {
-    return 'ls ~/.gemini/skills/ ~/.claude/skills/ 2>/dev/null && echo "Skills installed"'
+    return 'ls ~/.gemini/skills/ 2>/dev/null'
   }
   
   const skillsDir = assistants[assistantId]?.skillsDir || `~/.${assistantId}/skills`

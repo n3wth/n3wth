@@ -81,7 +81,7 @@ export default async function Image() {
               marginTop: '8px',
             }}
           >
-            Install components via npx shadcn add. Drop in .cursorrules or AGENTS.md so AI tools generate on-brand code.
+            Install components via npx shadcn add. Drop in GEMINI.md so AI tools generate on-brand code.
           </div>
           <div
             style={{
@@ -90,7 +90,7 @@ export default async function Image() {
               marginTop: '20px',
             }}
           >
-            {['v0', 'Cursor', 'Windsurf', 'Lovable', 'Cline'].map((tool) => (
+            {['Gemini CLI'].map((tool) => (
               <div
                 key={tool}
                 style={{

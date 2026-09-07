@@ -42,7 +42,6 @@
   "dependencies": {
     "@n3wth/site-config": "*",
     "@ai-sdk/google": "3.0.24",
-    "@ai-sdk/openai": "3.0.19",
     "@gsap/react": "2.1.2",
     "@n3wth/ui": "0.6.1",
     "@neondatabase/serverless": "1.0.2",

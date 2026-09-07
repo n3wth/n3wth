@@ -3,20 +3,20 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Documentation',
-  description: 'Documentation for n3wth/kit. Guides for getting started with Cursor, v0, Windsurf, Lovable, and Cline integration.',
+  description: 'Documentation for n3wth/kit. Guides for getting started with Gemini CLI integration.',
   alternates: {
     canonical: 'https://kit.n3wth.com/docs',
   },
   openGraph: {
     title: 'Documentation — n3wth/kit',
-    description: 'Guides for getting started with Cursor, v0, Windsurf, Lovable, and Cline integration.',
+    description: 'Guides for getting started with Gemini CLI integration.',
     url: 'https://kit.n3wth.com/docs',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Documentation — n3wth/kit',
-    description: 'Guides for getting started with Cursor, v0, Windsurf, Lovable, and Cline integration.',
+    description: 'Guides for getting started with Gemini CLI integration.',
   },
 }
 
@@ -26,7 +26,7 @@ const webPageJsonLd = {
   '@id': 'https://kit.n3wth.com/docs#webpage',
   url: 'https://kit.n3wth.com/docs',
   name: 'Documentation — n3wth/kit',
-  description: 'Guides for getting started with Cursor, v0, Windsurf, Lovable, and Cline integration.',
+  description: 'Guides for getting started with Gemini CLI integration.',
   isPartOf: { '@id': 'https://kit.n3wth.com/#website' },
   primaryImageOfPage: {
     '@type': 'ImageObject',
@@ -41,24 +41,9 @@ const guides = [
     description: 'Install components and set up AI context packs in your project.',
   },
   {
-    title: 'Cursor Integration',
-    href: '/docs/cursor',
-    description: 'Configure .cursorrules and MCP server for Cursor AI.',
-  },
-  {
     title: 'AI Context Pack',
     href: '/docs/agents',
     description: 'Set up AGENTS.md and MCP server for AI coding tools.',
-  },
-  {
-    title: 'v0 Integration',
-    href: '/docs/v0',
-    description: 'Use the registry URL with v0 to generate on-brand UIs.',
-  },
-  {
-    title: 'Lovable Integration',
-    href: '/docs/lovable',
-    description: 'Add n3wth components to Lovable projects.',
   },
 ]
 

@@ -9,7 +9,6 @@ tags:
   - extraction
 compatibility:
   - gemini
-  - claude
 ---
 
 # PDF Toolkit

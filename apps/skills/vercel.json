@@ -14,7 +14,7 @@
   ],
   "headers": [
     {
-      "source": "/skill/(algorithmic-art|canvas-design|copywriting|doc-coauthoring|docx|frontend-design|internal-comms|mcp-builder|pdf|pptx|skill-creator|slack-gif-creator|theme-factory|webapp-testing|xlsx)",
+      "source": "/skill/(algorithmic-art|canvas-design|copywriting|doc-coauthoring|docx|frontend-design|internal-comms|pdf|pptx|skill-creator|slack-gif-creator|theme-factory|webapp-testing|xlsx)",
       "headers": [
         {
           "key": "X-Robots-Tag",

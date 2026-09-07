@@ -9,7 +9,6 @@ tags:
   - presentations
 compatibility:
   - gemini
-  - claude
 ---
 
 # Presentations

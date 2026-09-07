@@ -68,10 +68,7 @@ export async function updateCommand(): Promise<void> {
     spinner.start()
 
     try {
-      const platforms: ('gemini' | 'claude')[] =
-        update.skill.platform === 'both'
-          ? ['gemini', 'claude']
-          : [update.skill.platform]
+      const platforms: ('gemini')[] = ['gemini']
 
       for (const platform of platforms) {
         if (!skill.compatibility || skill.compatibility.includes(platform)) {
@@ -103,7 +100,7 @@ export async function updateCommand(): Promise<void> {
 
 async function updateSkillForPlatform(
   skill: ReturnType<typeof getSkillById>,
-  platform: 'gemini' | 'claude'
+  platform: 'gemini'
 ): Promise<void> {
   if (!skill) return
 
