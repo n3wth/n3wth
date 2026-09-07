@@ -41,6 +41,13 @@ src/
 
 ## Quick Start
 
+Use Node 24 (`nvm use`) and `npm ci` for reproducible installs. Run `npm run check`
+before submitting changes; it runs lint, tests and the production build. Site CI
+uses the shared workflow in `n3wth/ui`, pinned to a reviewed commit. Dependabot
+opens weekly grouped dependency and workflow updates; merge only after checks pass.
+Canonical origins used by navigation and projects live in `src/data/sites.ts`.
+The ecosystem repository/domain map is maintained in `n3wth/ui/docs/ecosystem.json`.
+
 ```bash
 npm install
 npm run dev      # Vite dev server

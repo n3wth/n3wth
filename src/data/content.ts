@@ -1,3 +1,5 @@
+import { siteUrls } from './sites'
+
 export const siteConfig = {
   name: 'Oliver Newth',
   title: 'Oliver Newth — AI Product Lead at Google',
@@ -7,7 +9,7 @@ export const siteConfig = {
     github: 'https://github.com/n3wth',
     linkedin: 'https://linkedin.com/in/n3wth',
   },
-  gardenSite: 'https://garden.n3wth.com',
+  gardenSite: siteUrls.garden,
 }
 
 export interface NavItem {
@@ -25,12 +27,12 @@ export const navigation: NavItem[] = [
 
 /** Family sites for quiet access in the scene or keyboard nav */
 export const familySites = [
-  { name: 'hop.flights', href: 'https://hop.flights' },
-  { name: 'r3', href: 'https://r3.n3wth.com' },
-  { name: 'kit', href: 'https://kit.n3wth.com' },
-  { name: 'garden', href: 'https://garden.n3wth.com' },
-  { name: 'skills', href: 'https://skills.n3wth.com' },
-  { name: 'ui', href: 'https://ui.n3wth.com' },
+  { name: 'hop.flights', href: siteUrls.hop },
+  { name: 'r3', href: siteUrls.r3 },
+  { name: 'kit', href: siteUrls.kit },
+  { name: 'garden', href: siteUrls.garden },
+  { name: 'skills', href: siteUrls.skills },
+  { name: 'ui', href: siteUrls.ui },
 ]
 
 export interface Metric {
@@ -190,7 +192,7 @@ export const projects: Project[] = [
     question: 'Useful context beyond a single conversation',
     description: 'A memory service for AI apps with semantic search and a knowledge graph. An MCP interface makes that context available across tools.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
-    url: 'https://r3.n3wth.com',
+    url: siteUrls.r3,
     github: 'https://github.com/n3wth/r3',
   },
   {
@@ -200,7 +202,7 @@ export const projects: Project[] = [
     question: 'A design system that coding agents can use',
     description: 'A component registry that pairs reusable UI with context for coding agents. The design rules travel with the components.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
-    url: 'https://kit.n3wth.com',
+    url: siteUrls.kit,
     github: 'https://github.com/n3wth/kit',
   },
   {
@@ -208,7 +210,7 @@ export const projects: Project[] = [
     name: 'hop.flights',
     description: 'A flight comparison tool that weighs cash fares against points and taxes.',
     tech: ['Next.js', 'AI SDK', 'Duffel'],
-    url: 'https://hop.flights',
+    url: siteUrls.hop,
   },
   {
     id: 'skills',
@@ -217,7 +219,7 @@ export const projects: Project[] = [
     question: 'Turn a way of working into something others can use',
     description: 'A registry of installable markdown skills for coding agents. Each skill packages instructions for a specific task.',
     tech: ['Next.js', 'React', 'Supabase'],
-    url: 'https://skills.n3wth.com',
+    url: siteUrls.skills,
     github: 'https://github.com/n3wth/skills',
   },
   {
@@ -225,6 +227,6 @@ export const projects: Project[] = [
     name: 'garden',
     description: 'A digital garden: Obsidian-flavored markdown rendered as a wiki, every note linked.',
     tech: ['Next.js', 'Astryx', 'Wikilinks'],
-    url: 'https://garden.n3wth.com',
+    url: siteUrls.garden,
   },
 ]

@@ -1,14 +1,15 @@
 import { siteConfig } from '../data/content'
+import { siteUrls } from '../data/sites'
 
 /** A compact row of social and project links. */
 const links = [
   { label: 'GitHub', href: siteConfig.social.github, external: true },
   { label: 'LinkedIn', href: siteConfig.social.linkedin, external: true },
-  { label: 'hop', href: 'https://hop.flights', external: true },
-  { label: 'r3', href: 'https://r3.n3wth.com', external: true },
-  { label: 'kit', href: 'https://kit.n3wth.com', external: true },
-  { label: 'skills', href: 'https://skills.n3wth.com', external: true },
-  { label: 'garden', href: 'https://garden.n3wth.com', external: true },
+  { label: 'hop', href: siteUrls.hop, external: true },
+  { label: 'r3', href: siteUrls.r3, external: true },
+  { label: 'kit', href: siteUrls.kit, external: true },
+  { label: 'skills', href: siteUrls.skills, external: true },
+  { label: 'garden', href: siteUrls.garden, external: true },
 ]
 
 export function Footer() {
