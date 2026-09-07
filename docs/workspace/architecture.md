@@ -1,6 +1,6 @@
 # Personal sites workspace decision
 
-Status: pilot implementation decision. Production cutover follows separate validation.
+Status: workspace architecture. Per-site production evidence is recorded in the migration documents and Linear.
 
 ## Source and package manager
 
@@ -10,6 +10,10 @@ Use the existing n3wth/n3wth repository. Retain its history and import the UI li
 
 - apps/portfolio: existing portfolio application, API functions, public assets and app-specific configs. Name @n3wth/portfolio.
 - apps/ui-docs: UI documentation/demo and its assets and Vite config. Name @n3wth/ui-docs.
+- apps/garden: Garden homepage, notes, content history and search route.
+- apps/skills: Skills website, installer and preserved CLI/editor sources.
+- apps/kit: Kit website, registry and preserved CLI source.
+- apps/r3-web: r3 website and documentation. Core runtime remains separate.
 - packages/ui: existing public @n3wth/ui library, version 0.9.2. Preserve exports and public fonts. No visual redesign or component API upgrade.
 - packages/site-config: private @n3wth/site-config package containing canonical public origins only. No environment values, app behavior or framework dependency.
 - Root: lockfile, workspace commands, affected-app CI and maintenance documentation.
@@ -30,7 +34,7 @@ Inventory -> boundaries -> workspace pilot -> deployment previews and affected c
 
 Run existing app/library checks with clean npm ci. Verify package exports using npm pack --dry-run and the docs build as a consumer. Add dependency-selection tests and browser checks for routes, overflow and representative responsive pages. Avoid animation pixel equality. Preserve current framework versions by seeding the workspace lock with current locks and review resolved-version drift before accepting it.
 
-Garden, Skills, Kit and r3 website remain independent until the pilot is accepted. The r3 core runtime and failing memory tests remain separate. No domain consolidation or framework rewrite is needed to prove the workspace.
+Garden, Skills, Kit and the r3 website follow the validated pilot into separate application workspaces. The r3 core runtime and failing memory tests remain separate. Domains and frameworks remain unchanged. See maintenance.md for source and release ownership after migration.
 
 ## Validated dependency adjustment
 

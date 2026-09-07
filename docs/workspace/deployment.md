@@ -1,13 +1,17 @@
-# Pilot deployment checklist
+# Workspace deployment
 
 The pilot shipped in PR #149 at 98e871cc6b20e78b772eed32d39ded5357f33772 on September 6 2026. Both projects retain their domains and now build from n3wth/n3wth.
 
-| Project | Existing root | Pilot root | Build |
+| Project | Previous source root | Workspace root | Build |
 | --- | --- | --- | --- |
 | n3wth | . | apps/portfolio | npm run build from app |
 | ui | . in n3wth/ui | apps/ui-docs in n3wth/n3wth | cd ../.. && npm run build:ui |
+| garden | . in n3wth/newth-garden | apps/garden | npm run build |
+| skills | . in n3wth/skills | apps/skills | npm run build |
+| kit | . in n3wth/kit | apps/kit | npm run build |
+| r3 | website in n3wth/r3 | apps/r3-web | npm run build |
 
-Both installs run npm ci from the repository root. Enable access to files outside the app root for workspace packages. Preserve the project domains, environment scopes and portfolio API functions. UI must remain connected to its existing production source until the pilot preview has been verified; changing its Git source is an explicit cutover step.
+All installs use `cd ../.. && npx --yes npm@11.19.1 ci` from the app root with Node 24. Enable access to files outside the app root for workspace packages. Preserve the project identities, domains, environment scopes and API functions. Each source switch follows a verified preview and combined workspace checks.
 
 Before changing settings, export a configuration snapshot containing project IDs, Git source, root, framework, install/build/output settings and deployment IDs. Include environment names/scopes only. Verify the old production deployment remains available.
 
