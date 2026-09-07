@@ -3,21 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navigation = [{ name: "Docs", href: "/docs/introduction" }];
-
-function DartMark({ size = 18 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 32 32"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M9.4 6.6 25.2 14a1.5 1.5 0 0 1-.15 2.78l-6.1 1.78a2 2 0 0 0-1.32 1.24l-2.2 6.1c-.5 1.36-2.42 1.27-2.78-.15L8.0 8.2A1.6 1.6 0 0 1 9.4 6.6Z" />
-    </svg>
-  );
-}
+const navigation = [{ name: "Docs", href: "/docs" }];
 
 function GitHubIcon({ size = 18 }: { size?: number }) {
   return (
@@ -46,11 +32,8 @@ export function Navigation() {
       className="site-nav fixed inset-x-3 md:inset-x-4 z-50 flex md:justify-center pointer-events-none"
       style={{ top: "calc(0.75rem + env(safe-area-inset-top))" }}
     >
-      <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-1 pl-4 pr-2 md:w-auto md:pl-5 md:pr-3">
+      <div className="nav-island pointer-events-auto flex h-12 w-full items-center gap-2 pl-5 pr-2 md:w-auto md:pr-3">
         <Link href="/" className="brand shrink-0" aria-label="n3wth/r3 - home">
-          <span className="brand-mark shrink-0" aria-hidden="true">
-            <DartMark size={18} />
-          </span>
           <span>n3wth/r3</span>
         </Link>
 
@@ -60,6 +43,7 @@ export function Navigation() {
               key={item.href}
               href={item.href}
               className={`nav-link ${isActive(item.href) ? "nav-link-active" : ""}`}
+              aria-current={isActive(item.href) ? "page" : undefined}
             >
               {item.name}
             </Link>
