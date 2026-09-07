@@ -11,6 +11,7 @@ export default defineConfig({
   use: {
     baseURL: previewUrl || 'http://127.0.0.1:4391',
     storageState: process.env.SKILLS_BROWSER_STORAGE_STATE,
+    timezoneId: 'America/Los_Angeles',
     contextOptions: { reducedMotion: 'reduce' },
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
