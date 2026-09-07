@@ -25,3 +25,20 @@ test('public installer remains available', async ({ request }) => {
   expect(response.ok()).toBe(true)
   expect(await response.text()).toContain('#!/bin/bash')
 })
+
+test('fonts referenced by the shared UI stylesheet are available', async ({ request }) => {
+  for (const file of ['MonaSans-Variable.woff2', 'MonaSans-Variable-Italic.woff2']) {
+    const response = await request.get(`/fonts/${file}`)
+    expect(response.ok()).toBe(true)
+    expect((await response.body()).length).toBeGreaterThan(10_000)
+  }
+})
+
+test('health route dispatches to its own handler', async ({ request }) => {
+  const response = await request.get('/api/health/supabase')
+  expect([200, 503]).toContain(response.status())
+  const body = await response.json()
+  expect(body).toHaveProperty('ok')
+  expect(body).toHaveProperty('tables')
+  expect(body.error).not.toBe('skillId required')
+})

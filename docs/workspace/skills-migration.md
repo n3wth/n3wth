@@ -7,7 +7,7 @@ This branch prepares source only. The existing Skills Vercel project and product
 
 ## Preserved boundaries
 
-Application routes, API handlers, proxy/auth behavior, Supabase migrations, public assets, skill content, and the legacy Vite surface are copied without application changes. CLI and editor extension remain in the original Skills repository, including their release and install-script workflows. Public repository/raw-content links retain their original destinations.
+Application routes, API handlers, proxy/auth behavior, Supabase migrations, skill content, and the legacy Vite surface are preserved. CLI and editor extension remain in the original Skills repository, including their release and install-script workflows. Public repository/raw-content links retain their original destinations.
 
 Direct dependency versions are pinned to the source lockfile versions except Vite, aligned from 7.3.1 to the workspace's 7.3.5 to keep plugin types compatible after hoisting. Skills continues consuming published `@n3wth/ui@0.6.1`; the workspace UI library remains `0.9.2`. No UI version migration is included. The affected-workspace graph currently identifies dependencies by package name, so workspace UI edits conservatively also check Skills. That extra validation is safe but unnecessary until the resolver distinguishes registry dependencies from local packages.
 
@@ -38,4 +38,12 @@ React and React DOM are aligned from 19.2.4 to workspace 19.2.7 because hoisted 
 
 ## Local evidence
 
-Clean Node 24/npm 11.19.1 `npm ci` passes. Skills typecheck, lint, all 283 unit tests and production build pass. Production-server migration tests cover four routes, missing-code auth redirect and installer availability at 390, 852 and 1440 pixels. Existing portfolio/UI checks also pass against the expanded dependency installation. Application source, proxy, API handlers, public assets and Supabase files are byte-identical to the source commit.
+Clean Node 24/npm 11.19.1 `npm ci` passes. Skills typecheck, lint, unit tests and production build pass. Production-server migration tests cover four routes, missing-code auth redirect and installer availability at 390, 852 and 1440 pixels. Existing portfolio/UI checks also pass against the expanded dependency installation. API handlers, proxy and Supabase files remain byte-identical to the source commit.
+
+## Existing hosted defects addressed during preview validation
+
+The initial preview and original production both returned the vote handler's `skillId required` response for `/auth/callback` and `/api/health/supabase`. Vercel had assigned those handlers the same 113 KB bundle as `/api/vote`; the source contains both legacy and Next vote handlers. An identical-source preview with `NEXT_EXPERIMENTAL_FUNCTION_BUNDLING=1` routes auth and health through the full Next dispatcher, restoring callback 307 and health's explicit unconfigured 503. The flag is scoped to this app's build configuration. Preview Supabase variables are absent, so authenticated login remains unverified.
+
+The daily card now uses a stable initial state before computing the visitor's day after hydration. This fixes an existing hydration mismatch when the static build date/timezone differs from the visitor's. A server-render/hydration regression test covers different dates.
+
+UI 0.6.1 references Mona Sans fonts that were missing in Skills. Both variable font assets are copied unchanged from the existing UI docs workspace. Embedded font metadata identifies the Mona Sans Project Authors and SIL Open Font License 1.1; the upstream `github/mona-sans` OFL is included beside the fonts. No font styling or design tokens are changed.

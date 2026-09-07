@@ -13,13 +13,13 @@ function getDayOfYear(): number {
 }
 
 export function SkillOfTheDay() {
-  // Deterministic fallback
-  const fallbackSkill = skills[getDayOfYear() % skills.length]
-  const [skill, setSkill] = useState(fallbackSkill)
+  // Static HTML and the first client render must agree, even across dates/timezones.
+  const [skill, setSkill] = useState(skills[0])
   const [rationale, setRationale] = useState<string | null>(null)
   const [source, setSource] = useState<'loading' | 'ai' | 'fallback'>('loading')
 
   useEffect(() => {
+    setSkill(skills[getDayOfYear() % skills.length])
     let cancelled = false
     fetch('/api/skill-of-the-day')
       .then(res => res.json())
