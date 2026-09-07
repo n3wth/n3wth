@@ -35,7 +35,7 @@ export interface Skill {
   skillFile?: string
 }
 
-const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/n3wth/newth-skills/main/skills'
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills'
 const CANVAS_SKILL_BASE = 'https://raw.githubusercontent.com/n3wth/canvas/main/skills'
 
 export const skills: Skill[] = [
