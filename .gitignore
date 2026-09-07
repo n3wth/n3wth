@@ -40,3 +40,7 @@ claudedocs/
 
 playwright-report/
 test-results/
+
+# This is source code, not the macOS custom-folder Icon file.
+!/packages/ui/src/atoms/Icon/
+!/packages/ui/src/atoms/Icon/**
