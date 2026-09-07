@@ -10,6 +10,10 @@ import './globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrls.kit),
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+  },
   title: {
     default: 'n3wth/kit — shadcn registry with AI context packs',
     template: '%s — n3wth/kit',

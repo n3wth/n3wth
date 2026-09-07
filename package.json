@@ -6,6 +6,8 @@
   "packageManager": "npm@11.19.1",
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
+    "icons": "node scripts/site-icons.mjs",
+    "social": "node scripts/social-card.mjs",
     "dev": "npm run dev -w @n3wth/portfolio",
     "dev:portfolio": "npm run dev -w @n3wth/portfolio",
     "dev:ui": "node scripts/dev-ui.mjs",
@@ -20,5 +22,5 @@
     "check:browser": "playwright test",
     "preview": "npm run preview -w @n3wth/portfolio"
   },
-  "devDependencies": { "@playwright/test": "1.63.0", "@types/react": "19.2.9" }
+  "devDependencies": { "@playwright/test": "1.63.0", "@types/react": "19.2.9", "sharp": "0.35.4" }
 }

@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": { "check": "node --check index.js" },
   "exports": {
+    "./social": { "types": "./social.d.ts", "default": "./social.js" },
+    "./icons": { "types": "./icons.d.ts", "default": "./icons.js" },
     ".": {
       "types": "./index.d.ts",
       "default": "./index.js"
