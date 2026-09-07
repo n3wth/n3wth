@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "description": "Skeleton loading placeholder with text, circular, and rectangular variants.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/skeleton/skeleton.tsx",
+      "content": "import { type HTMLAttributes } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {\n  /** Skeleton variant */\n  variant?: 'text' | 'circular' | 'rectangular'\n  /** Width of the skeleton */\n  width?: string | number\n  /** Height of the skeleton */\n  height?: string | number\n  /** Enable shimmer animation */\n  animate?: boolean\n}\n\n/**\n * Skeleton loading placeholder\n * Uses CSS custom properties for consistent theming\n */\nexport function Skeleton({\n  variant = 'text',\n  width,\n  height,\n  animate = true,\n  className,\n  style,\n  ...props\n}: SkeletonProps) {\n  const baseStyles = [\n    'bg-[var(--glass-highlight)]',\n    animate && 'animate-pulse',\n  ]\n\n  const variants = {\n    text: 'rounded h-4',\n    circular: 'rounded-full',\n    rectangular: 'rounded-lg',\n  }\n\n  return (\n    <div\n      className={cn(baseStyles, variants[variant], className)}\n      style={{\n        width: typeof width === 'number' ? `${width}px` : width,\n        height: typeof height === 'number' ? `${height}px` : height,\n        ...style,\n      }}\n      {...props}\n    />\n  )\n}\n\nexport interface CardSkeletonProps extends HTMLAttributes<HTMLDivElement> {\n  /** Number of text lines to show */\n  lines?: number\n  /** Show header indicator */\n  showHeader?: boolean\n  /** Show tags row */\n  showTags?: boolean\n}\n\n/**\n * Pre-composed card skeleton for common use cases\n */\nexport function CardSkeleton({\n  lines = 2,\n  showHeader = true,\n  showTags = true,\n  className,\n  ...props\n}: CardSkeletonProps) {\n  return (\n    <div\n      className={cn(\n        'p-5 md:p-6 rounded-2xl border',\n        'bg-[var(--glass-bg)] border-[var(--glass-border)]',\n        className\n      )}\n      {...props}\n    >\n      {showHeader && (\n        <div className=\"mb-3 md:mb-4\">\n          <Skeleton variant=\"circular\" width={12} height={12} />\n        </div>\n      )}\n\n      <Skeleton width=\"70%\" height={20} className=\"mb-2\" />\n\n      <div className=\"space-y-2 mb-3 md:mb-4\">\n        {Array.from({ length: lines }).map((_, i) => (\n          <Skeleton\n            key={i}\n            width={i === lines - 1 ? '85%' : '100%'}\n            height={14}\n            className=\"bg-[var(--glass-bg)]\"\n          />\n        ))}\n      </div>\n\n      {showTags && (\n        <div className=\"flex flex-wrap gap-2\">\n          {[50, 60, 70].map((width, i) => (\n            <Skeleton\n              key={i}\n              width={width}\n              height={12}\n              className=\"bg-[var(--glass-bg)]\"\n            />\n          ))}\n        </div>\n      )}\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

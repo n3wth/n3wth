@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-text-reveal",
+  "description": "Character-by-character text reveal with scroll trigger.",
+  "dependencies": [
+    "gsap"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-text-reveal/use-text-reveal.ts",
+      "content": "import { useEffect, useRef } from 'react'\nimport gsap from 'gsap'\nimport { ScrollTrigger } from 'gsap/ScrollTrigger'\n\ngsap.registerPlugin(ScrollTrigger)\n\nexport interface UseTextRevealOptions {\n  /** Animation duration in seconds */\n  duration?: number\n  /** Delay before animation starts */\n  delay?: number\n  /** Stagger amount between characters */\n  staggerAmount?: number\n  /** Trigger animation on scroll into view */\n  onScroll?: boolean\n}\n\n/**\n * Hook for revealing text character by character\n * Creates staggered entrance animations for text content\n *\n * Note: This will replace the element's text content with spans\n */\nexport function useTextReveal(options: UseTextRevealOptions = {}) {\n  const {\n    duration = 0.6,\n    delay = 0,\n    staggerAmount = 0.03,\n    onScroll = true,\n  } = options\n\n  const ref = useRef<HTMLElement>(null)\n\n  useEffect(() => {\n    const element = ref.current\n    if (!element) return\n\n    const text = element.textContent || ''\n    const prefersReducedMotion = window.matchMedia(\n      '(prefers-reduced-motion: reduce)'\n    ).matches\n\n    if (prefersReducedMotion || !text) return\n\n    // Split text into characters\n    const characters = text.split('')\n    element.textContent = ''\n\n    // Create spans for each character\n    characters.forEach((char) => {\n      const span = document.createElement('span')\n      span.textContent = char === ' ' ? '\\u00A0' : char // Non-breaking space for spaces\n      span.style.display = 'inline-block'\n      span.style.opacity = '0'\n      element.appendChild(span)\n    })\n\n    const spans = Array.from(element.querySelectorAll('span'))\n\n    const ctx = gsap.context(() => {\n      if (onScroll) {\n        gsap.fromTo(\n          spans,\n          { opacity: 0, y: 12 },\n          {\n            opacity: 1,\n            y: 0,\n            duration: duration / 2,\n            stagger: staggerAmount,\n            ease: 'cubic.out',\n            scrollTrigger: {\n              trigger: element,\n              start: 'top 75%',\n              toggleActions: 'play none none none',\n            },\n          }\n        )\n      } else {\n        gsap.fromTo(\n          spans,\n          { opacity: 0, y: 12 },\n          {\n            opacity: 1,\n            y: 0,\n            duration: duration / 2,\n            stagger: staggerAmount,\n            delay,\n            ease: 'cubic.out',\n          }\n        )\n      }\n    }, element)\n\n    return () => ctx.revert()\n  }, [duration, delay, staggerAmount, onScroll])\n\n  return ref\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-theme",
+  "description": "Theme toggle with localStorage persistence and system preference detection.",
+  "files": [
+    {
+      "path": "registry/hooks/use-theme/use-theme.ts",
+      "content": "import { useState, useEffect, useCallback } from 'react'\n\nexport type Theme = 'dark' | 'light'\n\nexport interface UseThemeOptions {\n  defaultTheme?: Theme\n  storageKey?: string\n  attribute?: string\n}\n\nexport interface UseThemeReturn {\n  theme: Theme\n  setTheme: (theme: Theme) => void\n  toggleTheme: () => void\n  isDark: boolean\n  isLight: boolean\n}\n\nexport function useTheme(options: UseThemeOptions = {}): UseThemeReturn {\n  const {\n    defaultTheme = 'dark',\n    storageKey = 'n3wth-theme',\n    attribute = 'data-theme',\n  } = options\n\n  const [theme, setThemeState] = useState<Theme>(() => {\n    if (typeof window === 'undefined') return defaultTheme\n\n    const stored = localStorage.getItem(storageKey)\n    if (stored === 'dark' || stored === 'light') return stored\n\n    if (window.matchMedia('(prefers-color-scheme: light)').matches) {\n      return 'light'\n    }\n\n    return defaultTheme\n  })\n\n  const setTheme = useCallback(\n    (newTheme: Theme) => {\n      setThemeState(newTheme)\n\n      if (typeof window !== 'undefined') {\n        localStorage.setItem(storageKey, newTheme)\n        document.documentElement.setAttribute(attribute, newTheme)\n      }\n    },\n    [storageKey, attribute]\n  )\n\n  const toggleTheme = useCallback(() => {\n    setTheme(theme === 'dark' ? 'light' : 'dark')\n  }, [theme, setTheme])\n\n  // Initialize theme on mount\n  useEffect(() => {\n    document.documentElement.setAttribute(attribute, theme)\n  }, [attribute, theme])\n\n  // Listen for system theme changes\n  useEffect(() => {\n    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)')\n\n    const handleChange = (e: MediaQueryListEvent) => {\n      const stored = localStorage.getItem(storageKey)\n      if (!stored) {\n        setTheme(e.matches ? 'light' : 'dark')\n      }\n    }\n\n    mediaQuery.addEventListener('change', handleChange)\n    return () => mediaQuery.removeEventListener('change', handleChange)\n  }, [storageKey, setTheme])\n\n  return {\n    theme,\n    setTheme,\n    toggleTheme,\n    isDark: theme === 'dark',\n    isLight: theme === 'light',\n  }\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

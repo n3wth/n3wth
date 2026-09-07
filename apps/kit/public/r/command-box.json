@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "command-box",
+  "title": "Command Box",
+  "description": "Copyable command display box with clipboard support.",
+  "registryDependencies": [
+    "cn",
+    "icon"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/command-box/command-box.tsx",
+      "content": "import { useState, useCallback, type HTMLAttributes } from 'react'\nimport { cn } from '@/lib/utils'\nimport { Icon } from '@/components/ui/icon'\n\nexport interface CommandBoxProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {\n  command: string\n  variant?: 'default' | 'primary'\n  showCopyButton?: boolean\n  onCopy?: () => void\n}\n\nexport function CommandBox({\n  command,\n  variant = 'default',\n  showCopyButton = true,\n  onCopy,\n  className,\n  ...props\n}: CommandBoxProps) {\n  const [copied, setCopied] = useState(false)\n\n  const handleCopy = useCallback(async () => {\n    try {\n      await navigator.clipboard.writeText(command)\n      setCopied(true)\n      onCopy?.()\n      setTimeout(() => setCopied(false), 2000)\n    } catch (err) {\n      console.error('Failed to copy:', err)\n    }\n  }, [command, onCopy])\n\n  const baseStyles = [\n    'flex items-center justify-between gap-3',\n    'px-4 py-3',\n    'rounded-xl',\n    'border',\n    'backdrop-blur-lg',\n    'transition-[background-color,border-color] duration-200',\n  ]\n\n  const variants = {\n    default: [\n      'bg-[rgba(255,255,255,0.03)]',\n      'border-[var(--glass-border)]',\n      'hover:bg-[rgba(255,255,255,0.06)]',\n      'hover:border-[var(--glass-highlight)]',\n    ],\n    primary: [\n      'bg-[var(--glass-bg)]',\n      'border-[var(--glass-highlight)]',\n      'hover:bg-[rgba(255,255,255,0.12)]',\n    ],\n  }\n\n  return (\n    <div className={cn(baseStyles, variants[variant], className)} {...props}>\n      <code className=\"text-sm font-mono text-[var(--color-grey-300)] truncate\">{command}</code>\n      {showCopyButton && (\n        <>\n          <button\n            type=\"button\"\n            onClick={handleCopy}\n            className={cn(\n              'flex-shrink-0',\n              'p-2 rounded-lg',\n              'transition-[background-color,color,transform] duration-200',\n              'hover:scale-105 active:scale-92',\n              copied\n                ? 'bg-[var(--color-sage)] text-[var(--color-bg)]'\n                : 'bg-[rgba(255,255,255,0.1)] text-[var(--color-grey-400)] hover:bg-[rgba(255,255,255,0.15)] hover:text-[var(--color-white)]'\n            )}\n            aria-label={copied ? 'Copied!' : 'Copy to clipboard'}\n          >\n            <Icon name={copied ? 'check' : 'copy'} size=\"sm\" />\n          </button>\n          {/* Live region for screen reader announcement */}\n          <span className=\"sr-only\" role=\"status\" aria-live=\"polite\">\n            {copied ? 'Copied to clipboard' : ''}\n          </span>\n        </>\n      )}\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

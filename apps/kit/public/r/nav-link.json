@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "nav-link",
+  "title": "Nav Link",
+  "description": "Navigation link with default, underline, and pill variants.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/nav-link/nav-link.tsx",
+      "content": "import { type AnchorHTMLAttributes, type ReactNode, forwardRef } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {\n  variant?: 'default' | 'underline' | 'pill'\n  isActive?: boolean\n  children: ReactNode\n}\n\nexport const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(\n  ({ variant = 'default', isActive = false, children, className, style, ...props }, ref) => {\n    const baseStyles = [\n      'inline-flex items-center',\n      'text-sm font-normal',\n      'transition-[color,background-color,border-color,transform] duration-200 ease-out',\n      'focus-ring',\n      'hover:text-[--color-white]',\n    ]\n\n    const variants = {\n      default: [],\n      underline: ['relative', 'link-hover'],\n      pill: [\n        'px-3 py-1.5',\n        'rounded-full',\n        'border',\n        isActive\n          ? 'bg-[--color-white] border-[--color-white]'\n          : 'bg-transparent border-transparent hover:bg-[--glass-bg] hover:border-[--glass-border]',\n      ],\n    }\n\n    const getColor = () => {\n      if (variant === 'pill' && isActive) return 'var(--color-bg)'\n      return 'var(--color-white)'\n    }\n\n    return (\n      <a\n        ref={ref}\n        className={cn(baseStyles, variants[variant], className)}\n        style={{ color: getColor(), ...style }}\n        {...props}\n      >\n        {children}\n      </a>\n    )\n  }\n)\n\nNavLink.displayName = 'NavLink'\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

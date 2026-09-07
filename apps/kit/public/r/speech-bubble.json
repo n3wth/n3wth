@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "speech-bubble",
+  "title": "Speech Bubble",
+  "description": "Speech or thought bubble with directional tail.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/speech-bubble/speech-bubble.tsx",
+      "content": "import { cn } from '@/lib/utils'\n\nexport type BubbleDirection = 'left' | 'right' | 'top' | 'bottom'\nexport type BubbleVariant = 'speech' | 'thought'\nexport type BubbleSize = 'sm' | 'md' | 'lg'\n\nexport interface SpeechBubbleProps {\n  children: React.ReactNode\n  direction?: BubbleDirection\n  variant?: BubbleVariant\n  size?: BubbleSize\n  color?: string\n  borderColor?: string\n  className?: string\n  style?: React.CSSProperties\n}\n\nconst sizeClasses: Record<BubbleSize, string> = {\n  sm: 'px-2 py-1 text-xs',\n  md: 'px-3 py-2 text-sm',\n  lg: 'px-4 py-3 text-base',\n}\n\nexport function SpeechBubble({\n  children,\n  direction = 'bottom',\n  variant = 'speech',\n  size = 'md',\n  color = 'var(--glass-bg, rgba(255, 255, 255, 0.05))',\n  borderColor = 'var(--glass-border, rgba(255, 255, 255, 0.1))',\n  className,\n  style,\n}: SpeechBubbleProps) {\n  const isThought = variant === 'thought'\n\n  // Tail positioning\n  const tailPosition: Record<BubbleDirection, string> = {\n    bottom: 'bottom-0 left-1/2 -translate-x-1/2 translate-y-full',\n    top: 'top-0 left-1/2 -translate-x-1/2 -translate-y-full rotate-180',\n    left: 'left-0 top-1/2 -translate-x-full -translate-y-1/2 -rotate-90',\n    right: 'right-0 top-1/2 translate-x-full -translate-y-1/2 rotate-90',\n  }\n\n  // Thought bubble dots positioning\n  const dotsPosition: Record<BubbleDirection, string> = {\n    bottom: 'bottom-0 left-1/2 -translate-x-1/2 translate-y-[150%]',\n    top: 'top-0 left-1/2 -translate-x-1/2 -translate-y-[150%]',\n    left: 'left-0 top-1/2 -translate-x-[150%] -translate-y-1/2',\n    right: 'right-0 top-1/2 translate-x-[150%] -translate-y-1/2',\n  }\n\n  return (\n    <div\n      className={cn('relative inline-block', className)}\n      style={style}\n    >\n      <div\n        className={cn(\n          'relative rounded-xl',\n          sizeClasses[size]\n        )}\n        style={{\n          backgroundColor: color,\n          border: `1px solid ${borderColor}`,\n        }}\n      >\n        {children}\n\n        {/* Speech tail or thought dots */}\n        {isThought ? (\n          <div className={cn('absolute flex gap-1', dotsPosition[direction])}>\n            <div\n              className=\"w-2 h-2 rounded-full\"\n              style={{ backgroundColor: color, border: `1px solid ${borderColor}` }}\n            />\n            <div\n              className=\"w-1.5 h-1.5 rounded-full\"\n              style={{ backgroundColor: color, border: `1px solid ${borderColor}` }}\n            />\n          </div>\n        ) : (\n          <div className={cn('absolute', tailPosition[direction])}>\n            <svg\n              width=\"12\"\n              height=\"8\"\n              viewBox=\"0 0 12 8\"\n              fill=\"none\"\n            >\n              <path\n                d=\"M6 8L0 0H12L6 8Z\"\n                fill={color}\n              />\n              <path\n                d=\"M0.5 0L6 7L11.5 0\"\n                stroke={borderColor}\n                strokeWidth=\"1\"\n                fill=\"none\"\n              />\n            </svg>\n          </div>\n        )}\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-scroll-reveal",
+  "description": "Scroll-triggered entrance animations with directional options.",
+  "dependencies": [
+    "gsap"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-scroll-reveal/use-scroll-reveal.ts",
+      "content": "import { useEffect, useRef } from 'react'\nimport gsap from 'gsap'\nimport { ScrollTrigger } from 'gsap/ScrollTrigger'\n\ngsap.registerPlugin(ScrollTrigger)\n\nexport interface UseScrollRevealOptions {\n  /** Animation duration in seconds */\n  duration?: number\n  /** Delay before animation starts */\n  delay?: number\n  /** Stagger delay between children (false to disable, number for custom) */\n  stagger?: boolean | number\n  /** Direction elements animate from */\n  direction?: 'up' | 'down' | 'left' | 'right'\n  /** Distance in pixels to animate from */\n  distance?: number\n}\n\n/**\n * Hook that creates scroll-triggered entrance animations\n * Uses GSAP ScrollTrigger for performant viewport-based reveals\n */\nexport function useScrollReveal(options: UseScrollRevealOptions = {}) {\n  const {\n    duration = 0.8,\n    delay = 0,\n    stagger = 0.1,\n    direction = 'up',\n    distance = 40,\n  } = options\n\n  const ref = useRef<HTMLDivElement>(null)\n\n  useEffect(() => {\n    const element = ref.current\n    if (!element) return\n\n    const children = Array.from(element.children) as HTMLElement[]\n    if (children.length === 0) return\n\n    const directions = {\n      up: { y: distance, x: 0 },\n      down: { y: -distance, x: 0 },\n      left: { x: distance, y: 0 },\n      right: { x: -distance, y: 0 },\n    }\n\n    const movement = directions[direction]\n\n    // Check for reduced motion preference\n    const prefersReducedMotion = window.matchMedia(\n      '(prefers-reduced-motion: reduce)'\n    ).matches\n\n    if (prefersReducedMotion) {\n      children.forEach((child) => {\n        child.style.opacity = '1'\n      })\n      return\n    }\n\n    // Create timeline for staggered reveals\n    const ctx = gsap.context(() => {\n      gsap.fromTo(\n        children,\n        {\n          opacity: 0,\n          ...movement,\n        },\n        {\n          opacity: 1,\n          x: 0,\n          y: 0,\n          duration,\n          delay,\n          stagger: stagger ? (typeof stagger === 'number' ? stagger : 0.1) : 0,\n          ease: 'cubic.out',\n          scrollTrigger: {\n            trigger: element,\n            start: 'top 80%',\n            toggleActions: 'play none none none',\n          },\n        }\n      )\n    }, element)\n\n    return () => ctx.revert()\n  }, [duration, delay, stagger, direction, distance])\n\n  return ref\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

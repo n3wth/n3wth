@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "n3wth-kit": {
+      "command": "npx",
+      "args": ["-y", "shadcn@latest", "registry:mcp"],
+      "env": {
+        "REGISTRY_URL": "https://kit.n3wth.com/r/registry.json"
+      }
+    }
+  }
+}

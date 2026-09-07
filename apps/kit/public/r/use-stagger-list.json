@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-stagger-list",
+  "description": "Staggered list item cascade animations.",
+  "dependencies": [
+    "gsap"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-stagger-list/use-stagger-list.ts",
+      "content": "import { useEffect, useRef } from 'react'\nimport gsap from 'gsap'\n\nexport interface UseStaggerListOptions {\n  /** Animation duration in seconds */\n  duration?: number\n  /** Stagger delay between items */\n  stagger?: number\n  /** Delay before animation starts */\n  delay?: number\n  /** Direction items animate from */\n  direction?: 'up' | 'down' | 'left' | 'right' | 'scale'\n}\n\n/**\n * Hook for staggered list item animations\n * Creates cascade effects as items appear\n *\n * Items should have data-stagger-item attribute:\n * ```tsx\n * <ul ref={ref}>\n *   <li data-stagger-item>Item 1</li>\n *   <li data-stagger-item>Item 2</li>\n * </ul>\n * ```\n */\nexport function useStaggerList(options: UseStaggerListOptions = {}) {\n  const {\n    duration = 0.5,\n    stagger = 0.08,\n    delay = 0,\n    direction = 'up',\n  } = options\n\n  const ref = useRef<HTMLElement>(null)\n\n  useEffect(() => {\n    const container = ref.current\n    if (!container) return\n\n    const items = container.querySelectorAll('[data-stagger-item]')\n    if (items.length === 0) return\n\n    const prefersReducedMotion = window.matchMedia(\n      '(prefers-reduced-motion: reduce)'\n    ).matches\n\n    if (prefersReducedMotion) {\n      gsap.set(items, { opacity: 1 })\n      return\n    }\n\n    const fromVars: gsap.TweenVars = { opacity: 0 }\n    const toVars: gsap.TweenVars = {\n      opacity: 1,\n      duration,\n      stagger,\n      delay,\n      ease: 'cubic.out',\n    }\n\n    switch (direction) {\n      case 'up':\n        fromVars.y = 20\n        toVars.y = 0\n        break\n      case 'down':\n        fromVars.y = -20\n        toVars.y = 0\n        break\n      case 'left':\n        fromVars.x = 20\n        toVars.x = 0\n        break\n      case 'right':\n        fromVars.x = -20\n        toVars.x = 0\n        break\n      case 'scale':\n        fromVars.scale = 0.8\n        toVars.scale = 1\n        toVars.ease = 'back.out(1.7)'\n        break\n    }\n\n    const ctx = gsap.context(() => {\n      gsap.fromTo(items, fromVars, toVars)\n    }, container)\n\n    return () => ctx.revert()\n  }, [duration, stagger, delay, direction])\n\n  return ref\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

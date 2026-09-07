@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "theme-toggle",
+  "title": "Theme Toggle",
+  "description": "Dark/light theme toggle button with sun/moon icons.",
+  "registryDependencies": [
+    "cn",
+    "icon"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/theme-toggle/theme-toggle.tsx",
+      "content": "import { type ButtonHTMLAttributes } from 'react'\nimport { cn } from '@/lib/utils'\nimport { Icon } from '@/components/ui/icon'\n\nexport interface ThemeToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {\n  theme: 'dark' | 'light'\n  onToggle: () => void\n  size?: 'sm' | 'md'\n}\n\nexport function ThemeToggle({\n  theme,\n  onToggle,\n  size = 'md',\n  className,\n  ...props\n}: ThemeToggleProps) {\n  const sizes = {\n    sm: 'w-8 h-8',\n    md: 'w-10 h-10',\n  }\n\n  const iconSizes = {\n    sm: 'sm' as const,\n    md: 'md' as const,\n  }\n\n  return (\n    <button\n      type=\"button\"\n      onClick={onToggle}\n      className={cn(\n        'inline-flex items-center justify-center',\n        'rounded-full',\n        'border border-[var(--glass-border)]',\n        'bg-transparent',\n        'text-[var(--color-grey-400)]',\n        'transition-all duration-200 ease-out',\n        'hover:border-[var(--glass-highlight)]',\n        'hover:bg-[var(--glass-bg)]',\n        'hover:text-[var(--color-white)]',\n        'hover:scale-105',\n        'active:scale-95',\n        'focus-ring',\n        sizes[size],\n        className\n      )}\n      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}\n      {...props}\n    >\n      <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={iconSizes[size]} />\n    </button>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

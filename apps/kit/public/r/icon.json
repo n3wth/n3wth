@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "icon",
+  "title": "Icon",
+  "description": "Icon wrapper around iconoir-react with named icon map and size presets.",
+  "dependencies": [
+    "iconoir-react"
+  ],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/icon/icon.tsx",
+      "content": "import { type ComponentType, type SVGProps } from 'react'\nimport {\n  ArrowRight,\n  ArrowLeft,\n  ArrowUp,\n  ArrowDown,\n  NavArrowRight,\n  NavArrowLeft,\n  NavArrowDown,\n  NavArrowUp,\n  Check,\n  Xmark,\n  Copy,\n  Search,\n  Menu,\n  SunLight,\n  HalfMoon,\n  ArrowUpRight,\n  Github,\n  Terminal,\n  Code,\n  Sparks,\n  Plus,\n  Minus,\n  Settings,\n  User,\n  Heart,\n  Star,\n  Mail,\n  Calendar,\n  Clock,\n  Bell,\n  Home,\n  Folder,\n  Page,\n  Trash,\n  EditPencil,\n  Eye,\n  EyeClosed,\n  Lock,\n  LockSlash,\n  Link,\n  OpenInWindow,\n  Download,\n  Upload,\n  RefreshDouble,\n  Filter,\n  SortDown,\n  ViewGrid,\n  List,\n  MoreHoriz,\n  MoreVert,\n  InfoCircle,\n  WarningTriangle,\n  CheckCircle,\n  XmarkCircle,\n} from 'iconoir-react'\nimport { cn } from '@/lib/utils'\n\n// Map of icon names to Iconoir components\nconst iconComponents = {\n  'arrow-right': ArrowRight,\n  'arrow-left': ArrowLeft,\n  'arrow-up': ArrowUp,\n  'arrow-down': ArrowDown,\n  'chevron-right': NavArrowRight,\n  'chevron-left': NavArrowLeft,\n  'chevron-down': NavArrowDown,\n  'chevron-up': NavArrowUp,\n  check: Check,\n  x: Xmark,\n  copy: Copy,\n  search: Search,\n  menu: Menu,\n  sun: SunLight,\n  moon: HalfMoon,\n  external: ArrowUpRight,\n  github: Github,\n  terminal: Terminal,\n  code: Code,\n  sparkles: Sparks,\n  plus: Plus,\n  minus: Minus,\n  settings: Settings,\n  user: User,\n  heart: Heart,\n  star: Star,\n  mail: Mail,\n  calendar: Calendar,\n  clock: Clock,\n  bell: Bell,\n  home: Home,\n  folder: Folder,\n  file: Page,\n  trash: Trash,\n  edit: EditPencil,\n  eye: Eye,\n  'eye-off': EyeClosed,\n  lock: Lock,\n  unlock: LockSlash,\n  link: Link,\n  'external-link': OpenInWindow,\n  download: Download,\n  upload: Upload,\n  refresh: RefreshDouble,\n  filter: Filter,\n  sort: SortDown,\n  grid: ViewGrid,\n  list: List,\n  'more-horizontal': MoreHoriz,\n  'more-vertical': MoreVert,\n  info: InfoCircle,\n  warning: WarningTriangle,\n  success: CheckCircle,\n  error: XmarkCircle,\n} as const\n\nexport type IconName = keyof typeof iconComponents\n\nexport interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'ref'> {\n  name: IconName\n  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number\n}\n\nconst sizeClasses = {\n  xs: 'w-3 h-3',\n  sm: 'w-4 h-4',\n  md: 'w-5 h-5',\n  lg: 'w-6 h-6',\n  xl: 'w-8 h-8',\n}\n\nconst sizePixels = {\n  xs: 12,\n  sm: 16,\n  md: 20,\n  lg: 24,\n  xl: 32,\n}\n\nexport function Icon({ name, size = 'md', className, ...props }: IconProps) {\n  const IconComponent = iconComponents[name] as ComponentType<SVGProps<SVGSVGElement>>\n\n  if (!IconComponent) {\n    console.warn(`Icon \"${name}\" not found`)\n    return null\n  }\n\n  const isNumericSize = typeof size === 'number'\n  const pixelSize = isNumericSize ? size : sizePixels[size]\n\n  return (\n    <IconComponent\n      width={pixelSize}\n      height={pixelSize}\n      strokeWidth={1.5}\n      className={cn(!isNumericSize && sizeClasses[size], className)}\n      aria-hidden=\"true\"\n      {...props}\n    />\n  )\n}\n\n// Re-export all iconoir icons for direct use\nexport * from 'iconoir-react'\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

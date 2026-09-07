@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "animated-text",
+  "title": "Animated Text",
+  "description": "CSS-animated text with fade-up, fade-in, slide-up, and blur-in effects.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/animated-text/animated-text.tsx",
+      "content": "import { type HTMLAttributes, type ReactNode } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface AnimatedTextProps extends HTMLAttributes<HTMLElement> {\n  /** Text content or children */\n  children: ReactNode\n  /** Animation type */\n  animation?: 'fade-up' | 'fade-in' | 'slide-up' | 'blur-in'\n  /** Delay before animation starts (ms) */\n  delay?: number\n  /** Duration of animation (ms) */\n  duration?: number\n  /** HTML tag to render */\n  as?: 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div'\n  /** Whether to animate on scroll into view */\n  animateOnScroll?: boolean\n}\n\nconst animationStyles = {\n  'fade-up': {\n    initial: 'opacity-0 translate-y-8',\n    animate: 'opacity-100 translate-y-0',\n  },\n  'fade-in': {\n    initial: 'opacity-0',\n    animate: 'opacity-100',\n  },\n  'slide-up': {\n    initial: 'opacity-0 translate-y-full',\n    animate: 'opacity-100 translate-y-0',\n  },\n  'blur-in': {\n    initial: 'opacity-0 blur-sm',\n    animate: 'opacity-100 blur-0',\n  },\n}\n\nexport function AnimatedText({\n  children,\n  animation = 'fade-up',\n  delay = 0,\n  duration = 600,\n  as: Component = 'span',\n  animateOnScroll = true,\n  className,\n  style,\n  ...props\n}: AnimatedTextProps) {\n  const { initial } = animationStyles[animation]\n\n  // CSS-only animation using animation-timeline for scroll-based\n  // Falls back to immediate animation if not supported\n  const animationStyle = {\n    '--animation-delay': `${delay}ms`,\n    '--animation-duration': `${duration}ms`,\n    ...style,\n  } as React.CSSProperties\n\n  return (\n    <Component\n      className={cn(\n        'transition-all ease-out',\n        animateOnScroll ? 'motion-safe:animate-fade-up' : '',\n        // Fallback for reduced motion\n        'motion-reduce:opacity-100 motion-reduce:translate-y-0 motion-reduce:blur-0',\n        initial,\n        // Apply animate class after mount via CSS animation\n        '[animation-fill-mode:forwards]',\n        className\n      )}\n      style={{\n        transitionDuration: `${duration}ms`,\n        transitionDelay: `${delay}ms`,\n        animationDelay: `${delay}ms`,\n        animationDuration: `${duration}ms`,\n        ...animationStyle,\n      }}\n      {...props}\n    >\n      {children}\n    </Component>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

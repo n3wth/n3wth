@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-indicator",
+  "title": "Scroll Indicator",
+  "description": "Animated scroll-down indicator with label and position presets.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/scroll-indicator/scroll-indicator.tsx",
+      "content": "import { type HTMLAttributes } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface ScrollIndicatorProps extends HTMLAttributes<HTMLDivElement> {\n  /** Label text next to the indicator */\n  label?: string\n  /** Size of the icon */\n  size?: 'sm' | 'md' | 'lg'\n  /** Position of the indicator */\n  position?: 'bottom-left' | 'bottom-center' | 'bottom-right'\n}\n\nconst sizeMap = {\n  sm: { icon: 12, text: 'text-[10px]' },\n  md: { icon: 16, text: 'text-xs' },\n  lg: { icon: 20, text: 'text-sm' },\n}\n\nconst positionMap = {\n  'bottom-left': 'bottom-8 left-6 md:left-12',\n  'bottom-center': 'bottom-8 left-1/2 -translate-x-1/2',\n  'bottom-right': 'bottom-8 right-6 md:right-12',\n}\n\nexport function ScrollIndicator({\n  label = 'Scroll',\n  size = 'md',\n  position = 'bottom-left',\n  className,\n  ...props\n}: ScrollIndicatorProps) {\n  const { icon, text } = sizeMap[size]\n\n  return (\n    <div\n      className={cn(\n        'absolute flex items-center gap-3 text-current opacity-60',\n        positionMap[position],\n        className\n      )}\n      {...props}\n    >\n      <svg\n        width={icon}\n        height={icon * 1.5}\n        viewBox=\"0 0 16 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        strokeWidth=\"1.5\"\n        className=\"animate-bounce\"\n      >\n        <path d=\"M8 4v16M4 16l4 4 4-4\" />\n      </svg>\n      {label && (\n        <span className={cn('font-mono uppercase tracking-wider', text)}>\n          {label}\n        </span>\n      )}\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

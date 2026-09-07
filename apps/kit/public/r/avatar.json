@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar",
+  "title": "Avatar",
+  "description": "Circular avatar with image, fallback initials, and size presets.",
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/avatar/avatar.tsx",
+      "content": "import { forwardRef, useState, type ImgHTMLAttributes } from 'react'\nimport { cn } from '@/lib/utils'\n\nexport interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'size'> {\n  src?: string\n  alt?: string\n  fallback?: string\n  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'\n  className?: string\n}\n\nconst sizes = {\n  xs: 'w-6 h-6 text-[10px]',\n  sm: 'w-8 h-8 text-xs',\n  md: 'w-10 h-10 text-sm',\n  lg: 'w-12 h-12 text-base',\n  xl: 'w-16 h-16 text-lg',\n}\n\nexport const Avatar = forwardRef<HTMLDivElement, AvatarProps>(\n  (\n    {\n      src,\n      alt = '',\n      fallback,\n      size = 'md',\n      className,\n      ...props\n    },\n    ref\n  ) => {\n    const [imgError, setImgError] = useState(false)\n    const showImage = src && !imgError\n\n    return (\n      <div\n        ref={ref}\n        className={cn(\n          'relative inline-flex shrink-0 items-center justify-center rounded-full overflow-hidden',\n          !showImage && 'bg-[var(--glass-bg)] border border-[var(--glass-border)]',\n          sizes[size],\n          className\n        )}\n      >\n        {showImage ? (\n          <img\n            src={src}\n            alt={alt}\n            onError={() => setImgError(true)}\n            className=\"h-full w-full object-cover rounded-full\"\n            {...props}\n          />\n        ) : (\n          <span\n            className=\"font-medium text-[var(--color-grey-400)] select-none\"\n            aria-hidden={!!alt}\n          >\n            {fallback || ''}\n          </span>\n        )}\n      </div>\n    )\n  }\n)\n\nAvatar.displayName = 'Avatar'\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

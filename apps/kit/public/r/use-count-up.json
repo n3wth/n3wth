@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-count-up",
+  "description": "Animated number counter with scroll-trigger support.",
+  "dependencies": [
+    "gsap"
+  ],
+  "files": [
+    {
+      "path": "registry/hooks/use-count-up/use-count-up.ts",
+      "content": "import { useEffect, useRef, useState } from 'react'\nimport gsap from 'gsap'\nimport { ScrollTrigger } from 'gsap/ScrollTrigger'\n\ngsap.registerPlugin(ScrollTrigger)\n\nexport interface UseCountUpOptions {\n  /** Animation duration in seconds */\n  duration?: number\n  /** Delay before animation starts */\n  delay?: number\n  /** Trigger animation on scroll into view */\n  onScroll?: boolean\n  /** Suffix to append to value (e.g., '%', '+') */\n  suffix?: string\n  /** Prefix to prepend to value (e.g., '$') */\n  prefix?: string\n  /** Callback when animation completes */\n  onComplete?: () => void\n}\n\nexport interface UseCountUpReturn {\n  ref: React.RefObject<HTMLElement | null>\n  value: number\n  displayValue: string\n}\n\n/**\n * Hook for animated number counting\n * Creates smooth counter animations with scroll trigger support\n */\nexport function useCountUp(\n  target: number,\n  options: UseCountUpOptions = {}\n): UseCountUpReturn {\n  const {\n    duration = 1.5,\n    delay = 0,\n    onScroll = true,\n    suffix = '',\n    prefix = '',\n    onComplete,\n  } = options\n\n  const [value, setValue] = useState(0)\n  const ref = useRef<HTMLElement>(null)\n  const hasAnimated = useRef(false)\n\n  useEffect(() => {\n    const element = ref.current\n    if (!element || hasAnimated.current) return\n\n    const prefersReducedMotion = window.matchMedia(\n      '(prefers-reduced-motion: reduce)'\n    ).matches\n\n    if (prefersReducedMotion) {\n      setValue(target)\n      onComplete?.()\n      return\n    }\n\n    const counter = { value: 0 }\n\n    const animate = () => {\n      if (hasAnimated.current) return\n      hasAnimated.current = true\n\n      gsap.to(counter, {\n        value: target,\n        duration,\n        delay,\n        ease: 'power2.out',\n        onUpdate: () => {\n          setValue(Math.round(counter.value))\n        },\n        onComplete,\n      })\n    }\n\n    if (onScroll) {\n      ScrollTrigger.create({\n        trigger: element,\n        start: 'top 80%',\n        onEnter: animate,\n        once: true,\n      })\n    } else {\n      animate()\n    }\n\n    return () => {\n      ScrollTrigger.getAll().forEach((st) => {\n        if (st.trigger === element) st.kill()\n      })\n    }\n  }, [target, duration, delay, onScroll, onComplete])\n\n  const displayValue = `${prefix}${value.toLocaleString()}${suffix}`\n\n  return { ref, value, displayValue }\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}
