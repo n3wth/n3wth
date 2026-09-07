@@ -12,7 +12,7 @@
     "build": "npm run build:portfolio && npm run build:ui",
     "build:portfolio": "npm run build -w @n3wth/portfolio",
     "build:ui": "npm run build -w @n3wth/ui && npm run build -w @n3wth/ui-docs",
-    "check": "node --test scripts/affected.test.mjs && node scripts/affected.mjs --all",
+    "check": "node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs && node scripts/affected.mjs --all",
     "check:affected": "node scripts/affected.mjs",
     "check:browser": "playwright test",
     "preview": "npm run preview -w @n3wth/portfolio"
