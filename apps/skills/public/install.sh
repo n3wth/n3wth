@@ -4,8 +4,10 @@
 
 set -e
 
-SKILLS_REPO="https://github.com/n3wth/newth-skills.git"
-SKILLS_DIR="$HOME/.skills"
+SKILLS_INSTALL_HOME="${SKILLS_INSTALL_HOME:-$HOME}"
+
+SKILLS_REPO="https://github.com/n3wth/n3wth.git"
+SKILLS_DIR="$SKILLS_INSTALL_HOME/.skills"
 
 # Colors
 RED='\033[0;31m'
@@ -50,10 +52,10 @@ detect_platform() {
 # Get skills source directory
 get_skills_source() {
     # Check common locations
-    if [ -d "$HOME/.claude/skills" ]; then
-        echo "$HOME/.claude/skills"
-    elif [ -d "$HOME/.gemini/skills" ]; then
-        echo "$HOME/.gemini/skills"
+    if [ -d "$SKILLS_INSTALL_HOME/.claude/skills" ]; then
+        echo "$SKILLS_INSTALL_HOME/.claude/skills"
+    elif [ -d "$SKILLS_INSTALL_HOME/.gemini/skills" ]; then
+        echo "$SKILLS_INSTALL_HOME/.gemini/skills"
     else
         echo ""
     fi
@@ -63,7 +65,7 @@ get_skills_source() {
 install_gemini() {
     print_info "Installing skills for Gemini CLI..."
 
-    GEMINI_DIR="$HOME/.gemini"
+    GEMINI_DIR="$SKILLS_INSTALL_HOME/.gemini"
     GEMINI_SKILLS="$GEMINI_DIR/skills"
 
     # Create directory if needed
@@ -97,8 +99,8 @@ install_gemini() {
             exit 1
         }
 
-        if [ -d "$TMP_DIR/skills" ]; then
-            cp -r "$TMP_DIR/skills/"* "$GEMINI_SKILLS/" 2>/dev/null || true
+        if [ -d "$TMP_DIR/apps/skills/skills" ]; then
+            cp -r "$TMP_DIR/apps/skills/skills/"* "$GEMINI_SKILLS/" 2>/dev/null || true
         fi
 
         rm -rf "$TMP_DIR"
@@ -118,7 +120,7 @@ install_gemini() {
 install_claude() {
     print_info "Installing skills for Claude Code..."
 
-    CLAUDE_DIR="$HOME/.claude"
+    CLAUDE_DIR="$SKILLS_INSTALL_HOME/.claude"
     CLAUDE_SKILLS="$CLAUDE_DIR/skills"
 
     # Create directory if needed
@@ -152,8 +154,8 @@ install_claude() {
             exit 1
         }
 
-        if [ -d "$TMP_DIR/skills" ]; then
-            cp -r "$TMP_DIR/skills/"* "$CLAUDE_SKILLS/" 2>/dev/null || true
+        if [ -d "$TMP_DIR/apps/skills/skills" ]; then
+            cp -r "$TMP_DIR/apps/skills/skills/"* "$CLAUDE_SKILLS/" 2>/dev/null || true
         fi
 
         rm -rf "$TMP_DIR"
@@ -173,7 +175,7 @@ install_claude() {
 install_cursor() {
     print_info "Installing skills for Cursor..."
 
-    CURSOR_DIR="$HOME/.cursor"
+    CURSOR_DIR="$SKILLS_INSTALL_HOME/.cursor"
     CURSOR_SKILLS="$CURSOR_DIR/skills"
 
     # Create directory if needed
@@ -207,8 +209,8 @@ install_cursor() {
             exit 1
         }
 
-        if [ -d "$TMP_DIR/skills" ]; then
-            cp -r "$TMP_DIR/skills/"* "$CURSOR_SKILLS/" 2>/dev/null || true
+        if [ -d "$TMP_DIR/apps/skills/skills" ]; then
+            cp -r "$TMP_DIR/apps/skills/skills/"* "$CURSOR_SKILLS/" 2>/dev/null || true
         fi
 
         rm -rf "$TMP_DIR"
@@ -221,7 +223,7 @@ install_cursor() {
 install_windsurf() {
     print_info "Installing skills for Windsurf..."
 
-    WINDSURF_DIR="$HOME/.windsurf"
+    WINDSURF_DIR="$SKILLS_INSTALL_HOME/.windsurf"
     WINDSURF_SKILLS="$WINDSURF_DIR/skills"
 
     # Create directory if needed
@@ -255,8 +257,8 @@ install_windsurf() {
             exit 1
         }
 
-        if [ -d "$TMP_DIR/skills" ]; then
-            cp -r "$TMP_DIR/skills/"* "$WINDSURF_SKILLS/" 2>/dev/null || true
+        if [ -d "$TMP_DIR/apps/skills/skills" ]; then
+            cp -r "$TMP_DIR/apps/skills/skills/"* "$WINDSURF_SKILLS/" 2>/dev/null || true
         fi
 
         rm -rf "$TMP_DIR"
@@ -269,7 +271,7 @@ install_windsurf() {
 install_cody() {
     print_info "Installing skills for Sourcegraph Cody..."
 
-    CODY_DIR="$HOME/.cody"
+    CODY_DIR="$SKILLS_INSTALL_HOME/.cody"
     CODY_SKILLS="$CODY_DIR/skills"
 
     # Create directory if needed
@@ -303,8 +305,8 @@ install_cody() {
             exit 1
         }
 
-        if [ -d "$TMP_DIR/skills" ]; then
-            cp -r "$TMP_DIR/skills/"* "$CODY_SKILLS/" 2>/dev/null || true
+        if [ -d "$TMP_DIR/apps/skills/skills" ]; then
+            cp -r "$TMP_DIR/apps/skills/skills/"* "$CODY_SKILLS/" 2>/dev/null || true
         fi
 
         rm -rf "$TMP_DIR"
@@ -317,7 +319,7 @@ install_cody() {
 install_copilot() {
     print_info "Installing skills for GitHub Copilot..."
 
-    COPILOT_DIR="$HOME/.copilot"
+    COPILOT_DIR="$SKILLS_INSTALL_HOME/.copilot"
     COPILOT_SKILLS="$COPILOT_DIR/skills"
 
     # Create directory if needed
@@ -351,8 +353,8 @@ install_copilot() {
             exit 1
         }
 
-        if [ -d "$TMP_DIR/skills" ]; then
-            cp -r "$TMP_DIR/skills/"* "$COPILOT_SKILLS/" 2>/dev/null || true
+        if [ -d "$TMP_DIR/apps/skills/skills" ]; then
+            cp -r "$TMP_DIR/apps/skills/skills/"* "$COPILOT_SKILLS/" 2>/dev/null || true
         fi
 
         rm -rf "$TMP_DIR"

@@ -1,12 +1,15 @@
 'use client'
 
+import { siteUrls } from '@n3wth/site-config'
+
+
 const sites = [
-  { name: 'hop.flights', href: 'https://hop.flights' },
-  { name: 'r3', href: 'https://r3.n3wth.com' },
-  { name: 'kit', href: 'https://kit.n3wth.com' },
-  { name: 'garden', href: 'https://garden.n3wth.com' },
-  { name: 'ui', href: 'https://ui.n3wth.com' },
-  { name: 'n3wth.com', href: 'https://n3wth.com' },
+  { name: 'hop.flights', href: siteUrls.hop },
+  { name: 'r3', href: siteUrls.r3 },
+  { name: 'kit', href: siteUrls.kit },
+  { name: 'garden', href: siteUrls.garden },
+  { name: 'ui', href: siteUrls.ui },
+  { name: 'n3wth.com', href: siteUrls.home },
   { name: 'Email', href: 'mailto:hey@n3wth.com' },
 ]
 

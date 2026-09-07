@@ -66,7 +66,7 @@ export async function GET() {
 > Complete reference for all ${skills.length} AI coding assistant skills.
 
 Website: https://skills.n3wth.com
-GitHub: https://github.com/n3wth/skills
+GitHub: https://github.com/n3wth/n3wth/tree/main/apps/skills
 Contact: hey@n3wth.com
 
 ${'='.repeat(60)}

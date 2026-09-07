@@ -1,3 +1,4 @@
+import { siteUrls } from '@n3wth/site-config'
 import type { Metadata, Viewport } from 'next'
 import { AxiomWebVitals } from 'next-axiom'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -7,14 +8,14 @@ import { WebSiteJsonLd } from '../src/components/seo/JsonLd'
 import '../src/index.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://skills.n3wth.com'),
+  metadataBase: new URL(siteUrls.skills),
   title: {
     default: 'n3wth/skills',
     template: '%s | n3wth/skills',
   },
   description:
     'Markdown skills for Gemini CLI, Cursor, Windsurf, and Copilot. 46 skills. One install, works offline.',
-  authors: [{ name: 'Oliver Newth', url: 'https://n3wth.com' }],
+  authors: [{ name: 'Oliver Newth', url: siteUrls.home }],
   creator: 'n3wth',
   publisher: 'n3wth',
   robots: {
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://skills.n3wth.com',
+    url: siteUrls.skills,
     siteName: 'n3wth/skills',
     title: 'n3wth/skills',
     description:
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
     creator: '@olivernewth',
   },
   alternates: {
-    canonical: 'https://skills.n3wth.com',
+    canonical: siteUrls.skills,
   },
   other: {
     'msapplication-TileColor': '#000000',

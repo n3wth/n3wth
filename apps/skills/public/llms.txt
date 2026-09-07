@@ -3,7 +3,7 @@
 > Markdown skills for Gemini CLI, Cursor, Windsurf, and Copilot.
 
 Website: https://skills.n3wth.com
-GitHub: https://github.com/n3wth/skills
+GitHub: https://github.com/n3wth/n3wth/tree/main/apps/skills
 Contact: hey@n3wth.com
 
 ## Quick Start
