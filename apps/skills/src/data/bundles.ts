@@ -1,0 +1,194 @@
+export interface Bundle {
+  id: string
+  name: string
+  description: string
+  longDescription: string
+  skillIds: string[]
+  persona: 'frontend' | 'backend' | 'devops' | 'creator' | 'analyst' | 'founder'
+  difficulty: 'beginner' | 'intermediate' | 'advanced'
+  icon: string
+  tags: string[]
+  estimatedSetupTime: string
+  whatYouCanBuild: string[]
+}
+
+export const bundles: Bundle[] = [
+  {
+    id: 'frontend-starter',
+    name: 'Frontend Powerhouse',
+    description: 'Everything you need to build interactive web experiences',
+    longDescription: 'Master modern frontend development with AI assistance. Create animated landing pages, design responsive UIs, and build interactive components. The bundle includes GSAP animations, frontend design, typography selection, and live testing tools.',
+    skillIds: [
+      'gsap-animations',
+      'frontend-design',
+      'typescript-expert',
+      'code-reviewer',
+      'webapp-testing',
+      'canvas-design',
+      'theme-factory',
+    ],
+    persona: 'frontend',
+    difficulty: 'intermediate',
+    icon: 'code',
+    tags: ['animation', 'design', 'testing', 'ui', 'css'],
+    estimatedSetupTime: 'five minutes',
+    whatYouCanBuild: [
+      'Production-ready animated websites',
+      'Responsive design systems',
+      'Interactive component libraries',
+      'A/B tested landing pages',
+      'Accessible web applications',
+    ],
+  },
+  {
+    id: 'backend-builder',
+    name: 'Backend Builder',
+    description: 'APIs, microservices, and server infrastructure. MCP servers, SQL, CI/CD.',
+    longDescription: 'Backend systems: MCP servers, SQL optimization, API design, CI/CD pipelines, infrastructure. For full-stack and backend engineers.',
+    skillIds: [
+      'mcp-builder',
+      'sql-optimizer',
+      'api-docs-generator',
+      'ci-cd-builder',
+      'git-workflow',
+      'code-reviewer',
+      'schema-designer',
+    ],
+    persona: 'backend',
+    difficulty: 'advanced',
+    icon: 'gear',
+    tags: ['api', 'database', 'infrastructure', 'devops', 'security'],
+    estimatedSetupTime: '10 minutes',
+    whatYouCanBuild: [
+      'High-performance REST/GraphQL APIs',
+      'Custom MCP servers for AI assistants',
+      'Optimized database queries',
+      'Automated deployment pipelines',
+      'Service documentation systems',
+    ],
+  },
+  {
+    id: 'devops-toolkit',
+    name: 'DevOps Command Center',
+    description: 'Automate everything—from CI/CD to monitoring, monitoring to recovery',
+    longDescription: 'Take control of your infrastructure and deployments. Build CI/CD pipelines, optimize performance, manage containers, track metrics, and automate recovery. The bundle includes code quality tools, documentation generation, and workflow automation.',
+    skillIds: [
+      'ci-cd-builder',
+      'git-workflow',
+      'api-docs-generator',
+      'performance-profiler',
+      'regex-builder',
+      'code-reviewer',
+      'email-drafter',
+    ],
+    persona: 'devops',
+    difficulty: 'advanced',
+    icon: 'rocket',
+    tags: ['automation', 'deployment', 'monitoring', 'infrastructure', 'scale'],
+    estimatedSetupTime: '15 minutes',
+    whatYouCanBuild: [
+      'Automated deployment pipelines',
+      'Infrastructure-as-Code generators',
+      'Monitoring and alerting systems',
+      'Container orchestration helpers',
+      'Incident response automation',
+    ],
+  },
+  {
+    id: 'content-creator',
+    name: 'Content Creator Studio',
+    description: 'Write, design, and publish professional content at scale',
+    longDescription: 'Create compelling content faster. Generate landing pages, presentations, visual designs, social media content, and GIFs. The bundle includes copywriting assistance, design tools, document creation, and multimedia generation.',
+    skillIds: [
+      'copywriting',
+      'canvas-design',
+      'slack-gif-creator',
+      'pptx',
+      'docx',
+      'typography-selector',
+      'theme-factory',
+      'internal-comms',
+    ],
+    persona: 'creator',
+    difficulty: 'beginner',
+    icon: 'star',
+    tags: ['design', 'writing', 'marketing', 'social', 'visual'],
+    estimatedSetupTime: 'five minutes',
+    whatYouCanBuild: [
+      'Professional marketing copy',
+      'Beautiful presentations',
+      'Social media graphics and GIFs',
+      'Brand-consistent designs',
+      'Email campaigns and newsletters',
+      'Visual design systems',
+    ],
+  },
+  {
+    id: 'data-analyst',
+    name: 'Data Intelligence Suite',
+    description: 'Extract insights, analyze trends, and visualize data stories',
+    longDescription: 'Transform raw data into actionable insights. Optimize SQL queries, analyze spreadsheets, create visualizations, generate reports, and build research workflows. The suite includes database optimization, data visualization tools, and research automation.',
+    skillIds: [
+      'sql-optimizer',
+      'xlsx',
+      'research-assistant',
+      'business-panel',
+      'data-visualization',
+      'pdf',
+      'doc-coauthoring',
+    ],
+    persona: 'analyst',
+    difficulty: 'intermediate',
+    icon: 'chart',
+    tags: ['analytics', 'database', 'visualization', 'insights', 'reporting'],
+    estimatedSetupTime: 'eight minutes',
+    whatYouCanBuild: [
+      'Optimized analytics queries',
+      'Interactive data dashboards',
+      'Automated reporting systems',
+      'Trend analysis reports',
+      'Business intelligence workflows',
+      'Research compilations',
+    ],
+  },
+  {
+    id: 'founder-toolkit',
+    name: 'Founder\'s Toolkit',
+    description: 'Run your startup with AI—from strategy to execution',
+    longDescription: 'Everything a founder needs to move fast. Create business strategies, draft investor-ready presentations, write compelling copy, manage operations, and automate workflows. The toolkit includes strategic planning, documentation, and communication tools.',
+    skillIds: [
+      'business-panel',
+      'copywriting',
+      'pptx',
+      'doc-coauthoring',
+      'internal-comms',
+      'email-drafter',
+      'api-docs-generator',
+    ],
+    persona: 'founder',
+    difficulty: 'beginner',
+    icon: 'target',
+    tags: ['strategy', 'marketing', 'operations', 'communication', 'growth'],
+    estimatedSetupTime: 'five minutes',
+    whatYouCanBuild: [
+      'Investor pitches and decks',
+      'Product positioning docs',
+      'Marketing campaigns',
+      'Operational playbooks',
+      'Board update presentations',
+      'Customer communication',
+    ],
+  },
+]
+
+export function getBundleById(id: string): Bundle | undefined {
+  return bundles.find(b => b.id === id)
+}
+
+export function getBundlesByPersona(persona: Bundle['persona']): Bundle[] {
+  return bundles.filter(b => b.persona === persona)
+}
+
+export function getSkillBundles(skillId: string): Bundle[] {
+  return bundles.filter(b => b.skillIds.includes(skillId))
+}
