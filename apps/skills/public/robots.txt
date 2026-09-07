@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /playground
+Disallow: /analytics
+Disallow: /requests
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://skills.n3wth.com/sitemap.xml
+
+# LLM content
+# https://skills.n3wth.com/llms.txt
+# https://skills.n3wth.com/llms-full.txt

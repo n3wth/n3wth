@@ -4,6 +4,7 @@ Use Node 24 and npm 11.19.1, then run npm ci at the repository root. npm 10 has 
 
 - apps/portfolio: n3wth.com. Read its AGENTS.md before editing.
 - apps/ui-docs: ui.n3wth.com documentation app.
+- apps/skills: skills.n3wth.com. Read its AGENTS.md before editing. It intentionally uses published UI 0.6.1 rather than workspace UI 0.9.2.
 - packages/ui: public @n3wth/ui library. Read its AGENTS.md before editing.
 - packages/site-config: canonical public origins, with no framework dependency or secrets.
 

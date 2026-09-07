@@ -1,0 +1,833 @@
+@import 'tailwindcss';
+@import '@n3wth/ui/styles';
+
+/* Scan @n3wth/ui components for Tailwind classes */
+@source "../node_modules/@n3wth/ui/dist";
+
+/* Color variables from n3wth/ui (fallback for missing imports) */
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-grey-100: #f5f5f7;
+  --color-grey-200: #e8e8ed;
+  --color-grey-300: #c7c7cc;
+  --color-grey-400: #86868b;
+  --color-grey-500: #8e8e93;
+  --color-grey-600: #6e6e73;
+  --color-grey-700: #48484a;
+  --color-grey-800: #1d1d1f;
+
+  /* Typography scale */
+  --text-label: 0.8125rem;   /* 13px - section labels, captions */
+  --text-body: 0.875rem;      /* 14px - body */
+  --text-body-lg: 1rem;       /* 16px */
+  --text-title-sm: 1.125rem;  /* 18px */
+  --text-title: 1.25rem;      /* 20px */
+  --text-title-lg: 1.5rem;    /* 24px */
+
+  /* Liquid Glass variables */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+  --glass-blur: blur(20px) saturate(180%);
+  --glass-inset: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  --glass-inset-hover: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+
+/* Fix for @n3wth/ui Nav responsive classes not being detected */
+@media (min-width: 768px) {
+  .md\:hidden {
+    display: none !important;
+  }
+  .md\:flex {
+    display: flex !important;
+  }
+  .md\:items-center {
+    align-items: center !important;
+  }
+  .md\:gap-6 {
+    gap: 1.5rem !important;
+  }
+}
+
+/* Satoshi - Display font */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Geist Sans - UI/Body font */
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Geist Mono - Code only */
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Project-specific theme overrides */
+@theme {
+  --font-display: 'Satoshi', system-ui, sans-serif;
+  --font-sans: 'Geist Sans', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+}
+
+/* ============================================================
+   Liquid Glass Card System
+   Multi-layer glass material inspired by iOS 26
+   ============================================================ */
+
+/* Override @n3wth/ui glass-card with liquid glass material */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-inset);
+  transition: border-color 0.15s ease,
+              box-shadow 0.15s ease,
+              background 0.15s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--glass-inset-hover);
+}
+
+/* Skill Card */
+.skill-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  transition: border-color 0.15s ease,
+              box-shadow 0.15s ease;
+}
+
+.skill-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--glass-inset-hover);
+}
+
+.skill-card:focus-within {
+  border-color: var(--glass-highlight);
+}
+
+/* Featured card variant */
+.glass-card--featured {
+  border-radius: 24px;
+}
+
+/* Hero/Skill of the Day variant */
+.glass-card--hero {
+  border-radius: 24px;
+}
+
+/* Constellation pattern - project specific */
+@keyframes constellationTwinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+}
+
+.constellation-dot {
+  animation: constellationTwinkle var(--twinkle-duration, 3s) ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+}
+
+/* Section labels and secondary text */
+.label {
+  font-size: var(--text-label);
+  line-height: 1.4;
+  color: var(--color-grey-400);
+}
+
+/* Section titles - consistent heading under hero */
+.section-title {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: 500;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+}
+
+/* Number index */
+.index-num {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: var(--color-grey-600);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Background - solid black */
+.mesh-gradient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: #000000;
+}
+
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.015;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Page transition animations */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.page-enter {
+  animation: pageEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.page-exit {
+  animation: pageExit 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Hover Preview - project specific */
+.hover-preview {
+  width: 320px;
+  pointer-events: auto;
+}
+
+.hover-preview-content {
+  background: rgba(20, 20, 22, 0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 16px;
+  animation: hoverPreviewEnter 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+
+@keyframes hoverPreviewEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.hover-preview[data-placement="left"] .hover-preview-content {
+  transform-origin: right center;
+}
+
+.hover-preview[data-placement="right"] .hover-preview-content {
+  transform-origin: left center;
+}
+
+.hover-preview[data-placement="top"] .hover-preview-content {
+  transform-origin: bottom center;
+}
+
+.hover-preview[data-placement="bottom"] .hover-preview-content {
+  transform-origin: top center;
+}
+
+.hover-preview button:hover {
+  background: var(--glass-highlight) !important;
+  border-color: var(--glass-highlight) !important;
+}
+
+.hover-preview button:active {
+  transform: scale(0.98);
+}
+
+/* Line clamp utility */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Hidden scrollbar utility */
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Workflow node animations */
+@keyframes nodeEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.workflow-node-enter {
+  animation: nodeEnter 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Connection line animation */
+@keyframes connectionDraw {
+  from {
+    stroke-dashoffset: 100%;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.connection-line {
+  stroke-dasharray: 100%;
+  animation: connectionDraw 0.3s ease-out forwards;
+}
+
+/* Hero category hover delight */
+.hero-category {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-category:hover {
+  transform: translateY(-2px);
+}
+
+/* Stats counter animation helper */
+.counter-animate {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Interactive tag hover */
+.interactive-tag {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.interactive-tag:hover {
+  transform: scale(1.05);
+  background: var(--glass-highlight);
+}
+
+/* Empty state bounce animation */
+@keyframes emptyBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.empty-state-icon {
+  animation: emptyBounce 2s ease-in-out infinite;
+}
+
+/* Glass pill - liquid glass variant */
+.glass-pill {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-inset);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.glass-pill:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--glass-inset-hover);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Island nav - proper Gaussian blur */
+.island-nav {
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  isolation: isolate;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .island-nav {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: #000000;
+  }
+}
+
+/* Search input focus ring */
+.search-focus-ring {
+  transition: border-color 0.2s ease;
+}
+
+.search-focus-ring:focus-within {
+  border-color: var(--color-white);
+}
+
+/* Category filter buttons - simple text style, no pill/badge */
+.category-filter-btn {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: var(--color-grey-400);
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.category-filter-btn:hover {
+  color: var(--color-white);
+}
+
+.category-filter-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%;
+  height: 2px;
+  background: var(--color-white);
+  transition: transform 0.2s ease;
+}
+
+.category-filter-active {
+  color: var(--color-white);
+}
+
+.category-filter-active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+
+/* Button press state */
+.btn-press:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+/* Smooth number transitions */
+.number-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Instant scroll on navigation (no animation) */
+html {
+  scroll-behavior: auto;
+}
+
+/* Even line breaks */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p, li, figcaption, blockquote {
+  text-wrap: pretty;
+}
+
+/* Global interactive element styles */
+a,
+button,
+[role="button"],
+[type="button"],
+[type="submit"],
+[type="reset"],
+summary {
+  cursor: pointer;
+}
+
+a:hover,
+button:not(:disabled):hover,
+[role="button"]:not(:disabled):hover {
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+/* Restore opacity for elements that already handle their own hover */
+.glass-pill:hover,
+.glass-card:hover,
+.skill-card:hover,
+.interactive-tag:hover,
+.hover-preview button:hover,
+.command-box:hover,
+.category-filter-btn:hover,
+nav a:hover,
+nav button:hover,
+footer a:hover {
+  opacity: 1;
+}
+
+/* Ensure inputs keep text cursor */
+input,
+textarea,
+select,
+[contenteditable] {
+  cursor: text;
+}
+
+select {
+  cursor: pointer;
+}
+
+/* Success message entrance animation */
+@keyframes successEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.success-message {
+  animation: successEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Verification section entrance */
+@keyframes verifyEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.verification-section {
+  animation: verifyEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Code block styling */
+.code-block-wrapper {
+  transition: border-color 0.2s ease;
+}
+
+.code-block-wrapper:hover {
+  border-color: var(--glass-highlight);
+}
+
+/* Nav link active indicator */
+.nav-link-active {
+  position: relative;
+}
+
+.nav-link-active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: var(--color-white);
+  border-radius: 50%;
+}
+
+/* Project-specific reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .constellation-dot {
+    animation: none !important;
+    opacity: 0.5 !important;
+  }
+
+  .hero-word {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .floating-shape {
+    animation: none !important;
+    opacity: 0.5 !important;
+  }
+
+  .page-enter,
+  .page-exit,
+  .hover-preview-content,
+  .workflow-node-enter,
+  .success-message,
+  .verification-section {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Mobile touch improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable hover preview on touch devices */
+  .hover-preview {
+    display: none !important;
+  }
+
+  /* Improve tap targets */
+  .glass-pill {
+    min-height: 44px;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+  }
+
+  /* Smoother scrolling for category filters */
+  .scrollbar-hidden {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .scrollbar-hidden > button {
+    scroll-snap-align: start;
+  }
+}
+
+/* Safe area insets for iOS */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mobile hero optimizations */
+@media (max-width: 640px) {
+  /* Prevent horizontal scroll on narrow screens */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Hero typography - mobile responsive */
+  h1 {
+    line-height: 1.2;
+  }
+
+  p {
+    word-spacing: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* Touch target optimization */
+  button, a[role="button"], .hero-category {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth scrolling for category badges */
+  .scrollbar-hidden {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .scrollbar-hidden > * {
+    scroll-snap-align: start;
+  }
+}
+
+/* Hero words - visible immediately, no entrance animation */
+.hero-word {
+  opacity: 1;
+}
+
+/* Hero rotating word animation */
+.hero-rotating-word {
+  animation: heroWordFade 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes heroWordFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero CTA hover */
+.hero-cta:hover {
+  border-color: var(--glass-highlight) !important;
+  background-color: var(--glass-highlight) !important;
+}
+
+
+/* Content visibility for performance */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 200px;
+}
+
+/* Navigation Header Styling - Flat */
+nav,
+[role="navigation"],
+.nav-wrapper,
+header {
+  background: var(--color-bg) !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+
+/* Logo/Brand Visibility - Ensure high contrast */
+nav a,
+nav button,
+[role="navigation"] a,
+[role="navigation"] button,
+.nav-wrapper a,
+.nav-wrapper button {
+  color: var(--color-white) !important;
+  transition: opacity 0.2s ease;
+}
+
+nav a:hover,
+nav button:hover,
+[role="navigation"] a:hover,
+[role="navigation"] button:hover {
+  opacity: 0.7 !important;
+}
+
+
+/* Ensure site name/logo is visible with strong contrast */
+nav span,
+nav h1,
+nav h2,
+[role="navigation"] span,
+[role="navigation"] h1,
+[role="navigation"] h2 {
+  color: var(--color-white) !important;
+  font-weight: 600 !important;
+}
+
+
+/* Footer Styling - Flat */
+footer {
+  background: var(--color-bg) !important;
+  border-top: 1px solid var(--glass-border) !important;
+  color: var(--color-grey-500) !important;
+  margin-top: auto;
+}
+
+footer a {
+  color: var(--color-grey-500) !important;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  cursor: pointer;
+}
+
+footer a:hover {
+  color: var(--color-white) !important;
+}
+
+
+/* Ensure footer links have proper spacing and alignment */
+footer div {
+  color: inherit;
+}
+
+footer span {
+  color: inherit;
+}
+
+/* Override global nav styles inside footer */
+footer nav {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+/* @n3wth/ui Nav Component Specific Styling */
+[class*="nav"] {
+  background: var(--color-bg) !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+
+/* Logo text visibility in nav */
+[class*="nav"] [class*="logo"],
+[class*="nav"] [class*="brand"],
+[class*="header"] [class*="logo"],
+[class*="header"] [class*="brand"] {
+  color: var(--color-white) !important;
+  font-weight: 600 !important;
+}
+
+
