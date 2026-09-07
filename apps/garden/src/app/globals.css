@@ -1,0 +1,1087 @@
+@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import '@astryxdesign/core/reset.css';
+@import '@astryxdesign/core/astryx.css';
+@import '../theme/n3wth-theme.css';
+@import '@astryxdesign/core/tailwind-theme.css';
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* ============================================================
+   Astryx with the custom n3wth theme (src/theme/n3wthTheme.ts)
+   — the canonical @n3wth/ui wireframe palette: near-black
+   canvas, hairline rails, grayscale ink, Geist type.
+   Bridge Astryx font tokens into Tailwind font utilities so
+   `font-display` / `font-mono` classes keep working.
+   ============================================================ */
+
+/* Geist Sans (display + body) — served from /public/fonts,
+   matching n3wth.com's canonical font setup. */
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Satoshi — premium grotesque for display headers (matches n3wth.com).
+   The Bold cut registers at 600 so the semibold-max rule maps onto
+   Satoshi's display drawing. */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Source Serif 4 — the reading face, and only that. Note bodies are the
+   one long-form surface here, and a text face earns its keep on them in
+   a way it never would in the UI. Chosen for low stroke contrast and an
+   optical-size axis: high-contrast serifs go spindly on a near-black
+   canvas. Interface, nav, and metadata stay Geist; headings stay
+   Satoshi. Variable, so the whole range is two files. */
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('/fonts/SourceSerif4-Variable.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('/fonts/SourceSerif4-VariableItalic.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme inline {
+  --font-display: var(--font-family-heading);
+  --font-sans: var(--font-family-body);
+  --font-mono: var(--font-family-code);
+}
+
+/* Display voice: Satoshi carries headings (matches n3wth.com); Geist
+   stays on UI and nav; Source Serif 4 carries note bodies. The heading
+   family now lives in src/theme/n3wthTheme.ts — declaring it here could
+   never win, because the generated theme sets it on a closer scope. */
+
+/* Balanced line wrapping: headings never break into lopsided lines, and
+   paragraphs never orphan a single word onto the last line. */
+h1, h2, h3, .display { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* ---------- Page transitions ----------
+   Client-side navigations run through next-view-transitions
+   (document.startViewTransition), so the fade + rise animates the
+   transition snapshot — never a live ancestor, which keeps the
+   fixed-position /graph canvas out of any transform's containing block.
+   Prose wikilinks are server-rendered anchors that NotePageClient routes
+   client-side, so they ride the same transition; the @view-transition
+   rule keeps the cross-document dissolve as a no-JS fallback. */
+@view-transition {
+  navigation: auto;
+}
+
+/* The floating nav island persists across pages: give it its own
+   snapshot group and hold it perfectly still. */
+.site-nav {
+  view-transition-name: site-nav;
+}
+::view-transition-old(site-nav),
+::view-transition-new(site-nav) {
+  animation: none;
+}
+/* Entering/leaving /graph the nav exists on only one side of the
+   transition — fade it instead of freezing it. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(site-nav):only-child {
+    animation: vt-page-out 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  ::view-transition-new(site-nav):only-child {
+    animation: vt-page-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: vt-page-out 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-page-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  /* The clicked note title morphs into the note page's h1 (the browser
+     animates position + scale between the two snapshots). */
+  ::view-transition-group(note-title) {
+    animation-duration: 0.32s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+@keyframes vt-page-out {
+  to { opacity: 0; }
+}
+@keyframes vt-page-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(*) {
+    animation: none;
+  }
+}
+
+/* ---------- Native-app tactility ---------- */
+/* Pressing a row or card gives a small, immediate scale response —
+   the tap acknowledgment users know from native apps. */
+@media (prefers-reduced-motion: no-preference) {
+  .press {
+    transition:
+      transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+  .press:active {
+    transform: scale(0.985);
+  }
+
+  /* Notes index rows surface one after another, quickly — capped via
+     --row-i so long lists don't queue forever. */
+  .note-row {
+    animation: note-row-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--row-i, 0) * 28ms);
+  }
+}
+/* Off-screen rows in the ~252-row index skip layout/paint until scrolled
+   near — first print doesn't lay out every row. contain-intrinsic-size
+   holds the row's place so scrollbar height doesn't jump as rows resolve. */
+.note-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 66px;
+}
+
+/* Field-guide band signage. Sticky so the reader always knows which part
+   of the garden they are standing in; the body colour is repeated here so
+   rows pass cleanly underneath instead of ghosting through. */
+.field-band {
+  background: var(--color-background-body);
+  border-bottom: 1px solid var(--color-border-emphasized);
+  margin-bottom: -1px;
+}
+/* The nav is a floating island, so the 72px above a pinned band header
+   is transparent page — rows scrolled up through it and appeared above
+   the letter that was supposed to be pinning them. This paints that
+   strip out, on the one page that has band headers. */
+body:has(.field-band)::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: var(--color-background-body);
+  z-index: 20;
+  pointer-events: none;
+}
+.field-band + ul > .note-row:first-child {
+  border-top: 0;
+}
+
+@keyframes note-row-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+/* Deliberate UI type scale: 11 (micro labels) / 13 (secondary UI) /
+   15 (primary UI) / 16 (prose) / display. Tailwind's xs/sm steps are
+   redefined so every text-xs / text-sm usage lands on the scale. */
+@theme {
+  --text-xs: 13px;
+  --text-xs--line-height: 1.45;
+  --text-sm: 15px;
+  --text-sm--line-height: 1.5;
+}
+
+@layer components {
+
+/* Base */
+html {
+  background: var(--color-background-body);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* No global smooth scrolling: it turns every navigation's scroll reset
+     into a visible ~900ms drag and clamps browser back/forward scroll
+     restoration mid-flight. TOC/anchor jumps opt in below. */
+  /* App-like touch behavior */
+  -webkit-tap-highlight-color: transparent;
+  /* UA default scrollbar is the brightest thing in the chrome otherwise */
+  scrollbar-color: var(--color-border-emphasized) transparent;
+  scrollbar-width: thin;
+}
+
+
+body {
+  overscroll-behavior-y: none;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--color-text-primary);
+}
+
+/* Hairline rule with corner ticks — n3wth blueprint signature */
+.rule {
+  position: relative;
+  border-top: 1px solid var(--color-border);
+}
+
+.rule::before,
+.rule::after {
+  content: '';
+  position: absolute;
+  top: -3.5px;
+  width: 1px;
+  height: 7px;
+  background: var(--color-border-emphasized);
+}
+
+.rule::before { left: 0; }
+.rule::after { right: 0; }
+
+/* Small section label (TOC, backlinks, panels) */
+.label {
+  font-family: var(--font-family-body);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+}
+
+.focus-ring {
+  outline: none;
+}
+
+/* One visible ring everywhere. Links previously fell back to the UA's
+   near-invisible outline while Astryx buttons drew their own — keyboard
+   focus should look the same on every interactive element. */
+.focus-ring:focus-visible,
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+/* The skip-link target takes programmatic focus; a ring around the whole
+   page body would be noise. */
+#main:focus-visible {
+  outline: none;
+}
+
+/* Skip link — first tab stop, revealed on focus (mirrors n3wth.com) */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-emphasized);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  transform: translateY(-200%);
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* Family strip: quiet row of n3wth ecosystem links, fades into the 3D scene */
+.family-strip {
+  background: linear-gradient(to top, rgba(8, 9, 11, 0.7) 0%, transparent 100%);
+}
+
+/* Pointer-conditional copy (graph instructions) */
+.pointer-coarse-only { display: none; }
+@media (pointer: coarse) {
+  .pointer-coarse-only { display: block; }
+  .pointer-fine-only { display: none; }
+
+  /* Native minimum touch targets for the small chrome */
+  .nav-island button,
+  .nav-island a,
+  .tag-pill,
+  .glass-pill,
+  footer nav a {
+    min-height: 44px;
+  }
+  .nav-island button {
+    min-width: 44px;
+  }
+  /* Stacked 13px footer links need the tap area centered on the text */
+  footer nav a {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* Flat pill (used by backlinks + hero links) */
+.glass-pill {
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  color: var(--color-text-secondary);
+  background: var(--color-background-surface);
+  transition:
+    background-color var(--duration-fast, 125ms) ease,
+    border-color var(--duration-fast, 125ms) ease,
+    color var(--duration-fast, 125ms) ease;
+}
+
+.glass-pill:hover {
+  background: var(--color-overlay-hover);
+  border-color: var(--color-border-emphasized);
+  color: var(--color-text-primary);
+}
+
+/* Prose typography for garden notes — Astryx tokens throughout */
+.prose {
+  color: var(--color-text-primary);
+  /* The reading face. Everything outside the note body stays Geist. */
+  font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  /* Light type on a near-black ground needs compensating on all three
+     axes, or it reads thinner and tighter than the same text on paper:
+     a step up in size, a little more leading, a hair more tracking, and
+     the variable axis nudged just off the roman weight. */
+  font-size: 1.0625rem;
+  font-variation-settings: 'opsz' 16;
+  font-weight: 420;
+  letter-spacing: 0.003em;
+  line-height: 1.72;
+  /* Not 65ch: Geist's zero is wide, so 65ch computed to 698px and ran
+     real prose at ~87 characters a line. 36em measures ~72 characters in
+     this face — inside the comfortable 45–75 band the rest of the
+     reading column is tuned for. */
+  max-width: 36em;
+  /* Long URLs and unbroken strings wrap instead of pushing the page wide */
+  overflow-wrap: break-word;
+}
+
+/* Astryx's base layer styles the bare `p` element, and a direct element
+   rule beats anything .prose merely passes down by inheritance — which
+   is why the reading face has to be handed to the children explicitly
+   rather than set once on the container. */
+.prose :is(p, li, blockquote, dd, dt, figcaption, summary) {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  font-weight: inherit;
+  font-variation-settings: inherit;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-family-heading);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  scroll-margin-top: 96px; /* keep anchored headings clear of the fixed nav */
+}
+
+.prose h1 { font-size: 2rem; margin-top: 0; }
+.prose h2 {
+  font-size: 1.5rem;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--color-border);
+}
+.prose h3 { font-size: 1.25rem; }
+.prose h4 { font-size: 1.0625rem; }
+
+.prose p {
+  margin: 1em 0;
+}
+
+/* External links */
+.prose a {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--color-border-emphasized);
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.2s, color 0.2s;
+}
+
+.prose a:hover {
+  text-decoration-color: var(--color-accent);
+  color: var(--color-text-accent);
+}
+
+/* Internal wikilinks - more prominent */
+.prose a.internal-link {
+  color: var(--color-text-accent);
+  text-decoration-color: var(--color-border-emphasized);
+  transition: background 0.2s, text-decoration-color 0.2s;
+}
+
+.prose a.internal-link:hover {
+  background: var(--color-accent-muted);
+  text-decoration-color: var(--color-accent);
+}
+
+/* Worn path: a wikilink the reader has already opened. Dimmed like the
+   visited rows on the notes index — the garden remembers where you've been. */
+.prose a.internal-link.walked {
+  color: var(--color-text-secondary);
+  text-decoration-color: var(--color-border);
+}
+
+.prose a.internal-link.walked:hover {
+  color: var(--color-text-accent);
+  text-decoration-color: var(--color-accent);
+}
+
+.prose .broken-link {
+  color: var(--color-text-disabled);
+  cursor: help;
+  border-bottom: 1px dashed var(--color-border-emphasized);
+}
+
+.prose strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+
+/* Resets (Tailwind preflight + Astryx) strip list-style; restore it in prose */
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+
+.prose li {
+  margin: 0.35em 0;
+}
+
+.prose li::marker {
+  color: var(--color-text-disabled);
+}
+
+/* Hairline, not a tab. A 3px white bar was the loudest mark on the page
+   and the same slab this site's own identity calls a hairline rail
+   everywhere else; the quote earns its separation from indent and ink. */
+.prose blockquote {
+  border-left: 1px solid var(--color-border-emphasized);
+  padding-left: 1.5em;
+  margin: 1.75em 0;
+  color: var(--color-text-secondary);
+}
+
+.prose code {
+  font-family: var(--font-family-code);
+  font-size: 0.875em;
+  background: var(--color-background-muted);
+  padding: 0.2em 0.45em;
+  border-radius: var(--radius-inner, 4px);
+  color: var(--color-text-primary);
+}
+
+.prose pre {
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-container, 8px);
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+/* Shiki-highlighted blocks: keep the garden's surface + hairline chrome
+   over the theme's inline background, and pin a quiet language label to
+   the top-right corner. */
+.prose .code-block {
+  position: relative;
+  margin: 1.5em 0;
+}
+
+.prose .code-block pre {
+  margin: 0;
+  background: var(--color-background-surface) !important;
+}
+
+.prose .code-lang {
+  position: absolute;
+  top: 0.55em;
+  right: 0.85em;
+  font-family: var(--font-family-code);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--color-text-disabled);
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .prose pre {
+    padding: 0.85em;
+  }
+  .prose pre code {
+    font-size: 0.8125rem;
+  }
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 2em 0;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-container, 8px);
+  margin: 1.5em 0;
+}
+
+/* Wide tables scroll inside their wrapper instead of stretching the page —
+   the wrapper comes from rehype-rich-content. */
+.prose .table-scroll {
+  overflow-x: auto;
+  margin: 1.5em 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose .table-scroll table {
+  margin: 0;
+  min-width: max-content;
+  max-width: none;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.875rem;
+}
+
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.5em 0.75em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prose th {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+}
+
+/* GFM task lists: real checkbox glyphs, no doubled disc markers */
+.prose ul.contains-task-list {
+  list-style: none;
+  padding-left: 0.25em;
+}
+
+.prose li.task-list-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+}
+
+.prose li.task-list-item input[type='checkbox'] {
+  appearance: none;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  translate: 0 2px;
+  border: 1px solid var(--color-border-emphasized);
+  border-radius: 4px;
+  background: var(--color-background-surface);
+}
+
+.prose li.task-list-item input[type='checkbox']:checked {
+  border-color: var(--color-text-secondary);
+  background:
+    center / 10px no-repeat
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.5L4.8 9 10 3.5' fill='none' stroke='%23e6e6e6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      var(--color-background-muted);
+}
+
+.prose li.task-list-item input[type='checkbox']:checked ~ * {
+  color: var(--color-text-secondary);
+}
+
+/* GFM footnotes: quiet endnote block */
+.prose .footnotes {
+  margin-top: 3em;
+  padding-top: 1.5em;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.prose .footnotes h2 {
+  display: none;
+}
+
+.prose sup a[data-footnote-ref] {
+  text-decoration: none;
+  padding: 0 0.15em;
+  color: var(--color-text-accent);
+}
+
+.prose .heading-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.prose .heading-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Callouts - Astryx tinted backgrounds */
+.callout {
+  border-left: 1px solid var(--color-border-emphasized);
+  background: var(--color-background-muted);
+  border-radius: 0 var(--radius-container, 8px) var(--radius-container, 8px) 0;
+  padding: 1em 1.25em;
+  margin: 1.5em 0;
+}
+
+.callout-title {
+  font-family: var(--font-family-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5em;
+  color: var(--color-text-secondary);
+}
+
+.callout-content p:first-child { margin-top: 0; }
+.callout-content p:last-child { margin-bottom: 0; }
+
+/* Tip / Success - green tint */
+.callout-tip,
+.callout-success {
+  border-left-color: var(--color-border-green);
+  background: var(--color-background-green);
+}
+.callout-tip .callout-title,
+.callout-success .callout-title { color: var(--color-text-green); }
+
+/* Warning / Question - yellow tint */
+.callout-warning,
+.callout-question {
+  border-left-color: var(--color-border-yellow);
+  background: var(--color-background-yellow);
+}
+.callout-warning .callout-title,
+.callout-question .callout-title { color: var(--color-text-yellow); }
+
+/* Danger / Failure / Bug - red tint */
+.callout-danger,
+.callout-failure,
+.callout-bug {
+  border-left-color: var(--color-border-red);
+  background: var(--color-background-red);
+}
+.callout-danger .callout-title,
+.callout-failure .callout-title,
+.callout-bug .callout-title { color: var(--color-text-red); }
+
+/* Info / Note / Abstract / Todo - cyan tint */
+.callout-info,
+.callout-note,
+.callout-abstract,
+.callout-todo {
+  border-left-color: var(--color-border-cyan);
+  background: var(--color-background-cyan);
+}
+.callout-info .callout-title,
+.callout-note .callout-title,
+.callout-abstract .callout-title,
+.callout-todo .callout-title { color: var(--color-text-cyan); }
+
+/* Quote - subtle */
+.callout-quote {
+  border-left-color: var(--color-text-secondary);
+  background: var(--color-background-muted);
+}
+.callout-quote .callout-title { color: var(--color-text-secondary); }
+
+/* Example */
+.callout-example {
+  border-left-color: var(--color-text-secondary);
+  background: var(--color-background-muted);
+}
+.callout-example .callout-title { color: var(--color-text-secondary); }
+
+/* Assumed-audience aside — the note names its reader before it begins.
+   Callout bones, grayscale ink: epistemic signposting, not a highlight. */
+.assumed-audience {
+  max-width: 36em;
+  margin: 0 0 1.75rem;
+  padding: 0.85em 1.15em;
+  border-left: 1px solid var(--color-border-emphasized);
+  background: var(--color-background-muted);
+  border-radius: 0 var(--radius-container, 8px) var(--radius-container, 8px) 0;
+}
+
+/* Tag pills for the tag cloud (Astryx Badge covers inline tags) */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  /* 4px was under the readable floor for 13px type and made every pill
+     feel pinched around its own label */
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  color: var(--color-text-secondary);
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border);
+}
+
+.tag-pill:hover { opacity: 0.85; }
+
+/* Homepage recent note rows */
+.recent-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-element, 8px);
+  transition: background 0.15s;
+  margin: 0 -0.75rem;
+}
+
+.recent-row:hover {
+  background: var(--color-overlay-hover);
+}
+
+/* Frosted overlay panels (home + graph).
+   NOTE: declare only the standard backdrop-filter — writing the -webkit-
+   prefix by hand makes the minifier merge the pair and emit only the
+   prefixed form, which drops the effect entirely. Backgrounds stay
+   near-opaque so text is readable even where blur is unsupported. */
+.glass-panel {
+  background: color-mix(in srgb, var(--color-background-body) 82%, transparent);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-container, 12px);
+}
+
+/* Glassmorphic text shimmer (ShimmerText), glow-free: the base dims while
+   a sharp cursor-tracking light spot clipped to the lettering reveals
+   full-brightness glyphs. --shine-x is cursor position.
+
+   Two modes:
+   1) shimmer-text: for string children, uses ::before + data-text to avoid
+      duplicating DOM text (important for H1 SEO).
+   2) shimmer-wrap: for JSX children, uses duplicate span with aria-hidden
+      (acceptable for decorative non-heading text). */
+
+/* Mode 1: String children — single DOM text via ::before pseudo-element */
+.shimmer-text {
+  position: relative;
+  display: inline-block;
+  --shine-x: 50%;
+  --shine-opacity: 0;
+}
+
+.shimmer-text::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: var(--shine-opacity);
+  pointer-events: none;
+  user-select: none;
+  background-image: radial-gradient(
+    150px circle at var(--shine-x) 50%,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0.85) 40%,
+    transparent 70%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Mode 2: JSX children — duplicate span fallback */
+.shimmer-wrap {
+  position: relative;
+  display: inline-block;
+  --shine-x: 50%;
+  --shine-opacity: 0;
+}
+
+.shimmer-base {
+  display: inline-block;
+}
+
+.shimmer-layer {
+  position: absolute;
+  inset: 0;
+  display: inline-block;
+  opacity: var(--shine-opacity);
+  pointer-events: none;
+  user-select: none;
+  background-image: radial-gradient(
+    150px circle at var(--shine-x) 50%,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0.85) 40%,
+    transparent 70%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* Floating island nav — detached glass pill with real Gaussian blur */
+.nav-island {
+  isolation: isolate;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.02)
+    ),
+    color-mix(in srgb, var(--color-background-body) 72%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-island:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nav-island {
+    background: var(--color-background-body);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-island {
+    border-radius: 9999px;
+  }
+}
+
+/* Nav links — compact, medium weight, pill hover/active */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  transition:
+    color 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 768px) {
+  .nav-link {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+}
+
+.nav-link:hover {
+  color: var(--color-text-primary);
+  background: var(--color-overlay-hover);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-link:active {
+    transform: scale(0.96);
+  }
+}
+
+.nav-link-active {
+  color: var(--color-text-primary);
+  background: var(--color-overlay-pressed);
+}
+
+/* Bare icon tap-target — matches n3wth.com's nav-search exactly. */
+.nav-search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-search:hover {
+  color: var(--color-text-primary);
+}
+
+.nav-search::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-search {
+    transition: none;
+  }
+}
+
+/* Plant glyph draw-in: the note's plant grows when the page opens */
+.plant-draw path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: plant-draw 0.7s ease-out forwards;
+}
+.plant-draw circle {
+  opacity: 0;
+  animation: plant-pop 0.4s ease-out forwards;
+}
+@keyframes plant-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes plant-pop {
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plant-draw path { animation: none; stroke-dashoffset: 0; }
+  .plant-draw circle { animation: none; opacity: 1; }
+}
+
+/* Thin reading-progress rail pinned above the nav; scaleX driven by
+   GSAP scrub in NotePageClient. */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  background: linear-gradient(
+    to right,
+    var(--color-text-secondary),
+    var(--color-text-primary)
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+/* Faint growth-stage glow behind the note header. z-index -1 paints it
+   under all in-flow content; pointer-events off keeps it inert. */
+.stage-ambient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45vh;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(60% 100% at 50% 0%, var(--stage-tint, transparent), transparent 72%);
+}
+
+.stage-ambient[data-stage='evergreen'] {
+  --stage-tint: color-mix(in srgb, var(--color-border-green) 16%, transparent);
+}
+
+.stage-ambient[data-stage='budding'] {
+  --stage-tint: color-mix(in srgb, var(--color-border-yellow) 11%, transparent);
+}
+
+.stage-ambient[data-stage='seedling'] {
+  --stage-tint: color-mix(in srgb, var(--color-text-disabled) 9%, transparent);
+}
+
+}
