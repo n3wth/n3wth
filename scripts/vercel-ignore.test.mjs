@@ -16,6 +16,12 @@ const runFor = files => () => ({ status: 0, stdout: JSON.stringify(affectedWorks
 test('missing previous deployment builds without invoking comparison', () => {
   assert.equal(deploymentExitCode('@n3wth/portfolio', undefined, () => assert.fail('must not compare')), 1)
 })
+test('deployment selection excludes validation-only changes', () => {
+  assert.equal(deploymentExitCode('@n3wth/portfolio', 'previous', (_command, args) => {
+    assert.ok(args.includes('--deployment'))
+    return { status: 0, stdout: '[]' }
+  }), 0)
+})
 test('shared configuration deploys both consumers', () => {
   for (const app of ['@n3wth/portfolio', '@n3wth/ui-docs']) {
     assert.equal(deploymentExitCode(app, 'previous', runFor(['packages/site-config/index.ts'])), 1)

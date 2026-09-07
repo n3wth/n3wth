@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL('../', import.meta.url))
 export function deploymentExitCode(workspace, previousSha, run = spawnSync) {
   if (!workspace || !previousSha || /^0+$/.test(previousSha)) return 1
   try {
-    const result = run(process.execPath, [resolve(root, 'scripts/affected.mjs'), '--base', previousSha, '--list'], {
+    const result = run(process.execPath, [resolve(root, 'scripts/affected.mjs'), '--base', previousSha, '--list', '--deployment'], {
       cwd: root,
       encoding: 'utf8',
       timeout: 30_000,
