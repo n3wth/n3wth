@@ -1,0 +1,87 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import dts from 'vite-plugin-dts'
+import { resolve } from 'path'
+// @ts-expect-error Build helper is an ESM script.
+import { buildStyles } from './scripts/build-styles.mjs'
+
+export default defineConfig({
+  plugins: [
+    { name: 'package-styles', closeBundle: buildStyles },
+    react(),
+    dts({
+      include: ['src'],
+      outDir: 'dist',
+      // Generate declaration files alongside modules for better tree-shaking
+      rollupTypes: false,
+    })
+  ],
+  build: {
+    // Don't copy public/ (demo favicon, robots.txt, registry) into dist;
+    // the npm package ships fonts via the "files" field instead.
+    copyPublicDir: false,
+    lib: {
+      entry: {
+        index: resolve(__dirname, 'src/index.ts'),
+        'og/index': resolve(__dirname, 'src/og/index.ts'),
+      },
+      formats: ['es'],
+    },
+    rollupOptions: {
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        // Astryx's dist imports the dev JSX runtime. React 19 strips it from
+        // production bundles, so this stays external for the consuming app's
+        // bundler to resolve — apps building for production need their own
+        // resolve alias to a jsx-dev-runtime shim (see demo/jsx-dev-runtime-shim.js
+        // in this repo, or src/lib/jsx-dev-runtime-shim.js in garden.n3wth.com,
+        // for the pattern).
+        'react/jsx-dev-runtime',
+        // Mark gsap as external since it's an optional peer dependency
+        'gsap',
+        'gsap/ScrollTrigger',
+      ],
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          gsap: 'gsap',
+        },
+        // Preserve per-component module structure so consumers tree-shake
+        // unused components (and their deps, e.g. gsap) instead of pulling
+        // the whole barrel. preserveModulesRoot keeps the dist layout flat
+        // (dist/atoms/... not dist/src/atoms/...) so the exports map resolves.
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        entryFileNames: '[name].js',
+        // Ensure proper ESM output
+        format: 'es',
+        // Add banner for proper module resolution
+        banner: '/* @n3wth/ui - Atomic design system */',
+      },
+      // Ensure external modules aren't bundled
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+      },
+    },
+    cssCodeSplit: false,
+    // Minify for production
+    minify: 'esbuild',
+    // Generate sourcemaps for debugging
+    sourcemap: true,
+    // Target modern browsers only
+    target: 'es2020',
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src')
+    }
+  },
+  // Optimize dependency pre-bundling
+  optimizeDeps: {
+    include: ['clsx', 'tailwind-merge'],
+  },
+})

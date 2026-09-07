@@ -1,0 +1,310 @@
+[
+  {
+    "project": "n3wth",
+    "variables": [
+      {
+        "name": "GEMINI_API_KEY",
+        "scopes": [
+          "production"
+        ]
+      },
+      {
+        "name": "OPENROUTER_API_KEY",
+        "scopes": [
+          "preview"
+        ]
+      },
+      {
+        "name": "OPENROUTER_API_KEY",
+        "scopes": [
+          "production"
+        ]
+      },
+      {
+        "name": "GEMINI_API_KEY",
+        "scopes": [
+          "preview"
+        ]
+      },
+      {
+        "name": "POSTHOG_PERSONAL_API_KEY",
+        "scopes": [
+          "production"
+        ]
+      }
+    ]
+  },
+  {
+    "project": "ui",
+    "variables": []
+  },
+  {
+    "project": "garden",
+    "variables": []
+  },
+  {
+    "project": "skills",
+    "variables": [
+      {
+        "name": "POSTHOG_PERSONAL_API_KEY",
+        "scopes": [
+          "production"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_AXIOM_TOKEN",
+        "scopes": [
+          "production"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_AXIOM_DATASET",
+        "scopes": [
+          "production"
+        ]
+      },
+      {
+        "name": "GOOGLE_GENERATIVE_AI_API_KEY",
+        "scopes": [
+          "production"
+        ]
+      },
+      {
+        "name": "AI_GATEWAY_API_KEY",
+        "scopes": [
+          "development",
+          "preview",
+          "production"
+        ]
+      },
+      {
+        "name": "SENTRY_PUBLIC_KEY",
+        "scopes": [
+          "production",
+          "preview"
+        ]
+      },
+      {
+        "name": "SENTRY_OTLP_TRACES_URL",
+        "scopes": [
+          "production",
+          "preview"
+        ]
+      },
+      {
+        "name": "SENTRY_VERCEL_LOG_DRAIN_URL",
+        "scopes": [
+          "production",
+          "preview"
+        ]
+      },
+      {
+        "name": "VERCEL_GIT_COMMIT_SHA",
+        "scopes": [
+          "production",
+          "preview"
+        ]
+      },
+      {
+        "name": "SENTRY_AUTH_TOKEN",
+        "scopes": [
+          "production",
+          "preview"
+        ]
+      },
+      {
+        "name": "SENTRY_DSN",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "SENTRY_PROJECT",
+        "scopes": [
+          "production",
+          "preview"
+        ]
+      },
+      {
+        "name": "SENTRY_ORG",
+        "scopes": [
+          "production",
+          "preview"
+        ]
+      },
+      {
+        "name": "POSTGRES_URL",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "NEON_AUTH_BASE_URL",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "POSTGRES_PRISMA_URL",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "DATABASE_URL_UNPOOLED",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "POSTGRES_URL_NON_POOLING",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "PGHOST",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "POSTGRES_USER",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "DATABASE_URL",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "POSTGRES_PASSWORD",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "POSTGRES_DATABASE",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "PGPASSWORD",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "PGDATABASE",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "PGHOST_UNPOOLED",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "PGUSER",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "POSTGRES_URL_NO_SSL",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "POSTGRES_HOST",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "NEON_PROJECT_ID",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      },
+      {
+        "name": "VITE_NEON_AUTH_URL",
+        "scopes": [
+          "production",
+          "preview",
+          "development"
+        ]
+      }
+    ]
+  },
+  {
+    "project": "kit",
+    "variables": []
+  },
+  {
+    "project": "r3",
+    "variables": [
+      {
+        "name": "POSTHOG_PERSONAL_API_KEY",
+        "scopes": [
+          "production"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_AXIOM_TOKEN",
+        "scopes": [
+          "production"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_AXIOM_DATASET",
+        "scopes": [
+          "production"
+        ]
+      }
+    ]
+  }
+]

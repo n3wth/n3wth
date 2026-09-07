@@ -31,6 +31,16 @@ dist-ssr
 
 # Internal docs (contains SIDs, API references, playbooks)
 docs/
+!docs/
+docs/*
+!docs/workspace/
 claudedocs/
 .env*
 .vercel
+
+playwright-report/
+test-results/
+
+# This is source code, not the macOS custom-folder Icon file.
+!/packages/ui/src/atoms/Icon/
+!/packages/ui/src/atoms/Icon/**

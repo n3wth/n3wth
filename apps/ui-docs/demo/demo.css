@@ -1,0 +1,322 @@
+@import 'tailwindcss';
+@import '@n3wth/ui/styles';
+@source "../../../packages/ui/dist/**/*.js";
+@source "../demo/**/*.tsx";
+
+/* Canonical wireframe typography: Satoshi for display, Geist Sans for body.
+   theme.css intentionally ships no fonts — each app declares its own.
+   The demo uses Satoshi for display headings, Geist Sans for body/UI. */
+:root,
+[data-theme='dark'],
+[data-theme='light'] {
+  --font-display: 'Satoshi', system-ui, sans-serif;
+}
+
+/* Prose styles for markdown docs */
+.prose {
+  max-width: 72ch;
+  line-height: 1.75;
+  color: var(--color-grey-200);
+}
+
+.prose > * + * {
+  margin-top: 1.25em;
+}
+
+/* Headings */
+.prose h1 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-top: 0;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.prose h2 {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--color-white);
+  margin-top: 2.5em;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.prose h3 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-white);
+  margin-top: 2em;
+  margin-bottom: 0.5rem;
+}
+
+.prose h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-grey-300);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1.5em;
+  margin-bottom: 0.5rem;
+}
+
+/* Paragraphs */
+.prose p {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+/* Strong / emphasis */
+.prose strong {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+/* Flat system: no italics for emphasis — emphasis carries via ink weight */
+.prose em {
+  font-style: normal;
+  color: var(--color-white);
+}
+
+/* Links */
+.prose a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.prose a:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+  padding-left: 1.5em;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+.prose li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.prose li::marker {
+  color: var(--color-grey-600);
+}
+
+/* Inline code */
+.prose code:not(pre code) {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  padding: 0.15em 0.4em;
+  color: var(--color-grey-100);
+}
+
+/* Code blocks */
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  color: var(--color-grey-100);
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-white);
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--glass-highlight);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.prose td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--glass-border);
+  vertical-align: top;
+}
+
+.prose td code {
+  font-size: 0.8em;
+  white-space: nowrap;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: 1rem;
+  margin-left: 0;
+  color: var(--color-grey-300);
+}
+
+/* Horizontal rules */
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--glass-border);
+  margin: 2em 0;
+}
+
+/* Images */
+.prose img {
+  max-width: 100%;
+  border-radius: 12px;
+}
+
+/* rehype-highlight syntax colors */
+.prose .hljs-keyword,
+.prose .hljs-selector-tag,
+.prose .hljs-built_in {
+  color: var(--color-mint);
+}
+
+.prose .hljs-string,
+.prose .hljs-attr {
+  color: var(--color-sage);
+}
+
+.prose .hljs-comment {
+  color: var(--color-grey-600);
+}
+
+.prose .hljs-number,
+.prose .hljs-literal {
+  color: var(--color-gold);
+}
+
+.prose .hljs-title,
+.prose .hljs-section,
+.prose .hljs-type {
+  color: var(--color-coral);
+}
+
+.prose .hljs-name,
+.prose .hljs-tag {
+  color: var(--color-coral);
+}
+
+.prose .hljs-attribute {
+  color: var(--color-mint);
+}
+
+.prose .hljs-variable,
+.prose .hljs-template-variable {
+  color: var(--color-white);
+}
+
+.prose .hljs-punctuation {
+  color: var(--color-grey-400);
+}
+
+/* ---------- Nav-island (SiteNav.tsx) ----------
+   Frosted-glass pill matching n3wth family chrome.
+   Real Gaussian blur, translucent fill, hairline border. */
+.site-nav-pill {
+  isolation: isolate;
+  background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--glass-border);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-nav-pill {
+    background: var(--color-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Nav links: dim at rest, brighten on hover/active;
+   icons share the same resting shade. */
+.nav-pill-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  color: var(--color-grey-400);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.nav-pill-link:hover {
+  color: var(--color-white);
+  background: var(--glass-bg);
+}
+.nav-pill-link-active {
+  color: var(--color-white);
+  background: var(--glass-bg);
+}
+
+.nav-pill-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-grey-400);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.nav-pill-icon:hover {
+  color: var(--color-white);
+}
+
+.mobile-nav-pill-link {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--color-white);
+}
+.mobile-nav-pill-link:active {
+  background: var(--glass-bg);
+}

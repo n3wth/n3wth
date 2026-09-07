@@ -15,11 +15,20 @@ I build agent infrastructure — memory, tooling, and interfaces that make AI sy
 
 ## Site
 
-This repo is also [n3wth.com](https://n3wth.com) — React 19, Vite 7, Tailwind v4, GSAP.
+This repository contains the portfolio and the UI documentation pilot as independently built npm workspaces. Use Node 24 and install from the repository root.
 
 ```bash
-npm install && npm run dev
+npm install --global npm@11.19.1
+npm ci
+npm run dev             # Portfolio
+npm run dev:ui          # Build/watch the UI library and run its docs
+npm run build:portfolio
+npm run build:ui
+npm run check           # Library and app validation in dependency order
+npm run check:browser   # After building both apps
 ```
+
+Applications live in `apps/portfolio` and `apps/ui-docs`. Shared packages live in `packages/ui` and `packages/site-config`. See [workspace architecture](docs/workspace/architecture.md) and [deployment steps](docs/workspace/deployment.md). Public UI package publishing stays in n3wth/ui during the pilot.
 
 ## Contact
 
