@@ -15,6 +15,6 @@ concurrency:
 
 jobs:
   check:
-    uses: n3wth/ui/.github/workflows/site-check.yml@b581cab69af42366ebe8ac01448460bd57d0a8e4
+    uses: n3wth/ui/.github/workflows/site-check.yml@62839d33ae0a439901b9515339e6259ce6dcf274
     with:
       check-command: npm run check
