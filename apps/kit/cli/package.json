@@ -19,7 +19,7 @@
   "devDependencies": {
     "typescript": "^5.0.0",
     "@types/prompts": "^2.4.9",
-    "@types/node": "^20.0.0"
+    "@types/node": "^26.4.1"
   },
   "files": ["dist"],
   "license": "MIT"
