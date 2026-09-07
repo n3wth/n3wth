@@ -21,10 +21,10 @@ jobs:
     outputs:
       affected: ${{ steps.affected.outputs.workspaces }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -43,7 +43,7 @@ jobs:
         run: node scripts/affected.mjs --base "$BASE_SHA"
       - name: Save built browser targets
         if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/kit')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: browser-targets
           path: |
@@ -60,14 +60,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
       - run: npm install --global npm@11.19.1
       - run: npm ci
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: browser-targets
           path: apps
@@ -75,7 +75,7 @@ jobs:
       - run: npm run check:browser
         env:
           AFFECTED_WORKSPACES: ${{ needs.check.outputs.affected }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: browser-evidence
