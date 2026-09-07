@@ -1,0 +1,24 @@
+'use client'
+
+import posthog from 'posthog-js'
+import { PostHogProvider as PHProvider } from 'posthog-js/react'
+import { useEffect } from 'react'
+
+export function PostHogProvider({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    const host = window.location.hostname
+    if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]') return
+
+    posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
+      api_host: 'https://elephant.n3wth.com',
+      ui_host: 'https://us.i.posthog.com',
+      person_profiles: 'identified_only',
+      capture_pageview: true,
+      capture_pageleave: true,
+      capture_performance: { web_vitals: true },
+      disable_web_experiments: false,
+    })
+  }, [])
+
+  return <PHProvider client={posthog}>{children}</PHProvider>
+}
