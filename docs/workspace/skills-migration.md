@@ -7,7 +7,7 @@ This branch prepares source only. The existing Skills Vercel project and product
 
 ## Preserved boundaries
 
-Application routes, API handlers, proxy/auth behavior, Supabase migrations, skill content, and the legacy Vite surface are preserved. CLI and editor extension remain in the original Skills repository, including their release and install-script workflows. Public repository/raw-content links retain their original destinations.
+The website, API handlers, Supabase migrations, installer and CLI now live in this workspace. The original repository is archived. The public catalog and installer support Gemini; the unused editor extension has been retired. Public source links point to this workspace.
 
 Direct dependency versions are pinned to the source lockfile versions except Vite, aligned from 7.3.1 to the workspace's 7.3.5 to keep plugin types compatible after hoisting. Skills continues consuming published `@n3wth/ui@0.6.1`; the workspace UI library remains `0.9.2`. No UI version migration is included. The affected-workspace graph currently identifies dependencies by package name, so workspace UI edits conservatively also check Skills. That extra validation is safe but unnecessary until the resolver distinguishes registry dependencies from local packages.
 

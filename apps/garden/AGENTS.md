@@ -10,7 +10,7 @@ Digital garden (personal wiki) built with Next.js 16 App Router. Contact: hey@n3
 | `src/` | Chrome: app code, components, plugins, theme |
 | `src/theme/n3wthTheme.ts` | Astryx theme definition — regenerate CSS after edits: `npx astryx theme build src/theme/n3wthTheme.ts -o src/theme/n3wth-theme.css` |
 
-Before any visual/design work, load `.claude/skills/frontend-design/SKILL.md` and `.claude/skills/hallmark/SKILL.md` (anti-AI-slop design) and design against both. Before writing or editing user-facing copy, load `.claude/skills/anti-ai-slop-writing/SKILL.md` and follow its constraints. The heaviest font weight on this site is semibold (600).
+Follow the existing design and plain-language copy. The heaviest font weight on this site is semibold (600).
 
 Compliance, non-negotiable: site content and copy never name AI assistants, models, or their vendors. Before committing any new content or copy, search it for model and vendor names and remove them.
 
@@ -25,11 +25,7 @@ npm run build  # Production build
 
 ## Compliance (non-negotiable)
 
-Never mention any LLM brand on this site. Grep for `claude|anthropic|gpt|chatgpt|openai|sonnet|opus|grok|llama|copilot|qwen|mistral|deepmind` before committing new content. Max font weight: semibold (600).
-
-## Design and copy skills
-
-Before visual/design work, load `.claude/skills/frontend-design/SKILL.md` and `.claude/skills/hallmark/SKILL.md`. Before user-facing copy, load `.claude/skills/anti-ai-slop-writing/SKILL.md`.
+Keep site copy free of model and assistant brands. Max font weight: semibold (600).
 
 ---
 

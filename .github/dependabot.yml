@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directories: [/apps/skills/cli, /apps/skills/vscode-extension]
+    directories: [/apps/skills/cli]
     schedule:
       interval: weekly
     open-pull-requests-limit: 3

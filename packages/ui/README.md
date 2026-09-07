@@ -9,11 +9,10 @@ No shadows, no glows—just clean glassmorphism and precision typography.
 
 ## AI-Native Integration
 
-This library is optimized for AI-driven development (**v0**, **Cursor**, **Google AI Studio**).
+Use this library with Gemini in Google AI Studio.
 
-- **v0 / Shadcn**: Point v0 to this repo or use the [registry.json](./registry.json).
+- **Component registry**: Use the [registry.json](./registry.json).
 - **Google AI Studio**: Use the [native system instructions](./google-ai-studio-instructions.json).
-- **Cursor**: Automated context via [.cursorrules](./.cursorrules).
 
 ---
 

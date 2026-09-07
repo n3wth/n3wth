@@ -11,7 +11,7 @@ Use the existing n3wth/n3wth repository. Retain its history and import the UI li
 - apps/portfolio: existing portfolio application, API functions, public assets and app-specific configs. Name @n3wth/portfolio.
 - apps/ui-docs: UI documentation/demo and its assets and Vite config. Name @n3wth/ui-docs.
 - apps/garden: Garden homepage, notes, content history and search route.
-- apps/skills: Skills website, installer and preserved CLI/editor sources.
+- apps/skills: Gemini skills website, installer and CLI source.
 - apps/kit: Kit website, registry and preserved CLI source.
 - apps/r3-web: r3 website and documentation. Core runtime remains separate.
 - packages/ui: existing public @n3wth/ui library, version 0.9.2. Preserve exports and public fonts. No visual redesign or component API upgrade.
