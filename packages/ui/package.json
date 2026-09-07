@@ -1,0 +1,112 @@
+{
+  "name": "@n3wth/ui",
+  "version": "0.9.2",
+  "description": "Atomic design system for Newth sites - flat, minimal, iOS-inspired",
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./og": {
+      "types": "./dist/og/index.d.ts",
+      "import": "./dist/og/index.js"
+    },
+    "./styles": "./dist/styles.css",
+    "./tailwind": "./tailwind.preset.cjs",
+    "./theme": "./dist/theme.css"
+  },
+  "files": [
+    "dist",
+    "tailwind.preset.cjs",
+    "public/fonts"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src",
+    "size": "size-limit",
+    "prepublishOnly": "npm run build",
+    "check": "npm run lint && npm run build && npm test"
+  },
+  "dependencies": {
+    "@astryxdesign/core": "^0.1.5",
+    "clsx": "^2.1.1",
+    "iconoir-react": "^7.11.0",
+    "tailwind-merge": "^3.4.0"
+  },
+  "peerDependencies": {
+    "gsap": "^3.12.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "gsap": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.37.0",
+    "@mdx-js/rollup": "^3.1.1",
+    "@resvg/resvg-js": "^2.6.2",
+    "@size-limit/file": "^12.0.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/mdx": "^2.0.13",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "@vercel/og": "^1.0.2",
+    "@vitejs/plugin-react": "^5.1.4",
+    "@vitest/coverage-v8": "^4.1.8",
+    "eslint": "^9.37.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.3.0",
+    "gsap": "^3.14.2",
+    "jsdom": "^28.0.0",
+    "posthog-js": "^1.422.5",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-helmet-async": "^3.0.0",
+    "react-router": "^7.13.0",
+    "rehype-highlight": "^7.0.2",
+    "remark-gfm": "^4.0.1",
+    "satori": "^0.33.4",
+    "size-limit": "^12.0.0",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.55.0",
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.0.18",
+    "vitest-axe": "^0.1.0"
+  },
+  "keywords": [
+    "design-system",
+    "react",
+    "tailwind",
+    "atomic-design"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n3wth/ui.git"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ]
+}

@@ -31,6 +31,12 @@ dist-ssr
 
 # Internal docs (contains SIDs, API references, playbooks)
 docs/
+!docs/
+docs/*
+!docs/workspace/
 claudedocs/
 .env*
 .vercel
+
+playwright-report/
+test-results/

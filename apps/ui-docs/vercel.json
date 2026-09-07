@@ -1,0 +1,29 @@
+{
+  "buildCommand": "cd ../.. && npm run build:ui",
+  "outputDirectory": "dist",
+  "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
+  "framework": null,
+  "rewrites": [
+    { "source": "/docs", "destination": "/index.html" },
+    { "source": "/docs/:slug", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+}
