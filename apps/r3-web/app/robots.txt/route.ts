@@ -1,10 +1,12 @@
+import { siteUrls } from "@n3wth/site-config";
+
 export async function GET() {
   const content = `User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /logo-preview
 
-Sitemap: https://r3.n3wth.com/sitemap.xml
+Sitemap: ${siteUrls.r3}/sitemap.xml
 `;
 
   return new Response(content, {

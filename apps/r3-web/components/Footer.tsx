@@ -1,12 +1,14 @@
 "use client";
 
+import { siteUrls } from "@n3wth/site-config";
+
 const products = [
-  { label: "hop.flights", href: "https://hop.flights", external: true },
-  { label: "ui", href: "https://ui.n3wth.com", external: true },
-  { label: "kit", href: "https://kit.n3wth.com", external: true },
-  { label: "garden", href: "https://garden.n3wth.com", external: true },
-  { label: "skills", href: "https://skills.n3wth.com", external: true },
-  { label: "n3wth.com", href: "https://n3wth.com", external: true },
+  { label: "hop.flights", href: siteUrls.hop, external: true },
+  { label: "ui", href: siteUrls.ui, external: true },
+  { label: "kit", href: siteUrls.kit, external: true },
+  { label: "garden", href: siteUrls.garden, external: true },
+  { label: "skills", href: siteUrls.skills, external: true },
+  { label: "n3wth.com", href: siteUrls.home, external: true },
   { label: "Email", href: "mailto:hey@n3wth.com", external: false },
 ];
 
