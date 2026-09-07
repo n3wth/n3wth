@@ -9,6 +9,50 @@ const graph = [
   { name: '@n3wth/site-config', path: 'packages/site-config' },
 ]
 const select = files => affectedWorkspaces(graph, files)
+const lockedGraph = [
+  ...graph,
+  { name: '@n3wth/kit', path: 'apps/kit', dependencies: { '@n3wth/ui': '0.9.1' } },
+]
+const lock = {
+  packages: {
+    ...Object.fromEntries(lockedGraph.map(workspace => [workspace.path, {}])),
+    'node_modules/@n3wth/ui': { link: true, resolved: 'packages/ui' },
+    'node_modules/@n3wth/site-config': { link: true, resolved: 'packages/site-config' },
+    'apps/kit/node_modules/@n3wth/ui': { version: '0.9.1' },
+  },
+}
+test('registry consumer is excluded when a nested package shadows the workspace', () => {
+  assert.deepEqual(affectedWorkspaces(lockedGraph, ['packages/ui/src/Button.tsx'], false, lock),
+    ['@n3wth/site-config', '@n3wth/ui', '@n3wth/ui-docs'])
+})
+test('registry consumer does not build unrelated workspace prerequisites', () => {
+  assert.deepEqual(affectedWorkspaces(lockedGraph, ['apps/kit/app/page.tsx'], false, lock), ['@n3wth/kit'])
+})
+test('linked consumer is included once npm resolves it to the workspace', () => {
+  const linkedLock = structuredClone(lock)
+  delete linkedLock.packages['apps/kit/node_modules/@n3wth/ui']
+  assert.ok(affectedWorkspaces(lockedGraph, ['packages/ui/src/Button.tsx'], false, linkedLock).includes('@n3wth/kit'))
+})
+test('lock-aware graph preserves transitive config propagation', () => {
+  const result = affectedWorkspaces(lockedGraph, ['packages/site-config/index.js'], false, lock)
+  assert.equal(result.length, 4)
+  assert.ok(result.indexOf('@n3wth/ui') < result.indexOf('@n3wth/ui-docs'))
+  assert.ok(!result.includes('@n3wth/kit'))
+})
+test('incomplete lock data falls back conservatively', () => {
+  assert.ok(affectedWorkspaces(lockedGraph, ['packages/ui/src/Button.tsx'], false, { packages: {} }).includes('@n3wth/kit'))
+})
+test('optional workspace dependencies and aliased links are followed', () => {
+  const apps = [
+    { name: 'library', path: 'packages/library' },
+    { name: 'app', path: 'apps/app', optionalDependencies: { alias: '*' } },
+  ]
+  const aliasLock = { packages: {
+    'apps/app': {}, 'packages/library': {},
+    'node_modules/alias': { link: true, resolved: 'packages/library' },
+  } }
+  assert.deepEqual(affectedWorkspaces(apps, ['packages/library/index.js'], false, aliasLock), ['library', 'app'])
+})
 test('shared config reaches transitive consumers in dependency order', () => {
   const result = select(['packages/site-config/src/index.ts'])
   assert.equal(result.length, 4)
