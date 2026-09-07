@@ -1,6 +1,6 @@
 #!/bin/bash
 # n3wth skills installer
-# Usage: curl -fsSL https://skills.n3wth.com/install.sh | bash [-s -- gemini|claude|cursor|windsurf|cody|copilot]
+# Usage: curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- [assistant|all] [skill-id ...]
 
 set -e
 
@@ -78,7 +78,7 @@ install_gemini() {
         print_info "Linking skills from $SOURCE"
 
         for skill in "$SOURCE"/*; do
-            if [ -f "$skill" ]; then
+            if [ -f "$skill" ] || [ -d "$skill" ]; then
                 name=$(basename "$skill")
                 if [ ! -e "$GEMINI_SKILLS/$name" ]; then
                     ln -s "$skill" "$GEMINI_SKILLS/$name"
@@ -133,7 +133,7 @@ install_claude() {
         print_info "Linking skills from $SOURCE"
 
         for skill in "$SOURCE"/*; do
-            if [ -f "$skill" ]; then
+            if [ -f "$skill" ] || [ -d "$skill" ]; then
                 name=$(basename "$skill")
                 if [ ! -e "$CLAUDE_SKILLS/$name" ]; then
                     ln -s "$skill" "$CLAUDE_SKILLS/$name"
@@ -188,7 +188,7 @@ install_cursor() {
         print_info "Linking skills from $SOURCE"
 
         for skill in "$SOURCE"/*; do
-            if [ -f "$skill" ]; then
+            if [ -f "$skill" ] || [ -d "$skill" ]; then
                 name=$(basename "$skill")
                 if [ ! -e "$CURSOR_SKILLS/$name" ]; then
                     ln -s "$skill" "$CURSOR_SKILLS/$name"
@@ -236,7 +236,7 @@ install_windsurf() {
         print_info "Linking skills from $SOURCE"
 
         for skill in "$SOURCE"/*; do
-            if [ -f "$skill" ]; then
+            if [ -f "$skill" ] || [ -d "$skill" ]; then
                 name=$(basename "$skill")
                 if [ ! -e "$WINDSURF_SKILLS/$name" ]; then
                     ln -s "$skill" "$WINDSURF_SKILLS/$name"
@@ -284,7 +284,7 @@ install_cody() {
         print_info "Linking skills from $SOURCE"
 
         for skill in "$SOURCE"/*; do
-            if [ -f "$skill" ]; then
+            if [ -f "$skill" ] || [ -d "$skill" ]; then
                 name=$(basename "$skill")
                 if [ ! -e "$CODY_SKILLS/$name" ]; then
                     ln -s "$skill" "$CODY_SKILLS/$name"
@@ -332,7 +332,7 @@ install_copilot() {
         print_info "Linking skills from $SOURCE"
 
         for skill in "$SOURCE"/*; do
-            if [ -f "$skill" ]; then
+            if [ -f "$skill" ] || [ -d "$skill" ]; then
                 name=$(basename "$skill")
                 if [ ! -e "$COPILOT_SKILLS/$name" ]; then
                     ln -s "$skill" "$COPILOT_SKILLS/$name"
@@ -363,6 +363,54 @@ install_copilot() {
     print_success "GitHub Copilot skills installed to $COPILOT_SKILLS"
 }
 
+install_selected() {
+    local target="$1"
+    shift
+    local temporary source skill entry assistant destination
+    temporary=$(mktemp -d)
+    trap 'rm -rf "$temporary"' EXIT
+    git clone --depth 1 "$SKILLS_REPO" "$temporary" 2>/dev/null || {
+        print_error "Failed to clone skills repository"
+        exit 1
+    }
+    source="$temporary/apps/skills/skills"
+
+    # Validate the entire selection before modifying any assistant directory.
+    for skill in "$@"; do
+        case "$skill" in
+            ''|*[!a-z0-9-]*) print_error "Invalid skill ID: $skill"; exit 1 ;;
+        esac
+        if [ ! -f "$source/$skill.md" ] && [ ! -f "$source/$skill/SKILL.md" ]; then
+            print_error "Skill is not available: $skill"
+            exit 1
+        fi
+    done
+
+    local targets="$target"
+    if [ "$target" = all ]; then
+        targets="gemini claude cursor windsurf cody copilot"
+    fi
+    for assistant in $targets; do
+        destination="$SKILLS_INSTALL_HOME/.$assistant/skills"
+        mkdir -p "$destination"
+        for skill in "$@"; do
+            if [ -f "$source/$skill.md" ]; then
+                entry="$skill.md"
+            else
+                entry="$skill"
+            fi
+            if [ -e "$destination/$entry" ] || [ -L "$destination/$entry" ]; then
+                print_warning "$assistant/$entry already exists, skipping"
+            else
+                cp -R "$source/$entry" "$destination/$entry"
+                print_success "Installed $skill for $assistant"
+            fi
+        done
+    done
+    rm -rf "$temporary"
+    trap - EXIT
+}
+
 # Main
 print_header
 
@@ -370,6 +418,18 @@ PLATFORM=$(detect_platform)
 print_info "Detected platform: $PLATFORM"
 
 TARGET="${1:-all}"
+if [ "$#" -gt 0 ]; then shift; fi
+
+case "$TARGET" in
+    gemini|claude|cursor|windsurf|cody|copilot|all) ;;
+    *) print_error "Unknown target: $TARGET"; exit 1 ;;
+esac
+
+if [ "$#" -gt 0 ]; then
+    install_selected "$TARGET" "$@"
+    print_success "Selected skills installed"
+    exit 0
+fi
 
 case "$TARGET" in
     gemini)

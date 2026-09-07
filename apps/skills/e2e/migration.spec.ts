@@ -26,6 +26,15 @@ test('public installer remains available', async ({ request }) => {
   expect(await response.text()).toContain('#!/bin/bash')
 })
 
+test('curated bundle command selects only available downloads', async ({ page }) => {
+  await page.goto('/curated-bundles/frontend-starter')
+  const command = page.locator('code').filter({ hasText: 'install.sh' }).first()
+  await expect(command).toContainText('bash -s -- all ')
+  await expect(command).not.toContainText('code-reviewer')
+  await expect(page.getByText(/do not yet have downloads/)).toBeVisible()
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
+})
+
 test('fonts referenced by the shared UI stylesheet are available', async ({ request }) => {
   for (const file of ['MonaSans-Variable.woff2', 'MonaSans-Variable-Italic.woff2']) {
     const response = await request.get(`/fonts/${file}`)

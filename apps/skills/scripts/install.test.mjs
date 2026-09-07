@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, chmodSync, rmSync } from 'node:fs'
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, chmodSync, rmSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -37,3 +37,66 @@ printf 'nested skill' > "$5/apps/skills/skills/example/SKILL.md"
     }
   })
 }
+
+function withSelectionFixture(check) {
+  const temporary = mkdtempSync(join(tmpdir(), 'skills-selection-'))
+  try {
+    const bin = join(temporary, 'bin')
+    const home = join(temporary, 'home')
+    mkdirSync(bin)
+    mkdirSync(home)
+    const git = join(bin, 'git')
+    writeFileSync(git, `#!/bin/bash
+set -eu
+mkdir -p "$5/apps/skills/skills/folder/references"
+printf 'flat content' > "$5/apps/skills/skills/flat.md"
+printf 'folder content' > "$5/apps/skills/skills/folder/SKILL.md"
+printf 'reference' > "$5/apps/skills/skills/folder/references/example.md"
+printf 'unselected' > "$5/apps/skills/skills/other.md"
+`)
+    chmodSync(git, 0o755)
+    const run = args => spawnSync('bash', [installer, ...args], {
+      encoding: 'utf8',
+      env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, SKILLS_INSTALL_HOME: home },
+    })
+    check({ home, run })
+  } finally {
+    rmSync(temporary, { recursive: true, force: true })
+  }
+}
+
+test('bundle selection installs only requested flat and directory skills for all assistants', () => {
+  withSelectionFixture(({ home, run }) => {
+    mkdirSync(join(home, '.claude/skills'), { recursive: true })
+    writeFileSync(join(home, '.claude/skills/flat.md'), 'user content')
+    const result = run(['all', 'flat', 'folder'])
+    assert.equal(result.status, 0, result.stdout + result.stderr)
+    for (const assistant of ['gemini', 'claude', 'cursor', 'windsurf', 'cody', 'copilot']) {
+      const dir = join(home, `.${assistant}/skills`)
+      assert.equal(readFileSync(join(dir, 'flat.md'), 'utf8'), assistant === 'claude' ? 'user content' : 'flat content')
+      assert.equal(readFileSync(join(dir, 'folder/SKILL.md'), 'utf8'), 'folder content')
+      assert.equal(readFileSync(join(dir, 'folder/references/example.md'), 'utf8'), 'reference')
+      assert.equal(existsSync(join(dir, 'other.md')), false)
+    }
+  })
+})
+
+test('invalid or missing selections fail before writing any skills', () => {
+  for (const invalid of ['missing', '../folder']) {
+    withSelectionFixture(({ home, run }) => {
+      const result = run(['claude', 'flat', invalid])
+      assert.notEqual(result.status, 0)
+      assert.equal(existsSync(join(home, '.claude')), false)
+    })
+  }
+})
+
+test('unfiltered all-assistant install preserves directory skills when linking', () => {
+  withSelectionFixture(({ home, run }) => {
+    const result = run(['all'])
+    assert.equal(result.status, 0, result.stdout + result.stderr)
+    for (const assistant of ['gemini', 'claude', 'cursor', 'windsurf', 'cody', 'copilot']) {
+      assert.equal(readFileSync(join(home, `.${assistant}/skills/folder/SKILL.md`), 'utf8'), 'folder content')
+    }
+  })
+})
