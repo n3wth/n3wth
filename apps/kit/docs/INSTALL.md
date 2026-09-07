@@ -139,7 +139,7 @@ npx shadcn add @n3wth/use-theme
 
 ### Setup
 
-Download from https://kit.n3wth.com/ai/ or copy from the [public/ai](https://github.com/n3wth/kit/tree/main/public/ai) directory.
+Download from https://kit.n3wth.com/ai/ or copy from the [public/ai](https://github.com/n3wth/n3wth/tree/main/apps/kit/public/ai) directory.
 
 **Cursor:**
 

@@ -1,6 +1,6 @@
 # n3wth/kit
 
-Component registry + marketing site. hey@n3wth.com | github.com/n3wth/kit
+Component registry + marketing site. hey@n3wth.com | github.com/n3wth/n3wth/tree/main/apps/kit
 
 ## Quick Reference
 

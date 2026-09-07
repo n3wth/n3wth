@@ -1,3 +1,4 @@
+import { siteUrls } from '@n3wth/site-config'
 import Link from 'next/link'
 
 const columns = [
@@ -23,19 +24,19 @@ const columns = [
     title: 'Connect',
     links: [
       { label: 'Blog', href: '/blog' },
-      { label: 'GitHub', href: 'https://github.com/n3wth/kit', external: true },
+      { label: 'GitHub', href: 'https://github.com/n3wth/n3wth/tree/main/apps/kit', external: true },
       { label: 'Email', href: 'mailto:hey@n3wth.com' },
     ],
   },
 ] as const
 
 const familyLinks = [
-  { label: 'hop.flights', href: 'https://hop.flights' },
-  { label: 'r3', href: 'https://r3.n3wth.com' },
-  { label: 'garden', href: 'https://garden.n3wth.com' },
-  { label: 'skills', href: 'https://skills.n3wth.com' },
-  { label: 'ui', href: 'https://ui.n3wth.com' },
-  { label: 'n3wth.com', href: 'https://n3wth.com' },
+  { label: 'hop.flights', href: siteUrls.hop },
+  { label: 'r3', href: siteUrls.r3 },
+  { label: 'garden', href: siteUrls.garden },
+  { label: 'skills', href: siteUrls.skills },
+  { label: 'ui', href: siteUrls.ui },
+  { label: 'n3wth.com', href: siteUrls.home },
   { label: 'Email', href: 'mailto:hey@n3wth.com' },
 ] as const
 

@@ -75,7 +75,7 @@ export function Nav() {
 
         {/* Icons */}
         <a
-          href="https://github.com/n3wth/kit"
+          href="https://github.com/n3wth/n3wth/tree/main/apps/kit"
           target="_blank"
           rel="noopener noreferrer"
           className="flex h-8 w-8 items-center justify-center rounded-full text-ink-dim transition-colors hover:bg-bg-raise hover:text-ink"

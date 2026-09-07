@@ -16,6 +16,7 @@
     "registry:dev": "npx shadcn@latest build --watch"
   },
   "dependencies": {
+    "@n3wth/site-config": "*",
     "@gsap/react": "2.1.2",
     "@n3wth/ui": "0.9.1",
     "@next/third-parties": "16.3.4",

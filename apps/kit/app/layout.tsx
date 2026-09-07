@@ -1,3 +1,4 @@
+import { siteUrls } from '@n3wth/site-config'
 import type { Metadata } from 'next'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
@@ -8,7 +9,7 @@ import { PostHogProvider } from './_components/posthog-provider'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kit.n3wth.com'),
+  metadataBase: new URL(siteUrls.kit),
   title: {
     default: 'n3wth/kit — shadcn registry with AI context packs',
     template: '%s — n3wth/kit',
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'n3wth/kit — shadcn registry with AI context packs',
     description: 'A shadcn component registry with AI context packs. Install via npx shadcn add, then drop in .cursorrules or AGENTS.md.',
-    url: 'https://kit.n3wth.com',
+    url: siteUrls.kit,
     siteName: 'n3wth/kit',
     type: 'website',
     locale: 'en_US',
@@ -56,21 +57,21 @@ export const metadata: Metadata = {
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  '@id': 'https://kit.n3wth.com/#website',
+  '@id': `${siteUrls.kit}/#website`,
   name: 'n3wth/kit',
-  url: 'https://kit.n3wth.com',
+  url: siteUrls.kit,
   description: 'A shadcn component registry with AI context packs for v0, Cursor, Windsurf, Lovable, and Cline.',
   publisher: {
     '@type': 'Organization',
     name: 'n3wth',
-    url: 'https://n3wth.com',
+    url: siteUrls.home,
     email: 'hey@n3wth.com',
   },
   potentialAction: {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://kit.n3wth.com/components?q={search_term_string}',
+      urlTemplate: `${siteUrls.kit}/components?q={search_term_string}`,
     },
     'query-input': 'required name=search_term_string',
   },
@@ -79,18 +80,18 @@ const websiteJsonLd = {
 const softwareJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareSourceCode',
-  '@id': 'https://kit.n3wth.com/#software',
+  '@id': `${siteUrls.kit}/#software`,
   name: 'n3wth/kit',
   description: 'A shadcn component registry with AI context packs. 49 items: 32 UI components, 4 blocks, 11 hooks, 1 utility, 1 design style.',
-  url: 'https://kit.n3wth.com',
-  codeRepository: 'https://github.com/n3wth/kit',
+  url: siteUrls.kit,
+  codeRepository: 'https://github.com/n3wth/n3wth/tree/main/apps/kit',
   programmingLanguage: ['TypeScript', 'React', 'Tailwind CSS'],
   runtimePlatform: 'Node.js',
   license: 'https://opensource.org/licenses/MIT',
   author: {
     '@type': 'Person',
     name: 'Oliver Newth',
-    url: 'https://n3wth.com',
+    url: siteUrls.home,
   },
   offers: {
     '@type': 'Offer',

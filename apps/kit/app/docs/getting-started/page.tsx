@@ -303,12 +303,12 @@ import { Search } from 'lucide-react'
               <p className="mt-2 text-sm text-ink-dim">
                 Verify the registry is reachable. If kit.n3wth.com is down, check{' '}
                 <a
-                  href="https://github.com/n3wth/kit"
+                  href="https://github.com/n3wth/n3wth/tree/main/apps/kit"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-ink underline underline-offset-4"
                 >
-                  github.com/n3wth/kit
+                  github.com/n3wth/n3wth/tree/main/apps/kit
                 </a>
                 {' '}and install directly from the source.
               </p>
