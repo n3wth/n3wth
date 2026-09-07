@@ -70,7 +70,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("mcp");
 
   const codeExamples = {
-    mcp: `// MCP client config (e.g. claude_desktop_config.json)
+    mcp: `// MCP client config (e.g. .gemini/settings.json)
 {
   "mcpServers": {
     "r3": {
@@ -80,10 +80,9 @@ export default function Home() {
   }
 }`,
     cli: `# MCP CLI tools
-claude mcp add r3 "npx @n3wth/r3"
+gemini mcp add r3 npx -y @n3wth/r3
 
-# Or via environment variable
-export MCP_SERVERS='{"r3":{"command":"npx","args":["@n3wth/r3"]}}'`,
+gemini mcp list`,
   };
 
   return (

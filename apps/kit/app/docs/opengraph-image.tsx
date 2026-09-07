@@ -75,7 +75,7 @@ export default async function Image() {
               lineHeight: 1.5,
             }}
           >
-            Guides for Cursor, v0, Windsurf, Lovable, and Cline integration
+            Guides for Gemini CLI integration
           </div>
           <div
             style={{

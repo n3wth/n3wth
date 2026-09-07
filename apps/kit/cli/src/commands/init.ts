@@ -14,7 +14,7 @@ const REGISTRY_URL = 'https://kit.n3wth.com'
 
 const BASE_COMPONENTS = ['cn', 'button', 'card', 'input']
 
-const CURSORRULES = `# n3wth Design System
+const GEMINI_CONTEXT = `# n3wth Design System
 
 ## Component Usage
 - Import UI components from @/components/ui
@@ -146,10 +146,10 @@ async function installBaseComponents(projectDir: string): Promise<void> {
 async function copyContextPacks(projectDir: string): Promise<void> {
   console.log(chalk.blue('Copying AI context packs...'))
 
-  await writeFile(join(projectDir, '.cursorrules'), CURSORRULES)
+  await writeFile(join(projectDir, 'GEMINI.md'), GEMINI_CONTEXT)
   await writeFile(join(projectDir, 'AGENTS.md'), AGENTS_MD)
 
-  console.log(chalk.green('Created .cursorrules and AGENTS.md'))
+  console.log(chalk.green('Created GEMINI.md and AGENTS.md'))
 }
 
 async function setTheme(projectDir: string, theme: 'dark' | 'light'): Promise<void> {

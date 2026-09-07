@@ -39,7 +39,7 @@ const entries = [
     title: 'Business launch',
     changes: [
       'Added email waitlist capture on landing page',
-      'Complete documentation for Cursor, Windsurf, v0, and Lovable',
+      'Complete documentation for Gemini CLI',
       'Blog with technical content for SEO',
       'Interactive component page with search, filter, and copy-to-clipboard',
       'Mobile hamburger navigation',
@@ -63,7 +63,7 @@ const entries = [
     title: 'Initial release',
     changes: [
       '32 UI components + 4 blocks + 11 hooks, built on Tailwind CSS v4',
-      'AI context packs (.cursorrules, AGENTS.md, MCP config, components.json)',
+      'AI context packs (GEMINI.md, AGENTS.md, MCP config, components.json)',
       'shadcn registry protocol support',
       'CLI tool for project scaffolding',
       'Marketing site with documentation',

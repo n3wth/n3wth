@@ -23,7 +23,7 @@ export function JsonLd({ type, data }: JsonLdProps) {
       alternateName: "n3wth/r3",
       url: baseUrl,
       description:
-        "Persistent memory for AI assistants. An MCP server that gives Claude, Gemini, and GPT memory that survives between sessions.",
+        "Persistent memory for AI assistants. An MCP server that gives Gemini memory that survives between sessions.",
       publisher: {
         "@type": "Person",
         name: "Oliver Newth",
@@ -67,9 +67,7 @@ export function JsonLd({ type, data }: JsonLdProps) {
       keywords: [
         "MCP",
         "AI memory",
-        "Claude",
         "Gemini",
-        "GPT",
         "Redis",
         "vector search",
         "knowledge graph",

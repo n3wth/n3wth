@@ -26,9 +26,9 @@ r3 is a Model Context Protocol (MCP) server that gives AI assistants persistent 
 
 ## Integration
 
-### Claude Desktop
+### Gemini CLI
 
-Add to \`~/.claude/claude_desktop_config.json\`:
+Add to \`~/.gemini/settings.json\`:
 
 \`\`\`json
 {
@@ -41,10 +41,10 @@ Add to \`~/.claude/claude_desktop_config.json\`:
 }
 \`\`\`
 
-### Claude Code
+### Gemini CLI
 
 \`\`\`bash
-claude mcp add r3 "npx @n3wth/r3"
+gemini mcp add r3 npx -y @n3wth/r3
 \`\`\`
 
 ### Gemini CLI
