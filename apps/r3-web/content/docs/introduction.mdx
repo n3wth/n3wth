@@ -1,0 +1,100 @@
+---
+order: 1
+title: Introduction
+---
+
+# r3 Documentation
+
+MCP server for persistent AI memory. Local Redis storage with optional cloud sync.
+
+## Start building
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+  <a href="/docs/quickstart" className="block p-6 rounded-lg border border-rail hover:border-rail-strong transition-colors">
+    <h3 className="text-lg font-medium text-ink mb-2">Quickstart</h3>
+    <div className="text-ink-dim text-sm">Get started in 30 seconds</div>
+  </a>
+
+  <a href="/docs/api-reference" className="block p-6 rounded-lg border border-rail hover:border-rail-strong transition-colors">
+    <h3 className="text-lg font-medium text-ink mb-2">API Reference</h3>
+    <div className="text-ink-dim text-sm">MCP tools</div>
+  </a>
+</div>
+
+## How r3 works
+
+r3 is an MCP server that gives AI applications persistent memory. By default, it uses an embedded Redis server for local storage. No setup required. Optionally add cloud sync with Mem0.
+
+```json
+// MCP client config (e.g. claude_desktop_config.json)
+{
+  "mcpServers": {
+    "r3": {
+      "command": "npx",
+      "args": ["@n3wth/r3"]
+    }
+  }
+}
+```
+
+Once configured, your AI assistant can remember context across conversations:
+
+```
+You: Remember that I prefer TypeScript over JavaScript
+AI: I'll remember your preference for TypeScript.
+
+[New conversation]
+You: What language should I use for this project?
+AI: Based on your preferences, I'd recommend TypeScript.
+```
+
+## Architecture
+
+import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
+
+<ArchitectureDiagram />
+
+## Core concepts
+
+### Memories
+
+Each memory contains:
+
+- **Content**: The information to remember
+- **User ID**: Who it belongs to
+- **Priority**: How important it is (affects caching)
+- **Metadata**: Additional context
+
+### Caching layers
+
+1. **L1 (Redis)**: Hot data, 24-hour TTL
+2. **L2 (Cloud)**: Permanent storage with vector search
+
+### MCP tools
+
+r3 provides these tools to MCP clients:
+
+- `add_memory`: Store new information
+- `search_memory`: Find relevant context
+- `get_all_memories`: List all memories
+- `delete_memory`: Remove specific memory
+- `cache_stats`: Monitor performance
+
+## When to use r3
+
+**Good for:**
+
+- User preferences and settings
+- Conversation history
+- Facts about users or projects
+- Context that should persist
+
+**Not for:**
+
+- Sensitive data (use encryption)
+- Large files (use object storage)
+- Real-time data (use streaming)
+
+## Get help
+
+- [GitHub Issues](https://github.com/n3wth/r3/issues)

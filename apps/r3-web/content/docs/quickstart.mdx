@@ -1,0 +1,143 @@
+---
+order: 2
+title: Quick Start
+---
+
+# Quick Start
+
+Get r3 running in 30 seconds.
+
+## Step 1: Run r3
+
+```bash
+npx @n3wth/r3
+```
+
+r3 starts an embedded Redis server automatically. No setup required.
+
+## Step 2: Add to your MCP client
+
+r3 works with any MCP-compatible client. Add it to your client's config:
+
+```json
+{
+  "mcpServers": {
+    "r3": {
+      "command": "npx",
+      "args": ["@n3wth/r3"]
+    }
+  }
+}
+```
+
+### Client-specific paths
+
+**Claude Desktop:**
+- macOS/Linux: `~/.claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+**Claude Code CLI:**
+```bash
+claude mcp add r3 "npx @n3wth/r3"
+```
+
+**Other MCP clients:** Check your client's documentation for the config file location.
+
+## Step 3: Restart your client
+
+1. Quit the application completely
+2. Start it again
+3. Open a new conversation
+
+## Step 4: Test it works
+
+In your MCP client, type:
+
+```
+Remember that my name is Sarah and I prefer Python for data science projects.
+```
+
+Claude should respond confirming the memory was stored. Then start a new conversation and ask:
+
+```
+What's my name and preferred programming language?
+```
+
+Claude should recall your information from the previous conversation.
+
+## What happens
+
+When you ask Claude to remember something:
+
+1. **Local Storage**: Memory is stored in the embedded Redis server
+2. **Persistence**: Data persists between sessions on your local machine
+3. **Retrieval**: Memories are retrieved using semantic or keyword search
+
+## Optional: Cloud Sync
+
+To backup memories to the cloud, add a Mem0 API key:
+
+```json
+{
+  "mcpServers": {
+    "r3": {
+      "command": "npx",
+      "args": ["@n3wth/r3"],
+      "env": {
+        "MEM0_API_KEY": "mem0_..."
+      }
+    }
+  }
+}
+```
+
+Get a free API key at [mem0.ai](https://mem0.ai).
+
+## Optional: External Redis
+
+For production or shared Redis:
+
+```json
+{
+  "mcpServers": {
+    "r3": {
+      "command": "npx",
+      "args": ["@n3wth/r3"],
+      "env": {
+        "REDIS_URL": "redis://your-redis-server:6379"
+      }
+    }
+  }
+}
+```
+
+## Optional: User ID
+
+To separate memories by user:
+
+```json
+{
+  "env": {
+    "MEM0_USER_ID": "sarah_chen"
+  }
+}
+```
+
+## Common issues
+
+### Redis connection failed
+
+Redis is not running. r3 starts an embedded Redis server by default, but if you specified `REDIS_URL`, check that server is accessible.
+
+### MCP server not found
+
+Claude Desktop needs a restart:
+
+1. Quit Claude Desktop (Cmd+Q / Alt+F4)
+2. Start it again
+3. Check the config file is valid JSON
+
+## Next steps
+
+- [Explore the API](/docs/api-reference) to see all available tools
+- [View troubleshooting guide](/docs/troubleshooting) for production tips

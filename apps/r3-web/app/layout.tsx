@@ -1,0 +1,138 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { AxiomWebVitals } from "next-axiom";
+import { PostHogProvider } from "../components/PostHogProvider";
+import { JsonLd } from "../components/JsonLd";
+import { SkipLink } from "../components/SkipLink";
+import "./globals.css";
+
+const satoshi = localFont({
+  src: "../fonts/Satoshi-Variable.ttf",
+  variable: "--font-satoshi",
+  display: "swap",
+  preload: true,
+});
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
+  preload: false,
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://r3.n3wth.com"),
+  title: {
+    default: "n3wth/r3 - Persistent memory for AI assistants",
+    template: "%s - n3wth/r3",
+  },
+  description:
+    "An MCP server that gives AI assistants persistent memory. Local Redis, vector search, and knowledge graphs.",
+  keywords: [
+    "r3",
+    "MCP server",
+    "AI memory",
+    "Redis",
+    "vector search",
+    "persistent memory",
+  ],
+  authors: [{ name: "Oliver Newth" }],
+  alternates: {
+    canonical: "./",
+  },
+  openGraph: {
+    title: "n3wth/r3 - Persistent memory for AI assistants",
+    description:
+      "An MCP server that gives AI assistants persistent memory. Local Redis, vector search, knowledge graphs. Install with npx @n3wth/r3.",
+    url: "https://r3.n3wth.com",
+    siteName: "n3wth/r3",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "n3wth/r3 - Persistent memory for AI assistants",
+    description:
+      "An MCP server that gives AI assistants persistent memory. Local Redis, vector search, knowledge graphs. Install with npx @n3wth/r3.",
+    creator: "@n3wth",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${satoshi.variable} ${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <AxiomWebVitals />
+      <head>
+        <JsonLd type="WebSite" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="theme-color" content="#08090b" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+
+              // Preload critical resources
+              const linkPrefetch = document.createElement('link');
+              linkPrefetch.rel = 'prefetch';
+              linkPrefetch.href = '/docs';
+              document.head.appendChild(linkPrefetch);
+            `,
+          }}
+        />
+      </head>
+      <body className="antialiased min-h-screen" suppressHydrationWarning>
+        <SkipLink />
+        <PostHogProvider>
+          {children}
+          <Analytics />
+        </PostHogProvider>
+        <GoogleAnalytics gaId="G-4QRMSG5HXK" />
+      </body>
+    </html>
+  );
+}

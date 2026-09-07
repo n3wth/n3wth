@@ -1,0 +1,27 @@
+{
+  "name": "r3 - Persistent Memory for AI Assistants",
+  "short_name": "r3",
+  "description": "Open-source MCP server with local Redis caching and vector search for Claude, GPT, and Gemini.",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#08090b",
+  "background_color": "#08090b",
+  "display": "standalone",
+  "start_url": "/",
+  "orientation": "portrait"
+}
