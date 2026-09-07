@@ -1,3 +1,5 @@
+import { getSkillInstallCommand } from './commands'
+
 // AI Assistant configuration for multi-platform support
 export type AssistantId = 'gemini' | 'claude' | 'cursor' | 'windsurf' | 'copilot'
 
@@ -24,10 +26,8 @@ export const assistants: Record<AssistantId, AIAssistant> = {
     borderColor: 'rgba(66, 133, 244, 0.3)',
     icon: 'gemini',
     skillsDir: '~/.gemini/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) => 
-      skillFileUrl 
-        ? `curl -fsSL ${skillFileUrl} -o ~/.gemini/skills/${skillId}.md`
-        : `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini ${skillId}`,
+    installCommand: (skillId: string, skillFileUrl?: string) =>
+      getSkillInstallCommand('gemini', skillId, skillFileUrl),
     description: 'Google AI coding assistant',
   },
   claude: {
@@ -39,10 +39,8 @@ export const assistants: Record<AssistantId, AIAssistant> = {
     borderColor: 'rgba(217, 119, 6, 0.3)',
     icon: 'claude',
     skillsDir: '~/.claude/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) => 
-      skillFileUrl 
-        ? `curl -fsSL ${skillFileUrl} -o ~/.claude/skills/${skillId}.md`
-        : `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- claude ${skillId}`,
+    installCommand: (skillId: string, skillFileUrl?: string) =>
+      getSkillInstallCommand('claude', skillId, skillFileUrl),
     description: 'Anthropic AI coding assistant',
   },
   cursor: {
@@ -54,10 +52,8 @@ export const assistants: Record<AssistantId, AIAssistant> = {
     borderColor: 'rgba(25, 195, 125, 0.3)',
     icon: 'cursor',
     skillsDir: '~/.cursor/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) => 
-      skillFileUrl 
-        ? `curl -fsSL ${skillFileUrl} -o ~/.cursor/skills/${skillId}.md`
-        : `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- cursor ${skillId}`,
+    installCommand: (skillId: string, skillFileUrl?: string) =>
+      getSkillInstallCommand('cursor', skillId, skillFileUrl),
     description: 'AI-native code editor',
   },
   windsurf: {
@@ -69,10 +65,8 @@ export const assistants: Record<AssistantId, AIAssistant> = {
     borderColor: 'rgba(9, 182, 162, 0.3)',
     icon: 'windsurf',
     skillsDir: '~/.windsurf/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) => 
-      skillFileUrl 
-        ? `curl -fsSL ${skillFileUrl} -o ~/.windsurf/skills/${skillId}.md`
-        : `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- windsurf ${skillId}`,
+    installCommand: (skillId: string, skillFileUrl?: string) =>
+      getSkillInstallCommand('windsurf', skillId, skillFileUrl),
     description: 'Codeium AI code editor',
   },
   copilot: {
@@ -84,10 +78,8 @@ export const assistants: Record<AssistantId, AIAssistant> = {
     borderColor: 'rgba(110, 64, 201, 0.3)',
     icon: 'copilot',
     skillsDir: '~/.copilot/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) => 
-      skillFileUrl 
-        ? `curl -fsSL ${skillFileUrl} -o ~/.copilot/skills/${skillId}.md`
-        : `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- copilot ${skillId}`,
+    installCommand: (skillId: string, skillFileUrl?: string) =>
+      getSkillInstallCommand('copilot', skillId, skillFileUrl),
     description: 'GitHub AI pair programmer',
   },
 }

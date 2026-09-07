@@ -49,7 +49,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '✦',
     color: 'oklch(0.75 0.18 145)',
-    skillFile: `${GITHUB_RAW_BASE}/gsap-animations.md`,
+    skillFile: `${GITHUB_RAW_BASE}/gsap-animations/SKILL.md`,
     features: [
       'ScrollTrigger for scroll-based animations',
       'SplitText for text reveal effects',
@@ -126,7 +126,7 @@ export const skills: Skill[] = [
     tags: ['monorepo', 'turborepo', 'nx', 'workspaces', 'build-optimization'],
     icon: '⬡',
     color: 'oklch(0.72 0.16 260)',
-    skillFile: `${GITHUB_RAW_BASE}/monorepo-manager.md`,
+    skillFile: `${GITHUB_RAW_BASE}/monorepo-manager/SKILL.md`,
     features: [
       'Turborepo configuration and pipeline setup',
       'Nx workspace optimization',
@@ -199,7 +199,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '⬢',
     color: 'oklch(0.73 0.19 155)',
-    skillFile: `${GITHUB_RAW_BASE}/code-generation-pipeline.md`,
+    skillFile: `${GITHUB_RAW_BASE}/code-generation-pipeline/SKILL.md`,
     features: [
       'Cursor integration for AI code generation',
       'Code extraction and organization by type',
@@ -277,7 +277,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '◆',
     color: 'oklch(0.65 0.12 220)',
-    skillFile: `${GITHUB_RAW_BASE}/business-panel.md`,
+    skillFile: `${GITHUB_RAW_BASE}/business-panel/SKILL.md`,
     features: [
       'Multi-expert perspective synthesis',
       'Sequential analysis mode',
@@ -690,7 +690,7 @@ export const skills: Skill[] = [
     tags: ['fonts', 'typography', 'design'],
     icon: 'Aa',
     color: 'oklch(0.64 0.08 280)',
-    skillFile: `${GITHUB_RAW_BASE}/typography-selector.md`,
+    skillFile: `${GITHUB_RAW_BASE}/typography-selector/SKILL.md`,
     features: [
       'Google Fonts integration',
       'Curated font pairings',
@@ -718,7 +718,7 @@ export const skills: Skill[] = [
     tags: ['git', 'version-control', 'workflow', 'branching'],
     icon: '⎇',
     color: 'oklch(0.68 0.16 30)',
-    skillFile: `${GITHUB_RAW_BASE}/git-workflow.md`,
+    skillFile: `${GITHUB_RAW_BASE}/git-workflow/SKILL.md`,
     features: [
       'GitFlow and trunk-based branching',
       'Conventional commit-message formatting',
@@ -778,7 +778,6 @@ export const skills: Skill[] = [
     featured: false,
     icon: '◇',
     color: 'oklch(0.73 0.16 160)',
-    skillFile: `${GITHUB_RAW_BASE}/api-docs-generator.md`,
     features: [
       'Generate OpenAPI/Swagger specs from code',
       'Create markdown API documentation',
@@ -806,7 +805,6 @@ export const skills: Skill[] = [
     tags: ['cicd', 'github-actions', 'automation', 'devops'],
     icon: '⚙',
     color: 'oklch(0.72 0.16 180)',
-    skillFile: `${GITHUB_RAW_BASE}/cicd-builder.md`,
     features: [
       'GitHub Actions workflow templates',
       'GitLab CI/CD configuration',
@@ -845,7 +843,6 @@ export const skills: Skill[] = [
     tags: ['code-review', 'quality', 'best-practices', 'refactoring'],
     icon: '◇',
     color: 'oklch(0.72 0.17 160)',
-    skillFile: `${GITHUB_RAW_BASE}/code-reviewer.md`,
     features: [
       'Identify code smells and anti-patterns',
       'Suggest refactoring improvements',
@@ -909,7 +906,6 @@ export const skills: Skill[] = [
     tags: ['email', 'communication', 'professional', 'writing'],
     icon: '✉',
     color: 'oklch(0.66 0.13 85)',
-    skillFile: `${GITHUB_RAW_BASE}/email-drafter.md`,
     features: [
       'Professional email templates',
       'Tone adjustment (formal/casual)',
@@ -936,7 +932,6 @@ export const skills: Skill[] = [
     tags: ['regex', 'patterns', 'validation', 'parsing'],
     icon: '◇',
     color: 'oklch(0.72 0.16 140)',
-    skillFile: `${GITHUB_RAW_BASE}/regex-builder.md`,
     features: [
       'Build complex regex patterns',
       'Test against sample data',
@@ -974,7 +969,6 @@ export const skills: Skill[] = [
     tags: ['database', 'schema', 'sql', 'erd'],
     icon: '◫',
     color: 'oklch(0.72 0.16 160)',
-    skillFile: `${GITHUB_RAW_BASE}/schema-designer.md`,
     features: [
       'Visual database-schema design',
       'SQL migration generation',
@@ -1003,7 +997,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '◎',
     color: 'oklch(0.72 0.17 150)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-agent-orchestrator.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-agent-orchestrator/SKILL.md`,
     features: [
       'Chain multiple agent operations in sequence',
       'Batch-process files through agent mode',
@@ -1043,7 +1037,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '◈',
     color: 'oklch(0.65 0.18 220)',
-    skillFile: `${GITHUB_RAW_BASE}/imessage.md`,
+    skillFile: `${GITHUB_RAW_BASE}/imessage/SKILL.md`,
     features: [
       'Find unreplied message threads',
       'Search contacts with disambiguation',
@@ -1073,7 +1067,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '◉',
     color: 'oklch(0.72 0.16 150)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-rules-generator.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-rules-generator/SKILL.md`,
     features: [
       'Analyze coding patterns across a project',
       'Generate AI rules matching style',
@@ -1138,7 +1132,7 @@ export const skills: Skill[] = [
     featured: false,
     icon: '⚙',
     color: 'oklch(0.68 0.16 210)',
-    skillFile: `${GITHUB_RAW_BASE}/ai-rules-manager.md`,
+    skillFile: `${GITHUB_RAW_BASE}/ai-rules-manager/SKILL.md`,
     features: [
       'Auto-generate rules from code patterns',
       'Version control and comparison',
@@ -1177,7 +1171,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '◉',
     color: 'oklch(0.72 0.17 180)',
-    skillFile: `${GITHUB_RAW_BASE}/codebase-context-builder.md`,
+    skillFile: `${GITHUB_RAW_BASE}/codebase-context-builder/SKILL.md`,
     features: [
       'Project-structure analysis',
       'Dependency mapping and analysis',
@@ -1207,7 +1201,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '✓',
     color: 'oklch(0.70 0.16 280)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-code-review.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-code-review/SKILL.md`,
     features: [
       'Pre-commit quality-review process',
       'Team-standards validation',
@@ -1246,7 +1240,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '⟲',
     color: 'oklch(0.70 0.15 150)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-driven-refactoring.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-driven-refactoring/SKILL.md`,
     features: [
       'Batch refactoring via Cursor agent',
       'Automated change tracking',
@@ -1277,7 +1271,7 @@ export const skills: Skill[] = [
     tags: ['cursor', 'git', 'workflow', 'automation', 'ai-editor'],
     icon: '⟲',
     color: 'oklch(0.72 0.20 260)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-git-workflow.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-git-workflow/SKILL.md`,
     features: [
       'Branch-specific context generation',
       'PR-based Cursor-rule creation',
@@ -1309,7 +1303,7 @@ export const skills: Skill[] = [
     tags: ['cursor', 'linear', 'workflow', 'automation', 'integration'],
     icon: '↔',
     color: 'oklch(0.72 0.17 200)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-linear-bridge.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-linear-bridge/SKILL.md`,
     features: [
       'Workspace generation from Linear issues',
       'Auto-generated issue-specific rules',
@@ -1337,7 +1331,7 @@ export const skills: Skill[] = [
     tags: ['cursor', 'workspace', 'setup', 'configuration', 'templates'],
     icon: '◉',
     color: 'oklch(0.70 0.20 200)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-project-bootstrapper.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-project-bootstrapper/SKILL.md`,
     features: [
       'Template-based setup for React, Python, Monorepo, and more',
       'Auto-populate .cursor/rules with project-specific AI instructions',
@@ -1366,7 +1360,7 @@ export const skills: Skill[] = [
     featured: true,
     icon: '⚙',
     color: 'oklch(0.72 0.17 200)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-project-scanner.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-project-scanner/SKILL.md`,
     features: [
       'Configuration-health audit across projects',
       'Missing-rules detection',
@@ -1405,7 +1399,7 @@ export const skills: Skill[] = [
     featured: false,
     icon: '▤',
     color: 'oklch(0.72 0.15 220)',
-    skillFile: `${GITHUB_RAW_BASE}/cursor-usage-analytics.md`,
+    skillFile: `${GITHUB_RAW_BASE}/cursor-usage-analytics/SKILL.md`,
     features: [
       'Track agent modes and usage patterns',
       'Analyze code-generation quality',
@@ -1443,7 +1437,7 @@ export const skills: Skill[] = [
     tags: ['cursor', 'extensions', 'sync', 'settings', 'backup'],
     icon: '⟲',
     color: 'oklch(0.72 0.17 180)',
-    skillFile: `${GITHUB_RAW_BASE}/extension-sync.md`,
+    skillFile: `${GITHUB_RAW_BASE}/extension-sync/SKILL.md`,
     features: [
       'Export installed extensions with versions',
       'Sync settings.json and keybindings',
@@ -1475,7 +1469,7 @@ export const skills: Skill[] = [
     featured: false,
     icon: '⚙',
     color: 'oklch(0.70 0.15 280)',
-    skillFile: `${GITHUB_RAW_BASE}/settings-distribution-manager.md`,
+    skillFile: `${GITHUB_RAW_BASE}/settings-distribution-manager/SKILL.md`,
     features: [
       'Centralized settings repository with Git version control',
       'Automated deployment scripts for team machines',
@@ -1506,7 +1500,7 @@ export const skills: Skill[] = [
     featured: false,
     icon: '⇄',
     color: 'oklch(0.72 0.16 200)',
-    skillFile: `${GITHUB_RAW_BASE}/vscode-cursor-sync.md`,
+    skillFile: `${GITHUB_RAW_BASE}/vscode-cursor-sync/SKILL.md`,
     features: [
       'Keybindings synchronization',
       'Extension mirroring across editors',

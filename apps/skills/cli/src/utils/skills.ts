@@ -42,7 +42,7 @@ const skills: Skill[] = [
     featured: true,
     icon: '✦',
     color: 'oklch(0.75 0.18 145)',
-    skillFile: `${GITHUB_RAW_BASE}/gsap-animations.md`,
+    skillFile: `${GITHUB_RAW_BASE}/gsap-animations/SKILL.md`,
     features: [
       'ScrollTrigger for scroll-based animations',
       'SplitText for text reveal effects',
