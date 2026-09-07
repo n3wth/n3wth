@@ -17,7 +17,7 @@ export const siteConfig = {
   sections: {
     install: {
       title: 'Install',
-      subtitle: 'One command. Works with Gemini CLI, Cursor, and more.',
+      subtitle: 'One command. Works with Gemini CLI.',
     },
     browse: {
       title: 'Browse Skills',
@@ -28,7 +28,7 @@ export const siteConfig = {
       'AI coding skills',
       'Gemini CLI extensions',
       'AI assistant plugins',
-      'Cursor extensions',
+      'Gemini CLI skills',
       'AI tools',
       'developer productivity',
       'workflow automation',

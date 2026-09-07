@@ -10,7 +10,6 @@ tags:
   - components
 compatibility:
   - gemini
-  - claude
 ---
 
 # Frontend Design

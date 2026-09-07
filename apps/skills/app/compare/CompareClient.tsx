@@ -175,7 +175,7 @@ export function CompareClient() {
                   {comparedSkills.map(skill => (
                     <td key={skill.id} className="p-4">
                       <div className="flex flex-wrap gap-1">
-                        {skill.compatibility?.filter(id => id !== 'claude').map(assistantId => (
+                        {skill.compatibility?.map(assistantId => (
                           <AssistantBadge key={assistantId} assistantId={assistantId} size="sm" />
                         ))}
                       </div>

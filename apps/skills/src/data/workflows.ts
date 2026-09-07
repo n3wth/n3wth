@@ -68,17 +68,6 @@ export const skillIOSchemas: SkillIOSchema[] = [
     ]
   },
   {
-    skillId: 'mcp-builder',
-    inputs: [
-      { id: 'api-spec', name: 'API Spec', type: 'document', description: 'API documentation or specification', required: true },
-      { id: 'use-case', name: 'Use Case', type: 'text', description: 'Description of the intended use case' }
-    ],
-    outputs: [
-      { id: 'mcp-server', name: 'Server', type: 'code', description: 'Complete MCP server implementation' },
-      { id: 'tool-schemas', name: 'Schemas', type: 'data', description: 'JSON schemas for MCP tools' }
-    ]
-  },
-  {
     skillId: 'skill-creator',
     inputs: [
       { id: 'domain', name: 'Domain', type: 'text', description: 'The domain or area of expertise', required: true },
@@ -282,18 +271,6 @@ export const skillIOSchemas: SkillIOSchema[] = [
       { id: 'explanation', name: 'Guide', type: 'text', description: 'Step-by-step guide' }
     ]
   },
-  {
-    skillId: 'imessage',
-    inputs: [
-      { id: 'action', name: 'Action', type: 'text', description: 'Read, send, or search', required: true },
-      { id: 'contact', name: 'Contact', type: 'text', description: 'Contact name or number' },
-      { id: 'message', name: 'Message', type: 'text', description: 'Message to send' }
-    ],
-    outputs: [
-      { id: 'messages', name: 'Messages', type: 'data', description: 'Retrieved messages' },
-      { id: 'status', name: 'Status', type: 'text', description: 'Action result status' }
-    ]
-  }
 ]
 
 // Sample workflow templates

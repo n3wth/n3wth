@@ -10,7 +10,7 @@ export interface SkillTemplate {
   tags: string[]
   features: string[]
   useCases: string[]
-  compatibility: ('gemini' | 'claude')[]
+  compatibility: ('gemini')[]
   skillContent: string
 }
 
@@ -37,7 +37,7 @@ export const skillTemplates: SkillTemplate[] = [
       'Building component templates',
       'Writing database queries'
     ],
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     skillContent: `# {{name}}
 
 ## Description
@@ -91,7 +91,7 @@ Output: [TypeScript function with regex validation, type safety, and error handl
       'Improving maintainability',
       'Preparing for testing'
     ],
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     skillContent: `# {{name}}
 
 ## Description
@@ -147,7 +147,7 @@ When refactoring code:
       'Onboarding materials',
       'Release notes'
     ],
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     skillContent: `# {{name}}
 
 ## Description
@@ -203,7 +203,7 @@ When creating documentation:
       'UI component testing',
       'Performance testing'
     ],
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     skillContent: `# {{name}}
 
 ## Description
@@ -263,7 +263,7 @@ describe('ComponentName', () => {
       'Third-party integrations',
       'Mobile backend APIs'
     ],
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     skillContent: `# {{name}}
 
 ## Description
@@ -319,7 +319,7 @@ When designing APIs:
       'Script writing',
       'Social media content'
     ],
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     skillContent: `# {{name}}
 
 ## Description
@@ -374,7 +374,7 @@ When assisting with creative writing:
       'Trend analysis',
       'Decision support'
     ],
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     skillContent: `# {{name}}
 
 ## Description
@@ -430,7 +430,7 @@ When analyzing data:
       'Meeting preparation',
       'Report generation'
     ],
-    compatibility: ['gemini', 'claude'],
+    compatibility: ['gemini'],
     skillContent: `# {{name}}
 
 ## Description

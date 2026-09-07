@@ -7,7 +7,7 @@ interface CompatibilityMatrixProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const publicAssistantList = assistantList.filter(a => a.id !== 'claude')
+const publicAssistantList = assistantList
 
 export function CompatibilityMatrix({ 
   compatibility = [], 

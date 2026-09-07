@@ -102,12 +102,9 @@ export function BundlesClient() {
 
   const installAllCommand = useMemo(() => {
     if (!selectedBundle || selectedBundleSkills.length === 0) return ''
-    return selectedBundleSkills
-      .map(skill => skill.skillFile
-        ? `curl -fsSL ${skill.skillFile} -o ~/.claude/skills/${skill.id}.md`
-        : `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- ${skill.id}`
-      )
-      .join(' && ')
+    const available = selectedBundleSkills.filter(skill => skill.skillFile)
+    if (available.length === 0) return ''
+    return `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini ${available.map(skill => skill.id).join(' ')}`
   }, [selectedBundle, selectedBundleSkills])
 
   return (

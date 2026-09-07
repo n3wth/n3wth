@@ -15,7 +15,7 @@ import {
 import { createSpinner } from '../utils/spinner.js'
 
 interface InstallOptions {
-  platform?: 'gemini' | 'claude' | 'both'
+  platform?: 'gemini'
   force?: boolean
 }
 
@@ -47,23 +47,11 @@ export async function installCommand(skillId: string, options: InstallOptions): 
   console.log(divider())
   console.log()
 
-  const platform = options.platform || determinePlatform(skill.compatibility)
-
-  if (platform === 'both' || platform === 'gemini') {
-    if (!skill.compatibility || skill.compatibility.includes('gemini')) {
-      await installForPlatform(skill, 'gemini')
-    } else {
-      console.log(colors.warning('  Skipping Gemini CLI (not compatible)'))
-    }
+  const platform = 'gemini'
+  if (options.platform && options.platform !== 'gemini') {
+    throw new Error('Supported platform: gemini')
   }
-
-  if (platform === 'both' || platform === 'claude') {
-    if (!skill.compatibility || skill.compatibility.includes('claude')) {
-      await installForPlatform(skill, 'claude')
-    } else {
-      console.log(colors.warning('  Skipping Claude Code (not compatible)'))
-    }
-  }
+  await installForPlatform(skill, platform)
 
   addInstalledSkill({
     id: skill.id,
@@ -80,20 +68,10 @@ export async function installCommand(skillId: string, options: InstallOptions): 
   console.log()
 }
 
-function determinePlatform(compatibility?: ('gemini' | 'claude')[]): 'gemini' | 'claude' | 'both' {
-  if (!compatibility || compatibility.length === 0) {
-    return 'both'
-  }
-  if (compatibility.length === 1) {
-    return compatibility[0]
-  }
-  return 'both'
-}
-
-async function installForPlatform(skill: ReturnType<typeof getSkillById>, platform: 'gemini' | 'claude'): Promise<void> {
+async function installForPlatform(skill: ReturnType<typeof getSkillById>, platform: 'gemini'): Promise<void> {
   if (!skill) return
 
-  const platformName = platform === 'gemini' ? 'Gemini CLI' : 'Claude Code'
+  const platformName = 'Gemini CLI'
   const spinner = createSpinner(`Installing for ${platformName}...`)
   spinner.start()
 

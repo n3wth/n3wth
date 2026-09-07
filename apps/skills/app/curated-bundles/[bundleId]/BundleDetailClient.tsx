@@ -26,7 +26,7 @@ export function BundleDetailClient({ bundleId }: Props) {
 
   const installableSkills = bundleSkills.filter(skill => skill?.skillFile)
   const unavailableCount = bundle.skillIds.length - installableSkills.length
-  const installCommand = `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- all ${installableSkills.map(skill => skill!.id).join(' ')}`
+  const installCommand = `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini ${installableSkills.map(skill => skill!.id).join(' ')}`
 
   const difficultyColors = {
     beginner: 'bg-green-500/15 text-green-400',

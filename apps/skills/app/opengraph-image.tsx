@@ -66,7 +66,7 @@ export default async function Image() {
               maxWidth: 800,
             }}
           >
-            Markdown skills for Gemini CLI, Cursor, Windsurf, and Copilot
+            Markdown skills for Gemini CLI
           </div>
 
           {/* Stats */}

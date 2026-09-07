@@ -41,7 +41,7 @@ export async function infoCommand(skillId: string): Promise<void> {
 
   if (skill.compatibility && skill.compatibility.length > 0) {
     const platforms = skill.compatibility.map(p =>
-      p === 'gemini' ? colors.info('Gemini CLI') : colors.highlight('Claude Code')
+      colors.info(p === 'gemini' ? 'Gemini CLI' : 'Unknown')
     ).join(', ')
     console.log(`  ${colors.muted('Platforms:')}   ${platforms}`)
   }

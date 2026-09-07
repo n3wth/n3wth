@@ -10,7 +10,6 @@ tags:
   - creative-coding
 compatibility:
   - gemini
-  - claude
 ---
 
 # Algorithmic Art

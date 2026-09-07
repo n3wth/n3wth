@@ -6,7 +6,7 @@ import { CommandBox } from './CommandBox'
 import { AssistantIcon } from './AssistantIcon'
 import { useScrollReveal } from '../hooks'
 
-const publicAssistantList = assistantList.filter(a => a.id !== 'claude')
+const publicAssistantList = assistantList
 
 export function InstallSection() {
   const [showAll, setShowAll] = useState(false)
@@ -69,7 +69,7 @@ export function InstallSection() {
               border: '1px solid var(--glass-border)',
             }}
           >
-            Show {additionalCommands.length} more assistants (Cursor, Windsurf, Copilot)
+            Show additional commands
           </button>
         )}
         

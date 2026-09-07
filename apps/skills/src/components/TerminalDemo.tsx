@@ -5,10 +5,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const COMMAND = 'npx skills add gsap-animations'
+const COMMAND = 'curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini gsap-animations'
 const OUTPUT_LINES = [
   'Downloading gsap-animations...',
-  'Installed to ~/.claude/skills/gsap-animations/',
+  'Installed to ~/.gemini/skills/gsap-animations/',
   'Done! Use /gsap-animations to get started.',
 ]
 const CHAR_DELAY = 0.05

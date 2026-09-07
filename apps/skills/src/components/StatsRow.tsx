@@ -88,7 +88,7 @@ export function StatsRow() {
   // Calculate stats from actual data
   const totalSkills = skills.length
   const totalCategories = categories.length - 1 // Exclude "all"
-  const totalAssistants = assistantList.filter(a => a.id !== 'claude').length
+  const totalAssistants = assistantList.length
   const totalContributors = new Set(skills.map(s => s.contributor?.name).filter(Boolean)).size
 
   useEffect(() => {

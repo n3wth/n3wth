@@ -23,7 +23,7 @@ ${colors.muted('           AI Coding Skills Manager')}
 
 program
   .name('newth-skills')
-  .description('CLI tool for managing AI coding skills for Gemini CLI, Cursor, and more')
+  .description('CLI tool for managing AI coding skills for Gemini CLI')
   .version('1.0.0')
   .addHelpText('beforeAll', banner)
 
@@ -54,7 +54,7 @@ program
 program
   .command('install <skill-id>')
   .description('Install a skill')
-  .option('-p, --platform <platform>', 'Target platform (gemini, claude, or both)', 'both')
+  .option('-p, --platform <platform>', 'Target platform (gemini)', 'gemini')
   .option('-f, --force', 'Force reinstall if already installed')
   .action(async (skillId, options) => {
     await installCommand(skillId, options)

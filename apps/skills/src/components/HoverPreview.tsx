@@ -162,7 +162,7 @@ export function HoverPreview({ skill, isVisible, anchorRect, onClose }: HoverPre
         {/* Compatibility badges */}
         {skill.compatibility && skill.compatibility.length > 0 && (
           <div className="flex items-center gap-1.5 mb-3 flex-wrap">
-            {skill.compatibility.filter(id => id !== 'claude').map(assistantId => (
+            {skill.compatibility.map(assistantId => (
               <AssistantBadge key={assistantId} assistantId={assistantId} size="sm" showName={false} />
             ))}
           </div>

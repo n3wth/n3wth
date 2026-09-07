@@ -162,11 +162,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/mcp-builder</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+
   <url>
     <loc>https://skills.n3wth.com/skill/monorepo-manager</loc>
     <changefreq>weekly</changefreq>
@@ -177,11 +173,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/code-generation-pipeline</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+
   <url>
     <loc>https://skills.n3wth.com/skill/algorithmic-art</loc>
     <changefreq>weekly</changefreq>
@@ -302,84 +294,24 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-agent-orchestrator</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/imessage</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-rules-generator</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+
+
+
   <url>
     <loc>https://skills.n3wth.com/skill/research-assistant</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/ai-rules-manager</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/codebase-context-builder</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-code-review</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-driven-refactoring</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-git-workflow</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-linear-bridge</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-project-bootstrapper</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-project-scanner</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/cursor-usage-analytics</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/extension-sync</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/settings-distribution-manager</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skills.n3wth.com/skill/vscode-cursor-sync</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+
+
+
+
+
+
+
+
+
+
+
+
 </urlset>

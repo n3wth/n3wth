@@ -5,21 +5,19 @@ author: n3wth
 category: development
 tags:
   - skills
-  - claude
   - automation
 compatibility:
   - gemini
-  - claude
 ---
 
 # Skill Creator
 
-Guide for creating effective Claude Code skills with specialized knowledge, workflows, and tool integrations. Build skills that extend AI coding assistants with domain expertise.
+Guide for creating effective Gemini CLI skills with specialized knowledge, workflows, and tool integrations. Build skills that extend AI coding assistants with domain expertise.
 
 ## Triggers
 
 Use this skill when the user wants to:
-- Create a new skill for Claude or Gemini
+- Create a new skill for Gemini CLI
 - Design a skill structure
 - Write skill instructions
 - Package domain knowledge as a skill
@@ -41,7 +39,6 @@ tags:
   - tag1
   - tag2
 compatibility:
-  - claude
   - gemini
 ---
 
@@ -160,7 +157,7 @@ Skills are installed via CLI:
 curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- skill-id
 ```
 
-This downloads the skill to `~/.claude/skills/` or the equivalent for your AI assistant.
+This downloads the skill to `~/.gemini/skills/` or the equivalent for your AI assistant.
 
 ## Testing Your Skill
 
@@ -182,7 +179,6 @@ tags:
   - testing
   - vitest
 compatibility:
-  - claude
   - gemini
 ---
 

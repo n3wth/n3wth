@@ -16,30 +16,6 @@ export const installCommands: InstallCommand[] = [
     command: 'curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini',
     primary: true,
   },
-  {
-    name: 'For Cursor',
-    assistantId: 'cursor',
-    command: 'curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- cursor',
-    primary: false,
-  },
-  {
-    name: 'For Windsurf',
-    assistantId: 'windsurf',
-    command: 'curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- windsurf',
-    primary: false,
-  },
-  {
-    name: 'For GitHub Copilot',
-    assistantId: 'copilot',
-    command: 'curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- copilot',
-    primary: false,
-  },
-  {
-    name: 'Install All Skills',
-    assistantId: 'all',
-    command: 'curl -fsSL https://skills.n3wth.com/install.sh | bash',
-    primary: false,
-  },
 ]
 
 // Helper to get install command for a specific assistant
@@ -55,10 +31,6 @@ export function getSkillInstallCommand(
 ): string {
   const skillsDir = {
     gemini: '~/.gemini/skills',
-    claude: '~/.claude/skills',
-    cursor: '~/.cursor/skills',
-    windsurf: '~/.windsurf/skills',
-    copilot: '~/.copilot/skills',
   }
 
   if (skillFileUrl) {

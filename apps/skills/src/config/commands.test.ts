@@ -24,10 +24,10 @@ describe('installCommands', () => {
     expect(primaryCommands.length).toBe(1)
   })
 
-  it('should have commands for Gemini CLI and Install All', () => {
+  it('only offers the Gemini CLI installer', () => {
     const names = installCommands.map(cmd => cmd.name)
     expect(names).toContain('For Gemini CLI')
-    expect(names).toContain('Install All Skills')
+    expect(names).toEqual(['For Gemini CLI'])
   })
 
   it('should have valid curl commands', () => {

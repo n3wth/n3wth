@@ -9,7 +9,6 @@ tags:
   - enterprise
 compatibility:
   - gemini
-  - claude
 ---
 
 # Internal Comms

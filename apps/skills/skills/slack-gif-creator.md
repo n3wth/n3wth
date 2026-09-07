@@ -9,7 +9,6 @@ tags:
   - animation
 compatibility:
   - gemini
-  - claude
 ---
 
 # Slack GIF Creator

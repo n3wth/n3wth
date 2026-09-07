@@ -9,7 +9,6 @@ tags:
   - collaboration
 compatibility:
   - gemini
-  - claude
 ---
 
 # Doc Co-authoring

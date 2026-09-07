@@ -1,7 +1,7 @@
 import { getSkillInstallCommand } from './commands'
 
 // AI Assistant configuration for multi-platform support
-export type AssistantId = 'gemini' | 'claude' | 'cursor' | 'windsurf' | 'copilot'
+export type AssistantId = 'gemini'
 
 export interface AIAssistant {
   id: AssistantId
@@ -30,58 +30,6 @@ export const assistants: Record<AssistantId, AIAssistant> = {
       getSkillInstallCommand('gemini', skillId, skillFileUrl),
     description: 'Google AI coding assistant',
   },
-  claude: {
-    id: 'claude',
-    name: 'Claude Code',
-    shortName: 'Claude',
-    color: '#D97706',
-    bgColor: 'rgba(217, 119, 6, 0.15)',
-    borderColor: 'rgba(217, 119, 6, 0.3)',
-    icon: 'claude',
-    skillsDir: '~/.claude/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) =>
-      getSkillInstallCommand('claude', skillId, skillFileUrl),
-    description: 'Anthropic AI coding assistant',
-  },
-  cursor: {
-    id: 'cursor',
-    name: 'Cursor',
-    shortName: 'Cursor',
-    color: '#19C37D',
-    bgColor: 'rgba(25, 195, 125, 0.15)',
-    borderColor: 'rgba(25, 195, 125, 0.3)',
-    icon: 'cursor',
-    skillsDir: '~/.cursor/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) =>
-      getSkillInstallCommand('cursor', skillId, skillFileUrl),
-    description: 'AI-native code editor',
-  },
-  windsurf: {
-    id: 'windsurf',
-    name: 'Windsurf',
-    shortName: 'Windsurf',
-    color: '#09B6A2',
-    bgColor: 'rgba(9, 182, 162, 0.15)',
-    borderColor: 'rgba(9, 182, 162, 0.3)',
-    icon: 'windsurf',
-    skillsDir: '~/.windsurf/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) =>
-      getSkillInstallCommand('windsurf', skillId, skillFileUrl),
-    description: 'Codeium AI code editor',
-  },
-  copilot: {
-    id: 'copilot',
-    name: 'GitHub Copilot',
-    shortName: 'Copilot',
-    color: '#6e40c9',
-    bgColor: 'rgba(110, 64, 201, 0.15)',
-    borderColor: 'rgba(110, 64, 201, 0.3)',
-    icon: 'copilot',
-    skillsDir: '~/.copilot/skills',
-    installCommand: (skillId: string, skillFileUrl?: string) =>
-      getSkillInstallCommand('copilot', skillId, skillFileUrl),
-    description: 'GitHub AI pair programmer',
-  },
 }
 
 // Helper to get all assistant IDs
@@ -91,4 +39,4 @@ export const assistantIds = Object.keys(assistants) as AssistantId[]
 export const assistantList = Object.values(assistants)
 
 // Default compatibility for skills that don't specify
-export const defaultCompatibility: AssistantId[] = ['gemini', 'claude']
+export const defaultCompatibility: AssistantId[] = ['gemini']

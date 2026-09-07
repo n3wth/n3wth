@@ -35,7 +35,7 @@ export const exampleContributor: Contributor = {
  * - featured: Boolean (set by maintainers)
  * - features: Array of key features (3-5 recommended)
  * - useCases: Array of example use cases (3-5 recommended)
- * - compatibility: Array of supported platforms ('gemini' | 'claude')
+ * - compatibility: Array of supported platforms ('gemini')
  * - contributor: Your contributor information
  */
 export const skillTemplate: Skill = {
@@ -61,7 +61,7 @@ export const skillTemplate: Skill = {
     'Example use case four',
     'Example use case five',
   ],
-  compatibility: ['gemini', 'claude'],
+  compatibility: ['gemini'],
   version: '1.0.0',
   lastUpdated: '2026-01-27',
   contributor: {

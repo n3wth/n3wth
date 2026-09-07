@@ -7,7 +7,7 @@ documentation, and are ready for integration into the skills registry.
 
 Usage:
     python3 scripts/validate-skill.py <skill_path>
-    python3 scripts/validate-skill.py skills/cursor-project-bootstrapper.skill
+    python3 scripts/validate-skill.py skills/pdf.md
 """
 
 import sys
@@ -25,7 +25,7 @@ class SkillValidator:
     REQUIRED_DIRECTORIES = ['scripts', 'templates', 'references']
     REQUIRED_FILES = ['SKILL.md']
     VALID_CATEGORIES = ['development', 'documents', 'creative', 'productivity', 'business']
-    VALID_PLATFORMS = ['claude-code', 'gemini-cli', 'cursor', 'vscode', 'copilot']
+    VALID_PLATFORMS = ['gemini-cli']
     VALID_STATUSES = ['experimental', 'beta', 'stable', 'deprecated']
 
     def __init__(self, skill_path: str):
@@ -254,7 +254,7 @@ def main():
     """Main entry point."""
     if len(sys.argv) < 2:
         print("Usage: python3 scripts/validate-skill.py <skill_path>")
-        print("Example: python3 scripts/validate-skill.py skills/cursor-project-bootstrapper.skill")
+        print("Example: python3 scripts/validate-skill.py skills/pdf.md")
         sys.exit(1)
 
     skill_path = sys.argv[1]
