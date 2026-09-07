@@ -913,6 +913,9 @@ button:focus-visible,
 
 /* Floating island nav — detached glass pill with real Gaussian blur */
 .nav-island {
+  display: flex;
+  height: 3rem;
+  padding: 0 12px;
   isolation: isolate;
   background: linear-gradient(
       rgba(255, 255, 255, 0.04),
@@ -931,6 +934,37 @@ button:focus-visible,
   border-color: rgba(255, 255, 255, 0.15);
 }
 
+@media (max-width: 600px) {
+  .nav-island {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 4px 12px;
+    row-gap: 0;
+  }
+
+  .nav-island > nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+
+  .nav-island > span {
+    grid-column: 2;
+    grid-row: 1;
+    margin-left: 0;
+  }
+
+  .nav-island > a,
+  .nav-island .nav-link,
+  .nav-island .nav-search {
+    min-height: 44px;
+  }
+}
+
 @media (prefers-reduced-transparency: reduce) {
   .nav-island {
     background: var(--color-background-body);
@@ -941,6 +975,7 @@ button:focus-visible,
 
 @media (min-width: 768px) {
   .nav-island {
+    padding-inline: 20px;
     border-radius: 9999px;
   }
 }

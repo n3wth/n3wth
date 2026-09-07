@@ -60,7 +60,7 @@ export function Navigation({ paletteNotes }: { paletteNotes: PaletteNote[] }) {
         className="site-nav fixed inset-x-3 md:inset-x-4 z-50 flex justify-center pointer-events-none"
         style={{ top: 'calc(0.75rem + env(safe-area-inset-top))' }}
       >
-        <div className="nav-island pointer-events-auto flex h-12 items-center gap-1 px-3 md:px-5">
+        <div className="nav-island pointer-events-auto items-center gap-1">
           <Link
             href="/"
             className="text-[15px] font-semibold tracking-[-0.01em] text-[var(--color-text-primary)] whitespace-nowrap"
@@ -70,7 +70,7 @@ export function Navigation({ paletteNotes }: { paletteNotes: PaletteNote[] }) {
             </ShimmerText>
           </Link>
 
-          <nav aria-label="Main navigation" className="flex items-center gap-0.5 ml-2 md:ml-3">
+          <nav aria-label="Main navigation" className="flex items-center gap-0.5 min-[601px]:ml-2 md:ml-3">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -83,7 +83,7 @@ export function Navigation({ paletteNotes }: { paletteNotes: PaletteNote[] }) {
             ))}
           </nav>
 
-          <span className="ml-2 md:ml-3 inline-flex items-center gap-1">
+          <span className="min-[601px]:ml-2 md:ml-3 inline-flex items-center gap-1">
             <button
               type="button"
               onClick={openSearch}
