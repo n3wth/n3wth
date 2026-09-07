@@ -24,7 +24,9 @@ export function BundleDetailClient({ bundleId }: Props) {
     .map(id => skills.find(s => s.id === id))
     .filter(Boolean)
 
-  const installCommand = `curl -sL https://skills.n3wth.com/install.sh | sh -s -- ${bundle.skillIds.join(' ')}`
+  const installableSkills = bundleSkills.filter(skill => skill?.skillFile)
+  const unavailableCount = bundle.skillIds.length - installableSkills.length
+  const installCommand = `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- all ${installableSkills.map(skill => skill!.id).join(' ')}`
 
   const difficultyColors = {
     beginner: 'bg-green-500/15 text-green-400',
@@ -80,9 +82,14 @@ export function BundleDetailClient({ bundleId }: Props) {
           {/* Install Section */}
           <div className="mb-12 p-6 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)]">
             <h2 className="text-lg font-semibold text-[var(--color-white)] mb-4">
-              Install all {bundle.skillIds.length} skills
+              Install {installableSkills.length} available skills
             </h2>
-            <CommandBox name="Install Bundle" command={installCommand} primary={true} />
+            {installableSkills.length > 0 && <CommandBox name="Install Bundle" command={installCommand} primary={true} />}
+            {unavailableCount > 0 && (
+              <p className="text-sm text-[var(--color-grey-400)] mt-3">
+                {unavailableCount} skills in this collection do not yet have downloads.
+              </p>
+            )}
             <p className="text-xs text-[var(--color-grey-600)] mt-3">
               Setup time: {bundle.estimatedSetupTime}
             </p>

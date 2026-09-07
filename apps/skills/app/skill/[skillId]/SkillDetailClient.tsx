@@ -381,10 +381,12 @@ export function SkillDetailClient({ skillId }: Props) {
           <div className="glass-card p-6 md:p-8">
             <h2 className="section-title mb-2">Add to your AI assistant</h2>
             <p className="text-sm mb-6" style={{ color: 'var(--color-grey-400)' }}>
-              Choose your AI assistant and run the command in your terminal
+              {skill.skillFile
+                ? 'Choose your AI assistant and run the command in your terminal'
+                : 'A downloadable file is not available for this skill yet.'}
             </p>
             <div className="space-y-3">
-              {(skill.compatibility || ['gemini'] as AssistantId[]).filter(id => id !== 'claude').map((assistantId, index) => {
+              {skill.skillFile && (skill.compatibility || ['gemini'] as AssistantId[]).filter(id => id !== 'claude').map((assistantId, index) => {
                 const assistant = assistants[assistantId]
                 const command = getSkillInstallCommand(assistantId, skill.id, skill.skillFile)
                 return (

@@ -62,8 +62,8 @@ export function getSkillInstallCommand(
   }
 
   if (skillFileUrl) {
-    return `curl -fsSL ${skillFileUrl} -o ${skillsDir[assistantId]}/${skillId}.md`
+    return `mkdir -p ${skillsDir[assistantId]} && curl -fsSL ${skillFileUrl} -o ${skillsDir[assistantId]}/${skillId}.md`
   }
   
-  return `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- ${assistantId} ${skillId}`
+  return ''
 }

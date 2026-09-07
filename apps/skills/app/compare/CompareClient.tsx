@@ -10,6 +10,7 @@ import { CategoryShape } from '@/src/components/CategoryShape'
 import { CommandBox } from '@/src/components/CommandBox'
 import { AssistantBadge } from '@/src/components/AssistantBadge'
 import { categoryConfig } from '@/src/config/categories'
+import { getSkillInstallCommand } from '@/src/config/commands'
 import { clearComparison, removeFromComparison, getComparisonSkills } from '@/src/lib/community'
 
 export function CompareClient() {
@@ -297,15 +298,18 @@ export function CompareClient() {
                   </td>
                   {comparedSkills.map(skill => (
                     <td key={skill.id} className="p-4">
-                                        <CommandBox
-                                          name="Install"
-                                          command={skill.skillFile
-                                            ? `curl -fsSL ${skill.skillFile} -o ~/.gemini/skills/${skill.id}.md`
-                                            : `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- ${skill.id}`
-                                          }
-                                          skillId={skill.id}
-                                          primary={false}
-                                        />
+                      {skill.skillFile ? (
+                        <CommandBox
+                          name="Install"
+                          command={getSkillInstallCommand('gemini', skill.id, skill.skillFile)}
+                          skillId={skill.id}
+                          primary={false}
+                        />
+                      ) : (
+                        <span className="text-sm" style={{ color: 'var(--color-grey-400)' }}>
+                          Download not available yet
+                        </span>
+                      )}
                     </td>
                   ))}
                 </tr>
