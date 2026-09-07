@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "devCommand": "npm run dev",
+  "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
+  "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/r3-web",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}
