@@ -18,9 +18,9 @@ test('registry remains downloadable', async ({ request }) => {
   expect((await response.json()).name).toBe('button')
 })
 
-test('Gemini context guide links to a usable component reference', async ({ page, request }) => {
+test('AI context guide links to a usable component reference', async ({ page, request }) => {
   await page.goto('/docs/agents')
-  await expect(page.getByRole('heading', { name: 'Gemini context', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'AI context', exact: true })).toBeVisible()
   const download = page.getByRole('link', { name: 'Download GEMINI.md', exact: true })
   await expect(download).toHaveAttribute('href', '/ai/GEMINI.md')
   const response = await request.get('/ai/GEMINI.md')
