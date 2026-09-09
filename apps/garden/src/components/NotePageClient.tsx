@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useTransitionRouter } from 'next-view-transitions'
+import { useRouter } from 'next/navigation'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -12,16 +12,15 @@ gsap.registerPlugin(ScrollTrigger)
 
 export function NotePageClient({ children, slug }: { children: React.ReactNode; slug?: string }) {
   const container = useRef<HTMLDivElement>(null)
-  const router = useTransitionRouter()
+  const router = useRouter()
 
   // Add this note to the reader's explored trail (shown in the 3D garden)
   useEffect(() => {
     if (slug !== undefined) recordVisit(slug)
   }, [slug])
 
-  // Wikilinks are server-rendered plain anchors; route them client-side so
-  // an in-note hop gets the same view transition as every other navigation
-  // (no full-document reload, nav island holds still).
+  // Wikilinks are server-rendered plain anchors; route them client-side
+  // without a full-document reload.
   useEffect(() => {
     const root = container.current
     if (!root) return
@@ -114,19 +113,6 @@ export function NotePageClient({ children, slug }: { children: React.ReactNode; 
       scrollTrigger: { start: 0, end: 'max', scrub: 0.4 },
     })
 
-    /* Page entry is handled by the view transition (globals.css) — GSAP
-       from-tweens here would leave the h1 half-invisible when the new-state
-       snapshot is captured and break the note-title morph. */
-    gsap.from('.note-backlinks', {
-      y: 20,
-      opacity: 0,
-      duration: 0.5,
-      scrollTrigger: {
-        trigger: '.note-backlinks',
-        start: 'top 90%',
-        toggleActions: 'play none none none',
-      },
-    })
   }, { scope: container })
 
   return (

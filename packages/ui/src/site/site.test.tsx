@@ -66,4 +66,13 @@ describe('shared site composition', () => {
     expect(screen.getByRole('navigation', { name: 'Footer' })).toContainElement(screen.getByRole('link', { name: 'Privacy' }))
     expect(screen.getByRole('contentinfo')).toHaveTextContent('Built by Oliver')
   })
+
+  it('provides minimal footer destinations while retaining app legal links', () => {
+    render(<SiteFooter sourceHref="https://github.com/n3wth/kit" legalLinks={<a href="/privacy">Privacy</a>} />)
+    expect(screen.getByRole('link', { name: 'Oliver Newth' })).toHaveAttribute('href', 'https://n3wth.com')
+    expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', 'https://n3wth.com/contact')
+    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/n3wth/kit')
+    expect(screen.getByRole('navigation', { name: 'Footer' })).toContainElement(screen.getByRole('link', { name: 'Privacy' }))
+    expect(screen.getAllByRole('link')).toHaveLength(4)
+  })
 })

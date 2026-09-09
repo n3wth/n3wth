@@ -9,7 +9,6 @@ import { CommandPalette } from './components/CommandPalette'
 import { useCommandPalette } from './hooks/useCommandPalette'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
-import { useReveal } from './hooks/useReveal'
 import { gsap } from './lib/gsap'
 
 /** Jump to the top on route change (browser back/forward keeps its position),
@@ -65,7 +64,6 @@ function App() {
 
   useKonamiCode(onKonami)
   useKeyboardNav()
-  useReveal()
 
   // Lives in the shell, not on a page: search has to open from anywhere,
   // and the palette is how the four n3wth sites are searchable as one.

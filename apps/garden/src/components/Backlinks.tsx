@@ -1,4 +1,4 @@
-import { Link } from 'next-view-transitions'
+import Link from 'next/link'
 import { Divider } from '@astryxdesign/core/Divider'
 import type { Backlink } from '@/lib/backlinks'
 

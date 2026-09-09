@@ -54,69 +54,6 @@
 h1, h2, h3, .display { text-wrap: balance; }
 p { text-wrap: pretty; }
 
-/* ---------- Page transitions ----------
-   Client-side navigations run through next-view-transitions
-   (document.startViewTransition), so the fade + rise animates the
-   transition snapshot — never a live ancestor, which keeps the
-   fixed-position /graph canvas out of any transform's containing block.
-   Prose wikilinks are server-rendered anchors that NotePageClient routes
-   client-side, so they ride the same transition; the @view-transition
-   rule keeps the cross-document dissolve as a no-JS fallback. */
-@view-transition {
-  navigation: auto;
-}
-
-/* The floating nav island persists across pages: give it its own
-   snapshot group and hold it perfectly still. */
-.n3wth-site-navigation {
-  view-transition-name: site-nav;
-}
-::view-transition-old(site-nav),
-::view-transition-new(site-nav) {
-  animation: none;
-}
-/* Entering/leaving /graph the nav exists on only one side of the
-   transition — fade it instead of freezing it. */
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(site-nav):only-child {
-    animation: vt-page-out 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  ::view-transition-new(site-nav):only-child {
-    animation: vt-page-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root) {
-    animation: vt-page-out 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  ::view-transition-new(root) {
-    animation: vt-page-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  /* The clicked note title morphs into the note page's h1 (the browser
-     animates position + scale between the two snapshots). */
-  ::view-transition-group(note-title) {
-    animation-duration: 0.32s;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-}
-@keyframes vt-page-out {
-  to { opacity: 0; }
-}
-@keyframes vt-page-in {
-  from { opacity: 0; transform: translateY(8px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  @view-transition {
-    navigation: none;
-  }
-  ::view-transition-old(root),
-  ::view-transition-new(root),
-  ::view-transition-group(*) {
-    animation: none;
-  }
-}
-
 /* ---------- Native-app tactility ---------- */
 /* Pressing a row or card gives a small, immediate scale response —
    the tap acknowledgment users know from native apps. */
@@ -131,12 +68,7 @@ p { text-wrap: pretty; }
     transform: scale(0.985);
   }
 
-  /* Notes index rows surface one after another, quickly — capped via
-     --row-i so long lists don't queue forever. */
-  .note-row {
-    animation: note-row-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(var(--row-i, 0) * 28ms);
-  }
+
 }
 /* Off-screen rows in the ~252-row index skip layout/paint until scrolled
    near — first print doesn't lay out every row. contain-intrinsic-size
@@ -173,9 +105,7 @@ body:has(.field-band)::before {
   border-top: 0;
 }
 
-@keyframes note-row-in {
-  from { opacity: 0; transform: translateY(6px); }
-}
+
 
 /* Deliberate UI type scale: 11 (micro labels) / 13 (secondary UI) /
    15 (primary UI) / 16 (prose) / display. Tailwind's xs/sm steps are

@@ -63,7 +63,7 @@ export default function Home() {
       if (external) {
         window.location.href = href
       } else {
-        navigate(href, { viewTransition: true })
+        navigate(href)
       }
     },
     [navigate]
@@ -105,7 +105,7 @@ export default function Home() {
       <span className="block mt-5">
         My independent projects explore personal agents, tools for creating software, and skills that help people use both.
       </span>
-    </>} actions={<Link to="/work#building" viewTransition>Explore my projects</Link>} />
+    </>} actions={<Link to="/work#building">Explore my projects</Link>} />
     </>
   )
 }

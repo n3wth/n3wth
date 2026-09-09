@@ -2,7 +2,7 @@ import { useState, useEffect, type ComponentType } from 'react'
 import { NavLink, useParams } from 'react-router'
 import { SiteNav } from './SiteNav'
 import { SiteFooter } from '@n3wth/ui/site'
-import { siteLinks, legalLinks } from './siteLinks'
+import { siteUrls } from '@n3wth/site-config'
 import { Icon } from '@n3wth/ui'
 import { cn } from '@n3wth/ui'
 import { SEO, JsonLdWebPage, JsonLdBreadcrumb } from './SEO'
@@ -164,10 +164,7 @@ export function DocsLayout() {
         </div>
       </div>
 
-      <SiteFooter brand={<a href="/">n3wth/ui</a>} links={<>
-        {siteLinks.map(link => <a key={link.href} href={link.href}>{link.name}</a>)}
-        {legalLinks.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}
-      </>}>© {new Date().getFullYear()} n3wth</SiteFooter>
+      <SiteFooter sourceHref="https://github.com/n3wth/ui" legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
     </div>
   )
 }

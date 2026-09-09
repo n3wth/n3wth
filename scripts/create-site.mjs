@@ -52,7 +52,7 @@ createRoot(document.getElementById('root')!).render(
           <SiteText>Replace this introduction with the problem this site helps people solve.</SiteText>
         </SiteSection>
       </SiteContainer>
-      <SiteFooter brand={title} links={<a href="#start">Start here</a>} />
+      <SiteFooter />
     </N3wthProvider>
   </StrictMode>,
 )

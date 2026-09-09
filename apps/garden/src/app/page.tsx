@@ -41,7 +41,7 @@ export default async function HomePage() {
         {/* Hero */}
         <SiteContainer data-world-exclude className="home-overlay">
           <PageHeader title={
-            <ShimmerText sweepOnMount sweepDelay={1.6}>
+            <ShimmerText>
               A garden of growing ideas
             </ShimmerText>
           } description={<>

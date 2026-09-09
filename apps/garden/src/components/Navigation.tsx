@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'next-view-transitions'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Search } from 'lucide-react'
 import { SearchPalette, type PaletteNote } from '@/components/SearchPalette'

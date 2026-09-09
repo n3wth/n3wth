@@ -1,7 +1,6 @@
 "use client";
 
 import { SiteHeading, SiteText } from '@n3wth/ui/site';
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
@@ -43,7 +42,7 @@ export function BentoCard({
   span = "col-span-1",
 }: BentoCardProps) {
   return (
-    <motion.div
+    <div
       className={cn(
         "group relative overflow-hidden rounded-2xl border border-rail p-6 md:p-8",
         "bg-bg-soft transition-all duration-300",
@@ -51,10 +50,6 @@ export function BentoCard({
         span,
         className,
       )}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.3 }}
     >
       {/* Content */}
       <div className="relative z-10">
@@ -76,6 +71,6 @@ export function BentoCard({
 
         {children}
       </div>
-    </motion.div>
+    </div>
   );
 }
