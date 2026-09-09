@@ -24,5 +24,5 @@
     "check:browser": "playwright test",
     "preview": "npm run preview -w @n3wth/portfolio"
   },
-  "devDependencies": { "@playwright/test": "1.63.0", "@resvg/resvg-js": "2.6.2", "@types/react": "19.2.9", "react": "19.2.7", "satori": "0.33.4", "sharp": "0.35.4" }
+  "devDependencies": { "@playwright/test": "1.63.0", "@resvg/resvg-js": "2.6.2", "@types/react": "19.2.18", "react": "19.2.8", "satori": "0.33.4", "sharp": "0.35.4" }
 }
