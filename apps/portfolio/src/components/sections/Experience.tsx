@@ -1,4 +1,3 @@
-import { SectionHeader } from '../Frame'
 import { education, experiences } from '../../data/content'
 
 /* Ship log: a decade of work as a dense, confident index — one line per
@@ -7,10 +6,12 @@ import { education, experiences } from '../../data/content'
 export function Experience() {
   return (
     <section id="work" aria-label="Experience">
-      <SectionHeader
-        title="Experience"
-        lede="From Azure Cognitive Services in 2014 to DeepMind model platforms today, by way of Meta and Covariant."
-      />
+      <header data-reveal className="section-pad pb-8 md:pb-12">
+        <h2 className="display text-2xl">Experience</h2>
+        <p className="mt-5 max-w-xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+          From Azure Cognitive Services in 2014 to Google model platforms today, by way of Meta and Covariant.
+        </p>
+      </header>
 
       <div className="section-pad pad-tight !pt-0">
         <ol className="space-y-2">
