@@ -16,13 +16,12 @@ describe('documentation sidebar', () => {
     expect(toggle).toHaveFocus()
   })
 
-  it('preserves section selection and closes the mobile disclosure', () => {
+  it('exposes section links directly without a mobile disclosure', () => {
     const onSelect = vi.fn()
     render(<MemoryRouter><DocsSidebar label="Sections" activeId="tokens" items={[{ id: 'tokens', label: 'Tokens' }]} onSelect={onSelect} /></MemoryRouter>)
-    const toggle = screen.getByRole('button', { name: 'Sections: Tokens' })
-    fireEvent.click(toggle)
+    expect(screen.queryByRole('button', { name: 'Sections: Tokens' })).not.toBeInTheDocument()
     fireEvent.click(screen.getAllByRole('button', { name: 'Tokens', exact: true }).at(-1)!)
     expect(onSelect).toHaveBeenCalledWith('tokens')
-    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.getAllByRole('button', { name: 'Tokens', exact: true }).at(-1)).toHaveAttribute('aria-current', 'location')
   })
 })

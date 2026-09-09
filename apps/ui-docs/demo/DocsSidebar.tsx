@@ -25,7 +25,12 @@ export function DocsSidebar({ items, activeId, label, onSelect }: {
 
   return <>
     <aside className="hidden lg:block"><div className="sticky top-20">{links()}</div></aside>
-    <div ref={mobile} className="lg:hidden py-3 mb-6 border-b border-[var(--glass-border)]" onKeyDown={event => {
+    {onSelect ? <nav aria-label={label} className="lg:hidden flex flex-wrap gap-x-5 gap-y-1 pb-4 border-b border-[var(--glass-border)]">
+      {items.map(item => <button key={item.id} type="button" onClick={() => onSelect(item.id)} aria-current={activeId === item.id ? 'location' : undefined}
+        className={cn('min-h-11 text-sm focus-ring', activeId === item.id ? 'text-[var(--color-white)] underline underline-offset-4' : 'text-[var(--color-grey-400)]')}>
+        {item.label}
+      </button>)}
+    </nav> : <div ref={mobile} className="lg:hidden py-3 mb-6 border-b border-[var(--glass-border)]" onKeyDown={event => {
       if (event.key === 'Escape' && open) {
         event.stopPropagation()
         setOpen(false)
@@ -35,6 +40,6 @@ export function DocsSidebar({ items, activeId, label, onSelect }: {
       <Collapsible trigger={<span className="text-sm font-medium">{`${label}: ${items.find(item => item.id === activeId)?.label ?? 'Navigate'}`}</span>} isOpen={open} onOpenChange={setOpen}>
         {links()}
       </Collapsible>
-    </div>
+    </div>}
   </>
 }

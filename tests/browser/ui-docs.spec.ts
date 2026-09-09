@@ -9,8 +9,8 @@ test('showcase spacing, icon layout and example controls survive both themes', a
     const heading = page.getByRole('heading', { name: 'useCountUp', exact: true })
     await heading.scrollIntoViewIfNeeded()
     if ((page.viewportSize()?.width ?? 1440) < 1024) {
-      const sectionToggle = page.getByRole('button', { name: /^Component sections:/ })
-      expect(await sectionToggle.evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThan(0)
+      const sections = page.getByRole('navigation', { name: 'Component sections', exact: true }).filter({ visible: true })
+      expect(await sections.evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThan(0)
     }
     const gaps = await heading.evaluate(element => {
       const demo = element.parentElement!.nextElementSibling!
