@@ -9,9 +9,7 @@ const SITE_URL = 'https://n3wth.com'
 
 /* The full render of a single registered piece — everything the index on
    /thinking collapses to one stop now lives here, on its own route, so
-   there's nothing beside it on the page to divide from with a rule.
-   Reached via the index's RouterLink (viewTransition), so index -> piece
-   is a real expansion, not a hard swap. */
+   there's nothing beside it on the page to divide from with a rule. */
 export default function ThinkingPiece() {
   const { slug } = useParams()
   const piece = registeredPieces.find((p) => p.meta.id === slug)

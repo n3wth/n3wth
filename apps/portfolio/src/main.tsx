@@ -46,8 +46,7 @@ deferCallback(() => {
   })
 })
 
-/* Data router (createBrowserRouter): required for viewTransition —
-   declarative <BrowserRouter> never reaches document.startViewTransition. */
+/* The data router owns route loading and error boundaries. */
 const router = createBrowserRouter([
   {
     path: '/',

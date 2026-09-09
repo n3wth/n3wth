@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Link as TransitionLink } from 'next-view-transitions'
+import TransitionLink from 'next/link'
 import { getAllNotes, getAllTags, getNoteBySlug, type NoteData } from '@/lib/content'
 import { markdownToHtml, extractHeadings } from '@/lib/markdown'
 import { getBacklinksForSlug } from '@/lib/backlinks'
@@ -189,7 +189,6 @@ export default async function NotePage({ params }: PageProps) {
               <div className="flex items-end justify-between gap-6 mb-3">
                 <h1
                   className="font-display text-[2rem] md:text-[2.5rem] leading-[1.12] font-semibold tracking-[-0.025em] text-[var(--color-text-primary)]"
-                  style={{ viewTransitionName: 'note-title' }}
                 >
                   {note.title}
                 </h1>

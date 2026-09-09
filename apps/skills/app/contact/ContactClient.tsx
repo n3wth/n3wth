@@ -1,43 +1,25 @@
 'use client'
 import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
 
-import { useRef } from 'react'
 import Link from 'next/link'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
 import { IslandNav } from '../../src/components/IslandNav'
 import { Footer } from '../../src/components/Footer'
 import { FloatingShapes } from '../../src/components/FloatingShapes'
 import { siteConfig } from '../../src/config/site'
 
 export default function ContactClient() {
-  const pageRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-
-  useGSAP(() => {
-    if (!contentRef.current) return
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
-
-    gsap.fromTo(
-      contentRef.current.querySelectorAll('.animate-in'),
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out' }
-    )
-  }, { scope: pageRef })
-
   return (
-    <div ref={pageRef} className="min-h-screen relative content-loaded">
+    <div className="min-h-screen relative content-loaded">
       <div className="mesh-gradient" />
       <div className="noise-overlay" />
       <FloatingShapes />
       <IslandNav />
 
       <main className="n3wth-site-container n3wth-site-main">
-        <div ref={contentRef} className="max-w-2xl">
+        <div className="max-w-2xl">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 mb-8 text-sm hover:opacity-70 transition-opacity animate-in"
+            className="inline-flex items-center gap-2 mb-8 text-sm hover:opacity-70 transition-opacity"
             style={{ color: 'var(--color-grey-400)' }}
           >
             <span>&larr;</span> Back to skills
@@ -46,7 +28,7 @@ export default function ContactClient() {
           <PageHeader title={<>Contact</>} />
 
           <div className="skills-content-sections">
-            <SiteSection className="animate-in">
+            <SiteSection >
               <p
                 className="text-lg leading-relaxed mb-6"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -55,7 +37,7 @@ export default function ContactClient() {
               </p>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 GitHub
               </SiteHeading>
@@ -78,7 +60,7 @@ export default function ContactClient() {
               </a>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Email
               </SiteHeading>
@@ -100,7 +82,7 @@ export default function ContactClient() {
               </a>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Request a skill
               </SiteHeading>
@@ -118,7 +100,7 @@ export default function ContactClient() {
               </Link>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Author
               </SiteHeading>

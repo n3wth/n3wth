@@ -1,7 +1,7 @@
 export const iconColors = { background: '#08090b', foreground: '#ffffff' }
 
 export const siteIcons = {
-  portfolio: { name: 'n3wth', symbol: 'Monogram', paths: '<path d="M22 43V21L42 43V21"/>' },
+  portfolio: { name: 'n3wth', symbol: 'Home', paths: '<path d="M16 30L32 16L48 30M21 26V47H43V26M28 47V35H36V47"/>' },
   garden: { name: 'Garden', symbol: 'Sprout', paths: '<path d="M32 46V32M32 35C22 35 18 29 18 21C28 21 32 27 32 35ZM32 31C32 23 38 18 46 18C46 27 41 32 32 32"/>' },
   kit: { name: 'Kit', symbol: 'Cube', paths: '<path d="M32 16L47 24V41L32 49L17 41V24ZM17 24L32 33L47 24M32 33V49"/>' },
   r3: { name: 'r3', symbol: 'Rings', paths: '<circle cx="32" cy="32" r="16"/><circle cx="32" cy="32" r="9"/><circle cx="32" cy="32" r="2" fill="currentColor" stroke="none"/>' },

@@ -1,42 +1,24 @@
 'use client'
 import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
 
-import { useRef } from 'react'
 import Link from 'next/link'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
 import { IslandNav } from '../../src/components/IslandNav'
 import { Footer } from '../../src/components/Footer'
 import { FloatingShapes } from '../../src/components/FloatingShapes'
 
 export default function PrivacyClient() {
-  const pageRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-
-  useGSAP(() => {
-    if (!contentRef.current) return
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
-
-    gsap.fromTo(
-      contentRef.current.querySelectorAll('.animate-in'),
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out' }
-    )
-  }, { scope: pageRef })
-
   return (
-    <div ref={pageRef} className="min-h-screen relative content-loaded">
+    <div className="min-h-screen relative content-loaded">
       <div className="mesh-gradient" />
       <div className="noise-overlay" />
       <FloatingShapes />
       <IslandNav />
 
       <main className="n3wth-site-container n3wth-site-main">
-        <div ref={contentRef} className="max-w-2xl">
+        <div className="max-w-2xl">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 mb-8 text-sm hover:opacity-70 transition-opacity animate-in"
+            className="inline-flex items-center gap-2 mb-8 text-sm hover:opacity-70 transition-opacity"
             style={{ color: 'var(--color-grey-400)' }}
           >
             <span>&larr;</span> Back to skills
@@ -45,7 +27,7 @@ export default function PrivacyClient() {
           <PageHeader title={<>Privacy Policy</>} description={<>Last updated: January 2026</>} />
 
           <div className="skills-content-sections">
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Overview
               </SiteHeading>
@@ -57,7 +39,7 @@ export default function PrivacyClient() {
               </p>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Data we collect
               </SiteHeading>
@@ -77,7 +59,7 @@ export default function PrivacyClient() {
               </ul>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Skills installation
               </SiteHeading>
@@ -89,7 +71,7 @@ export default function PrivacyClient() {
               </p>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Third-party services
               </SiteHeading>
@@ -108,7 +90,7 @@ export default function PrivacyClient() {
               </ul>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Cookies
               </SiteHeading>
@@ -120,7 +102,7 @@ export default function PrivacyClient() {
               </p>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Data retention
               </SiteHeading>
@@ -132,7 +114,7 @@ export default function PrivacyClient() {
               </p>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Your rights
               </SiteHeading>
@@ -144,7 +126,7 @@ export default function PrivacyClient() {
               </p>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Changes to this policy
               </SiteHeading>
@@ -156,7 +138,7 @@ export default function PrivacyClient() {
               </p>
             </SiteSection>
 
-            <SiteSection className="animate-in">
+            <SiteSection >
               <SiteHeading variant="section">
                 Contact
               </SiteHeading>

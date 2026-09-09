@@ -4,6 +4,8 @@ The six workspace sites use one Astryx foundation from `packages/ui`. Their cont
 
 Navigation and footers also come from `SiteNavigation` and `SiteFooter`. Apps pass router-aware home links, primary links and relevant actions as ReactNode slots. The shared navigation owns its 48px height, subtle 1px theme border, spacing, mobile disclosure and Escape focus restoration. Do not add local island styles, separators, blur or alternate mobile breakpoints. Do not use sparkle icons.
 
+Keep footers minimal: use `SiteFooter` defaults for the Oliver Newth home link, Contact and GitHub; pass `sourceHref` for the app source and `legalLinks` only where needed. Avoid repeated site directories, product descriptions or separate copyright rows. Navigation should feel instant: do not add route-entry fades, slides, staggered content reveals or delayed page content. Keep functional feedback and specialized interactive demos.
+
 Use `n3wth-site-main` for the standard 96px fixed-navigation offset. `PageHeader` owns hero typography and vertical spacing; its optional `aside` accepts demonstrations in a shared responsive split layout. Use `SiteSection` and semantic heading/text roles for page sections. Immersive scenes and long-form reading layouts can retain their content-specific structure.
 
 ## Use

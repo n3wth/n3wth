@@ -7,7 +7,7 @@ import {
   useCallback,
   useEffect,
 } from 'react'
-import { useTransitionRouter } from 'next-view-transitions'
+import { useRouter } from 'next/navigation'
 import {
   CommandPalette,
   CommandPaletteFooter,
@@ -169,7 +169,7 @@ export function SearchPalette({
   isOpen,
   onOpenChange,
 }: SearchPaletteProps) {
-  const router = useTransitionRouter()
+  const router = useRouter()
   const [aiState, setAiState] = useState<AIState>({
     loading: false,
     result: '',

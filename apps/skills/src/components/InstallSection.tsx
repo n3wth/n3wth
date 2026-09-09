@@ -5,13 +5,11 @@ import { installCommands } from '../config/commands'
 import { assistantList } from '../config/assistants'
 import { CommandBox } from './CommandBox'
 import { AssistantIcon } from './AssistantIcon'
-import { useScrollReveal } from '../hooks'
 
 const publicAssistantList = assistantList
 
 export function InstallSection() {
   const [showAll, setShowAll] = useState(false)
-  const sectionRef = useScrollReveal({ direction: 'up', distance: 35, stagger: 0.15, duration: 0.9 })
   
   const primaryCommands = installCommands.filter(cmd => 
     cmd.assistantId === 'gemini' || cmd.assistantId === 'all'
@@ -21,7 +19,7 @@ export function InstallSection() {
   )
 
   return (
-    <SiteSection ref={sectionRef}>
+    <SiteSection>
       <div>
         <SiteHeading variant="section" className="mb-2">
           Install

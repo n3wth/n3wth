@@ -4,7 +4,7 @@ import { useGoogleAnalytics } from './useGoogleAnalytics'
 import { SiteNav } from './SiteNav'
 import { N3wthProvider, PageHeader, SiteContainer } from '@n3wth/ui/site'
 import { SiteFooter } from '@n3wth/ui/site'
-import { siteLinks, legalLinks } from './siteLinks'
+import { siteUrls } from '@n3wth/site-config'
 import { Icon } from '@n3wth/ui'
 import { useTheme } from '@n3wth/ui'
 import { cn } from '@n3wth/ui'
@@ -167,10 +167,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
       </div>
 
       {/* Footer */}
-      <SiteFooter brand={<a href="/">n3wth/ui</a>} links={<>
-        {siteLinks.map(link => <a key={link.href} href={link.href}>{link.name}</a>)}
-        {legalLinks.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}
-      </>}>© {new Date().getFullYear()} n3wth</SiteFooter>
+      <SiteFooter sourceHref="https://github.com/n3wth/ui" legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
     </div>
   )
 }

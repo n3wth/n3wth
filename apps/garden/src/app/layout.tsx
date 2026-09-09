@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import { ViewTransitions } from 'next-view-transitions'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { AxiomWebVitals } from 'next-axiom'
 import { getAllNotes } from '@/lib/content'
@@ -66,7 +65,6 @@ export default function RootLayout({
     }))
 
   return (
-    <ViewTransitions>
     <html lang="en" data-theme="dark">
       <AxiomWebVitals />
       <GoogleAnalytics gaId="G-4QRMSG5HXK" />
@@ -100,6 +98,5 @@ export default function RootLayout({
         </Providers>
       </body>
     </html>
-    </ViewTransitions>
   )
 }

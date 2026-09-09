@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Link } from 'next-view-transitions'
+import Link from 'next/link'
 import { attemptChunkReload, isChunkLoadError } from '@/lib/chunk-error'
 
 export default function Error({

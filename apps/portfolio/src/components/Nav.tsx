@@ -20,11 +20,11 @@ export function Nav({ onOpenSearch }: NavProps) {
       navigationId="primary-navigation"
       menuLabel="Primary"
       data-nosnippet
-      brand={<Link to="/" viewTransition aria-label="n3wth — home" onClick={sameRouteClick('/')}>n3wth</Link>}
-      links={navigation.map((item) => <NavLink key={item.href} to={item.href} viewTransition onClick={sameRouteClick(item.href)}>{item.name}</NavLink>)}
+      brand={<Link to="/" aria-label="n3wth — home" onClick={sameRouteClick('/')}>n3wth</Link>}
+      links={navigation.map((item) => <NavLink key={item.href} to={item.href} onClick={sameRouteClick(item.href)}>{item.name}</NavLink>)}
       actions={<>
         <a href="https://github.com/n3wth/n3wth" rel="noopener me" aria-label="GitHub"><Icon name="github" size="md" /></a>
-        <Link to="/contact" viewTransition onClick={sameRouteClick('/contact')} aria-label="Contact"><Mail size={16} aria-hidden="true" /></Link>
+        <Link to="/contact" onClick={sameRouteClick('/contact')} aria-label="Contact"><Mail size={16} aria-hidden="true" /></Link>
         {onOpenSearch && <button type="button" onClick={onOpenSearch} aria-label="Search"><Search size={16} aria-hidden="true" /></button>}
       </>}
     />

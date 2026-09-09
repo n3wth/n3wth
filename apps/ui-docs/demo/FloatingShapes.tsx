@@ -42,19 +42,7 @@ export function FloatingShapes() {
     const shapes = containerRef.current.querySelectorAll('.floating-shape')
 
     const ctx = gsap.context(() => {
-      // Entrance animation
-      gsap.fromTo(
-        shapes,
-        { opacity: 0, scale: 0.7 },
-        {
-          opacity: 0.5,
-          scale: 1,
-          duration: prefersReducedMotion ? 0 : 1,
-          delay: prefersReducedMotion ? 0 : (_i: number) => _i * 0.1,
-          ease: 'power2.out',
-          stagger: prefersReducedMotion ? 0 : 0.06,
-        }
-      )
+      gsap.set(shapes, { opacity: 0.5 })
 
       if (prefersReducedMotion) return
 

@@ -119,14 +119,21 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
 export interface SiteFooterProps extends HTMLAttributes<HTMLElement> {
   brand?: ReactNode
   links?: ReactNode
+  sourceHref?: string
+  legalLinks?: ReactNode
 }
 
-export function SiteFooter({ brand, links, children, className, ...props }: SiteFooterProps) {
+export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a>, links, sourceHref = 'https://github.com/n3wth/n3wth', legalLinks, children, className, ...props }: SiteFooterProps) {
+  const footerLinks = links ?? <>
+    <a href="https://n3wth.com/contact">Contact</a>
+    <a href={sourceHref}>GitHub</a>
+    {legalLinks}
+  </>
   return <footer {...props} className={cn('n3wth-site-footer', className)}>
     <SiteContainer>
       <div className="n3wth-site-footer-row">
         {brand != null && <div className="n3wth-site-footer-brand">{brand}</div>}
-        {links != null && <nav aria-label="Footer" className="n3wth-site-footer-links">{links}</nav>}
+        <nav aria-label="Footer" className="n3wth-site-footer-links">{footerLinks}</nav>
       </div>
       {children != null && <div className="n3wth-site-footer-meta">{children}</div>}
     </SiteContainer>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'next-view-transitions'
+import Link from 'next/link'
 import { TextInput } from '@astryxdesign/core/TextInput'
 import { SegmentedControl, SegmentedControlItem } from '@astryxdesign/core/SegmentedControl'
 import { EmptyState } from '@astryxdesign/core/EmptyState'
@@ -232,24 +232,16 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
                 <span className="tabular-nums">{bandNotes.length}</span>
               </h2>
               <ul className="divide-y divide-[var(--color-border)]">
-          {bandNotes.map((note, i) => {
+          {bandNotes.map((note) => {
             const seen = note.slug in visited
             return (
               <li
                 key={note.slug}
                 className="note-row"
-                style={{ '--row-i': Math.min(i, 12) } as React.CSSProperties}
               >
                 <Link
                   href={`/${note.slug}`}
                   className="group press flex items-center gap-4 py-3 px-2 -mx-2 rounded-lg hover:bg-[var(--color-overlay-hover)] transition-colors"
-                  onClick={(e) => {
-                    /* Name only the clicked row's title so the view transition
-                       morphs it into the note page's h1 — naming every row
-                       would snapshot all of them. */
-                    const title = e.currentTarget.querySelector<HTMLElement>('.note-row-title')
-                    if (title) title.style.viewTransitionName = 'note-title'
-                  }}
                 >
                   <span className={`shrink-0 w-6 flex justify-center ${seen ? 'opacity-70' : ''}`}>
                     <PlantGlyph slug={note.slug} stage={note.stage} linkCount={note.linkCount} size={30} />

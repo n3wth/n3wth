@@ -1,4 +1,4 @@
-import { Link } from 'next-view-transitions'
+import Link from 'next/link'
 import { Button } from '@astryxdesign/core/Button'
 import { EmptyState } from '@astryxdesign/core/EmptyState'
 import { getGraphData } from '@/lib/graph'

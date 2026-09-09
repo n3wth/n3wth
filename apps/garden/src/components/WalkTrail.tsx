@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Link } from 'next-view-transitions'
+import Link from 'next/link'
 
 /* This session's walk through the garden, kept in sessionStorage — the
    short-term companion to the localStorage worn paths. Stepping back to

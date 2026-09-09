@@ -1,124 +1,12 @@
 'use client'
 import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
 
-import { useRef, useEffect } from 'react'
 import Link from 'next/link'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { IslandNav } from '../../src/components/IslandNav'
 import { Footer } from '../../src/components/Footer'
 import { FloatingShapes } from '../../src/components/FloatingShapes'
 
-gsap.registerPlugin(ScrollTrigger)
-
 export default function AboutClient() {
-  const heroRef = useRef<HTMLDivElement>(null)
-  const sectionsRef = useRef<HTMLDivElement>(null)
-  const comparisonRef = useRef<HTMLDivElement>(null)
-  const cardsRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
-
-    const ctx = gsap.context(() => {
-      // Hero title animation
-      if (heroRef.current) {
-        gsap.fromTo(
-          heroRef.current.querySelectorAll('.animate-in'),
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out' }
-        )
-      }
-
-      // Section animations on scroll
-      if (sectionsRef.current) {
-        const sections = sectionsRef.current.querySelectorAll('section')
-        sections.forEach((section) => {
-          gsap.fromTo(
-            section,
-            { opacity: 0, y: 40 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.7,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 85%',
-                once: true,
-              },
-            }
-          )
-        })
-      }
-
-      // Comparison card animation
-      if (comparisonRef.current) {
-        const columns = comparisonRef.current.querySelectorAll('[data-col]')
-        gsap.fromTo(
-          columns,
-          { opacity: 0, x: (i) => (i === 0 ? -30 : 30) },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 0.6,
-            stagger: 0.2,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: comparisonRef.current,
-              start: 'top 80%',
-              once: true,
-            },
-          }
-        )
-
-        // Animate list items
-        const listItems = comparisonRef.current.querySelectorAll('li')
-        gsap.fromTo(
-          listItems,
-          { opacity: 0, x: -10 },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 0.4,
-            stagger: 0.08,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: comparisonRef.current,
-              start: 'top 75%',
-              once: true,
-            },
-          }
-        )
-      }
-
-      // Feature cards stagger
-      if (cardsRef.current) {
-        const cards = cardsRef.current.querySelectorAll('.glass-card')
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 20, scale: 0.95 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.5,
-            stagger: 0.12,
-            ease: 'back.out(1.2)',
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: 'top 85%',
-              once: true,
-            },
-          }
-        )
-      }
-    })
-
-    return () => ctx.revert()
-  }, [])
-
   return (
     <div className="min-h-screen relative content-loaded">
       <div className="mesh-gradient" />
@@ -128,10 +16,10 @@ export default function AboutClient() {
 
       <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-3xl">
-          <div ref={heroRef}>
+          <div>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 mb-8 text-sm hover:opacity-70 transition-opacity animate-in"
+              className="inline-flex items-center gap-2 mb-8 text-sm hover:opacity-70 transition-opacity"
               style={{ color: 'var(--color-grey-400)' }}
             >
               <span>&larr;</span> Back to skills
@@ -140,7 +28,7 @@ export default function AboutClient() {
             <PageHeader title={<>What are Skills?</>} description={<>Markdown files that tell your AI how to do one thing well.</>} />
           </div>
 
-          <div ref={sectionsRef}>
+          <div>
             <SiteSection>
               <SiteHeading variant="section">
                 How they work
@@ -175,7 +63,7 @@ export default function AboutClient() {
               >
                 A skill is just a markdown file in your config directory. Copy it anywhere.
               </p>
-              <div ref={comparisonRef} className="glass-card p-6 md:p-8 mt-6">
+              <div className="glass-card p-6 md:p-8 mt-6">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div data-col>
                     <h3
@@ -267,7 +155,7 @@ export default function AboutClient() {
               <SiteHeading variant="section">
                 Why skills?
               </SiteHeading>
-              <div ref={cardsRef} className="grid md:grid-cols-3 gap-6 mt-6">
+              <div className="grid md:grid-cols-3 gap-6 mt-6">
                 <div className="glass-card p-6">
                   <h3
                     className="text-lg font-medium mb-2"
