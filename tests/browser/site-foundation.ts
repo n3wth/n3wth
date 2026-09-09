@@ -22,6 +22,7 @@ export async function expectSiteFoundation(page: Page) {
   const canvas = await page.locator('html').evaluate(element => getComputedStyle(element).backgroundColor)
   expect(canvas).not.toBe('rgba(0, 0, 0, 0)')
   const island = page.locator('.n3wth-site-navigation-island')
+  await expect(island).toHaveAttribute('data-nosnippet', 'true')
   await expect(island).toHaveCSS('height', '48px')
   await expect(island).toHaveCSS('border-top-width', '1px')
   await expect(island).toHaveCSS('backdrop-filter', 'none')
