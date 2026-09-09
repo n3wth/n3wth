@@ -14,8 +14,8 @@ function checkImports(directory, shared = new Set()) {
     if (entry.isDirectory()) checkImports(path, shared)
     else if (/\.(?:[cm]?[jt]sx?|css|scss|mdx)$/.test(entry.name)) {
       const source = readFileSync(path, 'utf8')
-      if (/\.(?:css|scss)$/.test(entry.name) && /\.n3wth-site-[\w-]+/.test(source.replace(/\/\*[\s\S]*?\*\//g, ''))) {
-        throw new Error(`${path}: shared site selectors belong in packages/ui, not app overrides`)
+      if (/\.(?:css|scss)$/.test(entry.name) && /\.n3wth-(?:site|visual)-[\w-]+/.test(source.replace(/\/\*[\s\S]*?\*\//g, ''))) {
+        throw new Error(`${path}: shared UI selectors belong in packages/ui, not app overrides`)
       }
       if (!/\.(test|spec)\./.test(entry.name)) {
         for (const match of source.matchAll(/import\s*\{([^}]+)\}\s*from\s*['"]@n3wth\/ui\/site['"]/g)) {

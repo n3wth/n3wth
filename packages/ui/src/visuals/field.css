@@ -1,0 +1,21 @@
+.n3wth-visual-field { display: block; width: 100%; height: 100%; }
+.n3wth-visual-dot { opacity: 0.6; }
+
+/* Movement never controls whether the field is visible. */
+.n3wth-visual-field[data-reduced-motion='false'] .n3wth-visual-drift {
+  animation: n3wth-visual-drift var(--gd) ease-in-out var(--gl) infinite;
+}
+.n3wth-visual-field[data-reduced-motion='false'] .n3wth-visual-twinkle {
+  animation: n3wth-visual-twinkle var(--twd) ease-in-out var(--tw) infinite;
+}
+@keyframes n3wth-visual-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(var(--gvx), var(--gvy)); }
+}
+@keyframes n3wth-visual-twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .n3wth-visual-drift, .n3wth-visual-twinkle { animation: none !important; }
+}

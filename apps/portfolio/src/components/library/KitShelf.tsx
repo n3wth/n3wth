@@ -102,13 +102,9 @@ function KitRow({ primitive }: { primitive: KitPrimitive }) {
         <CodeBlock code={primitive.signature} className="mt-7 max-w-[52ch]" />
       </div>
 
-      {/* data-reveal on the specimen wrapper is load-bearing, not decoration:
-          the kit's line-draw, node-in and dot-in keyframes are all scoped to
-          `[data-reveal].is-in .kit-…` in index.css, so a FlowDiagram or an
-          AssembleField mounted without a revealed ancestor renders its paths
-          at full dash offset and its dots at opacity 0 — i.e. blank. */}
+      {/* Specimens render immediately; shared visuals own their motion. */}
       {Demo && (
-        <div data-reveal className="mt-10">
+        <div className="mt-10">
           <p className="index">Live</p>
           <div className="mt-5">
             <Suspense fallback={<div className="h-36" aria-hidden />}>

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Blockquote } from '@n3wth/ui/primitives'
 import { Beat } from '../kit/Beat'
-import { AssembleField } from '../kit/AssembleField'
+import { AssembleField } from '@n3wth/ui/visuals'
 
 /* "Working notes: 2026" — grounded in a personal annual-planning document
    that spans career, money, home life, and the infrastructure underneath

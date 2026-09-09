@@ -26,6 +26,10 @@
       "types": "./dist/primitives/index.d.ts",
       "import": "./dist/primitives/index.js"
     },
+    "./visuals": {
+      "types": "./dist/visuals/index.d.ts",
+      "import": "./dist/visuals/index.js"
+    },
     "./tailwind-theme.css": "./dist/tailwind-theme.css",
     "./site.css": "./dist/site.css",
     "./fonts/*": "./public/fonts/*",

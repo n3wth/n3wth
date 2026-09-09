@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useRef } from 'react'
+'use client'
+
+import { useId } from 'react'
+import { useLightPaths } from './useLightPaths'
 
 /**
  * The page's subject as a drawing instead of a photograph: one path of
@@ -6,12 +9,10 @@ import { useEffect, useMemo, useRef } from 'react'
  * base line and peel apart on a smooth divergence envelope — no fork
  * kink, and the shared stretch wobbles identically the way one exposure
  * would. The waver phase drifts continuously so the ripples travel
- * left to right, the direction the light is going; turbulence filters
- * add fine shimmer on top. Three strokes per path (haze, glow,
- * filament) make it read as light rather than line art.
+ * left to right, the direction the light is going. Each branch is a
+ * clean filament, with an alternating pulse travelling along it.
  *
- * Draw-in is keyed off the reveal system ([data-reveal].is-in); reduced
- * motion gets a still line and still filters.
+ * Filaments are visible immediately; reduced motion freezes the waveform.
  */
 
 const N = 72
@@ -49,51 +50,36 @@ function buildPath(dir: -1 | 1, time: number): string {
   return pts.join(' ')
 }
 
-const LAYERS = [{ width: 2, cls: 'fork-l-core' }] as const
+const LAYERS = [{ width: 2, cls: 'n3wth-visual-light-core' }] as const
 
 export function ForkLight() {
-  const upperRefs = useRef<(SVGPathElement | null)[]>([])
-  const lowerRefs = useRef<(SVGPathElement | null)[]>([])
-
-  const initial = useMemo(() => ({ up: buildPath(-1, 0), lo: buildPath(1, 0) }), [])
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let raf = 0
-    const t0 = performance.now()
-    const tick = (now: number) => {
-      const time = (now - t0) / 1000
-      const up = buildPath(-1, time)
-      const lo = buildPath(1, time)
-      for (const el of upperRefs.current) el?.setAttribute('d', up)
-      for (const el of lowerRefs.current) el?.setAttribute('d', lo)
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [])
+  const { upperRefs, lowerRefs, initial } = useLightPaths(buildPath)
+  const id = useId().replace(/:/g, '')
+  const gradientA = `n3wth-fork-${id}-a`
+  const gradientB = `n3wth-fork-${id}-b`
 
   return (
     <svg
       viewBox="0 0 1600 420"
       preserveAspectRatio="xMidYMid slice"
-      className="block h-full w-full"
+      className="n3wth-visual-light"
       role="presentation"
+      aria-hidden="true"
       focusable="false"
     >
       <defs>
         {/* tails fade in from the left edge; tips carry the temperature */}
-        <linearGradient id="fork-grad-a" gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
-          <stop offset="0" stopColor="#f2f0ec" stopOpacity="0" />
-          <stop offset="0.18" stopColor="#f2f0ec" stopOpacity="0.85" />
-          <stop offset="0.55" stopColor="#f0f2f6" stopOpacity="1" />
-          <stop offset="1" stopColor="#d8e3f6" stopOpacity="0.95" />
+        <linearGradient id={gradientA} gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
+          <stop offset="0" stopColor="var(--color-text-primary, #f2f0ec)" stopOpacity="0" />
+          <stop offset="0.18" stopColor="var(--color-text-primary, #f2f0ec)" stopOpacity="0.85" />
+          <stop offset="0.55" stopColor="var(--color-text-primary, #f0f2f6)" stopOpacity="1" />
+          <stop offset="1" stopColor="color-mix(in srgb, var(--color-text-primary, #d8e3f6) 50%, #d8e3f6)" stopOpacity="0.95" />
         </linearGradient>
-        <linearGradient id="fork-grad-b" gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
-          <stop offset="0" stopColor="#f2f0ec" stopOpacity="0" />
-          <stop offset="0.18" stopColor="#f2f0ec" stopOpacity="0.85" />
-          <stop offset="0.55" stopColor="#f4f0ea" stopOpacity="1" />
-          <stop offset="1" stopColor="#ffe3c2" stopOpacity="0.95" />
+        <linearGradient id={gradientB} gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
+          <stop offset="0" stopColor="var(--color-text-primary, #f2f0ec)" stopOpacity="0" />
+          <stop offset="0.18" stopColor="var(--color-text-primary, #f2f0ec)" stopOpacity="0.85" />
+          <stop offset="0.55" stopColor="var(--color-text-primary, #f4f0ea)" stopOpacity="1" />
+          <stop offset="1" stopColor="color-mix(in srgb, var(--color-text-primary, #ffe3c2) 50%, #ffe3c2)" stopOpacity="0.95" />
         </linearGradient>
       </defs>
       {LAYERS.map((l, i) => (
@@ -105,10 +91,10 @@ export function ForkLight() {
           d={initial.up}
           pathLength={1}
           fill="none"
-          stroke="url(#fork-grad-a)"
+          stroke={`url(#${gradientA})`}
           strokeWidth={l.width}
           strokeLinecap="round"
-          className={`fork-path ${l.cls} fork-branch`}
+          className={`n3wth-visual-light-path ${l.cls} n3wth-visual-light-branch`}
         />
       ))}
       {/* decisions in motion: a pulse travels the trunk, hesitates at
@@ -121,10 +107,10 @@ export function ForkLight() {
         d={initial.up}
         pathLength={1}
         fill="none"
-        stroke="#ffffff"
+        stroke="var(--color-text-primary, #ffffff)"
         strokeWidth={2.6}
         strokeLinecap="round"
-        className="fork-pulse fork-pulse-a"
+        className="n3wth-visual-light-pulse n3wth-visual-light-pulse-a"
       />
       <path
         ref={(el) => {
@@ -133,10 +119,10 @@ export function ForkLight() {
         d={initial.lo}
         pathLength={1}
         fill="none"
-        stroke="#ffffff"
+        stroke="var(--color-text-primary, #ffffff)"
         strokeWidth={2.6}
         strokeLinecap="round"
-        className="fork-pulse fork-pulse-b"
+        className="n3wth-visual-light-pulse n3wth-visual-light-pulse-b"
       />
       {LAYERS.map((l, i) => (
         <path
@@ -147,10 +133,10 @@ export function ForkLight() {
           d={initial.lo}
           pathLength={1}
           fill="none"
-          stroke="url(#fork-grad-b)"
+          stroke={`url(#${gradientB})`}
           strokeWidth={l.width}
           strokeLinecap="round"
-          className={`fork-path ${l.cls} fork-branch fork-branch-b`}
+          className={`n3wth-visual-light-path ${l.cls} n3wth-visual-light-branch n3wth-visual-light-branch-b`}
         />
       ))}
     </svg>

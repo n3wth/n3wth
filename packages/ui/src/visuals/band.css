@@ -1,0 +1,10 @@
+.n3wth-visual-band {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: clip;
+}
+.n3wth-visual-band--full {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}

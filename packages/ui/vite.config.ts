@@ -26,6 +26,7 @@ export default defineConfig({
         'og/index': resolve(__dirname, 'src/og/index.ts'),
         'site/index': resolve(__dirname, 'src/site/index.tsx'),
         'primitives/index': resolve(__dirname, 'src/primitives/index.ts'),
+        'visuals/index': resolve(__dirname, 'src/visuals/index.ts'),
       },
       formats: ['es'],
     },
@@ -49,7 +50,7 @@ export default defineConfig({
         // Ensure proper ESM output
         format: 'es',
         // Add banner for proper module resolution
-        banner: (chunk) => `${['site/index', 'primitives/index'].includes(chunk.name) ? "'use client';\n" : ''}/* @n3wth/ui - Built on Astryx */`,
+        banner: (chunk) => `${['site/index', 'primitives/index', 'visuals/index'].includes(chunk.name) ? "'use client';\n" : ''}/* @n3wth/ui - Built on Astryx */`,
       },
       // Ensure external modules aren't bundled
       treeshake: {
