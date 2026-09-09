@@ -51,6 +51,10 @@ import '@n3wth/ui/site.css'
 
 The canonical theme is `packages/ui/src/theme/n3wthTheme.ts`. Its CSS is generated during the UI build. Keep every app's `@n3wth/ui` dependency equal to the workspace version so npm does not silently install an older nested copy. The original `n3wth/ui` repository remains the public npm release authority; this change does not publish a package or move that authority.
 
+## Decorative artwork
+
+Decorative artwork uses `@n3wth/ui/visuals`: VisualBand owns full-width layout, while AssembleField, ForkLight and ConvergeLight own their drawing and motion. Styles are included in `site.css`. Keep seeds, cluster positions and heights in the app. Artwork is visible without an observer or a parent reveal class, and reduced motion keeps a still composition. VisualBand is aria-hidden; keep text and controls outside it. Use `fullBleed={false}` for contained previews.
+
 ## New sites
 
 ```sh

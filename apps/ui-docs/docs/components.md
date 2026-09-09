@@ -41,6 +41,12 @@ Import from @n3wth/ui/primitives to use Astryx APIs through UI’s dependency bo
 
 Use native primitive props from the installed workspace types. Keep accessible names, labels, focus behavior and state relationships intact; a library does not remove the application’s accessibility responsibilities.
 
+## Decorative visuals
+
+`@n3wth/ui/visuals` exports VisualBand, AssembleField, ForkLight and ConvergeLight. Their styles ship in `@n3wth/ui/site.css`. VisualBand provides full-width decorative layout; use fullBleed=false for an inline preview. Keep controls and meaningful text outside its aria-hidden content.
+
+Visuals are visible on first render without a reveal observer or parent class. Reduced motion keeps a still composition. The shared package owns rendering and motion; apps supply seeds, cluster positions and band heights.
+
 ## Existing UI APIs
 
 Root imports from @n3wth/ui remain for compatibility. Adapters translate existing props onto Astryx where appropriate. Root exports can also include project-specific illustrations and utilities.

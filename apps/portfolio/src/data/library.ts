@@ -22,8 +22,8 @@ export interface KitPrimitive {
 }
 
 /**
- * The essay kit that powers every Thinking piece: eight primitives, all
- * living in src/components/thinking/kit/. It never had a page of its own
+ * The essay kit that powers every Thinking piece: eight primitives, with essay-specific components
+ * in src/components/thinking/kit/ and shared visuals in packages/ui. It never had a page of its own
  * until this one; the pieces just imported it. Order matches how a piece
  * is actually built: layout unit first, then the specimens that go inside it.
  */
@@ -118,7 +118,7 @@ interface FlowDiagramProps {
   travelerCount?: number
   className?: string
 }`,
-    source: 'src/components/thinking/kit/AssembleField.tsx',
+    source: 'packages/ui/src/visuals/AssembleField.tsx',
     usedIn: '2026-goals',
     demo: 'field',
   },

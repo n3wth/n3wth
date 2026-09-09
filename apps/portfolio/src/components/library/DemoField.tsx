@@ -1,4 +1,4 @@
-import { AssembleField } from '../thinking/kit/AssembleField'
+import { AssembleField } from '@n3wth/ui/visuals'
 
 /**
  * AssembleField, running, at reading scale rather than band scale. Two

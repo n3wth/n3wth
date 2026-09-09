@@ -14,6 +14,30 @@ test('diagrams are immediately visible with normal motion', async ({ page }) => 
   }
 })
 
+for (const reducedMotion of ['no-preference', 'reduce'] as const) {
+  test(`shared visual bands remain visible with ${reducedMotion} motion`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion })
+    for (const route of ['/library', '/work', '/thinking', '/contact']) {
+      await page.goto(route)
+      const band = page.locator('.n3wth-visual-band').first()
+      await expect(band).toBeAttached()
+      await band.scrollIntoViewIfNeeded()
+      await expect(band).toBeVisible()
+      await expect(band).toHaveAttribute('aria-hidden', 'true')
+      await expect.poll(() => band.evaluate(element => {
+        const marks = [...element.querySelectorAll('.n3wth-visual-dot, .n3wth-visual-light-path')]
+        return marks.length > 0 && marks.every(mark => {
+          const style = getComputedStyle(mark)
+          return Number(style.opacity) > 0 && style.visibility !== 'hidden'
+            && (!mark.classList.contains('n3wth-visual-light-path') || Number.parseFloat(style.strokeDashoffset) === 0)
+        })
+      })).toBe(true)
+      expect(await band.locator('[data-reveal]').count()).toBe(0)
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
+    }
+  })
+}
+
 test('work uses the shared theme and a usable resume action', async ({ page }) => {
   await page.goto('/work')
   await expectSiteFoundation(page)

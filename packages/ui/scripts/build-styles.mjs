@@ -7,6 +7,7 @@ import { generateThemeCSS } from '@astryxdesign/core/theme'
 const require = createRequire(import.meta.url)
 export async function buildStyles() {
   const site = readFileSync('src/site/site.css', 'utf8')
+    + ['band', 'field', 'light'].map(name => readFileSync(`src/visuals/${name}.css`, 'utf8')).join('\n')
   const canonicalFamilies = /font-family:\s*'(?:Satoshi|Geist Sans|Geist Mono)'\s*;/
   const canonicalFonts = [...site.matchAll(/@font-face\s*\{[^}]*\}/g)]
     .map(([face]) => face)

@@ -1,4 +1,4 @@
-import { AssembleField } from '../thinking/kit/AssembleField'
+import { AssembleField, VisualBand } from '@n3wth/ui/visuals'
 
 /**
  * /library's decorative band, and a small joke that pays rent: it's the
@@ -10,9 +10,7 @@ import { AssembleField } from '../thinking/kit/AssembleField'
  * slices rather than fits, and at 1600 wide a phone crops away everything
  * past roughly x=1200, which is exactly where the clusters would be. At
  * 900 the gathering points survive down to 320px.
- *
- * data-reveal sits on the inner div, never on .bleed — the reveal's
- * transform would cancel .bleed's translateX(-50%) centering.
+
  */
 
 const CLUSTERS: [number, number][] = [
@@ -24,18 +22,16 @@ const CLUSTERS: [number, number][] = [
 
 export function AssembleBand() {
   return (
-    <div className="bleed mt-16 md:mt-24" aria-hidden>
-      <div data-reveal className="w-full" style={{ height: 'clamp(190px, 34svh, 340px)' }}>
-        <AssembleField
-          seed={4}
-          cols={30}
-          rows={12}
-          width={900}
-          height={400}
-          clusters={CLUSTERS}
-          travelerCount={4}
-        />
-      </div>
-    </div>
+    <VisualBand className="mt-16 md:mt-24">
+      <AssembleField
+        seed={4}
+        cols={30}
+        rows={12}
+        width={900}
+        height={400}
+        clusters={CLUSTERS}
+        travelerCount={4}
+      />
+    </VisualBand>
   )
 }

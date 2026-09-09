@@ -32,5 +32,8 @@ test('system ownership, native primitive and documentation navigation work', asy
   await page.goto('/components')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Component examples')
   await expect(page.getByText('Existing UI APIs stay available through the compatibility layer.', { exact: false })).toBeVisible()
+  const field = page.locator('.n3wth-visual-field').first()
+  await expect(field).toHaveCSS('height', '220px')
+  await expect(field.locator('.n3wth-visual-dot').first()).toHaveCSS('opacity', '0.6')
   expect(errors).toEqual([])
 })
