@@ -48,6 +48,7 @@ export async function generateMetadata({
       canonical: url,
     },
     openGraph: {
+      images: ["https://r3.n3wth.com/docs/opengraph-image"],
       title,
       description,
       type: "article",
@@ -55,6 +56,7 @@ export async function generateMetadata({
       siteName: "r3",
     },
     twitter: {
+      images: ["https://r3.n3wth.com/docs/twitter-image"],
       card: "summary_large_image",
       title,
       description,

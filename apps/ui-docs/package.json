@@ -6,8 +6,8 @@
   "engines": { "node": "24.x" },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "check": "npm run build && npm test",
+    "build": "vite build && vite build --ssr entry-server.tsx --outDir ../.prerender && node scripts/prerender.mjs",
+    "check": "npm run build && npm test && node --test scripts/prerender.test.mjs",
     "test": "vitest run",
     "preview": "vite preview"
   },

@@ -4,11 +4,8 @@
   "outputDirectory": "dist",
   "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
   "framework": null,
-  "rewrites": [
-    { "source": "/components", "destination": "/index.html" },
-    { "source": "/docs", "destination": "/index.html" },
-    { "source": "/docs/:slug", "destination": "/index.html" }
-  ],
+  "cleanUrls": true,
+  "redirects": [{ "source": "/docs", "destination": "/docs/getting-started", "permanent": true }],
   "headers": [
     {
       "source": "/(.*)",

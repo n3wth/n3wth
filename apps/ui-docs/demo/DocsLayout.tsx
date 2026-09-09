@@ -5,6 +5,7 @@ import { SiteFooter } from '@n3wth/ui/site'
 import { siteUrls } from '@n3wth/site-config'
 import { DocsSidebar } from './DocsSidebar'
 import { SEO, JsonLdWebPage, JsonLdBreadcrumb } from './SEO'
+import { NotFound } from './NotFound'
 
 const docModules = import.meta.glob<{ default: ComponentType }>([
   '../docs/getting-started.md',
@@ -54,12 +55,14 @@ export const docPages: DocPage[] = Object.entries(docModules)
 export function DocsLayout() {
   const { slug } = useParams()
 
-  const currentPage = docPages.find((p) => p.slug === slug) ?? docPages[0]
-  const Content = currentPage.Component
+  const currentPage = docPages.find((p) => p.slug === slug)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug])
+
+  if (!currentPage) return <NotFound />
+  const Content = currentPage.Component
 
   const pageUrl = `https://ui.n3wth.com/docs/${currentPage.slug}`
 

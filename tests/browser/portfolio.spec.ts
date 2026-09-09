@@ -1,6 +1,25 @@
 import { test, expect } from '@playwright/test'
 import { expectSiteFoundation } from './site-foundation'
 
+test('public navigation clears article and utility metadata', async ({ page }) => {
+  for (const initial of ['/error', '/thinking/gtd-mini']) {
+    await page.goto(initial)
+    const toggle = page.locator('.n3wth-site-navigation-toggle')
+    if (await toggle.isVisible()) await toggle.click()
+    await page.locator('.n3wth-site-navigation-links').getByRole('link', { name: 'Work', exact: true }).click()
+    await expect(page).toHaveTitle('Work — Oliver Newth')
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://n3wth.com/work')
+    await expect(page.locator('meta[name="robots"]')).toHaveCount(0)
+    await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website')
+    await expect(page.locator('meta[property="article:published_time"]')).toHaveCount(0)
+    const articleCount = await page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.flatMap(element => {
+      const schema = JSON.parse(element.textContent || '{}')
+      return Array.isArray(schema) ? schema : [schema]
+    }).filter(schema => schema['@type'] === 'Article').length)
+    expect(articleCount).toBe(0)
+  }
+})
+
 test('site identity is present in initial HTML and rendered routes', async ({ page, request }) => {
   const response = await request.get('/')
   expect(await response.text()).toContain('"@type": "WebSite"')

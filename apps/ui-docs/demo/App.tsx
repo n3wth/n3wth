@@ -15,6 +15,7 @@ import { OrganismsSection } from './sections/OrganismsSection'
 import { HooksSection } from './sections/HooksSection'
 import { DocsLayout } from './DocsLayout'
 import { SEO } from './SEO'
+import { NotFound } from './NotFound'
 
 const sidebarItems = [
   { id: 'tokens', label: 'Design Tokens', icon: 'grid' as const },
@@ -122,6 +123,7 @@ export function App() {
       <Route path="/components" element={<Showcase theme={theme} toggleTheme={toggleTheme} />} />
       <Route path="/docs/:slug" element={<DocsLayout />} />
       <Route path="/docs" element={<Navigate to="/docs/getting-started" replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
     </N3wthProvider>
   )

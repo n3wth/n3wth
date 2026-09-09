@@ -14,10 +14,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (workflowId === 'new') {
     return {
       title: 'Create AI Workflow — Visual Skill Builder',
+      robots: { index: false, follow: true },
       description:
         'Build custom AI workflows by chaining skills together. Create automated sequences combining research, writing, and document creation.',
       alternates: { canonical: 'https://skills.n3wth.com/workflows/new' },
-      openGraph: {
+      openGraph: { type: 'website',
         title: 'Create AI Workflow | n3wth/skills',
         description:
           'Build custom AI workflows by chaining skills together. Create automated sequences combining research, writing, and document creation.',
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: desc,
       alternates: { canonical: `https://skills.n3wth.com/workflows/${workflowId}` },
       keywords: template.tags,
-      openGraph: {
+      openGraph: { type: 'website',
         title: `${template.name} — AI Workflow | n3wth/skills`,
         description: desc,
         url: `https://skills.n3wth.com/workflows/${workflowId}`,
@@ -62,10 +63,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: 'Edit AI Skill Workflow — Visual Builder',
+    robots: { index: false, follow: true },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Edit AI Skill Workflow — Visual Builder',
+      description: 'Edit and customize your locally saved AI skill workflow.',
+    },
     description:
       'Edit and customize your AI workflow by chaining skills together. Connect research, writing, and document creation skills into powerful automated sequences.',
     alternates: { canonical: `https://skills.n3wth.com/workflows/${workflowId}` },
-    openGraph: {
+    openGraph: { type: 'website',
       title: 'Edit AI Skill Workflow — Visual Builder | n3wth/skills',
       description:
         'Edit and customize your AI workflow by chaining skills together. Connect research, writing, and document creation skills into powerful automated sequences.',
