@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -8,6 +8,14 @@ export function createSite(root, slug, title = slug) {
   }
   const destination = resolve(root, 'apps', slug)
   if (existsSync(destination)) throw new Error(`apps/${slug} already exists; nothing was changed.`)
+  for (const directory of ['apps', 'packages']) {
+    for (const entry of readdirSync(resolve(root, directory), { withFileTypes: true })) {
+      const path = resolve(root, directory, entry.name, 'package.json')
+      if (entry.isDirectory() && existsSync(path) && JSON.parse(readFileSync(path, 'utf8')).name === `@n3wth/${slug}`) {
+        throw new Error(`Workspace @n3wth/${slug} already exists; nothing was changed.`)
+      }
+    }
+  }
   const ui = JSON.parse(readFileSync(resolve(root, 'packages/ui/package.json'), 'utf8'))
   const portfolio = JSON.parse(readFileSync(resolve(root, 'apps/portfolio/package.json'), 'utf8'))
   const pick = names => Object.fromEntries(names.map(name => [name, portfolio.dependencies?.[name] ?? portfolio.devDependencies?.[name]]))

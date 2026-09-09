@@ -15,7 +15,7 @@
     "dev:ui": "node scripts/dev-ui.mjs",
     "dev:skills": "npm run dev -w @n3wth/skills",
     "build:skills": "npm run build -w @n3wth/skills",
-    "build": "npm run build:portfolio && npm run build:ui && npm run build:kit && npm run build:skills",
+    "build": "npm run build:ui && npm run build:portfolio && npm run build:kit && npm run build:skills",
     "build:kit": "npm run build -w @n3wth/kit",
     "build:portfolio": "npm run build -w @n3wth/portfolio",
     "build:ui": "npm run build -w @n3wth/ui && npm run build -w @n3wth/ui-docs",

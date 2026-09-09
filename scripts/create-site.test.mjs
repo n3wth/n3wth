@@ -9,9 +9,10 @@ test('site generator uses shared components, escapes titles, rejects traversal a
   const root = mkdtempSync(join(tmpdir(), 'n3wth-site-'))
   try {
     for (const path of ['packages/ui', 'apps/portfolio']) mkdirSync(join(root, path), { recursive: true })
-    writeFileSync(join(root, 'packages/ui/package.json'), JSON.stringify({ version: '0.9.2' }))
+    writeFileSync(join(root, 'packages/ui/package.json'), JSON.stringify({ name: '@n3wth/ui', version: '0.9.2' }))
     writeFileSync(join(root, 'apps/portfolio/package.json'), JSON.stringify({ dependencies: { react: '19.2.7', 'react-dom': '19.2.7' }, devDependencies: { vite: '7.3.5', typescript: '5.9.3', '@types/react': '19.2.9', '@types/react-dom': '19.2.3', '@vitejs/plugin-react': '5.1.4' } }))
     assert.throws(() => createSite(root, '../escape'))
+    assert.throws(() => createSite(root, 'ui'), /Workspace @n3wth\/ui already exists/)
     const title = 'Idea "one"\nnext'
     const path = createSite(root, 'new-idea', title)
     const source = readFileSync(join(path, 'src/main.tsx'), 'utf8')
