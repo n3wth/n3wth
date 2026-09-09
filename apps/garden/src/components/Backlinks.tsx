@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Divider } from '@astryxdesign/core/Divider'
+import { Divider } from '@n3wth/ui/primitives'
 import type { Backlink } from '@/lib/backlinks'
 
 interface BacklinkProps {

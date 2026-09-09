@@ -1,4 +1,5 @@
 import { forwardRef, type LabelHTMLAttributes, type ReactNode } from 'react'
+import { Text } from '@astryxdesign/core/Text'
 import { cn } from '../../utils/cn'
 
 export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
@@ -14,13 +15,16 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
       disabled = false,
       children,
       className,
+      color,
+      style,
       ...props
     },
     ref
   ) => {
     return (
-      <label
+      <Text as="label" type="supporting" weight="medium"
         ref={ref}
+        style={{ color, ...style }}
         className={cn(
           'text-sm font-medium text-[var(--color-white)]',
           disabled && 'opacity-50 cursor-not-allowed',
@@ -34,7 +38,7 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
             *
           </span>
         )}
-      </label>
+      </Text>
     )
   }
 )

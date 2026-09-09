@@ -13,7 +13,7 @@ describe('SiteNav', () => {
 
     const github = screen.getByRole('link', { name: 'GitHub' })
     expect(github).toBeInTheDocument()
-    expect(github).toHaveAttribute('href', 'https://github.com/n3wth/ui')
+    expect(github).toHaveAttribute('href', 'https://github.com/n3wth/n3wth/tree/main/packages/ui')
 
     // The shared shell provides mobile navigation on every site.
     expect(

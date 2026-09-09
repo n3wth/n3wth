@@ -1,4 +1,5 @@
 import { type HTMLAttributes, type ReactNode } from 'react'
+import { Badge as AstryxBadge } from '@astryxdesign/core/Badge'
 import { cn } from '../../utils/cn'
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
@@ -20,7 +21,6 @@ export function Badge({
     'rounded-full',
     'whitespace-nowrap',
     'transition-colors duration-200',
-    'backdrop-blur-sm',
   ]
 
   const variants = {
@@ -62,8 +62,6 @@ export function Badge({
   }
 
   return (
-    <span className={cn(baseStyles, variants[variant], sizes[size], className)} {...props}>
-      {children}
-    </span>
+    <AstryxBadge label={children} variant={variant === 'coral' ? 'error' : variant === 'gold' ? 'warning' : variant === 'sage' || variant === 'mint' ? 'success' : 'neutral'} className={cn(baseStyles, variants[variant], sizes[size], className)} {...props} />
   )
 }

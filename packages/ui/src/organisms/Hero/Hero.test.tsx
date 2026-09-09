@@ -44,22 +44,23 @@ describe('Hero', () => {
     expect(screen.getByText('Get Started').closest('a')).toHaveAttribute('href', '/start')
   })
 
-  it('applies center alignment by default', () => {
+  it('uses the shared page header', () => {
     const { container } = render(<Hero title="Welcome" />)
-    const inner = container.querySelector('.items-center')
+    const inner = container.querySelector('.n3wth-site-page-header')
     expect(inner).toBeInTheDocument()
   })
 
   it('applies left alignment', () => {
     const { container } = render(<Hero title="Welcome" align="left" />)
-    const inner = container.querySelector('.items-start')
-    expect(inner).toBeInTheDocument()
+    const inner = container.querySelector('.n3wth-site-page-header')
+    expect(inner).toHaveStyle({ textAlign: 'left' })
   })
 
-  it('applies gradient text by default', () => {
+  it('uses flat shared typography without entry animation', () => {
     render(<Hero title="Welcome" />)
     const h1 = screen.getByRole('heading', { level: 1 })
-    expect(h1.className).toContain('hero-gradient-text')
+    expect(h1.className).toContain('n3wth-site-heading--page')
+    expect(h1.className).not.toContain('animate-in')
   })
 
   it('disables gradient text when gradient=false', () => {

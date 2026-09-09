@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { Button } from '@astryxdesign/core/Button'
+import { Button } from '@n3wth/ui/primitives'
 import { ConvergeLight } from '../ConvergeLight'
 import { siteConfig } from '../../data/content'
 import { PageHeader } from '@n3wth/ui/site'

@@ -1,5 +1,6 @@
 import { type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../../utils/cn'
+import { SiteContainer, SiteSection, SiteHeading, SiteText } from '../../site'
 
 export interface SectionProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode
@@ -34,18 +35,18 @@ export function Section({
   const hasId = Boolean(props.id)
 
   return (
-    <section
+    <SiteSection
       className={cn(spacings[spacing], hasId && 'scroll-mt-20', className)}
       {...props}
     >
       {container ? (
-        <div className={cn('mx-auto px-6 md:px-10', sizes[size])}>
+        <SiteContainer className={cn('mx-auto', sizes[size])}>
           {children}
-        </div>
+        </SiteContainer>
       ) : (
         children
       )}
-    </section>
+    </SiteSection>
   )
 }
 
@@ -72,13 +73,13 @@ export function SectionHeader({
       className={cn('max-w-2xl mb-12', alignments[align], className)}
       {...props}
     >
-      <h2 className="font-display text-2xl md:text-3xl font-semibold text-[var(--color-white)] tracking-tight">
+      <SiteHeading>
         {title}
-      </h2>
+      </SiteHeading>
       {description && (
-        <p className="mt-4 text-base md:text-lg text-[var(--color-grey-400)] leading-relaxed">
+        <SiteText className="mt-4">
           {description}
-        </p>
+        </SiteText>
       )}
     </div>
   )

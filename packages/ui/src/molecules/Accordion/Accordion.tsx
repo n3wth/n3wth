@@ -3,33 +3,29 @@ import {
   createContext,
   useContext,
   useState,
-  useCallback,
-  useRef,
   useId,
   type HTMLAttributes,
   type ButtonHTMLAttributes,
   type ReactNode,
-  type KeyboardEvent,
 } from 'react'
+import { CollapsibleGroup, useCollapsible } from '@astryxdesign/core/Collapsible'
+import { useListFocus } from '@astryxdesign/core/hooks'
 import { cn } from '../../utils/cn'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 // --- Contexts ---
 
 interface AccordionContextValue {
-  openValues: string[]
-  toggle: (value: string) => void
   type: 'single' | 'multiple'
   collapsible: boolean
   baseId: string
-  registerTrigger: (value: string, element: HTMLButtonElement | null) => void
-  getTriggerElements: () => Map<string, HTMLButtonElement>
 }
 
 interface AccordionItemContextValue {
   value: string
   disabled: boolean
   isOpen: boolean
+  toggle: () => void
 }
 
 const AccordionContext = createContext<AccordionContextValue | null>(null)
@@ -77,63 +73,38 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       collapsible = false,
       children,
       className,
+      onKeyDown,
       ...props
     },
     ref
   ) => {
     const [internalValue, setInternalValue] = useState<string[]>(defaultValue)
-    const triggerElementsRef = useRef<Map<string, HTMLButtonElement>>(new Map())
+    const { listRef, handleKeyDown } = useListFocus<HTMLDivElement>({ itemSelector: 'button[aria-expanded]:not([aria-disabled="true"])' })
     const baseId = useId()
 
     const openValues = value !== undefined ? value : internalValue
 
-    const toggle = useCallback(
-      (itemValue: string) => {
-        let next: string[]
-
-        if (type === 'single') {
-          if (openValues.includes(itemValue)) {
-            next = collapsible ? [] : openValues
-          } else {
-            next = [itemValue]
-          }
-        } else {
-          if (openValues.includes(itemValue)) {
-            next = openValues.filter((v) => v !== itemValue)
-          } else {
-            next = [...openValues, itemValue]
-          }
-        }
-
-        if (value === undefined) {
-          setInternalValue(next)
-        }
-        onChange?.(next)
-      },
-      [type, openValues, collapsible, value, onChange]
-    )
-
-    const registerTrigger = useCallback((triggerValue: string, element: HTMLButtonElement | null) => {
-      if (element) {
-        triggerElementsRef.current.set(triggerValue, element)
-      } else {
-        triggerElementsRef.current.delete(triggerValue)
-      }
-    }, [])
-
-    const getTriggerElements = useCallback(() => triggerElementsRef.current, [])
+    const handleChange = (nextValue: string | string[]) => {
+      const next = Array.isArray(nextValue) ? nextValue : nextValue ? [nextValue] : []
+      if (type === 'single' && !collapsible && next.length === 0 && openValues.length > 0) return
+      if (value === undefined) setInternalValue(next)
+      onChange?.(next)
+    }
 
     return (
       <AccordionContext.Provider
-        value={{ openValues, toggle, type, collapsible, baseId, registerTrigger, getTriggerElements }}
+        value={{ type, collapsible, baseId }}
       >
+        <CollapsibleGroup type={type} value={openValues} onChange={handleChange}>
         <div
-          ref={ref}
+          ref={node => { listRef.current = node; if (typeof ref === 'function') ref(node); else if (ref) ref.current = node }}
+          onKeyDown={event => { onKeyDown?.(event); if (!event.defaultPrevented && event.key !== 'Escape') handleKeyDown(event) }}
           className={cn('flex flex-col divide-y divide-[var(--glass-border)]', className)}
           {...props}
         >
           {children}
         </div>
+        </CollapsibleGroup>
       </AccordionContext.Provider>
     )
   }
@@ -153,11 +124,11 @@ export interface AccordionItemProps extends HTMLAttributes<HTMLDivElement> {
 
 export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
   ({ value, disabled = false, children, className, ...props }, ref) => {
-    const { openValues } = useAccordionContext()
-    const isOpen = openValues.includes(value)
+    useAccordionContext()
+    const { isOpen, toggle } = useCollapsible({ isCollapsible: true, value })
 
     return (
-      <AccordionItemContext.Provider value={{ value, disabled, isOpen }}>
+      <AccordionItemContext.Provider value={{ value, disabled, isOpen, toggle }}>
         <div ref={ref} className={className} {...props}>
           {children}
         </div>
@@ -176,74 +147,25 @@ export interface AccordionTriggerProps extends ButtonHTMLAttributes<HTMLButtonEl
 
 export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
   ({ children, className, onKeyDown, ...props }, ref) => {
-    const { toggle, baseId, registerTrigger, getTriggerElements } = useAccordionContext()
-    const { value, disabled, isOpen } = useAccordionItemContext()
-    const internalRef = useRef<HTMLButtonElement | null>(null)
+    const { baseId } = useAccordionContext()
+    const { value, disabled, isOpen, toggle } = useAccordionItemContext()
     const prefersReducedMotion = useReducedMotion()
 
     const triggerId = `${baseId}-trigger-${value}`
     const contentId = `${baseId}-content-${value}`
 
-    const mergedRef = useCallback(
-      (node: HTMLButtonElement | null) => {
-        internalRef.current = node
-        registerTrigger(value, node)
-        if (typeof ref === 'function') ref(node)
-        else if (ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node
-      },
-      [ref, registerTrigger, value]
-    )
-
-    const handleKeyDown = useCallback(
-      (e: KeyboardEvent<HTMLButtonElement>) => {
-        onKeyDown?.(e)
-        if (e.defaultPrevented) return
-
-        const triggers = getTriggerElements()
-        const triggerValues = Array.from(triggers.keys())
-        const currentIndex = triggerValues.indexOf(value)
-
-        let targetIndex: number
-
-        switch (e.key) {
-          case 'ArrowDown':
-            targetIndex = (currentIndex + 1) % triggerValues.length
-            break
-          case 'ArrowUp':
-            targetIndex = (currentIndex - 1 + triggerValues.length) % triggerValues.length
-            break
-          case 'Home':
-            targetIndex = 0
-            break
-          case 'End':
-            targetIndex = triggerValues.length - 1
-            break
-          default:
-            return
-        }
-
-        e.preventDefault()
-        const targetValue = triggerValues[targetIndex]
-        const targetElement = triggers.get(targetValue)
-        if (targetElement) {
-          targetElement.focus()
-        }
-      },
-      [onKeyDown, getTriggerElements, value]
-    )
-
     return (
       <button
-        ref={mergedRef}
+        ref={ref}
         type="button"
         id={triggerId}
         aria-expanded={isOpen}
         aria-controls={contentId}
         aria-disabled={disabled || undefined}
         onClick={() => {
-          if (!disabled) toggle(value)
+          if (!disabled) toggle()
         }}
-        onKeyDown={handleKeyDown}
+        onKeyDown={onKeyDown}
         className={cn(
           'flex w-full items-center justify-between',
           'py-3 text-sm font-medium text-[var(--color-white)]',

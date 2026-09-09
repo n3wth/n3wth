@@ -5,6 +5,7 @@ import {
   cloneElement,
   isValidElement,
 } from 'react'
+import { Button as AstryxButton } from '@astryxdesign/core/Button'
 import { cn } from '../../utils/cn'
 
 export type ButtonSize = 'sm' | 'md' | 'lg'
@@ -55,8 +56,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       primary: [
         'bg-[var(--color-white)] text-[var(--color-bg)]',
         'border-[var(--color-white)]',
-        'hover:scale-[1.02]',
-        'glow-white',
       ],
       secondary: [
         'bg-transparent text-[var(--color-white)]',
@@ -71,9 +70,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       glass: [
         'bg-[var(--glass-bg)] text-[var(--color-white)]',
         'border-[var(--glass-border)]',
-        'backdrop-blur-lg',
         'hover:bg-[rgba(255,255,255,0.1)] hover:border-[var(--glass-highlight)]',
-        'hover:scale-[1.02]',
       ],
     }
 
@@ -137,14 +134,18 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <button
+      <AstryxButton
+        label={typeof children === 'string' ? children : props['aria-label'] ?? ''}
+        variant={variant === 'glass' ? 'secondary' : variant}
+        size={typeof size === 'string' ? size : size.base ?? 'sm'}
+        isLoading={isLoading}
         ref={ref}
         className={buttonClassName}
-        disabled={disabled || isLoading}
+        isDisabled={disabled || isLoading}
         {...props}
       >
-        {content}
-      </button>
+        {leftIcon}{children}{rightIcon}
+      </AstryxButton>
     )
   }
 )

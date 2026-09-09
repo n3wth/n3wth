@@ -42,21 +42,21 @@ describe('Tabs', () => {
   it('switches panels on tab click', async () => {
     const user = userEvent.setup()
     renderTabs()
-    await user.click(screen.getByText('Tab 2'))
+    await user.click(screen.getByRole('tab', { name: 'Tab 2' }))
     expect(screen.getByText('Panel 2')).toBeInTheDocument()
     expect(screen.queryByText('Panel 1')).toBeNull()
   })
 
   it('sets aria-selected on active tab', () => {
     renderTabs({ defaultValue: 'tab1' })
-    expect(screen.getByText('Tab 1')).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByText('Tab 2')).toHaveAttribute('aria-selected', 'false')
+    expect(screen.getByRole('tab', { name: 'Tab 1' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tab', { name: 'Tab 2' })).toHaveAttribute('aria-selected', 'false')
   })
 
   it('active tab has tabIndex=0, others have tabIndex=-1', () => {
     renderTabs({ defaultValue: 'tab1' })
-    expect(screen.getByText('Tab 1')).toHaveAttribute('tabindex', '0')
-    expect(screen.getByText('Tab 2')).toHaveAttribute('tabindex', '-1')
+    expect(screen.getByRole('tab', { name: 'Tab 1' })).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('tab', { name: 'Tab 2' })).toHaveAttribute('tabindex', '-1')
   })
 
   it('panel has role="tabpanel"', () => {
@@ -68,36 +68,36 @@ describe('Tabs', () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
     renderTabs({ value: 'tab1', onChange })
-    await user.click(screen.getByText('Tab 2'))
+    await user.click(screen.getByRole('tab', { name: 'Tab 2' }))
     expect(onChange).toHaveBeenCalledWith('tab2')
   })
 
   it('navigates with ArrowRight key', async () => {
     const user = userEvent.setup()
     renderTabs()
-    screen.getByText('Tab 1').focus()
+    screen.getByRole('tab', { name: 'Tab 1' }).focus()
     await user.keyboard('{ArrowRight}')
-    expect(screen.getByText('Tab 2')).toHaveFocus()
+    expect(screen.getByRole('tab', { name: 'Tab 2' })).toHaveFocus()
   })
 
   it('navigates with ArrowLeft key', async () => {
     const user = userEvent.setup()
     renderTabs()
-    screen.getByText('Tab 1').focus()
+    screen.getByRole('tab', { name: 'Tab 1' }).focus()
     await user.keyboard('{ArrowLeft}')
     // Wraps to last tab
-    expect(screen.getByText('Tab 3')).toHaveFocus()
+    expect(screen.getByRole('tab', { name: 'Tab 3' })).toHaveFocus()
   })
 
   it('navigates with Home/End keys', async () => {
     const user = userEvent.setup()
     renderTabs()
-    screen.getByText('Tab 2').focus()
+    screen.getByRole('tab', { name: 'Tab 2' }).focus()
     await user.keyboard('{Home}')
-    expect(screen.getByText('Tab 1')).toHaveFocus()
+    expect(screen.getByRole('tab', { name: 'Tab 1' })).toHaveFocus()
 
     await user.keyboard('{End}')
-    expect(screen.getByText('Tab 3')).toHaveFocus()
+    expect(screen.getByRole('tab', { name: 'Tab 3' })).toHaveFocus()
   })
 
   it('has displayName on all components', () => {

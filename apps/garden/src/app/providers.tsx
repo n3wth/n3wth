@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { N3wthProvider } from '@n3wth/ui/site'
-import { LinkProvider } from '@astryxdesign/core/Link'
-import { ToastViewport } from '@astryxdesign/core/Toast'
+import { LinkProvider } from '@n3wth/ui/primitives'
+import { ToastViewport } from '@n3wth/ui/primitives'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

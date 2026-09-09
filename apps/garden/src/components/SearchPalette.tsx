@@ -12,11 +12,11 @@ import {
   CommandPalette,
   CommandPaletteFooter,
   useCommandPaletteContext,
-} from '@astryxdesign/core/CommandPalette'
+} from '@n3wth/ui/primitives'
 import {
   createStaticSource,
   type SearchableItem,
-} from '@astryxdesign/core/Typeahead'
+} from '@n3wth/ui/primitives'
 import { getVisited } from '@/lib/visited'
 import type { GrowthStage } from '@/lib/content'
 import { stageColor } from '@/lib/plant'

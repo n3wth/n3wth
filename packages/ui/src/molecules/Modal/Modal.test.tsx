@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
@@ -6,6 +6,16 @@ import * as matchers from 'vitest-axe/matchers'
 import { Modal, ModalHeader, ModalTitle, ModalDescription, ModalBody, ModalFooter, ModalCloseButton } from './Modal'
 
 expect.extend(matchers)
+
+// JSDOM has no native modal top layer. Model the platform's open/focus behavior;
+// focus trapping itself is covered in browser tests rather than reimplemented.
+beforeAll(() => {
+  HTMLDialogElement.prototype.showModal = function () {
+    this.open = true
+    this.querySelector<HTMLElement>('button, [tabindex], input')?.focus()
+  }
+  HTMLDialogElement.prototype.close = function () { this.open = false }
+})
 
 function renderModal(props: Partial<React.ComponentProps<typeof Modal>> = {}) {
   const onClose = props.onClose ?? vi.fn()
@@ -27,13 +37,12 @@ function renderModal(props: Partial<React.ComponentProps<typeof Modal>> = {}) {
 describe('Modal', () => {
   it('renders dialog with role="dialog"', () => {
     renderModal()
-    // The dialog is inside an aria-hidden backdrop, so we need hidden: true
-    expect(screen.getByRole('dialog', { hidden: true })).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
 
   it('has aria-modal="true"', () => {
     renderModal()
-    expect(screen.getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'true')
+    expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true')
   })
 
   it('renders children', () => {
@@ -48,7 +57,7 @@ describe('Modal', () => {
         <div>Hidden</div>
       </Modal>
     )
-    expect(screen.queryByRole('dialog', { hidden: true })).toBeNull()
+    expect(screen.queryByRole('dialog')).toBeNull()
   })
 
   it('calls onClose on Escape key', async () => {
@@ -73,7 +82,20 @@ describe('Modal', () => {
         Content
       </Modal>
     )
-    expect(screen.getByRole('dialog', { hidden: true })).toHaveAttribute('aria-label', 'Custom label')
+    expect(screen.getByRole('dialog')).toHaveAttribute('aria-label', 'Custom label')
+  })
+
+  it('restores focus to the opener when controlled visibility closes', async () => {
+    const user = userEvent.setup()
+    const opener = document.createElement('button')
+    document.body.appendChild(opener)
+    opener.focus()
+    const { rerender } = render(<Modal isOpen onClose={vi.fn()} ariaLabel="Focus test"><button>Inside</button></Modal>)
+    expect(screen.getByRole('button', { name: 'Inside' })).toHaveFocus()
+    await user.keyboard('{Tab}')
+    rerender(<Modal isOpen={false} onClose={vi.fn()} ariaLabel="Focus test"><button>Inside</button></Modal>)
+    expect(opener).toHaveFocus()
+    opener.remove()
   })
 
   it('has displayName', () => {

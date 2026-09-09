@@ -149,44 +149,8 @@ function SearchDialog() {
 }`} />
       </DemoBlock>
 
-      {/* Other hooks */}
-      <DemoBlock title="Animation Hooks">
-        <div className="p-6 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] space-y-4">
-          <div>
-            <p className="text-sm font-medium text-[var(--color-white)]">useScrollReveal</p>
-            <p className="text-xs text-[var(--color-grey-400)]">Trigger animations when elements enter viewport</p>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-[var(--color-white)]">useStaggerList</p>
-            <p className="text-xs text-[var(--color-grey-400)]">Stagger entrance animations for list items</p>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-[var(--color-white)]">usePageTransition</p>
-            <p className="text-xs text-[var(--color-grey-400)]">Page enter/exit transition classes</p>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-[var(--color-white)]">useTextReveal</p>
-            <p className="text-xs text-[var(--color-grey-400)]">Character-by-character text reveal animation</p>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-[var(--color-white)]">useButtonPulse</p>
-            <p className="text-xs text-[var(--color-grey-400)]">Attention-grabbing pulse animation for CTAs</p>
-          </div>
-        </div>
-        <CodeSnippet className="mt-4" code={`import { useScrollReveal, useStaggerList } from '@n3wth/ui'
-
-function FeatureGrid({ items }) {
-  const revealRef = useScrollReveal({ threshold: 0.2 })
-  const staggered = useStaggerList(items, { delay: 100 })
-
-  return (
-    <div ref={revealRef} className="grid grid-cols-3 gap-4">
-      {staggered.map((item, i) => (
-        <div key={i} style={item.style}>{item.content}</div>
-      ))}
-    </div>
-  )
-}`} />
+      <DemoBlock title="Motion policy">
+        <p className="text-sm text-[var(--color-grey-400)]">Keep route content visible immediately. Existing animation hooks are compatibility tools for deliberate demonstrations and functional feedback, not a default page treatment.</p>
       </DemoBlock>
     </DemoSection>
   )

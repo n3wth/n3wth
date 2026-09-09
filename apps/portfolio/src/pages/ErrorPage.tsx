@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { track } from '../lib/analytics'
-import { Button } from '@astryxdesign/core/Button'
+import { Button } from '@n3wth/ui/primitives'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 /* Landing page for error redirects from auth providers (Auth0 sends

@@ -35,7 +35,6 @@ export function CommandBox({
     'px-4 py-3',
     'rounded-xl',
     'border',
-    'backdrop-blur-lg',
     'transition-[background-color,border-color] duration-200',
   ]
 

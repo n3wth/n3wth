@@ -12,10 +12,7 @@ const nextConfig: NextConfig = {
     "/*": ["./src/lib/og-fonts/**"],
     "/**": ["./src/lib/og-fonts/**"],
   },
-  // @astryxdesign/core 0.1.5 dist requires react/jsx-dev-runtime, whose
-  // production build exports jsxDEV = undefined. Alias it to a shim backed by
-  // the production jsx runtime (dev builds keep the real dev runtime).
-  webpack: (config, { dev, webpack }) => {
+  webpack: (config) => {
     config.resolve.alias["@"] = path.resolve(__dirname, "src");
     // Next's CSS loader prefixes package font URLs with './'. Resolve that
     // request back to the shared assets rather than copying fonts per app.
@@ -23,14 +20,6 @@ const nextConfig: NextConfig = {
       __dirname,
       "../../packages/ui/public/fonts"
     );
-    if (!dev) {
-      config.plugins.push(
-        new webpack.NormalModuleReplacementPlugin(
-          /^react\/jsx-dev-runtime$/,
-          path.resolve(__dirname, "src/lib/jsx-dev-runtime-shim.js")
-        )
-      );
-    }
     return config;
   },
 };

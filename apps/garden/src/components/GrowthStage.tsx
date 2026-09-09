@@ -1,4 +1,4 @@
-import { Tooltip } from '@astryxdesign/core/Tooltip'
+import { Tooltip } from '@n3wth/ui/primitives'
 import type { GrowthStage as GrowthStageType } from '@/lib/content'
 import { stageColor } from '@/lib/plant'
 

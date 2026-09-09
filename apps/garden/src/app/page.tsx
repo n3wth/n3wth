@@ -4,7 +4,7 @@ import { getGraphData } from '@/lib/graph'
 import { WorldGardenClient } from '@/components/WorldGardenClient'
 import { HomePageClient } from '@/components/HomePageClient'
 import { FamilyStrip } from '@/components/FamilyStrip'
-import { Button } from '@astryxdesign/core/Button'
+import { Button } from '@n3wth/ui/primitives'
 import { ShimmerText } from '@/components/ShimmerText'
 import { PageHeader, SiteContainer } from '@n3wth/ui/site'
 

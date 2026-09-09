@@ -55,8 +55,8 @@ describe('Input', () => {
 
   it('applies glass variant', () => {
     const { container } = render(<Input variant="glass" />)
-    const wrapper = container.querySelector('.backdrop-blur-lg')
-    expect(wrapper).toBeInTheDocument()
+    expect(container.querySelector('.backdrop-blur-lg')).not.toBeInTheDocument()
+    expect(screen.getByRole('textbox')).toBeEnabled()
   })
 
   it('links error message with aria-describedby', () => {
@@ -71,4 +71,17 @@ describe('Input', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+  it('preserves an external label, native type and uncontrolled form reset', async () => {
+    const user = userEvent.setup()
+    render(<form><label htmlFor="quantity">Quantity</label><Input id="quantity" name="quantity" type="number" defaultValue="2" /><button type="reset">Reset</button></form>)
+    const input = screen.getByLabelText('Quantity')
+    expect(input).toHaveAttribute('id', 'quantity')
+    expect(input).toHaveAttribute('name', 'quantity')
+    await user.clear(input)
+    await user.type(input, '7')
+    expect(input).toHaveValue(7)
+    await user.click(screen.getByRole('button', { name: 'Reset' }))
+    expect(input).toHaveValue(2)
+  })
+
 })

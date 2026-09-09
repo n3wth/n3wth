@@ -1,7 +1,7 @@
 'use client'
 
-import { IconButton } from '@astryxdesign/core/IconButton'
-import { useToast } from '@astryxdesign/core/Toast'
+import { IconButton } from '@n3wth/ui/primitives'
+import { useToast } from '@n3wth/ui/primitives'
 import { Link as LinkIcon } from 'lucide-react'
 
 export function CopyLinkButton() {

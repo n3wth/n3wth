@@ -1,4 +1,4 @@
-import { Timestamp } from '@astryxdesign/core/Timestamp'
+import { Timestamp } from '@n3wth/ui/primitives'
 
 interface NoteMetadataProps {
   readingTime: string

@@ -44,7 +44,7 @@ export function AtomsSection() {
   const [iconColor, setIconColor] = useState<string>('')
 
   return (
-    <DemoSection id="atoms" title="Atoms" description="The building blocks of the design system.">
+    <DemoSection id="atoms" title="Controls" description="Interactive examples of the existing UI compatibility API. Native Astryx props are available through @n3wth/ui/primitives.">
       {/* Buttons */}
       <DemoBlock title="Button">
         <div className="space-y-6">

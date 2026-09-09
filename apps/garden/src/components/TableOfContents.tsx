@@ -1,7 +1,7 @@
 'use client'
 
-import { Outline } from '@astryxdesign/core/Outline'
-import { Collapsible } from '@astryxdesign/core/Collapsible'
+import { Outline } from '@n3wth/ui/primitives'
+import { Collapsible } from '@n3wth/ui/primitives'
 
 interface Heading {
   id: string

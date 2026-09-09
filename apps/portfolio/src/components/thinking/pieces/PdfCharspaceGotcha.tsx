@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Blockquote } from '@astryxdesign/core/Blockquote'
+import { Blockquote } from '@n3wth/ui/primitives'
 import { Beat } from '../kit/Beat'
 
 /* "The PDF Gotcha That Cost an Afternoon" — a single real bug from a
