@@ -1,6 +1,37 @@
 import { test, expect } from '@playwright/test'
 import { expectSiteFoundation } from './site-foundation'
 
+test('showcase spacing, icon layout and example controls survive both themes', async ({ page }) => {
+  await page.goto('/components')
+  for (const theme of ['light', 'dark']) {
+    const switchTheme = page.getByRole('button', { name: `Switch to ${theme} mode`, exact: true }).first()
+    if (await switchTheme.count()) await switchTheme.click()
+    const heading = page.getByRole('heading', { name: 'useCountUp', exact: true })
+    await heading.scrollIntoViewIfNeeded()
+    const gaps = await heading.evaluate(element => {
+      const demo = element.parentElement!.nextElementSibling!
+      const code = demo.nextElementSibling!
+      return [demo.getBoundingClientRect().top - element.getBoundingClientRect().bottom,
+        code.getBoundingClientRect().top - demo.getBoundingClientRect().bottom]
+    })
+    expect(gaps).toEqual([16, 16])
+    const countDemo = heading.locator('../..')
+    await countDemo.getByRole('button', { name: 'Replay', exact: true }).click()
+    await expect(countDemo.locator('.tabular-nums')).toHaveText('1000')
+    const buttonDemo = page.getByRole('heading', { name: 'Button', exact: true }).locator('../..')
+    const ghost = buttonDemo.getByRole('button', { name: 'ghost', exact: true })
+    await ghost.click()
+    await expect(ghost).toHaveAttribute('aria-pressed', 'true')
+    expect((await ghost.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+    const iconButton = buttonDemo.getByRole('button', { name: 'With Icon', exact: true })
+    const icon = await iconButton.locator('svg').boundingBox()
+    const label = await iconButton.getByText('With Icon', { exact: true }).boundingBox()
+    expect(icon!.x + icon!.width).toBeLessThan(label!.x)
+    expect(Math.abs(icon!.y + icon!.height / 2 - label!.y - label!.height / 2)).toBeLessThan(2)
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  }
+})
+
 test('mobile documentation disclosure supports selection and Escape focus restoration', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 1440) >= 1024, 'Desktop uses the persistent sidebar')
   await page.goto('/docs/getting-started')

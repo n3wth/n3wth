@@ -139,12 +139,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         variant={variant === 'glass' ? 'secondary' : variant}
         size={typeof size === 'string' ? size : size.base ?? 'sm'}
         isLoading={isLoading}
+        icon={leftIcon}
+        endContent={rightIcon}
         ref={ref}
         className={buttonClassName}
         isDisabled={disabled || isLoading}
         {...props}
       >
-        {leftIcon}{children}{rightIcon}
+        {children}
       </AstryxButton>
     )
   }

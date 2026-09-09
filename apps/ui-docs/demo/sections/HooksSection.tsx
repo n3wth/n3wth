@@ -4,8 +4,14 @@ import { useReducedMotion } from '@n3wth/ui'
 import { useIsMobile, useIsTablet, useIsDesktop, useBreakpoint } from '@n3wth/ui'
 import { Button } from '@n3wth/ui'
 import { Badge } from '@n3wth/ui'
+import { useCountUp } from '@n3wth/ui'
 import { DemoSection, DemoBlock } from './DemoSection'
 import { CodeSnippet } from './CodeSnippet'
+
+function AnimatedCount() {
+  const { value, ref } = useCountUp(1000, { duration: 2, onScroll: false })
+  return <span ref={ref} className="font-display text-4xl font-bold text-[var(--color-white)] tabular-nums">{value}</span>
+}
 
 export function HooksSection() {
   const { theme } = useTheme()
@@ -14,7 +20,7 @@ export function HooksSection() {
   const isTablet = useIsTablet()
   const isDesktop = useIsDesktop()
   const breakpoint = useBreakpoint()
-  const [count, setCount] = useState(0)
+  const [countRun, setCountRun] = useState(0)
 
   return (
     <DemoSection id="hooks" title="Hooks" description="React hooks for theme, media queries, accessibility, and animations.">
@@ -99,24 +105,18 @@ function AnimatedCard() {
       <DemoBlock title="useCountUp">
         <div className="p-6 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)]">
           <div className="flex items-center gap-4">
-            <span className="font-display text-4xl font-bold text-[var(--color-white)] tabular-nums">
-              {count}
-            </span>
-            <Button variant="secondary" size="sm" onClick={() => setCount((c) => c + 100)}>
-              Add 100
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => setCount(0)}>
-              Reset
+            <AnimatedCount key={countRun} />
+            <Button variant="secondary" size="sm" onClick={() => setCountRun((run) => run + 1)}>
+              Replay
             </Button>
           </div>
         </div>
         <CodeSnippet className="mt-4" code={`import { useCountUp } from '@n3wth/ui'
 
 function StatsCounter() {
-  const { value, ref } = useCountUp({
-    end: 1000,
+  const { value, ref } = useCountUp(1000, {
     duration: 2,
-    startOnView: true,
+    onScroll: false,
   })
 
   return <span ref={ref}>{value}</span>

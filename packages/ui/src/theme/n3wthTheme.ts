@@ -57,6 +57,8 @@ export const n3wthTheme = defineTheme({
     '--color-text-secondary': ['#6e6e73', '#9aa0a8'],
     '--color-text-disabled': ['#c7c7cc', '#62666d'],
     '--color-text-accent': ['#08090b', '#ffffff'],
+    // Punctuation is readable source code, not disabled interface text.
+    '--color-syntax-punctuation': 'var(--color-text-secondary)',
 
     // Icons
     '--color-icon-primary': ['#1d1d1f', '#f2f3f5'],
