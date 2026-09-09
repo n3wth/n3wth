@@ -13,6 +13,7 @@ describe('system guide', () => {
       expect(screen.getByRole('heading', { name, exact: true })).toBeInTheDocument()
     }
     expect(screen.getByRole('link', { name: 'Get started' })).toHaveAttribute('href', '/docs/getting-started')
+    expect(screen.getByRole('link', { name: 'Astryx', exact: true })).toHaveAttribute('href', 'https://github.com/facebook/astryx')
     fireEvent.click(screen.getByRole('button', { name: 'Try the primitive' }))
     expect(screen.getByRole('status', { name: 'Primitive activation' })).toHaveTextContent('Activated 1 time')
   })

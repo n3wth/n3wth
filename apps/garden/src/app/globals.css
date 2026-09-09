@@ -38,12 +38,6 @@
   font-display: swap;
 }
 
-@theme inline {
-  --font-display: var(--font-family-heading);
-  --font-sans: var(--font-family-body);
-  --font-mono: var(--font-family-code);
-}
-
 /* Display voice: Satoshi carries headings (matches n3wth.com); Geist
    stays on UI and nav; Source Serif 4 carries note bodies. The heading
    family lives in the shared Astryx theme — declaring it here could
@@ -106,16 +100,6 @@ body:has(.field-band)::before {
 }
 
 
-
-/* Deliberate UI type scale: 11 (micro labels) / 13 (secondary UI) /
-   15 (primary UI) / 16 (prose) / display. Tailwind's xs/sm steps are
-   redefined so every text-xs / text-sm usage lands on the scale. */
-@theme {
-  --text-xs: 13px;
-  --text-xs--line-height: 1.45;
-  --text-sm: 15px;
-  --text-sm--line-height: 1.5;
-}
 
 @layer components {
 

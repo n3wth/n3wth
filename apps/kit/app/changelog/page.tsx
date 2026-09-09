@@ -1,38 +1,27 @@
 import { PageHeader, SiteContainer, SiteSection, SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
+import { siteUrls } from '@n3wth/site-config'
+import { pageMetadata, pageJsonLd } from '@n3wth/site-config/metadata'
 
-export const metadata: Metadata = {
+const url = `${siteUrls.kit}/changelog`
+const socialTitle = 'Changelog — n3wth/kit'
+const description = 'Latest updates and improvements to n3wth/kit. New components, features, and fixes.'
+
+export const metadata: Metadata = pageMetadata({
   title: 'Changelog',
-  description: 'Latest updates and improvements to n3wth/kit. New components, features, and fixes.',
-  alternates: {
-    canonical: 'https://kit.n3wth.com/changelog',
-  },
-  openGraph: {
-    title: 'Changelog — n3wth/kit',
-    description: 'Latest updates and improvements to n3wth/kit. New components, features, and fixes.',
-    url: 'https://kit.n3wth.com/changelog',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Changelog — n3wth/kit',
-    description: 'Latest updates and improvements to n3wth/kit. New components, features, and fixes.',
-  },
-}
+  description,
+  url,
+  socialTitle,
+})
 
-const webPageJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': 'https://kit.n3wth.com/changelog#webpage',
-  url: 'https://kit.n3wth.com/changelog',
-  name: 'Changelog — n3wth/kit',
-  description: 'Latest updates and improvements to n3wth/kit. New components, features, and fixes.',
-  isPartOf: { '@id': 'https://kit.n3wth.com/#website' },
-  primaryImageOfPage: {
-    '@type': 'ImageObject',
-    url: 'https://kit.n3wth.com/changelog/opengraph-image',
-  },
-}
+const webPageJsonLd = pageJsonLd({
+  url,
+  title: socialTitle,
+  description: description,
+  siteUrl: siteUrls.kit,
+  type: 'WebPage',
+  image: `${url}/opengraph-image`,
+})
 
 const entries = [
   {

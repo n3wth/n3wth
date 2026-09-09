@@ -1,39 +1,29 @@
 import { PageHeader, SiteContainer, SiteSection } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
+import { siteUrls } from '@n3wth/site-config'
+import { pageMetadata, pageJsonLd } from '@n3wth/site-config/metadata'
 import { ComponentGrid } from './_components/component-grid'
 
-export const metadata: Metadata = {
-  title: 'Components',
-  description: '47 production-ready React components with built-in AI context. Install via shadcn CLI with context packs for Antigravity CLI.',
-  alternates: {
-    canonical: 'https://kit.n3wth.com/components',
-  },
-  openGraph: {
-    title: 'Components — n3wth/kit',
-    description: '47 production-ready React components with built-in AI context. 32 UI components, 4 blocks, 11 hooks.',
-    url: 'https://kit.n3wth.com/components',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Components — n3wth/kit',
-    description: '47 production-ready React components with built-in AI context. 32 UI components, 4 blocks, 11 hooks.',
-  },
-}
+const url = `${siteUrls.kit}/components`
+const socialTitle = 'Components — n3wth/kit'
+const description = '47 production-ready React components with built-in AI context. Install via shadcn CLI with context packs for Antigravity CLI.'
 
-const webPageJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  '@id': 'https://kit.n3wth.com/components#webpage',
-  url: 'https://kit.n3wth.com/components',
-  name: 'Components — n3wth/kit',
+export const metadata: Metadata = pageMetadata({
+  title: 'Components',
+  description,
+  url,
+  socialTitle,
+  socialDescription: '47 production-ready React components with built-in AI context. 32 UI components, 4 blocks, 11 hooks.',
+})
+
+const webPageJsonLd = pageJsonLd({
+  url,
+  title: socialTitle,
   description: '47 production-ready React components with built-in AI context. Install via shadcn CLI.',
-  isPartOf: { '@id': 'https://kit.n3wth.com/#website' },
-  primaryImageOfPage: {
-    '@type': 'ImageObject',
-    url: 'https://kit.n3wth.com/components/opengraph-image',
-  },
-}
+  siteUrl: siteUrls.kit,
+  type: 'CollectionPage',
+  image: `${url}/opengraph-image`,
+})
 
 export default function ComponentsPage() {
   return (

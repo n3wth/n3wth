@@ -1,16 +1,12 @@
 @import 'tailwindcss';
 @import '@n3wth/ui/tailwind-theme.css';
 @import '@n3wth/ui/styles';
-@import '@n3wth/ui/site.css';
 @source "../../../packages/ui/dist/**/*.js";
 @source "../demo/**/*.tsx";
 
 /* Existing component examples use legacy names. Resolve them through the
    shared Astryx theme so the documentation and examples switch together. */
 [data-astryx-theme='n3wth'] {
-  --font-display: var(--font-family-heading);
-  --font-sans: var(--font-family-body);
-  --font-mono: var(--font-family-code);
   --color-bg: var(--color-background-body);
   --color-bg-secondary: var(--color-background-surface);
   --color-white: var(--color-text-primary);

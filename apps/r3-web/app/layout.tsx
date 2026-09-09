@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { siteUrls } from "@n3wth/site-config";
-import { Geist, Geist_Mono } from "next/font/google";
-import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { AxiomWebVitals } from "next-axiom";
@@ -10,27 +8,6 @@ import { JsonLd } from "../components/JsonLd";
 import { SkipLink } from "../components/SkipLink";
 import { SiteProvider } from "../components/SiteProvider";
 import "./globals.css";
-
-const satoshi = localFont({
-  src: "../fonts/Satoshi-Variable.ttf",
-  variable: "--font-satoshi",
-  display: "swap",
-  preload: true,
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-  preload: true,
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrls.r3),
@@ -82,7 +59,6 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${satoshi.variable} ${geistSans.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <AxiomWebVitals />

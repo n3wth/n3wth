@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { track } from '../lib/analytics'
 import { Button } from '@n3wth/ui/primitives'
+import { UtilityPage } from '../components/UtilityPage'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 /* Landing page for error redirects from auth providers (Auth0 sends
@@ -35,32 +36,11 @@ export default function ErrorPage() {
   }, [code])
 
   return (
-    <section aria-label="Error" className="relative min-h-[70vh] flex items-center">
-      <div className="frame relative w-full">
-        <div className="section-pad pad-air w-full">
-          <h1
-          className="display page-title max-w-[18ch]"
-            style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
-          >
-            {headline}
-          </h1>
-          <p className="mt-6 t-lead max-w-lg" style={{ color: 'var(--ink-dim)' }}>
-            Trying again usually clears it. If it keeps happening,{' '}
-            <a href="/support" className="underline underline-offset-4">
-              get support
-            </a>{' '}
-            and include the details below.
-          </p>
-          {(code || description) && (
-            <div
-              className="mt-8 max-w-lg border p-4 font-mono text-sm"
-              style={{ borderColor: 'var(--rail)', color: 'var(--ink-dim)' }}
-            >
-              {code && <p>error: {code}</p>}
-              {description && <p className="mt-1">{description}</p>}
-            </div>
-          )}
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+    <UtilityPage label="Error" title={headline} description={<>
+      Trying again usually clears it. If it keeps happening,{' '}
+      <a href="/support" className="underline underline-offset-4">get support</a>{' '}
+      and include the details below.
+    </>} actions={<>
             <Button
               label="Try again"
               variant="primary"
@@ -72,9 +52,16 @@ export default function ErrorPage() {
               }}
             />
             <Button label="Go home" variant="ghost" href="/" />
-          </div>
-        </div>
-      </div>
-    </section>
+          </>}>
+          {(code || description) && (
+            <div
+              className="mt-8 max-w-lg border p-4 font-mono text-sm"
+              style={{ borderColor: 'var(--rail)', color: 'var(--ink-dim)' }}
+            >
+              {code && <p>error: {code}</p>}
+              {description && <p className="mt-1">{description}</p>}
+            </div>
+          )}
+    </UtilityPage>
   )
 }

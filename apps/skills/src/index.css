@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import '@n3wth/ui/styles';
-@import '@n3wth/ui/site.css';
 
 /* Scan @n3wth/ui components for Tailwind classes */
 @source "../../../packages/ui/dist";
@@ -33,22 +32,6 @@
   .md\:gap-6 {
     gap: 1.5rem !important;
   }
-}
-
-/* Additional medium code weight for existing code examples. */
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Project-specific theme overrides */
-@theme {
-  --font-display: 'Satoshi', system-ui, sans-serif;
-  --font-sans: 'Geist Sans', system-ui, sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 }
 
 /* ============================================================
@@ -100,23 +83,6 @@
 /* Hero/Skill of the Day variant */
 .glass-card--hero {
   border-radius: 24px;
-}
-
-/* Constellation pattern - project specific */
-@keyframes constellationTwinkle {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.2);
-  }
-}
-
-.constellation-dot {
-  animation: constellationTwinkle var(--twinkle-duration, 3s) ease-in-out infinite;
-  animation-delay: var(--twinkle-delay, 0s);
 }
 
 /* Section labels and secondary text */
@@ -491,16 +457,6 @@ select {
 
 /* Project-specific reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .constellation-dot {
-    animation: none !important;
-    opacity: 0.5 !important;
-  }
-
-  .hero-word {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
   .floating-shape {
     animation: none !important;
     opacity: 0.5 !important;
@@ -579,27 +535,6 @@ select {
 
   .scrollbar-hidden > * {
     scroll-snap-align: start;
-  }
-}
-
-/* Hero words - visible immediately, no entrance animation */
-.hero-word {
-  opacity: 1;
-}
-
-/* Hero rotating word animation */
-.hero-rotating-word {
-  animation: heroWordFade 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes heroWordFade {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 

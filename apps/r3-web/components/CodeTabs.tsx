@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Children, isValidElement, useState, type ReactNode } from "react";
+import { CodeBlock, Tabs, TabsList, TabsTab, TabsPanel } from "@n3wth/ui";
 
 interface CodeTab {
   label: string;
@@ -11,84 +11,40 @@ interface CodeTab {
 
 interface CodeTabsProps {
   tabs?: CodeTab[];
-  children?: React.ReactNode;
+  children?: ReactNode;
+}
+
+function parseTabs(children: ReactNode): CodeTab[] {
+  return Children.toArray(children).flatMap((child) => {
+    if (!isValidElement<{ children?: ReactNode; tab?: string }>(child)) return [];
+    const code = child.props.children;
+    if (!isValidElement<{ className?: string; children?: ReactNode }>(code)) return [];
+    const language = code.props.className?.match(/(?:^|\s)language-([^\s]+)/)?.[1];
+    if (!language || typeof code.props.children !== "string") return [];
+    return [{
+      label: child.props.tab || language.charAt(0).toUpperCase() + language.slice(1),
+      language,
+      code: code.props.children,
+    }];
+  });
 }
 
 export function CodeTabs({ tabs, children }: CodeTabsProps) {
-  const [activeTab, setActiveTab] = useState(0);
-  const [copied, setCopied] = useState(false);
-
-  // Parse children if no tabs provided (for MDX usage)
-  if (!tabs && children) {
-    tabs = [];
-    const childArray = React.Children.toArray(children);
-    childArray.forEach((child: any) => {
-      if (child?.props?.children?.props?.className?.includes("language-")) {
-        const lang = child.props.children.props.className.replace(
-          "language-",
-          "",
-        );
-        const label =
-          child.props["tab"] || lang.charAt(0).toUpperCase() + lang.slice(1);
-        const code = child.props.children.props.children || "";
-        tabs!.push({ label, language: lang, code });
-      }
-    });
-  }
-
-  if (!tabs || tabs.length === 0) {
-    return <div className="text-ink-faint">No code tabs available</div>;
-  }
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(tabs![activeTab].code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const [activeTab, setActiveTab] = useState("0");
+  const entries = tabs ?? parseTabs(children);
+  if (entries.length === 0) return <div className="text-ink-faint">No code tabs available</div>;
+  const selected = Number(activeTab) < entries.length ? activeTab : "0";
 
   return (
-    <div className="rounded-lg overflow-hidden border border-rail bg-bg-soft">
-      {/* Tab Headers */}
-      <div className="flex items-center justify-between border-b border-rail">
-        <div className="flex">
-          {tabs.map((tab, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveTab(index)}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                activeTab === index
-                  ? "text-ink bg-bg-raise border-b-2 border-accent"
-                  : "text-ink-dim hover:text-ink"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-        <button
-          onClick={copyToClipboard}
-          className="flex items-center gap-1 px-3 py-2 text-xs text-ink-label hover:text-ink transition-colors"
-        >
-          {copied ? (
-            <>
-              <Check className="h-3 w-3" />
-              Copied
-            </>
-          ) : (
-            <>
-              <Copy className="h-3 w-3" />
-              Copy
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Code Content */}
-      <pre className="p-4 overflow-x-auto">
-        <code className="text-sm text-ink font-mono">
-          {tabs[activeTab].code}
-        </code>
-      </pre>
-    </div>
+    <Tabs value={selected} onChange={setActiveTab}>
+      <TabsList aria-label="Code examples">
+        {entries.map((tab, index) => <TabsTab key={index} value={String(index)}>{tab.label}</TabsTab>)}
+      </TabsList>
+      {entries.map((tab, index) => (
+        <TabsPanel key={index} value={String(index)}>
+          <CodeBlock code={tab.code} language={tab.language} showCopyButton />
+        </TabsPanel>
+      ))}
+    </Tabs>
   );
 }

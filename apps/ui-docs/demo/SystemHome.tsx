@@ -8,9 +8,9 @@ import { CodeSnippet } from './sections/CodeSnippet'
 import { SEO, JsonLdWebSite } from './SEO'
 
 const layers = [
-  { name: 'Sites', path: 'apps/*', responsibility: 'Content, routes and product logic', detail: 'Choose what the site says and does. Pass your router links and actions into shared components.' },
-  { name: '@n3wth/ui', path: 'packages/ui', responsibility: 'One brand and shared page structure', detail: 'Own the Newth theme, fonts, navigation, heroes, sections and footer. Translate existing component APIs when compatibility is needed.' },
-  { name: 'Astryx', path: '@astryxdesign/core', responsibility: 'Primitives and interaction behavior', detail: 'Supply the underlying controls, semantics and interaction patterns. The UI package exposes their native API through its primitives entry point.' },
+  { name: 'Sites', href: 'https://github.com/n3wth/n3wth/tree/main/apps', description: 'Content and product logic.' },
+  { name: '@n3wth/ui', href: 'https://github.com/n3wth/n3wth/tree/main/packages/ui', description: 'Shared theme and page components.' },
+  { name: 'Astryx', href: 'https://github.com/facebook/astryx', description: 'External primitives and interactions.' },
 ]
 
 export function SystemHome() {
@@ -22,14 +22,11 @@ export function SystemHome() {
     <SiteContainer as="main" id="main-content" className="n3wth-site-main">
       <PageHeader title="n3wth/ui design system" description="Shared components and styles, built on Astryx." actions={<Link to="/docs/getting-started">Get started</Link>} />
       <SiteSection aria-labelledby="architecture">
-        <SiteHeading id="architecture">Three layers, clear ownership</SiteHeading>
-        <SiteText className="system-intro">Dependencies flow down: Sites → @n3wth/ui → Astryx. A shared change belongs in the lowest layer that owns it.</SiteText>
+        <SiteHeading id="architecture">Built in three layers</SiteHeading>
         <ol className="system-layers">
           {layers.map(layer => <li key={layer.name}>
-            <SiteText variant="supporting">{layer.path}</SiteText>
-            <SiteHeading variant="item">{layer.name}</SiteHeading>
-            <SiteText>{layer.responsibility}</SiteText>
-            <SiteText variant="supporting">{layer.detail}</SiteText>
+            <SiteHeading variant="item"><a href={layer.href}>{layer.name}</a></SiteHeading>
+            <SiteText variant="supporting">{layer.description}</SiteText>
           </li>)}
         </ol>
       </SiteSection>

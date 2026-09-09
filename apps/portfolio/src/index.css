@@ -15,28 +15,6 @@
 
 /* Fonts are supplied by @n3wth/ui/site.css. */
 
-/* Design tokens — Tailwind v4 theme */
-/* Bridge shared Astryx font tokens into Tailwind font
-   utilities so `font-display` / `font-sans` / `font-mono` keep working.
-   `inline` keeps these as live var() refs instead of resolving at build
-   time, since the values are set at runtime by the Astryx theme CSS. */
-@theme inline {
-  --font-display: var(--font-family-heading);
-  --font-sans: var(--font-family-body);
-  --font-mono: var(--font-family-code);
-}
-
-/* Deliberate UI type scale (matches garden.n3wth.com): 11 (micro labels) /
-   13 (secondary UI) / 15 (primary UI) / 16 (prose) / display. Tailwind's
-   xs/sm steps are redefined so every text-xs / text-sm usage lands on
-   the scale. */
-@theme {
-  --text-xs: 13px;
-  --text-xs--line-height: 1.45;
-  --text-sm: 15px;
-  --text-sm--line-height: 1.5;
-}
-
 /* Bare-name aliases for var() usage outside utilities. Values are sourced
    from the shared Astryx design tokens — no re-hardcoding.
    --ink-label: accessible label tone for small meta;

@@ -1,6 +1,25 @@
 import { test, expect } from '@playwright/test'
 import { expectSiteFoundation } from './site-foundation'
 
+test('mobile documentation disclosure supports selection and Escape focus restoration', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 1440) >= 1024, 'Desktop uses the persistent sidebar')
+  await page.goto('/docs/getting-started')
+  const toggle = page.getByRole('button', { name: 'Documentation: Getting Started' })
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  await toggle.click()
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  const theming = page.getByRole('navigation', { name: 'Documentation', exact: true }).getByRole('link', { name: 'Theming', exact: true }).filter({ visible: true })
+  await theming.focus()
+  await page.keyboard.press('Escape')
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  await expect(toggle).toBeFocused()
+  await toggle.click()
+  await theming.click()
+  await expect(page).toHaveURL(/\/docs\/theming$/)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Theming')
+  await expect(page.getByRole('button', { name: 'Documentation: Theming' })).toHaveAttribute('aria-expanded', 'false')
+})
+
 test('system guide loads the shared theme and font assets', async ({ page }) => {
   await page.goto('/')
   await expectSiteFoundation(page)
@@ -16,6 +35,8 @@ test('system ownership, native primitive and documentation navigation work', asy
   for (const name of ['Sites', '@n3wth/ui', 'Astryx']) {
     await expect(page.getByRole('heading', { name, exact: true })).toBeVisible()
   }
+  await expect(page.getByRole('link', { name: 'Astryx', exact: true })).toHaveAttribute('href', 'https://github.com/facebook/astryx')
+  await page.locator('section[aria-labelledby="architecture"]').screenshot({ path: testInfo.outputPath('architecture.png') })
   await page.getByRole('button', { name: 'Try the primitive' }).click()
   await expect(page.getByRole('status', { name: 'Primitive activation' })).toHaveText('Activated 1 time')
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true)

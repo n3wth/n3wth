@@ -4,6 +4,15 @@
 @font-face { font-family: 'Geist Sans'; src: url('@n3wth/ui/fonts/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Satoshi'; src: url('@n3wth/ui/fonts/Satoshi-Variable.woff2') format('woff2'); font-weight: 400 600; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Geist Mono'; src: url('@n3wth/ui/fonts/GeistMono-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Geist Mono'; src: url('@n3wth/ui/fonts/GeistMono-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+
+/* Compatibility names resolve to the same families as Astryx components. */
+[data-astryx-theme='n3wth'] {
+  --font-display: var(--font-family-heading);
+  --font-brand: var(--font-family-heading);
+  --font-sans: var(--font-family-body);
+  --font-mono: var(--font-family-code);
+}
 
 html[data-astryx-theme='n3wth'] {
   background-color: var(--color-background-body);
