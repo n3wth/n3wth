@@ -2,64 +2,19 @@
 
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/preflight.css' layer(base);
-@import '@astryxdesign/core/reset.css';
-@import '@astryxdesign/core/astryx.css';
-@import '../theme/n3wth-theme.css';
+@import '@n3wth/ui/site.css';
 @import '@astryxdesign/core/tailwind-theme.css';
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 /* ============================================================
-   Astryx with the custom n3wth theme (src/theme/n3wthTheme.ts)
+   Astryx with the shared @n3wth/ui/site theme
    — the canonical @n3wth/ui wireframe palette: near-black
    canvas, hairline rails, grayscale ink, Geist type.
    Bridge Astryx font tokens into Tailwind font utilities so
    `font-display` / `font-mono` classes keep working.
    ============================================================ */
 
-/* Geist Sans (display + body) — served from /public/fonts,
-   matching n3wth.com's canonical font setup. */
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
-  font-weight: 600 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Satoshi — premium grotesque for display headers (matches n3wth.com).
-   The Bold cut registers at 600 so the semibold-max rule maps onto
-   Satoshi's display drawing. */
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
-  font-weight: 600 700;
-  font-style: normal;
-  font-display: swap;
-}
+/* Fonts are supplied by @n3wth/ui/site.css. */
 
 /* Source Serif 4 — the reading face, and only that. Note bodies are the
    one long-form surface here, and a text face earns its keep on them in
@@ -83,22 +38,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
-  font-weight: 500 600;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme inline {
   --font-display: var(--font-family-heading);
   --font-sans: var(--font-family-body);
@@ -107,7 +46,7 @@
 
 /* Display voice: Satoshi carries headings (matches n3wth.com); Geist
    stays on UI and nav; Source Serif 4 carries note bodies. The heading
-   family now lives in src/theme/n3wthTheme.ts — declaring it here could
+   family lives in the shared Astryx theme — declaring it here could
    never win, because the generated theme sets it on a closer scope. */
 
 /* Balanced line wrapping: headings never break into lopsided lines, and
@@ -352,22 +291,11 @@ button:focus-visible,
   min-height: 100svh;
 }
 .home-introduction {
-  display: grid;
-  gap: 1rem;
   max-width: 1200px;
   margin-inline: auto;
   padding: 1rem 1.5rem 0.5rem;
 }
 .home-introduction h1 { min-width: 0; }
-@media (min-width: 600px) {
-  .home-introduction {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 2rem;
-  }
-  .home-actions { grid-column: 2; grid-row: 1; justify-content: end; }
-  .home-description { grid-column: 1 / -1; }
-}
 .home-garden-stage {
   height: clamp(540px, 78svh, 900px);
   overflow: clip;

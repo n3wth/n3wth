@@ -3,51 +3,12 @@
 @import "shadcn/tailwind.css";
 /* source of truth: @n3wth/ui/theme (canonical wireframe tokens) */
 @import "@n3wth/ui/theme";
+@import "@n3wth/ui/site.css";
+@source "../../../packages/ui/dist";
 
 @custom-variant dark (&:is(.dark *));
 
-/* Geist Sans — body/UI (self-hosted from Vercel). */
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
-  font-weight: 500 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Satoshi — premium grotesque for display (Fontshare, self-hosted).
-   The Bold cut is registered at weight 600 so the site's semibold-max
-   rule maps to Satoshi's display drawing. */
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Geist Mono — literal machine output ONLY (code, coordinates, CLI). */
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+/* Shared site.css owns body/display fonts; retain the extra code weight. */
 @font-face {
   font-family: 'Geist Mono';
   src: url('/fonts/GeistMono-Medium.woff2') format('woff2');

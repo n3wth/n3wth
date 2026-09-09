@@ -6,6 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Nav } from './_components/nav'
 import { SkipLink } from './_components/skip-link'
 import { PostHogProvider } from './_components/posthog-provider'
+import { SiteProvider } from './_components/site-provider'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -118,6 +119,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
         />
         <PostHogProvider>
+          <SiteProvider>
           <SkipLink />
           <Nav />
           <div id="main-content">
@@ -125,6 +127,7 @@ export default function RootLayout({
           </div>
           <Analytics />
           <SpeedInsights />
+          </SiteProvider>
         </PostHogProvider>
         <GoogleAnalytics gaId="G-4QRMSG5HXK" />
       </body>

@@ -1,4 +1,10 @@
 import { test, expect } from '@playwright/test'
+import { expectSiteFoundation } from './site-foundation'
+
+test('showcase loads the shared theme and font assets', async ({ page }) => {
+  await page.goto('/')
+  await expectSiteFoundation(page)
+})
 
 test('component documentation renders with usable navigation', async ({ page }, testInfo) => {
   const errors: string[] = []

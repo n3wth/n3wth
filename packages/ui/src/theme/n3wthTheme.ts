@@ -1,13 +1,12 @@
 // n3wth theme for Astryx — canonical @n3wth/ui wireframe/blueprint palette.
 // Dark near-black canvas, hairline rails, grayscale ink ramp, white accent,
-// Geist Sans + Geist Mono. Values mirror @n3wth/ui/theme (single source of
+// Satoshi headings, Geist Sans body, Geist Mono code. Values mirror @n3wth/ui/theme (single source of
 // truth for n3wth.com, agents.n3wth.com, garden.n3wth.com).
 // Token pairs are [light, dark]; the site runs dark-only but light values
 // follow the same language (paper white, near-black ink) for future use.
 //
-// Canonical copy lives here (@n3wth/ui/src/theme/n3wthTheme.ts) and is
-// mirrored into garden.n3wth.com (src/theme/n3wthTheme.ts) — keep both in
-// sync when editing tokens.
+// Canonical copy lives here. The package build generates @n3wth/ui/site.css
+// from this object; applications consume it instead of maintaining copies.
 
 import { defineTheme } from '@astryxdesign/core/theme'
 
@@ -21,7 +20,7 @@ export const n3wthTheme = defineTheme({
       fallbacks: 'system-ui, -apple-system, sans-serif',
     },
     heading: {
-      family: 'Geist Sans',
+      family: 'Satoshi',
       fallbacks: 'system-ui, -apple-system, sans-serif',
     },
     code: {

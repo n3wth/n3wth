@@ -1,17 +1,16 @@
 'use client'
 
 import { Link } from 'next-view-transitions'
-import { Theme } from '@astryxdesign/core/theme'
+import { N3wthProvider } from '@n3wth/ui/site'
 import { LinkProvider } from '@astryxdesign/core/Link'
 import { ToastViewport } from '@astryxdesign/core/Toast'
-import { n3wthTheme } from '@/theme/n3wthTheme'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <Theme theme={n3wthTheme} mode="dark">
+    <N3wthProvider mode="dark">
       <LinkProvider component={Link}>
         <ToastViewport position="bottomEnd">{children}</ToastViewport>
       </LinkProvider>
-    </Theme>
+    </N3wthProvider>
   )
 }

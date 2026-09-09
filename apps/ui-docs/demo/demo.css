@@ -1,15 +1,31 @@
 @import 'tailwindcss';
 @import '@n3wth/ui/styles';
+@import '@n3wth/ui/site.css';
 @source "../../../packages/ui/dist/**/*.js";
 @source "../demo/**/*.tsx";
 
-/* Canonical wireframe typography: Satoshi for display, Geist Sans for body.
-   theme.css intentionally ships no fonts — each app declares its own.
-   The demo uses Satoshi for display headings, Geist Sans for body/UI. */
-:root,
-[data-theme='dark'],
-[data-theme='light'] {
-  --font-display: 'Satoshi', system-ui, sans-serif;
+/* Existing component examples use legacy names. Resolve them through the
+   shared Astryx theme so the documentation and examples switch together. */
+[data-astryx-theme='n3wth'] {
+  --font-display: var(--font-family-heading);
+  --font-sans: var(--font-family-body);
+  --font-mono: var(--font-family-code);
+  --color-bg: var(--color-background-body);
+  --color-bg-secondary: var(--color-background-surface);
+  --color-white: var(--color-text-primary);
+  --color-grey-100: var(--color-text-primary);
+  --color-grey-200: var(--color-text-primary);
+  --color-grey-300: var(--color-text-secondary);
+  --color-grey-400: var(--color-text-secondary);
+  --color-grey-500: var(--color-text-secondary);
+  --color-grey-600: var(--color-text-disabled);
+  --glass-bg: var(--color-overlay-hover);
+  --glass-border: var(--color-border);
+}
+
+html[data-astryx-theme='n3wth'] body {
+  background: var(--color-background-body);
+  color: var(--color-text-primary);
 }
 
 /* Prose styles for markdown docs */
@@ -26,8 +42,8 @@
 /* Headings */
 .prose h1 {
   font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: var(--font-size-3xl);
+  font-weight: 600;
   color: var(--color-white);
   margin-top: 0;
   margin-bottom: 1rem;
@@ -36,7 +52,7 @@
 
 .prose h2 {
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--color-white);
   margin-top: 2.5em;
@@ -48,7 +64,7 @@
 
 .prose h3 {
   font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   font-weight: 600;
   color: var(--color-white);
   margin-top: 2em;

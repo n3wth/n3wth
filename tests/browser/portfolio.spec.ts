@@ -1,4 +1,11 @@
 import { test, expect } from '@playwright/test'
+import { expectSiteFoundation } from './site-foundation'
+
+test('work uses the shared theme and a usable resume action', async ({ page }) => {
+  await page.goto('/work')
+  await expectSiteFoundation(page)
+  await expect(page.getByRole('link', { name: 'Resume (PDF)', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
+})
 
 for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact']) {
   test(`${route} renders without runtime errors or horizontal overflow`, async ({ page }, testInfo) => {

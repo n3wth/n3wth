@@ -24,6 +24,7 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
         'og/index': resolve(__dirname, 'src/og/index.ts'),
+        'site/index': resolve(__dirname, 'src/site/index.tsx'),
       },
       formats: ['es'],
     },
@@ -59,7 +60,7 @@ export default defineConfig({
         // Ensure proper ESM output
         format: 'es',
         // Add banner for proper module resolution
-        banner: '/* @n3wth/ui - Atomic design system */',
+        banner: (chunk) => `${chunk.name === 'site/index' ? "'use client';\n" : ''}/* @n3wth/ui - Atomic design system */`,
       },
       // Ensure external modules aren't bundled
       treeshake: {

@@ -6,6 +6,7 @@ import { HomePageClient } from '@/components/HomePageClient'
 import { FamilyStrip } from '@/components/FamilyStrip'
 import { Button } from '@astryxdesign/core/Button'
 import { ShimmerText } from '@/components/ShimmerText'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { site } from '@/lib/site'
 
@@ -40,20 +41,18 @@ export default async function HomePage() {
 
         {/* Hero */}
         <div data-world-exclude className="home-overlay home-introduction">
-          <h1 className="font-display text-[2rem] md:text-[2.75rem] leading-[1.05] font-semibold tracking-[-0.035em] text-[var(--color-text-primary)] text-balance">
+          <PageHeader title={
             <ShimmerText sweepOnMount sweepDelay={1.6}>
               A garden of growing ideas
             </ShimmerText>
-          </h1>
-            <p className="home-description text-sm text-[var(--color-text-secondary)] leading-6 max-w-[52ch]">
+          } description={<>
               {noteCount} interconnected notes on careers, learning, health, and
               building things. Each light is a note — the taller it grows, the more
               evergreen the idea.
-            </p>
-            <div className="home-actions flex flex-wrap items-center gap-3">
+            </>} actions={<>
               <Button label="Browse all notes" variant="primary" href="/notes" />
               <Button label="Random note" variant="ghost" href="/random" />
-            </div>
+            </>} />
         </div>
 
         <div className="home-garden-stage relative">

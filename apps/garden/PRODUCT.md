@@ -36,7 +36,7 @@ The garden is the interface, not a metaphor bolted onto a blog. Every note has a
 
 - Next.js 16 App Router, statically generated. Node >= 20.9.0.
 - Surfaces: `/` (3D world), `/{slug}` (note), `/notes` (field guide index), `/tags` and `/tags/{tag}` (groves), `/graph`, `/world`, `/random`, `/feed.xml`, `/llms.txt`, `/sitemap.xml`, OG image routes.
-- UI components come from Astryx (`@astryxdesign/core`); the theme is `src/theme/n3wthTheme.ts`, and `src/theme/n3wth-theme.css` is **generated** from it (`npx astryx theme build`) — never hand-edited.
+- UI components come from Astryx (`@astryxdesign/core`); the shared theme and page primitives come from `@n3wth/ui/site`, with generated styles imported from `@n3wth/ui/site.css`. Build the UI package after theme changes; do not copy its tokens into this app.
 - Prose styling is custom CSS in `src/app/globals.css`, not `@tailwindcss/typography`. Tailwind v4.
 - No test runner and no linter are configured. `npm run build` is the only gate.
 - Telemetry: Axiom (`next-axiom`) and PostHog web vitals, production only.

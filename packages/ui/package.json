@@ -18,6 +18,12 @@
       "types": "./dist/og/index.d.ts",
       "import": "./dist/og/index.js"
     },
+    "./site": {
+      "types": "./dist/site/index.d.ts",
+      "import": "./dist/site/index.js"
+    },
+    "./site.css": "./dist/site.css",
+    "./fonts/*": "./public/fonts/*",
     "./styles": "./dist/styles.css",
     "./tailwind": "./tailwind.preset.cjs",
     "./theme": "./dist/theme.css"
@@ -39,7 +45,7 @@
     "check": "npm run lint && npm run build && npm test"
   },
   "dependencies": {
-    "@astryxdesign/core": "^0.1.5",
+    "@astryxdesign/core": "0.1.6",
     "clsx": "^2.1.1",
     "iconoir-react": "^7.11.0",
     "tailwind-merge": "^3.4.0"

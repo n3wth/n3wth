@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
   // the production jsx runtime (dev builds keep the real dev runtime).
   webpack: (config, { dev, webpack }) => {
     config.resolve.alias["@"] = path.resolve(__dirname, "src");
+    // Next's CSS loader prefixes package font URLs with './'. Resolve that
+    // request back to the shared assets rather than copying fonts per app.
+    config.resolve.alias["./@n3wth/ui/fonts"] = path.resolve(
+      __dirname,
+      "../../packages/ui/public/fonts"
+    );
     if (!dev) {
       config.plugins.push(
         new webpack.NormalModuleReplacementPlugin(

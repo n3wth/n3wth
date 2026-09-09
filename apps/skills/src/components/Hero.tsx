@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader, SiteContainer, SiteText } from '@n3wth/ui/site'
 import { categoryConfig } from '../config/categories'
 import { siteConfig } from '../config/site'
 import { CategoryShape } from './CategoryShape'
@@ -6,36 +7,22 @@ import { CategoryShape } from './CategoryShape'
 export function Hero() {
   return (
     <div className="relative min-h-[50vh] sm:min-h-[60vh] flex items-end overflow-hidden">
-      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-12 py-12 sm:py-16 md:py-24">
+      <SiteContainer className="w-full py-12 sm:py-16 md:py-24">
         <div className="max-w-2xl">
-          {/* Heading - Satoshi display, left-aligned */}
-          <h1 
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-[1.15] mb-6"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
-            <span className="text-white">Skills for</span>
-            <br />
-            <span className="text-white">coding agents</span>
-          </h1>
-
-          {/* Description */}
-          <p
-            className="text-sm sm:text-base leading-relaxed max-w-md mb-6"
-            style={{ color: 'var(--color-grey-300)' }}
-          >
-            {siteConfig.description}
-            <br />
-            {siteConfig.tagline}
-          </p>
+          <PageHeader
+            style={{ paddingBlock: 0 }}
+            title={<>Skills for<br />coding agents</>}
+            description={<>{siteConfig.description}<br />{siteConfig.tagline}</>}
+          />
 
           {/* Category indicators - quiet, minimal */}
-          <div className="flex flex-wrap items-center gap-3 mb-8">
+          <div className="flex flex-wrap items-center gap-3 mt-6 mb-8">
             {Object.entries(categoryConfig).map(([key]) => (
               <div key={key} className="flex items-center gap-1.5">
                 <CategoryShape category={key} size={8} />
-                <span className="text-xs" style={{ color: 'var(--color-grey-400)' }}>
+                <SiteText as="span" variant="supporting">
                   {key.charAt(0).toUpperCase() + key.slice(1)}
-                </span>
+                </SiteText>
               </div>
             ))}
           </div>
@@ -56,7 +43,7 @@ export function Hero() {
             </svg>
           </a>
         </div>
-      </div>
+      </SiteContainer>
     </div>
   )
 }

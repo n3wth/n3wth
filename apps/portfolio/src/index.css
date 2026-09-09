@@ -2,9 +2,7 @@
 
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/preflight.css' layer(base);
-@import '@astryxdesign/core/reset.css';
-@import '@astryxdesign/core/astryx.css';
-@import './theme/n3wth-theme.css';
+@import '@n3wth/ui/site.css';
 @import '@astryxdesign/core/tailwind-theme.css';
 @import 'tailwindcss/utilities.css' layer(utilities);
 
@@ -12,62 +10,13 @@
    n3wth.com — Wireframe / Blueprint design system
    Dark near-black canvas, hairline rails, Geist + Geist Mono.
    Flat only: 1px borders & subtle fills, no glows/gradients.
-   Colors + type now sourced from Astryx (src/theme/n3wthTheme.ts),
-   which mirrors the site's canonical palette 1:1.
+   Colors and type come from the shared @n3wth/ui/site Astryx theme.
    ============================================================ */
 
-/* Geist Sans (display + body) — family name matches @n3wth/ui canonical */
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
-  font-weight: 500 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Satoshi — premium grotesque for display (Fontshare, self-hosted).
-   The Bold cut is registered at weight 600 so the site's semibold-max
-   rule maps to Satoshi's display drawing. */
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Geist Mono — literal machine output ONLY (code, coordinates, GitHub counts). Labels/eyebrows use Geist Sans. */
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
-  font-weight: 500 600;
-  font-style: normal;
-  font-display: swap;
-}
+/* Fonts are supplied by @n3wth/ui/site.css. */
 
 /* Design tokens — Tailwind v4 theme */
-/* Bridge Astryx font tokens (src/theme/n3wthTheme.ts) into Tailwind font
+/* Bridge shared Astryx font tokens into Tailwind font
    utilities so `font-display` / `font-sans` / `font-mono` keep working.
    `inline` keeps these as live var() refs instead of resolving at build
    time, since the values are set at runtime by the Astryx theme CSS. */
@@ -89,8 +38,7 @@
 }
 
 /* Bare-name aliases for var() usage outside utilities. Values are sourced
-   from Astryx design tokens (src/theme/n3wthTheme.ts, generated into
-   src/theme/n3wth-theme.css) — no re-hardcoding.
+   from the shared Astryx design tokens — no re-hardcoding.
    --ink-label: accessible label tone for small meta;
    --ink-faint / --ink-ghost stay for decorative marks/separators only.
    --accent-rail has no Astryx token counterpart, so it's defined here. */
@@ -128,7 +76,6 @@
 /* Display voice: Satoshi carries the headers — a premium grotesque with
    its own drawing — while Geist stays on UI, body, and nav. Tight display
    tracking per-element comes from the inline styles tuned for grotesques. */
-:root { --font-family-heading: 'Satoshi', 'Geist Sans', system-ui, sans-serif; }
 
 /* The heaviest weight on this site is semibold. Anything that asks for
    bold — Astryx's bold token, <strong>, UA defaults — lands on 600. */

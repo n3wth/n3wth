@@ -1,4 +1,10 @@
 import { test, expect } from '@playwright/test'
+import { expectSiteFoundation } from './site-foundation'
+
+test('home loads the shared theme and font assets', async ({ page }) => {
+  await page.goto('/')
+  await expectSiteFoundation(page)
+})
 
 for (const route of ['/', '/components', '/docs/getting-started', '/docs/agents', '/blog']) {
   test(`Kit renders ${route}`, async ({ page }) => {

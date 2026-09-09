@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { PageHeader } from '@n3wth/ui/site'
 
 /**
  * Section header: a large display headline and an optional lede.
@@ -16,27 +17,7 @@ export function SectionHeader({
   action?: ReactNode
   as?: 'h1' | 'h2'
 }) {
-  const heading = (
-    <Heading
-      className={`display ${Heading === 'h1' ? 'page-title' : 'text-[length:var(--display-h1)]'} max-w-[18ch]`}
-      style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
-    >
-      {title}
-    </Heading>
-  )
   return (
-    <header data-reveal className="section-pad pb-8 md:pb-12 relative">
-      {action ? (
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
-          {heading}
-          {action}
-        </div>
-      ) : heading}
-      {lede && (
-        <p className="t-lead mt-6 max-w-xl" style={{ color: 'var(--ink-dim)', textWrap: 'balance' }}>
-          {lede}
-        </p>
-      )}
-    </header>
+    <PageHeader data-reveal className="section-pad" title={title} description={lede} actions={action} level={Heading === 'h1' ? 1 : 2} />
   )
 }

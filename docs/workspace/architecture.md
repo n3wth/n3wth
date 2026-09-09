@@ -2,6 +2,8 @@
 
 Status: workspace architecture. Per-site production evidence is recorded in the migration documents and Linear.
 
+Design-system update: all six site apps now consume the workspace UI foundation through `@n3wth/ui/site`. The initial visual-preservation and published-version exceptions described below record the migration baseline; the subsequent user-authorized Astryx alignment supersedes those exceptions. See [design-system.md](design-system.md) for current theme ownership, components and new-site creation.
+
 ## Source and package manager
 
 Use the existing n3wth/n3wth repository. Retain its history and import the UI library/demo from a recorded n3wth/ui main revision. Keep the source repository and its public package release process active until publishing migration is explicitly validated. Use npm workspaces and Node 24, matching the maintenance baseline. One root lockfile owns the pilot dependency graph; do not introduce another build orchestrator yet.
