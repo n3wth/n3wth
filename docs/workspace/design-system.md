@@ -2,6 +2,10 @@
 
 The six workspace sites use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain app-owned. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.
 
+Navigation and footers also come from `SiteNavigation` and `SiteFooter`. Apps pass router-aware home links, primary links and relevant actions as ReactNode slots. The shared navigation owns its 48px height, subtle 1px theme border, spacing, mobile disclosure and Escape focus restoration. Do not add local island styles, separators, blur or alternate mobile breakpoints. Do not use sparkle icons.
+
+Use `n3wth-site-main` for the standard 96px fixed-navigation offset. `PageHeader` owns hero typography and vertical spacing; its optional `aside` accepts demonstrations in a shared responsive split layout. Use `SiteSection` and semantic heading/text roles for page sections. Immersive scenes and long-form reading layouts can retain their content-specific structure.
+
 ## Use
 
 ```tsx

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { registeredPieces } from '../components/thinking/registry'
 import { usePageMeta, buildWebPageSchema, buildArticleSchema } from '../hooks/usePageMeta'
 import NotFound from './NotFound'
+import { PageHeader, SiteSection } from '@n3wth/ui/site'
 
 const SITE_URL = 'https://n3wth.com'
 
@@ -55,7 +56,7 @@ export default function ThinkingPiece() {
 
   return (
     <section aria-label={meta.title}>
-      <div className="section-pad pad-tight">
+      <div className="site-content-gutter">
         {/* Date sits on its own line above the title/dek row instead of
             stacked inside the title's column — the row below starts flush
             at the top on both sides, so the dek's first line lands level
@@ -66,25 +67,15 @@ export default function ThinkingPiece() {
                 and renders a day early in every US timezone. */}
             {new Date(`${meta.date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
-          <div className="mt-3 md:grid md:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] md:gap-16 md:items-start">
-            <h1
-              className="display page-title max-w-[20ch]"
-              style={{ letterSpacing: '-0.03em', lineHeight: 1.04, fontWeight: 600 }}
-            >
-              {meta.title}
-            </h1>
-            <p className="mt-6 md:mt-0 text-base md:text-lg leading-relaxed" style={{ color: 'var(--ink)' }}>
-              {meta.dek}
-            </p>
-          </div>
+          <PageHeader title={meta.title} description={meta.dek} />
         </div>
 
         {/* Tall fallback keeps the footer out of the initially tappable
             region while the piece chunk loads — a 160px placeholder put
             footer links exactly where the article lands when it resolves. */}
-        <Suspense fallback={<div className="min-h-[70vh]" aria-hidden />}>
+        <SiteSection><Suspense fallback={<div className="min-h-[70vh]" aria-hidden />}>
           <Body />
-        </Suspense>
+        </Suspense></SiteSection>
       </div>
     </section>
   )

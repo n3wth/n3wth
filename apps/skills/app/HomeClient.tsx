@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useCallback } from 'react'
 import Link from 'next/link'
+import { SiteContainer, SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { skills, categories } from '../src/data/skills'
 import { IslandNav } from '../src/components/IslandNav'
 import { Footer } from '../src/components/Footer'
@@ -76,16 +77,16 @@ export default function HomeClient() {
       <IslandNav />
       <Hero />
 
-      <main id="main-content" className="max-w-6xl mx-auto px-6 md:px-12 pb-24">
+      <SiteContainer as="main" id="main-content">
         {/* AI Recommendations Section */}
-        <section className="mb-16 md:mb-24">
-          <div className="text-center mb-6">
-            <h2 className="section-title mb-2">
+        <SiteSection>
+          <div className="mb-6">
+            <SiteHeading variant="section" className="mb-2">
               What are you working on?
-            </h2>
-            <p className="label">
+            </SiteHeading>
+            <SiteText>
               Describe your task to see matching skills.
-            </p>
+            </SiteText>
           </div>
           <TaskInput value={taskQuery} onChange={handleTaskChange} />
           <SkillRecommendations
@@ -94,7 +95,7 @@ export default function HomeClient() {
             isLoading={isLoadingRecommendations}
             onClose={handleClearRecommendations}
           />
-        </section>
+        </SiteSection>
 
         <FeaturedSkills />
 
@@ -105,15 +106,16 @@ export default function HomeClient() {
 
         <SkillOfTheDay />
 
+        <SiteSection>
         {/* Browse Section Header */}
         <div className="mb-6 md:mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div>
-            <h2 className="section-title mb-2">
+            <SiteHeading variant="section" className="mb-2">
               All skills
-            </h2>
-            <p className="label">
+            </SiteHeading>
+            <SiteText>
               {skills.length} skills across {categories.length - 1} categories
-            </p>
+            </SiteText>
           </div>
           <Link
             href="/request-skill"
@@ -188,7 +190,8 @@ export default function HomeClient() {
             )}
           </div>
         )}
-      </main>
+        </SiteSection>
+      </SiteContainer>
 
       <Footer />
       <KeyboardShortcutsHelp isOpen={showHelp} onClose={() => setShowHelp(false)} />

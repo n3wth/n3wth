@@ -1,3 +1,4 @@
+import { PageHeader, SiteContainer, SiteSection } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
 import { ComponentGrid } from './_components/component-grid'
 
@@ -41,22 +42,11 @@ export default function ComponentsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
       />
-      <main className="mx-auto max-w-5xl px-6 pt-32 pb-24">
-        <div className="flex items-baseline gap-4">
-          <h1 className="text-3xl font-bold tracking-tight text-ink">
-            Components
-          </h1>
-          <span className="rounded-full border border-rail px-2.5 py-0.5 text-xs font-medium text-ink-faint">
-            47
-          </span>
-        </div>
-        <p className="mt-3 max-w-2xl text-ink-dim">
-          Every component ships with AI context packs. Install one, and AI tools
-          know how to use it on-brand.
-        </p>
+      <SiteContainer as="main" className="n3wth-site-main">
+        <PageHeader title="Components" description="Every component ships with AI context packs. Install one, and AI tools know how to use it on-brand." actions={<span>47 components</span>} />
 
-        <ComponentGrid />
-      </main>
+        <SiteSection><ComponentGrid /></SiteSection>
+      </SiteContainer>
     </div>
   )
 }

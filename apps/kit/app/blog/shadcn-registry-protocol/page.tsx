@@ -1,3 +1,4 @@
+import { SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
 import { PostLayout } from '../_components/post-layout'
 
@@ -36,9 +37,9 @@ export default function Post() {
         instead of compiled packages?
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         The problem with npm packages
-      </h2>
+      </SiteHeading>
 
       <p>
         Traditional component libraries ship as npm packages. You install them,
@@ -55,9 +56,9 @@ export default function Post() {
         scale, which is where the registry protocol comes in.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         How the protocol works
-      </h2>
+      </SiteHeading>
 
       <p>
         The registry protocol is a JSON-based schema that describes components
@@ -84,9 +85,9 @@ export default function Post() {
 }`}
       </pre>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         The install flow
-      </h2>
+      </SiteHeading>
 
       <p>
         When you run the install command, the CLI performs a straightforward
@@ -109,9 +110,9 @@ export default function Post() {
         dependency on the registry. No version lock-in. Just files.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         Why this matters for the ecosystem
-      </h2>
+      </SiteHeading>
 
       <p>
         The registry protocol turns component distribution into a URL-based
@@ -134,9 +135,9 @@ export default function Post() {
         </li>
       </ul>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         Extending with AI context
-      </h2>
+      </SiteHeading>
 
       <p>
         The registry protocol gives you component distribution. But

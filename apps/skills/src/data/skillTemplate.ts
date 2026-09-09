@@ -84,7 +84,7 @@ export const skillTemplate: Skill = {
  * Icon Suggestions
  * 
  * Use simple Unicode characters that represent your skill:
- * - Shapes: ◈ ◆ ◇ ◉ ◎ ◐ ◑ ◒ ◓ □ ▣ ▤ ▥ ▦ ✦
+ * - Shapes: ◈ ◆ ◇ ◉ ◎ ◐ ◑ ◒ ◓ □ ▣ ▤ ▥ ▦
  * - Symbols: ⚡ ★ ☆ ♦ ♢ ⬡ ⬢
  * - Letters: Aa (for typography), etc.
  */

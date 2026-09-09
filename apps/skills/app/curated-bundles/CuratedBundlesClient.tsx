@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
@@ -42,7 +43,7 @@ export function CuratedBundlesClient() {
 
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl">
           <Link
             href="/"
@@ -52,12 +53,7 @@ export function CuratedBundlesClient() {
             <span>&larr;</span> Back to skills
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
-            Skill Bundles for Every Role
-          </h1>
-          <p className="text-lg mb-12" style={{ color: 'var(--color-grey-300)' }}>
-            Curated collections of complementary skills, organized by profession. Everything you need to strengthen your workflow.
-          </p>
+          <PageHeader title={<>Skill Bundles for Every Role</>} description={<>Curated collections of complementary skills, organized by profession. Everything you need to strengthen your workflow.</>} />
 
           {/* Filter Section */}
           <div className="mb-12">

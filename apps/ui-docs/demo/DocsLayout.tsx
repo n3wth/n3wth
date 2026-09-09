@@ -1,7 +1,7 @@
 import { useState, useEffect, type ComponentType } from 'react'
 import { NavLink, useParams } from 'react-router'
 import { SiteNav } from './SiteNav'
-import { Footer } from '@n3wth/ui'
+import { SiteFooter } from '@n3wth/ui/site'
 import { siteLinks, legalLinks } from './siteLinks'
 import { Icon } from '@n3wth/ui'
 import { cn } from '@n3wth/ui'
@@ -96,7 +96,7 @@ export function DocsLayout() {
 
       <SiteNav />
 
-      <div className="pt-24 max-w-6xl mx-auto px-6 md:px-12 pb-24">
+      <div className="n3wth-site-main n3wth-site-container">
         <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
           {/* Sidebar - desktop */}
           <aside className="hidden lg:block">
@@ -164,12 +164,10 @@ export function DocsLayout() {
         </div>
       </div>
 
-      <Footer
-        sites={siteLinks}
-        currentSite="n3wth/ui"
-        legalLinks={legalLinks}
-        copyright={`\u00A9 ${new Date().getFullYear()} n3wth`}
-      />
+      <SiteFooter brand={<a href="/">n3wth/ui</a>} links={<>
+        {siteLinks.map(link => <a key={link.href} href={link.href}>{link.name}</a>)}
+        {legalLinks.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}
+      </>}>© {new Date().getFullYear()} n3wth</SiteFooter>
     </div>
   )
 }

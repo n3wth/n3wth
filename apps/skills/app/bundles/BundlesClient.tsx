@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
@@ -113,7 +114,7 @@ export function BundlesClient() {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main id="main-content" className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main id="main-content" className="n3wth-site-container n3wth-site-main">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -124,12 +125,7 @@ export function BundlesClient() {
               >
                 <span>&larr;</span> Back to the catalog
               </Link>
-              <h1 className="text-3xl md:text-4xl font-semibold text-white">
-                Skill Bundles
-              </h1>
-              <p className="mt-2" style={{ color: 'var(--color-grey-300)' }}>
-                Group skills into ready-to-share collections for faster installs.
-              </p>
+              <PageHeader title={<>Skill Bundles</>} description={<>Group skills into ready-to-share collections for faster installs.</>} />
             </div>
           </div>
 

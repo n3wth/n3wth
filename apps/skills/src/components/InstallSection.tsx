@@ -1,4 +1,5 @@
 'use client'
+import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { useState } from 'react'
 import { installCommands } from '../config/commands'
 import { assistantList } from '../config/assistants'
@@ -20,14 +21,12 @@ export function InstallSection() {
   )
 
   return (
-    <div ref={sectionRef} className="mb-16 md:mb-24">
+    <SiteSection ref={sectionRef}>
       <div>
-        <h2 className="section-title mb-2">
+        <SiteHeading variant="section" className="mb-2">
           Install
-        </h2>
-        <p className="label mb-4">
-          One command. Skills install locally and work offline.
-        </p>
+        </SiteHeading>
+        <SiteText className="mb-6">One command. Skills install locally and work offline.</SiteText>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
@@ -83,6 +82,6 @@ export function InstallSection() {
           />
         ))}
       </div>
-    </div>
+    </SiteSection>
   )
 }

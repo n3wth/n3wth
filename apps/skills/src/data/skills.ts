@@ -46,7 +46,7 @@ export const skills: Skill[] = [
     category: 'development',
     tags: ['animation', 'gsap', 'scrolltrigger', 'motion'],
     featured: true,
-    icon: '✦',
+    icon: '◈',
     color: 'oklch(0.75 0.18 145)',
     skillFile: `${GITHUB_RAW_BASE}/gsap-animations/SKILL.md`,
     features: [

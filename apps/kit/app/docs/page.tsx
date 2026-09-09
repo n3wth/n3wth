@@ -1,3 +1,4 @@
+import { PageHeader, SiteContainer, SiteSection, SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -54,31 +55,26 @@ export default function DocsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
       />
-      <main className="mx-auto max-w-3xl px-6 pt-32 pb-24">
-        <h1 className="text-3xl font-bold tracking-tight text-ink">
-          Documentation
-        </h1>
-        <p className="mt-3 text-ink-dim">
-          Guides for installing components and integrating with AI coding tools.
-        </p>
+      <SiteContainer as="main" className="n3wth-site-main">
+        <PageHeader title="Documentation" description="Guides for installing components and integrating with AI coding tools." />
 
-        <div className="mt-12 space-y-4">
+        <SiteSection className="space-y-4">
           {guides.map((guide) => (
             <Link
               key={guide.href}
               href={guide.href}
               className="group block rounded-lg border border-rail p-5 transition-colors hover:border-rail-strong"
             >
-              <h2 className="text-base font-semibold text-ink transition-colors group-hover:text-ink-dim">
+              <SiteHeading variant="item" level={2}>
                 {guide.title}
-              </h2>
+              </SiteHeading>
               <p className="mt-1.5 text-sm text-ink-dim">
                 {guide.description}
               </p>
             </Link>
           ))}
-        </div>
-      </main>
+        </SiteSection>
+      </SiteContainer>
     </div>
   )
 }

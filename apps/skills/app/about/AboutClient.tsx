@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
 
 import { useRef, useEffect } from 'react'
 import Link from 'next/link'
@@ -125,7 +126,7 @@ export default function AboutClient() {
       <FloatingShapes />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-3xl">
           <div ref={heroRef}>
             <Link
@@ -136,19 +137,14 @@ export default function AboutClient() {
               <span>&larr;</span> Back to skills
             </Link>
 
-            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight animate-in">
-              What are Skills?
-            </h1>
-            <p className="text-lg mb-12 animate-in" style={{ color: 'var(--color-grey-300)' }}>
-              Markdown files that tell your AI how to do one thing well.
-            </p>
+            <PageHeader title={<>What are Skills?</>} description={<>Markdown files that tell your AI how to do one thing well.</>} />
           </div>
 
-          <div ref={sectionsRef} className="space-y-12">
-            <section>
-              <h2 className="text-2xl md:text-3xl font-medium text-white mb-4">
+          <div ref={sectionsRef}>
+            <SiteSection>
+              <SiteHeading variant="section">
                 How they work
-              </h2>
+              </SiteHeading>
               <p
                 className="text-lg leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -161,12 +157,12 @@ export default function AboutClient() {
               >
                 Want scroll animations? Install the GSAP skill. Need PDFs? There's a skill for that.
               </p>
-            </section>
+            </SiteSection>
 
-            <section>
-              <h2 className="text-2xl md:text-3xl font-medium text-white mb-4">
+            <SiteSection>
+              <SiteHeading variant="section">
                 Skills vs. MCP servers
-              </h2>
+              </SiteHeading>
               <p
                 className="text-lg leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -221,12 +217,12 @@ export default function AboutClient() {
                   </div>
                 </div>
               </div>
-            </section>
+            </SiteSection>
 
-            <section>
-              <h2 className="text-2xl md:text-3xl font-medium text-white mb-4">
+            <SiteSection>
+              <SiteHeading variant="section">
                 When to use each
-              </h2>
+              </SiteHeading>
               <p
                 className="text-lg leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -239,12 +235,12 @@ export default function AboutClient() {
               >
                 <strong style={{ color: 'var(--color-white)' }}>MCP servers</strong> connect to external systems: databases, APIs, anything that needs live data.
               </p>
-            </section>
+            </SiteSection>
 
-            <section>
-              <h2 className="text-2xl md:text-3xl font-medium text-white mb-4">
+            <SiteSection>
+              <SiteHeading variant="section">
                 Installation
-              </h2>
+              </SiteHeading>
               <p
                 className="text-lg leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -265,12 +261,12 @@ export default function AboutClient() {
               >
                 Installs to your assistant's config directory.
               </p>
-            </section>
+            </SiteSection>
 
-            <section>
-              <h2 className="text-2xl md:text-3xl font-medium text-white mb-4">
+            <SiteSection>
+              <SiteHeading variant="section">
                 Why skills?
-              </h2>
+              </SiteHeading>
               <div ref={cardsRef} className="grid md:grid-cols-3 gap-6 mt-6">
                 <div className="glass-card p-6">
                   <h3
@@ -315,9 +311,9 @@ export default function AboutClient() {
                   </p>
                 </div>
               </div>
-            </section>
+            </SiteSection>
 
-            <section className="pt-8 border-t" style={{ borderColor: 'var(--glass-border)' }}>
+            <SiteSection className="border-t" style={{ borderColor: 'var(--glass-border)' }}>
               <p
                 className="text-lg leading-relaxed"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -330,7 +326,7 @@ export default function AboutClient() {
                   Browse the catalog
                 </Link>.
               </p>
-            </section>
+            </SiteSection>
           </div>
         </div>
       </main>

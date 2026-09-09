@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -150,7 +151,7 @@ export function SubmitClient() {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-2xl">
           <Link
             href="/"
@@ -160,18 +161,10 @@ export function SubmitClient() {
             <span>&larr;</span> Back to skills
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
-            Submit a Skill
-          </h1>
-          <p
-            className="text-lg mb-12"
-            style={{ color: 'var(--color-grey-300)' }}
-          >
-            Contribute a skill to the catalog. If approved, it gets listed with full attribution.{' '}
+          <PageHeader title={<>Submit a Skill</>} description={<>Contribute a skill to the catalog. If approved, it gets listed with full attribution.{' '}
             <Link href="/contribute" className="text-white hover:opacity-70 transition-opacity underline">
               View the contribution guide
-            </Link>.
-          </p>
+            </Link>.</>} />
 
           {submitStatus === 'success' && (
             <div

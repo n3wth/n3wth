@@ -1,5 +1,6 @@
 "use client";
 
+import { SiteHeading, SiteText } from '@n3wth/ui/site';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
@@ -63,14 +64,14 @@ export function BentoCard({
           </div>
         )}
 
-        <h3 className="mb-2 text-base font-medium text-ink break-words md:text-lg">
+        <SiteHeading variant="item" level={3} className="mb-2 break-words">
           {title}
-        </h3>
+        </SiteHeading>
 
         {description && (
-          <p className="text-sm text-ink-dim break-words leading-relaxed">
+          <SiteText className="break-words">
             {description}
-          </p>
+          </SiteText>
         )}
 
         {children}

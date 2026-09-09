@@ -79,7 +79,7 @@ function App() {
         <Nav onOpenSearch={toggleSearch} />
         <CommandPalette open={searchOpen} onClose={closeSearch} />
         <ScrollToTop />
-        <div className="pt-20">
+        <div className="n3wth-site-main">
           <div className="frame">
             {/* tabIndex so the skip link moves DOM focus here, not just
                 the scroll position */}

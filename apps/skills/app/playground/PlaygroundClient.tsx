@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
@@ -268,17 +269,10 @@ export function PlaygroundClient() {
 
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 md:mb-12">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4 tracking-tight">
-              Skill Playground
-            </h1>
-            <p
-              className="text-lg md:text-xl max-w-2xl"
-              style={{ color: 'var(--color-grey-300)' }}
-            >
-              Test skills with live AI responses.{' '}
+            <PageHeader title={<>Skill Playground</>} description={<>Test skills with live AI responses.{' '}
               {remaining !== null && remaining > 0 && (
                 <span style={{ color: 'var(--color-grey-400)' }}>
                   {remaining} free run{remaining !== 1 ? 's' : ''} remaining.
@@ -288,8 +282,7 @@ export function PlaygroundClient() {
                 <span style={{ color: 'var(--color-sage, #6bcf7f)' }}>
                   Using your API key.
                 </span>
-              )}
-            </p>
+              )}</>} />
           </div>
 
           <div className="grid lg:grid-cols-[300px_1fr] gap-6 lg:gap-8">

@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react'
+import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { cn } from '@n3wth/ui'
 
 interface DemoSectionProps {
@@ -11,17 +12,17 @@ interface DemoSectionProps {
 
 export function DemoSection({ id, title, description, children, className }: DemoSectionProps) {
   return (
-    <section id={id} className={cn('scroll-mt-20', className)}>
-      <div className="mb-8">
-        <h2 className="font-display text-2xl font-semibold text-[var(--color-white)] tracking-tight">
+    <SiteSection id={id} className={cn('scroll-mt-20', className)}>
+      <div className="mb-6">
+        <SiteHeading variant="section">
           {title}
-        </h2>
+        </SiteHeading>
         {description && (
-          <p className="mt-2 text-sm text-[var(--color-grey-400)]">{description}</p>
+          <SiteText className="mt-2">{description}</SiteText>
         )}
       </div>
       {children}
-    </section>
+    </SiteSection>
   )
 }
 
@@ -34,9 +35,9 @@ interface DemoBlockProps {
 export function DemoBlock({ title, children, className }: DemoBlockProps) {
   return (
     <div className={cn('mb-10', className)}>
-      <h3 className="text-sm font-medium text-[var(--color-grey-400)] uppercase tracking-wider mb-4">
+      <SiteHeading variant="item" className="mb-4">
         {title}
-      </h3>
+      </SiteHeading>
       {children}
     </div>
   )

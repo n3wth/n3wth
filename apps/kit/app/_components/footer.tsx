@@ -1,3 +1,4 @@
+import { SiteFooter } from '@n3wth/ui/site'
 import { siteUrls } from '@n3wth/site-config'
 import Link from 'next/link'
 
@@ -21,7 +22,11 @@ const columns = [
     title: 'Connect',
     links: [
       { label: 'Blog', href: '/blog' },
-      { label: 'GitHub', href: 'https://github.com/n3wth/n3wth/tree/main/apps/kit', external: true },
+      {
+        label: 'GitHub',
+        href: 'https://github.com/n3wth/n3wth/tree/main/apps/kit',
+        external: true,
+      },
       { label: 'Email', href: 'mailto:hey@n3wth.com' },
     ],
   },
@@ -39,79 +44,29 @@ const familyLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-rail bg-bg-soft">
-      <div className="n3wth-site-container py-16">
-        <div className="grid gap-10 sm:grid-cols-4">
-          {/* Brand */}
-          <div>
-            <p className="text-sm font-semibold text-ink">
-              n3wth/kit
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-ink-faint">
-              A shadcn registry with AI context packs.
-            </p>
-          </div>
-
-          {/* Link columns */}
-          {columns.map((col) => (
-            <div key={col.title}>
-              <p className="text-xs font-medium uppercase tracking-widest text-ink-label">
-                {col.title}
-              </p>
-              <ul className="mt-4 space-y-2.5">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    {'external' in link && link.external ? (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-ink-dim transition-colors hover:text-ink"
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
-                      <Link
-                        href={link.href}
-                        className="text-sm text-ink-dim transition-colors hover:text-ink"
-                      >
-                        {link.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Family row */}
-        <div className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-rail pt-6">
-          {familyLinks.map((link, i) => (
-            <span key={link.label} className="flex items-center gap-4">
-              <a
-                href={link.href}
-                target={link.href.startsWith('mailto:') ? undefined : '_blank'}
-                rel={link.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-                className="text-xs text-ink-faint transition-colors hover:text-ink"
-              >
+    <SiteFooter
+      brand={<Link href="/">n3wth/kit</Link>}
+      links={
+        <>
+          {columns.map((column) =>
+            column.links.map((link) => (
+              <Link key={`${column.title}-${link.href}`} href={link.href}>
+                {link.label}
+              </Link>
+            )),
+          )}
+          {familyLinks
+            .filter((link) => link.label !== 'Email')
+            .map((link) => (
+              <a key={link.href} href={link.href}>
                 {link.label}
               </a>
-              {i < familyLinks.length - 1 && (
-                <span className="text-ink-faint/50">·</span>
-              )}
-            </span>
-          ))}
-        </div>
-
-        {/* Bottom bar */}
-        <div className="mt-8 flex items-center justify-between pt-6">
-          <p className="text-xs text-ink-faint">
-            &copy; 2026 Oliver Newth
-          </p>
-          <p className="text-xs text-ink-faint">n3wth/kit</p>
-        </div>
-      </div>
-    </footer>
+            ))}
+        </>
+      }
+    >
+      <p>A shadcn registry with AI context packs.</p>
+      <p>© 2026 Oliver Newth</p>
+    </SiteFooter>
   )
 }

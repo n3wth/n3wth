@@ -6,7 +6,7 @@ import { HomePageClient } from '@/components/HomePageClient'
 import { FamilyStrip } from '@/components/FamilyStrip'
 import { Button } from '@astryxdesign/core/Button'
 import { ShimmerText } from '@/components/ShimmerText'
-import { PageHeader } from '@n3wth/ui/site'
+import { PageHeader, SiteContainer } from '@n3wth/ui/site'
 
 import { site } from '@/lib/site'
 
@@ -37,10 +37,9 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="home-immersive relative w-full">
-        <style>{`footer { display: none }`}</style>
 
         {/* Hero */}
-        <div data-world-exclude className="home-overlay home-introduction">
+        <SiteContainer data-world-exclude className="home-overlay">
           <PageHeader title={
             <ShimmerText sweepOnMount sweepDelay={1.6}>
               A garden of growing ideas
@@ -53,7 +52,7 @@ export default async function HomePage() {
               <Button label="Browse all notes" variant="primary" href="/notes" />
               <Button label="Random note" variant="ghost" href="/random" />
             </>} />
-        </div>
+        </SiteContainer>
 
         <div className="home-garden-stage relative">
           {graphData.nodes.length > 0 && (

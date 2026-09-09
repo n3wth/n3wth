@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -103,7 +104,7 @@ export function RequestSkillClient() {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-2xl">
           <Link
             href="/"
@@ -113,15 +114,7 @@ export function RequestSkillClient() {
             <span>&larr;</span> Back to the catalog
           </Link>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-4 tracking-tight">
-            Request a Skill
-          </h1>
-          <p
-            className="text-lg mb-12"
-            style={{ color: 'var(--color-grey-200)' }}
-          >
-            Have an idea for a skill you'd like to see? Tell us what would help, and we'll consider adding it to the catalog.
-          </p>
+          <PageHeader title={<>Request a Skill</>} description={<>Have an idea for a skill you'd like to see? Tell us what would help, and we'll consider adding it to the catalog.</>} />
 
           {submitStatus === 'success' && (
             <div

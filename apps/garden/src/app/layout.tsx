@@ -92,7 +92,7 @@ export default function RootLayout({
             <Navigation paletteNotes={paletteNotes} />
             {/* tabIndex so the skip link moves DOM focus here, not just
                 the scroll position */}
-            <main id="main" tabIndex={-1} className="flex-1 pt-20 outline-none">
+            <main id="main" tabIndex={-1} className="n3wth-site-main flex-1 outline-none">
               {children}
             </main>
             <SiteFooter />

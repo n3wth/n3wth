@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
@@ -44,7 +45,7 @@ export function WorkflowsClient() {
 
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl">
           <Link
             href="/"
@@ -54,12 +55,7 @@ export function WorkflowsClient() {
             <span>&larr;</span> Back to skills
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
-            Skill Workflows
-          </h1>
-          <p className="text-lg mb-12" style={{ color: 'var(--color-grey-300)' }}>
-            Chain skills together to automate multi-step work—research, drafting, and delivery.
-          </p>
+          <PageHeader title={<>Skill Workflows</>} description={<>Chain skills together to automate multi-step work—research, drafting, and delivery.</>} />
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
             <div className="flex items-center gap-2 p-1 bg-[var(--glass-bg)] rounded-lg border border-[var(--glass-border)]">

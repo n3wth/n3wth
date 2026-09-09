@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../data/content'
+import { PageHeader } from '@n3wth/ui/site'
 
 /* The front door is a field at night (three.js, lazy so the rest of the
    site never pays for it): every glowing structure is one of Oliver's
@@ -70,7 +71,7 @@ export default function Home() {
 
   return (
     <>
-    <section aria-label="Explore the night scene" className="bleed relative -mt-20" style={{ height: '100svh' }}>
+    <section aria-label="Explore the night scene" className="bleed relative -mt-24" style={{ height: '100svh' }}>
       {webglOk ? (
         <SceneBoundary>
           <Suspense
@@ -96,17 +97,15 @@ export default function Home() {
       )}
 
     </section>
-    <section className="section-pad" aria-labelledby="product-introduction">
-      <p className="meta mb-5">{siteConfig.name}</p>
-      <h1 id="product-introduction" className="display page-title max-w-[18ch]">I build new ways to work with AI.</h1>
-      <p className="t-lead mt-6 max-w-xl" style={{ color: 'var(--ink-dim)', textWrap: 'balance' }}>
+    <PageHeader className="site-content-gutter" title="I build new ways to work with AI." description={<>
+      <span className="block mb-4">{siteConfig.name}</span>
+      <span className="block">
         I’m a product leader who spots opportunities, builds early versions, and learns by putting them in people’s hands.
-      </p>
-      <p className="mt-5 max-w-xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+      </span>
+      <span className="block mt-5">
         My independent projects explore personal agents, tools for creating software, and skills that help people use both.
-      </p>
-      <Link to="/work#building" className="btn mt-8 min-h-11" viewTransition>Explore my projects</Link>
-    </section>
+      </span>
+    </>} actions={<Link to="/work#building" viewTransition>Explore my projects</Link>} />
     </>
   )
 }

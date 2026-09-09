@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState, useCallback } from 'react'
 import Link from 'next/link'
@@ -195,7 +196,7 @@ const SKILL_TEMPLATES = [
     id: 'blank',
     name: 'Start from Scratch',
     description: 'Create a completely custom skill with full control',
-    icon: '✨',
+    icon: '◇',
     content: ''
   },
   {
@@ -380,7 +381,7 @@ const CATEGORY_OPTIONS: { id: Category; name: string; color: string }[] = [
   { id: 'business', name: 'Business', color: '#ffd60a' }
 ]
 
-const ICON_SUGGESTIONS = ['🚀', '⚡', '🎯', '💡', '🔧', '📦', '🎨', '📊', '🔍', '✨', '🤖', '📝']
+const ICON_SUGGESTIONS = ['🚀', '⚡', '🎯', '💡', '🔧', '📦', '🎨', '📊', '🔍', '◇', '🤖', '📝']
 
 function BasicsStep({ draft, updateDraft }: BasicsStepProps) {
   return (
@@ -952,7 +953,7 @@ export function CreateSkillClient() {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <Link
@@ -962,12 +963,7 @@ export function CreateSkillClient() {
             >
               <span>&larr;</span> All skills
             </Link>
-            <h1 className="text-3xl md:text-4xl font-semibold text-white">
-              Create a Skill
-            </h1>
-            <p className="mt-2" style={{ color: 'var(--color-grey-300)' }}>
-              Build your own AI skill with our interactive wizard
-            </p>
+            <PageHeader title={<>Create a Skill</>} description={<>Build your own AI skill with our interactive wizard</>} />
           </div>
 
           <ProgressIndicator currentStep={currentStep} onStepClick={goToStep} />

@@ -7,7 +7,7 @@ test('note listing and nested note remain readable', async ({ page }, testInfo) 
     await expect(page.locator('main h1').first()).toBeVisible()
     await expect(page.locator('main')).toContainText(route === '/' ? 'A garden of growing ideas' : route === '/notes' ? 'Every plant' : '5 Whys')
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
-    const nav = await page.locator('.nav-island').boundingBox()
+    const nav = await page.locator('.n3wth-site-navigation-island').boundingBox()
     expect(nav).not.toBeNull()
     expect(nav!.x).toBeGreaterThanOrEqual(0)
     expect(nav!.x + nav!.width).toBeLessThanOrEqual(page.viewportSize()!.width)
@@ -15,7 +15,7 @@ test('note listing and nested note remain readable', async ({ page }, testInfo) 
       const heading = await page.locator('main h1').first().boundingBox()
       expect(heading!.y).toBeGreaterThanOrEqual(nav!.y + nav!.height)
     }
-    for (const control of await page.locator('.nav-island a, .nav-island button').all()) {
+    for (const control of await page.locator('.n3wth-site-navigation-island a:visible, .n3wth-site-navigation-island button:visible').all()) {
       const bounds = await control.boundingBox()
       expect(bounds).not.toBeNull()
       expect(bounds!.x).toBeGreaterThanOrEqual(0)

@@ -1,4 +1,5 @@
 'use client'
+import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import Link from 'next/link'
 import { skills, type Skill } from '../data/skills'
 import { CategoryShape } from './CategoryShape'
@@ -10,14 +11,12 @@ export function FeaturedSkills() {
   if (featuredSkills.length === 0) return null
 
   return (
-    <section className="mb-16 md:mb-24">
+    <SiteSection>
       <div className="mb-6">
-        <h2 className="section-title mb-2">
+        <SiteHeading variant="section" className="mb-2">
           Featured
-        </h2>
-        <p className="label">
-          Commonly used skills
-        </p>
+        </SiteHeading>
+        <SiteText>Commonly used skills</SiteText>
       </div>
 
       <div className="flex gap-4 overflow-x-auto scrollbar-hidden snap-x snap-mandatory py-3 -mx-2 px-2">
@@ -25,7 +24,7 @@ export function FeaturedSkills() {
           <FeaturedCard key={skill.id} skill={skill} />
         ))}
       </div>
-    </section>
+    </SiteSection>
   )
 }
 

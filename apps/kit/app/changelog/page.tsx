@@ -1,3 +1,4 @@
+import { PageHeader, SiteContainer, SiteSection, SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -78,21 +79,16 @@ export default function ChangelogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
       />
-      <main className="mx-auto max-w-2xl px-6 pt-32 pb-24">
-        <h1 className="text-3xl font-bold tracking-tight text-ink">
-          Changelog
-        </h1>
-        <p className="mt-3 text-ink-dim">
-          Latest updates and improvements.
-        </p>
+      <SiteContainer as="main" className="n3wth-site-main">
+        <PageHeader title="Changelog" description="Latest updates and improvements." />
 
-        <div className="mt-16 space-y-16">
+        <SiteSection className="space-y-16">
           {entries.map((entry) => (
             <article key={entry.date}>
               <time className="text-sm text-ink-faint">{entry.date}</time>
-              <h2 className="mt-2 text-xl font-semibold text-ink">
+              <SiteHeading variant="item" level={2}>
                 {entry.title}
-              </h2>
+              </SiteHeading>
               <ul className="mt-4 space-y-2">
                 {entry.changes.map((change) => (
                   <li key={change} className="flex items-start gap-2 text-sm text-ink-dim">
@@ -103,8 +99,8 @@ export default function ChangelogPage() {
               </ul>
             </article>
           ))}
-        </div>
-      </main>
+        </SiteSection>
+      </SiteContainer>
     </div>
   )
 }

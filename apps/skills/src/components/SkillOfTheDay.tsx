@@ -1,4 +1,5 @@
 'use client'
+import { SiteSection } from '@n3wth/ui/site'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { skills } from '../data/skills'
@@ -43,7 +44,7 @@ export function SkillOfTheDay() {
   if (!skill) return null
 
   return (
-    <section className="mb-16 md:mb-24">
+    <SiteSection>
       <Link
         href={`/skill/${skill.id}`}
         className="skill-card glass-card glass-card--hero group block w-full p-6 sm:p-8 md:p-10"
@@ -88,6 +89,6 @@ export function SkillOfTheDay() {
           </div>
         )}
       </Link>
-    </section>
+    </SiteSection>
   )
 }

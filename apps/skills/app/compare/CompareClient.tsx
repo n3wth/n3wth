@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
@@ -57,7 +58,7 @@ export function CompareClient() {
         <div className="mesh-gradient" />
         <div className="noise-overlay" />
         <IslandNav />
-        <main id="main-content" className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+        <main id="main-content" className="n3wth-site-container n3wth-site-main">
           <div className="max-w-4xl">
             <Link
               href="/"
@@ -67,12 +68,7 @@ export function CompareClient() {
               <span>&larr;</span> Back to skills
             </Link>
 
-            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
-              Compare Skills
-            </h1>
-            <p className="text-lg mb-12" style={{ color: 'var(--color-grey-300)' }}>
-              Select skills to compare them side by side.
-            </p>
+            <PageHeader title={<>Compare Skills</>} description={<>Select skills to compare them side by side.</>} />
             <Link
               href="/"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-medium transition-opacity hover:opacity-90"
@@ -93,7 +89,7 @@ export function CompareClient() {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl">
           <Link
             href="/"
@@ -104,9 +100,7 @@ export function CompareClient() {
           </Link>
 
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-4xl md:text-5xl font-semibold text-white tracking-tight">
-              Compare Skills
-            </h1>
+            <PageHeader title={<>Compare Skills</>} />
             <button
               onClick={handleClear}
               className="px-4 py-2 rounded-full text-sm font-medium transition-opacity hover:opacity-70"

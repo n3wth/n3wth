@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
 
 import { useRef } from 'react'
 import Link from 'next/link'
@@ -32,7 +33,7 @@ export default function ContactClient() {
       <FloatingShapes />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div ref={contentRef} className="max-w-2xl">
           <Link
             href="/"
@@ -42,24 +43,22 @@ export default function ContactClient() {
             <span>&larr;</span> Back to skills
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tight animate-in">
-            Contact
-          </h1>
+          <PageHeader title={<>Contact</>} />
 
-          <div className="space-y-8">
-            <section className="animate-in">
+          <div className="skills-content-sections">
+            <SiteSection className="animate-in">
               <p
                 className="text-lg leading-relaxed mb-6"
                 style={{ color: 'var(--color-grey-200)' }}
               >
                 Have questions about skills, want to report an issue, or interested in contributing? Here's how to reach us.
               </p>
-            </section>
+            </SiteSection>
 
-            <section className="animate-in">
-              <h2 className="text-2xl font-medium text-white mb-4">
+            <SiteSection className="animate-in">
+              <SiteHeading variant="section">
                 GitHub
-              </h2>
+              </SiteHeading>
               <p
                 className="text-base leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -77,12 +76,12 @@ export default function ContactClient() {
                 </svg>
                 View on GitHub
               </a>
-            </section>
+            </SiteSection>
 
-            <section className="animate-in">
-              <h2 className="text-2xl font-medium text-white mb-4">
+            <SiteSection className="animate-in">
+              <SiteHeading variant="section">
                 Email
-              </h2>
+              </SiteHeading>
               <p
                 className="text-base leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -99,12 +98,12 @@ export default function ContactClient() {
                 </svg>
                 hey@n3wth.com
               </a>
-            </section>
+            </SiteSection>
 
-            <section className="animate-in">
-              <h2 className="text-2xl font-medium text-white mb-4">
+            <SiteSection className="animate-in">
+              <SiteHeading variant="section">
                 Request a skill
-              </h2>
+              </SiteHeading>
               <p
                 className="text-base leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -117,12 +116,12 @@ export default function ContactClient() {
               >
                 Request a skill
               </Link>
-            </section>
+            </SiteSection>
 
-            <section className="animate-in">
-              <h2 className="text-2xl font-medium text-white mb-4">
+            <SiteSection className="animate-in">
+              <SiteHeading variant="section">
                 Author
-              </h2>
+              </SiteHeading>
               <p
                 className="text-base leading-relaxed mb-4"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -147,9 +146,9 @@ export default function ContactClient() {
                 </a>{' '}
                 for updates.
               </p>
-            </section>
+            </SiteSection>
 
-            <section className="animate-in pt-8 border-t" style={{ borderColor: 'var(--glass-border)' }}>
+            <SiteSection className="animate-in border-t" style={{ borderColor: 'var(--glass-border)' }}>
               <p
                 className="text-base leading-relaxed"
                 style={{ color: 'var(--color-grey-200)' }}
@@ -162,7 +161,7 @@ export default function ContactClient() {
                   Browse all skills
                 </Link>
               </p>
-            </section>
+            </SiteSection>
           </div>
         </div>
       </main>

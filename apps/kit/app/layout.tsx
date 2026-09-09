@@ -1,3 +1,4 @@
+import { Footer } from './_components/footer'
 import { siteUrls } from '@n3wth/site-config'
 import type { Metadata } from 'next'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -125,6 +126,7 @@ export default function RootLayout({
           <div id="main-content">
             {children}
           </div>
+          <Footer />
           <Analytics />
           <SpeedInsights />
           </SiteProvider>

@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
@@ -78,7 +79,7 @@ export function AnalyticsClient() {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl">
           <Link
             href="/"
@@ -88,12 +89,7 @@ export function AnalyticsClient() {
             <span>&larr;</span> Back to skills
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
-            Community Analytics
-          </h1>
-          <p className="text-lg mb-12" style={{ color: 'var(--color-grey-300)' }}>
-            Discover which skills are popular across all users.
-          </p>
+          <PageHeader title={<>Community Analytics</>} description={<>Discover which skills are popular across all users.</>} />
 
           {isLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">

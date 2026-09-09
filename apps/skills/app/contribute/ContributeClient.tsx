@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
 
 import Link from 'next/link'
 import { IslandNav } from '../../src/components/IslandNav'
@@ -41,7 +42,7 @@ export default function ContributeClient() {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-3xl">
           <Link
             href="/"
@@ -51,18 +52,10 @@ export default function ContributeClient() {
             <span>&larr;</span> Back to skills
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
-            Contribute a Skill
-          </h1>
-          <p
-            className="text-lg mb-12"
-            style={{ color: 'var(--color-grey-300)' }}
-          >
-            Built something useful? Share it. Submit your skill to get it listed in the catalog with full attribution.
-          </p>
+          <PageHeader title={<>Contribute a Skill</>} description={<>Built something useful? Share it. Submit your skill to get it listed in the catalog with full attribution.</>} />
 
-          <section className="mb-16">
-            <h2 className="text-2xl font-semibold text-white mb-6">How it works</h2>
+          <SiteSection>
+            <SiteHeading variant="section">How it works</SiteHeading>
             <div className="space-y-6">
               <div className="glass-card p-6">
                 <div className="flex items-start gap-4">
@@ -132,10 +125,10 @@ export default function ContributeClient() {
                 </div>
               </div>
             </div>
-          </section>
+          </SiteSection>
 
-          <section className="mb-16">
-            <h2 className="text-2xl font-semibold text-white mb-6">Skill template</h2>
+          <SiteSection>
+            <SiteHeading variant="section">Skill template</SiteHeading>
             <p
               className="mb-6"
               style={{ color: 'var(--color-grey-300)' }}
@@ -145,10 +138,10 @@ export default function ContributeClient() {
             <div className="glass-card p-6 overflow-x-auto">
               <CodeBlock code={skillTemplateCode} language="javascript" />
             </div>
-          </section>
+          </SiteSection>
 
-          <section className="mb-16">
-            <h2 className="text-2xl font-semibold text-white mb-6">Category guidelines</h2>
+          <SiteSection>
+            <SiteHeading variant="section">Category guidelines</SiteHeading>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="glass-card p-5">
                 <h3 className="text-base font-medium text-white mb-2">Development</h3>
@@ -181,10 +174,10 @@ export default function ContributeClient() {
                 </p>
               </div>
             </div>
-          </section>
+          </SiteSection>
 
-          <section className="mb-16">
-            <h2 className="text-2xl font-semibold text-white mb-6">Quality guidelines</h2>
+          <SiteSection>
+            <SiteHeading variant="section">Quality guidelines</SiteHeading>
             <div className="glass-card p-6">
               <ul className="space-y-4">
                 <li className="flex items-start gap-3" style={{ color: 'var(--color-grey-200)' }}>
@@ -205,10 +198,10 @@ export default function ContributeClient() {
                 </li>
               </ul>
             </div>
-          </section>
+          </SiteSection>
 
-          <section className="mb-16">
-            <h2 className="text-2xl font-semibold text-white mb-6">View pending submissions</h2>
+          <SiteSection>
+            <SiteHeading variant="section">View pending submissions</SiteHeading>
             <p
               className="mb-6"
               style={{ color: 'var(--color-grey-300)' }}
@@ -236,10 +229,10 @@ export default function ContributeClient() {
               </svg>
               View pending submissions
             </a>
-          </section>
+          </SiteSection>
 
-          <section>
-            <h2 className="text-2xl font-semibold text-white mb-6">Ready to submit?</h2>
+          <SiteSection>
+            <SiteHeading variant="section">Ready to submit?</SiteHeading>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/submit"
@@ -273,7 +266,7 @@ export default function ContributeClient() {
                 View on GitHub
               </a>
             </div>
-          </section>
+          </SiteSection>
         </div>
       </main>
 

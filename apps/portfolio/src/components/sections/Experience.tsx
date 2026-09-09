@@ -1,19 +1,20 @@
 import { education, experiences } from '../../data/content'
+import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 
 /* Ship log: a decade of work as a dense, confident index — one line per
    chapter, no résumé prose. Density here earns the breathing room the
    art chapter gets below. */
 export function Experience() {
   return (
-    <section id="work" aria-label="Experience">
-      <header data-reveal className="section-pad pb-8 md:pb-12">
-        <h2 className="display text-2xl">Experience</h2>
-        <p className="mt-5 max-w-xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+    <SiteSection id="work" aria-label="Experience" className="site-content-gutter">
+      <header data-reveal className="mb-8">
+        <SiteHeading>Experience</SiteHeading>
+        <SiteText className="mt-5 max-w-xl">
           From Azure Cognitive Services in 2014 to Google model platforms today, by way of Meta and Covariant.
-        </p>
+        </SiteText>
       </header>
 
-      <div className="section-pad pad-tight !pt-0">
+      <div>
         <ol className="space-y-2">
           {experiences.map((exp) => (
             <li
@@ -26,12 +27,9 @@ export function Experience() {
               </span>
 
               <div>
-                <h3
-                  className="display text-xl"
-                  style={{ letterSpacing: '-0.02em', lineHeight: 1.1 }}
-                >
+                <SiteHeading variant="item">
                   {exp.company}
-                </h3>
+                </SiteHeading>
                 <p className="meta mt-1">{exp.role}</p>
               </div>
 
@@ -49,6 +47,6 @@ export function Experience() {
           {education}
         </p>
       </div>
-    </section>
+    </SiteSection>
   )
 }

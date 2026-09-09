@@ -1,3 +1,4 @@
+import { PageHeader, SiteHeading } from '@n3wth/ui/site';
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
@@ -65,13 +66,13 @@ export async function generateMetadata({
 const components = {
   ...MDXComponents,
   h1: ({ children }: any) => (
-    <h1 className="text-4xl sm:text-5xl font-semibold text-ink mb-6">{children}</h1>
+    <PageHeader title={children} />
   ),
   h2: ({ children }: any) => (
-    <h2 className="text-2xl font-semibold text-ink mt-12 mb-4">{children}</h2>
+    <SiteHeading variant="section" level={2} className="mt-12 mb-4">{children}</SiteHeading>
   ),
   h3: ({ children }: any) => (
-    <h3 className="text-lg font-medium text-ink mt-8 mb-3">{children}</h3>
+    <SiteHeading variant="item" level={3} className="mt-8 mb-3">{children}</SiteHeading>
   ),
   p: ({ children }: any) => (
     <p className="text-ink-dim mb-4 leading-relaxed">{children}</p>

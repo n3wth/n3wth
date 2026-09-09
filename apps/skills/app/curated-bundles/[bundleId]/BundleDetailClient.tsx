@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -41,7 +42,7 @@ export function BundleDetailClient({ bundleId }: Props) {
 
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-5xl mx-auto">
           {/* Back link */}
           <Link
@@ -57,9 +58,7 @@ export function BundleDetailClient({ bundleId }: Props) {
           {/* Header */}
           <div className="mb-12">
             <div className="flex items-start gap-4 mb-4">
-              <h1 className="text-3xl md:text-4xl font-semibold text-[var(--color-white)]">
-                {bundle.name}
-              </h1>
+              <PageHeader title={<>{bundle.name}</>} />
               <span className={`text-xs px-3 py-1 rounded-full font-semibold ${difficultyColors[bundle.difficulty]}`}>
                 {bundle.difficulty}
               </span>

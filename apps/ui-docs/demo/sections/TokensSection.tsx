@@ -78,7 +78,7 @@ export function TokensSection() {
 
       <DemoBlock title="Typography">
         <div className="space-y-3">
-          <p className="font-display text-3xl font-semibold tracking-tight text-[var(--color-white)]">Mona Sans (Display)</p>
+          <p className="font-display text-3xl font-semibold tracking-tight text-[var(--color-white)]">Satoshi (Display)</p>
           <p className="font-sans text-base text-[var(--color-white)]">Geist Sans (Body/UI)</p>
           <p className="font-mono text-sm text-[var(--color-grey-400)]">Geist Mono (Code)</p>
         </div>
