@@ -1,3 +1,4 @@
+import { CodeBlock } from '@n3wth/ui'
 import { SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
 import { PostLayout } from '../_components/post-layout'
@@ -66,8 +67,8 @@ export default function Post() {
         item &mdash; a JSON file that the CLI can fetch and process.
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`{
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="json" showCopyButton code={`{
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "pricing-card",
   "type": "registry:component",
@@ -82,8 +83,8 @@ export default function Post() {
       "content": "// full component source code"
     }
   ]
-}`}
-      </pre>
+}`} />
+      </div>
 
       <SiteHeading variant="section" level={2} className="mt-12">
         The install flow
@@ -94,9 +95,9 @@ export default function Post() {
         sequence:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim">
-{`npx shadcn add https://kit.n3wth.com/r/card.json`}
-      </pre>
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="bash" showCopyButton code={`npx shadcn add https://kit.n3wth.com/r/card.json`} />
+      </div>
 
       <ol className="list-inside list-decimal space-y-2">
         <li>Fetch the registry JSON from the URL</li>
@@ -153,15 +154,15 @@ export default function Post() {
         tools can consume.
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`# Install the component
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="text" showCopyButton code={`# Install the component
 npx shadcn add https://kit.n3wth.com/r/button.json
 
 # AI tools now know about Button:
 # - Available props: variant, size, disabled
 # - Variants: primary, secondary, ghost, outline
-# - Constraints: use primary for main CTA only`}
-      </pre>
+# - Constraints: use primary for main CTA only`} />
+      </div>
 
       <p>
         The registry protocol created the foundation for source-code component

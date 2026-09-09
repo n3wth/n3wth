@@ -13,11 +13,14 @@ Import from @n3wth/ui/site.
 | PageHeader | Hero title, description, actions and optional aside |
 | SiteContainer | Shared width and horizontal gutters |
 | SiteSection | Shared vertical section rhythm |
+| SiteSectionLinks | Plain wrapping section or documentation links in page flow |
 | SiteHeading / SiteText | Semantic text roles |
 | SiteFooter | Quiet, aligned site footer |
 | ReadingOutline | Compact article contents with optional disclosure |
 
 Navigation links, action callbacks and content remain app-owned. Use real links for navigation and buttons for actions.
+
+Use `SiteSectionLinks` for a small set of section or documentation destinations. It scrolls with the page and does not track an active item. Keep current-section indicators in persistent sidebars. Footer text inherits one shared muted color. Documentation code samples can use `CodeBlock size="sm"` for compact text while retaining native scrolling and copying.
 
 ```tsx
 import { PageHeader, SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'

@@ -50,7 +50,7 @@ export default defineConfig({
         // Ensure proper ESM output
         format: 'es',
         // Add banner for proper module resolution
-        banner: (chunk) => `${['site/index', 'primitives/index', 'visuals/index'].includes(chunk.name) ? "'use client';\n" : ''}/* @n3wth/ui - Built on Astryx */`,
+        banner: (chunk) => `${['site/index', 'primitives/index', 'visuals/index', 'atoms/CodeBlock/CodeBlock'].includes(chunk.name) ? "'use client';\n" : ''}/* @n3wth/ui - Built on Astryx */`,
       },
       // Ensure external modules aren't bundled
       treeshake: {

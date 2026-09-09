@@ -65,7 +65,7 @@ export default function RootLayout({
     }))
 
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" data-astryx-theme="n3wth">
       <AxiomWebVitals />
       <GoogleAnalytics gaId="G-4QRMSG5HXK" />
       <body className="min-h-screen flex flex-col">

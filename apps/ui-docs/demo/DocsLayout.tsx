@@ -1,4 +1,4 @@
-import { useEffect, type ComponentType } from 'react'
+import { type ComponentType } from 'react'
 import { useParams } from 'react-router'
 import { SiteNav } from './SiteNav'
 import { SiteFooter } from '@n3wth/ui/site'
@@ -56,10 +56,6 @@ export function DocsLayout() {
   const { slug } = useParams()
 
   const currentPage = docPages.find((p) => p.slug === slug)
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [slug])
 
   if (!currentPage) return <NotFound />
   const Content = currentPage.Component

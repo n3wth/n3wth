@@ -6,8 +6,19 @@ test('showcase spacing, icon layout and example controls survive both themes', a
   for (const theme of ['light', 'dark']) {
     const switchTheme = page.getByRole('button', { name: `Switch to ${theme} mode`, exact: true }).first()
     if (await switchTheme.count()) await switchTheme.click()
+    await expect.poll(() => page.locator('.n3wth-site-footer a').evaluateAll(links => {
+      const colors = links.map(link => getComputedStyle(link).color)
+      const footerColor = getComputedStyle(links[0].closest('footer')!).color
+      return colors.every(color => color === footerColor)
+    })).toBe(true)
+    await expect(page.locator('#hooks pre code').first()).toHaveCSS('font-size', '13px')
     const heading = page.getByRole('heading', { name: 'useCountUp', exact: true })
     await heading.scrollIntoViewIfNeeded()
+    if ((page.viewportSize()?.width ?? 1440) < 1024) {
+      const sections = page.getByRole('navigation', { name: 'Component sections', exact: true }).filter({ visible: true })
+      await expect(sections.locator('[aria-current]')).toHaveCount(0)
+      expect(await sections.evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThan(0)
+    }
     const gaps = await heading.evaluate(element => {
       const demo = element.parentElement!.nextElementSibling!
       const code = demo.nextElementSibling!
@@ -32,23 +43,15 @@ test('showcase spacing, icon layout and example controls survive both themes', a
   }
 })
 
-test('mobile documentation disclosure supports selection and Escape focus restoration', async ({ page }) => {
+test('mobile documentation uses direct links without a second sticky header', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 1440) >= 1024, 'Desktop uses the persistent sidebar')
   await page.goto('/docs/getting-started')
-  const toggle = page.getByRole('button', { name: 'Documentation: Getting Started' })
-  await expect(toggle).toHaveAttribute('aria-expanded', 'false')
-  await toggle.click()
-  await expect(toggle).toHaveAttribute('aria-expanded', 'true')
   const theming = page.getByRole('navigation', { name: 'Documentation', exact: true }).getByRole('link', { name: 'Theming', exact: true }).filter({ visible: true })
   await theming.focus()
-  await page.keyboard.press('Escape')
-  await expect(toggle).toHaveAttribute('aria-expanded', 'false')
-  await expect(toggle).toBeFocused()
-  await toggle.click()
   await theming.click()
   await expect(page).toHaveURL(/\/docs\/theming$/)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Theming')
-  await expect(page.getByRole('button', { name: 'Documentation: Theming' })).toHaveAttribute('aria-expanded', 'false')
+  await expect(page.getByRole('button', { name: /^Documentation:/ })).toHaveCount(0)
 })
 
 test('system guide loads the shared theme and font assets', async ({ page }) => {
