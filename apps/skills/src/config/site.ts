@@ -17,7 +17,7 @@ export const siteConfig = {
   sections: {
     install: {
       title: 'Install',
-      subtitle: 'One command. Works with Gemini CLI.',
+      subtitle: 'One command. Works with Antigravity CLI.',
     },
     browse: {
       title: 'Browse Skills',
@@ -26,9 +26,9 @@ export const siteConfig = {
   seo: {
     keywords: [
       'AI coding skills',
-      'Gemini CLI extensions',
+      'Antigravity CLI extensions',
       'AI assistant plugins',
-      'Gemini CLI skills',
+      'Antigravity CLI skills',
       'AI tools',
       'developer productivity',
       'workflow automation',

@@ -12,12 +12,12 @@ compatibility:
 
 # Skill Creator
 
-Guide for creating effective Gemini CLI skills with specialized knowledge, workflows, and tool integrations. Build skills that extend AI coding assistants with domain expertise.
+Guide for creating effective Antigravity CLI skills with specialized knowledge, workflows, and tool integrations. Build skills that extend AI coding assistants with domain expertise.
 
 ## Triggers
 
 Use this skill when the user wants to:
-- Create a new skill for Gemini CLI
+- Create a new skill for Antigravity CLI
 - Design a skill structure
 - Write skill instructions
 - Package domain knowledge as a skill

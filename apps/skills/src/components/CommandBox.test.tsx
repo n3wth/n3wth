@@ -122,17 +122,17 @@ describe('CommandBox', () => {
 
     render(
       <CommandBox
-        name="Gemini CLI"
+        name="Antigravity CLI"
         command="test command"
         primary={false}
       />
     )
 
-    const commandBox = screen.getByText('Gemini CLI').closest('.command-box')
+    const commandBox = screen.getByText('Antigravity CLI').closest('.command-box')
     fireEvent.click(commandBox!)
 
     await waitFor(() => {
-      expect(trackCopyEvent).toHaveBeenCalledWith('gemini-cli')
+      expect(trackCopyEvent).toHaveBeenCalledWith('antigravity-cli')
     })
   })
 })

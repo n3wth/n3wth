@@ -197,7 +197,7 @@ export default function ContributeClient() {
                 </li>
                 <li className="flex items-start gap-3" style={{ color: 'var(--color-grey-200)' }}>
                   <span className="text-white mt-0.5">•</span>
-                  <span><strong className="text-white">Tested:</strong> Try your skill with Gemini CLI before submitting.</span>
+                  <span><strong className="text-white">Tested:</strong> Try your skill with Antigravity CLI before submitting.</span>
                 </li>
                 <li className="flex items-start gap-3" style={{ color: 'var(--color-grey-200)' }}>
                   <span className="text-white mt-0.5">•</span>

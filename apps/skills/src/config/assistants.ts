@@ -19,8 +19,8 @@ export interface AIAssistant {
 export const assistants: Record<AssistantId, AIAssistant> = {
   gemini: {
     id: 'gemini',
-    name: 'Gemini CLI',
-    shortName: 'Gemini',
+    name: 'Antigravity CLI',
+    shortName: 'Antigravity',
     color: '#4285F4',
     bgColor: 'rgba(66, 133, 244, 0.15)',
     borderColor: 'rgba(66, 133, 244, 0.3)',

@@ -1,7 +1,7 @@
 {
   "name": "Skills for AI Coding Assistants",
   "short_name": "AI Skills",
-  "description": "Markdown skills for Gemini CLI.",
+  "description": "Markdown skills for Antigravity CLI.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

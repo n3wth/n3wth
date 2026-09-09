@@ -56,7 +56,7 @@ export async function uninstallCommand(skillId: string): Promise<void> {
 }
 
 async function uninstallFromPlatform(skillId: string, platform: 'gemini'): Promise<void> {
-  const platformName = 'Gemini CLI'
+  const platformName = 'Antigravity CLI'
   const skillsDir = getGeminiSkillsDir()
   const skillPath = join(skillsDir, `${skillId}.md`)
 

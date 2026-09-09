@@ -9,7 +9,7 @@ import { assistants } from '../config/assistants'
 const rawBase = 'https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills/'
 
 describe('advertised skill downloads', () => {
-  it('only advertises Gemini CLI compatibility', () => {
+  it('only advertises Antigravity CLI compatibility', () => {
     expect(Object.keys(assistants)).toEqual(['gemini'])
     for (const skill of [...skills, ...getAllSkills()]) {
       expect(skill.compatibility, skill.id).toEqual(['gemini'])

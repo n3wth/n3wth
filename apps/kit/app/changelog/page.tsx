@@ -39,7 +39,7 @@ const entries = [
     title: 'Business launch',
     changes: [
       'Added email waitlist capture on landing page',
-      'Complete documentation for Gemini CLI',
+      'Complete documentation for Antigravity CLI',
       'Blog with technical content for SEO',
       'Interactive component page with search, filter, and copy-to-clipboard',
       'Mobile hamburger navigation',

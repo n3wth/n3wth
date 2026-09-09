@@ -17,7 +17,7 @@ export function ArchitectureDiagram() {
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 flex-wrap">
           <div className="flex items-center gap-3 px-5 py-3 rounded-lg bg-bg-soft border border-rail">
             <Monitor className="h-5 w-5 text-ink-dim" />
-            <span className="text-ink font-medium">Gemini CLI</span>
+            <span className="text-ink font-medium">Antigravity CLI</span>
           </div>
 
           <ArrowRight className="h-5 w-5 text-ink-faint hidden md:block" />

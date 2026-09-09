@@ -1,6 +1,6 @@
-# Skills for Gemini CLI
+# Skills for Antigravity CLI
 
-Markdown instructions for Gemini CLI. Browse the catalog at https://skills.n3wth.com.
+Markdown instructions for Antigravity CLI (formerly Gemini CLI). Browse the catalog at https://skills.n3wth.com.
 
 ```bash
 curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini
