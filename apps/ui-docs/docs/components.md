@@ -47,6 +47,14 @@ Root imports from @n3wth/ui remain for compatibility. Adapters translate existin
 
 Do not mix root-component props with the primitives API. Migrate a component and its props together, then verify its behavior.
 
+The current adapters have a few explicit boundaries:
+
+- Switch refs target a native input. Modal refs continue to target the inner content div; Astryx owns the outer dialog.
+- Input and Textarea preserve native controls inside Astryx Field so external labels, input types, uncontrolled values and form reset keep working.
+- Avatar preserves a native image path for arbitrary fallback text, image attributes and callbacks. Button asChild retains the supplied host element.
+- Astryx owns tooltip and dropdown presentation. The old tooltip arrow, dropdown portal and menuClassName settings do not customize that presentation; use the native API for new work.
+- Compatibility Toast variants share the Astryx information surface, except errors, which use its error surface. Historical Hero gradient and entry-animation settings are no longer applied.
+
 [Open compatibility examples](/components).
 
 ## Where to make a change
