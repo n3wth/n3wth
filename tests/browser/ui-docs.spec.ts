@@ -6,8 +6,11 @@ test('showcase spacing, icon layout and example controls survive both themes', a
   for (const theme of ['light', 'dark']) {
     const switchTheme = page.getByRole('button', { name: `Switch to ${theme} mode`, exact: true }).first()
     if (await switchTheme.count()) await switchTheme.click()
-    const footerColors = await page.locator('.n3wth-site-footer a').evaluateAll(links => links.map(link => getComputedStyle(link).color))
-    expect(new Set(footerColors).size).toBe(1)
+    await expect.poll(() => page.locator('.n3wth-site-footer a').evaluateAll(links => {
+      const colors = links.map(link => getComputedStyle(link).color)
+      const footerColor = getComputedStyle(links[0].closest('footer')!).color
+      return colors.every(color => color === footerColor)
+    })).toBe(true)
     await expect(page.locator('#hooks pre code').first()).toHaveCSS('font-size', '13px')
     const heading = page.getByRole('heading', { name: 'useCountUp', exact: true })
     await heading.scrollIntoViewIfNeeded()
