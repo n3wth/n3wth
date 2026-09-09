@@ -20,13 +20,20 @@
     <meta name="description" content="AI product lead at Google. Previously at Covariant, Meta, and Microsoft. Independent AI projects and large-scale light art." />
     <meta name="author" content="Oliver Newth" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4QRMSG5HXK"></script>
+    <!-- Google tag (gtag.js) - deferred until after first paint via requestIdleCallback -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4QRMSG5HXK');
+      (window.requestIdleCallback || function(cb){setTimeout(cb,1)})(function(){
+        var s = document.createElement('script');
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-4QRMSG5HXK';
+        s.async = true;
+        s.onload = function(){
+          gtag('js', new Date());
+          gtag('config', 'G-4QRMSG5HXK');
+        };
+        document.head.appendChild(s);
+      });
     </script>
 
     <!-- Canonical -->
@@ -56,6 +63,13 @@
 
     <!-- Preload Home's night backdrop (also the loader/no-WebGL still) -->
     <link rel="preload" href="/images/hero-playa.webp" as="image" type="image/webp" fetchpriority="high" />
+
+    <!-- Preload critical fonts to improve FCP/LCP
+         LCP element is display text (Satoshi-Bold), so it gets highest priority.
+         Geist-SemiBold used in nav and labels comes next. -->
+    <link rel="preload" href="/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
+    <link rel="preload" href="/fonts/Geist-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Structured Data -->
     <script type="application/ld+json">
