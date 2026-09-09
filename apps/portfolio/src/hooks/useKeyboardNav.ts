@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { gsap } from '../lib/gsap'
 
 /* Keyed by KeyboardEvent.code: on macOS Option+digit mutates e.key to
    '¡™£…', so an e.key lookup with altKey held can never match. Only ids
@@ -37,13 +36,16 @@ export function useKeyboardNav() {
       el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
 
       // Brief flash on the section header (h1 on route-lead sections)
+      // GSAP loaded on-demand to keep it off the critical path
       const header = el.querySelector('h1, h2')
       if (header && !prefersReducedMotion) {
-        gsap.fromTo(
-          header,
-          { color: '#ffffff' },
-          { color: '', duration: 0.8, ease: 'power2.out' }
-        )
+        import('../lib/gsap').then(({ gsap }) => {
+          gsap.fromTo(
+            header,
+            { color: '#ffffff' },
+            { color: '', duration: 0.8, ease: 'power2.out' }
+          )
+        })
       }
     }
 
