@@ -5,6 +5,16 @@
   "outputDirectory": "dist",
   "redirects": [
     {
+      "source": "/frameworks",
+      "destination": "/library",
+      "permanent": true
+    },
+    {
+      "source": "/frameworks/",
+      "destination": "/library",
+      "permanent": true
+    },
+    {
       "source": "/blog",
       "destination": "/thinking",
       "permanent": true

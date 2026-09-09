@@ -100,7 +100,7 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
 
   return (
     <header {...props} ref={header} className={cn('n3wth-site-navigation', className)}>
-      <div className="n3wth-site-navigation-island">
+      <div className="n3wth-site-navigation-island" data-nosnippet>
         <div className="n3wth-site-navigation-brand" onClick={() => setOpen(false)}>{brand}</div>
         <nav id={menuId} aria-label={navigationLabel} className="n3wth-site-navigation-links" data-open={open} onClick={(event) => {
           if ((event.target as Element).closest('a')) setOpen(false)
@@ -130,7 +130,7 @@ export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a
     {legalLinks}
   </>
   return <footer {...props} className={cn('n3wth-site-footer', className)}>
-    <SiteContainer>
+    <SiteContainer data-nosnippet>
       <div className="n3wth-site-footer-row">
         {brand != null && <div className="n3wth-site-footer-brand">{brand}</div>}
         <nav aria-label="Footer" className="n3wth-site-footer-links">{footerLinks}</nav>
