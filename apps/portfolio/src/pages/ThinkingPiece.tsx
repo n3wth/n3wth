@@ -44,6 +44,8 @@ export default function ThinkingPiece() {
   }, [piece, title, description, url])
 
   usePageMeta(title, description, {
+    noindex: !piece,
+    publishedTime: piece?.meta.date,
     ogImage: piece ? `/og/thinking/${piece.meta.id}.png` : '/og/thinking.png',
     jsonLd,
   })

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     'Learn what AI coding skills are, how they work with Antigravity CLI, and when to use them vs MCP servers for your development workflow.',
   alternates: { canonical: 'https://skills.n3wth.com/about' },
-  openGraph: {
+  openGraph: { type: 'website',
     title: 'About AI Skills — What They Are and How They Work | n3wth/skills',
     description:
       'Learn what AI coding skills are, how they work with Antigravity CLI, and when to use them vs MCP servers for your development workflow.',

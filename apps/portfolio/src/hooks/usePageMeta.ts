@@ -10,6 +10,8 @@ export interface PageMetaOptions {
   jsonLd?: object | object[]
   /** Canonical path override (defaults to current pathname). */
   canonical?: string
+  /** Publication date for article routes; absent on ordinary pages. */
+  publishedTime?: string
 }
 
 /** Production site URL for JSON-LD and absolute image URLs. */
@@ -25,9 +27,10 @@ export function usePageMeta(
   opts?: PageMetaOptions
 ) {
   const noindex = opts?.noindex ?? false
-  const ogImage = opts?.ogImage
+  const ogImage = opts?.ogImage ?? '/og-image.png'
   const jsonLd = opts?.jsonLd
   const canonical = opts?.canonical
+  const publishedTime = opts?.publishedTime
 
   useEffect(() => {
     document.title = title
@@ -37,9 +40,9 @@ export function usePageMeta(
       if (meta) meta.content = description
     }
 
-    // Canonical + OG URLs - use origin for runtime URLs (works in dev and prod)
+    // Canonical URLs always identify the public page, including previews.
     const pathname = canonical ?? window.location.pathname
-    const url = window.location.origin + pathname
+    const url = SITE_URL + pathname
     const canonicalEl = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
     if (canonicalEl) canonicalEl.href = url
     const ogUrl = document.querySelector<HTMLMetaElement>('meta[property="og:url"]')
@@ -54,6 +57,21 @@ export function usePageMeta(
     if (twitterTitle) twitterTitle.content = title
     const twitterDescription = document.querySelector<HTMLMetaElement>('meta[name="twitter:description"]')
     if (twitterDescription && description) twitterDescription.content = description
+
+    let ogType = document.querySelector<HTMLMetaElement>('meta[property="og:type"]')
+    if (!ogType) {
+      ogType = document.createElement('meta')
+      ogType.setAttribute('property', 'og:type')
+      document.head.appendChild(ogType)
+    }
+    ogType.content = publishedTime ? 'article' : 'website'
+    document.querySelectorAll('meta[property="article:published_time"]').forEach(el => el.remove())
+    if (publishedTime) {
+      const published = document.createElement('meta')
+      published.setAttribute('property', 'article:published_time')
+      published.content = publishedTime
+      document.head.appendChild(published)
+    }
 
     // OG Image
     if (ogImage) {
@@ -70,17 +88,20 @@ export function usePageMeta(
 
     // Noindex robots meta
     let robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]')
-    const createdRobots = !robots && noindex
     if (noindex) {
       if (!robots) {
         robots = document.createElement('meta')
         robots.name = 'robots'
         document.head.appendChild(robots)
       }
-      robots.content = 'noindex'
+      robots.content = 'noindex, nofollow'
+    } else {
+      robots?.remove()
     }
 
     // JSON-LD injection
+    // Static route schemas are replaced, while persistent Person/WebSite remain.
+    document.querySelectorAll('script[data-page-json-ld]').forEach(el => el.remove())
     const scriptIds: string[] = []
     if (jsonLd) {
       const schemas = Array.isArray(jsonLd) ? jsonLd : [jsonLd]
@@ -92,16 +113,16 @@ export function usePageMeta(
         const script = document.createElement('script')
         script.id = id
         script.type = 'application/ld+json'
+        script.dataset.pageJsonLd = ''
         script.textContent = JSON.stringify(schema)
         document.head.appendChild(script)
       })
     }
 
     return () => {
-      if (createdRobots && robots) robots.remove()
       scriptIds.forEach(id => document.getElementById(id)?.remove())
     }
-  }, [title, description, noindex, ogImage, jsonLd, canonical])
+  }, [title, description, noindex, ogImage, jsonLd, canonical, publishedTime])
 }
 
 /** Build WebPage JSON-LD for an inner page. */

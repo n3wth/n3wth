@@ -57,7 +57,7 @@ const routes = [
     path: 'art',
     title: 'After dark — Oliver Newth',
     description:
-      'Large-scale light installations for Burning Man and San Francisco memorials — THEM, Pink Triangle, and Circle of Light.',
+      'Large-scale light installations for Burning Man and San Francisco memorials. THEM, Pink Triangle, and Circle of Light.',
     ogImage: '/og/art.png',
     body: `
       <h1>After dark — light installations by Oliver Newth</h1>
@@ -73,7 +73,7 @@ const routes = [
     title: 'Library — Oliver Newth',
     description:
       'Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, the digital garden, and agent skills.',
-    ogImage: '/og-image.png',
+    ogImage: '/og/library.png',
     body: `
       <h1>Library — Oliver Newth</h1>
       <p>The components and systems behind n3wth.com and the sites next to it, with the install instructions that work today.</p>
@@ -98,7 +98,7 @@ const routes = [
     path: 'contact',
     title: 'Contact — Oliver Newth',
     description:
-      "Get in touch with Oliver Newth — product, AI safety, or LED art. Coffee if you're in San Francisco.",
+      "Product, AI safety, or LED art. Coffee if you're in San Francisco.",
     ogImage: '/og/contact.png',
     body: `
       <h1>Contact Oliver Newth</h1>
@@ -220,8 +220,8 @@ for (const p of pieceMetas) {
   routes.push({
     path: `thinking/${p.id}`,
     title: `${p.title} — Oliver Newth`,
-    description: p.dek.length > 160 ? `${p.dek.slice(0, 157).trimEnd()}…` : p.dek,
-    ogImage: '/og/thinking.png',
+    description: p.dek,
+    ogImage: `/og/thinking/${p.id}.png`,
     article: { published: p.date },
     jsonLd: {
       '@context': 'https://schema.org',
@@ -231,7 +231,7 @@ for (const p of pieceMetas) {
       ...(summary ? { abstract: summary } : {}),
       datePublished: p.date,
       dateModified: p.date,
-      image: `${ORIGIN}/og/thinking.png`,
+      image: `${ORIGIN}/og/thinking/${p.id}.png`,
       mainEntityOfPage: `${ORIGIN}/thinking/${p.id}`,
       author: { '@id': `${ORIGIN}/#person` },
       url: `${ORIGIN}/thinking/${p.id}`,
@@ -313,7 +313,7 @@ const renderRoute = (r, outPath) => {
   if (r.jsonLd) {
     html = html.replace(
       '</head>',
-      `  <script type="application/ld+json">${JSON.stringify(r.jsonLd)}</script>\n  </head>`
+      `  <script type="application/ld+json" data-page-json-ld>${JSON.stringify(r.jsonLd)}</script>\n  </head>`
     )
   }
   html = html.replace(
@@ -351,20 +351,19 @@ console.log('[prerender-meta] dist/404.html')
    drift when a piece is added. lastmod only; Google ignores
    changefreq/priority. */
 const latestPieceDate = pieceMetas.map((p) => p.date).sort().at(-1)
-const buildDate = new Date().toISOString().slice(0, 10)
 const sitemapEntries = [
-  { loc: `${ORIGIN}/`, lastmod: buildDate },
+  { loc: `${ORIGIN}/` },
   ...routes
     .filter((r) => !r.noindex)
     .map((r) => ({
       loc: `${ORIGIN}/${r.path}`,
-      lastmod: r.article?.published ?? buildDate,
+      lastmod: r.article?.published,
     })),
 ]
 writeFileSync(
   join(dist, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries
-    .map((e) => `  <url><loc>${e.loc}</loc><lastmod>${e.lastmod}</lastmod></url>`)
+    .map((e) => `  <url><loc>${e.loc}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ''}</url>`)
     .join('\n')}\n</urlset>\n`
 )
 console.log(`[prerender-meta] dist/sitemap.xml (${sitemapEntries.length} urls)`)

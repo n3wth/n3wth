@@ -3,7 +3,6 @@ import { siteUrls } from "@n3wth/site-config";
 
 export async function GET() {
   const baseUrl = siteUrls.r3;
-  const now = new Date().toISOString();
 
   const staticPages = [
     { url: baseUrl, changefreq: "monthly", priority: "1.0" },
@@ -25,7 +24,6 @@ ${allPages
   .map(
     (page) => `  <url>
     <loc>${page.url}</loc>
-    <lastmod>${now}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`,
