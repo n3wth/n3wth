@@ -1,7 +1,7 @@
 import { Suspense, useCallback, useEffect } from 'react'
 import { Outlet, useLocation, useNavigationType } from 'react-router-dom'
 import { N3wthProvider } from '@n3wth/ui/site'
-import { LinkProvider } from '@astryxdesign/core/Link'
+import { LinkProvider } from '@n3wth/ui/primitives'
 import { RouterLink } from './components/RouterLink'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'

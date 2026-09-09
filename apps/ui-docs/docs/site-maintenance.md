@@ -1,26 +1,28 @@
 # Site maintenance
 
-`ecosystem.json` records the six canonical domains, their source repositories, application roots and native validation commands. Keep separate applications and hosting projects; shared maintenance does not require matching page layouts or moving domains.
+The UI website lives in apps/ui-docs. The shared package lives in packages/ui; Astryx is its primitive dependency. Keep site content and routing in the app, shared presentation and adapters in UI, and primitive behavior in Astryx.
 
-## Shared validation
+## Validate from the repository root
 
-Use Node 24 locally (`nvm use` reads `.nvmrc`). The package engine and CI use the same major version. Dependabot opens grouped weekly npm and GitHub Actions updates; review and validate them before merging.
-
-`.github/workflows/site-check.yml` provides Node 24, a lockfile-keyed npm cache, `npm ci` and the caller's native check command. It checks out the calling repository. It needs only `contents: read` and no deployment secrets.
-
-Consumers should reference a reviewed full commit SHA of this workflow, not a moving branch. Pass `working-directory: website` for r3; root applications use the default `.`. Pass the command from the manifest as `check-command`. Updating the pinned SHA is an explicit dependency update.
-
-UI calls this workflow on pull requests and main pushes through `site-ci.yml`. The existing coverage gate remains independent. Run the same validation locally with:
+Use Node 24 and npm 11.19.1 with the root lockfile.
 
 ```sh
 npm ci
-npm run lint && npm run build && npm run demo:build && npm test
+npm run build --workspace @n3wth/ui
+npm run check --workspace @n3wth/ui-docs
+npm run check:design
 ```
 
-`npm run build` produces the distributable library in `dist`. `npm run demo:build` produces the website in `dist-demo`. Vercel installs with `npm ci` and deploys `dist-demo`; npm package releases remain a separate release-triggered workflow. Website maintenance does not require publishing a new npm version.
+The app check builds the Vite site and runs its unit tests. Browser checks cover the architecture guide, primitive interaction, compatibility catalog and docs navigation. Shared UI edits need checks in consuming applications.
 
-## Domains and shared presentation
+## Website and package releases
 
-Change canonical domain entries here when a domain changes, then update that application's redirects, metadata and cross-site links together. The manifest documents intended configuration; it does not alter DNS or Vercel projects.
+Vercel builds the workspace package before the docs app and serves apps/ui-docs/dist. Routes include /, /components and /docs/:slug. Update rewrites and the sitemap when adding a route.
 
-UI demo pages share footer links through `demo/siteLinks.ts`. Existing theme exports remain available at `@n3wth/ui/theme`; adopting this workflow does not require adding a UI package dependency or replacing an application's navigation.
+Workspace exports are not a promise that the same version is already published on npm. Publishing the UI package is a separate release action.
+
+## Presentation
+
+Use @n3wth/ui/site for the shell and page structure, @n3wth/ui/primitives for native controls, and shared CSS facades for theme integration. Keep the site free of duplicate brand tokens, app-local JSX runtime shims and decorative page-entry motion.
+
+The component catalog shows existing compatibility APIs. Keep its examples accurate when an adapter changes. New architectural guidance belongs in the homepage and active docs, not only in historical design plans.

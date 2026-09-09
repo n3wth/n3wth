@@ -46,7 +46,7 @@ describe('Nav', () => {
 
   it('applies fixed positioning', () => {
     render(<Nav fixed />)
-    expect(screen.getByRole('navigation')).toHaveClass('fixed')
+    expect(screen.getByRole('navigation').closest('header')).toHaveClass('fixed')
   })
 
   it('renders mobile menu button', () => {

@@ -6,6 +6,12 @@ This package is imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf2
 
 ## Overview
 
+### Current workspace architecture
+
+Sites → `@n3wth/ui` → Astryx. The UI package owns the pinned Astryx dependency and React runtime normalization. Native control APIs are exposed through `@n3wth/ui/primitives`; shared brand/page compositions use `@n3wth/ui/site`. `site.css` includes fonts, generated theme and component styles; `tailwind-theme.css` exposes the token bridge. Applications must not import Astryx directly.
+
+Prefer these entries for new work. Root component exports are compatibility adapters and brand utilities. The historical Nav/Hero/Footer/Section examples below describe their retained props, not the current recommended site API. All four delegate to the shared site compositions. See `../../docs/workspace/design-system.md` for the current design and workflow; its flat surfaces, Satoshi headings, Geist body, minimal footers and immediate navigation supersede historical visual guidance below.
+
 Flat, minimal design system for n3wth projects. Built on Tailwind CSS 4 with iOS-inspired aesthetics.
 
 ## Installation

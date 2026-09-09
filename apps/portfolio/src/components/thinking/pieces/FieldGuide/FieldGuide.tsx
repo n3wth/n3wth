@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import type { ReactNode } from 'react'
-import { Blockquote } from '@astryxdesign/core/Blockquote'
+import { Blockquote } from '@n3wth/ui/primitives'
 import { Beat } from '../../kit/Beat'
 import { RouterLink } from '../../../RouterLink'
 import { gsap, useGSAP, ScrollTrigger, SplitText } from '../../../../lib/scroll'

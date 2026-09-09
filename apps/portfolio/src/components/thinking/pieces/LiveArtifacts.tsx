@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import { Blockquote } from '@astryxdesign/core/Blockquote'
+import { Blockquote } from '@n3wth/ui/primitives'
 import { Beat } from '../kit/Beat'
 
 /* "Live Artifacts" — the argument is that "live AI-generated artifact" names

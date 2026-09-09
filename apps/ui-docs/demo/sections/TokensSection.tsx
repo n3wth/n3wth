@@ -43,7 +43,7 @@ function ColorSwatch({ name, value, label }: { name: string; value: string; labe
 
 export function TokensSection() {
   return (
-    <DemoSection id="tokens" title="Design Tokens" description="CSS custom properties that power the design system. Automatically adapt to light/dark themes.">
+    <DemoSection id="tokens" title="Design Tokens" description="Compatibility token names resolved through the shared Newth theme. Prefer semantic Astryx tokens for new site-specific styles.">
       <DemoBlock title="Core Colors">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {colorTokens.map((token) => (
@@ -60,18 +60,18 @@ export function TokensSection() {
         </div>
       </DemoBlock>
 
-      <DemoBlock title="Glass Morphism">
+      <DemoBlock title="Legacy surface aliases">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
           {glassTokens.map((token) => (
             <ColorSwatch key={token.name} {...token} />
           ))}
         </div>
         <div className="flex gap-4 mt-6">
-          <div className="flex-1 p-6 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-lg">
-            <p className="text-sm text-[var(--color-grey-400)]">Glass panel with blur</p>
+          <div className="flex-1 p-6 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] ">
+            <p className="text-sm text-[var(--color-grey-400)]">Compatibility surface</p>
           </div>
           <div className="flex-1 p-6 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-highlight)]">
-            <p className="text-sm text-[var(--color-grey-400)]">Glass with highlight border</p>
+            <p className="text-sm text-[var(--color-grey-400)]">Compatibility border</p>
           </div>
         </div>
       </DemoBlock>

@@ -1,4 +1,5 @@
-import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from 'react'
+import { Field } from '@astryxdesign/core/Field'
 import { cn } from '../../utils/cn'
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -12,6 +13,9 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   labelId?: string
 }
 
+// TextInput 0.1.6 generates its own id and limits input types. Astryx Field
+// supplies field layout while the native control preserves external labels,
+// browser input types, uncontrolled values, form reset, refs and native events.
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -27,15 +31,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
+    const generatedId = useId()
+    const inputId = id ?? generatedId
     const hasError = Boolean(error)
     const errorMessage = typeof error === 'string' ? error : undefined
-    const errorId = errorMessage && id ? `${id}-error` : undefined
+    const errorId = errorMessage ? `${inputId}-error` : undefined
     const wrapperStyles = [
       'relative inline-flex items-center w-full',
       'border rounded-xl',
       'transition-[border-color,background-color,box-shadow] duration-200',
       'focus-within:border-[var(--color-white)]',
-      'focus-glow',
+      'focus-within:outline-2 focus-within:outline-[var(--color-text-primary)] focus-within:outline-offset-2',
     ]
 
     const variants = {
@@ -46,7 +52,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       ],
       glass: [
         'bg-[var(--glass-bg)]',
-        'backdrop-blur-lg',
         hasError ? 'border-[var(--color-coral)]' : 'border-[var(--glass-border)]',
         'hover:bg-[rgba(255,255,255,0.08)]',
       ],
@@ -71,7 +76,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <div className="flex flex-col gap-1.5">
+      <Field label="" inputID={inputId} isLabelHidden className="flex flex-col gap-1.5">
         <div className={cn(wrapperStyles, variants[variant], sizes[inputSize], className)}>
           {leftIcon && (
             <span className="absolute left-3 text-[var(--color-grey-400)] pointer-events-none" aria-hidden="true">
@@ -80,7 +85,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           <input
             ref={ref}
-            id={id}
+            id={inputId}
             className={cn(
               'w-full h-full bg-transparent',
               'text-[var(--color-white)]',
@@ -104,7 +109,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {errorMessage}
           </span>
         )}
-      </div>
+      </Field>
     )
   }
 )

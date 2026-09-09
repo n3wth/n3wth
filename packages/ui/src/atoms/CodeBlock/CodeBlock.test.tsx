@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { CodeBlock } from './CodeBlock'
 
 describe('CodeBlock', () => {
@@ -9,8 +9,8 @@ describe('CodeBlock', () => {
   })
 
   it('renders code content', () => {
-    render(<CodeBlock code="hello world" />)
-    expect(screen.getByText('hello')).toBeInTheDocument()
+    const { container } = render(<CodeBlock code="hello world" />)
+    expect(container.querySelector('code')).toHaveTextContent('hello world')
   })
 
   it('renders a code element inside pre', () => {
@@ -21,7 +21,7 @@ describe('CodeBlock', () => {
   it('renders line numbers when showLineNumbers is true', () => {
     const code = 'line1\nline2\nline3'
     const { container } = render(<CodeBlock code={code} showLineNumbers />)
-    const lineNumberSpan = container.querySelector('.select-none')
+    const lineNumberSpan = container.querySelector('[aria-hidden="true"]')
     expect(lineNumberSpan).toBeInTheDocument()
     expect(lineNumberSpan?.textContent).toContain('1')
     expect(lineNumberSpan?.textContent).toContain('3')

@@ -1,4 +1,4 @@
-import { Breadcrumbs as AstryxBreadcrumbs, BreadcrumbItem } from '@astryxdesign/core/Breadcrumbs'
+import { Breadcrumbs as AstryxBreadcrumbs, BreadcrumbItem } from '@n3wth/ui/primitives'
 import { getNoteBySlug } from '@/lib/content'
 
 interface BreadcrumbsProps {

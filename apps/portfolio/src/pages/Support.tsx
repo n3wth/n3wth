@@ -1,5 +1,5 @@
 import { ArrowUpRight } from 'lucide-react'
-import { Button } from '@astryxdesign/core/Button'
+import { Button } from '@n3wth/ui/primitives'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { track } from '../lib/analytics'
 import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'

@@ -13,7 +13,6 @@
   "dependencies": {
     "@n3wth/ui": "0.9.2",
     "@n3wth/site-config": "*",
-    "@astryxdesign/core": "0.1.6",
     "@gsap/react": "^2.1.2",
     "@next/third-parties": "^16.3.4",
     "@react-three/drei": "^10.7.7",
@@ -47,7 +46,6 @@
     "node": "24.x"
   },
   "devDependencies": {
-    "@astryxdesign/cli": "^0.1.5",
     "@posthog/nextjs-config": "^1.10.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20",

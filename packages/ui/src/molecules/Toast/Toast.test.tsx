@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen, act, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import * as matchers from 'vitest-axe/matchers'
@@ -8,9 +8,9 @@ import { Toast, ToastContainer } from './Toast'
 expect.extend(matchers)
 
 describe('Toast', () => {
-  it('renders with role="alert"', () => {
+  it('announces informational notifications politely', () => {
     render(<Toast title="Hello" duration={0} />)
-    expect(screen.getByRole('alert')).toBeInTheDocument()
+    expect(screen.getByText('Hello').closest('[role="status"]')).toHaveAttribute('aria-live', 'polite')
   })
 
   it('renders title and description', () => {
@@ -61,12 +61,24 @@ describe('Toast', () => {
     vi.useRealTimers()
   })
 
-  it('applies variant styles', () => {
-    const { rerender } = render(<Toast title="Test" variant="success" duration={0} />)
-    expect(screen.getByRole('alert').className).toContain('sage')
+  it('announces errors assertively', () => {
+    render(<Toast title="Test" variant="error" duration={0} />)
+    expect(screen.getByRole('alert')).toHaveAttribute('aria-live', 'assertive')
+  })
 
-    rerender(<Toast title="Test" variant="error" duration={0} />)
-    expect(screen.getByRole('alert').className).toContain('coral')
+  it('pauses automatic dismissal while the user reads it', () => {
+    vi.useFakeTimers()
+    const onDismiss = vi.fn()
+    render(<Toast title="Read this" duration={2000} onDismiss={onDismiss} />)
+    const toast = screen.getByText('Read this').closest('[role="status"]')!
+    act(() => { vi.advanceTimersByTime(500) })
+    fireEvent.mouseEnter(toast)
+    act(() => { vi.advanceTimersByTime(5000) })
+    expect(onDismiss).not.toHaveBeenCalled()
+    fireEvent.mouseLeave(toast)
+    act(() => { vi.advanceTimersByTime(1500) })
+    expect(onDismiss).toHaveBeenCalledOnce()
+    vi.useRealTimers()
   })
 
   it('has displayName', () => {

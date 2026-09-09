@@ -172,13 +172,13 @@ describe('Accordion', () => {
     expect(screen.getByText('Section One')).toHaveFocus()
   })
 
-  it('keyboard navigation: ArrowUp wraps to last', async () => {
+  it('keyboard navigation: ArrowUp wraps to last enabled trigger', async () => {
     const user = userEvent.setup()
     renderAccordion()
 
     screen.getByText('Section One').focus()
     await user.keyboard('{ArrowUp}')
-    expect(screen.getByText('Section Three')).toHaveFocus()
+    expect(screen.getByText('Section Two')).toHaveFocus()
   })
 
   it('keyboard navigation: Home focuses first trigger', async () => {
@@ -190,13 +190,13 @@ describe('Accordion', () => {
     expect(screen.getByText('Section One')).toHaveFocus()
   })
 
-  it('keyboard navigation: End focuses last trigger', async () => {
+  it('keyboard navigation: End focuses last enabled trigger', async () => {
     const user = userEvent.setup()
     renderAccordion()
 
     screen.getByText('Section One').focus()
     await user.keyboard('{End}')
-    expect(screen.getByText('Section Three')).toHaveFocus()
+    expect(screen.getByText('Section Two')).toHaveFocus()
   })
 
   it('controlled mode: value + onChange', async () => {

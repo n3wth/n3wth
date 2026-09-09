@@ -18,13 +18,7 @@ const paddingStep = {
   lg: 8,
 } as const
 
-/**
- * Bordered container, now rendered on Astryx's `Card` primitive for
- * background/border/radius/padding. The `glass` and `interactive` variants
- * layer the original glass-morphism flourishes (backdrop blur, hover
- * highlight, gradient border, shine sweep) on top via className, since
- * Astryx's variant palette doesn't include them.
- */
+/** Astryx owns card geometry; legacy variants retain flat surface/hover differences. */
 export function Card({
   variant = 'default',
   padding = 'md',
@@ -34,11 +28,10 @@ export function Card({
 }: CardProps) {
   const overlayClassName = {
     default: '',
-    glass: 'bg-[var(--glass-bg)] backdrop-blur-lg',
+    glass: 'bg-[var(--color-background-surface)]',
     interactive: cn(
       'cursor-pointer',
-      'hover:border-[var(--glass-highlight)] hover:bg-[var(--glass-bg)]',
-      'gradient-border shine-sweep'
+      'hover:border-[var(--glass-highlight)] hover:bg-[var(--glass-bg)]'
     ),
   }[variant]
 

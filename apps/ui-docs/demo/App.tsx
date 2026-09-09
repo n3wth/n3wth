@@ -8,23 +8,20 @@ import { siteUrls } from '@n3wth/site-config'
 import { Icon } from '@n3wth/ui'
 import { useTheme } from '@n3wth/ui'
 import { cn } from '@n3wth/ui'
-import { FloatingShapes } from './FloatingShapes'
+import { SystemHome } from './SystemHome'
 import { TokensSection } from './sections/TokensSection'
 import { AtomsSection } from './sections/AtomsSection'
 import { MoleculesSection } from './sections/MoleculesSection'
 import { OrganismsSection } from './sections/OrganismsSection'
 import { HooksSection } from './sections/HooksSection'
 import { DocsLayout } from './DocsLayout'
-import { SEO, JsonLdWebSite, JsonLdSoftwareApplication } from './SEO'
-
-declare const __UI_VERSION__: string
-const version = __UI_VERSION__
+import { SEO } from './SEO'
 
 const sidebarItems = [
   { id: 'tokens', label: 'Design Tokens', icon: 'grid' as const },
-  { id: 'atoms', label: 'Atoms', icon: 'grid' as const },
-  { id: 'molecules', label: 'Molecules', icon: 'code' as const },
-  { id: 'organisms', label: 'Organisms', icon: 'list' as const },
+  { id: 'atoms', label: 'Controls', icon: 'grid' as const },
+  { id: 'molecules', label: 'Compositions', icon: 'code' as const },
+  { id: 'organisms', label: 'Site patterns', icon: 'list' as const },
   { id: 'hooks', label: 'Hooks', icon: 'terminal' as const },
 ]
 
@@ -56,7 +53,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      el.scrollIntoView({ behavior: 'instant', block: 'start' })
       setSidebarOpen(false)
     }
   }
@@ -64,13 +61,11 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-white)]">
       <SEO
-        title="@n3wth/ui — Flat, Minimal Design System for React"
-        description="Atomic design system for React applications. Flat, minimal, iOS-inspired components with no shadows or glows — just clean glass morphism. Built on Tailwind CSS 4."
-        path="/"
+        title="Component examples"
+        description="Existing UI component APIs and shared site patterns built on Astryx."
+        path="/components"
         ogImage="/og/home.png"
       />
-      <JsonLdWebSite />
-      <JsonLdSoftwareApplication version={version} />
 
       <a
         href="#main-content"
@@ -85,14 +80,13 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
 
       {/* Hero */}
       <div className="relative">
-        <FloatingShapes />
         <SiteContainer className="n3wth-site-main">
         <PageHeader
-          title="Flat, minimal components"
-          description={<>An atomic design system for Newth sites.<br />No shadows, no glows.</>}
+          title="Component examples"
+          description="Existing UI APIs stay available through the compatibility layer. Use the primitives entry point for native Astryx APIs, and site components for page structure."
           actions={<>
             <a href="#atoms">Browse components</a>
-            <a href="https://github.com/n3wth/ui">View source</a>
+            <a href="https://github.com/n3wth/n3wth/tree/main/packages/ui">View source</a>
           </>}
         />
         </SiteContainer>
@@ -179,7 +173,8 @@ export function App() {
   return (
     <N3wthProvider mode={theme}>
     <Routes>
-      <Route path="/" element={<Showcase theme={theme} toggleTheme={toggleTheme} />} />
+      <Route path="/" element={<SystemHome />} />
+      <Route path="/components" element={<Showcase theme={theme} toggleTheme={toggleTheme} />} />
       <Route path="/docs/:slug" element={<DocsLayout />} />
       <Route path="/docs" element={<Navigate to="/docs/getting-started" replace />} />
     </Routes>

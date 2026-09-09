@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { TextInput } from '@astryxdesign/core/TextInput'
-import { SegmentedControl, SegmentedControlItem } from '@astryxdesign/core/SegmentedControl'
-import { EmptyState } from '@astryxdesign/core/EmptyState'
+import { TextInput } from '@n3wth/ui/primitives'
+import { SegmentedControl, SegmentedControlItem } from '@n3wth/ui/primitives'
+import { EmptyState } from '@n3wth/ui/primitives'
 import { PlantGlyph } from '@/components/PlantGlyph'
 import { getVisited } from '@/lib/visited'
 import type { GrowthStage as GrowthStageType } from '@/lib/content'

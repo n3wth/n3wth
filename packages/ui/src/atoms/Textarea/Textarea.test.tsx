@@ -98,4 +98,15 @@ describe('Textarea', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+  it('preserves external labels and uncontrolled form reset', async () => {
+    const user = userEvent.setup()
+    render(<form><label htmlFor="notes">Notes</label><Textarea id="notes" name="notes" defaultValue="Original" /><button type="reset">Reset</button></form>)
+    const input = screen.getByLabelText('Notes')
+    expect(input).toHaveAttribute('id', 'notes')
+    await user.clear(input)
+    await user.type(input, 'Edited')
+    await user.click(screen.getByRole('button', { name: 'Reset' }))
+    expect(input).toHaveValue('Original')
+  })
+
 })

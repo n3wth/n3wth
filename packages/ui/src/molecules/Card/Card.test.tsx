@@ -17,9 +17,9 @@ describe('Card', () => {
     expect(container.firstChild).toHaveClass('astryx-card')
   })
 
-  it('applies glass variant with backdrop blur', () => {
+  it('maps legacy glass variant to a flat surface', () => {
     const { container } = render(<Card variant="glass">Glass</Card>)
-    expect(container.firstChild).toHaveClass('backdrop-blur-lg')
+    expect(container.firstChild).not.toHaveClass('backdrop-blur-lg')
   })
 
   it('applies interactive variant', () => {

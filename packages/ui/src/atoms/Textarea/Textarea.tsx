@@ -1,4 +1,5 @@
-import { forwardRef, type TextareaHTMLAttributes } from 'react'
+import { forwardRef, useId, type TextareaHTMLAttributes } from 'react'
+import { Field } from '@astryxdesign/core/Field'
 import { cn } from '../../utils/cn'
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -7,16 +8,21 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   className?: string
 }
 
+// Keep the native control inside Astryx Field: TextArea 0.1.6 replaces supplied
+// ids and controls its string value, breaking external labels and form reset.
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
       resize = 'vertical',
       error = false,
       className,
+      id,
       ...props
     },
     ref
   ) => {
+    const generatedId = useId()
+    const inputId = id ?? generatedId
     const resizeStyles = {
       none: 'resize-none',
       vertical: 'resize-y',
@@ -24,7 +30,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     }
 
     return (
+      <Field label="" inputID={inputId} isLabelHidden>
       <textarea
+        id={inputId}
         ref={ref}
         className={cn(
           'min-h-[80px] w-full',
@@ -44,6 +52,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         aria-invalid={error || undefined}
         {...props}
       />
+      </Field>
     )
   }
 )

@@ -1,143 +1,65 @@
 # Getting Started
 
-## Prerequisites
+Build pages from the shared site layer. Use Astryx controls through UI’s primitives entry point when the page needs interaction.
 
-- Node.js 18+
-- React 18 or 19
-- Tailwind CSS 4
+## Work in the repository
 
-## Install
+These instructions describe the current workspace, not a newly published npm release. Use Node 24 and npm 11.19.1 from the repository root.
 
 ```bash
-npm install @n3wth/ui
+npm ci
+npm run site:new -- my-idea "My idea"
+npm install
+npm run build --workspace @n3wth/ui
+npm run dev --workspace @n3wth/my-idea
 ```
 
-## Setup
+The generator creates an app with the shared provider, navigation, page header, sections and footer. It does not create a deployment or domain. Replace the starter copy before publishing.
 
-### 1. Import styles
-
-Add the global stylesheet to your app entry point:
+## Import the page system
 
 ```tsx
-import '@n3wth/ui/styles'
-```
+import {
+  N3wthProvider, SiteNavigation, SiteContainer,
+  PageHeader, SiteSection, SiteHeading, SiteText, SiteFooter,
+} from '@n3wth/ui/site'
+import '@n3wth/ui/site.css'
 
-This provides:
-- Font faces (Mona Sans, Geist Sans, Geist Mono)
-- CSS custom properties for theming
-- Glass utility classes
-- Animation keyframes
-- Reduced motion and high contrast support
-
-### 2. Configure Tailwind CSS 4
-
-Add the `@source` directive so Tailwind scans the library's class names:
-
-```css
-@import 'tailwindcss';
-@import '@n3wth/ui/styles';
-
-/* Required: scan @n3wth/ui for Tailwind classes */
-@source "../node_modules/@n3wth/ui/dist";
-```
-
-Without this directive, component styles that use Tailwind classes won't be included in your CSS output.
-
-### 3. Use components
-
-```tsx
-import { Button, Card, CardHeader, CardTitle, CardContent } from '@n3wth/ui'
-import '@n3wth/ui/styles'
-
-export default function App() {
-  return (
-    <Card variant="glass">
-      <CardHeader>
-        <CardTitle>Hello</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Button variant="primary">Click me</Button>
-      </CardContent>
-    </Card>
-  )
+export function App() {
+  return <N3wthProvider mode="dark">
+    <SiteNavigation brand={<a href="/">My idea</a>}
+      links={<a href="#details">Details</a>} />
+    <SiteContainer as="main" className="n3wth-site-main">
+      <PageHeader title="My idea" description="What this helps you do." />
+      <SiteSection id="details">
+        <SiteHeading>Details</SiteHeading>
+        <SiteText>Add your content here.</SiteText>
+      </SiteSection>
+    </SiteContainer>
+    <SiteFooter />
+  </N3wthProvider>
 }
 ```
 
-## Optional: GSAP animations
+Pass your framework’s Link component into navigation and action slots. The site owns URLs and routing; UI owns the layout. In Next.js, put the provider and interactive components behind a client boundary.
 
-Some hooks (`useScrollReveal`, `useCountUp`, `useStaggerList`, `usePageTransition`, `useTextReveal`, `useButtonPulse`) and the `AnimatedText` component require GSAP as a peer dependency:
+## Add a control
+
+Use the native Astryx API through the package facade:
+
+```tsx
+import { Button } from '@n3wth/ui/primitives'
+
+<Button onClick={() => console.log('Selected')}>Continue</Button>
+```
+
+Native primitive props and compatibility props are separate APIs. Do not assume a prop accepted by the root UI Button is accepted by the primitive Button.
+
+## Validate the consumer
 
 ```bash
-npm install gsap
+npm run check --workspace @n3wth/my-idea
+npm run check:design
 ```
 
-GSAP is optional. All other components and hooks work without it.
-
-## Fonts
-
-The stylesheet references font files from `/fonts/`. If you're self-hosting, copy the font files from `node_modules/@n3wth/ui/public/fonts/` to your public directory. The required files:
-
-- `MonaSans-Variable.woff2` (display/headings)
-- `MonaSans-Variable-Italic.woff2`
-- `Geist-Regular.woff2` (body)
-- `Geist-Medium.woff2`
-- `Geist-SemiBold.woff2`
-- `GeistMono-Regular.woff2` (code)
-- `GeistMono-Medium.woff2`
-
-If fonts fail to load, the system font stack (`system-ui, sans-serif`) is used as a fallback.
-
-## Quick example: full page
-
-```tsx
-import { Nav, Hero, Section, SectionHeader, Footer, useTheme } from '@n3wth/ui'
-import '@n3wth/ui/styles'
-
-function App() {
-  const { theme, toggleTheme } = useTheme()
-
-  return (
-    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-white)]">
-      <Nav
-        logo="My App"
-        items={[
-          { label: 'Features', href: '#features' },
-          { label: 'GitHub', href: 'https://github.com', external: true },
-        ]}
-        theme={theme}
-        onThemeToggle={toggleTheme}
-        fixed
-        hideOnScroll
-      />
-
-      <Hero
-        title="Build fast"
-        description="A flat, minimal design system."
-        ctas={[{ label: 'Get Started', href: '#features' }]}
-      />
-
-      <Section id="features">
-        <SectionHeader title="Features" description="Everything you need." />
-      </Section>
-
-      <Footer
-        logo="My App"
-        description="Built with @n3wth/ui"
-        copyright="2026 My App"
-      />
-    </div>
-  )
-}
-```
-
-## Container alignment
-
-All sections use consistent container constraints. Match these across your layout:
-
-```tsx
-<div className="mx-auto max-w-6xl px-6 md:px-12">
-  {/* Your content */}
-</div>
-```
-
-The `Nav`, `Footer`, and `Section` components handle this internally.
+Check desktop and mobile layouts, keyboard focus and font loading. Shared package changes need checks in the consuming sites too. See [component boundaries](/docs/components) and [theming](/docs/theming).

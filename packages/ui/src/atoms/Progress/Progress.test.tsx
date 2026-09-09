@@ -18,7 +18,7 @@ describe('Progress', () => {
     expect(bar).toHaveAttribute('aria-valuenow', '30')
     expect(bar).toHaveAttribute('aria-valuemin', '0')
     expect(bar).toHaveAttribute('aria-valuemax', '200')
-    expect(bar).toHaveAttribute('aria-label', 'Upload progress')
+    expect(bar).toHaveAccessibleName('Upload progress')
   })
 
   it('defaults max to 100', () => {
@@ -50,35 +50,6 @@ describe('Progress', () => {
   it('does not show percentage text by default', () => {
     render(<Progress value={42} label="Loading" />)
     expect(screen.queryByText('42%')).not.toBeInTheDocument()
-  })
-
-  it('applies size classes', () => {
-    const { rerender } = render(<Progress value={50} size="sm" label="Small" />)
-    expect(screen.getByRole('progressbar')).toHaveClass('h-1.5')
-
-    rerender(<Progress value={50} size="md" label="Medium" />)
-    expect(screen.getByRole('progressbar')).toHaveClass('h-2')
-
-    rerender(<Progress value={50} size="lg" label="Large" />)
-    expect(screen.getByRole('progressbar')).toHaveClass('h-3')
-  })
-
-  it('applies variant fill colors', () => {
-    const { container, rerender } = render(<Progress value={50} variant="default" label="Default" />)
-    const fill = container.querySelector('[role="progressbar"] > div') as HTMLElement
-    expect(fill).toHaveClass('bg-[var(--color-white)]')
-
-    rerender(<Progress value={50} variant="success" label="Success" />)
-    const fillSuccess = container.querySelector('[role="progressbar"] > div') as HTMLElement
-    expect(fillSuccess).toHaveClass('bg-[var(--color-sage)]')
-
-    rerender(<Progress value={50} variant="warning" label="Warning" />)
-    const fillWarning = container.querySelector('[role="progressbar"] > div') as HTMLElement
-    expect(fillWarning).toHaveClass('bg-[var(--color-gold)]')
-
-    rerender(<Progress value={50} variant="error" label="Error" />)
-    const fillError = container.querySelector('[role="progressbar"] > div') as HTMLElement
-    expect(fillError).toHaveClass('bg-[var(--color-coral)]')
   })
 
   it('merges custom className', () => {

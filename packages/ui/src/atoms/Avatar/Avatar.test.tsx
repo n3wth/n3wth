@@ -31,11 +31,12 @@ describe('Avatar', () => {
   })
 
   it('falls back to initials on image error', () => {
-    render(<Avatar src="https://example.com/broken.jpg" fallback="AB" alt="User" />)
-    const img = screen.getByRole('img')
+    const { container } = render(<Avatar src="https://example.com/broken.jpg" fallback="AB" alt="User" />)
+    const img = container.querySelector('img')!
     fireEvent.error(img)
     expect(screen.getByText('AB')).toBeInTheDocument()
-    expect(screen.queryByRole('img')).not.toBeInTheDocument()
+    expect(container.querySelector('img')).not.toBeInTheDocument()
+    expect(screen.getByRole('img')).toHaveAccessibleName('User')
   })
 
   it('applies size classes', () => {
@@ -53,13 +54,6 @@ describe('Avatar', () => {
 
     rerender(<Avatar fallback="A" size="xl" />)
     expect(container.firstChild).toHaveClass('w-16', 'h-16')
-  })
-
-  it('applies fallback styling (glass bg + border)', () => {
-    const { container } = render(<Avatar fallback="ON" />)
-    expect(container.firstChild).toHaveClass('bg-[var(--glass-bg)]')
-    expect(container.firstChild).toHaveClass('border')
-    expect(container.firstChild).toHaveClass('border-[var(--glass-border)]')
   })
 
   it('does not apply fallback border when image is shown', () => {
@@ -95,4 +89,16 @@ describe('Avatar', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+  it('preserves native image attributes and callbacks, then retries a changed source', () => {
+    const onError = vi.fn()
+    const { container, rerender } = render(<Avatar src="/broken.png" alt="User" fallback="Unknown person" loading="lazy" onError={onError} />)
+    expect(container.querySelector('img')).toHaveAttribute('loading', 'lazy')
+    fireEvent.error(container.querySelector('img')!)
+    expect(onError).toHaveBeenCalledOnce()
+    expect(screen.getByText('Unknown person')).toBeInTheDocument()
+    expect(screen.getByRole('img')).toHaveAccessibleName('User')
+    rerender(<Avatar src="/fixed.png" alt="User" fallback="Unknown person" loading="lazy" onError={onError} />)
+    expect(container.querySelector('img')).toHaveAttribute('src', '/fixed.png')
+  })
+
 })

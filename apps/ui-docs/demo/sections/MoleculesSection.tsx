@@ -48,7 +48,7 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
   const [navActive, setNavActive] = useState(true)
 
   return (
-    <DemoSection id="molecules" title="Molecules" description="Combinations of atoms forming functional UI patterns.">
+    <DemoSection id="molecules" title="Compositions" description="Interactive examples of the existing UI compatibility API. Native Astryx props are available through @n3wth/ui/primitives.">
       {/* Cards */}
       <DemoBlock title="Card">
         <div className="space-y-6">

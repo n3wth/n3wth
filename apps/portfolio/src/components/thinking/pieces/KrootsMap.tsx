@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Blockquote } from '@astryxdesign/core/Blockquote'
+import { Blockquote } from '@n3wth/ui/primitives'
 import { Beat } from '../kit/Beat'
 
 /* Grounded in a real map-of-content page from a personal knowledge base for

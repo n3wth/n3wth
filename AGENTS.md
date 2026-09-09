@@ -12,6 +12,8 @@ Applications may import shared packages. Packages must not import applications. 
 
 All site foundations come from `@n3wth/ui/site` and `@n3wth/ui/site.css`. Keep UI versions aligned so npm resolves the workspace, not a nested registry copy. Use `npm run site:new -- idea-name "Idea name"` for new sites; read `docs/workspace/design-system.md`. Keep themes and typography in the shared package rather than copying them into applications.
 
+Sites must import native controls through `@n3wth/ui/primitives` and Tailwind tokens through `@n3wth/ui/tailwind-theme.css`. Only packages/ui may depend on or import Astryx. Keep dependency upgrades and runtime integration in UI; do not add application JSX-runtime shims. `check:design` enforces the import/dependency boundary.
+
 Commands: npm run dev, npm run dev:ui, npm run build:portfolio, npm run build:ui and npm run check. CI uses scripts/affected.mjs to check changed workspaces and their consumers in dependency order. Build packages before their apps. Run browser checks when changing routes, layout or packaging.
 
 Do not redesign the portfolio scene/navigation or upgrade frameworks as part of migration. Preserve routes, redirects, metadata, assets and API behavior. The original feature/contact-form checkout contains unfinished work and must not be reset.

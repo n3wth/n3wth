@@ -1,5 +1,19 @@
 # Shared site design system
 
+## Dependency direction
+
+Sites → `@n3wth/ui` → Astryx. Only the UI package depends on Astryx; applications import `@n3wth/ui/primitives` for native controls, `@n3wth/ui/site` for site compositions and `@n3wth/ui/site.css` for the complete foundation. Tailwind consumers use `@n3wth/ui/tailwind-theme.css`. The design check rejects direct Astryx imports or dependencies in applications.
+
+Astryx supplies control behavior and accessibility. UI owns the pinned Astryx version, React runtime integration, Newth theme, typography and shared site layout. Applications own content, routes, data and specialized interactions. Add reusable design decisions to UI rather than redefining them per site.
+
+The package root retains compatibility adapters for existing component APIs. New code should prefer the native primitives and site entries. Brand illustrations, OG rendering and application-specific scenes are not generic control replacements and remain purpose-built. The compatibility Nav, Hero, Footer and Section delegate to the same site compositions; old decorative hero settings no longer introduce gradients or entry animations.
+
+```tsx
+import { Button } from '@n3wth/ui/primitives'
+
+<Button onClick={save}>Save</Button>
+```
+
 The six workspace sites use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain app-owned. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.
 
 Navigation and footers also come from `SiteNavigation` and `SiteFooter`. Apps pass router-aware home links, primary links and relevant actions as ReactNode slots. The shared navigation owns its 48px height, subtle 1px theme border, spacing, mobile disclosure and Escape focus restoration. Do not add local island styles, separators, blur or alternate mobile breakpoints. Do not use sparkle icons.

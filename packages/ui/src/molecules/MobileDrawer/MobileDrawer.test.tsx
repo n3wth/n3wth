@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { MobileDrawer } from './MobileDrawer'
+
+beforeAll(() => {
+  HTMLDialogElement.prototype.showModal = function () { this.open = true; this.querySelector<HTMLElement>('button, a, input')?.focus() }
+  HTMLDialogElement.prototype.close = function () { this.open = false }
+})
 
 describe('MobileDrawer', () => {
   it('renders children', () => {
@@ -60,8 +65,8 @@ describe('MobileDrawer', () => {
         Content
       </MobileDrawer>
     )
-    // Click the backdrop overlay (first child with aria-hidden)
-    const backdrop = container.querySelector('[aria-hidden="true"]')
+    // Native backdrop clicks target the dialog itself.
+    const backdrop = container.querySelector('dialog')
     if (backdrop) await user.click(backdrop)
     expect(onClose).toHaveBeenCalledOnce()
   })

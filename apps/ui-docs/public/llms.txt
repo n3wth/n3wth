@@ -1,145 +1,64 @@
 # @n3wth/ui
 
-> Atomic design system for React applications. Flat, minimal, iOS-inspired components built on Tailwind CSS 4.
+> The shared Newth brand and page system, built on Astryx primitives.
 
-## Quick Start
+## Architecture
+
+Dependencies flow from Sites to @n3wth/ui to Astryx.
+
+- Sites own content, routes, product state and business logic.
+- @n3wth/ui owns the Newth theme, fonts, navigation, page headers, sections, footer and compatibility adapters.
+- Astryx (@astryxdesign/core) supplies native primitives and their interaction behavior.
+- Applications consume Astryx through UI's primitives facade instead of creating another direct dependency.
+
+## Workspace entry points
+
+These paths describe the current repository. They do not establish that the same exports are already available in a published npm version.
+
+- @n3wth/ui/site: N3wthProvider, SiteNavigation, PageHeader, SiteContainer, SiteSection, SiteHeading, SiteText and SiteFooter.
+- @n3wth/ui/primitives: native Astryx component APIs, plus ToastViewport.
+- @n3wth/ui/site.css: shared Newth theme, fonts and site component styles.
+- @n3wth/ui/tailwind-theme.css: UI facade for the Astryx Tailwind theme bridge.
+- @n3wth/ui: existing compatibility APIs and project-specific utilities. Do not mix their props with native primitive props.
+- @n3wth/ui/styles: compatibility CSS used by existing consumers.
+
+## Build a site
+
+From the repository root, use Node 24 and npm 11.19.1:
 
 ```bash
-npm install @n3wth/ui
+npm ci
+npm run site:new -- my-idea "My idea"
+npm install
+npm run build --workspace @n3wth/ui
+npm run check --workspace @n3wth/my-idea
+npm run check:design
 ```
 
-```tsx
-import { Button, Card, Hero } from '@n3wth/ui'
-import '@n3wth/ui/styles'
-```
+The starter creates source files, not a deployment or domain. Replace its copy before publishing.
 
-## Overview
+## Shared presentation
 
-@n3wth/ui is an open-source React component library following atomic design principles. It provides a flat, minimal aesthetic with no shadows or heavy effects — just clean glassmorphism and precise typography.
+- Satoshi headings, Geist Sans body text, Geist Mono code.
+- Five semantic text roles: page, section, item, body and supporting.
+- Router links and callbacks remain in the app.
+- Shared site components own ordinary width, spacing and navigation behavior.
+- Route content appears immediately. Use motion only for deliberate product demonstrations or functional feedback.
+- Preserve labels, keyboard access, focus indicators, text contrast and reduced-motion behavior. Validate the actual page; library adoption alone does not prove accessibility compliance.
 
-- **Package**: https://www.npmjs.com/package/@n3wth/ui
-- **Source**: https://github.com/n3wth/ui
-- **Docs**: https://ui.n3wth.com
-- **License**: MIT
+## Documentation
 
-## Design Principles
+- System overview: https://ui.n3wth.com/
+- Component examples and compatibility APIs: https://ui.n3wth.com/components
+- Workspace setup: https://ui.n3wth.com/docs/getting-started
+- Component boundaries: https://ui.n3wth.com/docs/components
+- Theme and typography: https://ui.n3wth.com/docs/theming
+- Behavior and hooks: https://ui.n3wth.com/docs/hooks
+- CSS integration: https://ui.n3wth.com/docs/css-utilities
 
-1. **Flat Design**: No shadows, no gradients on surfaces — depth via borders and transparency
-2. **Glassmorphism**: Subtle backdrop blur and translucent backgrounds
-3. **Minimal**: Remove everything that doesn't serve function
-4. **iOS-Inspired**: Apple Human Interface Guidelines influence
-5. **Motion-Respecting**: Honors prefers-reduced-motion
+## Source ownership
 
-## Components
-
-### Atoms (Primitives)
-- **Button** - Primary actions, variants: default, secondary, ghost, destructive
-- **Badge** - Status indicators, labels, tags
-- **Input** - Text input with validation states
-- **Textarea** - Multi-line text input
-- **Label** - Form labels with required indicator
-- **Icon** - Iconoir icon wrapper with size variants
-- **Avatar** - User avatars with fallback initials
-- **Switch** - Toggle switches
-- **Progress** - Progress bars
-- **Skeleton** - Loading placeholders
-- **Separator** - Visual dividers
-- **Tooltip** - Hover tooltips
-- **AnimatedText** - Text reveal animations
-- **Character** - Animated character displays
-- **CodeBlock** - Syntax-highlighted code
-- **Shape** - Decorative geometric shapes
-- **SpeechBubble** - Chat-style bubbles
-- **ScrollIndicator** - Scroll position indicator
-- **NoiseOverlay** - Subtle texture overlay
-- **HamburgerIcon** - Animated menu icon
-
-### Molecules (Compositions)
-- **Card** - Content containers with glass effect
-- **Tabs** - Tab navigation
-- **Accordion** - Collapsible content sections
-- **Modal** - Dialog overlays
-- **Dropdown** - Select menus
-- **CommandBox** - Command palette / copy boxes
-- **NavLink** - Navigation links with active states
-- **ThemeToggle** - Dark/light mode switch
-- **MobileDrawer** - Slide-out mobile menus
-- **Toast** - Notification toasts
-- **CompositeShape** - Multi-shape compositions
-- **ErrorBoundary** - React error boundary
-
-### Organisms (Page Sections)
-- **Nav** - Fixed navigation with hide-on-scroll
-- **Hero** - Landing page hero sections
-- **Section** - Content sections with consistent spacing
-- **Footer** - Site footer with ecosystem links
-
-## Hooks
-
-- **useTheme** - Theme state management (dark/light)
-- **useMediaQuery** - Responsive breakpoint detection
-- **useKeyboardShortcuts** - Keyboard shortcut bindings
-- **useScrollReveal** - Scroll-triggered animations
-- **useReducedMotion** - Detect reduced motion preference
-- **useToast** - Toast notification management
-- **useCountUp** - Animated number counting
-- **useButtonPulse** - Button pulse animations
-- **usePageTransition** - Page transition animations
-- **useStaggerList** - Staggered list animations
-- **useTextReveal** - Text reveal animations
-
-## Design Tokens
-
-### Typography
-- Display: Satoshi (headings, titles)
-- Body: Geist Sans (UI text, paragraphs)
-- Mono: Geist Mono (code)
-
-### Colors
-- Background: `--color-bg` (#08090b dark, #ffffff light)
-- Text: `--color-white` (semantic, inverts with theme)
-- Accent: `--color-accent` (white in dark, black in light)
-- Category: sage (green), coral (red), mint (blue), gold (yellow)
-
-### Glass Effects
-- `.glass-card` - Card with translucent background
-- `.glass-pill` - Pill-shaped glass button
-- `.glass-nav` - Navigation glass effect
-
-## Tailwind CSS 4 Integration
-
-```css
-@import 'tailwindcss';
-@import '@n3wth/ui/styles';
-
-/* Scan @n3wth/ui for classes */
-@source "../node_modules/@n3wth/ui/dist";
-```
-
-## Accessibility
-
-- WCAG 2.1 AA color contrast
-- Keyboard navigation support
-- Focus indicators
-- Screen reader labels
-- Reduced motion support
-- Touch-friendly targets (44px minimum)
-
-## Browser Support
-
-- Chrome/Edge 88+
-- Firefox 78+
-- Safari 14+
-- iOS Safari 14+
-
-## Related Projects
-
-- **Astryx**: https://kit.n3wth.com (primitive layer)
-- **n3wth.com**: https://n3wth.com (portfolio)
-- **garden**: https://garden.n3wth.com (knowledge base)
-
-## Contact
-
-- Email: hey@n3wth.com
-- GitHub: https://github.com/n3wth/ui
-- Author: Oliver Newth (https://n3wth.com)
+- Workspace: https://github.com/n3wth/n3wth
+- Shared UI: https://github.com/n3wth/n3wth/tree/main/packages/ui
+- Documentation app: https://github.com/n3wth/n3wth/tree/main/apps/ui-docs
+- Author: Oliver Newth, https://n3wth.com

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Blockquote } from '@astryxdesign/core/Blockquote'
+import { Blockquote } from '@n3wth/ui/primitives'
 import { Beat } from '../kit/Beat'
 import { ToggleCompare } from '../kit/ToggleCompare'
 import { FlowDiagram } from '../kit/FlowDiagram'

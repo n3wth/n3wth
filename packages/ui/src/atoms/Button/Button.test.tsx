@@ -21,7 +21,7 @@ describe('Button', () => {
     expect(screen.getByRole('button')).toHaveClass('bg-transparent')
 
     rerender(<Button variant="glass">Btn</Button>)
-    expect(screen.getByRole('button')).toHaveClass('backdrop-blur-lg')
+    expect(screen.getByRole('button')).not.toHaveClass('backdrop-blur-lg', 'glow-white')
   })
 
   it('applies size classes', () => {
@@ -49,7 +49,7 @@ describe('Button', () => {
     render(<Button isLoading>Loading</Button>)
     const button = screen.getByRole('button')
     expect(button).toBeDisabled()
-    expect(button.querySelector('.animate-spin')).toBeInTheDocument()
+    expect(button).toHaveAttribute('aria-busy', 'true')
   })
 
   it('renders left and right icons', () => {
@@ -84,4 +84,9 @@ describe('Button', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+  it('preserves an accessible name supplied by nested content', () => {
+    render(<Button><span>Save changes</span></Button>)
+    expect(screen.getByRole('button')).toHaveAccessibleName('Save changes')
+  })
+
 })

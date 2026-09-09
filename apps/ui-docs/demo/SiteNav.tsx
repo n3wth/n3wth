@@ -7,10 +7,11 @@ export function SiteNav() {
     <SiteNavigation
       brand={<NavLink to="/">n3wth/ui</NavLink>}
       links={<>
-        <NavLink to="/" end>Components</NavLink>
+        <NavLink to="/" end>System</NavLink>
+        <NavLink to="/components">Components</NavLink>
         <NavLink to="/docs/getting-started">Docs</NavLink>
       </>}
-      actions={<a href="https://github.com/n3wth/ui" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Icon name="github" size="md" /></a>}
+      actions={<a href="https://github.com/n3wth/n3wth/tree/main/packages/ui" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Icon name="github" size="md" /></a>}
     />
   )
 }

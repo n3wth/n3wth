@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
-import { AspectRatio } from '@astryxdesign/core/AspectRatio'
+import { AspectRatio } from '@n3wth/ui/primitives'
 import * as THREE from 'three'
 
 /**

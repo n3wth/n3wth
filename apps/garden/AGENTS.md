@@ -52,10 +52,10 @@ Keep site copy free of model and assistant brands. Max font weight: semibold (60
 
 ### Styling
 
-- **Astryx** (`@astryxdesign/core`) — UI components. Docs: `npx astryx docs`
+- **Primitives** (`@n3wth/ui/primitives`) — native Astryx components exposed through the shared UI package. Do not add a direct Astryx dependency.
 - **Theme** — `@n3wth/ui/site` supplies the shared Astryx provider, palette and typography; keep Source Serif 4 as the note-reading extension.
-- **Tailwind v4** — coexists via `globals.css`; `@astryxdesign/core/tailwind-theme.css` bridges tokens
-- **jsx-dev-runtime shim** — `next.config.ts` aliases for Astryx compatibility with React 19 prod
+- **Tailwind v4** — coexists via `globals.css`; `@n3wth/ui/tailwind-theme.css` bridges tokens
+- **React runtime compatibility** — normalized by the shared UI build; no application shim is needed.
 
 ### Conventions
 

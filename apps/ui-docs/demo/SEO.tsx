@@ -68,7 +68,7 @@ export interface JsonLdWebSiteProps {
 export function JsonLdWebSite({
   name = SITE_NAME,
   url = BASE_URL,
-  description = 'Atomic design system for React applications. Flat, minimal, iOS-inspired components built on Tailwind CSS 4.',
+  description = 'Shared brand and page structure for Newth sites, built on Astryx primitives.',
 }: JsonLdWebSiteProps) {
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -104,7 +104,7 @@ export interface JsonLdSoftwareApplicationProps {
 
 export function JsonLdSoftwareApplication({
   name = SITE_NAME,
-  description = 'Atomic design system for React applications. Flat, minimal, iOS-inspired components built on Tailwind CSS 4 and Astryx primitives.',
+  description = 'Shared brand and page structure for Newth sites, built on Astryx primitives.',
   url = BASE_URL,
   version,
 }: JsonLdSoftwareApplicationProps) {
@@ -128,7 +128,7 @@ export function JsonLdSoftwareApplication({
       url: 'https://n3wth.com',
     },
     license: 'https://opensource.org/licenses/MIT',
-    codeRepository: 'https://github.com/n3wth/ui',
+    codeRepository: 'https://github.com/n3wth/n3wth/tree/main/packages/ui',
     programmingLanguage: ['TypeScript', 'React', 'CSS'],
   }
 

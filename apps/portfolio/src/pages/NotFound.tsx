@@ -1,4 +1,4 @@
-import { Button } from '@astryxdesign/core/Button'
+import { Button } from '@n3wth/ui/primitives'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 /* Unknown URLs used to silently render the homepage, which made bad

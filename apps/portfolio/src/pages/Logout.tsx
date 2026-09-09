@@ -1,4 +1,4 @@
-import { Button } from '@astryxdesign/core/Button'
+import { Button } from '@n3wth/ui/primitives'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 /* Post-logout landing page — listed in Auth0's Allowed Logout URLs so

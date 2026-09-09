@@ -23,11 +23,11 @@ export interface DocPage {
 }
 
 const DOC_DESCRIPTIONS: Record<string, string> = {
-  'getting-started': 'Quick setup guide for @n3wth/ui. Install, configure Tailwind CSS 4, and start building with flat, minimal React components.',
-  'theming': 'Customize @n3wth/ui with CSS custom properties. Dark and light themes, color tokens, and typography configuration.',
-  'components': 'Complete component reference for @n3wth/ui. Atoms, molecules, and organisms for building modern React interfaces.',
-  'hooks': 'React hooks included in @n3wth/ui. useTheme, useMediaQuery, useKeyboardShortcuts, useScrollReveal, and more.',
-  'css-utilities': 'CSS utility classes in @n3wth/ui. Glass effects, animations, typography, and responsive utilities.',
+  'getting-started': 'Create a site in the workspace using the shared UI page system and Astryx primitives.',
+  'theming': 'Shared brand tokens, typography, fonts and provider ownership.',
+  'components': 'Choose between site compositions, native Astryx primitives and existing UI adapters.',
+  'hooks': 'Theme state, focus behavior and intentional product feedback.',
+  'css-utilities': 'Site styles, the Tailwind theme facade and compatibility CSS.',
 }
 
 function slugToTitle(slug: string): string {

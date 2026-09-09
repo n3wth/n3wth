@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@n3wth/ui/tailwind-theme.css';
 @import '@n3wth/ui/styles';
 @import '@n3wth/ui/site.css';
 @source "../../../packages/ui/dist/**/*.js";
@@ -260,4 +261,26 @@ html[data-astryx-theme='n3wth'] body {
 
 .prose .hljs-punctuation {
   color: var(--color-grey-400);
+}
+
+/* Architecture guide uses the shared type scale and flat section rhythm. */
+.system-intro { max-width: 68ch; margin-bottom: 24px; }
+.system-layers { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 24px; }
+.system-layers li { border-top: 1px solid var(--color-border); padding-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+.system-table-wrap { overflow-x: auto; margin-bottom: 24px; }
+.system-table { width: 100%; border-collapse: collapse; text-align: left; font-size: var(--font-size-base); }
+.system-table th, .system-table td { padding: 16px 16px 16px 0; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.system-table th { font-weight: 500; }
+.system-table code { font-size: var(--font-size-sm); white-space: nowrap; }
+.system-guidance { padding-left: 20px; margin: 0 0 24px; line-height: 1.6; }
+.system-guidance li + li { margin-top: 16px; }
+@media (min-width: 900px) { .system-layers { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; } }
+.system-primitive-demo { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 24px; }
+@media (max-width: 599px) {
+  .system-table, .system-table tbody { display: block; }
+  .system-table thead { display: none; }
+  .system-table tr { display: block; padding-block: 16px; border-bottom: 1px solid var(--color-border); }
+  .system-table th, .system-table td { display: block; padding: 4px 0; border: 0; }
+  .system-table td:last-child { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+  .system-table td:last-child::before { content: 'Owner: '; }
 }

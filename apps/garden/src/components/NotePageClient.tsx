@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Lightbox, type LightboxMedia } from '@astryxdesign/core/Lightbox'
+import { Lightbox, type LightboxMedia } from '@n3wth/ui/primitives'
 import { getVisited, recordVisit } from '@/lib/visited'
 
 gsap.registerPlugin(ScrollTrigger)

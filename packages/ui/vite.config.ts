@@ -25,25 +25,14 @@ export default defineConfig({
         index: resolve(__dirname, 'src/index.ts'),
         'og/index': resolve(__dirname, 'src/og/index.ts'),
         'site/index': resolve(__dirname, 'src/site/index.tsx'),
+        'primitives/index': resolve(__dirname, 'src/primitives/index.ts'),
       },
       formats: ['es'],
     },
     rollupOptions: {
-      external: [
-        'react',
-        'react-dom',
-        'react/jsx-runtime',
-        // Astryx's dist imports the dev JSX runtime. React 19 strips it from
-        // production bundles, so this stays external for the consuming app's
-        // bundler to resolve — apps building for production need their own
-        // resolve alias to a jsx-dev-runtime shim (see demo/jsx-dev-runtime-shim.js
-        // in this repo, or src/lib/jsx-dev-runtime-shim.js in garden.n3wth.com,
-        // for the pattern).
-        'react/jsx-dev-runtime',
-        // Mark gsap as external since it's an optional peer dependency
-        'gsap',
-        'gsap/ScrollTrigger',
-      ],
+      external: (id) => id !== 'react/jsx-dev-runtime' && (
+        /^(react|react-dom)(\/|$)/.test(id) || /^gsap(\/|$)/.test(id)
+      ),
       output: {
         globals: {
           react: 'React',
@@ -60,7 +49,7 @@ export default defineConfig({
         // Ensure proper ESM output
         format: 'es',
         // Add banner for proper module resolution
-        banner: (chunk) => `${chunk.name === 'site/index' ? "'use client';\n" : ''}/* @n3wth/ui - Atomic design system */`,
+        banner: (chunk) => `${['site/index', 'primitives/index'].includes(chunk.name) ? "'use client';\n" : ''}/* @n3wth/ui - Built on Astryx */`,
       },
       // Ensure external modules aren't bundled
       treeshake: {
@@ -78,6 +67,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      'react/jsx-dev-runtime': resolve(__dirname, 'src/utils/jsx-dev-runtime.js'),
       '@': resolve(__dirname, './src')
     }
   },

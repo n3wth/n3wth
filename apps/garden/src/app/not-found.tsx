@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { Button } from '@astryxdesign/core/Button'
-import { EmptyState } from '@astryxdesign/core/EmptyState'
+import { Button } from '@n3wth/ui/primitives'
+import { EmptyState } from '@n3wth/ui/primitives'
 import { getGraphData } from '@/lib/graph'
 
 export default function NotFound() {
