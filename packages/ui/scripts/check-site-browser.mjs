@@ -37,9 +37,28 @@ try {
   assert(fonts.every(font => font.status === 200))
   assert.equal(actual.overflow, false)
   assert.deepEqual(errors, [])
+  // Optional action fixture: verify filled Astryx links retain their own
+  // foreground treatment while a plain resume link stays underlined.
+  const actions = await page.locator('.n3wth-site-actions a').evaluateAll(links => links.map(link => ({
+    primary: link.classList.contains('astryx-button') && link.getAttribute('data-variant') === 'primary',
+    plain: !link.classList.contains('astryx-button') && link.getAttribute('role') !== 'button',
+    color: getComputedStyle(link).color,
+    background: getComputedStyle(link).backgroundColor,
+    decoration: getComputedStyle(link).textDecorationLine,
+  })))
+  for (const action of actions) {
+    if (action.primary) {
+      assert.equal(action.color, 'rgb(8, 9, 11)')
+      assert.equal(action.background, 'rgb(255, 255, 255)')
+      assert.equal(action.decoration, 'none')
+    } else if (action.plain) {
+      assert.equal(action.color, 'rgb(242, 243, 245)')
+      assert.equal(action.decoration, 'underline')
+    }
+  }
   await page.setViewportSize({ width: 390, height: 844 })
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false)
-  console.log(JSON.stringify({ ...actual, fonts, mobileOverflow: false, errors }, null, 2))
+  console.log(JSON.stringify({ ...actual, fonts, actions, mobileOverflow: false, errors }, null, 2))
 } finally {
   await browser.close()
 }

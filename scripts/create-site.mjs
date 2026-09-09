@@ -20,6 +20,7 @@ export function createSite(root, slug, title = slug) {
   }
   const files = {
     'package.json': JSON.stringify(manifest, null, 2) + '\n',
+    'vercel.json': JSON.stringify({ installCommand: 'cd ../.. && npx --yes npm@11.19.1 ci', buildCommand: `cd ../.. && npm run build --workspace @n3wth/ui && npm run build --workspace @n3wth/${slug}`, outputDirectory: 'dist' }, null, 2) + '\n',
     'index.html': '<!doctype html>\n<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>New site</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>\n',
     'vite.config.ts': "import { defineConfig } from 'vite'\nimport react from '@vitejs/plugin-react'\nexport default defineConfig({ plugins: [react()] })\n",
     'tsconfig.json': JSON.stringify({ compilerOptions: { target: 'ES2022', lib: ['ES2022', 'DOM', 'DOM.Iterable'], module: 'ESNext', moduleResolution: 'Bundler', jsx: 'react-jsx', strict: true, skipLibCheck: true, noEmit: true }, include: ['src'] }, null, 2) + '\n',

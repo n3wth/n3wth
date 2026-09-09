@@ -18,6 +18,9 @@ test('site generator uses shared components, escapes titles, rejects traversal a
     assert.ok(source.includes(`const title = ${JSON.stringify(title)}`))
     assert.ok(source.includes("from '@n3wth/ui/site'"))
     assert.equal(JSON.parse(readFileSync(join(path, 'package.json'))).dependencies['@n3wth/ui'], '0.9.2')
+    const deployment = JSON.parse(readFileSync(join(path, 'vercel.json')))
+    assert.ok(deployment.buildCommand.indexOf('--workspace @n3wth/ui') < deployment.buildCommand.indexOf('--workspace @n3wth/new-idea'))
+    assert.equal(deployment.outputDirectory, 'dist')
     assert.throws(() => createSite(root, 'new-idea'))
     assert.equal(readFileSync(join(path, 'src/main.tsx'), 'utf8'), source)
   } finally { rmSync(root, { recursive: true, force: true }) }

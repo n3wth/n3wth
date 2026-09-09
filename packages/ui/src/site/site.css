@@ -54,7 +54,8 @@ html[data-astryx-theme='n3wth'] {
 .n3wth-site-text--supporting { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .n3wth-site-description { margin-top: 16px; color: var(--color-text-secondary); }
 .n3wth-site-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; flex-shrink: 0; }
-.n3wth-site-actions a {
+/* Button links own their variant contrast and focus treatment. */
+.n3wth-site-actions a:not(.astryx-button):not([role='button']) {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -64,7 +65,7 @@ html[data-astryx-theme='n3wth'] {
   text-decoration: underline;
   text-underline-offset: 0.25em;
 }
-.n3wth-site-actions a:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+.n3wth-site-actions a:not(.astryx-button):not([role='button']):focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
 @media (min-width: 768px) {
   .n3wth-site-container { padding-inline: 48px; }
   .n3wth-site-section, .n3wth-site-page-header { padding-block: 64px; }
