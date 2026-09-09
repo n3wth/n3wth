@@ -15,6 +15,7 @@ Import from @n3wth/ui/site.
 | SiteSection | Shared vertical section rhythm |
 | SiteHeading / SiteText | Semantic text roles |
 | SiteFooter | Quiet, aligned site footer |
+| ReadingOutline | Compact article contents with optional disclosure |
 
 Navigation links, action callbacks and content remain app-owned. Use real links for navigation and buttons for actions.
 
@@ -34,6 +35,12 @@ import { PageHeader, SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 ```
 
 The header’s aside slot is for a specialized preview or demonstration. It does not introduce another typography or spacing system.
+
+Use `PageHeader align="center"` for a centered introduction. Omit `actions` when the page does not need a hero button.
+
+PageHeader defaults to h1. SiteHeading uses h2 for sections and h3 for items; set its `level` to match the document hierarchy independently of its visual `variant`.
+
+ReadingOutline accepts Astryx outline items and preserves their anchors and scroll tracking. Set `collapsible` for a compact disclosure that starts closed on narrow layouts.
 
 ## Native primitives
 

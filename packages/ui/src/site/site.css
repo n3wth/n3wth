@@ -46,6 +46,9 @@ html[data-astryx-theme='n3wth'] {
   padding-block: 48px;
 }
 .n3wth-site-page-header-copy { min-width: 0; max-width: 44rem; }
+.n3wth-site-page-header.n3wth-site-page-header--center { align-items: center; flex-direction: column; text-align: center; }
+.n3wth-site-page-header--center .n3wth-site-description { margin-inline: auto; }
+.n3wth-site-page-header--center .n3wth-site-actions { justify-content: center; }
 .n3wth-site-page-header--split { align-items: flex-start; }
 .n3wth-site-page-header--split > .n3wth-site-page-header-copy { flex: 1; }
 .n3wth-site-page-header--split .n3wth-site-actions { margin-top: 24px; }

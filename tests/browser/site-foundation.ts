@@ -1,6 +1,7 @@
 import { expect, type Page } from '@playwright/test'
 
 export async function expectSiteFoundation(page: Page) {
+  await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
   await expect(page.locator('html')).toHaveAttribute('data-astryx-theme', 'n3wth')
   const heading = page.locator('.n3wth-site-heading--page').first()
   await expect(heading).toBeVisible()

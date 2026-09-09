@@ -152,7 +152,7 @@ export function ComponentGrid() {
           ) : (
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {filteredComponents.map((comp) => (
-                <ComponentCard key={comp.name} name={comp.name} description={comp.description} />
+                <ComponentCard key={comp.name} name={comp.name} description={comp.description} headingLevel={2} />
               ))}
             </div>
           )}
@@ -203,7 +203,8 @@ export function ComponentGrid() {
   )
 }
 
-function ComponentCard({ name, description }: { name: string; description: string }) {
+function ComponentCard({ name, description, headingLevel = 3 }: { name: string; description: string; headingLevel?: 2 | 3 }) {
+  const Heading = headingLevel === 2 ? 'h2' : 'h3'
   const command = `npx shadcn add https://kit.n3wth.com/r/${name}.json`
   const Demo = componentDemos[name]
 
@@ -217,9 +218,9 @@ function ComponentCard({ name, description }: { name: string; description: strin
         </div>
       ) : null}
       <div className="p-4">
-        <h3 className="font-mono text-sm font-medium text-ink">
+        <Heading className="font-mono text-sm font-medium text-ink">
           {name}
-        </h3>
+        </Heading>
         <p className="mt-1 text-sm text-ink-dim">
           {description}
         </p>
