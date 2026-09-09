@@ -9,7 +9,6 @@ import { CommandPalette } from './components/CommandPalette'
 import { useCommandPalette } from './hooks/useCommandPalette'
 import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
-import { gsap } from './lib/gsap'
 
 /** Jump to the top on route change (browser back/forward keeps its position),
     unless the new location names somewhere specific to land. */
@@ -55,11 +54,13 @@ function App() {
   const onKonami = useCallback(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const els = document.querySelectorAll('h1, h2, h3, .display')
-    gsap.fromTo(
-      els,
-      { color: '#ffffff' },
-      { clearProps: 'color', duration: 0.8, ease: 'power2.out' }
-    )
+    import('./lib/gsap').then(({ gsap }) => {
+      gsap.fromTo(
+        els,
+        { color: '#ffffff' },
+        { clearProps: 'color', duration: 0.8, ease: 'power2.out' }
+      )
+    })
   }, [])
 
   useKonamiCode(onKonami)
