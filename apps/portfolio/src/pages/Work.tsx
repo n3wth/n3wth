@@ -23,15 +23,20 @@ export default function Work() {
 
   return (
     <>
-      <SectionHeader as="h1" title="Work" lede="I choose a problem, build an early version, and put it in front of people. What I learn shapes what comes next." />
-      <div className="section-pad !pt-0">
-        <a
-          href="https://r2.n3wth.com/resume/oliver-newth-resume.pdf"
-          className="inline-flex min-h-11 items-center underline underline-offset-4"
-        >
-          Resume (PDF)
-        </a>
-      </div>
+      <SectionHeader
+        as="h1"
+        title="Work"
+        lede="I choose a problem, build an early version, and put it in front of people. What I learn shapes what comes next."
+        action={
+          <a
+            href="https://r2.n3wth.com/resume/oliver-newth-resume.pdf"
+            className="inline-flex min-h-11 w-fit shrink-0 items-center gap-2 underline underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+            aria-label="Resume (PDF)"
+          >
+            Resume (PDF)
+          </a>
+        }
+      />
       <Building />
       {/* A dot grid dissolving into constellations — hand-designed order
           becoming agent-shipped emergence, between the two halves of the
