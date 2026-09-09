@@ -81,8 +81,12 @@ const router = createBrowserRouter([
   },
 ])
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')!
+createRoot(root).render(
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>,
 )
+// Mark hydrated to hide SEO fallback after React paints.
+// requestAnimationFrame ensures the React tree has committed to DOM.
+requestAnimationFrame(() => root.classList.add('hydrated'))
