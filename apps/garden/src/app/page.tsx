@@ -45,8 +45,9 @@ export default async function HomePage() {
             </ShimmerText>
           } description={<>
               {noteCount} interconnected notes on careers, learning, health, and
-              building things. Each light is a note — the taller it grows, the more
-              evergreen the idea.
+              building things.{' '}
+              <span className="md:block">Each light is a note — the taller it grows, the more
+              evergreen the idea.</span>
             </>} />
         </SiteContainer>
 
