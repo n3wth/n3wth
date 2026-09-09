@@ -1,6 +1,7 @@
 'use client'
 
 import { type ReactNode } from 'react'
+import { N3wthProvider } from '@n3wth/ui/site'
 import dynamic from 'next/dynamic'
 import { AuthProvider } from '../src/components/AuthProvider'
 
@@ -27,9 +28,11 @@ const AnalyticsInit = dynamic(
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <AuthProvider>
-      {children}
-      <SentryInit />
-      <AnalyticsInit />
+      <N3wthProvider mode="dark">
+        {children}
+        <SentryInit />
+        <AnalyticsInit />
+      </N3wthProvider>
     </AuthProvider>
   )
 }

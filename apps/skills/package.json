@@ -43,7 +43,7 @@
     "@n3wth/site-config": "*",
     "@ai-sdk/google": "3.0.24",
     "@gsap/react": "2.1.2",
-    "@n3wth/ui": "0.6.1",
+    "@n3wth/ui": "0.9.2",
     "@neondatabase/serverless": "1.0.2",
     "@next/third-parties": "16.3.4",
     "@sentry/react": "10.36.0",

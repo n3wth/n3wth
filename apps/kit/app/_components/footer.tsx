@@ -40,7 +40,7 @@ const familyLinks = [
 export function Footer() {
   return (
     <footer className="border-t border-rail bg-bg-soft">
-      <div className="mx-auto max-w-5xl px-6 py-16">
+      <div className="n3wth-site-container py-16">
         <div className="grid gap-10 sm:grid-cols-4">
           {/* Brand */}
           <div>

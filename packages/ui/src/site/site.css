@@ -1,0 +1,75 @@
+/* Package URLs survive both Tailwind imports and direct CSS imports. */
+@font-face { font-family: 'Geist Sans'; src: url('@n3wth/ui/fonts/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Geist Sans'; src: url('@n3wth/ui/fonts/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Geist Sans'; src: url('@n3wth/ui/fonts/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('@n3wth/ui/fonts/Satoshi-Variable.woff2') format('woff2'); font-weight: 400 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Geist Mono'; src: url('@n3wth/ui/fonts/GeistMono-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+
+html[data-astryx-theme='n3wth'] {
+  background-color: var(--color-background-body);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+}
+[data-astryx-theme='n3wth'][data-theme='dark'] { color-scheme: dark; }
+[data-astryx-theme='n3wth'][data-theme='light'] { color-scheme: light; }
+
+/* Five semantic type roles. Apps own their content, not another type scale. */
+.n3wth-site-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1152px;
+  margin-inline: auto;
+  padding-inline: 24px;
+  font-family: var(--font-family-body);
+  color: var(--color-text-primary);
+}
+.n3wth-site-section { padding-block: 48px; }
+.n3wth-site-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 48px;
+}
+.n3wth-site-page-header-copy { min-width: 0; max-width: 44rem; }
+.n3wth-site-heading {
+  margin: 0;
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  color: var(--color-text-primary);
+}
+.n3wth-site-heading--page { font-size: var(--font-size-3xl); line-height: 1.15; }
+.n3wth-site-heading--section { font-size: var(--font-size-xl); line-height: 1.3; }
+.n3wth-site-heading--item { font-size: var(--font-size-lg); line-height: 1.4; }
+.n3wth-site-text {
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: normal;
+  line-height: 1.6;
+}
+.n3wth-site-text--body { font-size: var(--font-size-base); color: var(--color-text-primary); }
+.n3wth-site-text--supporting { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.n3wth-site-description { margin-top: 16px; color: var(--color-text-secondary); }
+.n3wth-site-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; flex-shrink: 0; }
+/* Button links own their variant contrast and focus treatment. */
+.n3wth-site-actions a:not(.astryx-button):not([role='button']) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: var(--font-size-base);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.n3wth-site-actions a:not(.astryx-button):not([role='button']):focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+@media (min-width: 768px) {
+  .n3wth-site-container { padding-inline: 48px; }
+  .n3wth-site-section, .n3wth-site-page-header { padding-block: 64px; }
+}
+@media (max-width: 767px) {
+  .n3wth-site-page-header { align-items: flex-start; flex-direction: column; }
+}

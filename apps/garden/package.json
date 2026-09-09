@@ -11,8 +11,9 @@
     "check": "node --test scripts/*.test.mjs && npm run typecheck && npm run build"
   },
   "dependencies": {
+    "@n3wth/ui": "0.9.2",
     "@n3wth/site-config": "*",
-    "@astryxdesign/core": "^0.1.5",
+    "@astryxdesign/core": "0.1.6",
     "@gsap/react": "^2.1.2",
     "@next/third-parties": "^16.3.4",
     "@react-three/drei": "^10.7.7",

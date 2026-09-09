@@ -15,7 +15,7 @@
     "@n3wth/site-config": "*",
     "@mdx-js/loader": "3.1.1",
     "@mdx-js/react": "3.1.1",
-    "@n3wth/ui": "0.9.1",
+    "@n3wth/ui": "0.9.2",
     "@next/mdx": "15.5.3",
     "@next/third-parties": "16.3.4",
     "@react-three/drei": "10.7.6",

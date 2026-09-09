@@ -1,6 +1,6 @@
 import { Suspense, useCallback, useEffect } from 'react'
 import { Outlet, useLocation, useNavigationType } from 'react-router-dom'
-import { Theme } from '@astryxdesign/core/theme'
+import { N3wthProvider } from '@n3wth/ui/site'
 import { LinkProvider } from '@astryxdesign/core/Link'
 import { RouterLink } from './components/RouterLink'
 import { Nav } from './components/Nav'
@@ -11,7 +11,6 @@ import { useKonamiCode } from './hooks/useKonamiCode'
 import { useKeyboardNav } from './hooks/useKeyboardNav'
 import { useReveal } from './hooks/useReveal'
 import { gsap } from './lib/gsap'
-import { n3wthTheme } from './theme/n3wthTheme'
 
 /** Jump to the top on route change (browser back/forward keeps its position),
     unless the new location names somewhere specific to land. */
@@ -74,7 +73,7 @@ function App() {
   const closeSearch = useCallback(() => setSearchOpen(false), [setSearchOpen])
 
   return (
-    <Theme theme={n3wthTheme} mode="dark">
+    <N3wthProvider mode="dark">
       <LinkProvider component={RouterLink}>
         <a href="#main" className="skip-link">Skip to content</a>
         <Nav onOpenSearch={toggleSearch} />
@@ -95,7 +94,7 @@ function App() {
             nothing to scroll to */}
         {!isHome && <Footer />}
       </LinkProvider>
-    </Theme>
+    </N3wthProvider>
   )
 }
 

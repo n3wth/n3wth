@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { PageHeader, SiteContainer, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { InstallCommand } from './_components/install-command'
 import { ComponentShowcase } from './_components/component-showcase'
 import { Footer } from './_components/footer'
@@ -32,25 +33,20 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
       />
       {/* Hero */}
-      <section className="mx-auto max-w-5xl px-6 pt-24 pb-14">
+      <SiteContainer as="section" className="pt-24 pb-14">
         <div className="grid grid-cols-1 items-center gap-12 sm:grid-cols-2">
           <div>
-            <h1
-              className="text-ink tracking-tight"
-              style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', lineHeight: 1.15 }}
-            >
-              shadcn registry<br />
-              + AI context packs
-            </h1>
-            <p className="mt-5 text-base leading-relaxed text-ink-dim">
+            <PageHeader
+              style={{ flexDirection: 'column', alignItems: 'stretch', paddingBlock: 0 }}
+              title={<>shadcn registry<br />+ AI context packs</>}
+              description={<>
               Install components with{' '}
               <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-sm">npx shadcn add</code>.
               Drop in the <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-sm">GEMINI.md</code>{' '}
               context pack to give Antigravity CLI the component guidance.
-            </p>
-            <div className="mt-8">
-              <InstallCommand command="npx shadcn add https://kit.n3wth.com/r/button.json" />
-            </div>
+              </>}
+              actions={<InstallCommand command="npx shadcn add https://kit.n3wth.com/r/button.json" />}
+            />
           </div>
 
           {/* Code comparison */}
@@ -58,7 +54,7 @@ export default function Home() {
             <div className="bg-bg-raise p-5">
               <div className="flex items-center gap-2">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-400" />
-                <p className="text-[11px] font-medium text-ink-faint">Without context</p>
+                <SiteText variant="supporting">Without context</SiteText>
               </div>
               <pre className="mt-3 overflow-x-auto font-mono text-xs leading-relaxed text-ink-faint">
 {`<button className="bg-primary
@@ -73,7 +69,7 @@ export default function Home() {
             <div className="bg-bg-raise p-5">
               <div className="flex items-center gap-2">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <p className="text-[11px] font-medium text-ink-faint">With context pack</p>
+                <SiteText variant="supporting">With context pack</SiteText>
               </div>
               <pre className="mt-3 overflow-x-auto font-mono text-xs leading-relaxed text-ink">
 {`<Button
@@ -85,14 +81,14 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </SiteContainer>
 
       {/* What's a context pack */}
       <section className="border-t border-rail">
-        <div className="mx-auto max-w-5xl px-6 py-14">
-          <h2 className="text-2xl tracking-tight text-ink sm:text-3xl">
+        <div className="n3wth-site-container py-14">
+          <SiteHeading variant="section" level={2}>
             What&apos;s a context pack?
-          </h2>
+          </SiteHeading>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-dim">
             A context pack is a file you drop into your project that tells AI coding tools
             about your components. Antigravity CLI reads{' '}
@@ -124,10 +120,10 @@ export default function Home() {
 
       {/* Components */}
       <section className="border-t border-rail">
-        <div className="mx-auto max-w-5xl px-6 py-14">
-          <h2 className="max-w-3xl text-2xl tracking-tight text-ink sm:text-3xl">
+        <div className="n3wth-site-container py-14">
+          <SiteHeading variant="section" level={2} className="max-w-3xl">
             The registry
-          </h2>
+          </SiteHeading>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-ink-dim">
             32 UI components, 4 blocks, 11 hooks. Each installs with{' '}
             <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-xs">npx shadcn add</code>{' '}
@@ -146,14 +142,14 @@ export default function Home() {
 
       {/* Install */}
       <section className="border-t border-rail">
-        <div className="mx-auto max-w-5xl px-6 py-14">
-          <h2 className="text-2xl tracking-tight text-ink sm:text-3xl">
+        <div className="n3wth-site-container py-14">
+          <SiteHeading variant="section" level={2}>
             Get started
-          </h2>
+          </SiteHeading>
 
           <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-ink-label">1. Install components</p>
+              <SiteText variant="supporting">1. Install components</SiteText>
               <p className="mt-2 text-sm text-ink-dim">
                 The standard shadcn CLI copies each component into your project.
               </p>
@@ -163,7 +159,7 @@ export default function Home() {
             </div>
 
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-ink-label">2. Add context pack</p>
+              <SiteText variant="supporting">2. Add context pack</SiteText>
               <p className="mt-2 text-sm text-ink-dim">
                 Download the file for your AI tool. It teaches the tool how to use the components.
               </p>

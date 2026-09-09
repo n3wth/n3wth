@@ -8,6 +8,7 @@ import { AxiomWebVitals } from "next-axiom";
 import { PostHogProvider } from "../components/PostHogProvider";
 import { JsonLd } from "../components/JsonLd";
 import { SkipLink } from "../components/SkipLink";
+import { SiteProvider } from "../components/SiteProvider";
 import "./globals.css";
 
 const satoshi = localFont({
@@ -129,8 +130,10 @@ export default function RootLayout({
       <body className="antialiased min-h-screen" suppressHydrationWarning>
         <SkipLink />
         <PostHogProvider>
+          <SiteProvider>
           {children}
           <Analytics />
+          </SiteProvider>
         </PostHogProvider>
         <GoogleAnalytics gaId="G-4QRMSG5HXK" />
       </body>

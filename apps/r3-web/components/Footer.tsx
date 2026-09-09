@@ -15,7 +15,7 @@ const products = [
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-rail">
-      <div className="mx-auto max-w-5xl px-6">
+      <div className="n3wth-site-container">
         <div className="py-8 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3">
           <p className="text-sm text-ink-dim">2026 Oliver Newth</p>
           <nav aria-label="Footer">

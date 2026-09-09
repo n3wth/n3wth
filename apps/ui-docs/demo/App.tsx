@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router'
 import { useGoogleAnalytics } from './useGoogleAnalytics'
 import { SiteNav } from './SiteNav'
-import { Hero } from '@n3wth/ui'
+import { N3wthProvider, PageHeader, SiteContainer } from '@n3wth/ui/site'
 import { Footer } from '@n3wth/ui'
 import { siteLinks, legalLinks } from './siteLinks'
 import { Icon } from '@n3wth/ui'
@@ -28,8 +28,7 @@ const sidebarItems = [
   { id: 'hooks', label: 'Hooks', icon: 'terminal' as const },
 ]
 
-function Showcase() {
-  const { theme, toggleTheme } = useTheme()
+function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: () => void }) {
   const [activeSection, setActiveSection] = useState('tokens')
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -87,15 +86,16 @@ function Showcase() {
       {/* Hero */}
       <div className="relative">
         <FloatingShapes />
-        <Hero
-          badge={`v${version}`}
+        <SiteContainer className="pt-24">
+        <PageHeader
           title="Flat, minimal components"
           description={<>An atomic design system for Newth sites.<br />No shadows, no glows.</>}
-          ctas={[
-            { label: 'Browse components', href: '#atoms' },
-            { label: 'View source', href: 'https://github.com/n3wth/ui', variant: 'secondary' },
-          ]}
+          actions={<>
+            <a href="#atoms">Browse components</a>
+            <a href="https://github.com/n3wth/ui">View source</a>
+          </>}
         />
+        </SiteContainer>
       </div>
 
       {/* Main content with sidebar */}
@@ -179,12 +179,15 @@ function Showcase() {
 
 export function App() {
   useGoogleAnalytics()
+  const { theme, toggleTheme } = useTheme()
 
   return (
+    <N3wthProvider mode={theme}>
     <Routes>
-      <Route path="/" element={<Showcase />} />
+      <Route path="/" element={<Showcase theme={theme} toggleTheme={toggleTheme} />} />
       <Route path="/docs/:slug" element={<DocsLayout />} />
       <Route path="/docs" element={<Navigate to="/docs/getting-started" replace />} />
     </Routes>
+    </N3wthProvider>
   )
 }

@@ -8,7 +8,7 @@ Digital garden (personal wiki) built with Next.js 16 App Router. Contact: hey@n3
 |------|------------|
 | `content/` | Garden notes (Obsidian-flavored markdown) — the source of truth |
 | `src/` | Chrome: app code, components, plugins, theme |
-| `src/theme/n3wthTheme.ts` | Astryx theme definition — regenerate CSS after edits: `npx astryx theme build src/theme/n3wthTheme.ts -o src/theme/n3wth-theme.css` |
+| `../../packages/ui/src/theme/n3wthTheme.ts` | Shared Astryx theme — build the UI package after edits; import `@n3wth/ui/site` and `@n3wth/ui/site.css` |
 
 Follow the existing design and plain-language copy. The heaviest font weight on this site is semibold (600).
 
@@ -53,7 +53,7 @@ Keep site copy free of model and assistant brands. Max font weight: semibold (60
 ### Styling
 
 - **Astryx** (`@astryxdesign/core`) — UI components. Docs: `npx astryx docs`
-- **Theme** — `src/theme/n3wthTheme.ts` mirrors `@n3wth/ui` palette (near-black `#08090b` canvas, grayscale ink, white accent, Geist fonts)
+- **Theme** — `@n3wth/ui/site` supplies the shared Astryx provider, palette and typography; keep Source Serif 4 as the note-reading extension.
 - **Tailwind v4** — coexists via `globals.css`; `@astryxdesign/core/tailwind-theme.css` bridges tokens
 - **jsx-dev-runtime shim** — `next.config.ts` aliases for Astryx compatibility with React 19 prod
 

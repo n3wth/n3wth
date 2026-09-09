@@ -1,29 +1,14 @@
 @import 'tailwindcss';
 @import '@n3wth/ui/styles';
+@import '@n3wth/ui/site.css';
 
 /* Scan @n3wth/ui components for Tailwind classes */
-@source "../node_modules/@n3wth/ui/dist";
+@source "../../../packages/ui/dist";
 
 /* Color variables from n3wth/ui (fallback for missing imports) */
 :root {
   --color-white: #ffffff;
   --color-black: #000000;
-  --color-grey-100: #f5f5f7;
-  --color-grey-200: #e8e8ed;
-  --color-grey-300: #c7c7cc;
-  --color-grey-400: #86868b;
-  --color-grey-500: #8e8e93;
-  --color-grey-600: #6e6e73;
-  --color-grey-700: #48484a;
-  --color-grey-800: #1d1d1f;
-
-  /* Typography scale */
-  --text-label: 0.8125rem;   /* 13px - section labels, captions */
-  --text-body: 0.875rem;      /* 14px - body */
-  --text-body-lg: 1rem;       /* 16px */
-  --text-title-sm: 1.125rem;  /* 18px */
-  --text-title: 1.25rem;      /* 20px */
-  --text-title-lg: 1.5rem;    /* 24px */
 
   /* Liquid Glass variables */
   --glass-bg: rgba(255, 255, 255, 0.06);
@@ -33,7 +18,6 @@
   --glass-inset: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
   --glass-inset-hover: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
-
 
 /* Fix for @n3wth/ui Nav responsive classes not being detected */
 @media (min-width: 768px) {
@@ -51,65 +35,7 @@
   }
 }
 
-/* Satoshi - Display font */
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Geist Sans - UI/Body font */
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Geist Mono - Code only */
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
+/* Additional medium code weight for existing code examples. */
 @font-face {
   font-family: 'Geist Mono';
   src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
@@ -195,7 +121,7 @@
 
 /* Section labels and secondary text */
 .label {
-  font-size: var(--text-label);
+  font-size: var(--font-size-sm);
   line-height: 1.4;
   color: var(--color-grey-400);
 }
@@ -224,7 +150,6 @@
   z-index: -1;
   background: #000000;
 }
-
 
 /* Noise texture overlay */
 .noise-overlay {
@@ -282,7 +207,6 @@
   padding: 16px;
   animation: hoverPreviewEnter 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-
 
 @keyframes hoverPreviewEnter {
   from {
@@ -483,7 +407,6 @@
 .category-filter-active::after {
   transform: translateX(-50%) scaleX(1);
 }
-
 
 /* Button press state */
 .btn-press:active {
@@ -732,7 +655,6 @@ select {
   background-color: var(--glass-highlight) !important;
 }
 
-
 /* Content visibility for performance */
 .content-visibility-auto {
   content-visibility: auto;
@@ -743,11 +665,24 @@ select {
 nav,
 [role="navigation"],
 .nav-wrapper,
-header {
+header:not(.n3wth-site-page-header) {
   background: var(--color-bg) !important;
   border-bottom: 1px solid var(--glass-border) !important;
 }
 
+/* Keep the skip link hidden without transforms, including reduced motion. */
+.skills-skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--color-white);
+  color: var(--color-black);
+}
+.skills-skip-link:focus {
+  top: 16px;
+}
 
 /* Logo/Brand Visibility - Ensure high contrast */
 nav a,
@@ -767,7 +702,6 @@ nav button:hover,
   opacity: 0.7 !important;
 }
 
-
 /* Ensure site name/logo is visible with strong contrast */
 nav span,
 nav h1,
@@ -778,7 +712,6 @@ nav h2,
   color: var(--color-white) !important;
   font-weight: 600 !important;
 }
-
 
 /* Footer Styling - Flat */
 footer {
@@ -797,7 +730,6 @@ footer a {
 footer a:hover {
   color: var(--color-white) !important;
 }
-
 
 /* Ensure footer links have proper spacing and alignment */
 footer div {
@@ -820,7 +752,6 @@ footer nav {
   border-bottom: 1px solid var(--glass-border) !important;
 }
 
-
 /* Logo text visibility in nav */
 [class*="nav"] [class*="logo"],
 [class*="nav"] [class*="brand"],
@@ -829,5 +760,3 @@ footer nav {
   color: var(--color-white) !important;
   font-weight: 600 !important;
 }
-
-

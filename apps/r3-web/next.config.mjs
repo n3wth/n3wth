@@ -6,6 +6,7 @@ const workspaceRoot = fileURLToPath(new URL("../../", import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['@n3wth/ui'],
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 
   // Performance optimizations

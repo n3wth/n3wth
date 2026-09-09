@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd ../.. && npm run build --workspace @n3wth/ui && npm run build --workspace @n3wth/skills",
   "build": { "env": { "NEXT_EXPERIMENTAL_FUNCTION_BUNDLING": "1" } },
   "cleanUrls": true,
   "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",

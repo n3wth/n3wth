@@ -1,0 +1,47 @@
+# Shared site design system
+
+The six workspace sites use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain app-owned. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.
+
+## Use
+
+```tsx
+import { N3wthProvider, PageHeader, SiteContainer, SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
+import '@n3wth/ui/site.css'
+
+<N3wthProvider mode="dark">
+  <SiteContainer as="main">
+    <PageHeader title="An idea" description="What this helps people do." actions={<a href="/start">Get started</a>} />
+    <SiteSection>
+      <SiteHeading variant="section">How it works</SiteHeading>
+      <SiteText>Explain the useful behavior.</SiteText>
+    </SiteSection>
+  </SiteContainer>
+</N3wthProvider>
+```
+
+`site.css` includes Astryx component CSS, the generated canonical theme, fonts and scoped site layout/type rules. It does not load the legacy UI reset. Vite and Next consume the same exported entry. Next must retain the client boundary; router-specific link adapters stay in each application. Bind the provider to the existing theme state for sites supporting light mode rather than maintaining two theme states.
+
+## Roles
+
+- Satoshi for page, section and item headings. Geist Sans for body text, actions and supporting labels. Geist Mono only for code.
+- Page titles are responsive. Section and item titles use shared sizes rather than separate scales per page. Body text and supporting labels have distinct semantic roles.
+- Content width and horizontal padding come from `SiteContainer` or the matching `n3wth-site-container` class. Sections use `SiteSection` when its spacing applies.
+- Use `PageHeader.actions` for page-level links such as the resume. Do not create a separate padded section for one link.
+- Garden reading typography and the portfolio scene may retain specialized layouts. Product names, content and interactions remain distinct; colors, type roles and common controls share the system.
+
+The canonical theme is `packages/ui/src/theme/n3wthTheme.ts`. Its CSS is generated during the UI build. Keep every app's `@n3wth/ui` dependency equal to the workspace version so npm does not silently install an older nested copy. The original `n3wth/ui` repository remains the public npm release authority; this change does not publish a package or move that authority.
+
+## New sites
+
+```sh
+npm run site:new -- idea-name "Idea name"
+npm install
+npm run build --workspace @n3wth/ui
+npm run dev --workspace @n3wth/idea-name
+```
+
+The generator creates a small Vite/React application using the shared provider, type and layout components. It rejects invalid names and existing directories. Replace starter copy before publishing. Configure deployment and the canonical domain separately; generation does not provision external services.
+
+## Validation
+
+Run `npm run check` with Node 24 and npm 11.19.1. It builds shared packages before consumers, checks the generator and runs the existing app suites. Check rendered mobile/desktop pages and keyboard navigation; typechecking alone cannot detect a missing font or theme scope. Verify production Next routes after any Astryx upgrade. Avoid upgrading the pre-1.0 component API solely to align versions: the current patch is pinned and tested as a unit.

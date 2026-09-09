@@ -68,17 +68,6 @@ export default function RootLayout({
   return (
     <ViewTransitions>
     <html lang="en" data-theme="dark">
-      <head>
-        {/* The LCP h1 sets in Satoshi 600 (font-display + font-semibold) —
-            preload it so the headline doesn't paint in system-ui and reflow. */}
-        <link
-          rel="preload"
-          href="/fonts/Satoshi-Bold.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-      </head>
       <AxiomWebVitals />
       <GoogleAnalytics gaId="G-4QRMSG5HXK" />
       <body className="min-h-screen flex flex-col">

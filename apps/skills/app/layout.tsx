@@ -90,7 +90,7 @@ export default function RootLayout({
       <body>
         <a
           href="#main-content"
-          className="fixed -translate-y-full focus:translate-y-0 top-4 left-4 z-50 px-4 py-2 bg-white text-black rounded-md outline-none ring-2 ring-offset-2 transition-transform"
+          className="skills-skip-link"
           tabIndex={0}
           data-nosnippet=""
         >

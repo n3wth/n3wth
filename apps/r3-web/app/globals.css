@@ -2,9 +2,10 @@
 @import "@n3wth/ui/styles";
 /* source of truth: @n3wth/ui/theme (canonical wireframe tokens) */
 @import "@n3wth/ui/theme";
+@import "@n3wth/ui/site.css";
 @import "../styles/animations.css";
 
-@source "../node_modules/@n3wth/ui/dist";
+@source "../../../packages/ui/dist";
 
 /* Satoshi for display headings, Geist Sans for body. Loaded via next/font in layout.tsx.
    Unlayered so it wins over @n3wth/ui's compiled :root declarations. */

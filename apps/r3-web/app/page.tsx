@@ -2,6 +2,7 @@
 
 import { Zap, Code, Lock, Globe, Cpu, Layers } from "lucide-react";
 import Link from "next/link";
+import { PageHeader, SiteContainer, SiteHeading, SiteText } from '@n3wth/ui/site';
 import { useState, lazy, Suspense } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -92,26 +93,15 @@ gemini mcp list`,
 
       <main id="main-content" className="flex-1 pt-20">
         {/* Hero */}
-        <section className="mx-auto max-w-5xl px-6 pt-12 pb-16 md:pt-16 md:pb-20">
+        <SiteContainer as="section" className="pt-12 pb-16 md:pt-16 md:pb-20">
           <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12">
             <div>
-              <h1
-                className="text-ink tracking-tight"
-                style={{
-                  fontSize: "clamp(2.25rem, 5vw, 3.5rem)",
-                  lineHeight: 1.08,
-                }}
-              >
-                Persistent memory for AI assistants
-              </h1>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-dim text-pretty">
-                An MCP server that gives AI assistants memory that survives
-                between sessions. Local Redis, vector search, and knowledge
-                graphs with zero configuration.
-              </p>
-              <div className="mt-8">
-                <InstallCommand command="npx @n3wth/r3" />
-              </div>
+              <PageHeader
+                style={{ flexDirection: 'column', alignItems: 'stretch', paddingBlock: 0 }}
+                title="Persistent memory for AI assistants"
+                description="An MCP server that gives AI assistants memory that survives between sessions. Local Redis, vector search, and knowledge graphs with zero configuration."
+                actions={<InstallCommand command="npx @n3wth/r3" />}
+              />
             </div>
 
             {/* Code comparison */}
@@ -119,9 +109,9 @@ gemini mcp list`,
               <div className="bg-bg-raise p-5">
                 <div className="flex items-center gap-2">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-400" />
-                  <p className="text-[11px] font-medium text-ink-faint">
+                  <SiteText variant="supporting">
                     Without r3
-                  </p>
+                  </SiteText>
                 </div>
                 <pre className="mt-3 overflow-x-auto font-mono text-xs leading-relaxed text-ink-faint">
                   {`> What's my preferred stack?
@@ -133,9 +123,9 @@ about your preferences.`}
               <div className="bg-bg-raise p-5">
                 <div className="flex items-center gap-2">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  <p className="text-[11px] font-medium text-ink-faint">
+                  <SiteText variant="supporting">
                     With r3
-                  </p>
+                  </SiteText>
                 </div>
                 <pre className="mt-3 overflow-x-auto font-mono text-xs leading-relaxed text-ink">
                   {`> What's my preferred stack?
@@ -147,14 +137,14 @@ Postgres with Drizzle ORM.`}
               </div>
             </div>
           </div>
-        </section>
+        </SiteContainer>
 
         {/* How it works */}
         <section className="border-t border-rail">
-          <div className="mx-auto max-w-5xl px-6 py-14">
-            <h2 className="text-2xl tracking-tight text-ink sm:text-3xl">
+          <div className="n3wth-site-container py-14">
+            <SiteHeading variant="section" level={2}>
               How it works
-            </h2>
+            </SiteHeading>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-dim">
               r3 runs a local Redis server with vector search. Your AI stores
               memories as embeddings and retrieves them by meaning, not just
@@ -176,10 +166,10 @@ Postgres with Drizzle ORM.`}
 
         {/* Terminal demo */}
         <section className="border-t border-rail">
-          <div className="mx-auto max-w-5xl px-6 py-14">
-            <h2 className="text-2xl tracking-tight text-ink sm:text-3xl">
+          <div className="n3wth-site-container py-14">
+            <SiteHeading variant="section" level={2}>
               See it in action
-            </h2>
+            </SiteHeading>
             <p className="mt-3 max-w-lg text-sm leading-relaxed text-ink-dim">
               r3 storing and retrieving memories across sessions.
             </p>
@@ -197,16 +187,16 @@ Postgres with Drizzle ORM.`}
 
         {/* Integration */}
         <section className="border-t border-rail">
-          <div className="mx-auto max-w-5xl px-6 py-14">
-            <h2 className="text-2xl tracking-tight text-ink sm:text-3xl">
+          <div className="n3wth-site-container py-14">
+            <SiteHeading variant="section" level={2}>
               Get started
-            </h2>
+            </SiteHeading>
 
             <div className="mt-8 grid gap-8 sm:grid-cols-2">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-ink-label">
+                <SiteText variant="supporting">
                   MCP Desktop Clients
-                </p>
+                </SiteText>
                 <p className="mt-2 text-sm text-ink-dim">
                   Add r3 to your MCP config file.
                 </p>
@@ -216,9 +206,9 @@ Postgres with Drizzle ORM.`}
               </div>
 
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-ink-label">
+                <SiteText variant="supporting">
                   MCP CLI Tools
-                </p>
+                </SiteText>
                 <p className="mt-2 text-sm text-ink-dim">
                   Add with a single command.
                 </p>
@@ -241,10 +231,10 @@ Postgres with Drizzle ORM.`}
 
         {/* Features */}
         <section className="border-t border-rail">
-          <div className="mx-auto max-w-5xl px-6 py-14">
-            <h2 className="text-2xl tracking-tight text-ink sm:text-3xl">
+          <div className="n3wth-site-container py-14">
+            <SiteHeading variant="section" level={2}>
               What you get
-            </h2>
+            </SiteHeading>
             <p className="mt-3 max-w-lg text-sm leading-relaxed text-ink-dim">
               r3 runs entirely on your machine. Embedded Redis, vector search,
               and knowledge graphs with no external services.
@@ -297,7 +287,7 @@ Postgres with Drizzle ORM.`}
 
         {/* Bottom CTA */}
         <section className="border-t border-rail">
-          <div className="mx-auto max-w-5xl px-6 py-14 text-center">
+          <div className="n3wth-site-container py-14 text-center">
             <p className="text-xl text-ink-dim">
               Your AI forgets everything between sessions.
             </p>
