@@ -1,5 +1,6 @@
 import { siteConfig } from '../data/content'
 import { siteUrls } from '../data/sites'
+import { SiteFooter } from '@n3wth/ui/site'
 
 /** A compact row of social and project links. */
 const links = [
@@ -14,29 +15,18 @@ const links = [
 
 export function Footer() {
   return (
-    <footer className="mt-auto" style={{ borderTop: '1px solid var(--rail)' }} data-nosnippet>
-      {/* Same column + gutters as page content so text edges align */}
-      <div className="frame" style={{ paddingInline: 'var(--gutter)' }}>
-        <div className="py-8">
-          <nav aria-label="Footer">
-            <ul className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+    <SiteFooter data-nosnippet brand={<a href="/">n3wth</a>} links={<>
               {links.map((link) => (
-                <li key={link.label}>
                   <a
+                    key={link.label}
                     href={link.href}
-                    className="footer-link text-sm"
                     {...(link.external
                       ? { target: '_blank', rel: 'noopener noreferrer' }
                       : {})}
                   >
                     {link.label}
                   </a>
-                </li>
               ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </footer>
+    </>} />
   )
 }

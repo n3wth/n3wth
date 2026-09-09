@@ -58,7 +58,7 @@
   --rail-strong: var(--color-border-emphasized);
   --accent-rail: rgba(255, 255, 255, 0.32);
 
-  --frame-max: 1280px;
+  --frame-max: 1152px;
   --gutter: 1.5rem;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -68,7 +68,7 @@
 }
 
 @media (min-width: 768px) {
-  :root { --gutter: 2.5rem; }
+  :root { --gutter: 3rem; }
 }
 
 * { box-sizing: border-box; }
@@ -92,7 +92,7 @@ p { text-wrap: pretty; }
    8px into place. The floating nav lives on its own transition layer so
    it stays perfectly still while pages change beneath it. Browsers
    without the API (and reduced-motion users) get instant navigation. */
-.nav-island { view-transition-name: site-nav; }
+.n3wth-site-navigation { view-transition-name: site-nav; }
 ::view-transition-old(site-nav),
 ::view-transition-new(site-nav) {
   animation: none;
@@ -255,16 +255,19 @@ body {
 }
 
 /* Section padding inside the frame */
+.site-content-gutter {
+  padding-inline: var(--gutter);
+}
 .section-pad {
   padding-left: var(--gutter);
   padding-right: var(--gutter);
-  padding-top: 4.5rem;
-  padding-bottom: 4.5rem;
+  padding-top: var(--n3wth-section-space, 3rem);
+  padding-bottom: var(--n3wth-section-space, 3rem);
 }
 @media (min-width: 768px) {
   .section-pad {
-    padding-top: 7rem;
-    padding-bottom: 7rem;
+    padding-top: var(--n3wth-section-space, 4rem);
+    padding-bottom: var(--n3wth-section-space, 4rem);
   }
 }
 
@@ -462,12 +465,6 @@ body {
 }
 .skip-link:focus { top: 0; }
 
-@media (max-width: 767px) {
-  .site-nav .nav-link::before {
-    inset: 0;
-  }
-}
-
 /* ---------- Focus ---------- */
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -498,94 +495,6 @@ body {
   .pad-tight { padding-top: 5.95rem; padding-bottom: 5.95rem; }
 }
 
-/* ---------- Brand lockup (matches agents reference) ---------- */
-/* Shared family treatment with agents.n3wth.com: boxed cursor glyph +
-   wordmark. n3wth.com is the parent brand (no sub-brand word). */
-.brand {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-
-/* Invisible hit extension: the wordmark is ~24px tall inside the 48px
-   island — same treatment as .nav-link::before so near-miss clicks
-   above/below the text still land. */
-.site-nav .brand::before {
-  content: '';
-  position: absolute;
-  inset: -12px -8px;
-}
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  color: var(--ink);
-}
-
-/* ---------- Footer links (Connect / ecosystem / legal) ---------- */
-.footer-link {
-  position: relative;
-  color: var(--ink-dim);
-  transition: color 0.2s var(--ease);
-}
-.footer-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.7;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.35s cubic-bezier(0.16, 0, 0.1, 1);
-}
-.footer-link:hover {
-  color: var(--ink);
-}
-.footer-link:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-.footer-link-muted {
-  position: relative;
-  /* ink-dim, not ink-faint: these are live links and faint fails AA */
-  color: var(--ink-dim);
-  transition: color 0.2s var(--ease);
-}
-.footer-link-muted::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.7;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.35s cubic-bezier(0.16, 0, 0.1, 1);
-}
-.footer-link-muted:hover {
-  color: var(--ink);
-}
-.footer-link-muted:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .footer-link::after,
-  .footer-link-muted::after {
-    transition: none;
-  }
-}
 
 /* Small section label (footer columns) — matches garden.n3wth.com */
 .label {
@@ -595,261 +504,6 @@ body {
   color: var(--ink-dim);
 }
 
-/* ---------- Floating island nav (matches garden.n3wth.com) ----------
-   NOTE: declare only the standard backdrop-filter — writing the -webkit-
-   prefix by hand makes the minifier merge the pair and emit only the
-   prefixed form, which drops the effect entirely. */
-/* Glass, kept flat: one translucent fill, a strong gaussian backdrop
-   blur, a hairline border. No sheen gradient, no drop shadow.
-   transform: translate3d(0,0,0) forces GPU compositing for the blur. */
-.nav-island {
-  position: relative;
-  z-index: 1;
-  transform: translate3d(0, 0, 0);
-  background: color-mix(in srgb, var(--bg) 72%, transparent);
-  backdrop-filter: blur(28px) saturate(1.4);
-  border: 1px solid var(--rail-strong);
-  border-radius: 16px;
-}
-
-/* Users who prefer reduced transparency: solid background, no blur. */
-@media (prefers-reduced-transparency: reduce) {
-  .nav-island {
-    background: var(--bg);
-    backdrop-filter: none;
-  }
-}
-
-@media (min-width: 768px) {
-  .nav-island {
-    border-radius: 9999px;
-  }
-}
-
-/* Nav links — compact, medium weight, pill hover/active. The visual
-   pill is 32px; an invisible extension raises the true hit target to
-   the island's full 48px height so clicks land reliably. Horizontal
-   extension is -1px — exactly half the 2px gap between pills — so
-   adjacent hit areas meet at the midpoint instead of overlapping and
-   sending gap clicks to the wrong neighbor. */
-.nav-link::before {
-  content: '';
-  position: absolute;
-  inset: -8px -1px;
-}
-
-.nav-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 9999px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.006em;
-  color: var(--ink-dim);
-  transition: color 0.15s var(--ease);
-}
-
-/* The pill visual lives on ::after so press feedback can scale it
-   without shrinking the link's real hit area under the pointer. */
-.nav-link::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: 9999px;
-  transition:
-    background 0.15s var(--ease),
-    transform 0.15s var(--ease);
-}
-
-.nav-link:hover {
-  color: var(--ink);
-}
-.nav-link:hover::after {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.nav-link-active {
-  color: var(--ink);
-}
-.nav-link-active::after {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* Hamburger: extend the true hit area to the physical screen edge
-   (island pr-2 = 8px + header inset-x-3 = 12px) — one-handed thumbs
-   tap flush against the edge where the icon visually sits. */
-.nav-burger {
-  position: relative;
-  /* Astryx's ghost variant defaults to full-contrast ink; every other
-     icon in the island (nav-search, nav-link at rest) sits at ink-dim
-     until hover. !important beats the component's stylex atomics. */
-  color: var(--ink-dim) !important;
-}
-.nav-burger:hover {
-  color: var(--ink) !important;
-}
-.nav-burger::after {
-  content: '';
-  position: absolute;
-  inset: -8px -20px -8px -8px;
-}
-
-/* Icon buttons in nav island — GitHub, mail, search. The island is only
-   48px tall, so the hit area is widened rather than drawing chrome. */
-.nav-icon {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent;
-  color: var(--ink-dim);
-  cursor: pointer;
-  transition: color 0.15s var(--ease);
-}
-.nav-icon:hover {
-  color: var(--ink);
-}
-.nav-icon:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-.nav-icon::after {
-  content: '';
-  position: absolute;
-  inset: -6px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nav-icon {
-    transition: none;
-  }
-}
-
-/* Search trigger (legacy class, now uses nav-icon) */
-.nav-search {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: var(--ink-dim);
-  cursor: pointer;
-  transition: color 0.15s var(--ease);
-}
-.nav-search:hover {
-  color: var(--ink);
-}
-.nav-search:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-.nav-search::after {
-  content: '';
-  position: absolute;
-  inset: -6px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nav-search {
-    transition: none;
-  }
-}
-
-/* Full-screen mobile menu */
-@keyframes menu-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: none; }
-}
-
-.mobile-menu {
-  animation: menu-in 0.25s var(--ease) both;
-  /* iOS ignores body overflow:hidden — stop scroll gestures that start
-     on the sheet from moving the page beneath. The link list overrides
-     this with touch-action: pan-y so it can still scroll on short
-     viewports. */
-  touch-action: none;
-  overscroll-behavior: contain;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mobile-menu { animation: none; }
-}
-
-.mobile-nav {
-  border-top: 1px solid var(--rail);
-}
-
-.mobile-nav-link {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  width: 100%;
-  min-height: 56px;
-  padding: 0 0.25rem;
-  font-size: 1.0625rem;
-  font-weight: 500;
-  color: var(--ink);
-  text-align: left;
-  transition: background 0.2s var(--ease);
-}
-
-.mobile-nav-link + .mobile-nav-link {
-  border-top: 1px solid var(--rail);
-}
-
-.mobile-nav-link svg {
-  color: var(--ink-dim);
-  flex-shrink: 0;
-}
-
-.mobile-nav-link-active {
-  color: var(--ink);
-}
-.mobile-nav-link-active .mobile-nav-link-label::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -3px;
-  height: 1px;
-  background: var(--ink);
-}
-
-.mobile-nav-link:active {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.mobile-nav-link-label {
-  position: relative;
-  display: inline-block;
-  transition: transform 0.15s var(--ease);
-}
-
-/* Each row fades/rises in on open, staggered by its own position
-   (--row-i, set inline per element). Kept subtle: this is a menu,
-   not a hero — the point is a settled list, not a show. */
-@media (prefers-reduced-motion: no-preference) {
-  .mobile-nav-row {
-    animation: mobile-nav-row-in 0.32s var(--ease) both;
-    animation-delay: calc(var(--row-i, 0) * 40ms + 60ms);
-  }
-}
-@keyframes mobile-nav-row-in {
-  from { opacity: 0; transform: translateY(6px); }
-}
 
 /* ---------- LED status pixel (static white square) ---------- */
 .led {
@@ -865,7 +519,7 @@ body {
   /* min-height is ignored on display:inline — inline-flex makes the
      44px floor real for text links (footer, contact) too */
   a, button { min-height: 44px; }
-  .footer-link, .footer-link-muted, .link-underline {
+  .link-underline {
     display: inline-flex;
     align-items: center;
   }
@@ -1323,12 +977,6 @@ body {
    scale a visual layer, never the interactive element itself — shrinking
    the hit target under a finger drops edge taps. */
 @media (prefers-reduced-motion: no-preference) {
-  .nav-link:active::after {
-    transform: scale(0.96);
-  }
-  .mobile-nav-link:active .mobile-nav-link-label {
-    transform: scale(0.97);
-  }
   a.cell:active,
   .cell:has(> a):active,
   button:not([disabled]):active {

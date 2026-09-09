@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest'
 import { SiteNav } from './SiteNav'
 
 describe('SiteNav', () => {
-  it('renders GitHub as an icon link, not a hamburger', () => {
+  it('preserves GitHub and exposes the shared mobile navigation', () => {
     render(
       <MemoryRouter>
         <SiteNav />
@@ -15,9 +15,9 @@ describe('SiteNav', () => {
     expect(github).toBeInTheDocument()
     expect(github).toHaveAttribute('href', 'https://github.com/n3wth/ui')
 
-    // No hamburger button present
+    // The shared shell provides mobile navigation on every site.
     expect(
       screen.queryByRole('button', { name: /menu|hamburger|nav/i })
-    ).not.toBeInTheDocument()
+    ).toBeInTheDocument()
   })
 })

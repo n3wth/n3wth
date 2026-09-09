@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
@@ -94,7 +95,7 @@ export function RequestsClient() {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start justify-between mb-8">
             <div>
@@ -105,12 +106,7 @@ export function RequestsClient() {
               >
                 <span>&larr;</span> All skills
               </Link>
-              <h1 className="text-3xl md:text-4xl font-semibold text-white">
-                Feature Requests
-              </h1>
-              <p className="mt-2" style={{ color: 'var(--color-grey-300)' }}>
-                Submit ideas for new skills, and vote on requests from the community.
-              </p>
+              <PageHeader title={<>Feature Requests</>} description={<>Submit ideas for new skills, and vote on requests from the community.</>} />
             </div>
             <button
               onClick={() => setShowCreateForm(true)}

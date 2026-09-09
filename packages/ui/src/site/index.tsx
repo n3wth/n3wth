@@ -1,6 +1,6 @@
 'use client'
 
-import type { HTMLAttributes, ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type ComponentProps, type HTMLAttributes, type ReactNode } from 'react'
 import { Heading, Text } from '@astryxdesign/core'
 import { cn } from '../utils/cn'
 
@@ -16,7 +16,7 @@ export function SiteContainer({ as: Component = 'div', className, ...props }: Si
   return <Component className={cn('n3wth-site-container', className)} {...props} />
 }
 
-export function SiteSection({ className, ...props }: HTMLAttributes<HTMLElement>) {
+export function SiteSection({ className, ...props }: ComponentProps<'section'>) {
   return <section className={cn('n3wth-site-section', className)} {...props} />
 }
 
@@ -45,16 +45,90 @@ export interface PageHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'titl
   level?: 1 | 2
   description?: ReactNode
   actions?: ReactNode
+  aside?: ReactNode
 }
 
-export function PageHeader({ title, level = 1, description, actions, className, ...props }: PageHeaderProps) {
+export function PageHeader({ title, level = 1, description, actions, aside, className, ...props }: PageHeaderProps) {
   return (
-    <header className={cn('n3wth-site-page-header', className)} {...props}>
+    <header className={cn('n3wth-site-page-header', aside != null && 'n3wth-site-page-header--split', className)} {...props}>
       <div className="n3wth-site-page-header-copy">
         <SiteHeading variant={level === 1 ? 'page' : 'section'} level={level}>{title}</SiteHeading>
         {description != null && <SiteText className="n3wth-site-description">{description}</SiteText>}
+        {aside != null && actions != null && <div className="n3wth-site-actions">{actions}</div>}
       </div>
-      {actions != null && <div className="n3wth-site-actions">{actions}</div>}
+      {aside == null && actions != null && <div className="n3wth-site-actions">{actions}</div>}
+      {aside != null && <div className="n3wth-site-page-header-aside">{aside}</div>}
     </header>
   )
+}
+
+export interface SiteNavigationProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
+  brand: ReactNode
+  links: ReactNode
+  actions?: ReactNode
+  navigationLabel?: string
+  navigationId?: string
+  menuLabel?: string
+}
+
+/** Router links remain app-owned; layout and disclosure behavior live here. */
+export function SiteNavigation({ brand, links, actions, navigationLabel = 'Primary', navigationId, menuLabel = 'Open menu', className, ...props }: SiteNavigationProps) {
+  const [open, setOpen] = useState(false)
+  const generatedId = useId()
+  const menuId = navigationId ?? `site-navigation-${generatedId}`
+  const button = useRef<HTMLButtonElement>(null)
+  const header = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    header.current?.querySelector<HTMLAnchorElement>('.n3wth-site-navigation-links a')?.focus()
+    const dismiss = (event: PointerEvent) => {
+      if (!header.current?.contains(event.target as Node)) setOpen(false)
+    }
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setOpen(false)
+      button.current?.focus()
+    }
+    document.addEventListener('pointerdown', dismiss)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('pointerdown', dismiss)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [open])
+
+  return (
+    <header {...props} ref={header} className={cn('n3wth-site-navigation', className)}>
+      <div className="n3wth-site-navigation-island">
+        <div className="n3wth-site-navigation-brand" onClick={() => setOpen(false)}>{brand}</div>
+        <nav id={menuId} aria-label={navigationLabel} className="n3wth-site-navigation-links" data-open={open} onClick={(event) => {
+          if ((event.target as Element).closest('a')) setOpen(false)
+        }}>{links}</nav>
+        <div className="n3wth-site-navigation-actions" onClick={() => setOpen(false)}>{actions}</div>
+        <button ref={button} type="button" className="n3wth-site-navigation-toggle" aria-label={open ? 'Close menu' : menuLabel} aria-controls={menuId} aria-expanded={open} onClick={() => setOpen(value => !value)}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
+            {open ? <path d="m6 6 12 12M6 18 18 6" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+          </svg>
+        </button>
+      </div>
+    </header>
+  )
+}
+
+export interface SiteFooterProps extends HTMLAttributes<HTMLElement> {
+  brand?: ReactNode
+  links?: ReactNode
+}
+
+export function SiteFooter({ brand, links, children, className, ...props }: SiteFooterProps) {
+  return <footer {...props} className={cn('n3wth-site-footer', className)}>
+    <SiteContainer>
+      <div className="n3wth-site-footer-row">
+        {brand != null && <div className="n3wth-site-footer-brand">{brand}</div>}
+        {links != null && <nav aria-label="Footer" className="n3wth-site-footer-links">{links}</nav>}
+      </div>
+      {children != null && <div className="n3wth-site-footer-meta">{children}</div>}
+    </SiteContainer>
+  </footer>
 }

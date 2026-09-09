@@ -2,7 +2,13 @@
 
 import { Zap, Code, Lock, Globe, Cpu, Layers } from "lucide-react";
 import Link from "next/link";
-import { PageHeader, SiteContainer, SiteHeading, SiteText } from '@n3wth/ui/site';
+import {
+  PageHeader,
+  SiteContainer,
+  SiteHeading,
+  SiteSection,
+  SiteText,
+} from "@n3wth/ui/site";
 import { useState, lazy, Suspense } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -68,8 +74,6 @@ function InstallCommand({ command }: { command: string }) {
 }
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("mcp");
-
   const codeExamples = {
     mcp: `// MCP client config (e.g. .gemini/settings.json)
 {
@@ -91,65 +95,56 @@ gemini mcp list`,
       <JsonLd type="SoftwareApplication" />
       <Navigation />
 
-      <main id="main-content" className="flex-1 pt-20">
+      <main id="main-content" className="flex-1 n3wth-site-main">
         {/* Hero */}
-        <SiteContainer as="section" className="pt-12 pb-16 md:pt-16 md:pb-20">
-          <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12">
-            <div>
-              <PageHeader
-                style={{ flexDirection: 'column', alignItems: 'stretch', paddingBlock: 0 }}
-                title="Persistent memory for AI assistants"
-                description="An MCP server that gives AI assistants memory that survives between sessions. Local Redis, vector search, and knowledge graphs with zero configuration."
-                actions={<InstallCommand command="npx @n3wth/r3" />}
-              />
-            </div>
-
-            {/* Code comparison */}
-            <div className="grid gap-px overflow-hidden rounded-lg border border-rail-strong bg-rail-strong">
-              <div className="bg-bg-raise p-5">
-                <div className="flex items-center gap-2">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-400" />
-                  <SiteText variant="supporting">
-                    Without r3
-                  </SiteText>
-                </div>
-                <pre className="mt-3 overflow-x-auto font-mono text-xs leading-relaxed text-ink-faint">
-                  {`> What's my preferred stack?
+        <SiteContainer>
+          <PageHeader
+            title="Persistent memory for AI assistants"
+            description="An MCP server that gives AI assistants memory that survives between sessions. Local Redis, vector search, and knowledge graphs with zero configuration."
+            actions={<InstallCommand command="npx @n3wth/r3" />}
+            aside={
+              <div className="grid gap-px overflow-hidden rounded-lg border border-rail-strong bg-rail-strong">
+                <div className="bg-bg-raise p-5">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-red-400" />
+                    <SiteText variant="supporting">Without r3</SiteText>
+                  </div>
+                  <pre className="mt-6 overflow-x-auto font-mono text-xs leading-relaxed text-ink-faint">
+                    {`> What's my preferred stack?
 
 I don't have any information
 about your preferences.`}
-                </pre>
-              </div>
-              <div className="bg-bg-raise p-5">
-                <div className="flex items-center gap-2">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  <SiteText variant="supporting">
-                    With r3
-                  </SiteText>
+                  </pre>
                 </div>
-                <pre className="mt-3 overflow-x-auto font-mono text-xs leading-relaxed text-ink">
-                  {`> What's my preferred stack?
+                <div className="bg-bg-raise p-5">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <SiteText variant="supporting">With r3</SiteText>
+                  </div>
+                  <pre className="mt-6 overflow-x-auto font-mono text-xs leading-relaxed text-ink">
+                    {`> What's my preferred stack?
 
 Based on our past conversations:
 React + TypeScript, Tailwind,
 Postgres with Drizzle ORM.`}
-                </pre>
+                  </pre>
+                </div>
               </div>
-            </div>
-          </div>
+            }
+          />
         </SiteContainer>
 
         {/* How it works */}
-        <section className="border-t border-rail">
-          <div className="n3wth-site-container py-14">
+        <SiteSection className="border-t border-rail">
+          <SiteContainer>
             <SiteHeading variant="section" level={2}>
               How it works
             </SiteHeading>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-dim">
+            <SiteText className="mt-6">
               r3 runs a local Redis server with vector search. Your AI stores
               memories as embeddings and retrieves them by meaning, not just
               keywords.
-            </p>
+            </SiteText>
             <div className="mt-6 flex flex-wrap gap-3">
               <span className="inline-flex items-center rounded-md border border-rail px-3 py-1.5 text-xs font-medium text-ink-dim">
                 Semantic search
@@ -161,19 +156,19 @@ Postgres with Drizzle ORM.`}
                 Local-only
               </span>
             </div>
-          </div>
-        </section>
+          </SiteContainer>
+        </SiteSection>
 
         {/* Terminal demo */}
-        <section className="border-t border-rail">
-          <div className="n3wth-site-container py-14">
+        <SiteSection className="border-t border-rail">
+          <SiteContainer>
             <SiteHeading variant="section" level={2}>
               See it in action
             </SiteHeading>
-            <p className="mt-3 max-w-lg text-sm leading-relaxed text-ink-dim">
+            <SiteText className="mt-6">
               r3 storing and retrieving memories across sessions.
-            </p>
-            <div className="mt-10">
+            </SiteText>
+            <div className="mt-6">
               <Suspense
                 fallback={
                   <div className="bg-bg-soft rounded-lg p-6 animate-pulse h-64" />
@@ -182,65 +177,59 @@ Postgres with Drizzle ORM.`}
                 <TerminalDemo />
               </Suspense>
             </div>
-          </div>
-        </section>
+          </SiteContainer>
+        </SiteSection>
 
         {/* Integration */}
-        <section className="border-t border-rail">
-          <div className="n3wth-site-container py-14">
+        <SiteSection className="border-t border-rail">
+          <SiteContainer>
             <SiteHeading variant="section" level={2}>
               Get started
             </SiteHeading>
 
-            <div className="mt-8 grid gap-8 sm:grid-cols-2">
+            <div className="mt-6 grid gap-8 sm:grid-cols-2">
               <div>
-                <SiteText variant="supporting">
-                  MCP Desktop Clients
-                </SiteText>
-                <p className="mt-2 text-sm text-ink-dim">
+                <SiteText variant="supporting">MCP Desktop Clients</SiteText>
+                <SiteText className="mt-2">
                   Add r3 to your MCP config file.
-                </p>
+                </SiteText>
                 <div className="mt-4">
                   <CodeBlock language="json">{codeExamples.mcp}</CodeBlock>
                 </div>
               </div>
 
               <div>
-                <SiteText variant="supporting">
-                  MCP CLI Tools
-                </SiteText>
-                <p className="mt-2 text-sm text-ink-dim">
-                  Add with a single command.
-                </p>
+                <SiteText variant="supporting">MCP CLI Tools</SiteText>
+                <SiteText className="mt-2">Add with a single command.</SiteText>
                 <div className="mt-4">
                   <CodeBlock language="bash">{codeExamples.cli}</CodeBlock>
                 </div>
               </div>
             </div>
 
-            <p className="mt-8 text-sm text-ink-dim">
+            <SiteText className="mt-6">
               <Link
                 href="/docs/quickstart"
                 className="underline underline-offset-4 hover:text-ink"
               >
                 Full setup guide
               </Link>
-            </p>
-          </div>
-        </section>
+            </SiteText>
+          </SiteContainer>
+        </SiteSection>
 
         {/* Features */}
-        <section className="border-t border-rail">
-          <div className="n3wth-site-container py-14">
+        <SiteSection className="border-t border-rail">
+          <SiteContainer>
             <SiteHeading variant="section" level={2}>
               What you get
             </SiteHeading>
-            <p className="mt-3 max-w-lg text-sm leading-relaxed text-ink-dim">
+            <SiteText className="mt-6">
               r3 runs entirely on your machine. Embedded Redis, vector search,
               and knowledge graphs with no external services.
-            </p>
+            </SiteText>
 
-            <div className="mt-10">
+            <div className="mt-6">
               <BentoGrid>
                 <BentoCard
                   title="Semantic Search"
@@ -282,23 +271,21 @@ Postgres with Drizzle ORM.`}
                 />
               </BentoGrid>
             </div>
-          </div>
-        </section>
+          </SiteContainer>
+        </SiteSection>
 
         {/* Bottom CTA */}
-        <section className="border-t border-rail">
-          <div className="n3wth-site-container py-14 text-center">
-            <p className="text-xl text-ink-dim">
-              Your AI forgets everything between sessions.
-            </p>
-            <p className="text-xl text-ink font-medium mt-1">
+        <SiteSection className="border-t border-rail">
+          <SiteContainer>
+            <SiteText>Your AI forgets everything between sessions.</SiteText>
+            <SiteHeading variant="section" level={2}>
               One command adds persistent memory.
-            </p>
-            <div className="mt-8 flex justify-center">
+            </SiteHeading>
+            <div className="mt-6 flex">
               <InstallCommand command="npx @n3wth/r3" />
             </div>
-          </div>
-        </section>
+          </SiteContainer>
+        </SiteSection>
       </main>
 
       <Footer />

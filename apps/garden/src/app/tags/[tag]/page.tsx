@@ -6,6 +6,7 @@ import { Breadcrumbs as AstryxBreadcrumbs, BreadcrumbItem } from '@astryxdesign/
 import { Text } from '@astryxdesign/core/Text'
 import { getAllTags } from '@/lib/content'
 import { GrowthStage } from '@/components/GrowthStage'
+import { PageHeader, SiteContainer, SiteSection } from '@n3wth/ui/site'
 
 import { site } from '@/lib/site'
 
@@ -86,12 +87,12 @@ export default async function TagPage({ params }: PageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-6 md:px-12 py-16">
+    <SiteContainer>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mb-8">
+      <div>
         <div className="mb-4">
           <AstryxBreadcrumbs variant="supporting">
             <BreadcrumbItem href="/">Garden</BreadcrumbItem>
@@ -99,20 +100,13 @@ export default async function TagPage({ params }: PageProps) {
             <BreadcrumbItem>{decoded}</BreadcrumbItem>
           </AstryxBreadcrumbs>
         </div>
-        <h1 className="font-display text-[2rem] md:text-[2.5rem] leading-[1.1] font-semibold tracking-[-0.025em] text-[var(--color-text-primary)] mb-3">
-          {decoded}
-        </h1>
-        <p className="flex flex-wrap items-center gap-3 text-sm text-[var(--color-text-secondary)]">
-          <span>
-            {notes.length} {notes.length === 1 ? 'note' : 'notes'} in this grove
-          </span>
+        <PageHeader title={decoded} description={`${notes.length} ${notes.length === 1 ? 'note' : 'notes'} in this grove`} actions={
           <Link
             href={`/?grove=${encodeURIComponent(decoded)}`}
-            className="text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-secondary)] transition-colors"
           >
             Stand in this grove in the garden →
           </Link>
-        </p>
+        } />
         {neighbours.length > 0 && (
           <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-2">
             <span className="text-xs text-[var(--color-text-disabled)]">Neighbouring groves</span>
@@ -124,7 +118,7 @@ export default async function TagPage({ params }: PageProps) {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <SiteSection className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {sorted.map((note) => (
           <ClickableCard key={note.slug} label={note.title} href={`/${note.slug}`}>
             <div className="flex flex-col min-h-[100px]">
@@ -142,7 +136,7 @@ export default async function TagPage({ params }: PageProps) {
             </div>
           </ClickableCard>
         ))}
-      </div>
-    </div>
+      </SiteSection>
+    </SiteContainer>
   )
 }

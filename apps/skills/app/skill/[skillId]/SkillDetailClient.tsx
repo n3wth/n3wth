@@ -1,4 +1,5 @@
 'use client'
+import { PageHeader } from '@n3wth/ui/site'
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
@@ -70,7 +71,7 @@ export function SkillDetailClient({ skillId }: Props) {
         <div className="mesh-gradient" />
         <div className="noise-overlay" />
         <IslandNav />
-        <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+        <main className="n3wth-site-container n3wth-site-main">
           <div className="max-w-4xl">
             <Link
               href="/"
@@ -80,12 +81,7 @@ export function SkillDetailClient({ skillId }: Props) {
               <span>&larr;</span> Back to skills
             </Link>
 
-            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
-              Skill Not Found
-            </h1>
-            <p className="text-lg mb-12" style={{ color: 'var(--color-grey-300)' }}>
-              The requested skill doesn't exist or may have been renamed. Browse the full collection to find what you need.
-            </p>
+            <PageHeader title={<>Skill Not Found</>} description={<>The requested skill doesn't exist or may have been renamed. Browse the full collection to find what you need.</>} />
           </div>
         </main>
         <Footer />
@@ -101,7 +97,7 @@ export function SkillDetailClient({ skillId }: Props) {
       <div className="noise-overlay" />
       <IslandNav />
 
-      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl">
           <Link
             href="/"
@@ -130,16 +126,7 @@ export function SkillDetailClient({ skillId }: Props) {
             )}
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tight">
-            {skill.name}
-          </h1>
-
-          <p
-            className="text-lg md:text-xl leading-relaxed mb-6"
-            style={{ color: 'var(--color-grey-200)' }}
-          >
-            {skill.description}
-          </p>
+          <PageHeader title={<>{skill.name}</>} description={<>{skill.description}</>} />
 
           {skill.longDescription && (
             <p

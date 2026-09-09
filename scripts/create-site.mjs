@@ -34,7 +34,7 @@ export function createSite(root, slug, title = slug) {
     'tsconfig.json': JSON.stringify({ compilerOptions: { target: 'ES2022', lib: ['ES2022', 'DOM', 'DOM.Iterable'], module: 'ESNext', moduleResolution: 'Bundler', jsx: 'react-jsx', strict: true, skipLibCheck: true, noEmit: true }, include: ['src'] }, null, 2) + '\n',
     'src/main.tsx': `import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { N3wthProvider, PageHeader, SiteContainer, SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
+import { N3wthProvider, PageHeader, SiteContainer, SiteSection, SiteHeading, SiteText, SiteNavigation, SiteFooter } from '@n3wth/ui/site'
 import '@n3wth/ui/site.css'
 import './styles.css'
 
@@ -44,13 +44,15 @@ document.title = title
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <N3wthProvider mode="dark">
-      <SiteContainer as="main">
+      <SiteNavigation brand={<a href="/">{title}</a>} links={<a href="#start">Start here</a>} />
+      <SiteContainer as="main" className="n3wth-site-main">
         <PageHeader title={title} description="A new idea, built with the shared site system." />
-        <SiteSection>
+        <SiteSection id="start">
           <SiteHeading variant="section">Start here</SiteHeading>
           <SiteText>Replace this introduction with the problem this site helps people solve.</SiteText>
         </SiteSection>
       </SiteContainer>
+      <SiteFooter brand={title} links={<a href="#start">Start here</a>} />
     </N3wthProvider>
   </StrictMode>,
 )

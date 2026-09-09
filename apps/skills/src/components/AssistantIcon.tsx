@@ -7,23 +7,16 @@ interface AssistantIconProps {
 }
 
 export function AssistantIcon({ assistant, size = 16, className = '' }: AssistantIconProps) {
-  const iconProps = {
-    width: size,
-    height: size,
-    viewBox: '0 0 24 24',
-    fill: 'currentColor',
-    className,
-  }
+  if (assistant !== 'gemini') return null
 
-  switch (assistant) {
-    case 'gemini':
-      // Google Gemini sparkle icon
-      return (
-        <svg {...iconProps}>
-          <path d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z" />
-        </svg>
-      )
-    default:
-      return null
-  }
+  return (
+    <span
+      role="img"
+      aria-label="Google Gemini"
+      className={className}
+      style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: size, height: size, fontSize: size, fontWeight: 600, lineHeight: 1 }}
+    >
+      G
+    </span>
+  )
 }

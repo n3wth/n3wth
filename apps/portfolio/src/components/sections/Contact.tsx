@@ -3,6 +3,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
 import { ConvergeLight } from '../ConvergeLight'
 import { siteConfig } from '../../data/content'
+import { PageHeader } from '@n3wth/ui/site'
 
 export function Contact() {
   const [copyStatus, setCopyStatus] = useState('')
@@ -28,15 +29,7 @@ export function Contact() {
       </div>
 
       <div className="frame w-full">
-        <div className="section-pad w-full">
-          <div className="max-w-3xl">
-            <h1 className="display page-title">Let's talk</h1>
-
-            <p className="mt-6 text-base md:text-xl leading-relaxed max-w-lg" style={{ color: 'var(--ink-dim)' }}>
-              Product, AI safety, or LED art. Coffee if you're in San Francisco.
-            </p>
-
-            <div className="mt-10 flex flex-wrap items-center gap-3">
+        <PageHeader className="site-content-gutter" title="Let's talk" description="Product, AI safety, or LED art. Coffee if you're in San Francisco." actions={<>
               <Button
                 label={siteConfig.email}
                 variant="primary"
@@ -49,12 +42,10 @@ export function Contact() {
               <a className="btn min-h-11" href={siteConfig.social.linkedin} rel="me noopener">
                 LinkedIn
               </a>
-            </div>
-            <p role="status" aria-live="polite" aria-atomic="true" className="mt-3 min-h-6 text-sm" style={{ color: 'var(--ink-dim)' }}>
+        </>} />
+            <p role="status" aria-live="polite" aria-atomic="true" className="site-content-gutter min-h-6 text-sm" style={{ color: 'var(--ink-dim)' }}>
               {copyStatus}
             </p>
-          </div>
-        </div>
       </div>
     </section>
   )

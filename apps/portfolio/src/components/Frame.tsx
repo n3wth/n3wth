@@ -18,6 +18,6 @@ export function SectionHeader({
   as?: 'h1' | 'h2'
 }) {
   return (
-    <PageHeader data-reveal className="section-pad" title={title} description={lede} actions={action} level={Heading === 'h1' ? 1 : 2} />
+    <PageHeader data-reveal className="site-content-gutter" title={title} description={lede} actions={action} level={Heading === 'h1' ? 1 : 2} />
   )
 }

@@ -3,6 +3,7 @@ import { getAllNotes, getPublishedNoteCount } from '@/lib/content'
 import { getGraphData } from '@/lib/graph'
 import { NotesIndexClient, type NoteListItem } from '@/components/NotesIndexClient'
 import { PageHeader } from '@/components/PageHeader'
+import { SiteContainer, SiteSection } from '@n3wth/ui/site'
 
 import { site } from '@/lib/site'
 
@@ -59,7 +60,7 @@ export default function NotesPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-6 md:px-12 py-16">
+    <SiteContainer>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -84,7 +85,7 @@ export default function NotesPage() {
           sub="Each note drawn as it grows in the world — its height is its maturity, its branches are its connections."
         />
       </div>
-      <NotesIndexClient notes={notes} />
-    </div>
+      <SiteSection><NotesIndexClient notes={notes} /></SiteSection>
+    </SiteContainer>
   )
 }

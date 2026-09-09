@@ -68,7 +68,7 @@ p { text-wrap: pretty; }
 
 /* The floating nav island persists across pages: give it its own
    snapshot group and hold it perfectly still. */
-.site-nav {
+.n3wth-site-navigation {
   view-transition-name: site-nav;
 }
 ::view-transition-old(site-nav),
@@ -286,16 +286,8 @@ button:focus-visible,
 /* Hero, scene, instructions and links each own their space. */
 .home-immersive {
   background: var(--color-background-body);
-  margin-top: -5rem;
-  padding-top: 5rem;
   min-height: 100svh;
 }
-.home-introduction {
-  max-width: 1200px;
-  margin-inline: auto;
-  padding: 1rem 1.5rem 0.5rem;
-}
-.home-introduction h1 { min-width: 0; }
 .home-garden-stage {
   height: clamp(540px, 78svh, 900px);
   overflow: clip;
@@ -314,13 +306,9 @@ button:focus-visible,
   padding-bottom: env(safe-area-inset-bottom);
 }
 @media (min-width: 768px) {
-  .home-introduction {
-    padding: 1.25rem 2.5rem 0.5rem;
-  }
   .home-garden-caption { padding-inline: 2.5rem; }
 }
 @media (max-width: 600px) {
-  .home-introduction { padding: 2.5rem 1.25rem 0.5rem; }
   .home-garden-caption { flex-direction: column; text-align: center; }
 }
 
@@ -331,20 +319,9 @@ button:focus-visible,
   .pointer-fine-only { display: none; }
 
   /* Native minimum touch targets for the small chrome */
-  .nav-island button,
-  .nav-island a,
   .tag-pill,
-  .glass-pill,
-  footer nav a {
+  .glass-pill {
     min-height: 44px;
-  }
-  .nav-island button {
-    min-width: 44px;
-  }
-  /* Stacked 13px footer links need the tap area centered on the text */
-  footer nav a {
-    display: inline-flex;
-    align-items: center;
   }
 }
 
@@ -886,148 +863,6 @@ button:focus-visible,
 }
 
 
-/* Floating island nav — detached glass pill with real Gaussian blur */
-.nav-island {
-  display: flex;
-  height: 3rem;
-  padding: 0 12px;
-  isolation: isolate;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.02)
-    ),
-    color-mix(in srgb, var(--color-background-body) 72%, transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  backdrop-filter: blur(16px) saturate(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-island:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-@media (max-width: 600px) {
-  .nav-island {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    padding: 4px 12px;
-    row-gap: 0;
-  }
-
-  .nav-island > nav {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-content: space-between;
-    margin-left: 0;
-  }
-
-  .nav-island > span {
-    grid-column: 2;
-    grid-row: 1;
-    margin-left: 0;
-  }
-
-  .nav-island > a,
-  .nav-island .nav-link,
-  .nav-island .nav-search {
-    min-height: 44px;
-  }
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .nav-island {
-    background: var(--color-background-body);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-}
-
-@media (min-width: 768px) {
-  .nav-island {
-    padding-inline: 20px;
-    border-radius: 9999px;
-  }
-}
-
-/* Nav links — compact, medium weight, pill hover/active */
-.nav-link {
-  display: inline-flex;
-  align-items: center;
-  height: 28px;
-  padding: 0 8px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: -0.006em;
-  color: var(--color-text-secondary);
-  white-space: nowrap;
-  transition:
-    color 0.15s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.15s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@media (min-width: 768px) {
-  .nav-link {
-    height: 32px;
-    padding: 0 12px;
-    font-size: 13px;
-  }
-}
-
-.nav-link:hover {
-  color: var(--color-text-primary);
-  background: var(--color-overlay-hover);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .nav-link:active {
-    transform: scale(0.96);
-  }
-}
-
-.nav-link-active {
-  color: var(--color-text-primary);
-  background: var(--color-overlay-pressed);
-}
-
-/* Bare icon tap-target — matches n3wth.com's nav-search exactly. */
-.nav-search {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  transition: color 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-search:hover {
-  color: var(--color-text-primary);
-}
-
-.nav-search::after {
-  content: '';
-  position: absolute;
-  inset: -6px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nav-search {
-    transition: none;
-  }
-}
 
 /* Plant glyph draw-in: the note's plant grows when the page opens */
 .plant-draw path {

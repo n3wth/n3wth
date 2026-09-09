@@ -1,3 +1,4 @@
+import { PageHeader, SiteContainer, SiteSection, SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -56,21 +57,16 @@ export default function BlogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
       />
-      <main className="mx-auto max-w-2xl px-6 pt-32 pb-24">
-        <h1 className="text-3xl font-bold tracking-tight text-ink">
-          Blog
-        </h1>
-        <p className="mt-3 text-ink-dim">
-          Notes on registries, context packs, and generated UI.
-        </p>
+      <SiteContainer as="main" className="n3wth-site-main">
+        <PageHeader title="Blog" description="Notes on registries, context packs, and generated UI." />
 
-        <div className="mt-16 space-y-12">
+        <SiteSection className="space-y-12">
           {posts.map((post) => (
             <article key={post.slug}>
               <Link href={`/blog/${post.slug}`} className="group block">
-                <h2 className="text-xl font-semibold text-ink transition-colors group-hover:text-ink-dim">
+                <SiteHeading variant="item" level={2}>
                   {post.title}
-                </h2>
+                </SiteHeading>
                 <time className="mt-2 block text-sm text-ink-faint">
                   {post.date}
                 </time>
@@ -78,8 +74,8 @@ export default function BlogPage() {
               </Link>
             </article>
           ))}
-        </div>
-      </main>
+        </SiteSection>
+      </SiteContainer>
     </div>
   )
 }

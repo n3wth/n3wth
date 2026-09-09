@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { N3wthProvider, PageHeader, SiteContainer, SiteHeading, SiteSection, SiteText, n3wthTheme } from './index'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { N3wthProvider, PageHeader, SiteContainer, SiteFooter, SiteHeading, SiteNavigation, SiteSection, SiteText, n3wthTheme } from './index'
 import { generateThemeCSS } from '@astryxdesign/core/theme'
 
 describe('shared site composition', () => {
@@ -34,5 +34,36 @@ describe('shared site composition', () => {
     expect(document.documentElement).toHaveAttribute('data-theme', 'light')
     expect(screen.getByRole('heading', { level: 2, name: 'Details' }).closest('header')).toHaveAttribute('id', 'details')
     expect(screen.getByRole('heading', { level: 2, name: 'Details' })).toHaveClass('n3wth-site-heading--section')
+  })
+
+  it('closes navigation with Escape and restores focus to its trigger', () => {
+    render(<SiteNavigation brand={<a href="/">Site</a>} links={<a href="/docs">Docs</a>} />)
+    const toggle = screen.getByRole('button', { name: 'Open menu' })
+    fireEvent.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByRole('link', { name: 'Docs' })).toHaveFocus()
+    fireEvent.keyDown(document, { key: 'Escape' })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(toggle).toHaveFocus()
+  })
+
+  it('keeps app link actions and dismisses navigation after activation or outside clicks', () => {
+    let activated = false
+    render(<SiteNavigation brand={<a href="/">Site</a>} links={<a href="/docs" onClick={event => { event.preventDefault(); activated = true }}>Docs</a>} />)
+    const toggle = screen.getByRole('button', { name: 'Open menu' })
+    fireEvent.click(toggle)
+    fireEvent.click(screen.getByRole('link', { name: 'Docs' }))
+    expect(activated).toBe(true)
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(toggle)
+    fireEvent.pointerDown(document.body)
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('keeps hero demonstrations outside the text and gives footer links a landmark', () => {
+    render(<><PageHeader title="Kit" actions={<a href="/docs">Start</a>} aside={<pre>Example</pre>} /><SiteFooter brand={<a href="/">Kit</a>} links={<a href="/privacy">Privacy</a>}>Built by Oliver</SiteFooter></>)
+    expect(screen.getByText('Example').closest('.n3wth-site-page-header-aside')).not.toBeNull()
+    expect(screen.getByRole('navigation', { name: 'Footer' })).toContainElement(screen.getByRole('link', { name: 'Privacy' }))
+    expect(screen.getByRole('contentinfo')).toHaveTextContent('Built by Oliver')
   })
 })

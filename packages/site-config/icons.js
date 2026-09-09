@@ -5,7 +5,7 @@ export const siteIcons = {
   garden: { name: 'Garden', symbol: 'Sprout', paths: '<path d="M32 46V32M32 35C22 35 18 29 18 21C28 21 32 27 32 35ZM32 31C32 23 38 18 46 18C46 27 41 32 32 32"/>' },
   kit: { name: 'Kit', symbol: 'Cube', paths: '<path d="M32 16L47 24V41L32 49L17 41V24ZM17 24L32 33L47 24M32 33V49"/>' },
   r3: { name: 'r3', symbol: 'Rings', paths: '<circle cx="32" cy="32" r="16"/><circle cx="32" cy="32" r="9"/><circle cx="32" cy="32" r="2" fill="currentColor" stroke="none"/>' },
-  skills: { name: 'Skills', symbol: 'Spark', paths: '<path d="M32 16L37 27L48 32L37 37L32 48L27 37L16 32L27 27Z"/>' },
+  skills: { name: 'Skills', symbol: 'Cards', paths: '<rect x="18" y="24" width="28" height="22" rx="3"/><path d="M22 18h20M27 31h10M27 38h6"/>' },
   ui: { name: 'UI', symbol: 'Grid', paths: '<rect x="18" y="18" width="11" height="11" rx="2"/><rect x="35" y="18" width="11" height="11" rx="2"/><rect x="18" y="35" width="11" height="11" rx="2"/><rect x="35" y="35" width="11" height="11" rx="2"/>' },
 }
 

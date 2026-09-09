@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router'
 import { useGoogleAnalytics } from './useGoogleAnalytics'
 import { SiteNav } from './SiteNav'
 import { N3wthProvider, PageHeader, SiteContainer } from '@n3wth/ui/site'
-import { Footer } from '@n3wth/ui'
+import { SiteFooter } from '@n3wth/ui/site'
 import { siteLinks, legalLinks } from './siteLinks'
 import { Icon } from '@n3wth/ui'
 import { useTheme } from '@n3wth/ui'
@@ -21,7 +21,7 @@ declare const __UI_VERSION__: string
 const version = __UI_VERSION__
 
 const sidebarItems = [
-  { id: 'tokens', label: 'Design Tokens', icon: 'sparkles' as const },
+  { id: 'tokens', label: 'Design Tokens', icon: 'grid' as const },
   { id: 'atoms', label: 'Atoms', icon: 'grid' as const },
   { id: 'molecules', label: 'Molecules', icon: 'code' as const },
   { id: 'organisms', label: 'Organisms', icon: 'list' as const },
@@ -86,7 +86,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
       {/* Hero */}
       <div className="relative">
         <FloatingShapes />
-        <SiteContainer className="pt-24">
+        <SiteContainer className="n3wth-site-main">
         <PageHeader
           title="Flat, minimal components"
           description={<>An atomic design system for Newth sites.<br />No shadows, no glows.</>}
@@ -99,7 +99,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
       </div>
 
       {/* Main content with sidebar */}
-      <div id="main-content" className="max-w-6xl mx-auto px-6 md:px-12 pb-24">
+      <div id="main-content" className="n3wth-site-container">
         <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
           {/* Sidebar - desktop */}
           <aside className="hidden lg:block">
@@ -156,7 +156,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
           </div>
 
           {/* Content */}
-          <main className="min-w-0 space-y-20 pt-8 lg:pt-0">
+          <main className="min-w-0">
             <TokensSection />
             <AtomsSection />
             <MoleculesSection theme={theme} onThemeToggle={toggleTheme} />
@@ -167,12 +167,10 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
       </div>
 
       {/* Footer */}
-      <Footer
-        sites={siteLinks}
-        currentSite="n3wth/ui"
-        legalLinks={legalLinks}
-        copyright={`\u00A9 ${new Date().getFullYear()} n3wth`}
-      />
+      <SiteFooter brand={<a href="/">n3wth/ui</a>} links={<>
+        {siteLinks.map(link => <a key={link.href} href={link.href}>{link.name}</a>)}
+        {legalLinks.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}
+      </>}>© {new Date().getFullYear()} n3wth</SiteFooter>
     </div>
   )
 }

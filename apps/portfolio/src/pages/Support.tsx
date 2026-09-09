@@ -2,6 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@astryxdesign/core/Button'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { track } from '../lib/analytics'
+import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
 
 const projects = [
   {
@@ -33,18 +34,10 @@ export default function Support() {
 
   return (
     <section aria-label="Support">
-      <header data-reveal className="section-pad pb-8 md:pb-12">
-        <h1
-          className="display page-title max-w-[18ch]"
-          style={{ letterSpacing: '-0.03em', lineHeight: 1 }}
-        >
-          Need a hand with something I built?
-        </h1>
-        <p className="t-lead mt-6 max-w-xl" style={{ color: 'var(--ink-dim)' }}>
+      <PageHeader data-reveal className="site-content-gutter" title="Need a hand with something I built?" description={<>
           One inbox covers everything. Include the product name and what you
           were doing when things went sideways; screenshots help.
-        </p>
-        <div className="mt-10">
+        </>} actions={
           <Button
             label="support@n3wth.com"
             variant="primary"
@@ -52,10 +45,9 @@ export default function Support() {
             clickAction={() => track('support_contact_clicked', { project: 'all', channel: 'email' })}
             endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
           />
-        </div>
-      </header>
+        } />
 
-      <div data-reveal className="section-pad !pt-0">
+      <SiteSection data-reveal className="site-content-gutter">
         <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <li
@@ -63,11 +55,11 @@ export default function Support() {
               className="border-t pt-5"
               style={{ borderColor: 'var(--rail-strong)' }}
             >
-              <h2 className="display text-lg" style={{ letterSpacing: '-0.025em', lineHeight: 1.1 }}>
+              <SiteHeading variant="item" level={2}>
                 <a href={project.href} className="link-underline">
                   {project.name}
                 </a>
-              </h2>
+              </SiteHeading>
               <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                 {project.purpose}
               </p>
@@ -82,7 +74,7 @@ export default function Support() {
             </li>
           ))}
         </ul>
-      </div>
+      </SiteSection>
     </section>
   )
 }

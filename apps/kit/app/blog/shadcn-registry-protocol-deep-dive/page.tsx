@@ -1,3 +1,4 @@
+import { SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
 import { PostLayout } from '../_components/post-layout'
 
@@ -55,9 +56,9 @@ export default function Post() {
         extend it or to build on top of it.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         Why source code distribution matters
-      </h2>
+      </SiteHeading>
 
       <p>
         Before getting into the mechanics, it helps to understand the design
@@ -86,9 +87,9 @@ export default function Post() {
         against them.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         The registry schema
-      </h2>
+      </SiteHeading>
 
       <p>
         A registry is a collection of JSON files served over HTTP. There are two
@@ -169,9 +170,9 @@ export default function Post() {
         a separate request per file. One fetch per registry item is all it takes.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         Item types
-      </h2>
+      </SiteHeading>
 
       <p>
         The{' '}
@@ -201,9 +202,9 @@ registry:file       // Arbitrary files (config, types, etc.)`}
         component files, which is how design system tokens get distributed.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         Dependency resolution
-      </h2>
+      </SiteHeading>
 
       <p>
         The two dependency fields serve different purposes:
@@ -245,9 +246,9 @@ registry:file       // Arbitrary files (config, types, etc.)`}
         rather than your registry.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         The install flow in detail
-      </h2>
+      </SiteHeading>
 
       <p>
         Running the install command triggers a multi-step process:
@@ -307,9 +308,9 @@ registry:file       // Arbitrary files (config, types, etc.)`}
         JSON and writes files.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         How kit builds the registry
-      </h2>
+      </SiteHeading>
 
       <p>
         kit&apos;s registry lives in a Next.js project. The source components
@@ -381,9 +382,9 @@ for (const item of registry.items) {
 }`}
       </pre>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         Building your own registry
-      </h2>
+      </SiteHeading>
 
       <p>
         The protocol is open and the schema is public. Building your own registry
@@ -434,9 +435,9 @@ registry/
         </li>
       </ul>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         The style item: distributing design tokens
-      </h2>
+      </SiteHeading>
 
       <p>
         The{' '}
@@ -490,9 +491,9 @@ registry/
         up the correct tokens automatically.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         What the protocol does not handle
-      </h2>
+      </SiteHeading>
 
       <p>
         The registry protocol is deliberately narrow. It handles one thing:
@@ -524,9 +525,9 @@ registry/
         </li>
       </ul>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         Extending the protocol for AI tools
-      </h2>
+      </SiteHeading>
 
       <p>
         AI coding tools have a different requirement than the shadcn CLI: they
@@ -576,9 +577,9 @@ Constraints:
         contains.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-ink">
+      <SiteHeading variant="section" level={2} className="mt-12">
         Protocol summary
-      </h2>
+      </SiteHeading>
 
       <p>
         The shadcn registry protocol is:

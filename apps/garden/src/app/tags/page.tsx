@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getAllTags } from '@/lib/content'
 import { PageHeader } from '@/components/PageHeader'
+import { SiteContainer, SiteSection, SiteHeading } from '@n3wth/ui/site'
 
 import { site } from '@/lib/site'
 
@@ -78,7 +79,7 @@ export default function TagsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-6 md:px-12 py-16">
+    <SiteContainer>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -101,7 +102,7 @@ export default function TagsPage() {
           sub="Where notes gather by topic. The largest groves are the ones named on the ground in the garden."
         />
       </div>
-      <div className="flex flex-wrap items-baseline gap-3">
+      <SiteSection aria-label="Groves" className="flex flex-wrap items-baseline gap-3">
         {groves.map(([tag, notes]) => (
           <Link
             key={tag}
@@ -113,13 +114,13 @@ export default function TagsPage() {
             <span className="text-[var(--color-text-secondary)]">{notes.length}</span>
           </Link>
         ))}
-      </div>
+      </SiteSection>
 
       {singles.length > 0 && (
-        <section className="mt-16 pt-8 border-t border-[var(--color-border)]">
-          <h2 className="font-display text-lg font-semibold text-[var(--color-text-primary)]">
+        <SiteSection className="border-t border-[var(--color-border)]">
+          <SiteHeading>
             Sown once
-          </h2>
+          </SiteHeading>
           <p className="mt-1 mb-5 max-w-prose text-sm text-[var(--color-text-secondary)]">
             {singles.length} labels that have found a single note so far. Some
             will grow into groves; most are just the one plant.
@@ -136,8 +137,8 @@ export default function TagsPage() {
               </li>
             ))}
           </ul>
-        </section>
+        </SiteSection>
       )}
-    </div>
+    </SiteContainer>
   )
 }

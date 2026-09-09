@@ -11,7 +11,7 @@ const iconNames: IconName[] = [
   'arrow-right', 'arrow-left', 'arrow-up', 'arrow-down',
   'chevron-right', 'chevron-left', 'chevron-up', 'chevron-down',
   'check', 'x', 'copy', 'search', 'menu',
-  'sun', 'moon', 'external', 'github', 'terminal', 'code', 'sparkles',
+  'sun', 'moon', 'external', 'github', 'terminal', 'code',
   'plus', 'minus', 'settings', 'user', 'heart', 'star', 'mail',
   'calendar', 'clock', 'bell', 'home', 'folder', 'file', 'trash',
   'edit', 'eye', 'eye-off', 'lock', 'unlock', 'link', 'external-link',
