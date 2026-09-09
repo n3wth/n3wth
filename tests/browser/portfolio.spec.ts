@@ -1,6 +1,19 @@
 import { test, expect } from '@playwright/test'
 import { expectSiteFoundation } from './site-foundation'
 
+test('diagrams are immediately visible with normal motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  for (const route of ['/thinking/gtd-mini', '/library']) {
+    await page.goto(route)
+    const nodes = page.locator('.kit-node-in')
+    await expect(nodes.first()).toBeAttached()
+    for (const node of await nodes.all()) await expect(node).toHaveCSS('opacity', '1')
+    for (const line of await page.locator('.kit-line-draw').all()) {
+      await expect(line).toHaveCSS('stroke-dashoffset', '0px')
+    }
+  }
+})
+
 test('work uses the shared theme and a usable resume action', async ({ page }) => {
   await page.goto('/work')
   await expectSiteFoundation(page)
