@@ -1,5 +1,19 @@
 import { test, expect } from '@playwright/test'
 
+test('article calendar date stays stable across browser timezones', async ({ browser }) => {
+  for (const timezoneId of ['America/Los_Angeles', 'Asia/Tokyo']) {
+    const context = await browser.newContext({ timezoneId })
+    const page = await context.newPage()
+    const errors: string[] = []
+    page.on('pageerror', error => errors.push(error.message))
+    await page.goto('http://127.0.0.1:4284/astryx-vs-shadcn-vs-angular-material')
+    await expect(page.locator('time[datetime="2026-07-14T00:00:00.000Z"]')).toHaveText('Jul 14, 2026')
+    await page.getByRole('button', { name: 'Search notes' }).click()
+    expect(errors).toEqual([])
+    await context.close()
+  }
+})
+
 test('note listing and nested note remain readable', async ({ page }, testInfo) => {
   for (const route of ['/', '/notes', '/frameworks/5-whys']) {
     const response = await page.goto(route)
