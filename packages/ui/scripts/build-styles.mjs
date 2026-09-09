@@ -24,7 +24,7 @@ export async function buildStyles() {
   // object on every build, so applications never need copied theme files.
   const { n3wthTheme } = await import(pathToFileURL(resolve('dist/theme/n3wthTheme.js')).href)
   const theme = generateThemeCSS(n3wthTheme)
-  const foundation = `${astryx}\n@layer reset {\n${theme.prose}\n}\n@layer astryx-theme {\n${theme.component}\n}\n${site}`
+  const foundation = `@layer reset, astryx-base, astryx-theme;\n${astryx}\n@layer reset {\n${theme.prose}\n}\n@layer astryx-theme {\n${theme.component}\n}\n${site}`
   writeFileSync('dist/site.css', foundation)
   writeFileSync('dist/styles.css', `${css}\n${foundation}`)
 }

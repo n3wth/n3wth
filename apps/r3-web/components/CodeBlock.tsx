@@ -10,5 +10,8 @@ interface CodeBlockProps {
 
 export function CodeBlock({ children, className, language }: CodeBlockProps) {
   const lang = language || className?.match(/(?:^|\s)language-([^\s]+)/)?.[1] || "text";
-  return <SharedCodeBlock code={children.trim()} language={lang} showLineNumbers showLanguageLabel showCopyButton />;
+  const code = children.trim();
+  const multiline = code.includes("\n");
+  const numbered = multiline && !["bash", "sh", "shell", "console", "text"].includes(lang);
+  return <SharedCodeBlock code={code} language={lang} size="sm" showLineNumbers={numbered} showLanguageLabel={multiline} showCopyButton />;
 }

@@ -1,5 +1,7 @@
 # Shared site design system
 
+The root [design.md](../../design.md) and [style.md](../../style.md) define current visual and implementation rules. This document covers architecture, package usage and setup.
+
 ## Dependency direction
 
 Sites → `@n3wth/ui` → Astryx. Only the UI package depends on Astryx; applications import `@n3wth/ui/primitives` for native controls, `@n3wth/ui/site` for site compositions and `@n3wth/ui/site.css` for the complete foundation. Tailwind consumers use `@n3wth/ui/tailwind-theme.css`. The design check rejects direct Astryx imports or dependencies in applications.
@@ -15,7 +17,7 @@ The package root retains compatibility adapters for existing component APIs. New
 ```tsx
 import { Button } from '@n3wth/ui/primitives'
 
-<Button onClick={save}>Save</Button>
+<Button label="Save" onClick={save} />
 ```
 
 The six workspace sites use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain app-owned. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.

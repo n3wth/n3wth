@@ -2,6 +2,10 @@ import { useState, useEffect, useCallback } from 'react'
 
 export type Theme = 'dark' | 'light'
 
+function readStoredTheme(key: string) {
+  try { return localStorage.getItem(key) } catch { return null }
+}
+
 export interface UseThemeOptions {
   defaultTheme?: Theme
   storageKey?: string
@@ -26,7 +30,7 @@ export function useTheme(options: UseThemeOptions = {}): UseThemeReturn {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window === 'undefined') return defaultTheme
 
-    const stored = localStorage.getItem(storageKey)
+    const stored = readStoredTheme(storageKey)
     if (stored === 'dark' || stored === 'light') return stored
 
     if (window.matchMedia('(prefers-color-scheme: light)').matches) {
@@ -41,7 +45,7 @@ export function useTheme(options: UseThemeOptions = {}): UseThemeReturn {
       setThemeState(newTheme)
 
       if (typeof window !== 'undefined') {
-        localStorage.setItem(storageKey, newTheme)
+        try { localStorage.setItem(storageKey, newTheme) } catch { /* Storage may be disabled. */ }
         document.documentElement.setAttribute(attribute, newTheme)
       }
     },
@@ -62,7 +66,7 @@ export function useTheme(options: UseThemeOptions = {}): UseThemeReturn {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: light)')
 
     const handleChange = (e: MediaQueryListEvent) => {
-      const stored = localStorage.getItem(storageKey)
+      const stored = readStoredTheme(storageKey)
       if (!stored) {
         setTheme(e.matches ? 'light' : 'dark')
       }

@@ -109,7 +109,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" data-astryx-theme="n3wth">
       <body className="font-sans antialiased">
         <script
           type="application/ld+json"

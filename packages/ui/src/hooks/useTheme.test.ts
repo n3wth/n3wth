@@ -16,6 +16,16 @@ const storageMock = (() => {
 })()
 
 describe('useTheme', () => {
+  it('still resolves and changes theme when browser storage is unavailable', () => {
+    storageMock.getItem.mockImplementationOnce(() => { throw new Error('Storage denied') })
+    const { result } = renderHook(() => useTheme())
+    expect(result.current.theme).toBe('dark')
+    storageMock.setItem.mockImplementationOnce(() => { throw new Error('Storage denied') })
+    act(() => result.current.setTheme('light'))
+    expect(result.current.theme).toBe('light')
+    expect(document.documentElement).toHaveAttribute('data-theme', 'light')
+  })
+
   beforeEach(() => {
     storageMock.clear()
     Object.defineProperty(window, 'localStorage', { value: storageMock, writable: true })

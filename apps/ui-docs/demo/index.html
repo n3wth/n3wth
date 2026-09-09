@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-astryx-theme="n3wth">
 <head>
+  <script src="/theme-init.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>n3wth/ui design system</title>
@@ -85,7 +86,8 @@
 
   <!-- Critical CSS -->
   <style>
-    html, body { background: #08090b; color: #f2f3f5; margin: 0; }
+    html, body { background: var(--color-background-body, #08090b); color: var(--color-text-primary, #f2f3f5); margin: 0; }
+    html[data-astryx-theme='n3wth'] #root > [data-astryx-theme='n3wth'] { color-scheme: inherit; }
     noscript { display: block; padding: 2rem; max-width: 72ch; margin: 0 auto; line-height: 1.6; }
     noscript h1 { font-size: 2rem; margin-bottom: 1rem; }
     noscript p { margin-bottom: 1rem; color: #86868b; }

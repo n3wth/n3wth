@@ -59,6 +59,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-theme="dark"
+      data-astryx-theme="n3wth"
       suppressHydrationWarning
     >
       <AxiomWebVitals />

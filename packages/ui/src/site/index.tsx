@@ -7,6 +7,7 @@ import { cn } from '../utils/cn'
 export { N3wthProvider } from '../theme/N3wthProvider'
 export type { N3wthProviderProps } from '../theme/N3wthProvider'
 export { n3wthTheme } from '../theme/n3wthTheme'
+export { useRouteScrollReset } from '../hooks/useRouteScrollReset'
 export { ReadingOutline } from './ReadingOutline'
 export type { ReadingOutlineProps } from './ReadingOutline'
 
@@ -20,6 +21,11 @@ export function SiteContainer({ as: Component = 'div', className, ...props }: Si
 
 export function SiteSection({ className, ...props }: ComponentProps<'section'>) {
   return <section className={cn('n3wth-site-section', className)} {...props} />
+}
+
+/** In-flow section or documentation links. Sticky navigation owns active state separately. */
+export function SiteSectionLinks({ className, ...props }: ComponentProps<'nav'>) {
+  return <nav className={cn('n3wth-site-section-links', className)} {...props} />
 }
 
 export interface SiteHeadingProps extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'> {

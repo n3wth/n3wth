@@ -1,3 +1,5 @@
+'use client'
+
 import { CodeBlock as AstryxCodeBlock } from '@astryxdesign/core/CodeBlock'
 
 export interface CodeBlockProps {
