@@ -29,7 +29,7 @@ export default function Work() {
           href="https://r2.n3wth.com/resume/oliver-newth-resume.pdf"
           className="inline-flex min-h-11 items-center underline underline-offset-4"
         >
-          Résumé (PDF)
+          Resume (PDF)
         </a>
       </div>
       <Building />
