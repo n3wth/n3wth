@@ -1,6 +1,18 @@
 import { test, expect } from '@playwright/test'
 import { expectSiteFoundation } from './site-foundation'
 
+test('site identity is present in initial HTML and rendered routes', async ({ page, request }) => {
+  const response = await request.get('/')
+  expect(await response.text()).toContain('"@type": "WebSite"')
+  for (const route of ['/', '/work', '/']) {
+    await page.goto(route)
+    const websites = await page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.map(element => JSON.parse(element.textContent || '{}')).filter(schema => schema['@type'] === 'WebSite'))
+    expect(websites).toHaveLength(1)
+    expect(websites[0]).toMatchObject({ name: 'Oliver Newth', alternateName: 'n3wth.com', url: 'https://n3wth.com/' })
+  }
+  await expect(page.getByText('I build new ways to work with AI.', { exact: true })).toHaveAttribute('data-nosnippet', 'true')
+})
+
 test('diagrams are immediately visible with normal motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   for (const route of ['/thinking/gtd-mini', '/library']) {

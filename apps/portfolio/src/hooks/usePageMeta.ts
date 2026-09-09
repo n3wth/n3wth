@@ -115,16 +115,7 @@ export function buildWebPageSchema(opts: {
 }): object[] {
   const schemas: object[] = []
 
-  // WebSite schema (for site-wide context)
-  schemas.push({
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    '@id': `${SITE_URL}/#website`,
-    url: SITE_URL,
-    name: 'Oliver Newth',
-    description: 'AI product lead at Google. Ships with a standing agent team; builds large-scale light art.',
-    publisher: { '@id': `${SITE_URL}/#person` },
-  })
+  // The persistent WebSite schema is supplied by index.html on every route.
 
   // WebPage schema
   const webPage: Record<string, unknown> = {
