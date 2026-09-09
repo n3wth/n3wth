@@ -25,14 +25,14 @@ export function DocsSidebar({ items, activeId, label, onSelect }: {
 
   return <>
     <aside className="hidden lg:block"><div className="sticky top-20">{links()}</div></aside>
-    <div ref={mobile} className="lg:hidden sticky top-16 z-30 py-3 bg-[var(--color-bg)] border-b border-[var(--glass-border)]" onKeyDown={event => {
+    <div ref={mobile} className="lg:hidden py-3 mb-6 border-b border-[var(--glass-border)]" onKeyDown={event => {
       if (event.key === 'Escape' && open) {
         event.stopPropagation()
         setOpen(false)
         mobile.current?.querySelector('button')?.focus()
       }
     }}>
-      <Collapsible trigger={`${label}: ${items.find(item => item.id === activeId)?.label ?? 'Navigate'}`} isOpen={open} onOpenChange={setOpen}>
+      <Collapsible trigger={<span className="text-sm font-medium">{`${label}: ${items.find(item => item.id === activeId)?.label ?? 'Navigate'}`}</span>} isOpen={open} onOpenChange={setOpen}>
         {links()}
       </Collapsible>
     </div>

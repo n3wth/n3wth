@@ -82,10 +82,6 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
         <PageHeader
           title="Component examples"
           description="Existing UI APIs stay available through the compatibility layer. Use the primitives entry point for native Astryx APIs, and site components for page structure."
-          actions={<>
-            <a href="#atoms">Browse components</a>
-            <a href="https://github.com/n3wth/n3wth/tree/main/packages/ui">View source</a>
-          </>}
         />
         </SiteContainer>
       </div>
