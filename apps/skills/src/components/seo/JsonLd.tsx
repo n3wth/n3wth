@@ -22,7 +22,7 @@ export function WebSiteJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'n3wth/skills',
-    description: 'Markdown skills for Gemini CLI',
+    description: 'Markdown skills for Antigravity CLI',
     url: 'https://skills.n3wth.com',
     potentialAction: {
       '@type': 'SearchAction',

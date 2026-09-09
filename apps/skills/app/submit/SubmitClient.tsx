@@ -472,7 +472,7 @@ export function SubmitClient() {
                     onChange={() => handleCompatibilityChange('gemini')}
                     className="w-4 h-4 rounded"
                   />
-                  <span style={{ color: 'var(--color-grey-200)' }}>Gemini CLI</span>
+                  <span style={{ color: 'var(--color-grey-200)' }}>Antigravity CLI</span>
                 </label>
 
               </div>

@@ -3,20 +3,20 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Documentation',
-  description: 'Documentation for n3wth/kit. Guides for getting started with Gemini CLI integration.',
+  description: 'Documentation for n3wth/kit. Guides for getting started with Antigravity CLI integration.',
   alternates: {
     canonical: 'https://kit.n3wth.com/docs',
   },
   openGraph: {
     title: 'Documentation — n3wth/kit',
-    description: 'Guides for getting started with Gemini CLI integration.',
+    description: 'Guides for getting started with Antigravity CLI integration.',
     url: 'https://kit.n3wth.com/docs',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Documentation — n3wth/kit',
-    description: 'Guides for getting started with Gemini CLI integration.',
+    description: 'Guides for getting started with Antigravity CLI integration.',
   },
 }
 
@@ -26,7 +26,7 @@ const webPageJsonLd = {
   '@id': 'https://kit.n3wth.com/docs#webpage',
   url: 'https://kit.n3wth.com/docs',
   name: 'Documentation — n3wth/kit',
-  description: 'Guides for getting started with Gemini CLI integration.',
+  description: 'Guides for getting started with Antigravity CLI integration.',
   isPartOf: { '@id': 'https://kit.n3wth.com/#website' },
   primaryImageOfPage: {
     '@type': 'ImageObject',

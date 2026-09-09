@@ -46,7 +46,7 @@ export default function Home() {
               Install components with{' '}
               <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-sm">npx shadcn add</code>.
               Drop in the <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-sm">GEMINI.md</code>{' '}
-              context pack to give Gemini CLI the component guidance.
+              context pack to give Antigravity CLI the component guidance.
             </p>
             <div className="mt-8">
               <InstallCommand command="npx shadcn add https://kit.n3wth.com/r/button.json" />
@@ -95,7 +95,7 @@ export default function Home() {
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-dim">
             A context pack is a file you drop into your project that tells AI coding tools
-            about your components. Gemini CLI reads{' '}
+            about your components. Antigravity CLI reads{' '}
             <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-xs">GEMINI.md</code>.
             Merge the guidance with your existing instructions and review generated changes.
           </p>

@@ -65,7 +65,7 @@ printf 'unselected' > "$5/apps/skills/skills/other.md"
   }
 }
 
-test('bundle selection installs only requested flat and directory skills for Gemini CLI', () => {
+test('bundle selection installs only requested flat and directory skills for Antigravity CLI', () => {
   withSelectionFixture(({ home, run }) => {
     mkdirSync(join(home, '.gemini/skills'), { recursive: true })
     writeFileSync(join(home, '.gemini/skills/flat.md'), 'user content')

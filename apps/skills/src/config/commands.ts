@@ -11,7 +11,7 @@ export interface InstallCommand {
 // Install commands configuration for all supported AI assistants
 export const installCommands: InstallCommand[] = [
   {
-    name: 'For Gemini CLI',
+    name: 'For Antigravity CLI',
     assistantId: 'gemini',
     command: 'curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini',
     primary: true,

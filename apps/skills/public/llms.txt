@@ -1,6 +1,6 @@
-# Skills for Gemini CLI
+# Skills for Antigravity CLI
 
-Markdown skills for Gemini CLI. Browse https://skills.n3wth.com/llms-full.txt for the current catalog.
+Markdown skills for Antigravity CLI. Browse https://skills.n3wth.com/llms-full.txt for the current catalog.
 
 Install: curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini
 

@@ -1,7 +1,7 @@
 {
   "name": "newth-skills",
   "version": "1.0.0",
-  "description": "CLI tool for managing AI coding skills for Gemini CLI",
+  "description": "CLI tool for managing AI coding skills for Antigravity CLI",
   "type": "module",
   "main": "dist/index.js",
   "bin": {

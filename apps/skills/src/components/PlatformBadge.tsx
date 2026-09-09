@@ -1,5 +1,5 @@
 /**
- * Platform compatibility badges for Gemini CLI
+ * Platform compatibility badges for Antigravity CLI
  * Uses official brand colors and icons
  */
 import type { ReactNode } from 'react'
@@ -16,7 +16,7 @@ interface PlatformConfig {
 
 const platformConfigs: Record<Platform, PlatformConfig> = {
   gemini: {
-    name: 'Gemini CLI',
+    name: 'Antigravity CLI',
     color: '#4285F4', // Google Blue
     bgColor: 'rgba(66, 133, 244, 0.15)',
     borderColor: 'rgba(66, 133, 244, 0.3)',

@@ -6,12 +6,12 @@ import { skills } from '@/src/data/skills'
 export const metadata: Metadata = {
   title: 'n3wth/skills',
   description:
-    'Markdown skills for Gemini CLI. One install, works offline.',
+    'Markdown skills for Antigravity CLI. One install, works offline.',
   alternates: { canonical: 'https://skills.n3wth.com' },
   openGraph: {
     title: 'n3wth/skills',
     description:
-      'Markdown skills for Gemini CLI. One install, works offline.',
+      'Markdown skills for Antigravity CLI. One install, works offline.',
     url: 'https://skills.n3wth.com',
   },
   twitter: {
@@ -29,7 +29,7 @@ export default function Home() {
     <>
       <ItemListJsonLd
         name="AI Coding Skills Catalog"
-        description="Markdown skills for Gemini CLI"
+        description="Markdown skills for Antigravity CLI"
         url="https://skills.n3wth.com"
         items={featuredSkills.map(skill => ({
           name: skill.name,

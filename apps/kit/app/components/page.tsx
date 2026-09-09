@@ -3,7 +3,7 @@ import { ComponentGrid } from './_components/component-grid'
 
 export const metadata: Metadata = {
   title: 'Components',
-  description: '47 production-ready React components with built-in AI context. Install via shadcn CLI with context packs for Gemini CLI.',
+  description: '47 production-ready React components with built-in AI context. Install via shadcn CLI with context packs for Antigravity CLI.',
   alternates: {
     canonical: 'https://kit.n3wth.com/components',
   },

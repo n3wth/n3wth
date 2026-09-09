@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     'shadcn',
     'React',
     'Tailwind CSS',
-    'Gemini CLI',
+    'Antigravity CLI',
     'component registry',
     'AI code generation',
     'context packs',
@@ -61,7 +61,7 @@ const websiteJsonLd = {
   '@id': `${siteUrls.kit}/#website`,
   name: 'n3wth/kit',
   url: siteUrls.kit,
-  description: 'A shadcn component registry with AI context packs for Gemini CLI.',
+  description: 'A shadcn component registry with AI context packs for Antigravity CLI.',
   publisher: {
     '@type': 'Organization',
     name: 'n3wth',

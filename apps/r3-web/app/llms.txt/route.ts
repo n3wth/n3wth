@@ -26,7 +26,7 @@ r3 is a Model Context Protocol (MCP) server that gives AI assistants persistent 
 
 ## Integration
 
-### Gemini CLI
+### Antigravity CLI
 
 Add to \`~/.gemini/settings.json\`:
 
@@ -41,13 +41,13 @@ Add to \`~/.gemini/settings.json\`:
 }
 \`\`\`
 
-### Gemini CLI
+### Antigravity CLI (command)
 
 \`\`\`bash
-gemini mcp add r3 npx -y @n3wth/r3
+agy mcp add r3 npx -y @n3wth/r3
 \`\`\`
 
-### Gemini CLI
+### Environment Variable
 
 \`\`\`bash
 export MCP_SERVERS='{"r3":{"command":"npx","args":["@n3wth/r3"]}}'

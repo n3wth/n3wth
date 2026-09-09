@@ -1,5 +1,5 @@
 #!/bin/bash
-# Gemini CLI skills installer. Optional skill IDs select a subset.
+# Antigravity CLI skills installer. Optional skill IDs select a subset.
 set -e
 SKILLS_INSTALL_HOME="${SKILLS_INSTALL_HOME:-$HOME}"
 SKILLS_REPO="https://github.com/n3wth/n3wth.git"
@@ -81,4 +81,4 @@ for entry in "$source"/*; do
         cp -R "$entry" "$destination/$name"
     fi
 done
-print_success "Skills installed for Gemini CLI"
+print_success "Skills installed for Antigravity CLI"

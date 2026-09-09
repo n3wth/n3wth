@@ -538,7 +538,7 @@ function BasicsStep({ draft, updateDraft }: BasicsStepProps) {
                       : 'var(--color-grey-300)'
                   }}
                 >
-                  {'Gemini CLI'}
+                  {'Antigravity CLI'}
                 </button>
               ))}
             </div>
@@ -764,7 +764,7 @@ ${processedContent}
                   border: '1px solid rgba(100, 210, 255, 0.3)'
                 }}
               >
-                Gemini CLI
+                Antigravity CLI
               </span>
               <span className="text-xs" style={{ color: 'var(--color-grey-400)' }}>
                 {skillId}.md

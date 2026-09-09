@@ -21,9 +21,9 @@ test('discovery endpoints and generated image remain available', async ({ reques
   }
 })
 
-test('integration guide documents Gemini MCP configuration', async ({ page }) => {
+test('integration guide documents Antigravity MCP configuration', async ({ page }) => {
   await page.goto('/docs/integrations')
-  await expect(page.getByRole('heading', { name: 'Connect Gemini CLI', exact: true })).toBeVisible()
-  await expect(page.getByRole('link', { name: 'Gemini CLI MCP documentation', exact: true })).toHaveAttribute('href', 'https://geminicli.com/docs/tools/mcp-server/')
+  await expect(page.getByRole('heading', { name: 'Connect Antigravity CLI', exact: true })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Antigravity CLI MCP documentation', exact: true })).toHaveAttribute('href', 'https://antigravity.google/docs/cli/mcp/')
   await expect(page.locator('main')).toContainText('mcpServers')
 })

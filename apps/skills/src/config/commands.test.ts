@@ -24,10 +24,10 @@ describe('installCommands', () => {
     expect(primaryCommands.length).toBe(1)
   })
 
-  it('only offers the Gemini CLI installer', () => {
+  it('only offers the Antigravity CLI installer', () => {
     const names = installCommands.map(cmd => cmd.name)
-    expect(names).toContain('For Gemini CLI')
-    expect(names).toEqual(['For Gemini CLI'])
+    expect(names).toContain('For Antigravity CLI')
+    expect(names).toEqual(['For Antigravity CLI'])
   })
 
   it('should have valid curl commands', () => {

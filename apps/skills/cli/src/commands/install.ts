@@ -71,7 +71,7 @@ export async function installCommand(skillId: string, options: InstallOptions): 
 async function installForPlatform(skill: ReturnType<typeof getSkillById>, platform: 'gemini'): Promise<void> {
   if (!skill) return
 
-  const platformName = 'Gemini CLI'
+  const platformName = 'Antigravity CLI'
   const spinner = createSpinner(`Installing for ${platformName}...`)
   spinner.start()
 

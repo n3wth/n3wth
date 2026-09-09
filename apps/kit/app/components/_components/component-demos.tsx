@@ -167,7 +167,7 @@ function AccordionDemo() {
         <AccordionItem value="item-1">
           <AccordionTrigger>What is n3wth/kit?</AccordionTrigger>
           <AccordionContent>
-            A component registry with context packs for Gemini CLI.
+            A component registry with context packs for Antigravity CLI.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
