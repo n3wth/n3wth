@@ -97,9 +97,9 @@ export default function Home() {
       )}
 
     </section>
-    <PageHeader className="site-content-gutter" title="I build new ways to work with AI." description={<>
+    <PageHeader className="site-content-gutter" title={<span data-nosnippet>I build new ways to work with AI.</span>} description={<>
       <span className="block mb-4">{siteConfig.name}</span>
-      <span className="block">
+      <span className="block" data-nosnippet>
         I’m a product leader who spots opportunities, builds early versions, and learns by putting them in people’s hands.
       </span>
       <span className="block mt-5">
