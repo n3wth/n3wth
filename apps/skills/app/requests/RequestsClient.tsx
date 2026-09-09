@@ -282,7 +282,7 @@ export function RequestsClient() {
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <h3 className="text-base font-semibold text-white">{request.title}</h3>
+                        <h2 className="text-base font-semibold text-white">{request.title}</h2>
                         <span
                           className="text-[10px] font-medium px-2 py-0.5 rounded-full"
                           style={{

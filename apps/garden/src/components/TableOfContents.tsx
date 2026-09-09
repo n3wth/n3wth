@@ -1,7 +1,6 @@
 'use client'
 
-import { Outline } from '@n3wth/ui/primitives'
-import { Collapsible } from '@n3wth/ui/primitives'
+import { ReadingOutline } from '@n3wth/ui/site'
 
 interface Heading {
   id: string
@@ -28,11 +27,8 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
   if (outline.length === 0) return null
 
   return (
-    <div>
-      <h3 className="label mb-3">On this page</h3>
-      <div className="max-h-[calc(100vh-29rem)] overflow-y-auto">
-        <Outline items={toOutlineItems(outline)} density="compact" label="On this page" />
-      </div>
+    <div className="max-h-[calc(100vh-29rem)] overflow-y-auto">
+      <ReadingOutline items={toOutlineItems(outline)} />
     </div>
   )
 }
@@ -48,12 +44,8 @@ export function MobileToc({ headings }: TableOfContentsProps) {
   if (sections.length === 0) return null
 
   return (
-    <div className="xl:hidden mb-8 max-w-md rounded-lg border border-[var(--color-border)] px-4 py-1">
-      <Collapsible trigger="On this page" defaultIsOpen={false}>
-        <div className="pb-3">
-          <Outline items={toOutlineItems(sections)} density="compact" label="On this page" />
-        </div>
-      </Collapsible>
+    <div className="xl:hidden mb-8 max-w-md">
+      <ReadingOutline items={toOutlineItems(sections)} collapsible />
     </div>
   )
 }

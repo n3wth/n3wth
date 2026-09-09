@@ -5,7 +5,7 @@ description: "An analysis comparing the true costs of grocery delivery versus in
 
 # The Hidden Economics of Grocery Delivery
 
-# decision-making #productivity #personal-finance #analysis
+\# decision-making #productivity #personal-finance #analysis
 
 The conventional wisdom that grocery delivery is more expensive than traditional shopping deserves deeper scrutiny. This analysis reveals how the true economics of grocery delivery might be counter-intuitive when accounting for hidden costs and modern optimization strategies. This is a [[Living documents|living analysis]] that evolves as new data and strategies emerge.
 

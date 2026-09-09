@@ -7,6 +7,8 @@ import { cn } from '../utils/cn'
 export { N3wthProvider } from '../theme/N3wthProvider'
 export type { N3wthProviderProps } from '../theme/N3wthProvider'
 export { n3wthTheme } from '../theme/n3wthTheme'
+export { ReadingOutline } from './ReadingOutline'
+export type { ReadingOutlineProps } from './ReadingOutline'
 
 export interface SiteContainerProps extends HTMLAttributes<HTMLElement> {
   as?: 'div' | 'main' | 'section' | 'article'
@@ -46,11 +48,12 @@ export interface PageHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'titl
   description?: ReactNode
   actions?: ReactNode
   aside?: ReactNode
+  align?: 'start' | 'center'
 }
 
-export function PageHeader({ title, level = 1, description, actions, aside, className, ...props }: PageHeaderProps) {
+export function PageHeader({ title, level = 1, description, actions, aside, align = 'start', className, ...props }: PageHeaderProps) {
   return (
-    <header className={cn('n3wth-site-page-header', aside != null && 'n3wth-site-page-header--split', className)} {...props}>
+    <header className={cn('n3wth-site-page-header', aside != null && 'n3wth-site-page-header--split', align === 'center' && 'n3wth-site-page-header--center', className)} {...props}>
       <div className="n3wth-site-page-header-copy">
         <SiteHeading variant={level === 1 ? 'page' : 'section'} level={level}>{title}</SiteHeading>
         {description != null && <SiteText className="n3wth-site-description">{description}</SiteText>}
