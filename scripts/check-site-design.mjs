@@ -6,7 +6,6 @@ import { fileURLToPath } from 'node:url'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const version = JSON.parse(readFileSync(resolve(root, 'packages/ui/package.json'), 'utf8')).version
 const canonical = realpathSync(resolve(root, 'packages/ui/dist/site.css'))
-const sites = new Set(['garden', 'kit', 'portfolio', 'r3-web', 'skills', 'ui-docs'])
 function checkImports(directory, shared = new Set()) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     if (['node_modules', 'dist', 'dist-demo', '.next', '.git', 'content', 'public'].includes(entry.name)) continue
@@ -21,7 +20,7 @@ function checkImports(directory, shared = new Set()) {
         for (const match of source.matchAll(/import\s*\{([^}]+)\}\s*from\s*['"]@n3wth\/ui\/site['"]/g)) {
           for (const symbol of match[1].split(',')) shared.add(symbol.trim().split(/\s+/)[0])
         }
-        if (source.includes('@n3wth/ui/site.css')) shared.add('site.css')
+        if (source.includes('@n3wth/ui/site.css') || source.includes('@n3wth/ui/styles')) shared.add('site.css')
       }
       if (/(?:from\s*|import\s*|require\s*\(|import\s*\(|@import\s*)['"]@astryxdesign\//.test(source)) {
         throw new Error(`${path}: import primitives and styles through @n3wth/ui`)
@@ -41,12 +40,11 @@ for (const entry of readdirSync(resolve(root, 'apps'), { withFileTypes: true }))
   }
   const shared = checkImports(resolve(root, 'apps', entry.name))
   if (!app.dependencies?.['@n3wth/ui']) {
-    if (sites.has(entry.name)) throw new Error(`${app.name} is missing the shared UI dependency`)
-    continue
+    throw new Error(`${app.name} is missing the shared UI dependency`)
   }
   if (app.dependencies['@n3wth/ui'] !== version) throw new Error(`${app.name} must use workspace UI ${version}`)
   for (const component of ['N3wthProvider', 'SiteNavigation', 'PageHeader', 'SiteSection', 'SiteFooter', 'site.css']) {
-    if (sites.has(entry.name) && !shared.has(component)) throw new Error(`${app.name} must consume shared ${component}`)
+    if (!shared.has(component)) throw new Error(`${app.name} must consume shared ${component}`)
   }
   const resolved = realpathSync(createRequire(manifest).resolve('@n3wth/ui/site.css'))
   if (resolved !== canonical) throw new Error(`${app.name} resolves a separate UI package: ${resolved}`)

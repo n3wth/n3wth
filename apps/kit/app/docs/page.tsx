@@ -1,39 +1,29 @@
 import { PageHeader, SiteContainer, SiteSection, SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
+import { siteUrls } from '@n3wth/site-config'
+import { pageMetadata, pageJsonLd } from '@n3wth/site-config/metadata'
 import Link from 'next/link'
 
-export const metadata: Metadata = {
-  title: 'Documentation',
-  description: 'Documentation for n3wth/kit. Guides for getting started with Antigravity CLI integration.',
-  alternates: {
-    canonical: 'https://kit.n3wth.com/docs',
-  },
-  openGraph: {
-    title: 'Documentation — n3wth/kit',
-    description: 'Guides for getting started with Antigravity CLI integration.',
-    url: 'https://kit.n3wth.com/docs',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Documentation — n3wth/kit',
-    description: 'Guides for getting started with Antigravity CLI integration.',
-  },
-}
+const url = `${siteUrls.kit}/docs`
+const socialTitle = 'Documentation — n3wth/kit'
+const description = 'Documentation for n3wth/kit. Guides for getting started with Antigravity CLI integration.'
 
-const webPageJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  '@id': 'https://kit.n3wth.com/docs#webpage',
-  url: 'https://kit.n3wth.com/docs',
-  name: 'Documentation — n3wth/kit',
+export const metadata: Metadata = pageMetadata({
+  title: 'Documentation',
+  description,
+  url,
+  socialTitle,
+  socialDescription: 'Guides for getting started with Antigravity CLI integration.',
+})
+
+const webPageJsonLd = pageJsonLd({
+  url,
+  title: socialTitle,
   description: 'Guides for getting started with Antigravity CLI integration.',
-  isPartOf: { '@id': 'https://kit.n3wth.com/#website' },
-  primaryImageOfPage: {
-    '@type': 'ImageObject',
-    url: 'https://kit.n3wth.com/docs/opengraph-image',
-  },
-}
+  siteUrl: siteUrls.kit,
+  type: 'CollectionPage',
+  image: `${url}/opengraph-image`,
+})
 
 const guides = [
   {

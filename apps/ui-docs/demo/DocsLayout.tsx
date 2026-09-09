@@ -1,10 +1,9 @@
-import { useState, useEffect, type ComponentType } from 'react'
-import { NavLink, useParams } from 'react-router'
+import { useEffect, type ComponentType } from 'react'
+import { useParams } from 'react-router'
 import { SiteNav } from './SiteNav'
 import { SiteFooter } from '@n3wth/ui/site'
 import { siteUrls } from '@n3wth/site-config'
-import { Icon } from '@n3wth/ui'
-import { cn } from '@n3wth/ui'
+import { DocsSidebar } from './DocsSidebar'
 import { SEO, JsonLdWebPage, JsonLdBreadcrumb } from './SEO'
 
 const docModules = import.meta.glob<{ default: ComponentType }>([
@@ -54,7 +53,6 @@ export const docPages: DocPage[] = Object.entries(docModules)
 
 export function DocsLayout() {
   const { slug } = useParams()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const currentPage = docPages.find((p) => p.slug === slug) ?? docPages[0]
   const Content = currentPage.Component
@@ -98,62 +96,7 @@ export function DocsLayout() {
 
       <div className="n3wth-site-main n3wth-site-container">
         <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
-          {/* Sidebar - desktop */}
-          <aside className="hidden lg:block">
-            <nav className="sticky top-20 space-y-1">
-              {docPages.map((page) => (
-                <NavLink
-                  key={page.slug}
-                  to={`/docs/${page.slug}`}
-                  className={({ isActive }) =>
-                    cn(
-                      'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm',
-                      'transition-colors duration-150',
-                      isActive
-                        ? 'bg-[var(--glass-bg)] text-[var(--color-white)] border border-[var(--glass-border)]'
-                        : 'text-[var(--color-grey-400)] hover:text-[var(--color-white)] hover:bg-[var(--glass-bg)] border border-transparent'
-                    )
-                  }
-                >
-                  {page.title}
-                </NavLink>
-              ))}
-            </nav>
-          </aside>
-
-          {/* Mobile sidebar toggle */}
-          <div className="lg:hidden sticky top-16 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 bg-[var(--color-bg)]/80 backdrop-blur-lg border-b border-[var(--glass-border)]">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="flex items-center gap-2 text-sm text-[var(--color-grey-400)]"
-            >
-              <Icon name="menu" size="sm" />
-              <span>{currentPage.title}</span>
-              <Icon name={sidebarOpen ? 'chevron-up' : 'chevron-down'} size="xs" />
-            </button>
-            {sidebarOpen && (
-              <nav className="mt-2 p-2 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] space-y-1">
-                {docPages.map((page) => (
-                  <NavLink
-                    key={page.slug}
-                    to={`/docs/${page.slug}`}
-                    onClick={() => setSidebarOpen(false)}
-                    className={({ isActive }) =>
-                      cn(
-                        'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm',
-                        'transition-colors duration-150',
-                        isActive
-                          ? 'bg-[var(--glass-bg)] text-[var(--color-white)]'
-                          : 'text-[var(--color-grey-400)]'
-                      )
-                    }
-                  >
-                    {page.title}
-                  </NavLink>
-                ))}
-              </nav>
-            )}
-          </div>
+          <DocsSidebar items={docPages.map(page => ({ id: page.slug, label: page.title, href: `/docs/${page.slug}` }))} activeId={currentPage.slug} label="Documentation" />
 
           {/* Content */}
           <main id="main-content" className="min-w-0 pt-8 lg:pt-0">

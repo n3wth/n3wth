@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { SiteContainer, SiteSection, SiteText } from '@n3wth/ui/site'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 /* Auth0 tenant login URI. When Auth0 needs to restart a login it redirects
@@ -16,14 +17,8 @@ export default function Login() {
   }, [])
 
   return (
-    <section aria-label="Redirecting" className="relative min-h-[70vh] flex items-center">
-      <div className="frame relative w-full">
-        <div className="section-pad pad-air w-full">
-          <p className="label" role="status" aria-live="polite" style={{ color: 'var(--ink-dim)' }}>
-            Redirecting to sign-in…
-          </p>
-        </div>
-      </div>
-    </section>
+    <SiteContainer as="section" aria-label="Redirecting">
+      <SiteSection><SiteText role="status" aria-live="polite">Redirecting to sign-in…</SiteText></SiteSection>
+    </SiteContainer>
   )
 }

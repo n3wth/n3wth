@@ -5,9 +5,8 @@ import { SiteNav } from './SiteNav'
 import { N3wthProvider, PageHeader, SiteContainer } from '@n3wth/ui/site'
 import { SiteFooter } from '@n3wth/ui/site'
 import { siteUrls } from '@n3wth/site-config'
-import { Icon } from '@n3wth/ui'
 import { useTheme } from '@n3wth/ui'
-import { cn } from '@n3wth/ui'
+import { DocsSidebar } from './DocsSidebar'
 import { SystemHome } from './SystemHome'
 import { TokensSection } from './sections/TokensSection'
 import { AtomsSection } from './sections/AtomsSection'
@@ -27,7 +26,6 @@ const sidebarItems = [
 
 function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: () => void }) {
   const [activeSection, setActiveSection] = useState('tokens')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Track active section via intersection observer
   useEffect(() => {
@@ -54,7 +52,6 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
     const el = document.getElementById(id)
     if (el) {
       el.scrollIntoView({ behavior: 'instant', block: 'start' })
-      setSidebarOpen(false)
     }
   }
 
@@ -95,59 +92,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
       {/* Main content with sidebar */}
       <div id="main-content" className="n3wth-site-container">
         <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
-          {/* Sidebar - desktop */}
-          <aside className="hidden lg:block">
-            <nav className="sticky top-20 space-y-1">
-              {sidebarItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollTo(item.id)}
-                  className={cn(
-                    'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left',
-                    'transition-colors duration-150',
-                    activeSection === item.id
-                      ? 'bg-[var(--glass-bg)] text-[var(--color-white)] border border-[var(--glass-border)]'
-                      : 'text-[var(--color-grey-400)] hover:text-[var(--color-white)] hover:bg-[var(--glass-bg)] border border-transparent'
-                  )}
-                >
-                  <Icon name={item.icon} size="sm" />
-                  {item.label}
-                </button>
-              ))}
-            </nav>
-          </aside>
-
-          {/* Mobile sidebar toggle */}
-          <div className="lg:hidden sticky top-16 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 bg-[var(--color-bg)]/80 backdrop-blur-lg border-b border-[var(--glass-border)]">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="flex items-center gap-2 text-sm text-[var(--color-grey-400)]"
-            >
-              <Icon name="menu" size="sm" />
-              <span>{sidebarItems.find((i) => i.id === activeSection)?.label || 'Navigate'}</span>
-              <Icon name={sidebarOpen ? 'chevron-up' : 'chevron-down'} size="xs" />
-            </button>
-            {sidebarOpen && (
-              <nav className="mt-2 p-2 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] space-y-1">
-                {sidebarItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollTo(item.id)}
-                    className={cn(
-                      'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left',
-                      'transition-colors duration-150',
-                      activeSection === item.id
-                        ? 'bg-[var(--glass-bg)] text-[var(--color-white)]'
-                        : 'text-[var(--color-grey-400)]'
-                    )}
-                  >
-                    <Icon name={item.icon} size="sm" />
-                    {item.label}
-                  </button>
-                ))}
-              </nav>
-            )}
-          </div>
+          <DocsSidebar items={sidebarItems} activeId={activeSection} label="Component sections" onSelect={scrollTo} />
 
           {/* Content */}
           <main className="min-w-0">

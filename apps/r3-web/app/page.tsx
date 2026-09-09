@@ -9,7 +9,8 @@ import {
   SiteSection,
   SiteText,
 } from "@n3wth/ui/site";
-import { useState, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
+import { CommandBox as InstallCommand } from "@n3wth/ui";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
@@ -21,57 +22,6 @@ const TerminalDemo = lazy(() =>
     default: module.TerminalDemo,
   })),
 );
-
-function InstallCommand({ command }: { command: string }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(command);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="inline-flex items-center gap-3 rounded-lg border border-rail bg-bg-raise px-4 py-2.5">
-      <code className="font-mono text-sm text-ink">{command}</code>
-      <button
-        onClick={handleCopy}
-        className="text-ink-faint transition-colors hover:text-ink"
-        aria-label="Copy to clipboard"
-      >
-        {copied ? (
-          <svg
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        ) : (
-          <svg
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-            />
-          </svg>
-        )}
-      </button>
-    </div>
-  );
-}
 
 export default function Home() {
   const codeExamples = {
