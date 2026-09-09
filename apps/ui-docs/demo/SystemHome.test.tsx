@@ -8,12 +8,11 @@ import { SystemHome } from './SystemHome'
 describe('system guide', () => {
   it('explains ownership, links to the workspace guide and exercises the native primitive', () => {
     render(<HelmetProvider><MemoryRouter><N3wthProvider><SystemHome /></N3wthProvider></MemoryRouter></HelmetProvider>)
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('The Newth site system')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('n3wth/ui design system')
     for (const name of ['Sites', '@n3wth/ui', 'Astryx']) {
       expect(screen.getByRole('heading', { name, exact: true })).toBeInTheDocument()
     }
-    expect(screen.getByRole('link', { name: 'Build a site' })).toHaveAttribute('href', '/docs/getting-started')
-    expect(screen.getByRole('link', { name: 'Explore components' })).toHaveAttribute('href', '/components')
+    expect(screen.getByRole('link', { name: 'Get started' })).toHaveAttribute('href', '/docs/getting-started')
     fireEvent.click(screen.getByRole('button', { name: 'Try the primitive' }))
     expect(screen.getByRole('status', { name: 'Primitive activation' })).toHaveTextContent('Activated 1 time')
   })

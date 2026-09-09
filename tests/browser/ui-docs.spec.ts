@@ -12,7 +12,7 @@ test('system ownership, native primitive and documentation navigation work', asy
   const response = await page.goto('/')
   expect(response?.ok()).toBe(true)
   await expect(page.locator('body')).not.toHaveText('')
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('The Newth site system')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('n3wth/ui design system')
   for (const name of ['Sites', '@n3wth/ui', 'Astryx']) {
     await expect(page.getByRole('heading', { name, exact: true })).toBeVisible()
   }

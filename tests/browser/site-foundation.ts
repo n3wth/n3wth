@@ -5,6 +5,14 @@ export async function expectSiteFoundation(page: Page) {
   const heading = page.locator('.n3wth-site-heading--page').first()
   await expect(heading).toBeVisible()
   await expect(heading).toHaveCSS('font-family', /Satoshi/)
+  const sectionSpacing = (page.viewportSize()?.width ?? 1440) >= 768 ? '64px' : '48px'
+  await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-top', sectionSpacing)
+  await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-bottom', sectionSpacing)
+  const section = page.locator('.n3wth-site-section').first()
+  if (await section.count()) {
+    await expect(section).toHaveCSS('padding-top', sectionSpacing)
+    await expect(section).toHaveCSS('padding-bottom', sectionSpacing)
+  }
   const fonts = await page.evaluate(async () => {
     const headingFonts = await document.fonts.load('600 24px "Satoshi"')
     const bodyFonts = await document.fonts.load('400 16px "Geist Sans"')

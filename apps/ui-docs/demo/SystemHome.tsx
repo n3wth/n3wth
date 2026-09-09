@@ -16,17 +16,17 @@ const layers = [
 export function SystemHome() {
   const [count, setCount] = useState(0)
   return <>
-    <SEO title="@n3wth/ui — The Newth site system" description="How Newth sites use a shared brand and page system built on Astryx primitives." path="/" />
+    <SEO title="n3wth/ui design system" description="Shared components and styles, built on Astryx." path="/" />
     <JsonLdWebSite />
     <SiteNav />
     <SiteContainer as="main" id="main-content" className="n3wth-site-main">
-      <PageHeader title="The Newth site system" description="Sites own the content. UI owns the brand and page structure. Astryx provides the primitives underneath." actions={<><Link to="/docs/getting-started">Build a site</Link><Link to="/components">Explore components</Link></>} />
+      <PageHeader title="n3wth/ui design system" description="Shared components and styles, built on Astryx." actions={<Link to="/docs/getting-started">Get started</Link>} />
       <SiteSection aria-labelledby="architecture">
         <SiteHeading id="architecture">Three layers, clear ownership</SiteHeading>
         <SiteText className="system-intro">Dependencies flow down: Sites → @n3wth/ui → Astryx. A shared change belongs in the lowest layer that owns it.</SiteText>
         <ol className="system-layers">
-          {layers.map((layer, index) => <li key={layer.name}>
-            <SiteText variant="supporting">0{index + 1} · {layer.path}</SiteText>
+          {layers.map(layer => <li key={layer.name}>
+            <SiteText variant="supporting">{layer.path}</SiteText>
             <SiteHeading variant="item">{layer.name}</SiteHeading>
             <SiteText>{layer.responsibility}</SiteText>
             <SiteText variant="supporting">{layer.detail}</SiteText>
