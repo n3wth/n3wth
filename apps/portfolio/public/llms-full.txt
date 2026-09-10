@@ -110,9 +110,12 @@ A digital garden of interconnected working notes. Notes carry growth stages (see
 ## Ecosystem
 
 - **GitHub**: https://github.com/n3wth (Open source)
-- **LinkedIn**: https://linkedin.com/in/n3wth
-- **Peerlist Resume**: https://peerlist.io/newth/resume
+- **LinkedIn**: https://www.linkedin.com/in/n3wth
+- **Peerlist**: https://peerlist.io/newth
 - **Contra**: https://contra.com/olivernewth
+- **Instagram**: https://www.instagram.com/lightsbyoliver/
+- **Glama.ai**: https://glama.ai/mcp/servers/n3wth/r3
+- **Skills.sh**: https://skills.sh/n3wth/skills
 - **newth.ai** redirects to n3wth.com
 - **here.n3wth.com** is a host for here.now pages, not a product homepage
 
