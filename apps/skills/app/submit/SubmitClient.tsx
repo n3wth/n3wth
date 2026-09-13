@@ -166,6 +166,7 @@ export function SubmitClient() {
 
           {submitStatus === 'success' && (
             <div
+              role="status"
               className="glass-card p-6 mb-8"
               style={{ borderColor: 'var(--color-sage)' }}
             >
@@ -186,6 +187,7 @@ export function SubmitClient() {
 
           {submitStatus === 'error' && (
             <div
+              role="alert"
               className="glass-card p-6 mb-8"
               style={{ borderColor: 'var(--color-coral)' }}
             >
@@ -230,6 +232,8 @@ export function SubmitClient() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="e.g., React Testing"
+                aria-invalid={errors.name ? true : undefined}
+                aria-describedby={errors.name ? 'name-error' : undefined}
                 className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
                 style={{
                   background: 'var(--glass-bg)',
@@ -239,6 +243,8 @@ export function SubmitClient() {
               />
               {errors.name && (
                 <p
+                  id="name-error"
+                  role="alert"
                   className="mt-2 text-sm"
                   style={{ color: 'var(--color-coral)' }}
                 >
@@ -260,6 +266,8 @@ export function SubmitClient() {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
+                aria-invalid={errors.category ? true : undefined}
+                aria-describedby={errors.category ? 'category-error' : undefined}
                 className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none appearance-none cursor-pointer"
                 style={{
                   background: 'var(--glass-bg)',
@@ -276,6 +284,8 @@ export function SubmitClient() {
               </select>
               {errors.category && (
                 <p
+                  id="category-error"
+                  role="alert"
                   className="mt-2 text-sm"
                   style={{ color: 'var(--color-coral)' }}
                 >
@@ -299,6 +309,8 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="Describe what the skill does and how it helps users..."
                 rows={4}
+                aria-invalid={errors.description ? true : undefined}
+                aria-describedby={errors.description ? 'description-error' : undefined}
                 className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
                 style={{
                   background: 'var(--glass-bg)',
@@ -308,6 +320,8 @@ export function SubmitClient() {
               />
               {errors.description && (
                 <p
+                  id="description-error"
+                  role="alert"
                   className="mt-2 text-sm"
                   style={{ color: 'var(--color-coral)' }}
                 >
@@ -337,6 +351,7 @@ export function SubmitClient() {
                 value={formData.tags}
                 onChange={handleChange}
                 placeholder="e.g., testing, react, jest, automation"
+                aria-describedby="tags-hint"
                 className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
                 style={{
                   background: 'var(--glass-bg)',
@@ -345,6 +360,7 @@ export function SubmitClient() {
                 }}
               />
               <p
+                id="tags-hint"
                 className="mt-2 text-sm"
                 style={{ color: 'var(--color-grey-400)' }}
               >
@@ -490,6 +506,8 @@ export function SubmitClient() {
                     value={formData.contributorName}
                     onChange={handleChange}
                     placeholder="Your display name for attribution"
+                    aria-invalid={errors.contributorName ? true : undefined}
+                    aria-describedby={errors.contributorName ? 'contributorName-error' : undefined}
                     className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
                     style={{
                       background: 'var(--glass-bg)',
@@ -499,6 +517,8 @@ export function SubmitClient() {
                   />
                   {errors.contributorName && (
                     <p
+                      id="contributorName-error"
+                      role="alert"
                       className="mt-2 text-sm"
                       style={{ color: 'var(--color-coral)' }}
                     >
