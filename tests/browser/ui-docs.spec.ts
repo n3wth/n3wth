@@ -54,6 +54,22 @@ test('mobile documentation uses direct links without a second sticky header', as
   await expect(page.getByRole('button', { name: /^Documentation:/ })).toHaveCount(0)
 })
 
+test('docs pages offer sequential previous and next navigation', async ({ page }) => {
+  await page.goto('/docs/getting-started')
+  const pager = page.getByRole('navigation', { name: 'Documentation pages', exact: true })
+  await expect(pager.getByRole('link', { name: '←', exact: false })).toHaveCount(0)
+  await pager.getByRole('link', { name: 'Theming →', exact: true }).click()
+  await expect(page).toHaveURL(/\/docs\/theming$/)
+  await expect(page.getByRole('link', { name: '← Getting Started', exact: true })).toBeVisible()
+})
+
+test('home surfaces the documentation index before the architecture sections', async ({ page }) => {
+  await page.goto('/')
+  const docs = page.locator('section[aria-labelledby="documentation"]')
+  await expect(docs.getByRole('link', { name: 'Getting Started', exact: true })).toBeVisible()
+  await expect(docs.getByRole('link', { name: 'CSS Utilities', exact: true })).toBeVisible()
+})
+
 test('system guide loads the shared theme and font assets', async ({ page }) => {
   await page.goto('/')
   await expectSiteFoundation(page)

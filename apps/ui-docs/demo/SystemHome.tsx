@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { PageHeader, SiteContainer, SiteSection, SiteHeading, SiteText, SiteFooter } from '@n3wth/ui/site'
 import { siteUrls } from '@n3wth/site-config'
 import { SiteNav } from './SiteNav'
+import { docPageMeta } from './docPages'
 import { CodeSnippet } from './sections/CodeSnippet'
 import { SEO, JsonLdWebSite } from './SEO'
 
@@ -21,6 +22,15 @@ export function SystemHome() {
     <SiteNav />
     <SiteContainer as="main" id="main-content" className="n3wth-site-main">
       <PageHeader title="n3wth/ui design system" description="Shared components and styles, built on Astryx." actions={<Link to="/docs/getting-started">Get started</Link>} />
+      <SiteSection aria-labelledby="documentation">
+        <SiteHeading id="documentation">Documentation</SiteHeading>
+        <ul className="system-docs">
+          {docPageMeta.map(page => <li key={page.slug}>
+            <SiteHeading variant="item"><Link to={`/docs/${page.slug}`}>{page.title}</Link></SiteHeading>
+            <SiteText variant="supporting">{page.description}</SiteText>
+          </li>)}
+        </ul>
+      </SiteSection>
       <SiteSection aria-labelledby="architecture">
         <SiteHeading id="architecture">Built in three layers</SiteHeading>
         <ol className="system-layers">

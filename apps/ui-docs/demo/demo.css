@@ -30,6 +30,11 @@ html[data-astryx-theme='n3wth'] body {
   max-width: 72ch;
   line-height: 1.75;
   color: var(--color-grey-200);
+  overflow-wrap: break-word;
+}
+
+.prose [id] {
+  scroll-margin-top: 6rem;
 }
 
 .prose > * + * {
@@ -106,6 +111,18 @@ html[data-astryx-theme='n3wth'] body {
 
 .prose a:hover {
   border-bottom-color: var(--color-accent);
+}
+
+.prose a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prose a {
+    transition: none;
+  }
 }
 
 /* Lists */
@@ -189,6 +206,17 @@ html[data-astryx-theme='n3wth'] body {
   white-space: nowrap;
 }
 
+@media (max-width: 640px) {
+  .prose td code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .prose th,
+  .prose td {
+    padding-right: 0.5rem;
+  }
+}
+
 .prose tr:last-child td {
   border-bottom: none;
 }
@@ -262,6 +290,9 @@ html[data-astryx-theme='n3wth'] body {
 /* Architecture guide uses the shared type scale and flat section rhythm. */
 .system-intro { max-width: 68ch; margin-bottom: 24px; }
 .system-layers { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 24px; }
+.system-docs { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 16px; }
+.system-docs li { display: flex; flex-direction: column; gap: 6px; }
+.system-docs a { text-decoration: none; }
 .system-layers li { border-top: 1px solid var(--color-border); padding-top: 24px; display: flex; flex-direction: column; gap: 12px; }
 .system-table-wrap { overflow-x: auto; margin-bottom: 24px; }
 .system-table { width: 100%; border-collapse: collapse; text-align: left; font-size: var(--font-size-base); }

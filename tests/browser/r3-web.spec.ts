@@ -44,6 +44,27 @@ test('mobile docs section links wrap in the document and navigate', async ({ pag
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
 })
 
+test('docs navigation discloses its state on every viewport', async ({ page }) => {
+  await page.goto('/docs/introduction')
+  if ((page.viewportSize()?.width ?? 1440) >= 1024) {
+    const toggle = page.getByRole('button', { name: 'API Reference', exact: true })
+    const initial = await toggle.getAttribute('aria-expanded')
+    expect(['true', 'false']).toContain(initial)
+    await toggle.click()
+    await expect(toggle).not.toHaveAttribute('aria-expanded', initial!)
+    await expect(
+      page.getByRole('link', { name: 'Introduction', exact: true }).first()
+    ).toHaveAttribute('aria-current', 'page')
+  } else {
+    await page.locator('summary', { hasText: 'All documentation pages' }).click()
+    const all = page.getByRole('navigation', { name: 'All documentation', exact: true })
+    await expect(all).toBeVisible()
+    await all.getByRole('link', { name: 'Troubleshooting', exact: true }).click()
+    await expect(page).toHaveURL(/\/docs\/troubleshooting$/)
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+  }
+})
+
 test('docs code is compact and footer links use one treatment', async ({ page }) => {
   await page.goto('/docs/integrations')
   const code = page.locator('main pre code').first()

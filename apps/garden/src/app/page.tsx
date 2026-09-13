@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { getPublishedNoteCount } from '@/lib/content'
 import { getGraphData } from '@/lib/graph'
 import { WorldGardenClient } from '@/components/WorldGardenClient'
@@ -62,6 +63,10 @@ export default async function HomePage() {
           <p data-world-exclude className="text-xs text-[var(--color-text-secondary)]">
             <span className="md:hidden">Tap a light to see its note</span>
             <span className="max-md:hidden">Move to look around &middot; Click a light to see its note</span>
+            {' · '}
+            <Link href="/notes" className="underline underline-offset-2 decoration-[var(--color-border-emphasized)] hover:text-[var(--color-text-primary)] transition-colors">
+              Or read the notes list
+            </Link>
           </p>
 
           {/* Garden stats: only the figure the hero doesn't already give */}

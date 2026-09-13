@@ -24,6 +24,32 @@ export default function DocsLayout({
             </Link>
           ))}
         </SiteSectionLinks>
+        <details className="mt-4 rounded-lg border border-rail">
+          <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-ink-label [&::-webkit-details-marker]:hidden">
+            All documentation pages
+          </summary>
+          <nav aria-label="All documentation" className="border-t border-rail px-4 py-3">
+            {docsConfig.map((section) => (
+              <div key={section.title} className="py-2">
+                <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">
+                  {section.title}
+                </p>
+                <ul className="mt-1 space-y-1">
+                  {section.items.map((item) => (
+                    <li key={item.slug}>
+                      <Link
+                        href={`/docs/${item.slug}`}
+                        className="block py-1.5 text-sm text-ink-dim hover:text-ink"
+                      >
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
+        </details>
         </div>
         <div className="flex gap-8">
           {/* Sidebar */}

@@ -49,7 +49,7 @@ export function remarkWikilinks() {
             url: `/${resolvedSlug}`,
             children: [{ type: 'text', value: displayText }],
             data: {
-              hProperties: { className: 'internal-link' },
+              hProperties: { className: ['internal-link'] },
             },
           }
           children.push(link)

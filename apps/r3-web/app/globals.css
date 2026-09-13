@@ -59,6 +59,16 @@
   outline-offset: 3px;
 }
 
+main [id] {
+  scroll-margin-top: 6rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* Skip link - visible only on focus, doesn't steal snippets */
 .skip-link {
   position: fixed;
@@ -74,7 +84,12 @@
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: top 0.15s var(--ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skip-link {
+    transition: top 0.15s var(--ease);
+  }
 }
 
 .skip-link:focus {
