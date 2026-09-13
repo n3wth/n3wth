@@ -21,6 +21,8 @@ export function CategoryFilter({ activeCategory, onCategoryChange }: CategoryFil
       {categories.map(cat => (
         <button
           key={cat.id}
+          type="button"
+          aria-pressed={activeCategory === cat.id}
           onClick={() => onCategoryChange(cat.id)}
           className={`category-filter-btn px-3 md:px-4 py-2 text-xs md:text-sm font-medium flex items-center gap-2 shrink-0 min-h-[44px] relative ${
             activeCategory === cat.id ? 'category-filter-active' : ''

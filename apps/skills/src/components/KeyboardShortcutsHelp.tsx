@@ -49,7 +49,7 @@ export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelp
       aria-labelledby="keyboard-shortcuts-title"
     >
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/70"
         aria-hidden="true"
       />
       <div

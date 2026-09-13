@@ -63,8 +63,6 @@ export function WorkflowBuilderClient({ workflowId }: WorkflowBuilderClientProps
 
   return (
     <div className="h-screen relative overflow-hidden">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
 
       <main className="h-full">
         <WorkflowBuilderComponent

@@ -10,8 +10,6 @@ const suggestedSkills = skills.filter(s => s.featured).slice(0, 4)
 export default function NotFound() {
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
 
       <IslandNav />
 

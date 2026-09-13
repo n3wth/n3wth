@@ -93,8 +93,6 @@ export function PageErrorFallback({
 }: PageErrorFallbackProps) {
   return (
     <div className="min-h-screen flex items-center justify-center p-8">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <div className="text-center max-w-md relative z-10">
         <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-coral/10 flex items-center justify-center">
           <svg

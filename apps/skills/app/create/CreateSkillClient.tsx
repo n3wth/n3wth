@@ -949,8 +949,6 @@ export function CreateSkillClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <IslandNav />
 
       <main className="n3wth-site-container n3wth-site-main">
