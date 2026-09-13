@@ -111,12 +111,6 @@ export default function RootLayout({
                   navigator.serviceWorker.register('/sw.js');
                 });
               }
-
-              // Preload critical resources
-              const linkPrefetch = document.createElement('link');
-              linkPrefetch.rel = 'prefetch';
-              linkPrefetch.href = '/docs';
-              document.head.appendChild(linkPrefetch);
             `,
           }}
         />
