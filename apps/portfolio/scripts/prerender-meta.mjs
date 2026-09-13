@@ -257,6 +257,11 @@ const template = readFileSync(join(dist, 'index.html'), 'utf8')
 
 const renderRoute = (r, outPath) => {
   let html = template
+  /* The visually-hidden #seo-lead repeats the homepage description; drop it
+     on routes where that copy is wrong (404, utility pages). */
+  if (r.stripSeoLead) {
+    html = html.replace(/\s*<p id="seo-lead">[\s\S]*?<\/p>/, '')
+  }
   const url = `${ORIGIN}/${r.path}`
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${r.title}</title>`)
   html = html.replace(
@@ -339,9 +344,17 @@ renderRoute(
     description: 'This page does not exist.',
     ogImage: '/og-image.png',
     noindex: true,
+    stripSeoLead: true,
     body: `
-      <h1>This page doesn't exist</h1>
-      <p>The link may be old, or the address mistyped (404). <a href="/">Go home</a>.</p>`,
+      <section aria-label="Page not found">
+        <img src="/images/empty-playa.webp" alt="" style="width:100%;height:auto;margin-bottom:1.5rem" />
+        <h1>This page doesn&rsquo;t exist</h1>
+        <p>The link may be old, or the address mistyped (404).</p>
+        <nav aria-label="Not found">
+          <a href="/">Go home</a>
+          <a href="/work">View work</a>
+        </nav>
+      </section>`,
   },
   join(dist, '404.html')
 )
