@@ -264,8 +264,6 @@ export function PlaygroundClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
 
       <IslandNav />
 
@@ -757,7 +755,7 @@ export function PlaygroundClient() {
       </main>
 
       {showApiKeyInput && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
           <div
             className="w-full max-w-md p-6 rounded-2xl"
             style={{

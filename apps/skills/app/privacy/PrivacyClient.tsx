@@ -9,8 +9,6 @@ import { FloatingShapes } from '../../src/components/FloatingShapes'
 export default function PrivacyClient() {
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <FloatingShapes />
       <IslandNav />
 

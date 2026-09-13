@@ -10,8 +10,6 @@ import { siteConfig } from '../../src/config/site'
 export default function ContactClient() {
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <FloatingShapes />
       <IslandNav />
 

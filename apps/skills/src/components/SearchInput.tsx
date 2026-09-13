@@ -1,6 +1,5 @@
 'use client'
-import { forwardRef, useState, useRef, useEffect } from 'react'
-import gsap from 'gsap'
+import { forwardRef, useState } from 'react'
 
 interface SearchInputProps {
   value: string
@@ -11,39 +10,14 @@ interface SearchInputProps {
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   function SearchInput({ value, onChange, placeholder = 'Search skills...' }, ref) {
     const [isFocused, setIsFocused] = useState(false)
-    const iconRef = useRef<SVGSVGElement>(null)
-    const containerRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-      if (!iconRef.current) return
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      if (prefersReducedMotion) return
-
-      if (isFocused) {
-        gsap.to(iconRef.current, {
-          scale: 1.1,
-          rotate: 15,
-          duration: 0.3,
-          ease: 'back.out(2)',
-        })
-      } else {
-        gsap.to(iconRef.current, {
-          scale: 1,
-          rotate: 0,
-          duration: 0.2,
-          ease: 'power2.out',
-        })
-      }
-    }, [isFocused])
 
     return (
-      <div ref={containerRef} className="relative w-full sm:w-64 md:w-80 search-focus-ring rounded-full" style={{ border: '1px solid transparent' }}>
+      <div className="relative w-full sm:w-64 md:w-80 search-focus-ring rounded-full" style={{ border: '1px solid transparent' }}>
         <label htmlFor="skill-search" className="sr-only">
           Search skills
         </label>
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg
-            ref={iconRef}
             className="h-4 w-4 transition-colors duration-200"
             style={{ color: isFocused ? 'var(--color-white)' : 'var(--color-grey-400)' }}
             fill="none"
