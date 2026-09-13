@@ -28,7 +28,6 @@ const entries = [
     date: 'February 15, 2026',
     title: 'Business launch',
     changes: [
-      'Added email waitlist capture on landing page',
       'Complete documentation for Antigravity CLI',
       'Blog with technical content for SEO',
       'Interactive component page with search, filter, and copy-to-clipboard',
