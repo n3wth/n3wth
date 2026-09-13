@@ -211,13 +211,11 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
           </button>
         )}
       </div>
-      {filtered.length > 0 && (
-        <p role="status" className="mb-2 text-xs text-[var(--color-text-disabled)]">
-          {filtered.length === notes.length
-            ? `${notes.length} notes`
-            : `${filtered.length} of ${notes.length} notes`}
-        </p>
-      )}
+      <p role="status" className="mb-2 text-xs text-[var(--color-text-disabled)]">
+        {filtered.length === notes.length
+          ? `${notes.length} notes`
+          : `${filtered.length} of ${notes.length} notes`}
+      </p>
       {exploredHere > 0 && (
         <p className="mb-6 text-xs text-[var(--color-text-disabled)]">
           You&rsquo;ve explored {exploredHere} of {notes.length} — the dimmed rows are where you&rsquo;ve been.
