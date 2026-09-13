@@ -124,7 +124,7 @@ test('primary navigation opens Work', async ({ page }) => {
   const work = page.locator('#primary-navigation').getByRole('link', { name: 'Work', exact: true })
   // Compact navigation exposes the same links through its menu toggle.
   if (!await work.isVisible()) {
-    await page.getByRole('button', { name: 'Primary', exact: true }).click()
+    await page.getByRole('button', { name: 'Open menu', exact: true }).click()
   }
   await work.click()
   await expect(page).toHaveURL(/\/work$/)

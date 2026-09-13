@@ -97,7 +97,9 @@ export default function RootLayout({
           Skip to main content
         </a>
         <PostHogProvider>
-          <Providers>{children}</Providers>
+          <Providers>
+            <div id="main-content" tabIndex={-1} className="outline-none">{children}</div>
+          </Providers>
         </PostHogProvider>
       </body>
       <GoogleAnalytics gaId="G-4QRMSG5HXK" />
