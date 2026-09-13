@@ -124,11 +124,12 @@ export function RequestsClient() {
               <h2 className="text-lg font-semibold text-white mb-4">Submit a feature request</h2>
               <form onSubmit={handleCreateRequest}>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-white mb-2">
+                  <label htmlFor="request-title" className="block text-sm font-medium text-white mb-2">
                     Title
                   </label>
                   <input
                     type="text"
+                    id="request-title"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
                     placeholder="e.g., Skill for Kubernetes deployment"
@@ -139,10 +140,11 @@ export function RequestsClient() {
                 </div>
 
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-white mb-2">
+                  <label htmlFor="request-description" className="block text-sm font-medium text-white mb-2">
                     Description
                   </label>
                   <textarea
+                    id="request-description"
                     value={newDescription}
                     onChange={(e) => setNewDescription(e.target.value)}
                     placeholder="Describe what the skill should do and why it would be useful..."
@@ -153,14 +155,15 @@ export function RequestsClient() {
                 </div>
 
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-white mb-2">
+                  <span id="request-category-label" className="block text-sm font-medium text-white mb-2">
                     Category
-                  </label>
-                  <div className="flex flex-wrap gap-2">
+                  </span>
+                  <div className="flex flex-wrap gap-2" role="group" aria-labelledby="request-category-label">
                     {categories.filter(c => c.id !== 'all').map(category => (
                       <button
                         key={category.id}
                         type="button"
+                        aria-pressed={newCategory === category.id}
                         onClick={() => setNewCategory(category.id)}
                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-2 ${
                           newCategory === category.id ? 'ring-1 ring-white/40' : ''
@@ -206,6 +209,7 @@ export function RequestsClient() {
               {(['all', 'open', 'planned', 'completed'] as FilterStatus[]).map(status => (
                 <button
                   key={status}
+                  aria-pressed={filterStatus === status}
                   onClick={() => setFilterStatus(status)}
                   className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
                     filterStatus === status ? 'ring-1 ring-white/40' : ''
@@ -224,6 +228,7 @@ export function RequestsClient() {
             <div className="flex items-center gap-2">
               <span className="text-xs font-medium" style={{ color: 'var(--color-grey-400)' }}>Sort:</span>
               <select
+                aria-label="Sort requests"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
                 className="px-3 py-1.5 rounded-lg text-xs bg-white/5 border text-white focus:outline-none focus:ring-1 focus:ring-white/20"
@@ -268,8 +273,10 @@ export function RequestsClient() {
                           color: voteState.hasVoted ? '#a855f7' : 'var(--color-grey-300)',
                         }}
                         title={voteState.hasVoted ? 'Remove vote' : 'Vote for this request'}
+                        aria-pressed={voteState.hasVoted}
+                        aria-label={`${voteState.hasVoted ? 'Remove vote from' : 'Vote for'} request "${request.title}". Current votes: ${voteState.votes}`}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill={voteState.hasVoted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill={voteState.hasVoted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M12 19V5M5 12l7-7 7 7" />
                         </svg>
                       </button>
