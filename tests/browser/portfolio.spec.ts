@@ -103,6 +103,22 @@ for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact'])
   })
 }
 
+test('home identity and scene destinations work before the scene settles', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.locator('.world-identity-name')).toHaveText('Oliver Newth')
+  const atlas = page.getByRole('navigation', { name: 'Scene destinations' })
+  await expect(atlas).toBeVisible()
+  for (const name of ['Work', 'Art', 'Thinking', 'Contact', 'Garden']) {
+    const link = atlas.getByRole('link', { name, exact: true })
+    await expect(link).toBeVisible()
+    const box = await link.boundingBox()
+    expect(box?.height).toBeGreaterThanOrEqual(44)
+  }
+  await expect(page.locator('h1')).toHaveCount(1)
+  await atlas.getByRole('link', { name: 'Work', exact: true }).click()
+  await expect(page).toHaveURL(/\/work$/)
+})
+
 test('primary navigation opens Work', async ({ page }) => {
   await page.goto('/art')
   const work = page.locator('#primary-navigation').getByRole('link', { name: 'Work', exact: true })
