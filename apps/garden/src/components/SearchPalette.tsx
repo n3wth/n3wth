@@ -72,7 +72,7 @@ async function streamAIResponse(
   })
 
   if (!response.ok) {
-    throw new Error(`AI search failed: ${response.status}`)
+    throw new Error(`Search request failed: ${response.status}`)
   }
 
   const reader = response.body?.getReader()
@@ -113,6 +113,7 @@ async function streamAIResponse(
 interface AIState {
   loading: boolean
   result: string
+  error: string
   query: string
 }
 
@@ -143,11 +144,15 @@ function AIResultFooter({
     <div className="border-t border-[var(--color-border)]">
       <div className="px-4 py-3">
         <div className="text-[11px] font-medium text-secondary uppercase tracking-wide mb-2">
-          Ask AI
+          Ask the garden
         </div>
-        {aiState.loading && !aiState.result ? (
-          <div className="text-secondary animate-pulse text-[13px]">
-            Thinking...
+        {aiState.error ? (
+          <div role="alert" className="text-primary text-[13px]">
+            {aiState.error}
+          </div>
+        ) : aiState.loading && !aiState.result ? (
+          <div role="status" className="text-secondary animate-pulse text-[13px]">
+            Searching the garden...
           </div>
         ) : aiState.result ? (
           <div className="text-primary text-[13px] leading-relaxed whitespace-pre-wrap max-h-[200px] overflow-y-auto">
@@ -155,7 +160,7 @@ function AIResultFooter({
             {aiState.loading && <span className="animate-pulse">...</span>}
           </div>
         ) : (
-          <div className="text-tertiary text-[13px]">
+          <div role="status" className="text-tertiary text-[13px]">
             Searching...
           </div>
         )}
@@ -173,6 +178,7 @@ export function SearchPalette({
   const [aiState, setAiState] = useState<AIState>({
     loading: false,
     result: '',
+    error: '',
     query: '',
   })
 
@@ -244,8 +250,13 @@ export function SearchPalette({
       setAiState((prev) => ({ ...prev, loading: false }))
     } catch (err) {
       if (err instanceof Error && err.name !== 'AbortError') {
-        console.error('AI search error:', err)
-        setAiState((prev) => ({ ...prev, loading: false }))
+        console.error('Garden search error:', err)
+        setAiState((prev) => ({
+          ...prev,
+          loading: false,
+          result: '',
+          error: 'The garden could not answer right now. Try again in a moment.',
+        }))
       }
     }
   }, [])
@@ -255,11 +266,11 @@ export function SearchPalette({
       cancelAISearch()
 
       if (!query.trim()) {
-        setAiState({ loading: false, result: '', query: '' })
+        setAiState({ loading: false, result: '', error: '', query: '' })
         return
       }
 
-      setAiState({ loading: true, result: '', query })
+      setAiState({ loading: true, result: '', error: '', query })
 
       debounceRef.current = setTimeout(() => {
         runAISearch(query)
@@ -282,7 +293,7 @@ export function SearchPalette({
   useEffect(() => {
     if (!isOpen) {
       cancelAISearch()
-      setAiState({ loading: false, result: '', query: '' })
+      setAiState({ loading: false, result: '', error: '', query: '' })
     }
   }, [isOpen, cancelAISearch])
 
