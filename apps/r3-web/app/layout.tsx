@@ -108,7 +108,9 @@ export default function RootLayout({
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js');
+                  navigator.serviceWorker.getRegistration('/').then(function(registration) {
+                    if (registration) registration.update();
+                  });
                 });
               }
             `,
