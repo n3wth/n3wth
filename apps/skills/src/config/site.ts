@@ -9,6 +9,7 @@ export const siteConfig = {
     about: siteUrls.home,
     github: 'https://github.com/n3wth/n3wth/tree/main/apps/skills',
     twitter: 'https://twitter.com/olivernewth',
+    terms: `${siteUrls.home}/terms`,
     docs: 'https://github.com/n3wth/n3wth/tree/main/apps/skills#readme',
   },
   hero: {
