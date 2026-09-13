@@ -1,7 +1,5 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
+import { useState } from 'react'
 import confetti from 'canvas-confetti'
 import { trackCopyEvent } from '../lib/analytics'
 import type { AssistantId } from '../config/assistants'
@@ -56,101 +54,51 @@ function triggerConfetti() {
 
 export function CommandBox({ name, command, primary, skillId, assistantId }: CommandBoxProps) {
   const [copied, setCopied] = useState(false)
+  const [copyFailed, setCopyFailed] = useState(false)
   const [showVerification, setShowVerification] = useState(false)
   const [verified, setVerified] = useState(false)
-  const copyButtonRef = useRef<HTMLSpanElement>(null)
-  const checkmarkRef = useRef<SVGSVGElement>(null)
-  const announcementRef = useRef<HTMLDivElement | null>(null)
+  const [announcement, setAnnouncement] = useState('')
+
+  const announce = setAnnouncement
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(command)
+    try {
+      await navigator.clipboard.writeText(command)
+    } catch {
+      setCopyFailed(true)
+      announce('Copy failed. Select the command and copy it manually.')
+      setTimeout(() => setCopyFailed(false), 4000)
+      return
+    }
+    setCopyFailed(false)
     setCopied(true)
     setShowVerification(true)
-    
-    // Announce to screen readers
-    const announcement = document.createElement('div')
-    announcement.setAttribute('role', 'status')
-    announcement.setAttribute('aria-live', 'polite')
-    announcement.className = 'sr-only'
-    announcement.textContent = 'Copied command to clipboard'
-    document.body.appendChild(announcement)
-    announcementRef.current = announcement
-    
+
+    announce('Copied command to clipboard')
+
     setTimeout(() => setCopied(false), 2000)
-    
+
     const trackingId = skillId || name.toLowerCase().replace(/\s+/g, '-')
     trackCopyEvent(trackingId)
   }
 
-  // Clean up announcement on unmount or when it's no longer needed
-  useEffect(() => {
-    return () => {
-      if (announcementRef.current && document.body.contains(announcementRef.current)) {
-        document.body.removeChild(announcementRef.current)
-        announcementRef.current = null
-      }
-    }
-  }, [])
-
-  // Remove announcement after delay
-  useEffect(() => {
-    if (announcementRef.current) {
-      const announcementElement = announcementRef.current
-      const timer = setTimeout(() => {
-        if (announcementElement && document.body.contains(announcementElement)) {
-          document.body.removeChild(announcementElement)
-          announcementRef.current = null
-        }
-      }, 1000)
-      return () => clearTimeout(timer)
-    }
-  }, [copied])
-
-  // Animate copy feedback with GSAP
-  useGSAP(() => {
-    if (copied && copyButtonRef.current && checkmarkRef.current) {
-      const timeline = gsap.timeline()
-      
-      // Animate button scale and background
-      timeline.fromTo(
-        copyButtonRef.current,
-        { scale: 1 },
-        { 
-          scale: 1.1, 
-          duration: 0.2, 
-          ease: 'back.out(2)',
-        }
-      )
-      
-      timeline.to(
-        copyButtonRef.current,
-        {
-          scale: 1,
-          duration: 0.15,
-          ease: 'power2.out'
-        },
-        '-=0.05'
-      )
-      
-      // Animate checkmark entrance
-      timeline.fromTo(
-        checkmarkRef.current,
-        { scale: 0, opacity: 0, rotate: -45 },
-        { 
-          scale: 1, 
-          opacity: 1, 
-          rotate: 0,
-          duration: 0.3, 
-          ease: 'back.out(1.7)' 
-        },
-        '-=0.15'
-      )
-    }
-  }, [copied])
+  const [verificationCopied, setVerificationCopied] = useState(false)
+  const [verificationFailed, setVerificationFailed] = useState(false)
 
   const handleVerificationCopy = async () => {
     const verifyCommand = getVerificationCommand(assistantId)
-    await navigator.clipboard.writeText(verifyCommand)
+    try {
+      await navigator.clipboard.writeText(verifyCommand)
+    } catch {
+      setVerificationFailed(true)
+      announce('Copy failed. Select the command and copy it manually.')
+      setTimeout(() => setVerificationFailed(false), 4000)
+      return
+    }
+    setVerificationFailed(false)
+    setVerificationCopied(true)
+    announce('Copied verification command to clipboard')
+    setTimeout(() => setVerificationCopied(false), 2000)
   }
 
   const handleItWorked = () => {
@@ -160,9 +108,12 @@ export function CommandBox({ name, command, primary, skillId, assistantId }: Com
 
   return (
     <div className="space-y-2">
-      <div
+      <div aria-live="polite" className="sr-only">{announcement}</div>
+      <button
+        type="button"
         onClick={handleCopy}
-        className={`command-box flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 cursor-pointer ${primary ? 'primary' : ''}`}
+        className={`command-box w-full text-left flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 cursor-pointer ${primary ? 'primary' : ''}`}
+        aria-label={`Copy ${name} command`}
       >
         <span
           className="label shrink-0 whitespace-nowrap"
@@ -176,18 +127,17 @@ export function CommandBox({ name, command, primary, skillId, assistantId }: Com
         >
           {command}
         </code>
-        <span 
-          ref={copyButtonRef}
+        <span
           className={`label px-3 py-1.5 rounded-lg copy-btn flex items-center gap-1.5 ${copied ? 'copied' : ''}`}
         >
           {copied && (
             <svg
-              ref={checkmarkRef}
               className="w-3.5 h-3.5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={3}
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -198,7 +148,17 @@ export function CommandBox({ name, command, primary, skillId, assistantId }: Com
           )}
           {copied ? 'Copied' : 'Copy'}
         </span>
-      </div>
+      </button>
+
+      {copyFailed && (
+        <p
+          role="status"
+          className="text-xs"
+          style={{ color: 'var(--color-coral, #ff6961)' }}
+        >
+          Copy failed — select the command and copy it manually.
+        </p>
+      )}
 
       {showVerification && !verified && (
         <div 
@@ -225,34 +185,47 @@ export function CommandBox({ name, command, primary, skillId, assistantId }: Com
               Run the install command in your terminal, then verify it worked:
             </p>
             
-            <div 
+            <button
+              type="button"
               onClick={handleVerificationCopy}
-              className="flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-colors"
+              className="flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-colors text-left"
               style={{
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid var(--glass-border)',
               }}
+              aria-label="Copy verification command"
             >
-              <code 
+              <code
                 className="flex-1 text-xs font-mono overflow-x-auto whitespace-nowrap"
                 style={{ color: 'var(--color-grey-300)' }}
               >
                 {getVerificationCommand(assistantId)}
               </code>
-              <span 
+              <span
                 className="label text-xs px-2 py-1 rounded"
-                style={{ 
+                style={{
                   background: 'rgba(255, 255, 255, 0.1)',
                   color: 'var(--color-grey-400)',
                 }}
               >
-                Copy
+                {verificationCopied ? 'Copied' : 'Copy'}
               </span>
-            </div>
+            </button>
+
+            {verificationFailed && (
+              <p
+                role="status"
+                className="text-xs"
+                style={{ color: 'var(--color-coral, #ff6961)' }}
+              >
+                Copy failed — select the command and copy it manually.
+              </p>
+            )}
 
             <button
+              type="button"
               onClick={handleItWorked}
-              className="self-start px-4 py-2 rounded-lg text-sm font-medium transition-all hover:scale-105 active:scale-95"
+              className="self-start px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               style={{
                 background: 'var(--color-sage)',
                 color: 'var(--color-bg)',

@@ -37,8 +37,6 @@ export function BundleDetailClient({ bundleId }: Props) {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
 
       <IslandNav />
 

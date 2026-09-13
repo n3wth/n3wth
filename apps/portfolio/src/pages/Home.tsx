@@ -42,8 +42,48 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
     return { failed: true }
   }
   render() {
-    return this.state.failed ? <StaticNight /> : this.props.children
+    return this.state.failed
+      ? (<><StaticNight /><div className="night-field-loader-tint" /></>)
+      : this.props.children
   }
+}
+
+const SCENE_LINKS = [
+  { name: 'Work', href: '/work' },
+  { name: 'Art', href: '/art' },
+  { name: 'Thinking', href: '/thinking' },
+  { name: 'Contact', href: '/contact' },
+  { name: 'Garden', href: 'https://garden.n3wth.com', external: true },
+] as const
+
+function WorldOverlay() {
+  return (
+    <div className="world-identity-layer">
+      <div className="world-identity">
+        <p className="world-identity-name">{siteConfig.name}</p>
+        <p>AI product lead at Google. Independent projects and large-scale light art.</p>
+      </div>
+      <div className="world-atlas">
+        <div className="world-atlas-copy">
+          <p>Each light is a piece of work.</p>
+          <span>Open one from the field, or from this list.</span>
+        </div>
+        <nav aria-label="Scene destinations">
+          <ul className="world-atlas-links">
+            {SCENE_LINKS.map((link) => (
+              <li key={link.href}>
+                {'external' in link && link.external ? (
+                  <a href={link.href}>{link.name}</a>
+                ) : (
+                  <Link to={link.href}>{link.name}</Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  )
 }
 
 export default function Home() {
@@ -93,9 +133,12 @@ export default function Home() {
           </Suspense>
         </SceneBoundary>
       ) : (
-        <StaticNight />
+        <>
+          <StaticNight />
+          <div className="night-field-loader-tint" />
+        </>
       )}
-
+      <WorldOverlay />
     </section>
     <PageHeader className="site-content-gutter" title={<span data-nosnippet>I build new ways to work with AI.</span>} description={<>
       <span className="block mb-4">{siteConfig.name}</span>
@@ -105,7 +148,7 @@ export default function Home() {
       <span className="block mt-5">
         My independent projects explore personal agents, tools for creating software, and skills that help people use both.
       </span>
-    </>} actions={<Link to="/work#building">Explore my projects</Link>} />
+    </>} actions={<Link className="btn" to="/work#building">Explore my projects</Link>} />
     </>
   )
 }

@@ -62,6 +62,62 @@ describe('CommandBox', () => {
     expect(commandBox).not.toHaveClass('primary')
   })
 
+  it('renders the copy control as a semantic button', () => {
+    render(
+      <CommandBox
+        name="Test Command"
+        command="test command"
+        primary={false}
+      />
+    )
+
+    expect(
+      screen.getByRole('button', { name: 'Copy Test Command command' })
+    ).toBeInTheDocument()
+  })
+
+  it('shows error feedback when clipboard write is rejected', async () => {
+    vi.mocked(navigator.clipboard.writeText).mockRejectedValueOnce(
+      new DOMException('Write permission denied', 'NotAllowedError')
+    )
+
+    render(
+      <CommandBox
+        name="Test Command"
+        command="test command"
+        primary={false}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Copy Test Command command' }))
+
+    await waitFor(() => {
+      expect(screen.getByRole('status')).toHaveTextContent('Copy failed')
+    })
+    expect(screen.queryByText('Copied')).not.toBeInTheDocument()
+  })
+
+  it('does not show the verification step when clipboard write is rejected', async () => {
+    vi.mocked(navigator.clipboard.writeText).mockRejectedValueOnce(
+      new DOMException('Write permission denied', 'NotAllowedError')
+    )
+
+    render(
+      <CommandBox
+        name="Test Command"
+        command="test command"
+        primary={false}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Copy Test Command command' }))
+
+    await waitFor(() => {
+      expect(screen.getByRole('status')).toHaveTextContent('Copy failed')
+    })
+    expect(screen.queryByText('Verify installation')).not.toBeInTheDocument()
+  })
+
   it('copies command to clipboard when clicked', async () => {
     const command = 'curl -fsSL https://example.com/install.sh | bash'
     render(

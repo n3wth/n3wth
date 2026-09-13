@@ -4,8 +4,6 @@ import { Footer } from './Footer'
 export function SkillDetailSkeleton() {
   return (
     <div className="min-h-screen relative">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <IslandNav />
 
       <main className="pt-28 md:pt-32 pb-24 animate-pulse">
