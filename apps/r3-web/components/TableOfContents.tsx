@@ -91,12 +91,9 @@ export function TableOfContents() {
                   : "text-ink-faint hover:text-ink-dim"
               }
             `}
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById(heading.id)?.scrollIntoView({
-                behavior: "smooth",
-              });
-            }}
+            aria-current={
+              activeId === heading.id ? "location" : undefined
+            }
           >
             {heading.text}
           </a>

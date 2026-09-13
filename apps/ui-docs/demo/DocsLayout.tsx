@@ -1,11 +1,13 @@
 import { type ComponentType } from 'react'
-import { useParams } from 'react-router'
+import { Link, useParams } from 'react-router'
 import { SiteNav } from './SiteNav'
 import { SiteFooter } from '@n3wth/ui/site'
 import { siteUrls } from '@n3wth/site-config'
 import { DocsSidebar } from './DocsSidebar'
 import { SEO, JsonLdWebPage, JsonLdBreadcrumb } from './SEO'
 import { NotFound } from './NotFound'
+
+import { docPageMeta, type DocPageMeta } from './docPages'
 
 const docModules = import.meta.glob<{ default: ComponentType }>([
   '../docs/getting-started.md',
@@ -15,42 +17,14 @@ const docModules = import.meta.glob<{ default: ComponentType }>([
   '../docs/css-utilities.md',
 ], { eager: true })
 
-export interface DocPage {
-  slug: string
-  title: string
-  description: string
+export interface DocPage extends DocPageMeta {
   Component: ComponentType
 }
 
-const DOC_DESCRIPTIONS: Record<string, string> = {
-  'getting-started': 'Create a site in the workspace using the shared UI page system and Astryx primitives.',
-  'theming': 'Shared brand tokens, typography, fonts and provider ownership.',
-  'components': 'Choose between site compositions, native Astryx primitives and existing UI adapters.',
-  'hooks': 'Theme state, focus behavior and intentional product feedback.',
-  'css-utilities': 'Site styles, the Tailwind theme facade and compatibility CSS.',
-}
-
-function slugToTitle(slug: string): string {
-  return slug
-    .replace(/-/g, ' ')
-    .replace(/css /i, 'CSS ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-}
-
-export const docPages: DocPage[] = Object.entries(docModules)
-  .map(([path, mod]) => {
-    const slug = path.replace('../docs/', '').replace('.md', '')
-    return {
-      slug,
-      title: slugToTitle(slug),
-      description: DOC_DESCRIPTIONS[slug] || `Documentation for ${slugToTitle(slug)} in @n3wth/ui design system.`,
-      Component: mod.default,
-    }
-  })
-  .sort((a, b) => {
-    const order = ['getting-started', 'theming', 'components', 'hooks', 'css-utilities']
-    return order.indexOf(a.slug) - order.indexOf(b.slug)
-  })
+export const docPages: DocPage[] = docPageMeta.map((meta) => ({
+  ...meta,
+  Component: docModules[`../docs/${meta.slug}.md`].default,
+}))
 
 export function DocsLayout() {
   const { slug } = useParams()
@@ -102,6 +76,25 @@ export function DocsLayout() {
             <article className="prose">
               <Content />
             </article>
+            <nav aria-label="Documentation pages" className="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-[var(--glass-border)] pt-6 text-sm">
+              {(() => {
+                const index = docPages.findIndex((p) => p.slug === currentPage.slug)
+                const prev = docPages[index - 1]
+                const next = docPages[index + 1]
+                return <>
+                  {prev && (
+                    <Link to={`/docs/${prev.slug}`} className="text-[var(--color-grey-400)] hover:text-[var(--color-white)]">
+                      ← {prev.title}
+                    </Link>
+                  )}
+                  {next && (
+                    <Link to={`/docs/${next.slug}`} className="ml-auto text-[var(--color-grey-400)] hover:text-[var(--color-white)]">
+                      {next.title} →
+                    </Link>
+                  )}
+                </>
+              })()}
+            </nav>
           </main>
         </div>
       </div>

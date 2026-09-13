@@ -32,7 +32,8 @@ export function DocsSidebar() {
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-dim" />
         <input
-          type="text"
+          type="search"
+          aria-label="Search documentation"
           placeholder="Search docs..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -51,7 +52,9 @@ export function DocsSidebar() {
           return (
             <div key={section.title}>
               <button
+                type="button"
                 onClick={() => toggleSection(section.title)}
+                aria-expanded={Boolean(isExpanded)}
                 className="flex items-center justify-between w-full px-2 py-1.5 text-sm font-medium text-ink-label hover:text-ink transition-colors"
               >
                 <span>{section.title}</span>
@@ -71,6 +74,7 @@ export function DocsSidebar() {
                       <Link
                         key={item.slug}
                         href={`/docs/${item.slug}`}
+                        aria-current={isActive ? "page" : undefined}
                         className={`
                           group flex items-center justify-between px-3 py-1.5 text-sm rounded-lg transition-all
                           ${

@@ -140,6 +140,13 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
 
   const bands = useMemo(() => groupByBand(filtered, sort), [filtered, sort])
 
+  const filtersActive = query.trim() !== '' || stage !== 'all' || sort !== 'title'
+  const resetFilters = () => {
+    setQuery('')
+    setStage('all')
+    setSort('title')
+  }
+
   const exploredHere = useMemo(
     () => notes.filter((n) => n.slug in visited).length,
     [notes, visited]
@@ -194,7 +201,23 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
             <SegmentedControlItem key={s.value} value={s.value} label={s.label} />
           ))}
         </SegmentedControl>
+        {filtersActive && (
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="self-start lg:self-auto text-sm text-[var(--color-text-secondary)] underline underline-offset-2 decoration-[var(--color-border-emphasized)] hover:text-[var(--color-text-primary)] transition-colors"
+          >
+            Reset
+          </button>
+        )}
       </div>
+      {filtered.length > 0 && (
+        <p role="status" className="mb-2 text-xs text-[var(--color-text-disabled)]">
+          {filtered.length === notes.length
+            ? `${notes.length} notes`
+            : `${filtered.length} of ${notes.length} notes`}
+        </p>
+      )}
       {exploredHere > 0 && (
         <p className="mb-6 text-xs text-[var(--color-text-disabled)]">
           You&rsquo;ve explored {exploredHere} of {notes.length} — the dimmed rows are where you&rsquo;ve been.

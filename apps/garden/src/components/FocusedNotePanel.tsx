@@ -27,6 +27,8 @@ interface FocusedNotePanelProps {
 export function FocusedNotePanel({ note, neighbors, visited, onSelectNeighbor }: FocusedNotePanelProps) {
   return (
     <div
+      role="region"
+      aria-label={`Selected note: ${note.title}`}
       className="glass-panel absolute z-20 flex flex-col gap-3 p-5 max-md:inset-x-3 max-md:bottom-3 max-md:max-h-[45vh] md:top-24 md:right-6 md:w-80 md:max-h-[70vh]"
       style={{ overflowY: 'auto' }}
     >
@@ -65,31 +67,33 @@ export function FocusedNotePanel({ note, neighbors, visited, onSelectNeighbor }:
           <p className="text-xs tracking-wide mb-2" style={{ color: 'var(--color-text-disabled)' }}>
             Connected · {neighbors.length}
           </p>
-          <div className="flex flex-col gap-1">
+          <ul className="flex flex-col gap-1">
             {neighbors.map((n) => {
               const seen = visited.has(n.id)
               return (
-                <button
-                  key={n.id}
-                  type="button"
-                  onClick={() => onSelectNeighbor(n.id)}
-                  className="rounded-md px-2.5 py-1.5 text-left text-sm transition-colors hover:bg-[rgba(255,255,255,0.06)]"
-                  style={{ color: seen ? 'var(--color-text-disabled)' : 'var(--color-text-secondary)' }}
-                >
-                  <span
-                    className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                    style={{ background: stageColor[n.stage] || '#9aa0a8' }}
-                  />
-                  {n.title}
-                  {!seen && (
-                    <span className="ml-2 text-[11px] tracking-wide" style={{ color: 'var(--color-text-disabled)' }}>
-                      new
-                    </span>
-                  )}
-                </button>
+                <li key={n.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectNeighbor(n.id)}
+                    className="w-full rounded-md px-2.5 py-1.5 text-left text-sm transition-colors hover:bg-[rgba(255,255,255,0.06)]"
+                    style={{ color: seen ? 'var(--color-text-disabled)' : 'var(--color-text-secondary)' }}
+                  >
+                    <span
+                      aria-hidden
+                      className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                      style={{ background: stageColor[n.stage] || '#9aa0a8' }}
+                    />
+                    {n.title}
+                    {!seen && (
+                      <span className="ml-2 text-[11px] tracking-wide" style={{ color: 'var(--color-text-disabled)' }}>
+                        new<span className="sr-only">, not yet visited</span>
+                      </span>
+                    )}
+                  </button>
+                </li>
               )
             })}
-          </div>
+          </ul>
         </div>
       )}
     </div>

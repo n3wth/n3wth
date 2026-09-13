@@ -130,44 +130,6 @@ Postgres with Drizzle ORM.`}
           </SiteContainer>
         </SiteSection>
 
-        {/* Integration */}
-        <SiteSection className="border-t border-rail">
-          <SiteContainer>
-            <SiteHeading variant="section" level={2}>
-              Get started
-            </SiteHeading>
-
-            <div className="mt-6 grid gap-8 sm:grid-cols-2">
-              <div>
-                <SiteText variant="supporting">MCP Desktop Clients</SiteText>
-                <SiteText className="mt-2">
-                  Add r3 to your MCP config file.
-                </SiteText>
-                <div className="mt-4">
-                  <CodeBlock language="json">{codeExamples.mcp}</CodeBlock>
-                </div>
-              </div>
-
-              <div>
-                <SiteText variant="supporting">MCP CLI Tools</SiteText>
-                <SiteText className="mt-2">Add with a single command.</SiteText>
-                <div className="mt-4">
-                  <CodeBlock language="bash">{codeExamples.cli}</CodeBlock>
-                </div>
-              </div>
-            </div>
-
-            <SiteText className="mt-6">
-              <Link
-                href="/docs/quickstart"
-                className="underline underline-offset-4 hover:text-ink"
-              >
-                Full setup guide
-              </Link>
-            </SiteText>
-          </SiteContainer>
-        </SiteSection>
-
         {/* Features */}
         <SiteSection className="border-t border-rail">
           <SiteContainer>
@@ -221,6 +183,43 @@ Postgres with Drizzle ORM.`}
                 />
               </BentoGrid>
             </div>
+          </SiteContainer>
+        </SiteSection>
+
+        <SiteSection className="border-t border-rail">
+          <SiteContainer>
+            <SiteHeading variant="section" level={2}>
+              Get started
+            </SiteHeading>
+
+            <div className="mt-6 grid gap-8 sm:grid-cols-2">
+              <div>
+                <SiteText variant="supporting">MCP Desktop Clients</SiteText>
+                <SiteText className="mt-2">
+                  Add r3 to your MCP config file.
+                </SiteText>
+                <div className="mt-4">
+                  <CodeBlock language="json">{codeExamples.mcp}</CodeBlock>
+                </div>
+              </div>
+
+              <div>
+                <SiteText variant="supporting">MCP CLI Tools</SiteText>
+                <SiteText className="mt-2">Add with a single command.</SiteText>
+                <div className="mt-4">
+                  <CodeBlock language="bash">{codeExamples.cli}</CodeBlock>
+                </div>
+              </div>
+            </div>
+
+            <SiteText className="mt-6">
+              <Link
+                href="/docs/quickstart"
+                className="underline underline-offset-4 hover:text-ink"
+              >
+                Full setup guide
+              </Link>
+            </SiteText>
           </SiteContainer>
         </SiteSection>
 
