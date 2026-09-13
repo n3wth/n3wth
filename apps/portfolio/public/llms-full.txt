@@ -79,6 +79,9 @@ Installable pieces from across the n3wth properties:
 #### Contact (https://n3wth.com/contact/)
 hey@n3wth.com — product, AI safety, LED art, or coffee in San Francisco.
 
+#### Support (https://n3wth.com/support/)
+support@n3wth.com — one inbox covering every n3wth project (n3wth.com, hop.flights, theywontshutup.com).
+
 ## Live Products
 
 Products designed by Oliver, kept shipping by an autonomous agent team:
