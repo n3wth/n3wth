@@ -35,6 +35,26 @@ const nextConfig = {
   outputFileTracingRoot: workspaceRoot,
   turbopack: { root: workspaceRoot },
 
+  async redirects() {
+    return [
+      {
+        source: "/docs/getting-started/introduction",
+        destination: "/docs/introduction",
+        permanent: true,
+      },
+      {
+        source: "/docs/getting-started/quickstart",
+        destination: "/docs/quickstart",
+        permanent: true,
+      },
+      {
+        source: "/docs/getting-started/installation",
+        destination: "/docs/installation",
+        permanent: true,
+      },
+    ];
+  },
+
   // Headers for caching
   async headers() {
     return [

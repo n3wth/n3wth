@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { getDocBySlug, getAllDocs } from "@/lib/mdx";
+import { docsConfig } from "@/lib/docs-config";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { MDXComponents } from "@/components/MDXComponents";
@@ -183,6 +184,21 @@ export default async function DocPage({
           name: pageTitle,
           description: pageDescription,
           url: pageUrl,
+        }}
+      />
+      <JsonLd
+        type="BreadcrumbList"
+        data={{
+          items: [
+            { name: "Docs", url: "https://r3.n3wth.com/docs" },
+            {
+              name:
+                docsConfig
+                  .flatMap((section) => section.items)
+                  .find((item) => item.slug === slugPath)?.title || pageTitle,
+              url: pageUrl,
+            },
+          ],
         }}
       />
       <article className="prose prose-invert max-w-none">
