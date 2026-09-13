@@ -27,6 +27,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/bundles`,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/compare`,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/workflows`,
       changeFrequency: 'weekly',
       priority: 0.9,
@@ -63,6 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const workflowPages: MetadataRoute.Sitemap = workflowTemplates.map(workflow => ({
     url: `${baseUrl}/workflows/${workflow.id}`,
+    lastModified: new Date(workflow.updatedAt),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }))

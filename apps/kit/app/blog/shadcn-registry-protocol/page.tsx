@@ -30,6 +30,9 @@ export default function Post() {
       title="The shadcn Registry Protocol"
       date="February 12, 2026"
       readingTime="4 min read"
+      description="How the shadcn registry protocol works."
+      path="/blog/shadcn-registry-protocol"
+      publishedIso="2026-02-12"
     >
       <p>
         The shadcn/ui registry protocol is one of the most underappreciated

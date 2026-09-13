@@ -40,6 +40,9 @@ export default function Post() {
       title="The shadcn Registry Protocol: A Technical Deep Dive"
       date="April 9, 2026"
       readingTime="12 min read"
+      description="How the shadcn registry protocol works under the hood: JSON schema, install flow, dependency resolution, and how to build your own custom component registry."
+      path="/blog/shadcn-registry-protocol-deep-dive"
+      publishedIso="2026-04-09"
     >
       <p>
         The shadcn registry protocol is one of those infrastructure decisions

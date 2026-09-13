@@ -10,7 +10,7 @@ import '../src/index.css'
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrls.skills),
   title: {
-    default: 'n3wth/skills',
+    default: 'n3wth/skills — Markdown skills for Antigravity CLI',
     template: '%s | n3wth/skills',
   },
   description:
