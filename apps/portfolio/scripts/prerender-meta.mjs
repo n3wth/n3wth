@@ -251,6 +251,25 @@ ${
   })
 }
 
+/* Every route must ship a unique title and description — a duplicate or
+   empty pair means two URLs present as the same page to crawlers. Throw
+   here rather than emit the collision. */
+const seenTitles = new Map()
+const seenDescriptions = new Map()
+for (const r of routes) {
+  if (!r.title?.trim() || !r.description?.trim()) {
+    throw new Error(`prerender-meta: /${r.path} is missing a title or description`)
+  }
+  if (seenTitles.has(r.title)) {
+    throw new Error(`prerender-meta: /${r.path} shares a title with /${seenTitles.get(r.title)}`)
+  }
+  if (seenDescriptions.has(r.description)) {
+    throw new Error(`prerender-meta: /${r.path} shares a description with /${seenDescriptions.get(r.description)}`)
+  }
+  seenTitles.set(r.title, r.path)
+  seenDescriptions.set(r.description, r.path)
+}
+
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
 const template = readFileSync(join(dist, 'index.html'), 'utf8')
