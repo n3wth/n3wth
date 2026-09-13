@@ -66,6 +66,10 @@ test('app-only changes include its prerequisites without siblings', () => {
   assert.deepEqual(select(['apps/portfolio/src/App.tsx']), ['@n3wth/site-config', '@n3wth/portfolio'])
 })
 test('root lock changes check every workspace', () => assert.equal(select(['package-lock.json']).length, 4))
+test('CI still treats a lockfile-only change as rebuild-all', () => {
+  assert.equal(affectedWorkspaces(graph, ['package-lock.json']).length, 4)
+  assert.equal(affectedWorkspaces(graph, ['apps/skills/package.json', 'package-lock.json']).length, 4)
+})
 test('deleted manifest checks all even when no longer in current graph', () => assert.equal(select(['packages/removed/package.json']).length, 4))
 test('root documentation alone needs no app checks', () => assert.deepEqual(select(['docs/pilot.md', 'README.md']), []))
 test('unknown configuration changes conservatively check all', () => assert.equal(select(['.github/workflows/site-check.yml']).length, 4))
@@ -76,10 +80,26 @@ test('browser-only changes validate only their app and prerequisites', () => {
 test('validation-only changes do not deploy applications', () => {
   assert.deepEqual(affectedWorkspaces(graph, ['.github/workflows/site-check.yml', 'tests/browser/portfolio.spec.ts', 'playwright.config.ts', 'scripts/affected.test.mjs'], false, undefined, true), [])
 })
-test('deployment filtering preserves mixed source changes and root dependency changes', () => {
+test('deployment filtering preserves mixed source changes and unknown root scripts', () => {
   assert.deepEqual(affectedWorkspaces(graph, ['tests/browser/portfolio.spec.ts', 'apps/portfolio/src/App.tsx'], false, undefined, true), ['@n3wth/site-config', '@n3wth/portfolio'])
-  assert.equal(affectedWorkspaces(graph, ['package-lock.json'], false, undefined, true).length, 4)
+  assert.deepEqual(affectedWorkspaces(graph, ['package-lock.json'], false, undefined, true), [])
   assert.equal(affectedWorkspaces(graph, ['scripts/affected.mjs'], false, undefined, true).length, 4)
+})
+test('deployment mode selects an app manifest plus lockfile without siblings', () => {
+  const apps = [
+    ...graph,
+    { name: '@n3wth/skills', path: 'apps/skills', dependencies: { '@n3wth/site-config': '*' } },
+  ]
+  const result = affectedWorkspaces(apps, ['apps/skills/package.json', 'package-lock.json'], false, undefined, true)
+  assert.ok(result.includes('@n3wth/skills'))
+  assert.ok(!result.includes('@n3wth/portfolio'))
+  assert.ok(!result.includes('@n3wth/ui-docs'))
+})
+test('deployment mode still rebuilds consumers of a shared package manifest', () => {
+  const result = affectedWorkspaces(graph, ['packages/ui/package.json'], false, undefined, true)
+  assert.ok(result.includes('@n3wth/ui'))
+  assert.ok(result.includes('@n3wth/ui-docs'))
+  assert.ok(!result.includes('@n3wth/portfolio'))
 })
 test('cycles fail instead of producing an invalid build order', () => {
   assert.throws(() => affectedWorkspaces([

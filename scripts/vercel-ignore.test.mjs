@@ -35,6 +35,16 @@ test('UI-only change deploys docs without deploying portfolio', () => {
   assert.equal(deploymentExitCode('@n3wth/portfolio', 'previous', runFor(['packages/ui/src/Button.tsx'])), 0)
   assert.equal(deploymentExitCode('@n3wth/ui-docs', 'previous', runFor(['packages/ui/src/Button.tsx'])), 1)
 })
+test('skills manifest plus lockfile deploys skills without portfolio', () => {
+  const apps = [
+    ...graph,
+    { name: '@n3wth/skills', path: 'apps/skills', dependencies: { '@n3wth/site-config': '*' } },
+  ]
+  const files = ['apps/skills/package.json', 'package-lock.json']
+  const run = () => ({ status: 0, stdout: JSON.stringify(affectedWorkspaces(apps, files, false, undefined, true)) })
+  assert.equal(deploymentExitCode('@n3wth/skills', 'previous', run), 1)
+  assert.equal(deploymentExitCode('@n3wth/portfolio', 'previous', run), 0)
+})
 test('invalid output and failed comparison always build', () => {
   for (const result of [
     { status: 0, stdout: 'not json' },

@@ -44,10 +44,13 @@ export function affectedWorkspaces(workspaces, files, all = false, lockfile, dep
       selected.add(`@n3wth/${browserTarget}`)
       continue
     }
-    // Manifest edits can remove dependency edges. Validate the complete graph.
-    if (file.endsWith('/package.json') || file === 'package.json' || file === 'package-lock.json') all = true
+    // Manifest edits can remove dependency edges. CI validates the complete
+    // graph. Deployments select by path and consumers so one app bump plus
+    // the root lockfile does not rebuild every Vercel project.
+    if (!deployment && (file.endsWith('/package.json') || file === 'package.json' || file === 'package-lock.json')) all = true
     const workspace = workspaces.find(item => file.startsWith(`${item.path}/`))
     if (workspace) selected.add(workspace.name)
+    else if (deployment && file === 'package-lock.json') continue
     else if (!/^(docs\/|.*\.(md|mdx)$)/.test(file)) all = true
   }
   if (all) for (const workspace of workspaces) selected.add(workspace.name)
