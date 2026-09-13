@@ -1,5 +1,3 @@
-"use client";
-
 import { Zap, Code, Lock, Globe, Cpu, Layers } from "lucide-react";
 import Link from "next/link";
 import {
@@ -9,19 +7,13 @@ import {
   SiteSection,
   SiteText,
 } from "@n3wth/ui/site";
-import { lazy, Suspense } from "react";
 import { CommandBox as InstallCommand } from "@n3wth/ui";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { CodeBlock } from "@/components/CodeBlock";
 import { JsonLd } from "@/components/JsonLd";
-
-const TerminalDemo = lazy(() =>
-  import("@/components/TerminalDemo").then((module) => ({
-    default: module.TerminalDemo,
-  })),
-);
+import { TerminalDemo } from "@/components/TerminalDemo";
 
 export default function Home() {
   const codeExamples = {
@@ -119,13 +111,7 @@ Postgres with Drizzle ORM.`}
               r3 storing and retrieving memories across sessions.
             </SiteText>
             <div className="mt-6">
-              <Suspense
-                fallback={
-                  <div className="bg-bg-soft rounded-lg p-6 animate-pulse h-64" />
-                }
-              >
-                <TerminalDemo />
-              </Suspense>
+              <TerminalDemo />
             </div>
           </SiteContainer>
         </SiteSection>

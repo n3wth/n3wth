@@ -108,15 +108,11 @@ export default function RootLayout({
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js');
+                  navigator.serviceWorker.getRegistration('/').then(function(registration) {
+                    if (registration) registration.update();
+                  });
                 });
               }
-
-              // Preload critical resources
-              const linkPrefetch = document.createElement('link');
-              linkPrefetch.rel = 'prefetch';
-              linkPrefetch.href = '/docs';
-              document.head.appendChild(linkPrefetch);
             `,
           }}
         />

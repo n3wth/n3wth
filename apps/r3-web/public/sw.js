@@ -1,26 +1,16 @@
-const CACHE_NAME = "recall-v1";
-const urlsToCache = [
-  "/",
-  "/docs",
-  "/docs/quickstart",
-  "/_next/static/css/",
-  "/_next/static/js/",
-];
-
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)),
-  );
+self.addEventListener("install", () => {
+  self.skipWaiting();
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      // Cache hit - return response
-      if (response) {
-        return response;
-      }
-      return fetch(event.request);
-    }),
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((names) => Promise.all(names.map((name) => caches.delete(name))))
+      .then(() => self.registration.unregister())
+      .then(() => self.clients.matchAll({ type: "window" }))
+      .then((clients) => {
+        clients.forEach((client) => client.navigate(client.url));
+      }),
   );
 });
