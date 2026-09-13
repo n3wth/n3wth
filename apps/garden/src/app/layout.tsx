@@ -26,9 +26,25 @@ export const metadata: Metadata = {
     siteName: 'n3wth/garden',
     type: 'website',
     url: './',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'n3wth/garden',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'n3wth/garden',
+      },
+    ],
   },
   authors: [{ name: 'Oliver Newth', url: site.parentUrl }],
   icons: {

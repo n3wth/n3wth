@@ -37,12 +37,28 @@ export const metadata: Metadata = {
     siteName: "n3wth/r3",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "n3wth/r3 - Persistent memory for AI assistants",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "n3wth/r3 - Persistent memory for AI assistants",
     description:
       "An MCP server that gives AI assistants persistent memory. Local Redis, vector search, knowledge graphs. Install with npx @n3wth/r3.",
+    images: [
+      {
+        url: "/twitter-image",
+        width: 1200,
+        height: 630,
+        alt: "n3wth/r3 - Persistent memory for AI assistants",
+      },
+    ],
     creator: "@n3wth",
   },
   robots: {
