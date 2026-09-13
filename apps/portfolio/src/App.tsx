@@ -75,7 +75,7 @@ function App() {
     <N3wthProvider mode="dark">
       <LinkProvider component={RouterLink}>
         <a href="#main" className="skip-link">Skip to content</a>
-        <Nav onOpenSearch={toggleSearch} />
+        <Nav onOpenSearch={toggleSearch} searchOpen={searchOpen} />
         <CommandPalette open={searchOpen} onClose={closeSearch} />
         <ScrollToTop />
         <div className="n3wth-site-main">
