@@ -35,6 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${decoded} grove`,
     description,
+    robots: { index: count > 1, follow: true },
     alternates: { canonical: `/tags/${encodeURIComponent(decoded)}` },
     openGraph: {
       title: `${decoded} grove`,
