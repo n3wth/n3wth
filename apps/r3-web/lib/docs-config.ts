@@ -53,27 +53,6 @@ export const docsConfig: DocSection[] = [
   },
 ];
 
-export const apiReferenceConfig = {
-  baseUrl: "https://api.recall.ai",
-  version: "v1",
-  authentication: {
-    type: "Bearer",
-    header: "Authorization",
-  },
-  rateLimit: {
-    requests: 1000,
-    window: "1m",
-  },
-};
-
-export const searchConfig = {
-  algolia: {
-    appId: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-    apiKey: process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY,
-    indexName: "recall-docs",
-  },
-};
-
 import { getPackageVersion } from "./version";
 
 const currentVersion = getPackageVersion();

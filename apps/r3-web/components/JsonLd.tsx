@@ -2,11 +2,12 @@ import { getPackageVersion } from "@/lib/version";
 import { siteUrls } from "@n3wth/site-config";
 
 interface JsonLdProps {
-  type: "WebSite" | "SoftwareApplication" | "WebPage";
+  type: "WebSite" | "SoftwareApplication" | "WebPage" | "BreadcrumbList";
   data?: {
     name?: string;
     description?: string;
     url?: string;
+    items?: { name: string; url: string }[];
   };
 }
 
@@ -28,14 +29,6 @@ export function JsonLd({ type, data }: JsonLdProps) {
         "@type": "Person",
         name: "Oliver Newth",
         url: "https://n3wth.com",
-      },
-      potentialAction: {
-        "@type": "SearchAction",
-        target: {
-          "@type": "EntryPoint",
-          urlTemplate: `${baseUrl}/docs?q={search_term_string}`,
-        },
-        "query-input": "required name=search_term_string",
       },
     },
     SoftwareApplication: {
@@ -91,6 +84,16 @@ export function JsonLd({ type, data }: JsonLdProps) {
         name: "Oliver Newth",
         url: "https://n3wth.com",
       },
+    },
+    BreadcrumbList: {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: (data?.items || []).map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        item: item.url,
+      })),
     },
   };
 

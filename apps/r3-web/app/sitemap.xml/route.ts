@@ -1,4 +1,4 @@
-import { docsConfig } from "@/lib/docs-config";
+import { getAllDocs } from "@/lib/mdx";
 import { siteUrls } from "@n3wth/site-config";
 
 export async function GET() {
@@ -6,15 +6,15 @@ export async function GET() {
 
   const staticPages = [
     { url: baseUrl, changefreq: "monthly", priority: "1.0" },
+    { url: `${baseUrl}/docs`, changefreq: "weekly", priority: "0.9" },
   ];
 
-  const docsPages = docsConfig.flatMap((section) =>
-    section.items.map((item) => ({
-      url: `${baseUrl}/docs/${item.slug}`,
-      changefreq: "weekly",
-      priority: "0.8",
-    })),
-  );
+  const docs = await getAllDocs();
+  const docsPages = docs.map((doc) => ({
+    url: `${baseUrl}/docs/${doc.slug}`,
+    changefreq: "weekly",
+    priority: "0.8",
+  }));
 
   const allPages = [...staticPages, ...docsPages];
 
