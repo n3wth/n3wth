@@ -139,7 +139,7 @@ export default function RootLayout({
           <SiteProvider>
           <SkipLink />
           <Nav />
-          <div id="main-content">
+          <div id="main-content" tabIndex={-1} className="outline-none">
             {children}
           </div>
           <Footer />

@@ -18,7 +18,7 @@ export function Nav({ onOpenSearch, searchOpen = false }: NavProps) {
   return (
     <SiteNavigation
       navigationId="primary-navigation"
-      menuLabel="Primary"
+      menuLabel="Open menu"
       data-nosnippet
       brand={<Link to="/" aria-label="n3wth — home" onClick={sameRouteClick('/')}>n3wth</Link>}
       links={navigation.map((item) => <NavLink key={item.href} to={item.href} onClick={sameRouteClick(item.href)}>{item.name}</NavLink>)}

@@ -15,7 +15,7 @@ function renderNav(path = '/') {
       <Nav onOpenSearch={onOpenSearch} />
     </MemoryRouter>
   )
-  return { trigger: screen.getByRole('button', { name: 'Primary' }), onOpenSearch }
+  return { trigger: screen.getByRole('button', { name: 'Open menu' }), onOpenSearch }
 }
 
 describe('Navigation disclosure', () => {

@@ -56,7 +56,7 @@ export function CompareClient() {
     return (
       <div className="min-h-screen relative">
         <IslandNav />
-        <main id="main-content" className="n3wth-site-container n3wth-site-main">
+        <main className="n3wth-site-container n3wth-site-main">
           <div className="max-w-4xl">
             <Link
               href="/"
