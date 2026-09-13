@@ -44,7 +44,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!note) return { title: 'Not Found' }
 
-  const { description, image, publishedTime } = noteMetadata(note, slugStr, site.url)
+  const modified = getGraphData().nodes.find((n) => n.id === slugStr)?.modified
+  const { description, image, publishedTime, modifiedTime } = noteMetadata(note, slugStr, site.url, modified)
 
   return {
     title: note.title,
@@ -58,6 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `/${slugStr}`,
       siteName: 'n3wth/garden',
       publishedTime,
+      modifiedTime,
       tags: note.tags,
       images: [{ url: image, width: 1200, height: 630, alt: note.title }],
     },
@@ -84,7 +86,8 @@ export default async function NotePage({ params }: PageProps) {
   const previews = getAllPreviews()
 
   const url = `${site.url}/${slugStr}`
-  const { description, image, publishedTime } = noteMetadata(note, slugStr, site.url)
+  const graphNode = getGraphData().nodes.find((n) => n.id === slugStr)
+  const { description, image, publishedTime, modifiedTime } = noteMetadata(note, slugStr, site.url, graphNode?.modified)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -93,6 +96,7 @@ export default async function NotePage({ params }: PageProps) {
     image,
     keywords: note.tags.join(', ') || undefined,
     datePublished: publishedTime,
+    dateModified: modifiedTime,
     author: { '@type': 'Person', name: 'Oliver Newth', url: site.parentUrl },
     publisher: { '@type': 'Person', name: 'Oliver Newth', url: site.parentUrl },
     mainEntityOfPage: url,
@@ -140,7 +144,6 @@ export default async function NotePage({ params }: PageProps) {
 
   const gardenHref = `/?note=${encodeURIComponent(slugStr)}`
   const graphById = new Map(getGraphData().nodes.map((n) => [n.id, n]))
-  const graphNode = graphById.get(slugStr)
   const plantedLabel = graphNode?.created
     ? new Date(graphNode.created).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : null
