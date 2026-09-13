@@ -5,9 +5,9 @@ import { Icon } from '@n3wth/ui'
 import { SiteNavigation } from '@n3wth/ui/site'
 import { navigation } from '../data/content'
 
-export interface NavProps { onOpenSearch?: () => void }
+export interface NavProps { onOpenSearch?: () => void; searchOpen?: boolean }
 
-export function Nav({ onOpenSearch }: NavProps) {
+export function Nav({ onOpenSearch, searchOpen = false }: NavProps) {
   const { pathname } = useLocation()
   const sameRouteClick = (href: string) => (event: MouseEvent<HTMLAnchorElement>) => {
     if (href !== pathname) return
@@ -25,7 +25,19 @@ export function Nav({ onOpenSearch }: NavProps) {
       actions={<>
         <a href="https://github.com/n3wth/n3wth" rel="noopener me" aria-label="GitHub"><Icon name="github" size="md" /></a>
         <Link to="/contact" onClick={sameRouteClick('/contact')} aria-label="Contact"><Mail size={16} aria-hidden="true" /></Link>
-        {onOpenSearch && <button type="button" onClick={onOpenSearch} aria-label="Search"><Search size={16} aria-hidden="true" /></button>}
+        {onOpenSearch && (
+          <button
+            type="button"
+            onClick={onOpenSearch}
+            aria-label="Search"
+            aria-haspopup="dialog"
+            aria-expanded={searchOpen}
+            aria-controls="command-palette"
+            aria-keyshortcuts="Control+K Meta+K /"
+          >
+            <Search size={16} aria-hidden="true" />
+          </button>
+        )}
       </>}
     />
   )

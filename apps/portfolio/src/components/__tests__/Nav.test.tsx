@@ -60,6 +60,25 @@ describe('Navigation disclosure', () => {
     expect(onOpenSearch).toHaveBeenCalledOnce()
   })
 
+  it('exposes the icon-only search control as a named dialog trigger', () => {
+    const { rerender } = render(
+      <MemoryRouter>
+        <Nav onOpenSearch={() => {}} searchOpen={false} />
+      </MemoryRouter>
+    )
+    const search = screen.getByRole('button', { name: 'Search' })
+    expect(search).toHaveAttribute('aria-haspopup', 'dialog')
+    expect(search).toHaveAttribute('aria-expanded', 'false')
+    expect(search).toHaveAttribute('aria-controls', 'command-palette')
+
+    rerender(
+      <MemoryRouter>
+        <Nav onOpenSearch={() => {}} searchOpen />
+      </MemoryRouter>
+    )
+    expect(search).toHaveAttribute('aria-expanded', 'true')
+  })
+
   it('opens the contact page and closes the mobile navigation', () => {
     const { trigger } = renderNav()
     fireEvent.click(trigger)

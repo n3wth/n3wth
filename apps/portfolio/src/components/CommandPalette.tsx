@@ -570,6 +570,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       >
         <div
           ref={panelRef}
+          id="command-palette"
           role="dialog"
           aria-modal="true"
           aria-label="Search n3wth.com"
