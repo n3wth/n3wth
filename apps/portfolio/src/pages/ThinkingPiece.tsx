@@ -1,5 +1,6 @@
 import { Suspense, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
+import { RouterLink } from '../components/RouterLink'
 import { registeredPieces } from '../components/thinking/registry'
 import { usePageMeta, buildWebPageSchema, buildArticleSchema } from '../hooks/usePageMeta'
 import NotFound from './NotFound'
@@ -63,6 +64,10 @@ export default function ThinkingPiece() {
             with the title's first line instead of with the date. */}
         <div className="mb-10" data-reveal>
           <p className="text-xs tracking-wide" style={{ color: 'var(--ink-dim)' }}>
+            <RouterLink href="/" className="link-underline" style={{ color: 'var(--ink)' }}>
+              Oliver Newth
+            </RouterLink>
+            {' · '}
             {/* Parse as local time: bare YYYY-MM-DD parses as UTC midnight
                 and renders a day early in every US timezone. */}
             {new Date(`${meta.date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
