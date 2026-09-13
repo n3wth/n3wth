@@ -87,12 +87,12 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
       </div>
 
       {/* Main content with sidebar */}
-      <div id="main-content" className="n3wth-site-container">
+      <div className="n3wth-site-container">
         <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
           <DocsSidebar items={sidebarItems} activeId={activeSection} label="Component sections" onSelect={scrollTo} />
 
           {/* Content */}
-          <main className="min-w-0">
+          <main id="main-content" className="min-w-0">
             <TokensSection />
             <AtomsSection />
             <MoleculesSection theme={theme} onThemeToggle={toggleTheme} />
