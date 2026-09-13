@@ -32,4 +32,4 @@ Applications live in `apps/portfolio`, `apps/ui-docs`, `apps/garden`, `apps/skil
 
 ## Contact
 
-[n3wth.com](https://n3wth.com) · [LinkedIn](https://linkedin.com/in/newth) · hey@n3wth.com
+[n3wth.com](https://n3wth.com) · [LinkedIn](https://linkedin.com/in/n3wth) · hey@n3wth.com
