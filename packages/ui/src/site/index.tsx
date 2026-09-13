@@ -91,6 +91,10 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
   useEffect(() => {
     if (!open) return
     header.current?.querySelector<HTMLAnchorElement>('.n3wth-site-navigation-links a')?.focus()
+    const desktop = window.matchMedia('(min-width: 768px)')
+    const collapse = () => {
+      if (desktop.matches) setOpen(false)
+    }
     const dismiss = (event: PointerEvent) => {
       if (!header.current?.contains(event.target as Node)) setOpen(false)
     }
@@ -101,9 +105,11 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
     }
     document.addEventListener('pointerdown', dismiss)
     document.addEventListener('keydown', escape)
+    desktop.addEventListener('change', collapse)
     return () => {
       document.removeEventListener('pointerdown', dismiss)
       document.removeEventListener('keydown', escape)
+      desktop.removeEventListener('change', collapse)
     }
   }, [open])
 

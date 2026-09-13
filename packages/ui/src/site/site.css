@@ -18,6 +18,8 @@ html[data-astryx-theme='n3wth'] {
   background-color: var(--color-background-body);
   color: var(--color-text-primary);
   font-family: var(--font-family-body);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 84px;
 }
 [data-astryx-theme='n3wth'][data-theme='dark'] { color-scheme: dark; }
 [data-astryx-theme='n3wth'][data-theme='light'] { color-scheme: light; }
@@ -78,6 +80,10 @@ html[data-astryx-theme='n3wth'] {
 .n3wth-site-text--body { font-size: var(--font-size-base); color: var(--color-text-primary); }
 .n3wth-site-text--supporting { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .n3wth-site-description { margin-top: 16px; color: var(--color-text-secondary); }
+.n3wth-site-text, .n3wth-site-description, .n3wth-site-heading { overflow-wrap: break-word; }
+.n3wth-site-container :where(pre) { box-sizing: border-box; max-width: 100%; overflow-x: auto; }
+.n3wth-site-container :where(code, kbd, samp) { font-family: var(--font-family-code); }
+.n3wth-site-container :where(img, video, canvas, svg) { max-width: 100%; height: auto; }
 .n3wth-site-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; flex-shrink: 0; }
 /* Button links own their variant contrast and focus treatment. */
 .n3wth-site-actions a:not(.astryx-button):not([role='button']) {
@@ -149,10 +155,15 @@ html[data-astryx-theme='n3wth'] {
   top: calc(100% + 8px);
   flex-direction: column;
   gap: 4px;
+  box-sizing: border-box;
+  max-height: calc(100dvh - 96px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 8px;
   border: 1px solid var(--color-border);
   border-radius: 16px;
   background: var(--color-background-body);
+  -webkit-tap-highlight-color: transparent;
 }
 .n3wth-site-navigation-links[data-open='true'] { display: flex; }
 .n3wth-site-navigation-links a {
@@ -205,6 +216,8 @@ html[data-astryx-theme='n3wth'] {
     flex-direction: row;
     align-items: center;
     gap: 0;
+    max-height: none;
+    overflow: visible;
     margin-left: 12px;
     padding: 0;
     border: 0;
@@ -233,4 +246,11 @@ html[data-astryx-theme='n3wth'] {
 @media (min-width: 768px) {
   .n3wth-site-footer { padding-block: 32px; }
   .n3wth-site-footer-row { grid-template-columns: 1fr auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-astryx-theme='n3wth'] { scroll-behavior: auto; }
+  .n3wth-site-navigation :is(a, button, svg),
+  .n3wth-site-footer :is(a, button),
+  .n3wth-site-section-links :is(a, button) { transition: none; animation: none; }
 }

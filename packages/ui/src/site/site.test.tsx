@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { N3wthProvider, PageHeader, SiteContainer, SiteFooter, SiteHeading, SiteNavigation, SiteSection, SiteText, n3wthTheme } from './index'
 import { generateThemeCSS } from '@astryxdesign/core/theme'
 
@@ -58,6 +58,37 @@ describe('shared site composition', () => {
     fireEvent.click(toggle)
     fireEvent.pointerDown(document.body)
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('closes the mobile menu when the viewport reaches the desktop breakpoint', () => {
+    const listeners = new Set<() => void>()
+    const desktop = {
+      matches: false,
+      media: '(min-width: 768px)',
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: (_: string, listener: () => void) => listeners.add(listener),
+      removeEventListener: (_: string, listener: () => void) => listeners.delete(listener),
+      dispatchEvent: () => false,
+    }
+    const original = window.matchMedia
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: (query: string) => (query === desktop.media ? desktop : original(query)),
+    })
+    try {
+      render(<SiteNavigation brand={<a href="/">Site</a>} links={<a href="/docs">Docs</a>} />)
+      const toggle = screen.getByRole('button', { name: 'Open menu' })
+      fireEvent.click(toggle)
+      expect(toggle).toHaveAttribute('aria-expanded', 'true')
+      desktop.matches = true
+      act(() => listeners.forEach(listener => listener()))
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    } finally {
+      Object.defineProperty(window, 'matchMedia', { writable: true, configurable: true, value: original })
+    }
   })
 
   it('keeps hero demonstrations outside the text and gives footer links a landmark', () => {
