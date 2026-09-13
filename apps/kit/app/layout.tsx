@@ -45,11 +45,27 @@ export const metadata: Metadata = {
     siteName: 'n3wth/kit',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'n3wth/kit — shadcn registry with AI context packs',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'n3wth/kit — shadcn registry with AI context packs',
     description: 'A shadcn component registry with AI context packs. Install via npx shadcn add, then drop in GEMINI.md.',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'n3wth/kit — shadcn registry with AI context packs',
+      },
+    ],
   },
   robots: {
     index: true,

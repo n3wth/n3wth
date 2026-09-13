@@ -23,7 +23,8 @@ export function SEO({
 }: SEOProps) {
   const fullTitle = path === '/' ? title : `${title} | ${SITE_NAME}`
   const canonicalUrl = `${BASE_URL}${path}`
-  const imageUrl = ogImage ? `${BASE_URL}${ogImage}` : `${BASE_URL}/og/home.png`
+  const imagePath = ogImage ?? '/og/home.png'
+  const imageUrl = imagePath.startsWith('http') ? imagePath : `${BASE_URL}${imagePath}`
 
   return (
     <Helmet>
@@ -53,6 +54,7 @@ export function SEO({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
+      <meta name="twitter:image:alt" content={`${title} — ${SITE_NAME}`} />
       <meta name="twitter:site" content={TWITTER_HANDLE} />
       <meta name="twitter:creator" content={TWITTER_HANDLE} />
     </Helmet>
