@@ -359,6 +359,11 @@ const sitemapEntries = [
       loc: `${ORIGIN}/${r.path}`,
       lastmod: r.article?.published,
     })),
+  /* Static pages served through Vercel rewrites (vercel.json), not SPA
+     routes. They carry a canonical and no noindex, so they belong here.
+     /privacy is deliberately noindex and stays out. */
+  { loc: `${ORIGIN}/terms` },
+  { loc: `${ORIGIN}/consent` },
 ]
 writeFileSync(
   join(dist, 'sitemap.xml'),
@@ -406,11 +411,25 @@ const thinkingSection = `\n\n## Thinking\n\n${pieceMetas
 writeFileSync(join(dist, 'llms.txt'), llmsBase + thinkingSection)
 console.log('[prerender-meta] dist/llms.txt')
 
-if (Object.keys(summaries).length > 0) {
-  const full = pieceMetas
-    .filter((p) => summaries[p.id])
-    .map((p) => `# ${p.title} (${p.date})\n${ORIGIN}/thinking/${p.id}\n\n${summaries[p.id]}`)
-    .join('\n\n---\n\n')
-  writeFileSync(join(dist, 'llms-full.txt'), `${llmsBase}\n\n${full}\n`)
-  console.log('[prerender-meta] dist/llms-full.txt')
+/* llms-full.txt is referenced by robots.txt, so it must always exist.
+   Base is the hand-written public/llms-full.txt (bio, stack, ecosystem);
+   generated piece summaries are appended so assistants can quote the
+   writing. Falls back to the llms.txt base if the file is missing. */
+let llmsFullBase = llmsBase
+try {
+  llmsFullBase = readFileSync(
+    join(here, '../public/llms-full.txt'),
+    'utf8'
+  ).trimEnd()
+} catch {
+  /* no hand-written base — llms.txt base is enough */
 }
+const llmsFull = pieceMetas
+  .filter((p) => summaries[p.id])
+  .map((p) => `# ${p.title} (${p.date})\n${ORIGIN}/thinking/${p.id}\n\n${summaries[p.id]}`)
+  .join('\n\n---\n\n')
+writeFileSync(
+  join(dist, 'llms-full.txt'),
+  `${llmsFullBase}${llmsFull ? `\n\n${llmsFull}` : ''}\n`
+)
+console.log('[prerender-meta] dist/llms-full.txt')
