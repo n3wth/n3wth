@@ -47,7 +47,7 @@ export function FocusedNotePanel({ note, neighbors, visited, onSelectNeighbor }:
         {note.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
             {note.tags.map((tag) => (
-              <span key={tag} className="text-xs" style={{ color: 'var(--color-text-disabled)' }}>#{tag}</span>
+              <span key={tag} className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>#{tag}</span>
             ))}
           </div>
         )}
@@ -64,7 +64,7 @@ export function FocusedNotePanel({ note, neighbors, visited, onSelectNeighbor }:
 
       {neighbors.length > 0 && (
         <div>
-          <p className="text-xs tracking-wide mb-2" style={{ color: 'var(--color-text-disabled)' }}>
+          <p className="text-xs tracking-wide mb-2" style={{ color: 'var(--color-text-secondary)' }}>
             Connected · {neighbors.length}
           </p>
           <ul className="flex flex-col gap-1">
@@ -76,7 +76,7 @@ export function FocusedNotePanel({ note, neighbors, visited, onSelectNeighbor }:
                     type="button"
                     onClick={() => onSelectNeighbor(n.id)}
                     className="w-full rounded-md px-2.5 py-1.5 text-left text-sm transition-colors hover:bg-[rgba(255,255,255,0.06)]"
-                    style={{ color: seen ? 'var(--color-text-disabled)' : 'var(--color-text-secondary)' }}
+                    style={{ color: seen ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
                   >
                     <span
                       aria-hidden

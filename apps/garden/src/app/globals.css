@@ -99,6 +99,71 @@ body:has(.field-band)::before {
   border-top: 0;
 }
 
+/* The notes index opens as a field-guide title plate: the botanical
+   linework occupies the spare field while the copy stays firmly anchored. */
+.notes-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 25rem;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-border);
+}
+.notes-hero-copy {
+  position: relative;
+  z-index: 1;
+  width: 62%;
+  padding-block: 5rem;
+}
+.notes-hero-title {
+  display: block;
+  max-width: 12ch;
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+.notes-hero-description {
+  display: block;
+  max-width: 34rem;
+  font-size: 1.0625rem;
+}
+.notes-hero-meadow {
+  position: absolute;
+  right: -2rem;
+  bottom: -3.75rem;
+  width: min(48%, 33rem);
+  height: auto;
+  opacity: 0.88;
+  mix-blend-mode: screen;
+  mask-image: linear-gradient(to bottom, transparent 2%, black 18%, black 72%, transparent 96%);
+  pointer-events: none;
+}
+@media (max-width: 767px) {
+  .notes-hero {
+    align-items: flex-start;
+    min-height: 30rem;
+  }
+  .notes-hero-copy {
+    width: 100%;
+    padding-block: 3.5rem;
+  }
+  .notes-hero-title {
+    max-width: 10ch;
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+  }
+  .notes-hero-description {
+    max-width: 30rem;
+    font-size: 1rem;
+  }
+  .notes-hero-meadow {
+    right: -5rem;
+    bottom: -4rem;
+    width: 31rem;
+    max-width: none;
+    opacity: 0.72;
+  }
+}
+
 
 
 @layer components {
@@ -197,33 +262,21 @@ button:focus-visible,
   transform: none;
 }
 
-/* Hero, scene, instructions and links each own their space. */
+/* The home page is only the hero and its immersive garden scene. */
 .home-immersive {
+  display: flex;
+  flex-direction: column;
+  height: calc(100svh - 96px);
+  min-height: 0;
+  overflow: hidden;
   background: var(--color-background-body);
-  min-height: 100svh;
 }
 .home-garden-stage {
-  height: clamp(540px, 78svh, 900px);
+  flex: 1;
+  min-height: 0;
   overflow: clip;
   isolation: isolate;
   mask-image: linear-gradient(to bottom, transparent, black 3%, black 97%, transparent);
-}
-.home-garden-caption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 2rem;
-  padding: 1.25rem 1.5rem 0.5rem;
-}
-.family-strip {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-@media (min-width: 768px) {
-  .home-garden-caption { padding-inline: 2.5rem; }
-}
-@media (max-width: 600px) {
-  .home-garden-caption { flex-direction: column; text-align: center; }
 }
 
 /* Pointer-conditional copy (graph instructions) */

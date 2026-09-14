@@ -1,10 +1,8 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { getPublishedNoteCount } from '@/lib/content'
 import { getGraphData } from '@/lib/graph'
 import { WorldGardenClient } from '@/components/WorldGardenClient'
 import { HomePageClient } from '@/components/HomePageClient'
-import { FamilyStrip } from '@/components/FamilyStrip'
 import { ShimmerText } from '@/components/ShimmerText'
 import { PageHeader, SiteContainer } from '@n3wth/ui/site'
 
@@ -57,28 +55,6 @@ export default async function HomePage() {
             <WorldGardenClient nodes={graphData.nodes} edges={graphData.edges} />
           )}
         </div>
-
-        <div className="home-garden-caption">
-          {/* Interaction hint */}
-          <p data-world-exclude className="text-xs text-[var(--color-text-secondary)]">
-            <span className="md:hidden">Tap a light to see its note</span>
-            <span className="max-md:hidden">Move to look around &middot; Click a light to see its note</span>
-            {' · '}
-            <Link href="/notes" className="underline underline-offset-2 decoration-[var(--color-border-emphasized)] hover:text-[var(--color-text-primary)] transition-colors">
-              Or read the notes list
-            </Link>
-          </p>
-
-          {/* Garden stats: only the figure the hero doesn't already give */}
-          <div data-world-exclude>
-            <p className="text-xs text-[var(--color-text-disabled)]">
-              {graphData.edges.length} links between notes
-            </p>
-          </div>
-        </div>
-
-        {/* n3wth ecosystem links */}
-        <FamilyStrip />
       </div>
     </HomePageClient>
   )

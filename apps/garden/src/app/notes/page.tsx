@@ -65,24 +65,22 @@ export default function NotesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="relative overflow-hidden">
-        {/* Hairline meadow in the header's spare right field (FLORA,
-            screen-blended so its black dissolves into the page). Masked
-            to a soft bottom fade so the clip line dissolves rather than
-            cutting across the segmented controls beneath it. */}
+      <div className="notes-hero">
+        {/* The meadow is the field guide's specimen plate. Its black
+            background dissolves into the page so only the linework remains. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/meadow.webp"
           alt=""
           aria-hidden
-          width={360}
-          height={269}
-          className="hidden md:block absolute right-0 top-0 opacity-70 pointer-events-none"
-          style={{ mixBlendMode: 'screen', maskImage: 'linear-gradient(to bottom, black 65%, transparent)' }}
+          width={900}
+          height={672}
+          className="notes-hero-meadow"
         />
         <PageHeader
-          title="Every plant in the garden"
-          sub="Each note drawn as it grows in the world — its height is its maturity, its branches are its connections."
+          className="notes-hero-copy"
+          title={<span className="notes-hero-title">Every plant in the garden</span>}
+          sub={<span className="notes-hero-description">Each note drawn as it grows in the world — its height is its maturity, its branches are its connections.</span>}
         />
       </div>
       <SiteSection><NotesIndexClient notes={notes} /></SiteSection>
