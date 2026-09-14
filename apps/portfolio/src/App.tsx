@@ -82,7 +82,7 @@ function App() {
           <div className="frame">
             {/* tabIndex so the skip link moves DOM focus here, not just
                 the scroll position */}
-            <main id="main" tabIndex={-1} style={{ outline: 'none' }}>
+            <main id="main" tabIndex={-1}>
               <Suspense fallback={null}>
                 <Outlet />
               </Suspense>
