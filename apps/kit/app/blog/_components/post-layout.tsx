@@ -34,7 +34,7 @@ export function PostLayout({ title, date, readingTime, description, path, publis
         />
       )}
       <SiteContainer as="main" id="main-content" tabIndex={-1} className="n3wth-site-main">
-        <PageHeader title={title} description={<><time>{date}</time> · {readingTime}</>} actions={<Link href="/blog">Back to blog</Link>} />
+        <PageHeader title={title} description={<><time dateTime={publishedIso}>{date}</time> · {readingTime}</>} actions={<Link href="/blog">Back to blog</Link>} />
 
         <SiteSection className="max-w-2xl space-y-6 text-base leading-relaxed text-ink-dim">
           {children}
