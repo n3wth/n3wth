@@ -37,7 +37,7 @@ export function ApiKeyModal({ onClose, onKeySaved }: ApiKeyModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
       <div className="bg-[var(--color-bg-secondary)] border border-[var(--glass-border)] rounded-2xl p-6 w-full max-w-md">

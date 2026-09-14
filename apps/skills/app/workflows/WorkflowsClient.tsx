@@ -40,8 +40,6 @@ export function WorkflowsClient() {
 
   return (
     <div className="min-h-screen relative">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
 
       <IslandNav />
 

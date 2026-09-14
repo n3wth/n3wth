@@ -1,58 +1,91 @@
 ---
 title: "Astryx vs shadcn: which design system for LLM-written UI"
-description: "Astryx vs shadcn (and Angular Material): field notes from rebuilding this garden with an LLM writing the UI, and which system makes accessible design easiest."
+description: "Field notes from this garden: Astryx, shadcn and component ownership, with a reproducible table of contents example and the limits of type-level accessibility checks."
 tags: [technology, engineering, design, development]
 date: 2026-07-14
 ---
 
 # Astryx vs shadcn: which design system for LLM-written UI
 
-**Astryx vs shadcn** is the comparison I keep seeing, including the other way around (shadcn vs Astryx). This garden was rebuilt on [Astryx](https://astryx.atmeta.com/), Meta's open-source design system, almost entirely by an LLM. That makes it a decent field test for a question I haven't seen answered elsewhere: *where should the accessibility contract live when an AI agent writes your UI?* Astryx enforces WCAG compliance at the type level — required props, compile-time errors — while shadcn leaves it at the prompt level, where it drifts with every edit. Notes below against the two I'd otherwise reach for — [shadcn/ui](https://ui.shadcn.com/) and [Angular Material](https://material.angular.dev/).
+This garden gave me a practical way to compare **Astryx and shadcn**: build a real interface with coding agents, then see which decisions still needed attention. The table of contents on this page is a useful example. Its underlying behavior worked, but the first composition looked too much like a large settings control above a reading surface.
+
+The fix was a small shared reading component. It kept the existing navigation behavior and changed its presentation. That experience is more useful than declaring one library the universal winner.
+
+*Implementation reviewed September 2026, using Astryx 0.1.6 in this workspace. This is a report on this integration, not a controlled benchmark of three libraries.*
 
 ## Three ownership models
 
-The deepest difference isn't styling — it's *who owns the component source*, because that determines what an LLM can see and safely change.
+[Astryx](https://astryx.atmeta.com/) supplies the primitives used here. Our shared `@n3wth/ui` package owns the theme, page compositions and compatibility work. The garden imports that package; it does not maintain its own copy of the primitives.
 
-- **Astryx** ships pre-compiled, typed packages. The agent composes documented APIs and themes via tokens; it can eject a single component (`npx astryx swizzle Button`) when it truly needs to fork one.
-- **shadcn/ui** vendors component source *into your repo*. The agent can read and edit every line — maximum flexibility, but every edit is now yours to maintain, including the accessibility behavior.
-- **Angular Material** is a classic framework-integrated package: strong components, theming through tokens/Sass, internals firmly closed.
+[shadcn/ui](https://ui.shadcn.com/docs) distributes component source that you can edit in your repository. That makes local changes straightforward, while making those changes part of your maintenance work. It also gives a coding agent the implementation to inspect.
 
-## Feeding the model: docs the agent can actually read
+[Angular Material](https://material.angular.dev/) belongs in a different framework decision. An existing Angular application can use Material components and the CDK's accessibility utilities. I did not rebuild this garden in Angular, so I cannot use this project to rank its development experience.
 
-LLMs write better code against APIs they can *query* rather than half-remember from training data:
+The choice I made here was to keep product pages thin and put reusable presentation into one package. You can use that ownership pattern with more than one component system.
 
-- **Astryx** is explicitly agent-first: every component's full API, composition hints, and do/don't guidance is available offline via `node node_modules/@astryxdesign/core/docs.mjs <Name>` and the `astryx` CLI, plus an MCP server. During this rebuild, the agent looked up `CommandPalette`, `Outline`, and `Lightbox` docs on demand and used them correctly first try — including components far too new to be in training data.
-- **shadcn** has closed the gap fast: it ships a [first-party MCP server](https://ui.shadcn.com/docs/mcp) and, as of the [July 2026 Base UI release](https://ui.shadcn.com/docs/changelog/2026-07-base-ui-default), "shadcn/skills" that give coding agents component and registry context. And because the source lives in your repo, the code itself is documentation an agent can grep.
-- **Angular Material** has excellent human documentation and no first-party agent surface. The model works from training data — usually fine for this mature, stable API, but it shows on newer M3 token theming.
+## What the garden actually imports
 
-## The accessibility question
+The current dependency path is **Garden → @n3wth/ui → Astryx**. The shared package pins Astryx 0.1.6 and exposes two relevant entry points:
 
-Was it easier to ship W3C/WCAG-conformant UI with Astryx? **Yes — and the reason is more interesting than "the components are accessible."** All three systems have accessible primitives (Astryx's components, shadcn's Radix/Base UI underneath, Material's superb [CDK a11y toolkit](https://material.angular.dev/cdk/a11y/overview)). The difference is where the accessibility contract lives:
+- `@n3wth/ui/primitives` exposes native component APIs, including `Outline`.
+- `@n3wth/ui/site` adds the site's page and reading compositions, including `ReadingOutline`.
 
-1. **Astryx enforces accessibility at the type level.** `IconButton` won't compile without a `label`. `SegmentedControl` *requires* an accessible group label. `StatusDot` requires a label because color alone can't carry meaning. This is the killer feature for LLM development: an agent that forgets an aria-label gets an immediate TypeScript error and fixes it in the same loop — no human audit needed. Accessibility failures become build failures.
-2. **Astryx's docs put a11y guidance in the agent's context window at the moment of use.** Each component's docs include do/don't rules ("always pair the dot with visible text", "make the last breadcrumb plain text"). When the agent reads the API, it reads the accessibility rules too.
-3. **shadcn is accessible until you edit it.** The primitives are battle-tested, but the whole point of shadcn is modifying vendored source — and every modification can silently break focus traps, ARIA wiring, or keyboard handling with no compiler pushback. With an LLM doing rapid iterations, that drift is a real risk; the ecosystem is patching it with context layers like [A11Y.md](https://rogerwong.me/2026/06/a11y-md-accessibility-for-ai-agents), which is a prompt-level fix for what Astryx solves at the type level.
-4. **Angular Material's a11y foundation is arguably the strongest** — `FocusTrap`, `LiveAnnouncer`, high-contrast support are first-class CDK citizens. But the contract is conventions in human docs, not required props, and LLMs are measurably weaker at Angular templates than at React/TSX (there's simply less of it in training data). The agent can do the right thing; nothing *makes* it.
+The [shared build configuration](https://github.com/n3wth/n3wth/blob/main/packages/ui/vite.config.ts) also normalizes the JSX development-runtime calls shipped in this Astryx version. This happens once inside UI. The garden no longer needs an application-owned webpack shim for that integration.
 
-## Where each one wins
+These examples describe the monorepo checkout. Check the exports of a published package before copying them into another project; the [getting-started guide](https://ui.n3wth.com/docs/getting-started) explains the workspace setup.
 
-| | Astryx | shadcn/ui | Angular Material |
-|---|---|---|---|
-| Agent-readable docs | CLI + MCP + offline docs, first-party | MCP + skills, first-party | None (human docs) |
-| A11y enforcement | **Type-level (required props)** | Primitive-level, drifts with edits | Convention-level, strong CDK tools |
-| Customization | Tokens + `defineTheme` + swizzle | Unlimited (you own the source) | Tokens/Sass, internals closed |
-| Maturity | Beta (0.1.5) — real rough edges | Very mature ecosystem | Most mature of the three |
-| Framework | React | React | Angular only |
+## A small example: the table of contents
 
-Honesty requires the beta caveat: Astryx 0.1.5's dist is compiled against `react/jsx-dev-runtime`, which React 19 stubs out in production — this site ships a webpack shim to work around it. shadcn will never have that class of problem, because there's no dist to break.
+Inside a page already wrapped in `N3wthProvider`, with `@n3wth/ui/site.css` loaded, a native outline needs heading IDs that match real elements:
 
-## Verdict
+```tsx
+import { Outline } from '@n3wth/ui/primitives'
 
-For LLM-driven development specifically, **Astryx currently has the best architecture**: machine-queryable docs plus compile-time accessibility contracts mean the agent's fast iteration loop *converges on* compliant UI instead of drifting away from it. **shadcn** is the pragmatic pick when you need an ecosystem, unlimited visual control, and don't mind owning the a11y burden your agent's edits create. **Angular Material** remains the right answer inside an Angular shop — but you'll be the accessibility reviewer your compiler isn't.
+const items = [
+  { id: 'ownership', label: 'Ownership', level: 2 },
+  { id: 'testing', label: 'Testing', level: 2 },
+]
 
-The general principle I'm taking away: *when an LLM writes your UI, move correctness contracts from documentation into the type system.* Whatever the compiler enforces, the agent gets right.
+export function Example() {
+  return (
+    <>
+      <Outline items={items} label="On this page" density="compact" />
+      <h2 id="ownership">Ownership</h2>
+      <p>Who maintains the component and its behavior?</p>
+      <h2 id="testing">Testing</h2>
+      <p>Check navigation in the page where it will be used.</p>
+    </>
+  )
+}
+```
 
-Related: [[Digital Gardening]], [[Technology Trends]], [[Tools]]
+For the compact reading treatment used here, replace the `Outline` import and element with:
+
+```tsx
+import { ReadingOutline } from '@n3wth/ui/site'
+
+<ReadingOutline items={items} collapsible />
+```
+
+The shared [ReadingOutline implementation](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/site/ReadingOutline.tsx) still renders Astryx's `Outline`, which owns scroll-spy and anchor navigation. Astryx's `useCollapsible` owns disclosure state. Our composition supplies the label, disclosure button, linked content region and compact styling. With `collapsible`, it starts closed; without it, the outline remains visible.
+
+The garden chooses which headings to include and where to place each version. It does not restyle every outline or collapsible across the site.
+
+## What types and tests establish
+
+A required label prop can catch a missing label at compile time. It cannot establish whether the label is useful, the text has enough contrast, or the whole page meets WCAG. Those questions remain part of implementation and review.
+
+Our [ReadingOutline tests](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/site/ReadingOutline.test.tsx) check the closed default, disclosure state, visibility and matching anchor URLs. Browser checks confirmed that the mobile outline opens and closes and that the article fits the tested mobile and desktop widths. Those checks establish specific behavior; they are not an accessibility certification or proof that another library would perform worse.
+
+The initial oversized table of contents is a reminder of that boundary. Correct primitive behavior does not automatically produce a good reading interface.
+
+## What I would choose again
+
+For these sites, I would keep the shared UI layer over Astryx. It gives a correction one home, while letting the garden keep its reading typography and content structure.
+
+I would consider shadcn where owning and changing component source is a central requirement. For an Angular application, I would evaluate Material in that application's context. In each case, I would test a real page before treating component documentation or required props as evidence of the finished experience.
+
+Next: [shared UI examples](https://ui.n3wth.com/components) · [theme ownership](https://ui.n3wth.com/docs/theming) · [garden table of contents source](https://github.com/n3wth/n3wth/blob/main/apps/garden/src/components/TableOfContents.tsx)
 
 ---
 

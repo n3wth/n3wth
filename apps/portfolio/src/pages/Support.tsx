@@ -3,11 +3,12 @@ import { Button } from '@n3wth/ui/primitives'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { track } from '../lib/analytics'
 import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
+import { RouterLink } from '../components/RouterLink'
 
 const projects = [
   {
     name: 'n3wth.com',
-    href: 'https://n3wth.com',
+    href: '/',
     purpose: 'Portfolio, writing, and experiments.',
     contact: 'support@n3wth.com',
   },
@@ -56,9 +57,9 @@ export default function Support() {
               style={{ borderColor: 'var(--rail-strong)' }}
             >
               <SiteHeading variant="item" level={2}>
-                <a href={project.href} className="link-underline">
+                <RouterLink href={project.href} className="link-underline">
                   {project.name}
-                </a>
+                </RouterLink>
               </SiteHeading>
               <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                 {project.purpose}

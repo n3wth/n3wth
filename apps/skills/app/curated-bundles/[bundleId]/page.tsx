@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { bundles } from '@/src/data/bundles'
 import { skills } from '@/src/data/skills'
 import { BundleDetailClient } from './BundleDetailClient'
@@ -12,18 +13,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { bundleId } = await params
   const bundle = bundles.find(b => b.id === bundleId)
 
-  if (!bundle) {
-    return {
-      title: 'Bundle Not Found',
-      description: 'The bundle you are looking for does not exist.',
-    }
-  }
+  if (!bundle) notFound()
 
   return {
     title: `${bundle.name} — Skill Bundle`,
     description: bundle.description,
     alternates: { canonical: `https://skills.n3wth.com/curated-bundles/${bundleId}` },
-    openGraph: {
+    openGraph: { type: 'website',
       title: `${bundle.name} — Skill Bundle | n3wth/skills`,
       description: bundle.description,
       url: `https://skills.n3wth.com/curated-bundles/${bundleId}`,
@@ -45,9 +41,7 @@ export default async function BundleDetailPage({ params }: Props) {
   const { bundleId } = await params
   const bundle = bundles.find(b => b.id === bundleId)
 
-  if (!bundle) {
-    return <BundleDetailClient bundleId={bundleId} />
-  }
+  if (!bundle) notFound()
 
   const bundleSkills = bundle.skillIds
     .map(id => skills.find(s => s.id === id))

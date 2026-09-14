@@ -18,7 +18,7 @@ export function DemoSection({ id, title, description, children, className }: Dem
           {title}
         </SiteHeading>
         {description && (
-          <SiteText className="mt-2">{description}</SiteText>
+          <div className="mt-2"><SiteText>{description}</SiteText></div>
         )}
       </div>
       {children}
@@ -35,9 +35,9 @@ interface DemoBlockProps {
 export function DemoBlock({ title, children, className }: DemoBlockProps) {
   return (
     <div className={cn('mb-10', className)}>
-      <SiteHeading variant="item" className="mb-4">
-        {title}
-      </SiteHeading>
+      <div className="mb-4">
+        <SiteHeading variant="item">{title}</SiteHeading>
+      </div>
       {children}
     </div>
   )

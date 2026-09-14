@@ -10,6 +10,7 @@ interface UseKeyboardShortcutsOptions {
   onNavigateSkill?: (direction: 'up' | 'down') => void
   filteredSkillsCount?: number
   selectedIndex?: number
+  setSelectedIndex?: (index: number) => void
 }
 
 interface UseKeyboardShortcutsReturn {
@@ -27,6 +28,7 @@ export function useKeyboardShortcuts(options: UseKeyboardShortcutsOptions = {}):
     onNavigateSkill,
     filteredSkillsCount = 0,
     selectedIndex: externalSelectedIndex,
+    setSelectedIndex: externalSetSelectedIndex,
   } = options
 
   const router = useRouter()
@@ -35,7 +37,7 @@ export function useKeyboardShortcuts(options: UseKeyboardShortcutsOptions = {}):
   const [internalSelectedIndex, setInternalSelectedIndex] = useState(-1)
 
   const selectedIndex = externalSelectedIndex ?? internalSelectedIndex
-  const setSelectedIndex = setInternalSelectedIndex
+  const setSelectedIndex = externalSetSelectedIndex ?? setInternalSelectedIndex
 
   const isTyping = useCallback(() => {
     const activeElement = document.activeElement

@@ -57,7 +57,7 @@ const routes = [
     path: 'art',
     title: 'After dark — Oliver Newth',
     description:
-      'Large-scale light installations for Burning Man and San Francisco memorials — THEM, Pink Triangle, and Circle of Light.',
+      'Large-scale light installations for Burning Man and San Francisco memorials. THEM, Pink Triangle, and Circle of Light.',
     ogImage: '/og/art.png',
     body: `
       <h1>After dark — light installations by Oliver Newth</h1>
@@ -73,7 +73,7 @@ const routes = [
     title: 'Library — Oliver Newth',
     description:
       'Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, the digital garden, and agent skills.',
-    ogImage: '/og-image.png',
+    ogImage: '/og/library.png',
     body: `
       <h1>Library — Oliver Newth</h1>
       <p>The components and systems behind n3wth.com and the sites next to it, with the install instructions that work today.</p>
@@ -98,7 +98,7 @@ const routes = [
     path: 'contact',
     title: 'Contact — Oliver Newth',
     description:
-      "Get in touch with Oliver Newth — product, AI safety, or LED art. Coffee if you're in San Francisco.",
+      "Product, AI safety, or LED art. Coffee if you're in San Francisco.",
     ogImage: '/og/contact.png',
     body: `
       <h1>Contact Oliver Newth</h1>
@@ -220,8 +220,8 @@ for (const p of pieceMetas) {
   routes.push({
     path: `thinking/${p.id}`,
     title: `${p.title} — Oliver Newth`,
-    description: p.dek.length > 160 ? `${p.dek.slice(0, 157).trimEnd()}…` : p.dek,
-    ogImage: '/og/thinking.png',
+    description: p.dek,
+    ogImage: `/og/thinking/${p.id}.png`,
     article: { published: p.date },
     jsonLd: {
       '@context': 'https://schema.org',
@@ -231,7 +231,7 @@ for (const p of pieceMetas) {
       ...(summary ? { abstract: summary } : {}),
       datePublished: p.date,
       dateModified: p.date,
-      image: `${ORIGIN}/og/thinking.png`,
+      image: `${ORIGIN}/og/thinking/${p.id}.png`,
       mainEntityOfPage: `${ORIGIN}/thinking/${p.id}`,
       author: { '@id': `${ORIGIN}/#person` },
       url: `${ORIGIN}/thinking/${p.id}`,
@@ -251,12 +251,36 @@ ${
   })
 }
 
+/* Every route must ship a unique title and description — a duplicate or
+   empty pair means two URLs present as the same page to crawlers. Throw
+   here rather than emit the collision. */
+const seenTitles = new Map()
+const seenDescriptions = new Map()
+for (const r of routes) {
+  if (!r.title?.trim() || !r.description?.trim()) {
+    throw new Error(`prerender-meta: /${r.path} is missing a title or description`)
+  }
+  if (seenTitles.has(r.title)) {
+    throw new Error(`prerender-meta: /${r.path} shares a title with /${seenTitles.get(r.title)}`)
+  }
+  if (seenDescriptions.has(r.description)) {
+    throw new Error(`prerender-meta: /${r.path} shares a description with /${seenDescriptions.get(r.description)}`)
+  }
+  seenTitles.set(r.title, r.path)
+  seenDescriptions.set(r.description, r.path)
+}
+
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
 const template = readFileSync(join(dist, 'index.html'), 'utf8')
 
 const renderRoute = (r, outPath) => {
   let html = template
+  /* The visually-hidden #seo-lead repeats the homepage description; drop it
+     on routes where that copy is wrong (404, utility pages). */
+  if (r.stripSeoLead) {
+    html = html.replace(/\s*<p id="seo-lead">[\s\S]*?<\/p>/, '')
+  }
   const url = `${ORIGIN}/${r.path}`
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${r.title}</title>`)
   html = html.replace(
@@ -313,7 +337,7 @@ const renderRoute = (r, outPath) => {
   if (r.jsonLd) {
     html = html.replace(
       '</head>',
-      `  <script type="application/ld+json">${JSON.stringify(r.jsonLd)}</script>\n  </head>`
+      `  <script type="application/ld+json" data-page-json-ld>${JSON.stringify(r.jsonLd)}</script>\n  </head>`
     )
   }
   html = html.replace(
@@ -339,9 +363,17 @@ renderRoute(
     description: 'This page does not exist.',
     ogImage: '/og-image.png',
     noindex: true,
+    stripSeoLead: true,
     body: `
-      <h1>This page doesn't exist</h1>
-      <p>The link may be old, or the address mistyped (404). <a href="/">Go home</a>.</p>`,
+      <section aria-label="Page not found">
+        <img src="/images/empty-playa.webp" alt="" style="width:100%;height:auto;margin-bottom:1.5rem" />
+        <h1>This page doesn&rsquo;t exist</h1>
+        <p>The link may be old, or the address mistyped (404).</p>
+        <nav aria-label="Not found">
+          <a href="/">Go home</a>
+          <a href="/work">View work</a>
+        </nav>
+      </section>`,
   },
   join(dist, '404.html')
 )
@@ -351,20 +383,24 @@ console.log('[prerender-meta] dist/404.html')
    drift when a piece is added. lastmod only; Google ignores
    changefreq/priority. */
 const latestPieceDate = pieceMetas.map((p) => p.date).sort().at(-1)
-const buildDate = new Date().toISOString().slice(0, 10)
 const sitemapEntries = [
-  { loc: `${ORIGIN}/`, lastmod: buildDate },
+  { loc: `${ORIGIN}/` },
   ...routes
     .filter((r) => !r.noindex)
     .map((r) => ({
       loc: `${ORIGIN}/${r.path}`,
-      lastmod: r.article?.published ?? buildDate,
+      lastmod: r.article?.published,
     })),
+  /* Static pages served through Vercel rewrites (vercel.json), not SPA
+     routes. They carry a canonical and no noindex, so they belong here.
+     /privacy is deliberately noindex and stays out. */
+  { loc: `${ORIGIN}/terms` },
+  { loc: `${ORIGIN}/consent` },
 ]
 writeFileSync(
   join(dist, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries
-    .map((e) => `  <url><loc>${e.loc}</loc><lastmod>${e.lastmod}</lastmod></url>`)
+    .map((e) => `  <url><loc>${e.loc}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ''}</url>`)
     .join('\n')}\n</urlset>\n`
 )
 console.log(`[prerender-meta] dist/sitemap.xml (${sitemapEntries.length} urls)`)
@@ -407,11 +443,25 @@ const thinkingSection = `\n\n## Thinking\n\n${pieceMetas
 writeFileSync(join(dist, 'llms.txt'), llmsBase + thinkingSection)
 console.log('[prerender-meta] dist/llms.txt')
 
-if (Object.keys(summaries).length > 0) {
-  const full = pieceMetas
-    .filter((p) => summaries[p.id])
-    .map((p) => `# ${p.title} (${p.date})\n${ORIGIN}/thinking/${p.id}\n\n${summaries[p.id]}`)
-    .join('\n\n---\n\n')
-  writeFileSync(join(dist, 'llms-full.txt'), `${llmsBase}\n\n${full}\n`)
-  console.log('[prerender-meta] dist/llms-full.txt')
+/* llms-full.txt is referenced by robots.txt, so it must always exist.
+   Base is the hand-written public/llms-full.txt (bio, stack, ecosystem);
+   generated piece summaries are appended so assistants can quote the
+   writing. Falls back to the llms.txt base if the file is missing. */
+let llmsFullBase = llmsBase
+try {
+  llmsFullBase = readFileSync(
+    join(here, '../public/llms-full.txt'),
+    'utf8'
+  ).trimEnd()
+} catch {
+  /* no hand-written base — llms.txt base is enough */
 }
+const llmsFull = pieceMetas
+  .filter((p) => summaries[p.id])
+  .map((p) => `# ${p.title} (${p.date})\n${ORIGIN}/thinking/${p.id}\n\n${summaries[p.id]}`)
+  .join('\n\n---\n\n')
+writeFileSync(
+  join(dist, 'llms-full.txt'),
+  `${llmsFullBase}${llmsFull ? `\n\n${llmsFull}` : ''}\n`
+)
+console.log('[prerender-meta] dist/llms-full.txt')

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     'Markdown skills for Antigravity CLI. One install, works offline.',
   alternates: { canonical: 'https://skills.n3wth.com' },
-  openGraph: {
+  openGraph: { type: 'website',
     title: 'n3wth/skills',
     description:
       'Markdown skills for Antigravity CLI. One install, works offline.',

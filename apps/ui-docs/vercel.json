@@ -4,12 +4,27 @@
   "outputDirectory": "dist",
   "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
   "framework": null,
-  "rewrites": [
-    { "source": "/components", "destination": "/index.html" },
-    { "source": "/docs", "destination": "/index.html" },
-    { "source": "/docs/:slug", "destination": "/index.html" }
-  ],
+  "cleanUrls": true,
+  "redirects": [{ "source": "/docs", "destination": "/docs/getting-started", "permanent": true }],
   "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/((?!assets/).*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -22,8 +37,16 @@
           "value": "nosniff"
         },
         {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     }

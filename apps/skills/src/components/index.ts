@@ -2,7 +2,6 @@
 export { ErrorBoundary, PageErrorFallback } from './ErrorBoundary'
 export { CategoryShape, RenderShape } from './CategoryShape'
 export { FloatingShapes } from './FloatingShapes'
-export { HeroConstellation } from './HeroConstellation'
 export { IslandNav } from './IslandNav'
 export { AuthProvider, useAuth } from './AuthProvider'
 export type { Profile } from './AuthProvider'

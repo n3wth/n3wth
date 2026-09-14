@@ -3,10 +3,12 @@ import { Suspense } from 'react'
 import { CompareClient } from './CompareClient'
 
 export const metadata: Metadata = {
+  twitter: { images: ['/twitter-image'], card: 'summary_large_image', title: 'Compare AI Skills Side by Side - Feature Matrix', description: 'Compare AI coding skills side by side with detailed feature matrices. Evaluate compatibility, features, and use cases to find the best skills for your workflow.' },
   title: 'Compare AI Skills Side by Side - Feature Matrix',
   description: 'Compare AI coding skills side by side with detailed feature matrices. Evaluate compatibility, features, and use cases to find the best skills for your workflow.',
   alternates: { canonical: '/compare' },
-  openGraph: {
+  openGraph: { type: 'website',
+    images: ['/opengraph-image'],
     title: 'Compare AI Skills Side by Side - Feature Matrix | skills.n3wth.com',
     description: 'Compare AI coding skills side by side with detailed feature matrices. Evaluate compatibility, features, and use cases to find the best skills for your workflow.',
     url: 'https://skills.n3wth.com/compare',

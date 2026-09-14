@@ -52,6 +52,24 @@ describe('VoteButton', () => {
     })
   })
 
+  it('reflects pressed state with aria-pressed', async () => {
+    vi.mocked(fetch)
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ count: 0 }) } as Response)
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ count: 1 }) } as Response)
+    render(<VoteButton skillId="test-skill" />)
+    await waitFor(() => expect(screen.getByText('0')).toBeInTheDocument())
+    const btn = screen.getByRole('button')
+    expect(btn).toHaveAttribute('aria-pressed', 'false')
+    await userEvent.click(btn)
+    expect(btn).toHaveAttribute('aria-pressed', 'true')
+    await waitFor(() => {
+      expect(btn).toHaveAttribute(
+        'aria-label',
+        expect.stringContaining('Remove vote from')
+      )
+    })
+  })
+
   it('calls POST on click when not voted', async () => {
     vi.mocked(fetch)
       .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ count: 0 }) } as Response)

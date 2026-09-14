@@ -4,6 +4,7 @@ import { Beat } from '../kit/Beat'
 import { ToggleCompare } from '../kit/ToggleCompare'
 import { FlowDiagram } from '../kit/FlowDiagram'
 import { MarginNote } from '../kit/MarginNote'
+import { RouterLink } from '../../RouterLink'
 import type { FlowEdge, FlowNode } from '../kit/FlowDiagram'
 
 const STAGES = [
@@ -215,8 +216,8 @@ export default function NightField() {
       </Beat>
 
       <Blockquote className="mt-4 max-w-[48ch]" data-reveal>
-        The front door of n3wth isn't a metaphor for that argument. It is that argument, running
-        live.
+        The front door of <RouterLink href="/">n3wth</RouterLink> isn't a metaphor for that
+        argument. It is that argument, running live.
       </Blockquote>
     </div>
   )

@@ -26,6 +26,10 @@
       "types": "./dist/primitives/index.d.ts",
       "import": "./dist/primitives/index.js"
     },
+    "./visuals": {
+      "types": "./dist/visuals/index.d.ts",
+      "import": "./dist/visuals/index.js"
+    },
     "./tailwind-theme.css": "./dist/tailwind-theme.css",
     "./site.css": "./dist/site.css",
     "./fonts/*": "./public/fonts/*",
@@ -47,7 +51,7 @@
     "lint": "eslint src",
     "size": "size-limit",
     "prepublishOnly": "npm run build",
-    "check": "npm run lint && npm run build && npm test"
+    "check": "npm run lint && npm run build && node scripts/check-build.mjs && npm test"
   },
   "dependencies": {
     "@astryxdesign/core": "0.1.6",

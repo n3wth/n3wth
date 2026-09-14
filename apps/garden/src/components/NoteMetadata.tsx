@@ -1,5 +1,3 @@
-import { Timestamp } from '@n3wth/ui/primitives'
-
 interface NoteMetadataProps {
   readingTime: string
   date?: string
@@ -14,7 +12,11 @@ export function NoteMetadata({ readingTime, date }: NoteMetadataProps) {
         <>
           <span className="text-[var(--color-text-secondary)]">
             {Number.isFinite(parsed) ? (
-              <Timestamp value={new Date(parsed).toISOString()} format="date" />
+              <time dateTime={new Date(parsed).toISOString()}>
+                {new Intl.DateTimeFormat('en-US', {
+                  year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC',
+                }).format(parsed)}
+              </time>
             ) : (
               <time>{date}</time>
             )}

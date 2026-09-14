@@ -1,11 +1,13 @@
-import { useState, useEffect, type ComponentType } from 'react'
-import { NavLink, useParams } from 'react-router'
+import { type ComponentType } from 'react'
+import { Link, useParams } from 'react-router'
 import { SiteNav } from './SiteNav'
 import { SiteFooter } from '@n3wth/ui/site'
 import { siteUrls } from '@n3wth/site-config'
-import { Icon } from '@n3wth/ui'
-import { cn } from '@n3wth/ui'
+import { DocsSidebar } from './DocsSidebar'
 import { SEO, JsonLdWebPage, JsonLdBreadcrumb } from './SEO'
+import { NotFound } from './NotFound'
+
+import { docPageMeta, type DocPageMeta } from './docPages'
 
 const docModules = import.meta.glob<{ default: ComponentType }>([
   '../docs/getting-started.md',
@@ -15,53 +17,22 @@ const docModules = import.meta.glob<{ default: ComponentType }>([
   '../docs/css-utilities.md',
 ], { eager: true })
 
-export interface DocPage {
-  slug: string
-  title: string
-  description: string
+export interface DocPage extends DocPageMeta {
   Component: ComponentType
 }
 
-const DOC_DESCRIPTIONS: Record<string, string> = {
-  'getting-started': 'Create a site in the workspace using the shared UI page system and Astryx primitives.',
-  'theming': 'Shared brand tokens, typography, fonts and provider ownership.',
-  'components': 'Choose between site compositions, native Astryx primitives and existing UI adapters.',
-  'hooks': 'Theme state, focus behavior and intentional product feedback.',
-  'css-utilities': 'Site styles, the Tailwind theme facade and compatibility CSS.',
-}
-
-function slugToTitle(slug: string): string {
-  return slug
-    .replace(/-/g, ' ')
-    .replace(/css /i, 'CSS ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-}
-
-export const docPages: DocPage[] = Object.entries(docModules)
-  .map(([path, mod]) => {
-    const slug = path.replace('../docs/', '').replace('.md', '')
-    return {
-      slug,
-      title: slugToTitle(slug),
-      description: DOC_DESCRIPTIONS[slug] || `Documentation for ${slugToTitle(slug)} in @n3wth/ui design system.`,
-      Component: mod.default,
-    }
-  })
-  .sort((a, b) => {
-    const order = ['getting-started', 'theming', 'components', 'hooks', 'css-utilities']
-    return order.indexOf(a.slug) - order.indexOf(b.slug)
-  })
+export const docPages: DocPage[] = docPageMeta.map((meta) => ({
+  ...meta,
+  Component: docModules[`../docs/${meta.slug}.md`].default,
+}))
 
 export function DocsLayout() {
   const { slug } = useParams()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const currentPage = docPages.find((p) => p.slug === slug) ?? docPages[0]
+  const currentPage = docPages.find((p) => p.slug === slug)
+
+  if (!currentPage) return <NotFound />
   const Content = currentPage.Component
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [slug])
 
   const pageUrl = `https://ui.n3wth.com/docs/${currentPage.slug}`
 
@@ -98,68 +69,32 @@ export function DocsLayout() {
 
       <div className="n3wth-site-main n3wth-site-container">
         <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
-          {/* Sidebar - desktop */}
-          <aside className="hidden lg:block">
-            <nav className="sticky top-20 space-y-1">
-              {docPages.map((page) => (
-                <NavLink
-                  key={page.slug}
-                  to={`/docs/${page.slug}`}
-                  className={({ isActive }) =>
-                    cn(
-                      'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm',
-                      'transition-colors duration-150',
-                      isActive
-                        ? 'bg-[var(--glass-bg)] text-[var(--color-white)] border border-[var(--glass-border)]'
-                        : 'text-[var(--color-grey-400)] hover:text-[var(--color-white)] hover:bg-[var(--glass-bg)] border border-transparent'
-                    )
-                  }
-                >
-                  {page.title}
-                </NavLink>
-              ))}
-            </nav>
-          </aside>
-
-          {/* Mobile sidebar toggle */}
-          <div className="lg:hidden sticky top-16 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 bg-[var(--color-bg)]/80 backdrop-blur-lg border-b border-[var(--glass-border)]">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="flex items-center gap-2 text-sm text-[var(--color-grey-400)]"
-            >
-              <Icon name="menu" size="sm" />
-              <span>{currentPage.title}</span>
-              <Icon name={sidebarOpen ? 'chevron-up' : 'chevron-down'} size="xs" />
-            </button>
-            {sidebarOpen && (
-              <nav className="mt-2 p-2 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] space-y-1">
-                {docPages.map((page) => (
-                  <NavLink
-                    key={page.slug}
-                    to={`/docs/${page.slug}`}
-                    onClick={() => setSidebarOpen(false)}
-                    className={({ isActive }) =>
-                      cn(
-                        'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm',
-                        'transition-colors duration-150',
-                        isActive
-                          ? 'bg-[var(--glass-bg)] text-[var(--color-white)]'
-                          : 'text-[var(--color-grey-400)]'
-                      )
-                    }
-                  >
-                    {page.title}
-                  </NavLink>
-                ))}
-              </nav>
-            )}
-          </div>
+          <DocsSidebar items={docPages.map(page => ({ id: page.slug, label: page.title, href: `/docs/${page.slug}` }))} activeId={currentPage.slug} label="Documentation" />
 
           {/* Content */}
           <main id="main-content" className="min-w-0 pt-8 lg:pt-0">
             <article className="prose">
               <Content />
             </article>
+            <nav aria-label="Documentation pages" className="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-[var(--glass-border)] pt-6 text-sm">
+              {(() => {
+                const index = docPages.findIndex((p) => p.slug === currentPage.slug)
+                const prev = docPages[index - 1]
+                const next = docPages[index + 1]
+                return <>
+                  {prev && (
+                    <Link to={`/docs/${prev.slug}`} className="text-[var(--color-grey-400)] hover:text-[var(--color-white)]">
+                      ← {prev.title}
+                    </Link>
+                  )}
+                  {next && (
+                    <Link to={`/docs/${next.slug}`} className="ml-auto text-[var(--color-grey-400)] hover:text-[var(--color-white)]">
+                      {next.title} →
+                    </Link>
+                  )}
+                </>
+              })()}
+            </nav>
           </main>
         </div>
       </div>

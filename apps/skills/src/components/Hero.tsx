@@ -8,7 +8,6 @@ export function Hero() {
       <PageHeader
         title="Skills for coding agents"
         description={`${siteConfig.description} ${siteConfig.tagline}`}
-        actions={<a href="#main-content">Browse skills</a>}
       />
     </SiteContainer>
   )

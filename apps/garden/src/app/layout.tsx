@@ -26,9 +26,25 @@ export const metadata: Metadata = {
     siteName: 'n3wth/garden',
     type: 'website',
     url: './',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'n3wth/garden',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'n3wth/garden',
+      },
+    ],
   },
   authors: [{ name: 'Oliver Newth', url: site.parentUrl }],
   icons: {
@@ -65,7 +81,7 @@ export default function RootLayout({
     }))
 
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" data-astryx-theme="n3wth">
       <AxiomWebVitals />
       <GoogleAnalytics gaId="G-4QRMSG5HXK" />
       <body className="min-h-screen flex flex-col">

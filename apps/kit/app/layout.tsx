@@ -45,11 +45,27 @@ export const metadata: Metadata = {
     siteName: 'n3wth/kit',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'n3wth/kit — shadcn registry with AI context packs',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'n3wth/kit — shadcn registry with AI context packs',
     description: 'A shadcn component registry with AI context packs. Install via npx shadcn add, then drop in GEMINI.md.',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'n3wth/kit — shadcn registry with AI context packs',
+      },
+    ],
   },
   robots: {
     index: true,
@@ -109,7 +125,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" data-astryx-theme="n3wth">
       <body className="font-sans antialiased">
         <script
           type="application/ld+json"
@@ -123,7 +139,7 @@ export default function RootLayout({
           <SiteProvider>
           <SkipLink />
           <Nav />
-          <div id="main-content">
+          <div id="main-content" tabIndex={-1} className="outline-none">
             {children}
           </div>
           <Footer />

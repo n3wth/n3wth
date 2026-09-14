@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { skills } from '@/src/data/skills'
+import { noindexSkillIds } from '@/src/config/indexability'
 import { SkillDetailClient } from './SkillDetailClient'
 import { SoftwareApplicationJsonLd, WebPageJsonLd } from '@/src/components/seo/JsonLd'
 
@@ -11,22 +13,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { skillId } = await params
   const skill = skills.find(s => s.id === skillId)
 
-  if (!skill) {
-    return {
-      title: 'Skill Not Found',
-      description: 'The skill you are looking for does not exist.',
-    }
-  }
+  if (!skill) notFound()
 
   const rawDesc = skill.longDescription || skill.description
   const description = rawDesc.length > 155 ? rawDesc.slice(0, 155) + '...' : rawDesc
 
   return {
+    robots: noindexSkillIds.has(skillId) ? { index: false, follow: true } : { index: true, follow: true },
     title: `${skill.name} — AI Skill`,
     description,
     alternates: { canonical: `https://skills.n3wth.com/skill/${skillId}` },
     keywords: skill.tags,
-    openGraph: {
+    openGraph: { type: 'website',
       title: `${skill.name} — AI Skill | n3wth/skills`,
       description,
       url: `https://skills.n3wth.com/skill/${skillId}`,
@@ -56,9 +54,7 @@ export default async function SkillDetailPage({ params }: Props) {
   const { skillId } = await params
   const skill = skills.find(s => s.id === skillId)
 
-  if (!skill) {
-    return <SkillDetailClient skillId={skillId} />
-  }
+  if (!skill) notFound()
 
   return (
     <>

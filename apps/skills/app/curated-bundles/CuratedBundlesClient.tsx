@@ -38,8 +38,6 @@ export function CuratedBundlesClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
 
       <IslandNav />
 

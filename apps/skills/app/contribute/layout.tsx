@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: 'Contribute a Skill',
   description: 'Built something useful? Share it. Submit your skill and get it listed in the catalog with full attribution.',
   alternates: { canonical: '/contribute' },
-  openGraph: {
+  openGraph: { type: 'website',
     title: 'Contribute a Skill',
     description: 'Built something useful? Share it. Submit your skill and get it listed in the catalog with full attribution.',
     url: '/contribute',

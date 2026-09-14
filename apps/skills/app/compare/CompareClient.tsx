@@ -55,10 +55,8 @@ export function CompareClient() {
   if (comparedSkills.length === 0) {
     return (
       <div className="min-h-screen relative">
-        <div className="mesh-gradient" />
-        <div className="noise-overlay" />
         <IslandNav />
-        <main id="main-content" className="n3wth-site-container n3wth-site-main">
+        <main className="n3wth-site-container n3wth-site-main">
           <div className="max-w-4xl">
             <Link
               href="/"
@@ -85,8 +83,6 @@ export function CompareClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <IslandNav />
 
       <main className="n3wth-site-container n3wth-site-main">
@@ -120,9 +116,9 @@ export function CompareClient() {
             <table className="w-full min-w-[800px]">
               <thead>
                 <tr>
-                  <th className="text-left p-4 w-48" style={{ color: 'var(--color-grey-400)' }}></th>
+                  <th scope="col" className="text-left p-4 w-48" style={{ color: 'var(--color-grey-400)' }}><span className="sr-only">Attribute</span></th>
                   {comparedSkills.map(skill => (
-                    <th key={skill.id} className="p-4 text-left align-top">
+                    <th key={skill.id} scope="col" className="p-4 text-left align-top">
                       <div className="glass-card p-4 relative">
                         <button
                           onClick={() => handleRemove(skill.id)}
@@ -163,9 +159,9 @@ export function CompareClient() {
               </thead>
               <tbody>
                 <tr className="border-t" style={{ borderColor: 'var(--glass-border)' }}>
-                  <td className="p-4 text-sm font-medium" style={{ color: 'var(--color-grey-400)' }}>
+                  <th scope="row" className="p-4 text-left text-sm font-medium" style={{ color: 'var(--color-grey-400)' }}>
                     Compatibility
-                  </td>
+                  </th>
                   {comparedSkills.map(skill => (
                     <td key={skill.id} className="p-4">
                       <div className="flex flex-wrap gap-1">
@@ -178,9 +174,9 @@ export function CompareClient() {
                 </tr>
 
                 <tr className="border-t" style={{ borderColor: 'var(--glass-border)' }}>
-                  <td className="p-4 text-sm font-medium" style={{ color: 'var(--color-grey-400)' }}>
+                  <th scope="row" className="p-4 text-left text-sm font-medium" style={{ color: 'var(--color-grey-400)' }}>
                     Version
-                  </td>
+                  </th>
                   {comparedSkills.map(skill => (
                     <td key={skill.id} className="p-4 text-sm text-white">
                       {skill.version}
@@ -189,9 +185,9 @@ export function CompareClient() {
                 </tr>
 
                 <tr className="border-t" style={{ borderColor: 'var(--glass-border)' }}>
-                  <td className="p-4 text-sm font-medium" style={{ color: 'var(--color-grey-400)' }}>
+                  <th scope="row" className="p-4 text-left text-sm font-medium" style={{ color: 'var(--color-grey-400)' }}>
                     Last Updated
-                  </td>
+                  </th>
                   {comparedSkills.map(skill => (
                     <td key={skill.id} className="p-4 text-sm text-white">
                       {new Date(skill.lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -200,9 +196,9 @@ export function CompareClient() {
                 </tr>
 
                 <tr className="border-t" style={{ borderColor: 'var(--glass-border)' }}>
-                  <td className="p-4 text-sm font-medium align-top" style={{ color: 'var(--color-grey-400)' }}>
+                  <th scope="row" className="p-4 text-left text-sm font-medium align-top" style={{ color: 'var(--color-grey-400)' }}>
                     Tags
-                  </td>
+                  </th>
                   {comparedSkills.map(skill => (
                     <td key={skill.id} className="p-4">
                       <div className="flex flex-wrap gap-1">
@@ -233,20 +229,26 @@ export function CompareClient() {
                     </tr>
                     {allFeatures.map((feature, index) => (
                       <tr key={index} className="border-t" style={{ borderColor: 'var(--glass-border)' }}>
-                        <td className="p-4 text-xs" style={{ color: 'var(--color-grey-400)' }}>
+                        <th scope="row" className="p-4 text-left text-xs font-normal" style={{ color: 'var(--color-grey-400)' }}>
                           {feature}
-                        </td>
+                        </th>
                         {comparedSkills.map(skill => (
                           <td key={skill.id} className="p-4 text-center">
                             {skill.features?.includes(feature) ? (
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
-                                <polyline points="20 6 9 17 4 12" />
-                              </svg>
+                              <>
+                                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                <span className="sr-only">Included in {skill.name}</span>
+                              </>
                             ) : (
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-grey-600)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
-                              </svg>
+                              <>
+                                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-grey-600)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
+                                  <line x1="18" y1="6" x2="6" y2="18" />
+                                  <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                                <span className="sr-only">Not included in {skill.name}</span>
+                              </>
                             )}
                           </td>
                         ))}
@@ -264,20 +266,26 @@ export function CompareClient() {
                     </tr>
                     {allUseCases.map((useCase, index) => (
                       <tr key={index} className="border-t" style={{ borderColor: 'var(--glass-border)' }}>
-                        <td className="p-4 text-xs" style={{ color: 'var(--color-grey-400)' }}>
+                        <th scope="row" className="p-4 text-left text-xs font-normal" style={{ color: 'var(--color-grey-400)' }}>
                           {useCase}
-                        </td>
+                        </th>
                         {comparedSkills.map(skill => (
                           <td key={skill.id} className="p-4 text-center">
                             {skill.useCases?.includes(useCase) ? (
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
-                                <polyline points="20 6 9 17 4 12" />
-                              </svg>
+                              <>
+                                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                <span className="sr-only">Included in {skill.name}</span>
+                              </>
                             ) : (
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-grey-600)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
-                              </svg>
+                              <>
+                                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-grey-600)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
+                                  <line x1="18" y1="6" x2="6" y2="18" />
+                                  <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                                <span className="sr-only">Not included in {skill.name}</span>
+                              </>
                             )}
                           </td>
                         ))}
@@ -287,9 +295,9 @@ export function CompareClient() {
                 )}
 
                 <tr className="border-t" style={{ borderColor: 'var(--glass-border)' }}>
-                  <td className="p-4 text-sm font-medium align-top" style={{ color: 'var(--color-grey-400)' }}>
+                  <th scope="row" className="p-4 text-left text-sm font-medium align-top" style={{ color: 'var(--color-grey-400)' }}>
                     Install Command
-                  </td>
+                  </th>
                   {comparedSkills.map(skill => (
                     <td key={skill.id} className="p-4">
                       {skill.skillFile ? (

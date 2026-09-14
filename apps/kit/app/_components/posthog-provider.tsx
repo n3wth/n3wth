@@ -3,14 +3,12 @@
 import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
 import { useEffect } from 'react'
+import { initializeSiteAnalytics } from '@n3wth/site-config/analytics'
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
+    initializeSiteAnalytics(posthog, {
       api_host: 'https://us.i.posthog.com',
-      person_profiles: 'identified_only',
-      capture_pageview: true,
-      capture_pageleave: true,
     })
   }, [])
 

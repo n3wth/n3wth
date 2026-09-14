@@ -264,8 +264,6 @@ export function PlaygroundClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
 
       <IslandNav />
 
@@ -654,6 +652,7 @@ export function PlaygroundClient() {
 
                       {error && (
                         <div
+                          role="alert"
                           className="p-4 rounded-xl text-sm"
                           style={{
                             backgroundColor: 'rgba(255, 105, 97, 0.1)',
@@ -678,6 +677,7 @@ export function PlaygroundClient() {
                             value={prompt}
                             onChange={e => setPrompt(e.target.value)}
                             onKeyDown={handleKeyDown}
+                            aria-label={`Message ${selectedSkill.name}`}
                             placeholder={`Ask ${selectedSkill.name} something...`}
                             rows={2}
                             className="flex-1 bg-transparent text-white placeholder:text-[var(--color-grey-600)] resize-none focus:outline-none text-sm leading-relaxed"
@@ -757,7 +757,7 @@ export function PlaygroundClient() {
       </main>
 
       {showApiKeyInput && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
           <div
             className="w-full max-w-md p-6 rounded-2xl"
             style={{

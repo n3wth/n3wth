@@ -1,5 +1,3 @@
-"use client";
-
 import { Zap, Code, Lock, Globe, Cpu, Layers } from "lucide-react";
 import Link from "next/link";
 import {
@@ -9,69 +7,13 @@ import {
   SiteSection,
   SiteText,
 } from "@n3wth/ui/site";
-import { useState, lazy, Suspense } from "react";
+import { CommandBox as InstallCommand } from "@n3wth/ui";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { CodeBlock } from "@/components/CodeBlock";
 import { JsonLd } from "@/components/JsonLd";
-
-const TerminalDemo = lazy(() =>
-  import("@/components/TerminalDemo").then((module) => ({
-    default: module.TerminalDemo,
-  })),
-);
-
-function InstallCommand({ command }: { command: string }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(command);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="inline-flex items-center gap-3 rounded-lg border border-rail bg-bg-raise px-4 py-2.5">
-      <code className="font-mono text-sm text-ink">{command}</code>
-      <button
-        onClick={handleCopy}
-        className="text-ink-faint transition-colors hover:text-ink"
-        aria-label="Copy to clipboard"
-      >
-        {copied ? (
-          <svg
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        ) : (
-          <svg
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-            />
-          </svg>
-        )}
-      </button>
-    </div>
-  );
-}
+import { TerminalDemo } from "@/components/TerminalDemo";
 
 export default function Home() {
   const codeExamples = {
@@ -169,52 +111,8 @@ Postgres with Drizzle ORM.`}
               r3 storing and retrieving memories across sessions.
             </SiteText>
             <div className="mt-6">
-              <Suspense
-                fallback={
-                  <div className="bg-bg-soft rounded-lg p-6 animate-pulse h-64" />
-                }
-              >
-                <TerminalDemo />
-              </Suspense>
+              <TerminalDemo />
             </div>
-          </SiteContainer>
-        </SiteSection>
-
-        {/* Integration */}
-        <SiteSection className="border-t border-rail">
-          <SiteContainer>
-            <SiteHeading variant="section" level={2}>
-              Get started
-            </SiteHeading>
-
-            <div className="mt-6 grid gap-8 sm:grid-cols-2">
-              <div>
-                <SiteText variant="supporting">MCP Desktop Clients</SiteText>
-                <SiteText className="mt-2">
-                  Add r3 to your MCP config file.
-                </SiteText>
-                <div className="mt-4">
-                  <CodeBlock language="json">{codeExamples.mcp}</CodeBlock>
-                </div>
-              </div>
-
-              <div>
-                <SiteText variant="supporting">MCP CLI Tools</SiteText>
-                <SiteText className="mt-2">Add with a single command.</SiteText>
-                <div className="mt-4">
-                  <CodeBlock language="bash">{codeExamples.cli}</CodeBlock>
-                </div>
-              </div>
-            </div>
-
-            <SiteText className="mt-6">
-              <Link
-                href="/docs/quickstart"
-                className="underline underline-offset-4 hover:text-ink"
-              >
-                Full setup guide
-              </Link>
-            </SiteText>
           </SiteContainer>
         </SiteSection>
 
@@ -271,6 +169,43 @@ Postgres with Drizzle ORM.`}
                 />
               </BentoGrid>
             </div>
+          </SiteContainer>
+        </SiteSection>
+
+        <SiteSection className="border-t border-rail">
+          <SiteContainer>
+            <SiteHeading variant="section" level={2}>
+              Get started
+            </SiteHeading>
+
+            <div className="mt-6 grid gap-8 sm:grid-cols-2">
+              <div>
+                <SiteText variant="supporting">MCP Desktop Clients</SiteText>
+                <SiteText className="mt-2">
+                  Add r3 to your MCP config file.
+                </SiteText>
+                <div className="mt-4">
+                  <CodeBlock language="json">{codeExamples.mcp}</CodeBlock>
+                </div>
+              </div>
+
+              <div>
+                <SiteText variant="supporting">MCP CLI Tools</SiteText>
+                <SiteText className="mt-2">Add with a single command.</SiteText>
+                <div className="mt-4">
+                  <CodeBlock language="bash">{codeExamples.cli}</CodeBlock>
+                </div>
+              </div>
+            </div>
+
+            <SiteText className="mt-6">
+              <Link
+                href="/docs/quickstart"
+                className="underline underline-offset-4 hover:text-ink"
+              >
+                Full setup guide
+              </Link>
+            </SiteText>
           </SiteContainer>
         </SiteSection>
 

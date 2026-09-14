@@ -1,3 +1,4 @@
+import { CodeBlock } from '@n3wth/ui'
 import { SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
 import { PostLayout } from '../_components/post-layout'
@@ -39,6 +40,9 @@ export default function Post() {
       title="The shadcn Registry Protocol: A Technical Deep Dive"
       date="April 9, 2026"
       readingTime="12 min read"
+      description="How the shadcn registry protocol works under the hood: JSON schema, install flow, dependency resolution, and how to build your own custom component registry."
+      path="/blog/shadcn-registry-protocol-deep-dive"
+      publishedIso="2026-04-09"
     >
       <p>
         The shadcn registry protocol is one of those infrastructure decisions
@@ -100,14 +104,14 @@ export default function Post() {
         The{' '}
         <span className="font-medium text-ink">registry manifest</span>{' '}
         (validated against{' '}
-        <code className="rounded bg-bg-raise px-1.5 py-0.5 text-sm text-ink-dim">
+        <code className="break-all rounded bg-bg-raise px-1.5 py-0.5 text-sm text-ink-dim">
           https://ui.shadcn.com/schema/registry.json
         </code>
         ) describes the registry itself and its items:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`{
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="json" showCopyButton code={`{
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "n3wth",
   "homepage": "https://kit.n3wth.com",
@@ -126,8 +130,8 @@ export default function Post() {
       ]
     }
   ]
-}`}
-      </pre>
+}`} />
+      </div>
 
       <p>
         The manifest is the source of truth during the build step. A build
@@ -140,15 +144,15 @@ export default function Post() {
         A{' '}
         <span className="font-medium text-ink">registry item</span>{' '}
         (validated against{' '}
-        <code className="rounded bg-bg-raise px-1.5 py-0.5 text-sm text-ink-dim">
+        <code className="break-all rounded bg-bg-raise px-1.5 py-0.5 text-sm text-ink-dim">
           https://ui.shadcn.com/schema/registry-item.json
         </code>
         ) is what the CLI fetches. The key difference from the manifest entry
         is that it includes the full file content inline:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`{
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="json" showCopyButton code={`{
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "button",
   "title": "Button",
@@ -162,8 +166,8 @@ export default function Post() {
       "type": "registry:ui"
     }
   ]
-}`}
-      </pre>
+}`} />
+      </div>
 
       <p>
         The file content is embedded as a string. The CLI does not need to make
@@ -181,15 +185,15 @@ export default function Post() {
         the files. The defined types are:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`registry:style      // Design system base (CSS vars, global styles)
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="text" showCopyButton code={`registry:style      // Design system base (CSS vars, global styles)
 registry:lib        // Utility functions (cn, formatters, hooks)
 registry:ui         // UI components
 registry:block      // Multi-file page sections or patterns
 registry:component  // Single-purpose standalone components
 registry:page       // Full page templates
-registry:file       // Arbitrary files (config, types, etc.)`}
-      </pre>
+registry:file       // Arbitrary files (config, types, etc.)`} />
+      </div>
 
       <p>
         In practice,{' '}
@@ -210,12 +214,12 @@ registry:file       // Arbitrary files (config, types, etc.)`}
         The two dependency fields serve different purposes:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`{
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="json" showCopyButton code={`{
   "dependencies": ["clsx", "tailwind-merge"],
   "registryDependencies": ["cn", "button"]
-}`}
-      </pre>
+}`} />
+      </div>
 
       <p>
         <span className="font-medium text-ink">dependencies</span> are npm
@@ -254,9 +258,9 @@ registry:file       // Arbitrary files (config, types, etc.)`}
         Running the install command triggers a multi-step process:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`npx shadcn add https://kit.n3wth.com/r/card.json`}
-      </pre>
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="bash" showCopyButton code={`npx shadcn add https://kit.n3wth.com/r/card.json`} />
+      </div>
 
       <p>
         Step by step:
@@ -324,8 +328,8 @@ registry:file       // Arbitrary files (config, types, etc.)`}
         The Next.js app serves them as static files.
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`# Source
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="text" showCopyButton code={`# Source
 registry/
   lib/cn/cn.ts
   new-york/
@@ -339,8 +343,8 @@ public/r/
   cn.json          # { name, type, files: [{ content: "..." }] }
   button.json
   badge.json
-  card.json`}
-      </pre>
+  card.json`} />
+      </div>
 
       <p>
         The build script inlines the file content into each item JSON. After
@@ -353,8 +357,8 @@ public/r/
         Here is the structure of the build script pattern:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`import { readFileSync, writeFileSync } from 'fs'
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="typescript" showCopyButton code={`import { readFileSync, writeFileSync } from 'fs'
 import { registry } from './registry.json'
 
 for (const item of registry.items) {
@@ -379,8 +383,8 @@ for (const item of registry.items) {
     \`public/r/\${item.name}.json\`,
     JSON.stringify(registryItem, null, 2)
   )
-}`}
-      </pre>
+}`} />
+      </div>
 
       <SiteHeading variant="section" level={2} className="mt-12">
         Building your own registry
@@ -398,14 +402,14 @@ for (const item of registry.items) {
         You can author the item JSON manually if your registry is small:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`# Minimal registry structure
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="text" showCopyButton code={`# Minimal registry structure
 registry/
   components/
     my-button.tsx
   r/
-    my-button.json   # authored by hand or generated`}
-      </pre>
+    my-button.json   # authored by hand or generated`} />
+      </div>
 
       <p>
         For a production registry with more than a handful of components, you
@@ -447,8 +451,8 @@ registry/
         variables and configuration into your project.
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`{
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="json" showCopyButton code={`{
   "name": "n3wth",
   "type": "registry:style",
   "description": "Flat, minimal design system tokens.",
@@ -471,8 +475,8 @@ registry/
     }
   },
   "files": []
-}`}
-      </pre>
+}`} />
+      </div>
 
       <p>
         When a style item is installed, the CLI writes these values into your{' '}
@@ -545,8 +549,8 @@ registry/
         composition patterns in a format optimized for language model consumption:
       </p>
 
-      <pre className="rounded-lg border border-rail bg-bg-soft p-4 font-mono text-sm text-ink-dim overflow-x-auto">
-{`# Button component context (in GEMINI.md / AGENTS.md)
+      <div className="min-w-0">
+        <CodeBlock size="sm" language="text" showCopyButton code={`# Button component context (in GEMINI.md / AGENTS.md)
 
 ## Button
 Props: variant, size, isLoading, leftIcon, rightIcon, asChild, touchTarget
@@ -561,8 +565,8 @@ Constraints:
 - Do not add custom className for sizing — use the size prop
 - Use touchTarget={true} for mobile primary actions (WCAG 2.5.5)
 - Loading state: set isLoading, do not disable manually
-- Never nest interactive elements inside Button`}
-      </pre>
+- Never nest interactive elements inside Button`} />
+      </div>
 
       <p>
         This context is installed alongside the component source. From that point

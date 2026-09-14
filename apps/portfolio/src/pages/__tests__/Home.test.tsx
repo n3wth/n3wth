@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Home from '../Home'
 
@@ -19,7 +19,11 @@ describe('Homepage without a ready scene', () => {
     render(<MemoryRouter><Home /></MemoryRouter>)
 
     expect(screen.getByRole('heading', { level: 1, name: 'I build new ways to work with AI.' })).toBeInTheDocument()
-    expect(screen.getByText('Oliver Newth')).toBeInTheDocument()
+    expect(screen.getAllByText('Oliver Newth').length).toBeGreaterThan(0)
+    const atlas = screen.getByRole('navigation', { name: 'Scene destinations' })
+    for (const name of ['Work', 'Art', 'Thinking', 'Contact', 'Garden']) {
+      expect(within(atlas).getByRole('link', { name })).toBeInTheDocument()
+    }
     expect(screen.getByRole('link', { name: 'Explore my projects' })).toHaveAttribute('href', '/work#building')
     expect(screen.queryByRole('navigation', { name: 'Site chapters' })).toBeNull()
   })

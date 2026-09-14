@@ -100,8 +100,6 @@ export function RequestSkillClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <IslandNav />
 
       <main className="n3wth-site-container n3wth-site-main">
@@ -118,6 +116,7 @@ export function RequestSkillClient() {
 
           {submitStatus === 'success' && (
             <div
+              role="status"
               className="glass-card p-6 mb-8"
               style={{ borderColor: 'var(--color-sage)' }}
             >
@@ -138,6 +137,7 @@ export function RequestSkillClient() {
 
           {submitStatus === 'error' && (
             <div
+              role="alert"
               className="glass-card p-6 mb-8"
               style={{ borderColor: 'var(--color-coral)' }}
             >
@@ -182,7 +182,9 @@ export function RequestSkillClient() {
                 value={formData.skillName}
                 onChange={handleChange}
                 placeholder="e.g., Image Compression"
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                aria-invalid={errors.skillName ? true : undefined}
+                aria-describedby={errors.skillName ? 'skillName-error' : undefined}
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                 style={{
                   background: 'var(--glass-bg)',
                   border: `1px solid ${errors.skillName ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -191,6 +193,8 @@ export function RequestSkillClient() {
               />
               {errors.skillName && (
                 <p
+                  id="skillName-error"
+                  role="alert"
                   className="mt-2 text-sm"
                   style={{ color: 'var(--color-coral)' }}
                 >
@@ -214,7 +218,9 @@ export function RequestSkillClient() {
                 onChange={handleChange}
                 placeholder="Describe what the skill should do and how it would help..."
                 rows={4}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                aria-invalid={errors.description ? true : undefined}
+                aria-describedby={errors.description ? 'description-error' : undefined}
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: `1px solid ${errors.description ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -223,6 +229,8 @@ export function RequestSkillClient() {
               />
               {errors.description && (
                 <p
+                  id="description-error"
+                  role="alert"
                   className="mt-2 text-sm"
                   style={{ color: 'var(--color-coral)' }}
                 >
@@ -252,7 +260,7 @@ export function RequestSkillClient() {
                 onChange={handleChange}
                 placeholder="Describe a specific scenario where you'd use this skill..."
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',

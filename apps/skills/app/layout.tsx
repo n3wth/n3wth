@@ -10,7 +10,7 @@ import '../src/index.css'
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrls.skills),
   title: {
-    default: 'n3wth/skills',
+    default: 'n3wth/skills — Markdown skills for Antigravity CLI',
     template: '%s | n3wth/skills',
   },
   description:
@@ -75,7 +75,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="dark" data-astryx-theme="n3wth" suppressHydrationWarning>
       <AxiomWebVitals />
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -97,7 +97,9 @@ export default function RootLayout({
           Skip to main content
         </a>
         <PostHogProvider>
-          <Providers>{children}</Providers>
+          <Providers>
+            <div id="main-content" tabIndex={-1} className="outline-none">{children}</div>
+          </Providers>
         </PostHogProvider>
       </body>
       <GoogleAnalytics gaId="G-4QRMSG5HXK" />

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { siteUrls } from "@n3wth/site-config";
-import { Geist, Geist_Mono } from "next/font/google";
-import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { AxiomWebVitals } from "next-axiom";
@@ -10,27 +8,6 @@ import { JsonLd } from "../components/JsonLd";
 import { SkipLink } from "../components/SkipLink";
 import { SiteProvider } from "../components/SiteProvider";
 import "./globals.css";
-
-const satoshi = localFont({
-  src: "../fonts/Satoshi-Variable.ttf",
-  variable: "--font-satoshi",
-  display: "swap",
-  preload: true,
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-  preload: true,
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrls.r3),
@@ -60,12 +37,28 @@ export const metadata: Metadata = {
     siteName: "n3wth/r3",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "n3wth/r3 - Persistent memory for AI assistants",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "n3wth/r3 - Persistent memory for AI assistants",
     description:
       "An MCP server that gives AI assistants persistent memory. Local Redis, vector search, knowledge graphs. Install with npx @n3wth/r3.",
+    images: [
+      {
+        url: "/twitter-image",
+        width: 1200,
+        height: 630,
+        alt: "n3wth/r3 - Persistent memory for AI assistants",
+      },
+    ],
     creator: "@n3wth",
   },
   robots: {
@@ -82,7 +75,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${satoshi.variable} ${geistSans.variable} ${geistMono.variable}`}
+      data-theme="dark"
+      data-astryx-theme="n3wth"
       suppressHydrationWarning
     >
       <AxiomWebVitals />
@@ -114,15 +108,11 @@ export default function RootLayout({
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js');
+                  navigator.serviceWorker.getRegistration('/').then(function(registration) {
+                    if (registration) registration.update();
+                  });
                 });
               }
-
-              // Preload critical resources
-              const linkPrefetch = document.createElement('link');
-              linkPrefetch.rel = 'prefetch';
-              linkPrefetch.href = '/docs';
-              document.head.appendChild(linkPrefetch);
             `,
           }}
         />

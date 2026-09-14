@@ -1,17 +1,23 @@
 # Shared site design system
 
+The root [design.md](../../design.md) and [style.md](../../style.md) define current visual and implementation rules. This document covers architecture, package usage and setup.
+
 ## Dependency direction
 
 Sites → `@n3wth/ui` → Astryx. Only the UI package depends on Astryx; applications import `@n3wth/ui/primitives` for native controls, `@n3wth/ui/site` for site compositions and `@n3wth/ui/site.css` for the complete foundation. Tailwind consumers use `@n3wth/ui/tailwind-theme.css`. The design check rejects direct Astryx imports or dependencies in applications.
 
-Astryx supplies control behavior and accessibility. UI owns the pinned Astryx version, React runtime integration, Newth theme, typography and shared site layout. Applications own content, routes, data and specialized interactions. Add reusable design decisions to UI rather than redefining them per site.
+[Astryx](https://github.com/facebook/astryx) is the external package supplying control behavior and accessibility. [UI](https://github.com/n3wth/n3wth/tree/main/packages/ui) owns the pinned Astryx version, React runtime integration, Newth theme, typography and shared site layout. Applications own content, routes, data and specialized interactions. Add reusable design decisions to UI rather than redefining them per site.
+
+Import one complete stylesheet: `@n3wth/ui/site.css` for new sites, or `@n3wth/ui/styles` when legacy component styles are needed. The latter already includes the site foundation and fonts; do not import both.
+
+Metadata and analytics belong in `@n3wth/site-config`, outside UI. Its framework-neutral `metadata` helpers generate canonical/social metadata and page JSON-LD while leaving copy and page types in the app. Its `analytics` initializer shares defaults and prevents duplicate initialization; apps supply their own installed client and host options. Specialized deferred-loading policies remain app-owned.
 
 The package root retains compatibility adapters for existing component APIs. New code should prefer the native primitives and site entries. Brand illustrations, OG rendering and application-specific scenes are not generic control replacements and remain purpose-built. The compatibility Nav, Hero, Footer and Section delegate to the same site compositions; old decorative hero settings no longer introduce gradients or entry animations.
 
 ```tsx
 import { Button } from '@n3wth/ui/primitives'
 
-<Button onClick={save}>Save</Button>
+<Button label="Save" onClick={save} />
 ```
 
 The six workspace sites use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain app-owned. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.
@@ -50,6 +56,10 @@ import '@n3wth/ui/site.css'
 - Garden reading typography and the portfolio scene may retain specialized layouts. Product names, content and interactions remain distinct; colors, type roles and common controls share the system.
 
 The canonical theme is `packages/ui/src/theme/n3wthTheme.ts`. Its CSS is generated during the UI build. Keep every app's `@n3wth/ui` dependency equal to the workspace version so npm does not silently install an older nested copy. The original `n3wth/ui` repository remains the public npm release authority; this change does not publish a package or move that authority.
+
+## Decorative artwork
+
+Decorative artwork uses `@n3wth/ui/visuals`: VisualBand owns full-width layout, while AssembleField, ForkLight and ConvergeLight own their drawing and motion. Styles are included in `site.css`. Keep seeds, cluster positions and heights in the app. Artwork is visible without an observer or a parent reveal class, and reduced motion keeps a still composition. VisualBand is aria-hidden; keep text and controls outside it. Use `fullBleed={false}` for contained previews.
 
 ## New sites
 

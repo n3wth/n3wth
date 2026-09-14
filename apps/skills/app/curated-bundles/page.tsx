@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     'Pre-built skill bundles for different roles. From frontend developers to founders, get pre-curated collections designed for your profession.',
   alternates: { canonical: 'https://skills.n3wth.com/curated-bundles' },
-  openGraph: {
+  openGraph: { type: 'website',
     title: 'Curated Skill Bundles for Every Role | n3wth/skills',
     description:
       'Pre-built skill bundles for different roles. From frontend developers to founders, get pre-curated collections designed for your profession.',

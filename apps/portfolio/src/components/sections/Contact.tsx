@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
-import { ConvergeLight } from '../ConvergeLight'
+import { ConvergeLight, VisualBand } from '@n3wth/ui/visuals'
 import { siteConfig } from '../../data/content'
 import { PageHeader } from '@n3wth/ui/site'
 
@@ -22,11 +22,9 @@ export function Contact() {
     <section id="contact" aria-label="Contact" className="min-h-[85vh] flex flex-col justify-center">
       {/* The bookend to /thinking's fork: two lines of light — one cool,
           one warm — converge and carry on as one. A conversation. */}
-      <div className="bleed" aria-hidden>
-        <div data-reveal className="w-full" style={{ height: 'clamp(200px, 34svh, 380px)' }}>
-          <ConvergeLight />
-        </div>
-      </div>
+      <VisualBand height="clamp(200px, 34svh, 380px)">
+        <ConvergeLight />
+      </VisualBand>
 
       <div className="frame w-full">
         <PageHeader className="site-content-gutter" title="Let's talk" description="Product, AI safety, or LED art. Coffee if you're in San Francisco." actions={<>

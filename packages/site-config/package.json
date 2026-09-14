@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "scripts": { "check": "node --check index.js" },
+  "scripts": { "check": "node --check index.js && node --test *.test.js" },
   "exports": {
+    "./metadata": { "types": "./metadata.d.ts", "default": "./metadata.js" },
+    "./analytics": { "types": "./analytics.d.ts", "default": "./analytics.js" },
     "./social": { "types": "./social.d.ts", "default": "./social.js" },
     "./icons": { "types": "./icons.d.ts", "default": "./icons.js" },
     ".": {

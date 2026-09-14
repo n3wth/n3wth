@@ -147,8 +147,6 @@ export function SubmitClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <IslandNav />
 
       <main className="n3wth-site-container n3wth-site-main">
@@ -168,6 +166,7 @@ export function SubmitClient() {
 
           {submitStatus === 'success' && (
             <div
+              role="status"
               className="glass-card p-6 mb-8"
               style={{ borderColor: 'var(--color-sage)' }}
             >
@@ -188,6 +187,7 @@ export function SubmitClient() {
 
           {submitStatus === 'error' && (
             <div
+              role="alert"
               className="glass-card p-6 mb-8"
               style={{ borderColor: 'var(--color-coral)' }}
             >
@@ -232,7 +232,9 @@ export function SubmitClient() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="e.g., React Testing"
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                aria-invalid={errors.name ? true : undefined}
+                aria-describedby={errors.name ? 'name-error' : undefined}
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                 style={{
                   background: 'var(--glass-bg)',
                   border: `1px solid ${errors.name ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -241,6 +243,8 @@ export function SubmitClient() {
               />
               {errors.name && (
                 <p
+                  id="name-error"
+                  role="alert"
                   className="mt-2 text-sm"
                   style={{ color: 'var(--color-coral)' }}
                 >
@@ -262,7 +266,9 @@ export function SubmitClient() {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none appearance-none cursor-pointer"
+                aria-invalid={errors.category ? true : undefined}
+                aria-describedby={errors.category ? 'category-error' : undefined}
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 appearance-none cursor-pointer"
                 style={{
                   background: 'var(--glass-bg)',
                   border: `1px solid ${errors.category ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -278,6 +284,8 @@ export function SubmitClient() {
               </select>
               {errors.category && (
                 <p
+                  id="category-error"
+                  role="alert"
                   className="mt-2 text-sm"
                   style={{ color: 'var(--color-coral)' }}
                 >
@@ -301,7 +309,9 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="Describe what the skill does and how it helps users..."
                 rows={4}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                aria-invalid={errors.description ? true : undefined}
+                aria-describedby={errors.description ? 'description-error' : undefined}
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: `1px solid ${errors.description ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -310,6 +320,8 @@ export function SubmitClient() {
               />
               {errors.description && (
                 <p
+                  id="description-error"
+                  role="alert"
                   className="mt-2 text-sm"
                   style={{ color: 'var(--color-coral)' }}
                 >
@@ -339,7 +351,8 @@ export function SubmitClient() {
                 value={formData.tags}
                 onChange={handleChange}
                 placeholder="e.g., testing, react, jest, automation"
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                aria-describedby="tags-hint"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',
@@ -347,6 +360,7 @@ export function SubmitClient() {
                 }}
               />
               <p
+                id="tags-hint"
                 className="mt-2 text-sm"
                 style={{ color: 'var(--color-grey-400)' }}
               >
@@ -375,7 +389,7 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="A more detailed description explaining the skill's capabilities..."
                 rows={4}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',
@@ -405,7 +419,7 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="List key features, one per line..."
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',
@@ -435,7 +449,7 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="Describe specific scenarios where this skill would be useful..."
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',
@@ -492,7 +506,9 @@ export function SubmitClient() {
                     value={formData.contributorName}
                     onChange={handleChange}
                     placeholder="Your display name for attribution"
-                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                    aria-invalid={errors.contributorName ? true : undefined}
+                    aria-describedby={errors.contributorName ? 'contributorName-error' : undefined}
+                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                     style={{
                       background: 'var(--glass-bg)',
                       border: `1px solid ${errors.contributorName ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -501,6 +517,8 @@ export function SubmitClient() {
                   />
                   {errors.contributorName && (
                     <p
+                      id="contributorName-error"
+                      role="alert"
                       className="mt-2 text-sm"
                       style={{ color: 'var(--color-coral)' }}
                     >
@@ -529,7 +547,7 @@ export function SubmitClient() {
                     value={formData.contributorGithub}
                     onChange={handleChange}
                     placeholder="your-github-username"
-                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                     style={{
                       background: 'var(--glass-bg)',
                       border: '1px solid var(--glass-border)',

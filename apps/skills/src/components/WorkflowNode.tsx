@@ -165,18 +165,23 @@ export function WorkflowNodeComponent({
       >
         <button
           onClick={handleClick}
-          className={`port-button w-2.5 h-2.5 rounded-full border-2 transition-all shrink-0 ${
-            canConnect
-              ? 'scale-125 border-[var(--color-sage)] bg-[var(--color-sage)]/20'
-              : 'border-current hover:scale-110'
-          }`}
-          style={{
-            borderColor: canConnect ? undefined : portColor,
-            backgroundColor: canConnect ? undefined : 'var(--color-bg)'
-          }}
+          className="port-button group w-6 h-6 rounded-full flex items-center justify-center transition-all shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20"
           title={`${port.name} (${port.type})`}
           aria-label={`${isOutput ? 'Output' : 'Input'} port: ${port.name} (${port.type})`}
-        />
+        >
+          <span
+            aria-hidden="true"
+            className={`block w-2.5 h-2.5 rounded-full border-2 transition-all ${
+              canConnect
+                ? 'scale-125 border-[var(--color-sage)] bg-[var(--color-sage)]/20'
+                : 'border-current group-hover:scale-110'
+            }`}
+            style={{
+              borderColor: canConnect ? undefined : portColor,
+              backgroundColor: canConnect ? undefined : 'var(--color-bg)'
+            }}
+          />
+        </button>
         <span className="text-[var(--color-grey-400)] shrink-0" title={port.description}>
           {port.name}
         </span>

@@ -21,6 +21,7 @@ import { LinkPreview } from '@/components/LinkPreview'
 import { NotePageClient } from '@/components/NotePageClient'
 import { WalkTrail } from '@/components/WalkTrail'
 import { site } from '@/lib/site'
+import { noteMetadata } from '@/lib/note-metadata'
 
 interface PageProps {
   params: Promise<{ slug: string[] }>
@@ -43,10 +44,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!note) return { title: 'Not Found' }
 
-  const description = note.description || `${note.title} - n3wth/garden`
-  const published = note.date ? new Date(note.date) : null
-  const publishedTime =
-    published && !isNaN(published.getTime()) ? published.toISOString() : undefined
+  const modified = getGraphData().nodes.find((n) => n.id === slugStr)?.modified
+  const { description, image, publishedTime, modifiedTime } = noteMetadata(note, slugStr, site.url, modified)
 
   return {
     title: note.title,
@@ -60,14 +59,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `/${slugStr}`,
       siteName: 'n3wth/garden',
       publishedTime,
+      modifiedTime,
       tags: note.tags,
-      images: [{ url: `/og/${slugStr}`, width: 1200, height: 630, alt: note.title }],
+      images: [{ url: image, width: 1200, height: 630, alt: note.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: note.title,
       description,
-      images: [`/og/${slugStr}`],
+      images: [image],
     },
   }
 }
@@ -86,15 +86,17 @@ export default async function NotePage({ params }: PageProps) {
   const previews = getAllPreviews()
 
   const url = `${site.url}/${slugStr}`
-  const published = note.date ? new Date(note.date) : null
+  const graphNode = getGraphData().nodes.find((n) => n.id === slugStr)
+  const { description, image, publishedTime, modifiedTime } = noteMetadata(note, slugStr, site.url, graphNode?.modified)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: note.title,
-    description: note.description || undefined,
+    description,
+    image,
     keywords: note.tags.join(', ') || undefined,
-    datePublished:
-      published && !isNaN(published.getTime()) ? published.toISOString() : undefined,
+    datePublished: publishedTime,
+    dateModified: modifiedTime,
     author: { '@type': 'Person', name: 'Oliver Newth', url: site.parentUrl },
     publisher: { '@type': 'Person', name: 'Oliver Newth', url: site.parentUrl },
     mainEntityOfPage: url,
@@ -142,7 +144,6 @@ export default async function NotePage({ params }: PageProps) {
 
   const gardenHref = `/?note=${encodeURIComponent(slugStr)}`
   const graphById = new Map(getGraphData().nodes.map((n) => [n.id, n]))
-  const graphNode = graphById.get(slugStr)
   const plantedLabel = graphNode?.created
     ? new Date(graphNode.created).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : null

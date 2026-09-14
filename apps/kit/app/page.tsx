@@ -98,6 +98,33 @@ export default function Home() {
         />
       </SiteContainer>
 
+      {/* Components */}
+      <SiteSection className="border-t border-rail">
+        <SiteContainer>
+          <SiteHeading variant="section" level={2} className="max-w-3xl">
+            The registry
+          </SiteHeading>
+          <SiteText className="mt-6">
+            32 UI components, 4 blocks, 11 hooks. Each installs with{' '}
+            <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-xs">
+              npx shadcn add
+            </code>{' '}
+            and is documented in the context packs.
+          </SiteText>
+          <div className="mt-6">
+            <ComponentShowcase />
+          </div>
+          <SiteText className="mt-6">
+            <Link
+              href="/components"
+              className="underline underline-offset-4 hover:text-ink"
+            >
+              View all components →
+            </Link>
+          </SiteText>
+        </SiteContainer>
+      </SiteSection>
+
       {/* What's a context pack */}
       <SiteSection className="border-t border-rail">
         <SiteContainer>
@@ -133,33 +160,6 @@ export default function Home() {
               <span>mcp.json</span>
             </a>
           </div>
-        </SiteContainer>
-      </SiteSection>
-
-      {/* Components */}
-      <SiteSection className="border-t border-rail">
-        <SiteContainer>
-          <SiteHeading variant="section" level={2} className="max-w-3xl">
-            The registry
-          </SiteHeading>
-          <SiteText className="mt-6">
-            32 UI components, 4 blocks, 11 hooks. Each installs with{' '}
-            <code className="rounded bg-bg-raise px-1.5 py-0.5 font-mono text-xs">
-              npx shadcn add
-            </code>{' '}
-            and is documented in the context packs.
-          </SiteText>
-          <div className="mt-6">
-            <ComponentShowcase />
-          </div>
-          <SiteText className="mt-6">
-            <Link
-              href="/components"
-              className="underline underline-offset-4 hover:text-ink"
-            >
-              View all components →
-            </Link>
-          </SiteText>
         </SiteContainer>
       </SiteSection>
 

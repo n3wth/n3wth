@@ -12,6 +12,7 @@ Astryx owns generic controls and interaction behavior. UI owns the pinned depend
 | --- | --- |
 | `@n3wth/ui/site` | Provider, navigation, page headers, containers, sections and footer |
 | `@n3wth/ui/primitives` | Native Astryx component APIs |
+| `@n3wth/ui/visuals` | Visible-by-default decorative bands and artwork |
 | `@n3wth/ui/site.css` | Astryx styles, Newth theme, fonts and site layout |
 | `@n3wth/ui/tailwind-theme.css` | Tailwind token bridge |
 | `@n3wth/ui` | Existing component API compatibility and brand utilities |

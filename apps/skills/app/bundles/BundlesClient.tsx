@@ -110,11 +110,9 @@ export function BundlesClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
       <IslandNav />
 
-      <main id="main-content" className="n3wth-site-container n3wth-site-main">
+      <main className="n3wth-site-container n3wth-site-main">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>

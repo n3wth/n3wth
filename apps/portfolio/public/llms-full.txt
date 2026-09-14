@@ -34,16 +34,16 @@ Oliver Newth is an AI Product Lead at Google (2025 to present), developing AI pl
 #### Home (https://n3wth.com/)
 Who Oliver is — AI at Google, art in the desert. A 3D night field scene built by an agent team.
 
-#### Work (https://n3wth.com/work/)
+#### Work (https://n3wth.com/work)
 Independent AI projects and product roles at Google, Covariant, Meta, and Microsoft.
 
-#### After Dark / Art (https://n3wth.com/art/)
+#### After Dark / Art (https://n3wth.com/art)
 Large-scale light installations for Burning Man and San Francisco memorials:
 - **THEM** (2022): Lighting and Circle of Light ring. Black Rock City, Nevada. Design: Simón Malvaez. Fabrication: Brenden Blaine Darby. Fractured Atlas.
 - **Pink Triangle** (2022): Project coordination as part of Illuminate on Patrick Carney's Pride memorial. Twin Peaks, San Francisco.
 - **Circle of Light** (2021): World AIDS Day memorial for the National AIDS Memorial. AIDS Memorial Grove, San Francisco.
 
-#### Thinking (https://n3wth.com/thinking/)
+#### Thinking (https://n3wth.com/thinking)
 Positions on production AI and agents as an org-design problem, with interactive AI-safety trade-off walkthroughs.
 
 ##### Featured Thinking Pieces:
@@ -69,15 +69,18 @@ Positions on production AI and agents as an org-design problem, with interactive
 - **Working notes: 2026** (/thinking/2026-goals): Four generic goal categories, one review cadence each.
 - **The PDF gotcha that cost an afternoon** (/thinking/pdf-charspace): A hairline rule in a table looked wrong by 10 to 25 points.
 
-#### Library (https://n3wth.com/library/)
+#### Library (https://n3wth.com/library)
 Installable pieces from across the n3wth properties:
 - The essay kit behind the Thinking pieces
 - The @n3wth/ui component library
 - The digital garden structure
 - Agent skills
 
-#### Contact (https://n3wth.com/contact/)
+#### Contact (https://n3wth.com/contact)
 hey@n3wth.com — product, AI safety, LED art, or coffee in San Francisco.
+
+#### Support (https://n3wth.com/support)
+support@n3wth.com — one inbox covering every n3wth project (n3wth.com, hop.flights, theywontshutup.com).
 
 ## Live Products
 
@@ -110,9 +113,12 @@ A digital garden of interconnected working notes. Notes carry growth stages (see
 ## Ecosystem
 
 - **GitHub**: https://github.com/n3wth (Open source)
-- **LinkedIn**: https://linkedin.com/in/n3wth
-- **Peerlist Resume**: https://peerlist.io/newth/resume
+- **LinkedIn**: https://www.linkedin.com/in/n3wth
+- **Peerlist**: https://peerlist.io/newth
 - **Contra**: https://contra.com/olivernewth
+- **Instagram**: https://www.instagram.com/lightsbyoliver/
+- **Glama.ai**: https://glama.ai/mcp/servers/n3wth/r3
+- **Skills.sh**: https://skills.sh/n3wth/skills
 - **newth.ai** redirects to n3wth.com
 - **here.n3wth.com** is a host for here.now pages, not a product homepage
 

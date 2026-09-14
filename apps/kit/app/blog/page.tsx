@@ -1,39 +1,28 @@
 import { PageHeader, SiteContainer, SiteSection, SiteHeading } from '@n3wth/ui/site'
 import type { Metadata } from 'next'
+import { siteUrls } from '@n3wth/site-config'
+import { pageMetadata, pageJsonLd } from '@n3wth/site-config/metadata'
 import Link from 'next/link'
 
-export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Notes on registries, context packs, and generated UI.',
-  alternates: {
-    canonical: 'https://kit.n3wth.com/blog',
-  },
-  openGraph: {
-    title: 'Blog — n3wth/kit',
-    description: 'Notes on registries, context packs, and generated UI.',
-    url: 'https://kit.n3wth.com/blog',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blog — n3wth/kit',
-    description: 'Notes on registries, context packs, and generated UI.',
-  },
-}
+const url = `${siteUrls.kit}/blog`
+const socialTitle = 'Blog — n3wth/kit'
+const description = 'Notes on registries, context packs, and generated UI.'
 
-const webPageJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Blog',
-  '@id': 'https://kit.n3wth.com/blog#webpage',
-  url: 'https://kit.n3wth.com/blog',
-  name: 'Blog — n3wth/kit',
-  description: 'Notes on registries, context packs, and generated UI.',
-  isPartOf: { '@id': 'https://kit.n3wth.com/#website' },
-  primaryImageOfPage: {
-    '@type': 'ImageObject',
-    url: 'https://kit.n3wth.com/blog/opengraph-image',
-  },
-}
+export const metadata: Metadata = pageMetadata({
+  title: 'Blog',
+  description,
+  url,
+  socialTitle,
+})
+
+const webPageJsonLd = pageJsonLd({
+  url,
+  title: socialTitle,
+  description: description,
+  siteUrl: siteUrls.kit,
+  type: 'Blog',
+  image: `${url}/opengraph-image`,
+})
 
 const posts = [
   {

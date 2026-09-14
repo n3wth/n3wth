@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useRef } from 'react'
+'use client'
+
+import { useId } from 'react'
+import { useLightPaths } from './useLightPaths'
 
 /**
  * The bookend to /thinking's fork: two paths of light converge and
@@ -6,7 +9,7 @@ import { useEffect, useMemo, useRef } from 'react'
  * after-dark work — meet and carry on together as white. The waver
  * phase drifts left to right, and the shared stretch past the merge
  * wobbles identically, one exposure again. Bare filaments, no glow:
- * one clean line each, drawn in on reveal.
+ * one clean line each, visible immediately.
  */
 
 const N = 72
@@ -40,51 +43,37 @@ function buildPath(dir: -1 | 1, time: number): string {
   return pts.join(' ')
 }
 
-const LAYERS = [{ width: 2, cls: 'fork-l-core' }] as const
+const LAYERS = [{ width: 2, cls: 'n3wth-visual-light-core' }] as const
 
 export function ConvergeLight() {
-  const upperRefs = useRef<(SVGPathElement | null)[]>([])
-  const lowerRefs = useRef<(SVGPathElement | null)[]>([])
-  const initial = useMemo(() => ({ up: buildPath(-1, 0), lo: buildPath(1, 0) }), [])
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let raf = 0
-    const t0 = performance.now()
-    const tick = (now: number) => {
-      const time = (now - t0) / 1000
-      const up = buildPath(-1, time)
-      const lo = buildPath(1, time)
-      for (const el of upperRefs.current) el?.setAttribute('d', up)
-      for (const el of lowerRefs.current) el?.setAttribute('d', lo)
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [])
+  const { upperRefs, lowerRefs, initial } = useLightPaths(buildPath)
+  const id = useId().replace(/:/g, '')
+  const gradientA = `n3wth-converge-${id}-a`
+  const gradientB = `n3wth-converge-${id}-b`
 
   return (
     <svg
       viewBox="0 0 1600 420"
       preserveAspectRatio="xMidYMid slice"
-      className="block h-full w-full"
+      className="n3wth-visual-light"
       role="presentation"
+      aria-hidden="true"
       focusable="false"
     >
       <defs>
         {/* each line keeps its temperature until the meeting, then both
             carry on white */}
-        <linearGradient id="conv-grad-a" gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
-          <stop offset="0" stopColor="#d8e3f6" stopOpacity="0" />
-          <stop offset="0.12" stopColor="#d8e3f6" stopOpacity="0.9" />
-          <stop offset="0.58" stopColor="#f0f2f6" stopOpacity="1" />
-          <stop offset="1" stopColor="#f4f2ee" stopOpacity="0.95" />
+        <linearGradient id={gradientA} gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
+          <stop offset="0" stopColor="color-mix(in srgb, var(--color-text-primary, #d8e3f6) 50%, #d8e3f6)" stopOpacity="0" />
+          <stop offset="0.12" stopColor="color-mix(in srgb, var(--color-text-primary, #d8e3f6) 50%, #d8e3f6)" stopOpacity="0.9" />
+          <stop offset="0.58" stopColor="var(--color-text-primary, #f0f2f6)" stopOpacity="1" />
+          <stop offset="1" stopColor="var(--color-text-primary, #f4f2ee)" stopOpacity="0.95" />
         </linearGradient>
-        <linearGradient id="conv-grad-b" gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
-          <stop offset="0" stopColor="#ffe3c2" stopOpacity="0" />
-          <stop offset="0.12" stopColor="#ffe3c2" stopOpacity="0.9" />
-          <stop offset="0.58" stopColor="#f4f0ea" stopOpacity="1" />
-          <stop offset="1" stopColor="#f4f2ee" stopOpacity="0.95" />
+        <linearGradient id={gradientB} gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="1640" y2="0">
+          <stop offset="0" stopColor="color-mix(in srgb, var(--color-text-primary, #ffe3c2) 50%, #ffe3c2)" stopOpacity="0" />
+          <stop offset="0.12" stopColor="color-mix(in srgb, var(--color-text-primary, #ffe3c2) 50%, #ffe3c2)" stopOpacity="0.9" />
+          <stop offset="0.58" stopColor="var(--color-text-primary, #f4f0ea)" stopOpacity="1" />
+          <stop offset="1" stopColor="var(--color-text-primary, #f4f2ee)" stopOpacity="0.95" />
         </linearGradient>
       </defs>
       {LAYERS.map((l, i) => (
@@ -96,10 +85,10 @@ export function ConvergeLight() {
           d={initial.up}
           pathLength={1}
           fill="none"
-          stroke="url(#conv-grad-a)"
+          stroke={`url(#${gradientA})`}
           strokeWidth={l.width}
           strokeLinecap="round"
-          className={`fork-path ${l.cls} fork-branch conv-glow-ref`}
+          className={`n3wth-visual-light-path ${l.cls} n3wth-visual-light-branch`}
         />
       ))}
       {LAYERS.map((l, i) => (
@@ -111,10 +100,10 @@ export function ConvergeLight() {
           d={initial.lo}
           pathLength={1}
           fill="none"
-          stroke="url(#conv-grad-b)"
+          stroke={`url(#${gradientB})`}
           strokeWidth={l.width}
           strokeLinecap="round"
-          className={`fork-path ${l.cls} fork-branch fork-branch-b conv-glow-ref`}
+          className={`n3wth-visual-light-path ${l.cls} n3wth-visual-light-branch n3wth-visual-light-branch-b`}
         />
       ))}
     </svg>

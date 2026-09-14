@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import '@n3wth/ui/styles';
-@import '@n3wth/ui/site.css';
 
 /* Scan @n3wth/ui components for Tailwind classes */
 @source "../../../packages/ui/dist";
@@ -10,13 +9,9 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  /* Liquid Glass variables */
-  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-highlight: rgba(255, 255, 255, 0.18);
-  --glass-blur: blur(20px) saturate(180%);
-  --glass-inset: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
-  --glass-inset-hover: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Fix for @n3wth/ui Nav responsive classes not being detected */
@@ -35,43 +30,22 @@
   }
 }
 
-/* Additional medium code weight for existing code examples. */
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Project-specific theme overrides */
-@theme {
-  --font-display: 'Satoshi', system-ui, sans-serif;
-  --font-sans: 'Geist Sans', system-ui, sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
-}
-
 /* ============================================================
-   Liquid Glass Card System
-   Multi-layer glass material inspired by iOS 26
+   Flat card system
+   Solid translucent surfaces with subtle borders — no blur,
+   shadows or glass material.
    ============================================================ */
 
-/* Override @n3wth/ui glass-card with liquid glass material */
 .glass-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-inset);
   transition: border-color 0.15s ease,
-              box-shadow 0.15s ease,
               background 0.15s ease;
 }
 
 .glass-card:hover {
   border-color: rgba(255, 255, 255, 0.16);
-  box-shadow: var(--glass-inset-hover);
 }
 
 /* Skill Card */
@@ -79,13 +53,11 @@
   position: relative;
   overflow: hidden;
   border-radius: 20px;
-  transition: border-color 0.15s ease,
-              box-shadow 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 
 .skill-card:hover {
   border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: var(--glass-inset-hover);
 }
 
 .skill-card:focus-within {
@@ -100,23 +72,6 @@
 /* Hero/Skill of the Day variant */
 .glass-card--hero {
   border-radius: 24px;
-}
-
-/* Constellation pattern - project specific */
-@keyframes constellationTwinkle {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.2);
-  }
-}
-
-.constellation-dot {
-  animation: constellationTwinkle var(--twinkle-duration, 3s) ease-in-out infinite;
-  animation-delay: var(--twinkle-delay, 0s);
 }
 
 /* Section labels and secondary text */
@@ -144,24 +99,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Shared canvas behind the catalog. */
-.mesh-gradient {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background: var(--color-background-body);
-}
 
-/* Noise texture overlay */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.015;
-  z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
 
 /* Hover Preview - project specific */
 .hover-preview {
@@ -171,8 +109,6 @@
 
 .hover-preview-content {
   background: rgba(20, 20, 22, 0.97);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   padding: 16px;
@@ -264,15 +200,6 @@
   animation: connectionDraw 0.3s ease-out forwards;
 }
 
-/* Hero category hover delight */
-.hero-category {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hero-category:hover {
-  transform: translateY(-2px);
-}
-
 /* Stats counter animation helper */
 .counter-animate {
   font-variant-numeric: tabular-nums;
@@ -280,42 +207,22 @@
 
 /* Interactive tag hover */
 .interactive-tag {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
 }
 
 .interactive-tag:hover {
-  transform: scale(1.05);
   background: var(--glass-highlight);
 }
 
-/* Empty state bounce animation */
-@keyframes emptyBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-.empty-state-icon {
-  animation: emptyBounce 2s ease-in-out infinite;
-}
-
-/* Glass pill - liquid glass variant */
 .glass-pill {
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-inset);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .glass-pill:hover {
   border-color: rgba(255, 255, 255, 0.16);
-  box-shadow: var(--glass-inset-hover);
   background: rgba(255, 255, 255, 0.08);
 }
 
@@ -360,12 +267,6 @@
 
 .category-filter-active::after {
   transform: translateX(-50%) scaleX(1);
-}
-
-/* Button press state */
-.btn-press:active {
-  transform: scale(0.96);
-  transition: transform 0.1s ease;
 }
 
 /* Smooth number transitions */
@@ -431,37 +332,7 @@ select {
   cursor: pointer;
 }
 
-/* Success message entrance animation */
-@keyframes successEnter {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
 
-.success-message {
-  animation: successEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Verification section entrance */
-@keyframes verifyEnter {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.verification-section {
-  animation: verifyEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
 
 /* Code block styling */
 .code-block-wrapper {
@@ -491,16 +362,6 @@ select {
 
 /* Project-specific reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .constellation-dot {
-    animation: none !important;
-    opacity: 0.5 !important;
-  }
-
-  .hero-word {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
   .floating-shape {
     animation: none !important;
     opacity: 0.5 !important;
@@ -509,9 +370,7 @@ select {
   .page-enter,
   .page-exit,
   .hover-preview-content,
-  .workflow-node-enter,
-  .success-message,
-  .verification-section {
+  .workflow-node-enter {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -579,27 +438,6 @@ select {
 
   .scrollbar-hidden > * {
     scroll-snap-align: start;
-  }
-}
-
-/* Hero words - visible immediately, no entrance animation */
-.hero-word {
-  opacity: 1;
-}
-
-/* Hero rotating word animation */
-.hero-rotating-word {
-  animation: heroWordFade 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes heroWordFade {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 

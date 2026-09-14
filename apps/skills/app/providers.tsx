@@ -1,7 +1,8 @@
 'use client'
 
 import { type ReactNode } from 'react'
-import { N3wthProvider } from '@n3wth/ui/site'
+import { N3wthProvider, useRouteScrollReset } from '@n3wth/ui/site'
+import { usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import { AuthProvider } from '../src/components/AuthProvider'
 
@@ -26,6 +27,7 @@ const AnalyticsInit = dynamic(
 )
 
 export function Providers({ children }: { children: ReactNode }) {
+  useRouteScrollReset(usePathname())
   return (
     <AuthProvider>
       <N3wthProvider mode="dark">

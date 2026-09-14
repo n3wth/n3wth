@@ -53,8 +53,7 @@ export default function HomeClient() {
     setShowRecommendations(false)
   }, [])
 
-  // Keyboard navigation
-  const { selectedIndex, setCardRef } = useSkillNavigation({
+  const { selectedIndex, setSelectedIndex, setCardRef } = useSkillNavigation({
     skills: filteredSkills,
   })
 
@@ -63,6 +62,8 @@ export default function HomeClient() {
     onClearSearch: clearSearch,
     onCategoryChange: setCategory,
     filteredSkillsCount: filteredSkills.length,
+    selectedIndex,
+    setSelectedIndex,
   })
 
   // Badge status (memoized)
@@ -71,41 +72,10 @@ export default function HomeClient() {
 
   return (
     <div className="min-h-screen relative content-loaded">
-      <div className="mesh-gradient" />
-      <div className="noise-overlay" />
-
       <IslandNav />
       <Hero />
 
-      <SiteContainer as="main" id="main-content">
-        {/* AI Recommendations Section */}
-        <SiteSection>
-          <div className="mb-6">
-            <SiteHeading variant="section" className="mb-2">
-              What are you working on?
-            </SiteHeading>
-            <SiteText>
-              Describe your task to see matching skills.
-            </SiteText>
-          </div>
-          <TaskInput value={taskQuery} onChange={handleTaskChange} />
-          <SkillRecommendations
-            recommendations={recommendations}
-            isVisible={showRecommendations}
-            isLoading={isLoadingRecommendations}
-            onClose={handleClearRecommendations}
-          />
-        </SiteSection>
-
-        <FeaturedSkills />
-
-        <StatsRow />
-
-        <InstallSection />
-        <TerminalDemo />
-
-        <SkillOfTheDay />
-
+      <SiteContainer as="main">
         <SiteSection>
         {/* Browse Section Header */}
         <div className="mb-6 md:mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
@@ -191,6 +161,34 @@ export default function HomeClient() {
           </div>
         )}
         </SiteSection>
+
+        {/* AI Recommendations Section */}
+        <SiteSection>
+          <div className="mb-6">
+            <SiteHeading variant="section" className="mb-2">
+              What are you working on?
+            </SiteHeading>
+            <SiteText>
+              Describe your task to see matching skills.
+            </SiteText>
+          </div>
+          <TaskInput value={taskQuery} onChange={handleTaskChange} />
+          <SkillRecommendations
+            recommendations={recommendations}
+            isVisible={showRecommendations}
+            isLoading={isLoadingRecommendations}
+            onClose={handleClearRecommendations}
+          />
+        </SiteSection>
+
+        <FeaturedSkills />
+
+        <StatsRow />
+
+        <InstallSection />
+        <TerminalDemo />
+
+        <SkillOfTheDay />
       </SiteContainer>
 
       <Footer />

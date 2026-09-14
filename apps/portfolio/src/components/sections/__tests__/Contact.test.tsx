@@ -1,9 +1,10 @@
+import type { ReactNode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { Contact } from '../Contact'
 import { siteConfig } from '../../../data/content'
 
-vi.mock('../../ConvergeLight', () => ({ ConvergeLight: () => null }))
+vi.mock('@n3wth/ui/visuals', () => ({ ConvergeLight: () => null, VisualBand: ({ children }: { children: ReactNode }) => <div>{children}</div> }))
 const originalClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard')
 
 afterEach(() => {

@@ -120,9 +120,11 @@ export function VoteButton({ skillId, className = '', size = 'md' }: VoteButtonP
         color: hasVoted ? '#a855f7' : 'var(--color-grey-300)',
       }}
       title={hasVoted ? 'Remove vote' : 'Vote for this skill'}
+      aria-pressed={hasVoted}
       aria-label={`${hasVoted ? 'Remove vote from' : 'Vote for'} skill. Current votes: ${votes}`}
     >
       <svg
+        aria-hidden="true"
         width={iconSize}
         height={iconSize}
         viewBox="0 0 24 24"

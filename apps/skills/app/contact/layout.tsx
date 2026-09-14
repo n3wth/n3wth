@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: 'Contact',
   description: 'Get in touch about AI skills for Antigravity CLI. Report issues, request features, or contribute to the skills directory.',
   alternates: { canonical: '/contact' },
-  openGraph: {
+  openGraph: { type: 'website',
     title: 'Contact',
     description: 'Get in touch about AI skills for Antigravity CLI. Report issues, request features, or contribute to the skills directory.',
     url: '/contact',

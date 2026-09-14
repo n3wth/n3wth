@@ -20,7 +20,7 @@ const iconNames: IconName[] = [
 ]
 
 const controlBtnClass = (active: boolean) =>
-  `px-2 py-1 text-xs rounded-full border transition-colors ${
+  `min-h-11 min-w-11 px-3 py-2 text-sm rounded-full border focus-ring ${
     active
       ? 'bg-[var(--color-white)] text-[var(--color-bg)] border-[var(--color-white)]'
       : 'bg-transparent text-[var(--color-grey-400)] border-[var(--glass-border)] hover:border-[var(--glass-highlight)]'
@@ -55,6 +55,7 @@ export function AtomsSection() {
               <button
                 key={v}
                 onClick={() => setBtnVariant(v)}
+                aria-pressed={btnVariant === v}
                 className={controlBtnClass(btnVariant === v)}
               >
                 {v}
@@ -65,6 +66,7 @@ export function AtomsSection() {
               <button
                 key={s}
                 onClick={() => setBtnSize(s)}
+                aria-pressed={btnSize === s}
                 className={controlBtnClass(btnSize === s)}
               >
                 {s}
@@ -72,6 +74,7 @@ export function AtomsSection() {
             ))}
             <button
               onClick={() => setBtnLoading(!btnLoading)}
+              aria-pressed={btnLoading}
               className={`${controlBtnClass(btnLoading)} ml-4`}
             >
               Loading
@@ -79,7 +82,7 @@ export function AtomsSection() {
           </div>
 
           {/* Preview */}
-          <div className="p-8 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] flex items-center justify-center gap-4">
+          <div className="p-8 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] flex flex-wrap items-center justify-center gap-4">
             <Button variant={btnVariant} size={btnSize} isLoading={btnLoading}>
               Button
             </Button>
@@ -107,6 +110,7 @@ export function AtomsSection() {
               <button
                 key={v}
                 onClick={() => setBadgeVariant(v)}
+                aria-pressed={badgeVariant === v}
                 className={controlBtnClass(badgeVariant === v)}
               >
                 {v}
@@ -117,6 +121,7 @@ export function AtomsSection() {
               <button
                 key={s}
                 onClick={() => setBadgeSize(s)}
+                aria-pressed={badgeSize === s}
                 className={controlBtnClass(badgeSize === s)}
               >
                 {s}
@@ -149,6 +154,7 @@ export function AtomsSection() {
               <button
                 key={v}
                 onClick={() => setInputVariant(v)}
+                aria-pressed={inputVariant === v}
                 className={controlBtnClass(inputVariant === v)}
               >
                 {v}
@@ -159,6 +165,7 @@ export function AtomsSection() {
               <button
                 key={s}
                 onClick={() => setInputSize(s)}
+                aria-pressed={inputSize === s}
                 className={controlBtnClass(inputSize === s)}
               >
                 {s}
@@ -166,12 +173,14 @@ export function AtomsSection() {
             ))}
             <button
               onClick={() => setInputIcon(!inputIcon)}
+              aria-pressed={inputIcon}
               className={`${controlBtnClass(inputIcon)} ml-4`}
             >
               Icon
             </button>
             <button
               onClick={() => setInputError(!inputError)}
+              aria-pressed={inputError}
               className={`${controlBtnClass(inputError)} ml-2`}
             >
               Error
@@ -211,6 +220,7 @@ export function AtomsSection() {
               <button
                 key={s}
                 onClick={() => setIconSize(s)}
+                aria-pressed={iconSize === s}
                 className={controlBtnClass(iconSize === s)}
               >
                 {s}
@@ -227,6 +237,7 @@ export function AtomsSection() {
               <button
                 key={c.label}
                 onClick={() => setIconColor(c.value)}
+                aria-pressed={iconColor === c.value}
                 className={controlBtnClass(iconColor === c.value)}
               >
                 {c.label}

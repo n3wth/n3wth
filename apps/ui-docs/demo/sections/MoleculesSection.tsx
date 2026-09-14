@@ -27,7 +27,7 @@ interface MoleculesSectionProps {
 }
 
 const controlBtnClass = (active: boolean) =>
-  `px-2 py-1 text-xs rounded-full border transition-colors ${
+  `min-h-11 min-w-11 px-3 py-2 text-sm rounded-full border focus-ring ${
     active
       ? 'bg-[var(--color-white)] text-[var(--color-bg)] border-[var(--color-white)]'
       : 'bg-transparent text-[var(--color-grey-400)] border-[var(--glass-border)] hover:border-[var(--glass-highlight)]'
@@ -59,6 +59,7 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
               <button
                 key={v}
                 onClick={() => setCardVariant(v)}
+                aria-pressed={cardVariant === v}
                 className={controlBtnClass(cardVariant === v)}
               >
                 {v}
@@ -69,6 +70,7 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
               <button
                 key={p}
                 onClick={() => setCardPadding(p)}
+                aria-pressed={cardPadding === p}
                 className={controlBtnClass(cardPadding === p)}
               >
                 {p}
@@ -120,6 +122,7 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
               <button
                 key={v}
                 onClick={() => setTabVariant(v)}
+                aria-pressed={tabVariant === v}
                 className={controlBtnClass(tabVariant === v)}
               >
                 {v}
@@ -171,6 +174,7 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
               <button
                 key={s}
                 onClick={() => setModalSize(s)}
+                aria-pressed={modalSize === s}
                 className={controlBtnClass(modalSize === s)}
               >
                 {s}
@@ -232,6 +236,7 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
               <button
                 key={v}
                 onClick={() => setToastVariant(v)}
+                aria-pressed={toastVariant === v}
                 className={controlBtnClass(toastVariant === v)}
               >
                 {v}
@@ -279,6 +284,7 @@ toast.${toastVariant === 'default' ? '' : toastVariant + '('}{ title: 'Done!', d
               <button
                 key={v}
                 onClick={() => setNavVariant(v)}
+                aria-pressed={navVariant === v}
                 className={controlBtnClass(navVariant === v)}
               >
                 {v}
@@ -286,6 +292,7 @@ toast.${toastVariant === 'default' ? '' : toastVariant + '('}{ title: 'Done!', d
             ))}
             <button
               onClick={() => setNavActive(!navActive)}
+              aria-pressed={navActive}
               className={`${controlBtnClass(navActive)} ml-4`}
             >
               isActive

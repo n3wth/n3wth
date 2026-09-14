@@ -1,5 +1,5 @@
 import { Thinking as Positions } from '../components/sections/Thinking'
-import { ForkLight } from '../components/ForkLight'
+import { ForkLight, VisualBand } from '@n3wth/ui/visuals'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import gardenNotes from '../data/garden-notes.json'
 
@@ -72,16 +72,9 @@ export default function ThinkingPage() {
   return (
     <>
       <Positions />
-      {/* A light path forking in the dark — the page's subject drawn once,
-          between the positions and the working notes. Vector, so it stays
-          sharp and draws itself in on reveal. */}
-      {/* data-reveal lives on the inner div, not the bleed wrapper — the
-          reveal's transform would override .bleed's translateX(-50%) */}
-      <div className="bleed" aria-hidden>
-        <div data-reveal className="w-full" style={{ height: 'clamp(220px, 42svh, 420px)' }}>
-          <ForkLight />
-        </div>
-      </div>
+      <VisualBand height="clamp(220px, 42svh, 420px)">
+        <ForkLight />
+      </VisualBand>
       <TendedRecently />
     </>
   )

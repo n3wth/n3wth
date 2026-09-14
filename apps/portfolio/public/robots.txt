@@ -3,6 +3,7 @@
 
 User-agent: *
 Allow: /
+Disallow: /api/
 
 # Sitemap
 Sitemap: https://n3wth.com/sitemap.xml

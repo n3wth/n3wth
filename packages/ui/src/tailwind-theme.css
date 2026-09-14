@@ -1,0 +1,14 @@
+/* Live Astryx font references for retained Tailwind utility names. */
+@theme inline {
+  --font-display: var(--font-family-heading);
+  --font-sans: var(--font-family-body);
+  --font-mono: var(--font-family-code);
+}
+
+/* Shared compact UI scale; reading typography remains app-owned. */
+@theme {
+  --text-xs: 13px;
+  --text-xs--line-height: 1.45;
+  --text-sm: 15px;
+  --text-sm--line-height: 1.5;
+}

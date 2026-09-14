@@ -7,6 +7,9 @@ import { cn } from '../utils/cn'
 export { N3wthProvider } from '../theme/N3wthProvider'
 export type { N3wthProviderProps } from '../theme/N3wthProvider'
 export { n3wthTheme } from '../theme/n3wthTheme'
+export { useRouteScrollReset } from '../hooks/useRouteScrollReset'
+export { ReadingOutline } from './ReadingOutline'
+export type { ReadingOutlineProps } from './ReadingOutline'
 
 export interface SiteContainerProps extends HTMLAttributes<HTMLElement> {
   as?: 'div' | 'main' | 'section' | 'article'
@@ -18,6 +21,11 @@ export function SiteContainer({ as: Component = 'div', className, ...props }: Si
 
 export function SiteSection({ className, ...props }: ComponentProps<'section'>) {
   return <section className={cn('n3wth-site-section', className)} {...props} />
+}
+
+/** In-flow section or documentation links. Sticky navigation owns active state separately. */
+export function SiteSectionLinks({ className, ...props }: ComponentProps<'nav'>) {
+  return <nav className={cn('n3wth-site-section-links', className)} {...props} />
 }
 
 export interface SiteHeadingProps extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'> {
@@ -46,11 +54,12 @@ export interface PageHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'titl
   description?: ReactNode
   actions?: ReactNode
   aside?: ReactNode
+  align?: 'start' | 'center'
 }
 
-export function PageHeader({ title, level = 1, description, actions, aside, className, ...props }: PageHeaderProps) {
+export function PageHeader({ title, level = 1, description, actions, aside, align = 'start', className, ...props }: PageHeaderProps) {
   return (
-    <header className={cn('n3wth-site-page-header', aside != null && 'n3wth-site-page-header--split', className)} {...props}>
+    <header className={cn('n3wth-site-page-header', aside != null && 'n3wth-site-page-header--split', align === 'center' && 'n3wth-site-page-header--center', className)} {...props}>
       <div className="n3wth-site-page-header-copy">
         <SiteHeading variant={level === 1 ? 'page' : 'section'} level={level}>{title}</SiteHeading>
         {description != null && <SiteText className="n3wth-site-description">{description}</SiteText>}
@@ -82,6 +91,10 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
   useEffect(() => {
     if (!open) return
     header.current?.querySelector<HTMLAnchorElement>('.n3wth-site-navigation-links a')?.focus()
+    const desktop = window.matchMedia('(min-width: 768px)')
+    const collapse = () => {
+      if (desktop.matches) setOpen(false)
+    }
     const dismiss = (event: PointerEvent) => {
       if (!header.current?.contains(event.target as Node)) setOpen(false)
     }
@@ -92,15 +105,17 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
     }
     document.addEventListener('pointerdown', dismiss)
     document.addEventListener('keydown', escape)
+    desktop.addEventListener('change', collapse)
     return () => {
       document.removeEventListener('pointerdown', dismiss)
       document.removeEventListener('keydown', escape)
+      desktop.removeEventListener('change', collapse)
     }
   }, [open])
 
   return (
     <header {...props} ref={header} className={cn('n3wth-site-navigation', className)}>
-      <div className="n3wth-site-navigation-island">
+      <div className="n3wth-site-navigation-island" data-nosnippet>
         <div className="n3wth-site-navigation-brand" onClick={() => setOpen(false)}>{brand}</div>
         <nav id={menuId} aria-label={navigationLabel} className="n3wth-site-navigation-links" data-open={open} onClick={(event) => {
           if ((event.target as Element).closest('a')) setOpen(false)
@@ -130,7 +145,7 @@ export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a
     {legalLinks}
   </>
   return <footer {...props} className={cn('n3wth-site-footer', className)}>
-    <SiteContainer>
+    <SiteContainer data-nosnippet>
       <div className="n3wth-site-footer-row">
         {brand != null && <div className="n3wth-site-footer-brand">{brand}</div>}
         <nav aria-label="Footer" className="n3wth-site-footer-links">{footerLinks}</nav>

@@ -59,20 +59,34 @@ const hooks = [
 
 const categories = ['All', 'Atoms', 'Molecules', 'Blocks', 'Utilities', 'Hooks'] as const
 
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
+function CopyButton({ text, name }: { text: string; name: string }) {
+  const [state, setState] = useState<'idle' | 'copied' | 'failed'>('idle')
 
   return (
     <button
+      type="button"
+      aria-label={`Copy ${name} install command`}
       onClick={async () => {
-        await navigator.clipboard.writeText(text)
-        setCopied(true)
+        try {
+          await navigator.clipboard.writeText(text)
+        } catch {
+          setState('failed')
+          setTimeout(() => setState('idle'), 4000)
+          return
+        }
+        setState('copied')
         posthog.capture('component_install_copied', { command: text })
-        setTimeout(() => setCopied(false), 2000)
+        setTimeout(() => setState('idle'), 2000)
       }}
-      className="ml-2 shrink-0 text-xs text-ink-faint transition-colors hover:text-ink-dim"
+      className={`ml-2 shrink-0 text-xs transition-colors ${
+        state === 'failed'
+          ? 'text-red-400'
+          : 'text-ink-faint hover:text-ink-dim'
+      }`}
     >
-      {copied ? 'Copied' : 'Copy'}
+      <span role="status">
+        {state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed' : 'Copy'}
+      </span>
     </button>
   )
 }
@@ -104,17 +118,23 @@ export function ComponentGrid() {
     <div className="mt-8">
       {/* Search + Filter */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <label htmlFor="component-search" className="sr-only">
+          Search components and hooks
+        </label>
         <input
-          type="text"
+          id="component-search"
+          type="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search components..."
+          placeholder="Search components and hooks..."
           className="flex-1 rounded-lg border border-rail bg-bg-soft px-4 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:border-rail-strong focus:outline-none"
         />
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by category">
           {categories.map((cat) => (
             <button
               key={cat}
+              type="button"
+              aria-pressed={activeCategory === cat}
               onClick={() => setActiveCategory(cat)}
               className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                 activeCategory === cat
@@ -152,7 +172,7 @@ export function ComponentGrid() {
           ) : (
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {filteredComponents.map((comp) => (
-                <ComponentCard key={comp.name} name={comp.name} description={comp.description} />
+                <ComponentCard key={comp.name} name={comp.name} description={comp.description} headingLevel={2} />
               ))}
             </div>
           )}
@@ -184,7 +204,7 @@ export function ComponentGrid() {
                     <code className="flex-1 truncate font-mono text-xs text-ink-faint">
                       npx shadcn add .../{hook.name}.json
                     </code>
-                    <CopyButton text={command} />
+                    <CopyButton text={command} name={hook.name} />
                   </div>
                 </div>
               )
@@ -197,13 +217,21 @@ export function ComponentGrid() {
       {filteredComponents.length === 0 && filteredHooks.length === 0 && (
         <div className="mt-16 text-center">
           <p className="text-ink-dim">No results for &ldquo;{search}&rdquo;</p>
+          <button
+            type="button"
+            onClick={() => { setSearch(''); setActiveCategory('All') }}
+            className="mt-3 text-sm text-ink-faint underline underline-offset-4 transition-colors hover:text-ink"
+          >
+            Clear search and filters
+          </button>
         </div>
       )}
     </div>
   )
 }
 
-function ComponentCard({ name, description }: { name: string; description: string }) {
+function ComponentCard({ name, description, headingLevel = 3 }: { name: string; description: string; headingLevel?: 2 | 3 }) {
+  const Heading = headingLevel === 2 ? 'h2' : 'h3'
   const command = `npx shadcn add https://kit.n3wth.com/r/${name}.json`
   const Demo = componentDemos[name]
 
@@ -217,9 +245,9 @@ function ComponentCard({ name, description }: { name: string; description: strin
         </div>
       ) : null}
       <div className="p-4">
-        <h3 className="font-mono text-sm font-medium text-ink">
+        <Heading className="font-mono text-sm font-medium text-ink">
           {name}
-        </h3>
+        </Heading>
         <p className="mt-1 text-sm text-ink-dim">
           {description}
         </p>
@@ -227,7 +255,7 @@ function ComponentCard({ name, description }: { name: string; description: strin
           <code className="flex-1 truncate font-mono text-xs text-ink-faint">
             npx shadcn add .../{name}.json
           </code>
-          <CopyButton text={command} />
+          <CopyButton text={command} name={name} />
         </div>
       </div>
     </div>

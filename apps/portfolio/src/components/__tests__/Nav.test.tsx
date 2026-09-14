@@ -15,7 +15,7 @@ function renderNav(path = '/') {
       <Nav onOpenSearch={onOpenSearch} />
     </MemoryRouter>
   )
-  return { trigger: screen.getByRole('button', { name: 'Primary' }), onOpenSearch }
+  return { trigger: screen.getByRole('button', { name: 'Open menu' }), onOpenSearch }
 }
 
 describe('Navigation disclosure', () => {
@@ -58,6 +58,25 @@ describe('Navigation disclosure', () => {
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
     expect(onOpenSearch).toHaveBeenCalledOnce()
+  })
+
+  it('exposes the icon-only search control as a named dialog trigger', () => {
+    const { rerender } = render(
+      <MemoryRouter>
+        <Nav onOpenSearch={() => {}} searchOpen={false} />
+      </MemoryRouter>
+    )
+    const search = screen.getByRole('button', { name: 'Search' })
+    expect(search).toHaveAttribute('aria-haspopup', 'dialog')
+    expect(search).toHaveAttribute('aria-expanded', 'false')
+    expect(search).toHaveAttribute('aria-controls', 'command-palette')
+
+    rerender(
+      <MemoryRouter>
+        <Nav onOpenSearch={() => {}} searchOpen />
+      </MemoryRouter>
+    )
+    expect(search).toHaveAttribute('aria-expanded', 'true')
   })
 
   it('opens the contact page and closes the mobile navigation', () => {
