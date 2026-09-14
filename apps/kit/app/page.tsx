@@ -33,7 +33,7 @@ const webPageJsonLd = {
 
 export default function Home() {
   return (
-    <main className="n3wth-site-main">
+    <main id="main-content" tabIndex={-1} className="n3wth-site-main">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}

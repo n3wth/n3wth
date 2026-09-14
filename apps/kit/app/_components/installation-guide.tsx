@@ -3,7 +3,7 @@ import { CodeBlock } from '@n3wth/ui'
 
 export function InstallationGuide({ title }: { title: string }) {
   return (
-    <SiteContainer as="main" className="n3wth-site-main">
+    <SiteContainer as="main" id="main-content" tabIndex={-1} className="n3wth-site-main">
       <PageHeader title={title} />
       <SiteSection>
         <SiteHeading variant="section" level={2}>Install a component</SiteHeading>

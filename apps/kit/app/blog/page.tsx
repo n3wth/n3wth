@@ -32,7 +32,7 @@ export default function BlogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
       />
-      <SiteContainer as="main" className="n3wth-site-main">
+      <SiteContainer as="main" id="main-content" tabIndex={-1} className="n3wth-site-main">
         <PageHeader title="Blog" description="Notes on registries, context packs, and generated UI." />
 
         <SiteSection className="space-y-12">
