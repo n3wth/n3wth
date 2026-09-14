@@ -72,7 +72,7 @@ export function DocsLayout() {
           <DocsSidebar items={docPages.map(page => ({ id: page.slug, label: page.title, href: `/docs/${page.slug}` }))} activeId={currentPage.slug} label="Documentation" />
 
           {/* Content */}
-          <main id="main-content" className="min-w-0 pt-8 lg:pt-0">
+          <main id="main-content" tabIndex={-1} className="min-w-0 pt-8 lg:pt-0">
             <article className="prose">
               <Content />
             </article>
