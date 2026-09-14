@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run build",
+    "check": "npm run lint && npm run typecheck && npm run build",
     "registry:build": "npx shadcn@latest build",
     "registry:dev": "npx shadcn@latest build --watch"
   },

@@ -19,7 +19,7 @@ Change shared origins once in site-config. Framework-specific components remain 
 
 Install at the root with Node 24 and npm 11.19.1. Use each application's workspace scripts for development. Run npm run check:affected for a branch and npm run check for the complete workspace. The lock-aware graph follows installed workspace links, including transitive consumers. Unknown lock metadata falls back to conservative validation.
 
-Run the affected browser suites after their application builds. Do not run multiple Playwright configurations against the same output directory concurrently. CI covers responsive routes and installers; it does not prove configured authentication or third-party delivery.
+Run the affected browser suites after their application builds. Do not run multiple Playwright configurations against the same output directory concurrently. CI covers responsive routes and installers; it does not prove configured authentication or third-party delivery. After affected workspace checks, Site CI runs `check:metadata` with `AFFECTED_WORKSPACES` so only the HTML actually built is required; local `npm run check` still validates every app.
 
 Dependabot owns the root workspace lock, GitHub Actions and standalone nested CLI/editor packages. Pending dependency upgrades from retired repositories are tracked separately in Linear. Do not combine broad upgrades with a source migration.
 

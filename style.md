@@ -30,6 +30,6 @@ Use the existing system; do not introduce another visual scale or a new set of c
 
 ## Validation
 
-Read before editing. Use a feature branch. Build shared packages before app checks. Run `npm run check` for the complete workspace; use focused workspace checks during iteration. `check:design` enforces ownership and `check:metadata` checks generated public page metadata.
+Read before editing. Use a feature branch. Build shared packages before app checks. Run `npm run check` for the complete workspace; use focused workspace checks during iteration. `check:design` enforces ownership and `check:metadata` checks generated public page metadata. Local `check:metadata` expects every app to be built; CI passes `AFFECTED_WORKSPACES` so only the outputs actually built are required.
 
 For CSS, routing or packaging changes, also run relevant browser tests and inspect screenshots. Validate dimensions, scroll position, theme at first paint and interactions rather than relying only on class-name tests. Before reporting a deployment complete, verify the live affected pages.
