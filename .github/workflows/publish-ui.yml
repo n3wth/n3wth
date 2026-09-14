@@ -16,7 +16,9 @@ concurrency:
 
 jobs:
   release:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' || github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    # workflow_run uses the current default-branch SHA for npm provenance.
+    # Ignore stale CI completions so the checked source and provenance agree.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' || github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_sha == github.sha
     runs-on: ubuntu-latest
     permissions:
       contents: write
