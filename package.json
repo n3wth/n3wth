@@ -8,6 +8,7 @@
   "scripts": {
     "site:new": "node scripts/create-site.mjs",
     "check:design": "node scripts/check-site-design.mjs",
+    "check:invariants": "node scripts/check-invariants.mjs",
     "icons": "node scripts/site-icons.mjs",
     "social": "node scripts/social-card.mjs",
     "dev": "npm run dev -w @n3wth/portfolio",
@@ -19,7 +20,7 @@
     "build:kit": "npm run build -w @n3wth/kit",
     "build:portfolio": "npm run build -w @n3wth/portfolio",
     "build:ui": "npm run build -w @n3wth/ui && npm run build -w @n3wth/ui-docs",
-    "check": "node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs scripts/create-site.test.mjs && node scripts/affected.mjs --all && npm run check:design && npm run check:metadata",
+    "check": "node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs scripts/create-site.test.mjs scripts/check-invariants.test.mjs && node scripts/check-invariants.mjs && node scripts/affected.mjs --all && npm run check:design && npm run check:metadata",
     "check:metadata": "node scripts/check-built-metadata.mjs",
     "check:affected": "node scripts/affected.mjs",
     "check:browser": "playwright test",

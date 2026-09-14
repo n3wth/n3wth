@@ -28,6 +28,8 @@ jobs:
           cache: npm
       - name: Verify affected workspace selection
         run: node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs scripts/create-site.test.mjs
+      - name: Verify repository invariants
+        run: node --test scripts/check-invariants.test.mjs && node scripts/check-invariants.mjs
       - name: Select affected workspaces
         id: affected
         env:

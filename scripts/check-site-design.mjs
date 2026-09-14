@@ -3,9 +3,12 @@ import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const root = fileURLToPath(new URL('../', import.meta.url))
-const version = JSON.parse(readFileSync(resolve(root, 'packages/ui/package.json'), 'utf8')).version
-const canonical = realpathSync(resolve(root, 'packages/ui/dist/site.css'))
+export const DEPENDENCY_GROUPS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
+
+export function hasDirectAstryxDependency(manifest) {
+  return DEPENDENCY_GROUPS.some(group => Object.keys(manifest[group] || {}).some(name => name.startsWith('@astryxdesign/')))
+}
+
 function checkImports(directory, shared = new Set()) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     if (['node_modules', 'dist', 'dist-demo', '.next', '.git', 'content', 'public'].includes(entry.name)) continue
@@ -29,24 +32,31 @@ function checkImports(directory, shared = new Set()) {
   }
   return shared
 }
-for (const entry of readdirSync(resolve(root, 'apps'), { withFileTypes: true })) {
-  if (!entry.isDirectory()) continue
-  const manifest = resolve(root, 'apps', entry.name, 'package.json')
-  const app = JSON.parse(readFileSync(manifest, 'utf8'))
-  for (const group of ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']) {
-    if (Object.keys(app[group] || {}).some(name => name.startsWith('@astryxdesign/'))) {
+
+export function checkSiteDesign(root = fileURLToPath(new URL('../', import.meta.url))) {
+  const version = JSON.parse(readFileSync(resolve(root, 'packages/ui/package.json'), 'utf8')).version
+  const canonical = realpathSync(resolve(root, 'packages/ui/dist/site.css'))
+  for (const entry of readdirSync(resolve(root, 'apps'), { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue
+    const manifest = resolve(root, 'apps', entry.name, 'package.json')
+    const app = JSON.parse(readFileSync(manifest, 'utf8'))
+    if (hasDirectAstryxDependency(app)) {
       throw new Error(`${app.name}: Astryx dependencies belong in @n3wth/ui`)
     }
+    const shared = checkImports(resolve(root, 'apps', entry.name))
+    if (!app.dependencies?.['@n3wth/ui']) {
+      throw new Error(`${app.name} is missing the shared UI dependency`)
+    }
+    if (app.dependencies['@n3wth/ui'] !== version) throw new Error(`${app.name} must use workspace UI ${version}`)
+    for (const component of ['N3wthProvider', 'SiteNavigation', 'PageHeader', 'SiteSection', 'SiteFooter', 'site.css']) {
+      if (!shared.has(component)) throw new Error(`${app.name} must consume shared ${component}`)
+    }
+    const resolved = realpathSync(createRequire(manifest).resolve('@n3wth/ui/site.css'))
+    if (resolved !== canonical) throw new Error(`${app.name} resolves a separate UI package: ${resolved}`)
+    console.log(`${app.name}: shared site foundation verified`)
   }
-  const shared = checkImports(resolve(root, 'apps', entry.name))
-  if (!app.dependencies?.['@n3wth/ui']) {
-    throw new Error(`${app.name} is missing the shared UI dependency`)
-  }
-  if (app.dependencies['@n3wth/ui'] !== version) throw new Error(`${app.name} must use workspace UI ${version}`)
-  for (const component of ['N3wthProvider', 'SiteNavigation', 'PageHeader', 'SiteSection', 'SiteFooter', 'site.css']) {
-    if (!shared.has(component)) throw new Error(`${app.name} must consume shared ${component}`)
-  }
-  const resolved = realpathSync(createRequire(manifest).resolve('@n3wth/ui/site.css'))
-  if (resolved !== canonical) throw new Error(`${app.name} resolves a separate UI package: ${resolved}`)
-  console.log(`${app.name}: shared site foundation verified`)
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  checkSiteDesign()
 }
