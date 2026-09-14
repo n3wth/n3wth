@@ -626,7 +626,7 @@ body {
   margin: 0.7rem 0 0;
   font-size: 14px;
   line-height: 1.45;
-  color: rgba(242, 243, 245, 0.68);
+  color: rgba(242, 243, 245, 0.74);
 }
 
 .world-atlas {
@@ -656,7 +656,7 @@ body {
   margin-top: 0.4rem;
   font-size: 12px;
   line-height: 1.4;
-  color: rgba(242, 243, 245, 0.58);
+  color: rgba(242, 243, 245, 0.64);
 }
 
 .world-atlas-links {
@@ -683,9 +683,15 @@ body {
   border-radius: 999px;
   transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
 }
-.world-atlas-links a:hover {
+.world-atlas-links a:hover,
+.world-atlas-links a:focus-visible {
   color: var(--ink);
   border-color: var(--accent-rail);
+  background: rgba(255, 255, 255, 0.06);
+}
+.world-atlas-links a:focus-visible {
+  outline: 2px solid var(--accent-rail);
+  outline-offset: 2px;
 }
 @media (prefers-reduced-motion: reduce) {
   .world-atlas-links a {
