@@ -17,7 +17,7 @@ Source: n3wth/ui main 62839d33ae0a439901b9515339e6259ce6dcf274, verified with Gi
 - CSS packaging resolves Astryx through Node package resolution instead of a cwd-relative node_modules path, supporting npm hoisting.
 - Demo Tailwind scans built library modules; UI must build before docs. Existing React JSX development-runtime production shim retained.
 - Original 376 library tests and one demo navigation test remain in their respective packages.
-- UI docs Vercel file installs at workspace root, invokes root build:ui and outputs app-local dist. Live project settings have not been changed.
+- UI docs Vercel file installs at workspace root, invokes root build:ui-docs and outputs app-local dist. Live project settings have not been changed.
 
 ## Validation
 

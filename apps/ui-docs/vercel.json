@@ -1,7 +1,7 @@
 {
   "git": { "deploymentEnabled": false },
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/ui-docs",
-  "buildCommand": "cd ../.. && npm run build:ui",
+  "buildCommand": "cd ../.. && npm run build:ui-docs",
   "outputDirectory": "dist",
   "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
   "framework": null,

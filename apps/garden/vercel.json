@@ -1,6 +1,6 @@
 {
   "git": { "deploymentEnabled": false },
-  "buildCommand": "cd ../.. && npm run build --workspace @n3wth/ui && npm run build --workspace @n3wth/garden",
+  "buildCommand": "cd ../.. && npm run build:garden",
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/garden",
   "redirects": [
     {

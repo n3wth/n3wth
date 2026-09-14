@@ -1,0 +1,76 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { spawnSync } from 'node:child_process'
+import { orderSelectedWorkspaces, readWorkspaces } from './affected.mjs'
+
+export function parseBuildArgs(args) {
+  const parsed = { list: false, workspaces: [] }
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index]
+    if (arg === '--list') {
+      parsed.list = true
+      continue
+    }
+    if (arg === '--workspace' || arg === '-w') {
+      const name = args[index + 1]
+      if (!name || name.startsWith('-')) throw new Error('build --workspace requires a workspace name')
+      parsed.workspaces.push(name)
+      index += 1
+      continue
+    }
+    if (arg.startsWith('--workspace=')) {
+      parsed.workspaces.push(arg.slice('--workspace='.length))
+      continue
+    }
+    throw new Error(`Unknown build argument: ${arg}`)
+  }
+  return parsed
+}
+
+function hasBuildScript(workspace) {
+  return typeof workspace?.scripts?.build === 'string' && workspace.scripts.build.length > 0
+}
+
+export function buildOrder(workspaces, targets = [], lockfile) {
+  const byName = new Map(workspaces.map(workspace => [workspace.name, workspace]))
+  const selected = new Set()
+  if (targets.length === 0) {
+    for (const workspace of workspaces) selected.add(workspace.name)
+  } else {
+    for (const name of targets) {
+      if (!byName.has(name)) throw new Error(`Unknown workspace ${name}`)
+      selected.add(name)
+    }
+  }
+  return orderSelectedWorkspaces(workspaces, selected, lockfile).filter(name => hasBuildScript(byName.get(name)))
+}
+
+function readLockfile(root) {
+  try {
+    return JSON.parse(readFileSync(resolve(root, 'package-lock.json'), 'utf8'))
+  } catch {
+    return undefined
+  }
+}
+
+export function runWorkspaceBuilds(order, spawn = spawnSync, cwd) {
+  for (const workspace of order) {
+    const result = spawn('npm', ['run', 'build', '--workspace', workspace], { cwd, stdio: 'inherit' })
+    if (result.error) throw result.error
+    if (result.status !== 0) process.exit(result.status ?? 1)
+  }
+}
+
+function main() {
+  const root = fileURLToPath(new URL('../', import.meta.url))
+  const options = parseBuildArgs(process.argv.slice(2))
+  const order = buildOrder(readWorkspaces(root), options.workspaces, readLockfile(root))
+  if (options.list) {
+    console.log(JSON.stringify(order))
+    return
+  }
+  runWorkspaceBuilds(order, spawnSync, root)
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main()

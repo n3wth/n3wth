@@ -22,12 +22,12 @@ The pilot shipped in PR #149 at 98e871cc6b20e78b772eed32d39ded5357f33772 on Sept
 
 | Project | Previous source root | Workspace root | Build |
 | --- | --- | --- | --- |
-| n3wth | . | apps/portfolio | npm run build from app |
-| ui | . in n3wth/ui | apps/ui-docs in n3wth/n3wth | cd ../.. && npm run build:ui |
-| garden | . in n3wth/newth-garden | apps/garden | npm run build |
-| skills | . in n3wth/skills | apps/skills | npm run build |
-| kit | . in n3wth/kit | apps/kit | npm run build |
-| r3 | website in n3wth/r3 | apps/r3-web | npm run build |
+| n3wth | . | apps/portfolio | cd ../.. && npm run build:portfolio |
+| ui | . in n3wth/ui | apps/ui-docs in n3wth/n3wth | cd ../.. && npm run build:ui-docs |
+| garden | . in n3wth/newth-garden | apps/garden | cd ../.. && npm run build:garden |
+| skills | . in n3wth/skills | apps/skills | cd ../.. && npm run build:skills |
+| kit | . in n3wth/kit | apps/kit | cd ../.. && npm run build:kit |
+| r3 | website in n3wth/r3 | apps/r3-web | cd ../.. && npm run build:r3 |
 
 Use Node 24 and npm 11.19.1. Portfolio uses a filtered root install for `@n3wth/portfolio`, `@n3wth/ui`, and `@n3wth/site-config`, including root build tooling. Other apps use `cd ../.. && npx --yes npm@11.19.1 ci`; see each app's vercel.json for its commands. Enable access to files outside the app root for workspace packages. Preserve the project identities, domains, environment scopes and API functions. Each source switch follows a verified preview and combined workspace checks.
 
@@ -46,4 +46,4 @@ Rollback: promote the previous deployment for only the affected project and rest
 
 Previous n3wth settings: repository n3wth/n3wth, root null, framework vite, Node 24.x, build/install/output null. Previous ui settings: repository n3wth/ui, root null, framework vite, Node 24.x, build npm run demo, install/output null. Both allow source files outside the app root. Preserve existing environment scopes during rollback.
 
-Portfolio builds the shared UI package before its application; UI docs uses `cd ../.. && npm run build:ui`. Their outputs are app-local dist. Each app uses scripts/vercel-ignore.mjs to select deployment from the same affected graph as CI. Missing or invalid comparison history builds safely instead of skipping.
+Portfolio, Garden, Kit, Skills and r3 build through the root app-targeted scripts so shared UI is built once first; UI docs uses `cd ../.. && npm run build:ui-docs`. Their outputs are app-local dist or Next output. Each app uses scripts/vercel-ignore.mjs to select deployment from the same affected graph as CI. Missing or invalid comparison history builds safely instead of skipping.

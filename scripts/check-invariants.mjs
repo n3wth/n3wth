@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readWorkspaces } from './affected.mjs'
+import { buildOrder } from './build.mjs'
 import { DEPENDENCY_GROUPS, hasDirectAstryxDependency } from './check-site-design.mjs'
 
 function isApp(workspace) {
@@ -75,6 +76,21 @@ export function checkInvariants(root) {
     if (vercel.git?.deploymentEnabled !== false) {
       errors.push(`${vercelPath}: git.deploymentEnabled must be false`)
     }
+  }
+  const manifest = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
+  if (manifest.scripts?.build && manifest.scripts.build !== 'node scripts/build.mjs') {
+    errors.push('package.json: build must use scripts/build.mjs so every app is included')
+  }
+  try {
+    const order = buildOrder(workspaces)
+    for (const workspace of workspaces) {
+      if (!isApp(workspace) || typeof workspace.scripts?.build !== 'string') continue
+      if (!order.includes(workspace.name)) {
+        errors.push(`package.json: root build omits ${workspace.name}`)
+      }
+    }
+  } catch (error) {
+    errors.push(error.message)
   }
   if (errors.length) throw new Error(errors.join('\n'))
   return workspaces
