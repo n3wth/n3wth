@@ -32,7 +32,7 @@ export default function ComponentsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
       />
-      <SiteContainer as="main" className="n3wth-site-main">
+      <SiteContainer as="main" id="main-content" tabIndex={-1} className="n3wth-site-main">
         <PageHeader title="Components" description="Every component ships with AI context packs. Install one, and AI tools know how to use it on-brand." actions={<span>47 components</span>} />
 
         <SiteSection><ComponentGrid /></SiteSection>

@@ -45,7 +45,7 @@ export default function DocsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
       />
-      <SiteContainer as="main" className="n3wth-site-main">
+      <SiteContainer as="main" id="main-content" tabIndex={-1} className="n3wth-site-main">
         <PageHeader title="Documentation" description="Guides for installing components and integrating with AI coding tools." />
 
         <SiteSection className="space-y-4">
