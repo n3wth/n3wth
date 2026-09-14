@@ -22,6 +22,8 @@ export function GET() {
     '',
     'Notes are served as standard HTML pages with semantic headings, JSON-LD Article metadata, and internal wikilinks between related notes.',
     '',
+    `- [RSS feed](${BASE_URL}/feed.xml): The most recently tended notes.`,
+    '',
     '## Topics',
     '',
     ...topTags.map(
