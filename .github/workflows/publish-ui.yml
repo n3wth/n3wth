@@ -37,7 +37,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm install --global npm@11.19.1
-      - run: npm ci
+      - run: npm ci --workspace @n3wth/ui --include-workspace-root
       - uses: changesets/action@v1
         id: changesets
         with:
@@ -72,7 +72,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm install --global npm@11.19.1
-      - run: npm ci
+      - run: npm ci --workspace @n3wth/ui --include-workspace-root
       - run: npm run check --workspace @n3wth/ui
       - run: npx playwright install --with-deps chromium
       - run: npm run check:package
