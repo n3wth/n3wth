@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { siteUrls } from '@n3wth/site-config'
 import { pageMetadata, pageJsonLd } from '@n3wth/site-config/metadata'
 import Link from 'next/link'
+import { posts } from './posts'
 
 const url = `${siteUrls.kit}/blog`
 const socialTitle = 'Blog — n3wth/kit'
@@ -23,21 +24,6 @@ const webPageJsonLd = pageJsonLd({
   type: 'Blog',
   image: `${url}/opengraph-image`,
 })
-
-const posts = [
-  {
-    slug: 'shadcn-registry-protocol-deep-dive',
-    title: 'The shadcn Registry Protocol: A Technical Deep Dive',
-    date: 'April 9, 2026',
-    excerpt: 'How the JSON schema, dependency resolution, and install flow work under the hood — and how to build your own custom component registry.',
-  },
-  {
-    slug: 'shadcn-registry-protocol',
-    title: 'The shadcn Registry Protocol',
-    date: 'February 12, 2026',
-    excerpt: 'How the shadcn registry protocol works.',
-  },
-]
 
 export default function BlogPage() {
   return (

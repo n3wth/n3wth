@@ -126,6 +126,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="dark" data-astryx-theme="n3wth">
+      <head>
+        <link rel="alternate" type="application/rss+xml" title="n3wth/kit Blog" href="/feed.xml" />
+      </head>
       <body className="font-sans antialiased">
         <script
           type="application/ld+json"
