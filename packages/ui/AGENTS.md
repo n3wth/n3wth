@@ -2,7 +2,7 @@
 
 ## Workspace pilot override
 
-This package is imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf274. The original repository remains the only publishing authority. Do not run the historical release instructions below from this workspace. UI docs now lives in apps/ui-docs; use root workspace commands and the root lockfile. Package validation is npm run check --workspace @n3wth/ui. See SOURCE.md.
+This package was imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf274. Starting with 2.0.0, this monorepo is the publishing authority. Use Changesets and .github/workflows/publish-ui.yml; never publish locally. See ../../docs/workspace/npm-release.md. UI docs lives in apps/ui-docs; use root workspace commands and the root lockfile. Validate with npm run check --workspace @n3wth/ui and npm run check:package. See SOURCE.md for historical provenance.
 
 ## Overview
 
@@ -151,21 +151,17 @@ Use matching container constraints: `max-w-6xl mx-auto px-6 md:px-12`
 
 Publishing is automated via GitHub Actions. Do NOT use `npm publish` locally.
 
-1. Bump version: `npm version patch` (or minor/major)
-2. Push: `git push && git push --tags`
-3. Create release: `gh release create v$(node -p "require('./package.json').version") --generate-notes`
-4. The `.github/workflows/publish.yml` triggers on release creation and publishes to both npm and GitHub Packages
-
-Shortcut: `npm run release:patch` does all steps at once.
+Add a Changeset at the repository root. Merge the generated release PR after
+validation. Release UI publishes through npm trusted publishing after Site CI.
+The former repository's release-created workflow is superseded.
 
 ### Demo Site (Vercel)
 
-The demo site at https://ui.n3wth.com deploys automatically from the `main` branch via Vercel.
+The docs site at https://ui.n3wth.com deploys manually from the monorepo.
 
-- **Project:** Linked to `n3wth/ui` GitHub repo
-- **Build:** Demo Vite build (`npm run demo:build`), output `dist-demo`. `npm run build` builds the npm library.
-- **Auto-deploy:** Every push to `main` triggers a new deployment
-- **Preview:** PRs get preview deployments automatically
+- **Project:** Existing ui project, root apps/ui-docs in n3wth/n3wth
+- **Build:** Root npm run build:ui-docs
+- **Deployments:** Manual; package release does not deploy sites
 
 ### Downstream Consumers
 

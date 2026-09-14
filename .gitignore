@@ -38,6 +38,7 @@ docs/*
 
 playwright-report/
 test-results/
+.release/
 
 # This is source code, not the macOS custom-folder Icon file.
 !/packages/ui/src/atoms/Icon/

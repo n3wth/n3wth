@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "referenceWorkspace": {
+    "sources": [{
+      "id": "github-repo:n3wth/n3wth:main",
+      "type": "github-repo",
+      "repo": { "org": "n3wth", "name": "n3wth" },
+      "ref": "main",
+      "mountPath": "/vercel/share/v0-reference-workspace-sources/n3wth/n3wth/main"
+    }]
+  },
+  "starter": { "source": "skill-directory", "path": "assets/starter" }
+}

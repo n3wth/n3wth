@@ -11,7 +11,7 @@ Use Node 24 and npm 11.19.1, then run npm ci at the repository root. npm 10 has 
 - packages/ui: public @n3wth/ui library. Read its AGENTS.md before editing.
 - packages/site-config: canonical public origins, with no framework dependency or secrets.
 
-Applications may import shared packages. Packages must not import applications. Preserve the UI package exports and version; publishing remains in n3wth/ui during the pilot.
+Applications may import shared packages. Packages must not import applications. Preserve UI package exports; releases from 2.0.0 use Changesets and the monorepo publish-ui.yml workflow. See docs/workspace/npm-release.md.
 
 All site foundations come from `@n3wth/ui/site` and `@n3wth/ui/site.css`. Keep UI versions aligned so npm resolves the workspace, not a nested registry copy. Use `npm run site:new -- idea-name "Idea name"` for new sites; read `docs/workspace/design-system.md`. Keep themes and typography in the shared package rather than copying them into applications.
 

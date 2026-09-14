@@ -2,9 +2,14 @@
   "name": "@n3wth/sites",
   "private": true,
   "type": "module",
-  "engines": { "node": "24.x" },
+  "engines": {
+    "node": "24.x"
+  },
   "packageManager": "npm@11.19.1",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "site:new": "node scripts/create-site.mjs",
     "check:design": "node scripts/check-site-design.mjs",
@@ -27,7 +32,20 @@
     "check:metadata": "node scripts/check-built-metadata.mjs",
     "check:affected": "node scripts/affected.mjs",
     "check:browser": "playwright test",
-    "preview": "npm run preview -w @n3wth/portfolio"
+    "preview": "npm run preview -w @n3wth/portfolio",
+    "changeset": "changeset",
+    "release:version": "node scripts/version-ui.mjs",
+    "check:package": "node scripts/check-ui-package.mjs"
   },
-  "devDependencies": { "@playwright/test": "1.63.0", "@resvg/resvg-js": "2.6.2", "@types/react": "19.2.9", "opentype.js": "^2.0.0", "react": "19.2.7", "satori": "0.33.4", "sharp": "0.35.4", "wawoff2": "^2.0.1" }
+  "devDependencies": {
+    "@changesets/cli": "3.0.2",
+    "@playwright/test": "1.63.0",
+    "@resvg/resvg-js": "2.6.2",
+    "@types/react": "19.2.9",
+    "opentype.js": "^2.0.0",
+    "react": "19.2.7",
+    "satori": "0.33.4",
+    "sharp": "0.35.4",
+    "wawoff2": "^2.0.1"
+  }
 }

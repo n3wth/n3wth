@@ -1,0 +1,81 @@
+name: Release UI
+
+on:
+  workflow_run:
+    workflows: [Site CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-ui
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # workflow_run uses the current default-branch SHA for npm provenance.
+    # Ignore stale CI completions so the checked source and provenance agree.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' || github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_sha == github.sha
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    outputs:
+      hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
+      sha: ${{ steps.source.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 0
+      - id: source
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.19.1
+      - run: npm ci --workspace @n3wth/ui --include-workspace-root
+      - uses: changesets/action@v1
+        id: changesets
+        with:
+          version: npm run release:version
+          branch: main
+          title: 'Release @n3wth/ui'
+          commit: 'chore: version UI release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # PRs created with GITHUB_TOKEN do not trigger pull_request workflows.
+      # Explicit workflow_dispatch does, and checks the generated release SHA.
+      - name: Validate generated release PR
+        if: steps.changesets.outputs.pullRequestNumber != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.changesets.outputs.pullRequestNumber }}
+        run: gh workflow run site-check.yml --ref "$(gh pr view "$PR_NUMBER" --json headRefName --jq .headRefName)"
+
+  publish:
+    needs: release
+    if: needs.release.outputs.hasChangesets == 'false' && vars.UI_NPM_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.release.outputs.sha }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.19.1
+      - run: npm ci --workspace @n3wth/ui --include-workspace-root
+      - run: npm run check --workspace @n3wth/ui
+      - run: npx playwright install --with-deps chromium
+      - run: npm run check:package
+      - run: node scripts/publish-ui.mjs

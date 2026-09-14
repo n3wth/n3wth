@@ -2,6 +2,10 @@
 
 Status: workspace architecture. Per-site production evidence is recorded in the migration documents and Linear.
 
+Release update: the approved 2.0.0 cutover makes this monorepo the npm release
+source. The publishing restrictions below describe the historical pilot and
+are superseded by [npm-release.md](npm-release.md).
+
 Design-system update: all six site apps now consume the workspace UI foundation through `@n3wth/ui/site`. The initial visual-preservation and published-version exceptions described below record the migration baseline; the subsequent user-authorized Astryx alignment supersedes those exceptions. See [design-system.md](design-system.md) for current theme ownership, components and new-site creation.
 
 ## Source and package manager
