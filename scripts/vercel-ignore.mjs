@@ -39,7 +39,20 @@ function comparisonBase(env, log) {
       cwd: root, encoding: 'utf8', timeout: Math.min(10_000, remaining),
       env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
     })
-    return result.status === 0 ? result.stdout.trim() : undefined
+    if (result.status === 0) return result.stdout.trim()
+    // Classify failures without printing remote URLs or credentials from stderr.
+    const stderr = result.stderr || ''
+    const reason = result.error?.code || [
+      ['dubious ownership', 'repository ownership'],
+      ['not a git repository', 'missing Git checkout'],
+      ['does not appear to be a git repository', 'unavailable remote'],
+      ['Host key verification failed', 'SSH host verification'],
+      ['Permission denied', 'remote permission'],
+      ['could not read Username', 'remote authentication'],
+      ['couldn\'t find remote ref', 'missing remote ref'],
+    ].find(([message]) => stderr.includes(message))?.[1] || `exit ${result.status}`
+    log(`Git ${args[0]} failed: ${reason}.`)
+    return undefined
   }
   const previous = env.VERCEL_GIT_PREVIOUS_SHA
   if (previous && !/^0+$/.test(previous)) {
