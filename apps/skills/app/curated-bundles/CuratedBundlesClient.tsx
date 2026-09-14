@@ -41,7 +41,7 @@ export function CuratedBundlesClient() {
 
       <IslandNav />
 
-      <main className="n3wth-site-container n3wth-site-main">
+      <main id="main-content" tabIndex={-1} className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl">
           <Link
             href="/"

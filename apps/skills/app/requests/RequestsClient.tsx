@@ -93,7 +93,7 @@ export function RequestsClient() {
     <div className="min-h-screen relative content-loaded">
       <IslandNav />
 
-      <main className="n3wth-site-container n3wth-site-main">
+      <main id="main-content" tabIndex={-1} className="n3wth-site-container n3wth-site-main">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start justify-between mb-8">
             <div>

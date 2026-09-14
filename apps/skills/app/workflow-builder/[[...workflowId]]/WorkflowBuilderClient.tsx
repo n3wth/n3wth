@@ -64,7 +64,7 @@ export function WorkflowBuilderClient({ workflowId }: WorkflowBuilderClientProps
   return (
     <div className="h-screen relative overflow-hidden">
 
-      <main className="h-full">
+      <main id="main-content" tabIndex={-1} className="h-full">
         <WorkflowBuilderComponent
           key={initialWorkflow?.id ?? 'new'}
           initialWorkflow={initialWorkflow}

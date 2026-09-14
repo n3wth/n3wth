@@ -98,7 +98,7 @@ export default function RootLayout({
         </a>
         <PostHogProvider>
           <Providers>
-            <div id="main-content" tabIndex={-1} className="outline-none">{children}</div>
+            <div className="outline-none">{children}</div>
           </Providers>
         </PostHogProvider>
       </body>

@@ -64,7 +64,7 @@ export function WorkflowBuilderClient({ workflowId }: Props) {
   return (
     <div className="h-screen relative overflow-hidden">
 
-      <main className="h-full">
+      <main id="main-content" tabIndex={-1} className="h-full">
         <h1 className="sr-only">
           {initialWorkflow ? `Edit Workflow: ${initialWorkflow.name}` : 'Create New Workflow'}
         </h1>

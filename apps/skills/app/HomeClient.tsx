@@ -75,7 +75,7 @@ export default function HomeClient() {
       <IslandNav />
       <Hero />
 
-      <SiteContainer as="main">
+      <SiteContainer as="main" id="main-content" tabIndex={-1}>
         <SiteSection>
         {/* Browse Section Header */}
         <div className="mb-6 md:mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-4">

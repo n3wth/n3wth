@@ -149,7 +149,7 @@ export function SubmitClient() {
     <div className="min-h-screen relative content-loaded">
       <IslandNav />
 
-      <main className="n3wth-site-container n3wth-site-main">
+      <main id="main-content" tabIndex={-1} className="n3wth-site-container n3wth-site-main">
         <div className="max-w-2xl">
           <Link
             href="/"
