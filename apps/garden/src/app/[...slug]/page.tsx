@@ -15,7 +15,6 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { NoteMetadata } from '@/components/NoteMetadata'
 import { TableOfContents, MobileToc } from '@/components/TableOfContents'
 import { GrowthStage } from '@/components/GrowthStage'
-import { NoteGraph } from '@/components/NoteGraph'
 import { LinkPreview } from '@/components/LinkPreview'
 import { NotePageClient } from '@/components/NotePageClient'
 import { site } from '@/lib/site'
@@ -140,7 +139,6 @@ export default async function NotePage({ params }: PageProps) {
     }
   }
 
-  const gardenHref = `/?note=${encodeURIComponent(slugStr)}`
   const graphById = new Map(getGraphData().nodes.map((n) => [n.id, n]))
   const plantedLabel = graphNode?.created
     ? new Date(graphNode.created).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
@@ -229,41 +227,37 @@ export default async function NotePage({ params }: PageProps) {
             <div className="note-content">
               <Prose html={html} />
             </div>
+            <div className="note-postscript">
             {note.tags.length > 0 && (
               <section className="note-topics" aria-label="Topics">
                 <TagList tags={note.tags} />
               </section>
             )}
-            {/* On xl the local graph lives in the sidebar; keep the full-width
-                version for narrower viewports only. */}
             {localGraph.nodes.length > 1 && (
               <section className="note-graph note-graph-section">
                 <div className="note-graph-header">
                   <div>
                     <h2>Connected notes</h2>
                   </div>
-                  <Link
-                    href={gardenHref}
-                    className="note-graph-link"
-                  >
-                    Open full graph <span aria-hidden>→</span>
-                  </Link>
                 </div>
-                <div className="note-graph-canvas">
-                  <NoteGraph
-                    nodes={localGraph.nodes}
-                    edges={localGraph.edges}
-                    currentSlug={slugStr}
-                    interactive={false}
-                    className="w-full h-full"
-                  />
-                </div>
-                <Backlinks backlinks={backlinks} />
+                <ul className="connected-garden" aria-label="Connected notes">
+                  {localGraph.nodes.filter((n) => n.id !== slugStr).map((n, index) => (
+                    <li key={n.id}>
+                      <Link href={`/${n.id}`} className="connected-plant">
+                        <span className="connected-plant-specimen">
+                          <PlantGlyph slug={n.id} stage={n.stage} linkCount={n.linkCount} size={48 + (index % 3) * 8} />
+                        </span>
+                        <span className="connected-plant-title">{n.title}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </section>
             )}
             {localGraph.nodes.length <= 1 && (
               <Backlinks backlinks={backlinks} />
             )}
+            </div>
             {grove && (
               <section className="mt-12 pt-8 border-t border-[var(--color-border)]">
                 <h2 className="label mb-4">More in the {grove.tag} grove</h2>

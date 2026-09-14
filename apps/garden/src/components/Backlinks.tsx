@@ -13,8 +13,7 @@ export function Backlinks({ backlinks }: BacklinkProps) {
   const ordered = [...backlinks].sort((a, b) => Number(!!b.context) - Number(!!a.context))
   return (
     <div className="connected-mentions">
-      <h3>Mentioned by</h3>
-      <ul>
+      <ul aria-label="Notes mentioning this note">
         {ordered.map((link) => (
           <li key={link.slug} className="min-w-0">
             <Link
@@ -24,13 +23,6 @@ export function Backlinks({ backlinks }: BacklinkProps) {
               <span className="connected-mention-title">
                 {link.title}
               </span>
-              {link.context && (
-                <span className="connected-mention-context">
-                  {link.context.before}
-                  <span className="text-[var(--color-text-primary)]">{link.context.mention}</span>
-                  {link.context.after}
-                </span>
-              )}
             </Link>
           </li>
         ))}

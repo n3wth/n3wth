@@ -110,7 +110,7 @@ export default function TagsPage() {
             className="tag-pill"
             style={{ fontSize: tagSize(notes.length), color: tagInk(notes.length) }}
           >
-            {tag}
+            #{tag}
             <span className="text-[var(--color-text-secondary)]">{notes.length}</span>
           </Link>
         ))}
@@ -132,7 +132,7 @@ export default function TagsPage() {
                   href={`/tags/${encodeURIComponent(tag)}`}
                   className="text-sm text-[var(--color-text-secondary)] underline underline-offset-4 decoration-transparent hover:decoration-[var(--color-border-emphasized)] hover:text-[var(--color-text-primary)] transition-colors"
                 >
-                  {tag}
+                  #{tag}
                 </Link>
               </li>
             ))}

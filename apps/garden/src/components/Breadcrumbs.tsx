@@ -26,11 +26,11 @@ export function Breadcrumbs({ slug }: BreadcrumbsProps) {
   })
 
   return (
-    <div className="mb-4">
+    <div className="note-breadcrumbs">
       <AstryxBreadcrumbs variant="supporting">
         {crumbs.map((crumb) => (
           <BreadcrumbItem key={crumb.key} href={crumb.href}>
-            {crumb.label}
+            <span className="note-breadcrumb-label">{crumb.label}</span>
           </BreadcrumbItem>
         ))}
       </AstryxBreadcrumbs>
