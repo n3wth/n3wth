@@ -40,9 +40,9 @@ export function HoverPreview({ skill, isVisible, anchorRect, onClose }: HoverPre
     const spaceBelow = viewportHeight - anchorRect.bottom - padding
     const spaceAbove = anchorRect.top - padding
 
-    let top = 0
-    let left = 0
-    let placement: 'right' | 'left' | 'top' | 'bottom' = 'right'
+    let top: number
+    let left: number
+    let placement: 'right' | 'left' | 'top' | 'bottom'
 
     // Prefer right, then left, then bottom, then top
     if (spaceRight >= previewWidth + offset) {
