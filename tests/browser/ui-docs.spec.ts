@@ -16,7 +16,7 @@ test('showcase spacing, icon layout and example controls survive both themes', a
     await heading.scrollIntoViewIfNeeded()
     if ((page.viewportSize()?.width ?? 1440) < 1024) {
       const sections = page.getByRole('navigation', { name: 'Component sections', exact: true }).filter({ visible: true })
-      await expect(sections.locator('[aria-current]')).toHaveCount(0)
+      await expect(sections.locator('[aria-current="location"]')).toHaveText('Hooks')
       expect(await sections.evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThan(0)
     }
     const gaps = await heading.evaluate(element => {
