@@ -29,7 +29,7 @@ export function App() {
   return <N3wthProvider mode="dark">
     <SiteContainer as="main">
       <PageHeader title="An idea" description="What it helps people do."
-        actions={<Button onClick={() => {}}>Get started</Button>} />
+        actions={<Button label="Get started" onClick={() => {}} />} />
     </SiteContainer>
     <SiteFooter />
   </N3wthProvider>
@@ -51,6 +51,6 @@ npm run check:design
 
 See [the design system guide](../../docs/workspace/design-system.md) and [UI website](https://ui.n3wth.com).
 
-These exports describe the current workspace. The original `n3wth/ui` repository remains the public npm publishing authority during the pilot. Do not publish or create release tags from this workspace; check a published version's exports before using the new entries outside it.
+Starting with 2.0.0, npm releases come from this monorepo through Changesets and trusted publishing. See [migration notes](CHANGELOG.md). The [v0 skill and standalone starter](v0/n3wth-ui/SKILL.md) ship with the package and support v0 Design Systems 2.0 imports; shipping these files does not automatically save a skill in v0.
 
 MIT © Oliver Newth

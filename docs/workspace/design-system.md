@@ -55,7 +55,7 @@ import '@n3wth/ui/site.css'
 - Use `PageHeader.actions` for page-level links such as the resume. Do not create a separate padded section for one link.
 - Garden reading typography and the portfolio scene may retain specialized layouts. Product names, content and interactions remain distinct; colors, type roles and common controls share the system.
 
-The canonical theme is `packages/ui/src/theme/n3wthTheme.ts`. Its CSS is generated during the UI build. Keep every app's `@n3wth/ui` dependency equal to the workspace version so npm does not silently install an older nested copy. The original `n3wth/ui` repository remains the public npm release authority; this change does not publish a package or move that authority.
+The canonical theme is `packages/ui/src/theme/n3wthTheme.ts`. Its CSS is generated during the UI build. Keep every app's `@n3wth/ui` dependency equal to the workspace version so npm does not silently install an older nested copy. Starting with 2.0.0, this monorepo owns public npm releases through Changesets and trusted publishing; see [npm-release.md](npm-release.md).
 
 ## Decorative artwork
 
