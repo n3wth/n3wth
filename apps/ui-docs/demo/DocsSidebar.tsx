@@ -25,8 +25,8 @@ export function DocsSidebar({ items, activeId, label, onSelect }: {
     <div className="lg:hidden"><SiteSectionLinks aria-label={label}>
       {items.map(item => {
         return item.href
-          ? <Link key={item.id} to={item.href}>{item.label}</Link>
-          : <button key={item.id} type="button" onClick={() => onSelect?.(item.id)}>{item.label}</button>
+          ? <Link key={item.id} to={item.href} aria-current={activeId === item.id ? 'location' : undefined}>{item.label}</Link>
+          : <button key={item.id} type="button" aria-current={activeId === item.id ? 'location' : undefined} onClick={() => onSelect?.(item.id)}>{item.label}</button>
       })}
     </SiteSectionLinks></div>
   </>
