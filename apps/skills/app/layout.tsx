@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: siteUrls.skills,
     siteName: 'n3wth/skills',
-    title: 'n3wth/skills',
+    title: 'n3wth/skills — Markdown skills for Antigravity CLI',
     description:
       'Markdown skills for Antigravity CLI. One install, works offline.',
     images: [
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'n3wth/skills',
+    title: 'n3wth/skills — Markdown skills for Antigravity CLI',
     description:
       'Markdown skills for coding agents. One install, works offline.',
     images: ['/twitter-image'],
