@@ -3,11 +3,16 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 import { orderSelectedWorkspaces, readWorkspaces } from './affected.mjs'
+import { restoreUiBuild, saveUiBuild, uiBuildKey } from './ui-build-cache.mjs'
 
 export function parseBuildArgs(args) {
-  const parsed = { list: false, workspaces: [] }
+  const parsed = { list: false, cacheUi: false, workspaces: [] }
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index]
+    if (arg === '--cache-ui') {
+      parsed.cacheUi = true
+      continue
+    }
     if (arg === '--list') {
       parsed.list = true
       continue
@@ -54,11 +59,18 @@ function readLockfile(root) {
   }
 }
 
-export function runWorkspaceBuilds(order, spawn = spawnSync, cwd) {
+export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = false } = {}) {
   for (const workspace of order) {
+    const key = cacheUi && workspace === '@n3wth/ui' ? uiBuildKey(cwd) : undefined
+    if (key && restoreUiBuild(cwd, key)) {
+      console.log('@n3wth/ui: restored verified build cache')
+      continue
+    }
+    if (key) console.log('@n3wth/ui: cache miss; building')
     const result = spawn('npm', ['run', 'build', '--workspace', workspace], { cwd, stdio: 'inherit' })
     if (result.error) throw result.error
     if (result.status !== 0) process.exit(result.status ?? 1)
+    if (key) saveUiBuild(cwd, key)
   }
 }
 
@@ -70,7 +82,7 @@ function main() {
     console.log(JSON.stringify(order))
     return
   }
-  runWorkspaceBuilds(order, spawnSync, root)
+  runWorkspaceBuilds(order, spawnSync, root, options)
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main()

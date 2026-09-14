@@ -1,5 +1,13 @@
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+
+const manifest = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
+for (const [entry, target] of Object.entries(manifest.exports)) {
+  if (typeof target !== 'object') continue
+  for (const condition of ['types', 'import']) {
+    assert.ok(existsSync(new URL(`../${target[condition]}`, import.meta.url)), `${entry} missing ${condition} output`)
+  }
+}
 
 // Validate shipped artifacts: source directives and correct JSX do not prove
 // that Next consumers or the final CSS cascade will behave correctly.

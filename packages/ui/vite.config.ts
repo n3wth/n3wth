@@ -12,11 +12,20 @@ export default defineConfig({
     dts({
       include: ['src'],
       outDir: 'dist',
+      // Declaration generation already checks the TypeScript program. Fail the
+      // build on diagnostics instead of checking the same sources twice.
+      afterDiagnostic(diagnostics) {
+        if (diagnostics.some(diagnostic => diagnostic.category === 1)) {
+          throw new Error('UI TypeScript validation failed; see diagnostics above')
+        }
+      },
       // Generate declaration files alongside modules for better tree-shaking
       rollupTypes: false,
     })
   ],
   build: {
+    // Consumers bundle these modules again; gzip reporting is not a package check.
+    reportCompressedSize: false,
     // Don't copy public/ (demo favicon, robots.txt, registry) into dist;
     // the npm package ships fonts via the "files" field instead.
     copyPublicDir: false,
@@ -31,8 +40,10 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
+      // Ordinary runtime dependencies are bundled by the consuming app. Keep
+      // Astryx internal so its development JSX calls pass through our shim.
       external: (id) => id !== 'react/jsx-dev-runtime' && (
-        /^(react|react-dom)(\/|$)/.test(id) || /^gsap(\/|$)/.test(id)
+        /^(react|react-dom|gsap|clsx|tailwind-merge|iconoir-react)(\/|$)/.test(id)
       ),
       output: {
         globals: {
