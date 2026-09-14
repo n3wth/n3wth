@@ -31,6 +31,7 @@ test('install reuses dependencies with pinned npm and preserves lockfile', t => 
     assert.ok(args.includes('install'))
     assert.ok(!args.includes('ci'))
     assert.ok(args.includes('--include=dev'))
+    assert.ok(args.includes('--include-workspace-root=false'))
     assert.equal(options.cwd, root)
     return { status: 0 }
   })

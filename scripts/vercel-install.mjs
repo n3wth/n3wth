@@ -22,7 +22,7 @@ export function installPortfolio(root, spawn = spawnSync) {
   const result = spawn('npx', [
     '--prefer-offline', '--yes', 'npm@11.19.1', 'install',
     '--workspace=@n3wth/portfolio', '--workspace=@n3wth/ui',
-    '--workspace=@n3wth/site-config', '--include-workspace-root',
+    '--workspace=@n3wth/site-config', '--include-workspace-root=false',
     '--include=dev', '--prefer-offline', '--no-audit', '--no-fund',
   ], { cwd: root, stdio: 'inherit' })
   if (result.error) throw result.error
