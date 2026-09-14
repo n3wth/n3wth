@@ -92,7 +92,20 @@ export const WorkflowCanvas = forwardRef<HTMLDivElement, WorkflowCanvasProps>(({
     const path = `M ${start.x} ${start.y} C ${start.x + controlOffset} ${start.y}, ${end.x - controlOffset} ${end.y}, ${end.x} ${end.y}`
     
     return (
-      <g key={connection.id} className="group cursor-pointer" onClick={() => onRemoveConnection(connection.id)}>
+      <g
+        key={connection.id}
+        className="group cursor-pointer focus-visible:outline-none"
+        role="button"
+        tabIndex={0}
+        aria-label="Remove connection"
+        onClick={() => onRemoveConnection(connection.id)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === 'Delete' || event.key === 'Backspace') {
+            event.preventDefault()
+            onRemoveConnection(connection.id)
+          }
+        }}
+      >
         <path
           d={path}
           fill="none"
@@ -104,7 +117,7 @@ export const WorkflowCanvas = forwardRef<HTMLDivElement, WorkflowCanvasProps>(({
           fill="none"
           stroke="var(--color-grey-600)"
           strokeWidth={2}
-          className="transition-all group-hover:stroke-[var(--color-coral)]"
+          className="transition-all group-hover:stroke-[var(--color-coral)] group-focus-visible:stroke-[var(--color-coral)]"
         />
         <circle
           cx={midX}
@@ -113,7 +126,7 @@ export const WorkflowCanvas = forwardRef<HTMLDivElement, WorkflowCanvasProps>(({
           fill="var(--color-bg)"
           stroke="var(--color-grey-600)"
           strokeWidth={2}
-          className="opacity-0 group-hover:opacity-100 transition-opacity"
+          className="opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"
         />
         <text
           x={midX}
@@ -121,7 +134,7 @@ export const WorkflowCanvas = forwardRef<HTMLDivElement, WorkflowCanvasProps>(({
           textAnchor="middle"
           fill="var(--color-coral)"
           fontSize={12}
-          className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+          className="opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none"
         >
           ×
         </text>

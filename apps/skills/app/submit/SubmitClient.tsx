@@ -234,7 +234,7 @@ export function SubmitClient() {
                 placeholder="e.g., React Testing"
                 aria-invalid={errors.name ? true : undefined}
                 aria-describedby={errors.name ? 'name-error' : undefined}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                 style={{
                   background: 'var(--glass-bg)',
                   border: `1px solid ${errors.name ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -268,7 +268,7 @@ export function SubmitClient() {
                 onChange={handleChange}
                 aria-invalid={errors.category ? true : undefined}
                 aria-describedby={errors.category ? 'category-error' : undefined}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none appearance-none cursor-pointer"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 appearance-none cursor-pointer"
                 style={{
                   background: 'var(--glass-bg)',
                   border: `1px solid ${errors.category ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -311,7 +311,7 @@ export function SubmitClient() {
                 rows={4}
                 aria-invalid={errors.description ? true : undefined}
                 aria-describedby={errors.description ? 'description-error' : undefined}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: `1px solid ${errors.description ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -352,7 +352,7 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="e.g., testing, react, jest, automation"
                 aria-describedby="tags-hint"
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',
@@ -389,7 +389,7 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="A more detailed description explaining the skill's capabilities..."
                 rows={4}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',
@@ -419,7 +419,7 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="List key features, one per line..."
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',
@@ -449,7 +449,7 @@ export function SubmitClient() {
                 onChange={handleChange}
                 placeholder="Describe specific scenarios where this skill would be useful..."
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none resize-none"
+                className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
                 style={{
                   background: 'var(--glass-bg)',
                   border: '1px solid var(--glass-border)',
@@ -508,7 +508,7 @@ export function SubmitClient() {
                     placeholder="Your display name for attribution"
                     aria-invalid={errors.contributorName ? true : undefined}
                     aria-describedby={errors.contributorName ? 'contributorName-error' : undefined}
-                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                     style={{
                       background: 'var(--glass-bg)',
                       border: `1px solid ${errors.contributorName ? 'var(--color-coral)' : 'var(--glass-border)'}`,
@@ -547,7 +547,7 @@ export function SubmitClient() {
                     value={formData.contributorGithub}
                     onChange={handleChange}
                     placeholder="your-github-username"
-                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20"
                     style={{
                       background: 'var(--glass-bg)',
                       border: '1px solid var(--glass-border)',

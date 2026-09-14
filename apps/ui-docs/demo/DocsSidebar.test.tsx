@@ -16,6 +16,6 @@ describe('documentation sidebar', () => {
     expect(screen.queryByRole('button', { name: 'Sections: Tokens' })).not.toBeInTheDocument()
     fireEvent.click(screen.getAllByRole('button', { name: 'Tokens', exact: true }).at(-1)!)
     expect(onSelect).toHaveBeenCalledWith('tokens')
-    expect(screen.getAllByRole('button', { name: 'Tokens', exact: true }).at(-1)).not.toHaveAttribute('aria-current')
+    expect(screen.getAllByRole('button', { name: 'Tokens', exact: true }).at(-1)).toHaveAttribute('aria-current', 'location')
   })
 })
