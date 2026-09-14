@@ -37,7 +37,7 @@ gemini mcp list`,
       <JsonLd type="SoftwareApplication" />
       <Navigation />
 
-      <main id="main-content" className="flex-1 n3wth-site-main">
+      <main id="main-content" tabIndex={-1} className="flex-1 n3wth-site-main">
         {/* Hero */}
         <SiteContainer>
           <PageHeader

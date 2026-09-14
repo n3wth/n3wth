@@ -60,7 +60,7 @@ export default function DocsLayout({
           </aside>
 
           {/* Main Content */}
-          <main id="main-content" className="min-w-0 max-w-4xl flex-grow">
+          <main id="main-content" tabIndex={-1} className="min-w-0 max-w-4xl flex-grow">
             {children}
           </main>
 

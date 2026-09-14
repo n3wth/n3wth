@@ -92,7 +92,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
           <DocsSidebar items={sidebarItems} activeId={activeSection} label="Component sections" onSelect={scrollTo} />
 
           {/* Content */}
-          <main id="main-content" className="min-w-0">
+          <main id="main-content" tabIndex={-1} className="min-w-0">
             <TokensSection />
             <AtomsSection />
             <MoleculesSection theme={theme} onThemeToggle={toggleTheme} />
