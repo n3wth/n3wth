@@ -3,6 +3,7 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, write
 import { tmpdir } from 'node:os'
 import { resolve } from 'node:path'
 import { execFileSync, spawn } from 'node:child_process'
+import { setTimeout as delay } from 'node:timers/promises'
 import { chromium } from '@playwright/test'
 
 const root = process.cwd()
@@ -33,12 +34,19 @@ try {
   execFileSync('npm', ['install', '--no-audit', '--no-fund'], { cwd: directory, stdio: 'inherit' })
   assert.ok(existsSync(resolve(directory, 'node_modules/@n3wth/ui/dist/site/index.js')))
   execFileSync('npm', ['run', 'build'], { cwd: directory, stdio: 'inherit' })
-  server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', 'preview', '--host', '127.0.0.1', '--port', '4187', '--strictPort'], { cwd: directory, stdio: 'pipe' })
-  await new Promise((resolveReady, reject) => {
-    const timeout = setTimeout(() => reject(new Error('Starter server timeout')), 15000)
-    server.on('exit', code => { clearTimeout(timeout); reject(new Error(`Server exited: ${code}`)) })
-    server.stdout.on('data', chunk => { if (chunk.toString().includes('127.0.0.1:4187')) { clearTimeout(timeout); resolveReady() } })
-  })
+  server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', 'preview', '--host', '127.0.0.1', '--port', '4187', '--strictPort'], { cwd: directory, stdio: 'inherit' })
+  // CI may add ANSI escapes to Vite's URL. Observe HTTP readiness instead of
+  // parsing human-readable console output.
+  const deadline = Date.now() + 15000
+  while (true) {
+    if (server.exitCode !== null || server.signalCode) throw new Error(`Server exited: ${server.exitCode ?? server.signalCode}`)
+    try {
+      const response = await fetch('http://127.0.0.1:4187', { signal: AbortSignal.timeout(1000) })
+      if (response.ok) break
+    } catch { /* Server is still starting. */ }
+    if (Date.now() >= deadline) throw new Error('Starter server timeout')
+    await delay(100)
+  }
   browser = await chromium.launch()
   const errors = []
   const page = await browser.newPage()
