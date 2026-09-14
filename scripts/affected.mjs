@@ -22,16 +22,40 @@ function linkedDependency(workspace, name, packages, byPath) {
   }
 }
 
-export function affectedWorkspaces(workspaces, files, all = false, lockfile, deployment = false) {
+function workspaceDependencies(workspaces, lockfile) {
   const byName = new Map(workspaces.map(workspace => [workspace.name, workspace]))
   const byPath = new Map(workspaces.map(workspace => [workspace.path, workspace]))
-  const dependencies = workspace => Object.keys({ ...workspace.dependencies, ...workspace.devDependencies, ...workspace.optionalDependencies, ...workspace.peerDependencies }).flatMap(name => {
+  return workspace => Object.keys({ ...workspace.dependencies, ...workspace.devDependencies, ...workspace.optionalDependencies, ...workspace.peerDependencies }).flatMap(name => {
     const linked = linkedDependency(workspace, name, lockfile?.packages, byPath)
     if (linked === null) return []
     if (linked !== undefined) return [linked]
     // Missing or incomplete lock data must never suppress a possible consumer.
     return byName.has(name) ? [name] : []
   })
+}
+
+export function orderSelectedWorkspaces(workspaces, selected, lockfile) {
+  const byName = new Map(workspaces.map(workspace => [workspace.name, workspace]))
+  const dependencies = workspaceDependencies(workspaces, lockfile)
+  const ordered = []
+  const visited = new Set()
+  const visiting = new Set()
+  const visit = name => {
+    if (visited.has(name)) return
+    if (visiting.has(name)) throw new Error(`Workspace dependency cycle at ${name}`)
+    visiting.add(name)
+    for (const dependency of dependencies(byName.get(name))) visit(dependency)
+    visiting.delete(name)
+    visited.add(name)
+    ordered.push(name)
+  }
+  for (const name of selected) visit(name)
+  return ordered
+}
+
+export function affectedWorkspaces(workspaces, files, all = false, lockfile, deployment = false) {
+  const byName = new Map(workspaces.map(workspace => [workspace.name, workspace]))
+  const dependencies = workspaceDependencies(workspaces, lockfile)
   const selected = new Set()
   for (const file of files) {
     // Root validation assets do not change deployed output. Unknown configuration
@@ -66,20 +90,7 @@ export function affectedWorkspaces(workspaces, files, all = false, lockfile, dep
     }
   }
   // Include prerequisites so clean CI never relies on stale package output.
-  const ordered = []
-  const visited = new Set()
-  const visiting = new Set()
-  const visit = name => {
-    if (visited.has(name)) return
-    if (visiting.has(name)) throw new Error(`Workspace dependency cycle at ${name}`)
-    visiting.add(name)
-    for (const dependency of dependencies(byName.get(name))) visit(dependency)
-    visiting.delete(name)
-    visited.add(name)
-    ordered.push(name)
-  }
-  for (const name of selected) visit(name)
-  return ordered
+  return orderSelectedWorkspaces(workspaces, selected, lockfile)
 }
 
 export function readWorkspaces(root) {

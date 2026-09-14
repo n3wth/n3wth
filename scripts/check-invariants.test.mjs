@@ -39,10 +39,21 @@ function rejects(root, pattern) {
   finally { rmSync(root, { recursive: true, force: true }) }
 }
 
-test('current repository keeps unique names, internal deps and six manual site deployments', () => {
+test('current repository keeps unique names, internal deps, six manual site deployments and a complete root build', () => {
   const workspaces = checkInvariants(repo)
   const apps = workspaces.filter(workspace => workspace.path.startsWith('apps/')).map(workspace => workspace.path.replace('apps/', ''))
   for (const site of sites) assert.ok(apps.includes(site), `missing site workspace ${site}`)
+  assert.equal(workspaces.filter(workspace => workspace.path.startsWith('apps/') && workspace.scripts?.build).length, 6)
+})
+
+test('hardcoded root builds fail instead of omitting apps', () => {
+  rejects(fixture(root => {
+    validGraph(root)
+    writeFileSync(join(root, 'package.json'), JSON.stringify({
+      workspaces: ['apps/*', 'packages/*'],
+      scripts: { build: 'npm run build:ui && npm run build:portfolio' },
+    }))
+  }), /package.json: build must use scripts\/build.mjs so every app is included/)
 })
 
 test('accepts a valid workspace graph', () => {

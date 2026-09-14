@@ -17,7 +17,7 @@ All site foundations come from `@n3wth/ui/site` and `@n3wth/ui/site.css`. Keep U
 
 Sites must import native controls through `@n3wth/ui/primitives` and Tailwind tokens through `@n3wth/ui/tailwind-theme.css`. Only packages/ui may depend on or import Astryx. Keep dependency upgrades and runtime integration in UI; do not add application JSX-runtime shims. `check:design` enforces the import/dependency boundary.
 
-Commands: npm run dev, npm run dev:ui, npm run build:portfolio, npm run build:ui and npm run check. CI uses scripts/affected.mjs to check changed workspaces and their consumers in dependency order. Build packages before their apps. Run browser checks when changing routes, layout or packaging.
+Commands: npm run dev, npm run dev:ui, npm run build, npm run build:portfolio and npm run check. Root and app-targeted builds use scripts/build.mjs so shared packages build before consumers and only once per run. CI uses scripts/affected.mjs to check changed workspaces and their consumers in dependency order. Build packages before their apps. Run browser checks when changing routes, layout or packaging.
 
 For shared changes, identify affected consumers and verify them at mobile and desktop widths. Check both themes where supported, initial theme paint, scroll reset on page navigation, anchor links, browser Back, code overflow and footer consistency. Preserve useful product actions; remove redundant navigation only where appropriate. Keep public metadata and sitemaps correct. Never report production complete from a local build alone.
 

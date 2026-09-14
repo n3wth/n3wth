@@ -22,8 +22,8 @@ npm install --global npm@11.19.1
 npm ci
 npm run dev             # Portfolio
 npm run dev:ui          # Build/watch the UI library and run its docs
-npm run build:portfolio
-npm run build:ui
+npm run build           # All six apps and shared packages, once, in dependency order
+npm run build:portfolio # App plus shared UI; also garden, kit, skills, r3, ui-docs
 npm run check           # Library and app validation in dependency order
 npm run check:browser   # Portfolio, UI docs and Kit after building
 ```

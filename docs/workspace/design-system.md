@@ -66,7 +66,7 @@ Decorative artwork uses `@n3wth/ui/visuals`: VisualBand owns full-width layout, 
 ```sh
 npm run site:new -- idea-name "Idea name"
 npm install
-npm run build --workspace @n3wth/ui
+npm run build -- --workspace @n3wth/idea-name
 npm run dev --workspace @n3wth/idea-name
 ```
 
