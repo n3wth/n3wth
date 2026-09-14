@@ -102,7 +102,10 @@ function main() {
   let all = args.includes('--all') || !base || /^0+$/.test(base)
   let files = []
   if (!all) {
-    const diff = spawnSync('git', ['diff', '--name-only', '-z', `${base}...HEAD`, '--'], { cwd: root, encoding: 'utf8' })
+    // Deployment bases are either the last deployed tree or a resolved preview
+    // merge-base. Compare trees directly, including force-push reversions.
+    const range = args.includes('--deployment') ? `${base}..HEAD` : `${base}...HEAD`
+    const diff = spawnSync('git', ['diff', '--name-only', '-z', range, '--'], { cwd: root, encoding: 'utf8' })
     if (diff.status !== 0) {
       console.warn('Unable to resolve comparison base; checking every workspace.')
       all = true

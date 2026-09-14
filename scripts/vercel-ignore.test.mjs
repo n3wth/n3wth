@@ -2,6 +2,9 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
+import { mkdtempSync, mkdirSync, copyFileSync, writeFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { affectedWorkspaces } from './affected.mjs'
 import { deploymentExitCode } from './vercel-ignore.mjs'
 
@@ -65,4 +68,89 @@ test('ignore command works from the app root and builds without previous SHA', (
   })
   assert.equal(result.status, 1)
   assert.match(result.stdout, /Building deployment/)
+})
+
+function repository(t) {
+  const directory = mkdtempSync(join(tmpdir(), 'vercel-ignore-'))
+  t.after(() => rmSync(directory, { recursive: true, force: true }))
+  const git = (...args) => {
+    const result = spawnSync('git', args, { cwd: directory, encoding: 'utf8' })
+    assert.equal(result.status, 0, result.stderr)
+    return result.stdout.trim()
+  }
+  git('init', '-b', 'main')
+  git('config', 'user.email', 'test@example.com')
+  git('config', 'user.name', 'Test')
+  mkdirSync(join(directory, 'scripts'))
+  for (const script of ['affected.mjs', 'vercel-ignore.mjs']) {
+    copyFileSync(new URL(script, import.meta.url), join(directory, 'scripts', script))
+  }
+  writeFileSync(join(directory, 'package.json'), JSON.stringify({ workspaces: ['apps/*'] }))
+  writeFileSync(join(directory, 'package-lock.json'), JSON.stringify({ packages: {} }))
+  for (const app of ['portfolio', 'r3-web']) {
+    mkdirSync(join(directory, 'apps', app), { recursive: true })
+    writeFileSync(join(directory, 'apps', app, 'package.json'), JSON.stringify({ name: `@n3wth/${app}` }))
+  }
+  git('add', '.')
+  git('commit', '-m', 'base')
+  const base = git('rev-parse', 'HEAD')
+  git('checkout', '-b', 'fix/r3')
+  writeFileSync(join(directory, 'apps/r3-web/page.tsx'), 'r3 change')
+  git('add', '.')
+  git('commit', '-m', 'r3 only')
+  git('remote', 'add', 'origin', directory)
+  const ignore = (app, env = {}, cwd = directory) => spawnSync(process.execPath, ['scripts/vercel-ignore.mjs', `@n3wth/${app}`], {
+    cwd,
+    encoding: 'utf8',
+    env: { ...process.env, VERCEL_ENV: 'preview', VERCEL_GIT_COMMIT_REF: 'fix/r3', VERCEL_GIT_PREVIOUS_SHA: '', ...env },
+  })
+  return { directory, git, base, ignore }
+}
+
+test('first branch preview skips unrelated apps but builds the changed app', t => {
+  const { ignore } = repository(t)
+  assert.equal(ignore('portfolio').status, 0)
+  assert.equal(ignore('r3-web').status, 1)
+})
+
+test('first production deployment still builds every app', t => {
+  const { ignore } = repository(t)
+  assert.equal(ignore('portfolio', { VERCEL_ENV: 'production' }).status, 1)
+})
+
+test('first preview builds conservatively when its base cannot be fetched', t => {
+  const { ignore, git } = repository(t)
+  git('remote', 'remove', 'origin')
+  assert.equal(ignore('portfolio').status, 1)
+})
+
+test('shallow clone recovers the previous deployment commit before comparing', t => {
+  const { directory, base, ignore } = repository(t)
+  const clone = `${directory}-shallow`
+  t.after(() => rmSync(clone, { recursive: true, force: true }))
+  const result = spawnSync('git', ['clone', '--depth=1', '--branch=fix/r3', `file://${directory}`, clone], { encoding: 'utf8' })
+  assert.equal(result.status, 0, result.stderr)
+  assert.equal(ignore('portfolio', { VERCEL_GIT_PREVIOUS_SHA: base }, clone).status, 0)
+  assert.equal(ignore('r3-web', { VERCEL_GIT_PREVIOUS_SHA: base }, clone).status, 1)
+})
+
+test('first preview finds its branch point in a shallow clone', t => {
+  const { directory, ignore } = repository(t)
+  const clone = `${directory}-preview`
+  t.after(() => rmSync(clone, { recursive: true, force: true }))
+  const result = spawnSync('git', ['clone', '--depth=1', '--branch=fix/r3', `file://${directory}`, clone], { encoding: 'utf8' })
+  assert.equal(result.status, 0, result.stderr)
+  assert.equal(ignore('portfolio', {}, clone).status, 0)
+  assert.equal(ignore('r3-web', {}, clone).status, 1)
+})
+
+test('force-push removing a deployed change rebuilds that app', t => {
+  const { directory, git, ignore } = repository(t)
+  git('checkout', '-b', 'old-preview')
+  writeFileSync(join(directory, 'apps/portfolio/page.tsx'), 'old deployed change')
+  git('add', '.')
+  git('commit', '-m', 'portfolio change')
+  const previous = git('rev-parse', 'HEAD')
+  git('checkout', 'fix/r3')
+  assert.equal(ignore('portfolio', { VERCEL_GIT_PREVIOUS_SHA: previous }).status, 1)
 })
