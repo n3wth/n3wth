@@ -82,7 +82,7 @@ export function affectedWorkspaces(workspaces, files, all = false, lockfile, dep
   return ordered
 }
 
-function readWorkspaces(root) {
+export function readWorkspaces(root) {
   const manifest = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
   const patterns = Array.isArray(manifest.workspaces) ? manifest.workspaces : manifest.workspaces?.packages
   if (!patterns?.length) throw new Error('Root package.json must declare workspaces')
