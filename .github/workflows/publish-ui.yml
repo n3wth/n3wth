@@ -21,6 +21,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: write
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       sha: ${{ steps.source.outputs.sha }}
@@ -41,10 +42,19 @@ jobs:
         id: changesets
         with:
           version: npm run release:version
+          branch: main
           title: 'Release @n3wth/ui'
           commit: 'chore: version UI release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # PRs created with GITHUB_TOKEN do not trigger pull_request workflows.
+      # Explicit workflow_dispatch does, and checks the generated release SHA.
+      - name: Validate generated release PR
+        if: steps.changesets.outputs.pullRequestNumber != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.changesets.outputs.pullRequestNumber }}
+        run: gh workflow run site-check.yml --ref "$(gh pr view "$PR_NUMBER" --json headRefName --jq .headRefName)"
 
   publish:
     needs: release
