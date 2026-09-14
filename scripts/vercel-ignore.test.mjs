@@ -102,7 +102,7 @@ function repository(t) {
   const ignore = (app, env = {}, cwd = directory) => spawnSync(process.execPath, ['scripts/vercel-ignore.mjs', `@n3wth/${app}`], {
     cwd,
     encoding: 'utf8',
-    env: { ...process.env, VERCEL_ENV: 'preview', VERCEL_GIT_COMMIT_REF: 'fix/r3', VERCEL_GIT_PREVIOUS_SHA: '', ...env },
+    env: { ...process.env, VERCEL: '', VERCEL_ENV: 'preview', VERCEL_GIT_COMMIT_REF: 'fix/r3', VERCEL_GIT_PREVIOUS_SHA: '', ...env },
   })
   return { directory, git, base, ignore }
 }
@@ -111,6 +111,15 @@ test('first branch preview skips unrelated apps but builds the changed app', t =
   const { ignore } = repository(t)
   assert.equal(ignore('portfolio').status, 0)
   assert.equal(ignore('r3-web').status, 1)
+})
+
+test('Vercel first preview fetches public history without an origin remote', t => {
+  const { directory, git, ignore } = repository(t)
+  git('remote', 'remove', 'origin')
+  // Keep the test offline while exercising the exact public-URL fetch path.
+  git('config', `url.file://${directory}.insteadOf`, 'https://github.com/n3wth/n3wth.git')
+  assert.equal(ignore('portfolio', { VERCEL: '1' }).status, 0)
+  assert.equal(ignore('r3-web', { VERCEL: '1' }).status, 1)
 })
 
 test('first production deployment still builds every app', t => {

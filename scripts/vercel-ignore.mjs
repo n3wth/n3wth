@@ -31,6 +31,9 @@ export function deploymentExitCode(workspace, previousSha, run = spawnSync, log 
 }
 
 function comparisonBase(env, log) {
+  // Vercel's checkout has no usable origin. This repository is public, so its
+  // HTTPS URL supplies history without adding credentials or changing remotes.
+  const remote = env.VERCEL === '1' ? 'https://github.com/n3wth/n3wth.git' : 'origin'
   const deadline = Date.now() + 20_000
   const git = args => {
     const remaining = deadline - Date.now()
@@ -60,7 +63,7 @@ function comparisonBase(env, log) {
     const resolved = git(['rev-parse', '--verify', `${previous}^{commit}`])
     if (resolved) return resolved
     log('Previous deployment commit is outside the shallow clone; fetching it.')
-    git(['fetch', '--no-tags', '--depth=1', 'origin', previous])
+    git(['fetch', '--no-tags', '--depth=1', remote, previous])
     return git(['rev-parse', '--verify', `${previous}^{commit}`])
   }
   // This repository deploys main to production. Only first-time Git previews
@@ -70,7 +73,7 @@ function comparisonBase(env, log) {
   const head = git(['rev-parse', 'HEAD'])
   if (!head) return undefined
   // Fetch both histories: Vercel may only have the latest ten branch commits.
-  if (git(['fetch', '--no-tags', '--depth=100', 'origin', '+refs/heads/main:refs/remotes/origin/main', head]) === undefined) return undefined
+  if (git(['fetch', '--no-tags', '--depth=100', remote, '+refs/heads/main:refs/remotes/origin/main', head]) === undefined) return undefined
   return git(['merge-base', 'refs/remotes/origin/main', 'HEAD'])
 }
 
