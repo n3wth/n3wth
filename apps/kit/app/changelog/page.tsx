@@ -26,6 +26,7 @@ const webPageJsonLd = pageJsonLd({
 const entries = [
   {
     date: 'February 15, 2026',
+    dateIso: '2026-02-15',
     title: 'Business launch',
     changes: [
       'Complete documentation for Antigravity CLI',
@@ -39,6 +40,7 @@ const entries = [
   },
   {
     date: 'February 14, 2026',
+    dateIso: '2026-02-14',
     title: 'Landing page redesign',
     changes: [
       'New hero with GSAP animations and floating design elements',
@@ -49,6 +51,7 @@ const entries = [
   },
   {
     date: 'February 12, 2026',
+    dateIso: '2026-02-12',
     title: 'Initial release',
     changes: [
       '32 UI components + 4 blocks + 11 hooks, built on Tailwind CSS v4',
@@ -73,7 +76,7 @@ export default function ChangelogPage() {
         <SiteSection className="space-y-16">
           {entries.map((entry) => (
             <article key={entry.date}>
-              <time className="text-sm text-ink-faint">{entry.date}</time>
+              <time className="text-sm text-ink-faint" dateTime={entry.dateIso}>{entry.date}</time>
               <SiteHeading variant="item" level={2}>
                 {entry.title}
               </SiteHeading>
