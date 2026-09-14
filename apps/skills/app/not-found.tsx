@@ -13,7 +13,7 @@ export default function NotFound() {
 
       <IslandNav />
 
-      <SiteContainer as="main" className="n3wth-site-main">
+      <SiteContainer as="main" id="main-content" tabIndex={-1} className="n3wth-site-main">
         <PageHeader title="Page not found" description="The page you're looking for doesn't exist or has been moved." actions={<Link href="/">Back to home</Link>} />
         <SiteSection>
           <SiteText className="mb-6">Maybe try one of these skills</SiteText>
