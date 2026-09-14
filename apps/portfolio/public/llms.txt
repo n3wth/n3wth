@@ -11,6 +11,7 @@
 - [Library](https://n3wth.com/library): The installable pieces — the essay kit, the @n3wth/ui component library, the garden's structure, and agent skills, each with getting-started instructions.
 - [Contact](https://n3wth.com/contact): hey@n3wth.com — product, AI safety, LED art, or coffee in San Francisco.
 - [Support](https://n3wth.com/support): support@n3wth.com — one inbox for every n3wth project.
+- [RSS feed](https://n3wth.com/feed.xml): New thinking pieces.
 
 ## Live products
 
