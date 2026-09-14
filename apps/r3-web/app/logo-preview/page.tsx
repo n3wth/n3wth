@@ -8,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function LogoPreviewPage() {
-  return <LogoAccentOptions />;
+  return (
+    <main id="main-content" tabIndex={-1} className="outline-none">
+      <LogoAccentOptions />
+    </main>
+  );
 }
