@@ -1,5 +1,6 @@
 import { siteUrls } from '@n3wth/site-config'
 import type { MetadataRoute } from 'next'
+import { posts } from './blog/posts'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -10,17 +11,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrls.kit}/docs/getting-started`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${siteUrls.kit}/docs/agents`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${siteUrls.kit}/changelog`, changeFrequency: 'weekly', priority: 0.5 },
-    {
-      url: `${siteUrls.kit}/blog/shadcn-registry-protocol`,
-      lastModified: new Date('2026-02-12'),
-      changeFrequency: 'monthly',
+    ...posts.map((post) => ({
+      url: `${siteUrls.kit}/blog/${post.slug}`,
+      lastModified: new Date(post.publishedIso),
+      changeFrequency: 'monthly' as const,
       priority: 0.6,
-    },
-    {
-      url: `${siteUrls.kit}/blog/shadcn-registry-protocol-deep-dive`,
-      lastModified: new Date('2026-04-09'),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
+    })),
   ]
 }
