@@ -91,8 +91,14 @@ r3 provides these tools to MCP clients:
 - Introduction: https://r3.n3wth.com/docs/introduction
 - Quickstart: https://r3.n3wth.com/docs/quickstart
 - Installation: https://r3.n3wth.com/docs/installation
+- AI Intelligence: https://r3.n3wth.com/docs/ai-intelligence
 - API Reference: https://r3.n3wth.com/docs/api-reference
+- Client API: https://r3.n3wth.com/docs/api/client
+- Python SDK: https://r3.n3wth.com/docs/sdks/python
+- TypeScript SDK: https://r3.n3wth.com/docs/sdks/typescript
 - Examples: https://r3.n3wth.com/docs/examples
+- Chatbot with Memory: https://r3.n3wth.com/docs/examples/chatbot-memory
+- Integrations: https://r3.n3wth.com/docs/integrations
 - Troubleshooting: https://r3.n3wth.com/docs/troubleshooting
 
 ## Key Features

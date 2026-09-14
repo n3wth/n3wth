@@ -6,7 +6,6 @@ export async function GET() {
 
   const staticPages = [
     { url: baseUrl, changefreq: "monthly", priority: "1.0" },
-    { url: `${baseUrl}/docs`, changefreq: "weekly", priority: "0.9" },
   ];
 
   const docs = await getAllDocs();

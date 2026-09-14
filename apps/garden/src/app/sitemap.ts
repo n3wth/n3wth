@@ -51,7 +51,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/notes`, lastModified: lastTended, changeFrequency: 'daily', priority: 0.9 },
     { url: `${BASE_URL}/tags`, lastModified: lastTended, changeFrequency: 'weekly', priority: 0.6 },
     { url: `${BASE_URL}/graph`, lastModified: lastTended, changeFrequency: 'weekly', priority: 0.5 },
-    { url: `${BASE_URL}/world`, lastModified: lastTended, changeFrequency: 'weekly', priority: 0.5 },
     ...notes,
     ...tags,
   ]
