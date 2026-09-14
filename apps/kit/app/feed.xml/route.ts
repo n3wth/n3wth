@@ -24,8 +24,9 @@ export function GET() {
   }).join('\n')
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
+    <atom:link href="${siteUrls.kit}/feed.xml" rel="self" type="application/rss+xml" />
     <title>n3wth/kit Blog</title>
     <link>${siteUrls.kit}/blog</link>
     <description>Notes on registries, context packs, and generated UI.</description>
