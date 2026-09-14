@@ -14,12 +14,9 @@ import { TagList } from '@/components/TagList'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { NoteMetadata } from '@/components/NoteMetadata'
 import { TableOfContents, MobileToc } from '@/components/TableOfContents'
-import { CopyLinkButton } from '@/components/CopyLinkButton'
 import { GrowthStage } from '@/components/GrowthStage'
-import { NoteGraph } from '@/components/NoteGraph'
 import { LinkPreview } from '@/components/LinkPreview'
 import { NotePageClient } from '@/components/NotePageClient'
-import { WalkTrail } from '@/components/WalkTrail'
 import { site } from '@/lib/site'
 import { noteMetadata } from '@/lib/note-metadata'
 
@@ -142,7 +139,6 @@ export default async function NotePage({ params }: PageProps) {
     }
   }
 
-  const gardenHref = `/?note=${encodeURIComponent(slugStr)}`
   const graphById = new Map(getGraphData().nodes.map((n) => [n.id, n]))
   const plantedLabel = graphNode?.created
     ? new Date(graphNode.created).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
@@ -179,7 +175,7 @@ export default async function NotePage({ params }: PageProps) {
       {/* Faint stage-tinted glow behind the header; z-index -1 keeps it under
           all content, pointer-events off. */}
       <div className="stage-ambient" data-stage={note.stage} aria-hidden />
-      <div className="mx-auto max-w-6xl px-6 md:px-12 py-16">
+      <div className="mx-auto max-w-6xl px-6 md:px-12 py-12 md:py-14">
         <div className="flex gap-16">
           <article className="min-w-0 flex-1">
             <div className="note-header">
@@ -187,19 +183,19 @@ export default async function NotePage({ params }: PageProps) {
               {/* Shares 'note-title' with the clicked notes-index row (and with
                   the previous note's h1 on wikilink hops), so the title morphs
                   across the navigation instead of cutting. */}
-              <div className="flex items-end justify-between gap-6 mb-3">
+              <div className="flex items-center justify-between gap-8 mb-2">
                 <h1
                   className="font-display text-[2rem] md:text-[2.5rem] leading-[1.12] font-semibold tracking-[-0.025em] text-[var(--color-text-primary)]"
                 >
                   {note.title}
                 </h1>
                 {/* the note's own plant, drawing itself in over the header's spare corner */}
-                <span className="hidden sm:block shrink-0">
+                <span className="note-header-plant hidden sm:block shrink-0">
                   <PlantGlyph
                     slug={slugStr}
                     stage={note.stage}
                     linkCount={graphNode?.linkCount ?? 0}
-                    size={64}
+                    size={112}
                     draw
                   />
                 </span>
@@ -218,10 +214,7 @@ export default async function NotePage({ params }: PageProps) {
                   </span>
                 </>
               )}
-              <CopyLinkButton />
             </div>
-            <TagList tags={note.tags} />
-            {note.tags.length > 0 && <div className="mt-6" />}
             {note.audience && (
               <aside className="assumed-audience" role="note">
                 <p className="label mb-1">Assumed audience</p>
@@ -234,31 +227,36 @@ export default async function NotePage({ params }: PageProps) {
             <div className="note-content">
               <Prose html={html} />
             </div>
-            {/* On xl the local graph lives in the sidebar; keep the full-width
-                version for narrower viewports only. */}
-            {localGraph.nodes.length > 1 && (
-              <div className="note-graph xl:hidden mt-12 pt-8 border-t border-[var(--color-border)]">
-                <div className="flex items-baseline justify-between mb-4">
-                  <h2 className="label">Connected notes</h2>
-                  <Link
-                    href={gardenHref}
-                    className="text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-secondary)] transition-colors"
-                  >
-                    See in the garden →
-                  </Link>
-                </div>
-                <div className="rounded-lg overflow-hidden" style={{ height: 300 }}>
-                  <NoteGraph
-                    nodes={localGraph.nodes}
-                    edges={localGraph.edges}
-                    currentSlug={slugStr}
-                    className="w-full h-full"
-                  />
-                </div>
-              </div>
+            <div className="note-postscript">
+            {note.tags.length > 0 && (
+              <section className="note-topics" aria-label="Topics">
+                <TagList tags={note.tags} />
+              </section>
             )}
-            <div className="note-backlinks">
+            {localGraph.nodes.length > 1 && (
+              <section className="note-graph note-graph-section">
+                <div className="note-graph-header">
+                  <div>
+                    <h2>Connected notes</h2>
+                  </div>
+                </div>
+                <ul className="connected-garden" aria-label="Connected notes">
+                  {localGraph.nodes.filter((n) => n.id !== slugStr).map((n, index) => (
+                    <li key={n.id}>
+                      <Link href={`/${n.id}`} className="connected-plant">
+                        <span className="connected-plant-specimen">
+                          <PlantGlyph slug={n.id} stage={n.stage} linkCount={n.linkCount} size={48 + (index % 3) * 8} />
+                        </span>
+                        <span className="connected-plant-title">{n.title}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+            {localGraph.nodes.length <= 1 && (
               <Backlinks backlinks={backlinks} />
+            )}
             </div>
             {grove && (
               <section className="mt-12 pt-8 border-t border-[var(--color-border)]">
@@ -283,59 +281,10 @@ export default async function NotePage({ params }: PageProps) {
                 </ul>
               </section>
             )}
-            {/* Keep exploring: hand the reader back to the world */}
-            <div className="mt-12 border-t border-[var(--color-border)] pt-8">
-              <nav aria-label="Keep exploring" className="flex flex-wrap items-center gap-3">
-                <Link
-                  href={gardenHref}
-                  className="rounded-lg px-4 py-2 text-sm transition-colors"
-                  style={{
-                    background: 'var(--color-background-surface)',
-                    border: '1px solid var(--color-border)',
-                    color: 'var(--color-text-primary)',
-                  }}
-                >
-                  Stand at this note in the garden
-                </Link>
-                <Link
-                  href="/random"
-                  className="rounded-lg px-4 py-2 text-sm transition-colors"
-                  style={{
-                    background: 'var(--color-background-surface)',
-                    border: '1px solid var(--color-border)',
-                    color: 'var(--color-text-secondary)',
-                  }}
-                >
-                  Wander to a random note
-                </Link>
-              </nav>
-              {/* Below the buttons so its post-hydration appearance never
-                  shifts them under a moving cursor. */}
-              <WalkTrail slug={slugStr} title={note.title} />
-            </div>
           </article>
           <div className="note-sidebar hidden xl:block w-56 shrink-0 self-start">
             <div className="sticky top-24 space-y-8">
               <TableOfContents headings={headings} />
-              {localGraph.nodes.length > 1 && (
-                <div>
-                  <h3 className="label mb-3">Nearby in the garden</h3>
-                  <div className="rounded-lg overflow-hidden border border-[var(--color-border)]" style={{ height: 200 }}>
-                    <NoteGraph
-                      nodes={localGraph.nodes}
-                      edges={localGraph.edges}
-                      currentSlug={slugStr}
-                      className="w-full h-full"
-                    />
-                  </div>
-                  <Link
-                    href={gardenHref}
-                    className="mt-2 inline-block text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-secondary)] transition-colors"
-                  >
-                    See in the garden →
-                  </Link>
-                </div>
-              )}
             </div>
           </div>
         </div>

@@ -112,7 +112,7 @@ export function LinkPreview({ previews }: LinkPreviewProps) {
       <p className="mb-2 text-sm leading-snug line-clamp-3" style={{ color: 'var(--color-text-secondary)' }}>{preview.excerpt}</p>
       <div className="mb-2 flex flex-wrap gap-1">
         {preview.tags.map((tag) => (
-          <span key={tag} className="rounded-full px-2 py-0.5 text-xs" style={{ background: 'var(--color-background-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}>{tag}</span>
+          <span key={tag} className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>#{tag}</span>
         ))}
       </div>
       <div className="flex items-center justify-between text-xs" style={{ color: 'var(--color-text-secondary)' }}>

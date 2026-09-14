@@ -13,7 +13,7 @@ export function TagList({ tags }: TagListProps) {
     <div className="flex flex-wrap gap-2">
       {tags.map((tag) => (
         <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`} className="tag-pill">
-          {tag}
+          #{tag}
         </Link>
       ))}
     </div>
