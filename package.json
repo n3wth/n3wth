@@ -23,7 +23,7 @@
     "build:skills": "node scripts/build.mjs --workspace @n3wth/skills",
     "build:ui": "node scripts/build.mjs --workspace @n3wth/ui-docs",
     "build:ui-docs": "node scripts/build.mjs --workspace @n3wth/ui-docs",
-    "check": "node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs scripts/create-site.test.mjs scripts/check-invariants.test.mjs scripts/build.test.mjs && node scripts/check-invariants.mjs && node scripts/affected.mjs --all && npm run check:design && npm run check:metadata",
+    "check": "node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs scripts/create-site.test.mjs scripts/check-invariants.test.mjs scripts/build.test.mjs scripts/check-built-metadata.test.mjs && node scripts/check-invariants.mjs && node scripts/affected.mjs --all && npm run check:design && npm run check:metadata",
     "check:metadata": "node scripts/check-built-metadata.mjs",
     "check:affected": "node scripts/affected.mjs",
     "check:browser": "playwright test",

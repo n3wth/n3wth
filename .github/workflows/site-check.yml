@@ -27,7 +27,7 @@ jobs:
           node-version: 24
           cache: npm
       - name: Verify affected workspace selection
-        run: node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs scripts/create-site.test.mjs scripts/build.test.mjs
+        run: node --test scripts/affected.test.mjs scripts/vercel-ignore.test.mjs scripts/create-site.test.mjs scripts/build.test.mjs scripts/check-built-metadata.test.mjs
       - name: Verify repository invariants
         run: node --test scripts/check-invariants.test.mjs && node scripts/check-invariants.mjs
       - name: Select affected workspaces
@@ -44,6 +44,11 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: node scripts/affected.mjs --base "$BASE_SHA"
+      - name: Check built metadata
+        if: steps.affected.outputs.workspaces != '[]'
+        env:
+          AFFECTED_WORKSPACES: ${{ steps.affected.outputs.workspaces }}
+        run: npm run check:metadata
       - name: Verify shared site design resolution
         if: contains(steps.affected.outputs.workspaces, '@n3wth/ui')
         run: npm run check:design
