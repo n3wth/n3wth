@@ -121,7 +121,7 @@ function GoalConstellation() {
                     setSelected((cur) => (cur === c.id ? null : c.id))
                   }
                 }}
-                style={{ cursor: 'pointer', outline: 'none' }}
+                style={{ cursor: 'pointer' }}
               >
                 {/* Invisible, generously-sized hit target: the visible rings below are
                     fill="none", so without this only their ~3px stroke would be
