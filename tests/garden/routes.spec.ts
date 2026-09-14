@@ -41,7 +41,7 @@ test('note listing and nested note remain readable', async ({ page }, testInfo) 
 
 test('home offers a textual notes entry and the index can reset its filters', async ({ page }) => {
   await page.goto('/')
-  await page.getByRole('link', { name: 'Or read the notes list', exact: true }).click()
+  await page.getByRole('link', { name: 'Notes', exact: true }).click()
   await expect(page).toHaveURL(/\/notes$/)
   await expect(page.getByRole('button', { name: 'Reset', exact: true })).toHaveCount(0)
   await page.getByPlaceholder(/Search \d+ notes/).fill('evergreen')
