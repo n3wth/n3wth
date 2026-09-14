@@ -30,6 +30,12 @@ npm run check:browser   # Portfolio, UI docs and Kit after building
 
 Applications live in `apps/portfolio`, `apps/ui-docs`, `apps/garden`, `apps/skills`, `apps/kit` and `apps/r3-web`. Shared packages live in `packages/ui` and `packages/site-config`. See [workspace architecture](docs/workspace/architecture.md), [deployment steps](docs/workspace/deployment.md) and [maintenance ownership](docs/workspace/maintenance.md). Public UI publishing remains in n3wth/ui and r3 core releases remain in n3wth/r3.
 
+## Deployment
+
+All six sites deploy manually. Each app's `vercel.json` sets `git.deploymentEnabled` to `false`, including for `main`: pushing or merging runs GitHub CI but does not publish a site. New sites inherit this setting from the generator.
+
+After CI passes, select the affected Vercel project, open **Deployments → Create Deployment**, and choose the exact commit SHA and intended environment. Verify a preview before a production release. Release only the affected sites; shared-package changes may require several. See the [deployment runbook](docs/workspace/deployment.md) for project mappings, validation, and rollback. Older branches must incorporate this configuration before further pushes to avoid their previous automatic deployment policy.
+
 ## Contact
 
 [n3wth.com](https://n3wth.com) · [LinkedIn](https://linkedin.com/in/n3wth) · hey@n3wth.com

@@ -1,5 +1,23 @@
 # Workspace deployment
 
+## Manual release policy
+
+All six applications set `git.deploymentEnabled: false` in their own `vercel.json`. This disables automatic Git deployments for every branch, including main, while keeping the repository connected for manual deployments. GitHub CI continues to validate pushes and pull requests. Committing or merging code does not publish it. The site generator uses the same default.
+
+Vercel reads configuration from the commit being deployed. Bring older branches up to date with this policy before pushing them; their old configuration may still permit automatic deployments. Do not re-enable automatic deployments or add a deployment workflow without an explicit policy change.
+
+1. Choose the exact commit SHA with passing CI and identify the apps changed since each project's last release. Include consumers of changed shared packages; do not compare only the latest commit or assume all projects last released the same SHA.
+2. Open the chosen project in the n3wth Vercel team, then **Deployments → Create Deployment**. Enter the SHA and confirm the branch/environment before submitting. Use a feature-branch preview to validate the release before deploying production from main. A main-branch deployment can update the production domain immediately.
+3. If the ignore step cancels an intentionally requested deployment, use the dashboard's option to bypass the project's Ignored Build Step for that deployment. Keep the repository's manual-only policy in place.
+4. Verify the deployment is Ready, then check affected routes, assets, redirects, and APIs. Record the project, SHA, deployment URL/ID, environment, and checks. Repeat only for the other affected projects.
+5. Roll back a release by restoring the previous successful production deployment for that project. Do not rebuild an arbitrary newer commit as a rollback.
+
+Native **Skip deployments when there are no changes to the root directory or its dependencies** is enabled on all six projects. Each project uses its app root with access to files outside that root for shared workspaces. The ignore script is an additional filter for builds that reach the build stage: it compares against the previous deployed tree, or a first-preview merge-base, and builds conservatively when history is unavailable. Neither skipping mechanism replaces manual release intent.
+
+References: [Vercel's manual-only Git configuration](https://vercel.com/docs/project-configuration/git-configuration#turning-off-all-automatic-deployments), [deploying a Git reference](https://vercel.com/docs/git#creating-a-deployment-from-a-git-reference), and [monorepo setup](https://vercel.com/docs/monorepos).
+
+## Project layout and migration history
+
 The pilot shipped in PR #149 at 98e871cc6b20e78b772eed32d39ded5357f33772 on September 6 2026. Both projects retain their domains and now build from n3wth/n3wth.
 
 | Project | Previous source root | Workspace root | Build |
@@ -11,7 +29,7 @@ The pilot shipped in PR #149 at 98e871cc6b20e78b772eed32d39ded5357f33772 on Sept
 | kit | . in n3wth/kit | apps/kit | npm run build |
 | r3 | website in n3wth/r3 | apps/r3-web | npm run build |
 
-All installs use `cd ../.. && npx --yes npm@11.19.1 ci` from the app root with Node 24. Enable access to files outside the app root for workspace packages. Preserve the project identities, domains, environment scopes and API functions. Each source switch follows a verified preview and combined workspace checks.
+Use Node 24 and npm 11.19.1. Portfolio uses a filtered root install for `@n3wth/portfolio`, `@n3wth/ui`, and `@n3wth/site-config`, including root build tooling. Other apps use `cd ../.. && npx --yes npm@11.19.1 ci`; see each app's vercel.json for its commands. Enable access to files outside the app root for workspace packages. Preserve the project identities, domains, environment scopes and API functions. Each source switch follows a verified preview and combined workspace checks.
 
 Before changing settings, export a configuration snapshot containing project IDs, Git source, root, framework, install/build/output settings and deployment IDs. Include environment names/scopes only. Verify the old production deployment remains available.
 
@@ -28,4 +46,4 @@ Rollback: promote the previous deployment for only the affected project and rest
 
 Previous n3wth settings: repository n3wth/n3wth, root null, framework vite, Node 24.x, build/install/output null. Previous ui settings: repository n3wth/ui, root null, framework vite, Node 24.x, build npm run demo, install/output null. Both allow source files outside the app root. Preserve existing environment scopes during rollback.
 
-Current installs use `cd ../.. && npx --yes npm@11.19.1 ci`; portfolio builds with `npm run build`, UI docs with `cd ../.. && npm run build:ui`. Outputs are app-local dist. Each app uses scripts/vercel-ignore.mjs to select deployment from the same affected graph as CI. Missing or invalid comparison history builds safely instead of skipping.
+Portfolio builds the shared UI package before its application; UI docs uses `cd ../.. && npm run build:ui`. Their outputs are app-local dist. Each app uses scripts/vercel-ignore.mjs to select deployment from the same affected graph as CI. Missing or invalid comparison history builds safely instead of skipping.

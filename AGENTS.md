@@ -24,3 +24,9 @@ For shared changes, identify affected consumers and verify them at mobile and de
 Do not redesign the portfolio scene/navigation or upgrade frameworks as part of migration. Preserve routes, redirects, metadata, assets and API behavior. The original feature/contact-form checkout contains unfinished work and must not be reset.
 
 Deployment cutover and rollback are separate from source preparation. See docs/workspace/architecture.md and the Linear Personal sites workspace project. Keep existing projects and domains and verify previews before any production root changes.
+
+## Deployment policy
+
+All six Vercel sites are manual-only, including main. Preserve `git.deploymentEnabled: false` in every app's vercel.json and the site generator. A commit, push, PR, or merge is not a release request. Do not deploy, promote, or enable automatic deployments unless the user requests a release or a deployment-policy change.
+
+Keep GitHub CI enabled. For an authorized release, use the exact tested commit SHA and deploy only the requested affected projects; include shared-package consumers when relevant. Verify the target environment, successful deployment, and live behavior before reporting a release complete. Follow [the deployment runbook](docs/workspace/deployment.md), including its older-branch and rollback guidance. Keep native Vercel unaffected-project skipping enabled as a secondary cost control; it does not authorize a release.
