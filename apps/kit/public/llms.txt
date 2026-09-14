@@ -15,5 +15,7 @@ Download https://kit.n3wth.com/ai/GEMINI.md and merge its component guidance int
 - Components: https://kit.n3wth.com/components
 - Setup: https://kit.n3wth.com/docs/getting-started
 - Context guide: https://kit.n3wth.com/docs/agents
+- Blog: https://kit.n3wth.com/blog
+- RSS feed: https://kit.n3wth.com/feed.xml
 - Source: https://github.com/n3wth/n3wth/tree/main/apps/kit
 - Antigravity context reference: https://antigravity.google/docs/rules-workflows/
