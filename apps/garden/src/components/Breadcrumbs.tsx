@@ -15,7 +15,11 @@ export function Breadcrumbs({ slug }: BreadcrumbsProps) {
     // Prefer the note's real title (sentence case, as written); fall back
     // to a de-hyphenated segment with only its first letter capitalized.
     const dehyphenated = part.replace(/-/g, ' ')
-    const label = note ? note.title : dehyphenated.charAt(0).toUpperCase() + dehyphenated.slice(1)
+    const label = part.toLowerCase() === 'mocs'
+      ? 'Maps of Content'
+      : note
+        ? note.title
+        : dehyphenated.charAt(0).toUpperCase() + dehyphenated.slice(1)
     // Only link segments that exist as notes
     const href = note ? `/${crumbSlug}` : undefined
     return { key: crumbSlug, href, label }
@@ -24,7 +28,6 @@ export function Breadcrumbs({ slug }: BreadcrumbsProps) {
   return (
     <div className="mb-4">
       <AstryxBreadcrumbs variant="supporting">
-        <BreadcrumbItem href="/">Garden</BreadcrumbItem>
         {crumbs.map((crumb) => (
           <BreadcrumbItem key={crumb.key} href={crumb.href}>
             {crumb.label}

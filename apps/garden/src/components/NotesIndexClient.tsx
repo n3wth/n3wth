@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { TextInput } from '@n3wth/ui/primitives'
 import { SegmentedControl, SegmentedControlItem } from '@n3wth/ui/primitives'
@@ -36,6 +36,8 @@ const SORTS: { value: SortKey; label: string }[] = [
   { value: 'connected', label: 'Linked' },
   { value: 'title', label: 'Title' },
 ]
+
+const NOTES_PAGE_SIZE = 40
 
 /* Date only — the Tended sort control names the column, so printing
    "tended" on every one of ~256 rows was ink without information. */
@@ -110,6 +112,8 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
   const [stage, setStage] = useState<GrowthStageType | 'all'>('all')
   const [sort, setSort] = useState<SortKey>('title')
   const [visited, setVisited] = useState<Record<string, number>>({})
+  const [visibleCount, setVisibleCount] = useState(NOTES_PAGE_SIZE)
+  const loadMoreRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setVisited(getVisited())
@@ -139,6 +143,36 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
   }, [notes, query, stage, sort])
 
   const bands = useMemo(() => groupByBand(filtered, sort), [filtered, sort])
+  const visibleBands = useMemo(
+    () => groupByBand(filtered.slice(0, visibleCount), sort),
+    [filtered, sort, visibleCount]
+  )
+  const bandCounts = useMemo(
+    () => new Map(bands.map(({ band, notes: bandNotes }) => [band, bandNotes.length])),
+    [bands]
+  )
+  const hasMore = visibleCount < filtered.length
+
+  useEffect(() => {
+    setVisibleCount(NOTES_PAGE_SIZE)
+  }, [query, stage, sort])
+
+  useEffect(() => {
+    const target = loadMoreRef.current
+    if (!target || !hasMore) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisibleCount((count) => Math.min(count + NOTES_PAGE_SIZE, filtered.length))
+        }
+      },
+      { rootMargin: '600px 0px' }
+    )
+
+    observer.observe(target)
+    return () => observer.disconnect()
+  }, [filtered.length, hasMore])
 
   const filtersActive = query.trim() !== '' || stage !== 'all' || sort !== 'title'
   const resetFilters = () => {
@@ -168,54 +202,56 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
 
   return (
     <div>
-      {/* One row on desktop: search grows, both segmented controls hold
-          their width. whitespace-nowrap keeps segment labels on one line. */}
-      <div className="flex flex-col gap-3 mb-2 lg:flex-row lg:items-center whitespace-nowrap">
-        <div className="w-full lg:flex-1 lg:min-w-0 lg:max-w-sm">
+      <div className="flex flex-col gap-3 mb-2 whitespace-nowrap lg:flex-row lg:items-center">
+        <div className="w-full lg:min-w-0 lg:flex-1">
           <TextInput
+            className="notes-search"
             label="Search notes"
             isLabelHidden
             value={query}
             onChange={setQuery}
             placeholder={`Search ${notes.length} notes…`}
             size="sm"
+            width="100%"
           />
         </div>
-        <SegmentedControl
-          value={stage}
-          onChange={(value) => setStage(value as GrowthStageType | 'all')}
-          label="Filter by growth stage"
-          size="sm"
-        >
-          {STAGES.map((s) => (
-            <SegmentedControlItem key={s.value} value={s.value} label={s.label} />
-          ))}
-        </SegmentedControl>
-        <SegmentedControl
-          value={sort}
-          onChange={(value) => setSort(value as SortKey)}
-          label="Sort notes"
-          size="sm"
-        >
-          {SORTS.map((s) => (
-            <SegmentedControlItem key={s.value} value={s.value} label={s.label} />
-          ))}
-        </SegmentedControl>
-        {filtersActive && (
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="self-start lg:self-auto text-sm text-[var(--color-text-secondary)] underline underline-offset-2 decoration-[var(--color-border-emphasized)] hover:text-[var(--color-text-primary)] transition-colors"
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:flex-wrap lg:flex-none lg:flex-nowrap">
+          <SegmentedControl
+            value={stage}
+            onChange={(value) => setStage(value as GrowthStageType | 'all')}
+            label="Filter by growth stage"
+            size="sm"
           >
-            Reset
-          </button>
-        )}
+            {STAGES.map((s) => (
+              <SegmentedControlItem key={s.value} value={s.value} label={s.label} />
+            ))}
+          </SegmentedControl>
+          <SegmentedControl
+            value={sort}
+            onChange={(value) => setSort(value as SortKey)}
+            label="Sort notes"
+            size="sm"
+          >
+            {SORTS.map((s) => (
+              <SegmentedControlItem key={s.value} value={s.value} label={s.label} />
+            ))}
+          </SegmentedControl>
+          {filtersActive && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="self-start sm:self-auto text-sm text-[var(--color-text-secondary)] underline underline-offset-2 decoration-[var(--color-border-emphasized)] hover:text-[var(--color-text-primary)] transition-colors"
+            >
+              Reset
+            </button>
+          )}
+        </div>
       </div>
-      <p role="status" className="mb-2 text-xs text-[var(--color-text-disabled)]">
-        {filtered.length === notes.length
-          ? `${notes.length} notes`
-          : `${filtered.length} of ${notes.length} notes`}
-      </p>
+      {filtered.length !== notes.length && (
+        <p role="status" className="mb-2 text-xs text-[var(--color-text-disabled)]">
+          {filtered.length} of {notes.length} notes
+        </p>
+      )}
       {exploredHere > 0 && (
         <p className="mb-6 text-xs text-[var(--color-text-disabled)]">
           You&rsquo;ve explored {exploredHere} of {notes.length} — the dimmed rows are where you&rsquo;ve been.
@@ -243,14 +279,14 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
         </div>
       ) : (
         <div>
-          {bands.map(({ band, notes: bandNotes }, bandIndex) => (
+          {visibleBands.map(({ band, notes: bandNotes }, bandIndex) => (
             <section key={band} aria-labelledby={`band-${bandIndex}`}>
               <h2
                 id={`band-${bandIndex}`}
-                className="field-band sticky top-[72px] z-10 flex items-baseline justify-between gap-4 py-2 text-[11px] tracking-[0.08em] text-[var(--color-text-disabled)]"
+                className="field-band sticky top-[72px] z-10 flex items-baseline justify-between gap-4 text-[var(--color-text-disabled)]"
               >
                 <span>{band}</span>
-                <span className="tabular-nums">{bandNotes.length}</span>
+                <span className="tabular-nums">{bandCounts.get(band)}</span>
               </h2>
               <ul className="divide-y divide-[var(--color-border)]">
           {bandNotes.map((note) => {
@@ -262,15 +298,15 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
               >
                 <Link
                   href={`/${note.slug}`}
-                  className="group press flex items-center gap-4 py-3 px-2 -mx-2 rounded-lg hover:bg-[var(--color-overlay-hover)] transition-colors"
+                  className="note-row-link group press"
                 >
-                  <span className={`shrink-0 w-6 flex justify-center ${seen ? 'opacity-70' : ''}`}>
+                  <span className={`note-row-glyph ${seen ? 'opacity-70' : ''}`}>
                     <PlantGlyph slug={note.slug} stage={note.stage} linkCount={note.linkCount} size={30} />
                     <span className="sr-only">{note.stage}</span>
                   </span>
-                  <span className="min-w-0 flex-1">
+                  <span className="note-row-copy">
                     <span
-                      className={`note-row-title block truncate text-sm font-medium transition-colors ${
+                      className={`note-row-title ${
                         seen
                           ? 'text-[var(--color-text-secondary)]'
                           : 'text-[var(--color-text-primary)] group-hover:text-[var(--color-text-accent)]'
@@ -278,11 +314,11 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
                     >
                       {note.title}
                     </span>
-                    <span className="block truncate text-xs text-[var(--color-text-secondary)] mt-0.5">
+                    <span className="note-row-description">
                       {note.description || `${note.stage} · ${note.readingTime}`}
                     </span>
                   </span>
-                  <span className="shrink-0 w-20 text-right text-xs text-[var(--color-text-disabled)] tabular-nums">
+                  <span className="note-row-meta">
                     {metaLabel(note, sort)}
                   </span>
                   <span
@@ -298,6 +334,17 @@ export function NotesIndexClient({ notes }: { notes: NoteListItem[] }) {
               </ul>
             </section>
           ))}
+          {hasMore && (
+            <div ref={loadMoreRef} className="flex justify-center py-8">
+              <button
+                type="button"
+                onClick={() => setVisibleCount((count) => Math.min(count + NOTES_PAGE_SIZE, filtered.length))}
+                className="min-h-11 px-4 text-sm text-[var(--color-text-secondary)] underline underline-offset-4 decoration-[var(--color-border-emphasized)] hover:text-[var(--color-text-primary)] transition-colors"
+              >
+                Load more notes
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

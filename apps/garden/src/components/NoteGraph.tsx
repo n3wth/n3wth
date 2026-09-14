@@ -29,6 +29,7 @@ interface NoteGraphProps {
   edges: GraphEdge[]
   currentSlug?: string
   fullscreen?: boolean
+  interactive?: boolean
   className?: string
 }
 
@@ -47,7 +48,7 @@ interface HoverInfo {
 const monthYearFormat = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' })
 const monthYear = (ms: number) => monthYearFormat.format(ms)
 
-export function NoteGraph({ nodes, edges, currentSlug, fullscreen = false, className }: NoteGraphProps) {
+export function NoteGraph({ nodes, edges, currentSlug, fullscreen = false, interactive = true, className }: NoteGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [hover, setHover] = useState<HoverInfo | null>(null)
@@ -87,6 +88,7 @@ export function NoteGraph({ nodes, edges, currentSlug, fullscreen = false, class
     const container = containerRef.current
     const w = container.clientWidth
     const h = container.clientHeight
+    const localSpread = !fullscreen && w > 500 ? 1.75 : 1
 
     // Zero-link seedlings render as ~8px circles; a 2px transparent hit
     // area is too small to tap reliably, so touch devices get a bigger
@@ -160,7 +162,7 @@ export function NoteGraph({ nodes, edges, currentSlug, fullscreen = false, class
       })
 
     zoomRef.current = zoom
-    svg.call(zoom)
+    if (interactive) svg.call(zoom)
 
     // Initial zoom to fit
     const initialScale = fullscreen ? 0.7 : 0.9
@@ -175,10 +177,10 @@ export function NoteGraph({ nodes, edges, currentSlug, fullscreen = false, class
         .distance((d: any) => {
           const srcLinks = (d.source as GraphNode).linkCount || 1
           const tgtLinks = (d.target as GraphNode).linkCount || 1
-          return 20 + 60 / Math.sqrt(Math.min(srcLinks, tgtLinks))
+          return (20 + 60 / Math.sqrt(Math.min(srcLinks, tgtLinks))) * localSpread
         }))
       .force('charge', d3.forceManyBody()
-        .strength((d: any) => -30 - d.linkCount * 4))
+        .strength((d: any) => (-30 - d.linkCount * 4) * localSpread))
       .force('center', d3.forceCenter(w / 2, h / 2))
       .force('collide', d3.forceCollide((d: any) => getNodeRadius(d) + 2))
       .force('x', d3.forceX(w / 2).strength(0.04))
@@ -345,7 +347,7 @@ export function NoteGraph({ nodes, edges, currentSlug, fullscreen = false, class
         d.fx = null
         d.fy = null
       })
-    nodeAnchor.call(drag as any)
+    if (interactive) nodeAnchor.call(drag as any)
 
     // Labels (semantic zoom controls visibility)
     const label = labelGroup
@@ -441,7 +443,7 @@ export function NoteGraph({ nodes, edges, currentSlug, fullscreen = false, class
     }
 
     return () => { sim.stop() }
-  }, [nodes, edges, currentSlug, fullscreen, getNodeRadius, labelThreshold, labelOpacity])
+  }, [nodes, edges, currentSlug, fullscreen, interactive, getNodeRadius, labelThreshold, labelOpacity])
 
   const handleZoomIn = useCallback(() => {
     if (!svgSelRef.current || !zoomRef.current) return
@@ -466,7 +468,7 @@ export function NoteGraph({ nodes, edges, currentSlug, fullscreen = false, class
 
   return (
     <div ref={containerRef} className={className} style={{ position: 'relative', overflow: 'hidden' }}>
-      <svg ref={svgRef} width="100%" height="100%" style={{ cursor: 'grab' }} />
+      <svg ref={svgRef} width="100%" height="100%" style={{ cursor: interactive ? 'grab' : 'default' }} />
 
       {/* Zoom controls */}
       {fullscreen && (

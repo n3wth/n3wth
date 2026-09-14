@@ -44,8 +44,20 @@ export function MobileToc({ headings }: TableOfContentsProps) {
   if (sections.length === 0) return null
 
   return (
-    <div className="xl:hidden mb-8 max-w-md">
-      <ReadingOutline items={toOutlineItems(sections)} collapsible />
-    </div>
+    <details className="note-toc md:hidden">
+      <summary>
+        <span>On this page</span>
+        <span className="note-toc-count">{sections.length} sections</span>
+      </summary>
+      <nav aria-label="On this page">
+        <ol>
+          {sections.map((section) => (
+            <li key={section.id}>
+              <a href={`#${section.id}`}>{section.text}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </details>
   )
 }
