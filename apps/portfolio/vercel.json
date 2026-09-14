@@ -1,4 +1,5 @@
 {
+  "git": { "deploymentEnabled": false },
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/portfolio",
   "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci --workspace=@n3wth/portfolio --workspace=@n3wth/ui --workspace=@n3wth/site-config --include-workspace-root --no-audit --no-fund",
   "buildCommand": "cd ../.. && npm run build --workspace @n3wth/ui && npm run build --workspace @n3wth/portfolio",
