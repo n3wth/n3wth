@@ -42,7 +42,7 @@ export default function BlogPage() {
                 <SiteHeading variant="item" level={2}>
                   {post.title}
                 </SiteHeading>
-                <time className="mt-2 block text-sm text-ink-faint">
+                <time className="mt-2 block text-sm text-ink-faint" dateTime={post.publishedIso}>
                   {post.date}
                 </time>
                 <p className="mt-3 text-ink-dim">{post.excerpt}</p>
