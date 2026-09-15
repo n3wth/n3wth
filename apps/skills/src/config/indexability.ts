@@ -1,6 +1,6 @@
 import deployment from '../../vercel.json'
 
-// Preserve the deployment policy inherited during workspace migration (#154).
+// Public skills are indexable. Track any explicit deployment exclusions here.
 // Derive IDs from its exact route group so HTML and sitemap cannot drift.
 export const noindexSkillIds = new Set(
   deployment.headers.flatMap(rule => {

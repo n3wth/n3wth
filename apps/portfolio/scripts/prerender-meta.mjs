@@ -393,7 +393,8 @@ const sitemapEntries = [
     })),
   /* Static pages served through Vercel rewrites (vercel.json), not SPA
      routes. They carry a canonical and no noindex, so they belong here.
-     /privacy is deliberately noindex and stays out. */
+     Include all public legal pages. */
+  { loc: `${ORIGIN}/privacy` },
   { loc: `${ORIGIN}/terms` },
   { loc: `${ORIGIN}/consent` },
 ]

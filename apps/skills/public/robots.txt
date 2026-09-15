@@ -1,9 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /playground
-Disallow: /analytics
-Disallow: /requests
 
 # Sitemap
 Sitemap: https://skills.n3wth.com/sitemap.xml

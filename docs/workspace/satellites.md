@@ -21,7 +21,7 @@ All audited checkouts are clean feature branches. Their maintenance commits are 
 ## Skills
 
 - Preserve skill detail paths, bundles, curated bundles, workflows and optional workflow-builder IDs, auth callback, comments/voting/health APIs and static discovery endpoints. Source contains additional routes; generate a complete route manifest before cutover.
-- Committed Vercel settings: npm ci, clean URLs, no trailing slash, temporary `/home` redirect, selected skill noindex headers and site-specific CSP/security headers.
+- Committed Vercel settings: npm ci, clean URLs, no trailing slash, temporary `/home` redirect and site-specific CSP/security headers. All public skills are indexable; the inherited skill exclusions were removed at the owner's request in September 2026.
 - Published UI 0.6.1 dependency differs from newer consumers. Upgrade independently with API and visual checks. Previous implicit sibling UI alias was removed. Legacy Vite scripts remain and must not be deleted without consumer evidence.
 - Supabase/auth and AI integration configuration must be inventoried before migration; do not copy a generic CSP over existing service requirements.
 - Recorded baseline: typecheck/lint, 283 unit tests and build pass.

@@ -118,10 +118,10 @@ export const skills: Skill[] = [
   {
     id: 'skill-creator',
     name: 'Skill Creator',
-    description: 'Guide for creating effective AI coding skills with specialized knowledge, workflows, and tool integrations.',
-    longDescription: 'Create your own skills that extend AI coding assistants. The skill covers structure, best practices, and patterns for building effective skills that provide specialized knowledge and workflows.',
+    description: 'Create reusable AI coding skills with Markdown templates, clear triggers, step-by-step instructions, and validation prompts.',
+    longDescription: 'Create reusable AI coding skills with Markdown templates, clear triggers, step-by-step instructions, and validation prompts. Start with one task, define when the skill should run, and write the steps your assistant should follow. Add an example and test both a matching request and an unrelated request before sharing it. This catalog version provides installation instructions for Antigravity CLI.',
     category: 'development',
-    tags: ['skills', 'gemini', 'automation'],
+    tags: ['skills', 'skill-creator', 'skill template', 'gemini', 'automation'],
     icon: '◈',
     color: 'oklch(0.70 0.15 280)',
     skillFile: `${GITHUB_RAW_BASE}/skill-creator.md`,
@@ -145,7 +145,7 @@ export const skills: Skill[] = [
     samplePrompts: [
       {
         prompt: "Create a skill for React component development",
-        output: "Here's a skill structure for React development:\n\n```markdown\n# React Component Skill\n\n## Trigger Words\n- \"create component\"\n- \"react component\"\n- \"build ui\"\n\n## Instructions\nWhen creating React components:\n1. Use functional components with hooks\n2. Apply TypeScript for type safety\n3. Follow naming conventions (PascalCase)\n4. Include prop types and defaults\n5. Add JSDoc comments for documentation\n\n## Example Output\n```tsx\ninterface ButtonProps {\n  label: string;\n  onClick: () => void;\n  variant?: 'primary' | 'secondary';\n}\n\nexport function Button({ label, onClick, variant = 'primary' }: ButtonProps) {\n  return (\n    <button className={`btn btn-${variant}`} onClick={onClick}>\n      {label}\n    </button>\n  );\n}\n```\n```"
+        output: "Save the following as react-components.md. It defines when to use the skill, what to produce, and how to check the result.\n\n```markdown\n---\nname: React Components\nversion: 1.0.0\ncategory: development\ntags:\n  - react\n  - typescript\ncompatibility:\n  - gemini\n---\n\n# React Components\n\nCreate React components that follow the current project conventions.\n\n## Triggers\n\nUse when asked to create a React component or add a reusable UI control.\n\n## Instructions\n\n1. Read the package manifest and an existing component before writing code.\n2. Define typed props and use the project styling conventions.\n3. Use native HTML controls with accessible names and keyboard support.\n4. Include an example that uses the new component.\n5. Run the project checks and report any failures.\n\n## Validation\n\nTry: Create a button with a label, disabled state, and click handler.\nCheck: The button has an accessible name, responds to keyboard input,\nand cannot be activated while disabled.\n\nTry: Explain how this project handles routing.\nCheck: Do not apply this component-creation workflow to that request.\n```\n\nTest the skill in a fresh conversation with both prompts. Revise any instruction the assistant misses, then repeat the checks."
       }
     ]
   },
