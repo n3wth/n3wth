@@ -9,6 +9,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteUrls.skills
 
   const staticPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/analytics`, changeFrequency: 'weekly', priority: 0.5 },
+    { url: `${baseUrl}/requests`, changeFrequency: 'weekly', priority: 0.5 },
+    { url: `${baseUrl}/playground`, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${baseUrl}/workflows/new`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/contact`, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${baseUrl}/request-skill`, changeFrequency: 'monthly', priority: 0.5 },
     {

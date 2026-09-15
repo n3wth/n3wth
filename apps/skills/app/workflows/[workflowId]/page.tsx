@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (workflowId === 'new') {
     return {
       title: 'Create AI Workflow — Visual Skill Builder',
-      robots: { index: false, follow: true },
+      robots: { index: true, follow: true },
       description:
         'Build custom AI workflows by chaining skills together. Create automated sequences combining research, writing, and document creation.',
       alternates: { canonical: 'https://skills.n3wth.com/workflows/new' },
