@@ -24,14 +24,14 @@ test('install command reports clipboard success and failure honestly', async ({ 
     } })
   })
   await page.getByRole('button', { name: 'Copy install command', exact: true }).click()
-  await expect(page.getByRole('status')).toHaveText('Command copied. Run it in your terminal to install.')
+  await expect(page.getByRole('status').filter({ hasText: 'Command copied.' })).toHaveText('Command copied. Run it in your terminal to install.')
   await page.evaluate(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
       writeText: async () => { throw new Error('Clipboard unavailable') },
     } })
   })
   await page.getByRole('button', { name: 'Copy install command', exact: true }).click()
-  await expect(page.getByRole('status')).toHaveText('Copy failed. Select the command and copy it manually.')
+  await expect(page.getByRole('status').filter({ hasText: 'Copy failed.' })).toHaveText('Copy failed. Select the command and copy it manually.')
 })
 
 for (const route of ['/', '/skill/pdf', '/about', '/bundles']) {
@@ -41,7 +41,10 @@ for (const route of ['/', '/skill/pdf', '/about', '/bundles']) {
     const response = await page.goto(route)
     expect(response?.ok()).toBe(true)
     await expect(page.locator('h1').first()).toBeVisible()
-    await expect(page.locator('nav').first()).toBeVisible()
+    const toggle = page.locator('.n3wth-site-navigation-toggle')
+    if (await toggle.isVisible()) await toggle.click()
+    await expect(page.getByRole('navigation', { name: 'Primary' })).toBeVisible()
+    if (await toggle.isVisible()) await toggle.click()
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
     if (route === '/') await page.screenshot({ path: testInfo.outputPath('skills-home.png') })
     expect(errors).toEqual([])
