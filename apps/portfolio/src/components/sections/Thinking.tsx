@@ -15,7 +15,7 @@ export function Thinking() {
       <SectionHeader
         as="h1"
         title="What building this taught me"
-        lede="Each piece started as a bug or a tradeoff from building this site."
+        lede="Working notes on agents, systems, and shipping."
       />
 
       <ThinkingIndex pieces={registeredPieces} />
@@ -51,11 +51,8 @@ export function Thinking() {
                 {piece.insights.map((insight, idx) => (
                   <p
                     key={idx}
-                    className="text-sm md:text-base leading-relaxed pl-5"
-                    style={{
-                      color: 'var(--ink-dim)',
-                      borderLeft: '1px solid var(--rail)',
-                    }}
+                    className="text-sm md:text-base leading-relaxed"
+                    style={{ color: 'var(--ink-dim)' }}
                   >
                     {insight}
                   </p>

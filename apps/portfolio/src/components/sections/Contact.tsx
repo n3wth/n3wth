@@ -27,23 +27,39 @@ export function Contact() {
       </VisualBand>
 
       <div className="frame w-full">
-        <PageHeader className="site-content-gutter" title="Let's talk" description="Product, AI safety, or LED art. Coffee if you're in San Francisco." actions={<>
+        <PageHeader
+          className="site-content-gutter"
+          title="Let's talk"
+          description="Product, AI safety, or LED art. Coffee if you're in San Francisco."
+          actions={
+            <>
               <Button
                 label={siteConfig.email}
                 variant="primary"
+                size="md"
                 href={`mailto:${siteConfig.email}`}
                 endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
               />
-              <button type="button" className="btn min-h-11" onClick={copyEmail}>
-                Copy email
-              </button>
-              <a className="btn min-h-11" href={siteConfig.social.linkedin} rel="me noopener">
-                LinkedIn
-              </a>
-        </>} />
-            <p role="status" aria-live="polite" aria-atomic="true" className="site-content-gutter min-h-6 text-sm" style={{ color: 'var(--ink-dim)' }}>
-              {copyStatus}
-            </p>
+              <Button label="Copy email" variant="secondary" size="md" clickAction={copyEmail} />
+              <Button
+                label="LinkedIn"
+                variant="secondary"
+                size="md"
+                href={siteConfig.social.linkedin}
+                rel="me noopener"
+              />
+            </>
+          }
+        />
+        <p
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="site-content-gutter min-h-6 text-sm"
+          style={{ color: 'var(--ink-dim)' }}
+        >
+          {copyStatus}
+        </p>
       </div>
     </section>
   )

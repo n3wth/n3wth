@@ -1,8 +1,26 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { N3wthProvider, PageHeader, SiteContainer, SiteFooter, SiteHeading, SiteNavigation, SiteSection, SiteText, n3wthTheme } from './index'
+import { N3wthProvider, PageHeader, SiteContainer, SiteDocSection, SiteDocList, SiteFooter, SiteHeading, SiteNavigation, SiteSection, SiteText, n3wthTheme } from './index'
 import { generateThemeCSS } from '@astryxdesign/core/theme'
 
 describe('shared site composition', () => {
+
+  it('stacks doc sections with shared rhythm classes', () => {
+    const { container } = render(
+      <N3wthProvider>
+        <SiteSection>
+          <SiteDocSection title="Overview">
+            <SiteText variant="lede">Lead copy</SiteText>
+            <SiteDocList items={['One', 'Two']} />
+          </SiteDocSection>
+          <SiteText className="n3wth-site-doc-meta">Last updated</SiteText>
+        </SiteSection>
+      </N3wthProvider>,
+    )
+    expect(container.querySelector('.n3wth-site-doc-section')).not.toBeNull()
+    expect(container.querySelector('.n3wth-site-text--lede')).not.toBeNull()
+    expect(container.querySelector('.n3wth-site-doc-list')).not.toBeNull()
+    expect(container.querySelector('.n3wth-site-doc-meta')).not.toBeNull()
+  })
   it('preserves the document outline and native action links', () => {
     render(<N3wthProvider><SiteContainer as="main"><PageHeader title="Work" description="Selected projects" actions={<a href="/resume.pdf">Resume (PDF)</a>} /><SiteSection aria-labelledby="projects"><SiteHeading id="projects">Projects</SiteHeading><SiteHeading variant="item" level={4}>Nested project</SiteHeading><SiteText variant="supporting">Independent work</SiteText></SiteSection></SiteContainer></N3wthProvider>)
     expect(screen.getByRole('main')).toContainElement(screen.getByRole('heading', { name: 'Work', level: 1 }))

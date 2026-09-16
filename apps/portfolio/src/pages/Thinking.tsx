@@ -13,25 +13,21 @@ interface GardenNote {
   date: string
 }
 
-/* Real thinking, in progress: the most recently tended notes from the
-   garden, snapshotted at build time (scripts/fetch-garden-notes.mjs).
-   Nothing invented — if the feed is down, the last committed snapshot
-   ships. */
-function TendedRecently() {
+/* Recent garden notes, snapshotted at build time
+   (scripts/fetch-garden-notes.mjs). If the feed is down, the last
+   committed snapshot ships. */
+function GardenNotes() {
   const notes = (gardenNotes as GardenNote[]).slice(0, 4)
   if (notes.length === 0) return null
   return (
-    <section aria-label="Recently tended garden notes" className="frame">
+    <section aria-label="Garden notes" className="frame">
       <div className="section-pad">
-        <p className="text-xs tracking-wide" style={{ color: 'var(--ink-label)' }}>
-          Tended recently
-        </p>
-        <p className="mt-3 max-w-xl text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-          Positions come from somewhere. These are the working notes — live from{' '}
+        <p className="max-w-xl text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+          Recent notes from{' '}
           <a href="https://garden.n3wth.com" className="link-underline" style={{ color: 'var(--ink)' }}>
             the garden
           </a>
-          , still growing.
+          .
         </p>
         <ul className="mt-10 grid gap-x-10 gap-y-8 md:grid-cols-2">
           {notes.map((n) => (
@@ -75,7 +71,7 @@ export default function ThinkingPage() {
       <VisualBand height="clamp(220px, 42svh, 420px)">
         <ForkLight />
       </VisualBand>
-      <TendedRecently />
+      <GardenNotes />
     </>
   )
 }
