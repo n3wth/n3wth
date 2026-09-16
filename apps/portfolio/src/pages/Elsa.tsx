@@ -294,28 +294,20 @@ export default function Elsa() {
             n3wth.com without texting Elsa. Consent to receive messages is voluntary and is not
             required to browse the site, contact Oliver, or use other n3wth.com services.
           </Prose>
-          <div
-            className="mt-5 rounded-lg border p-4"
-            style={{
-              borderColor: 'var(--rail-strong)',
-              background: 'color-mix(in srgb, var(--ink) 4%, transparent)',
-            }}
-          >
-            <SiteText variant="body" style={{ color: 'var(--ink)' }}>
-              By texting +1 (415) 718-0992 or +1 (415) 360-0751 or otherwise opting in, you agree to
-              receive automated SMS messages from Elsa (n3wth.com / Oliver Newth). Message frequency
-              varies. Message and data rates may apply. Reply STOP to opt out. Consent is not a
-              condition of purchase. Reply HELP for help. See{' '}
-              <RouterLink href="/privacy" className="link-underline">
-                Privacy Policy
-              </RouterLink>{' '}
-              and{' '}
-              <RouterLink href="/terms" className="link-underline">
-                Terms of Service
-              </RouterLink>
-              .
-            </SiteText>
-          </div>
+          <Prose>
+            By texting +1 (415) 718-0992 or +1 (415) 360-0751 or otherwise opting in, you agree to
+            receive automated SMS messages from Elsa (n3wth.com / Oliver Newth). Message frequency
+            varies. Message and data rates may apply. Reply STOP to opt out. Consent is not a
+            condition of purchase. Reply HELP for help. See{' '}
+            <RouterLink href="/privacy" className="link-underline">
+              Privacy Policy
+            </RouterLink>{' '}
+            and{' '}
+            <RouterLink href="/terms" className="link-underline">
+              Terms of Service
+            </RouterLink>
+            .
+          </Prose>
         </Section>
 
         <Section title="Privacy">
