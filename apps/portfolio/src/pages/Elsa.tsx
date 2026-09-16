@@ -5,9 +5,9 @@ import { RouterLink } from '../components/RouterLink'
 
 const TITLE = 'Elsa · SMS Messaging Consent'
 const DESCRIPTION =
-  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992 and +1 (415) 360-0751."
+  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (424) 667-2214 and +1 (415) 360-0751."
 
-const PRIMARY_SMS = 'sms:+14157180992'
+const PRIMARY_SMS = 'sms:+14246672214'
 const ALT_SMS = 'sms:+14153600751'
 
 const FEATURES = [
@@ -20,7 +20,7 @@ const FEATURES = [
 const NUMBERS = [
   {
     label: 'Main line',
-    display: '+1 (415) 718-0992',
+    display: '+1 (424) 667-2214',
     href: PRIMARY_SMS,
     copy: 'Preferred number. Same Elsa assistant. Tap to open Messages and send START, HELLO, or any first message.',
     buttonLabel: 'Text Elsa',
@@ -92,7 +92,7 @@ export default function Elsa() {
             A personal AI assistant in your texts.
           </SiteText>
           <div className="n3wth-site-actions elsa-hero-actions">
-            <Button label="+1 (415) 718-0992" variant="primary" size="md" href={PRIMARY_SMS} />
+            <Button label="+1 (424) 667-2214" variant="primary" size="md" href={PRIMARY_SMS} />
             <Button label="+1 (415) 360-0751" variant="secondary" size="md" href={ALT_SMS} />
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function Elsa() {
           <SiteText>
             There is no website signup form, phone number field, or SMS consent checkbox on
             n3wth.com. Consumers opt in only by voluntarily texting{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (424) 667-2214</strong> or{' '}
             <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> after reading this
             page. SMS is optional and is not required to use n3wth.com.
           </SiteText>
@@ -164,7 +164,7 @@ export default function Elsa() {
         <SiteDocSection title="What you will get">
           <SiteText>
             By opting in, you consent to receive automated SMS (and MMS when needed) from{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (424) 667-2214</strong> or{' '}
             <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong>, including:
           </SiteText>
           <SiteDocList
@@ -194,7 +194,7 @@ export default function Elsa() {
                   <>
                     Text{' '}
                     <a href={PRIMARY_SMS} className="link-underline">
-                      +1 (415) 718-0992
+                      +1 (424) 667-2214
                     </a>{' '}
                     or{' '}
                     <a href={ALT_SMS} className="link-underline">
@@ -237,7 +237,7 @@ export default function Elsa() {
             required to browse the site, contact Oliver, or use other n3wth.com services.
           </SiteText>
           <SiteText>
-            By texting +1 (415) 718-0992 or +1 (415) 360-0751 or otherwise opting in, you agree to
+            By texting +1 (424) 667-2214 or +1 (415) 360-0751 or otherwise opting in, you agree to
             receive automated SMS messages from Elsa (n3wth.com / Oliver Newth). Message frequency
             varies. Message and data rates may apply. Reply STOP to opt out. Consent is not a
             condition of purchase. Reply HELP for help. See{' '}
