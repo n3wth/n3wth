@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { MessageSquare } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
 import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
@@ -126,13 +125,8 @@ export default function Elsa() {
             Personal AI assistant over SMS for Oliver Newth on n3wth.com.
           </SiteText>
           <div className="n3wth-site-actions elsa-hero-actions">
-            <Button
-              label="+1 (415) 718-0992"
-              variant="primary"
-              href={PRIMARY_SMS}
-              endContent={<MessageSquare size={16} strokeWidth={1.5} aria-hidden="true" />}
-            />
-            <Button label="+1 (415) 360-0751" variant="secondary" href={ALT_SMS} />
+            <Button label="+1 (415) 718-0992" variant="primary" size="md" href={PRIMARY_SMS} />
+            <Button label="+1 (415) 360-0751" variant="secondary" size="md" href={ALT_SMS} />
           </div>
         </div>
       </header>
@@ -148,8 +142,7 @@ export default function Elsa() {
             {FEATURES.map((feature) => (
               <li
                 key={feature.title}
-                className="border-t pt-4"
-                style={{ borderColor: 'var(--rail-strong)' }}
+                className="pt-1"
               >
                 <SiteHeading variant="item" level={3}>
                   {feature.title}
@@ -178,8 +171,7 @@ export default function Elsa() {
             {NUMBERS.map((number) => (
               <li
                 key={number.display}
-                className="border-t pt-4"
-                style={{ borderColor: 'var(--rail-strong)' }}
+                className="pt-1"
               >
                 <SiteText variant="supporting" as="div" className="elsa-number-label">
                   {number.label}
@@ -195,13 +187,9 @@ export default function Elsa() {
                 <Button
                   label={number.buttonLabel}
                   variant={number.variant}
+                  size="md"
                   href={number.href}
-                  className="mt-3"
-                  endContent={
-                    number.variant === 'primary' ? (
-                      <MessageSquare size={16} strokeWidth={1.5} aria-hidden="true" />
-                    ) : undefined
-                  }
+                  className="mt-4"
                 />
               </li>
             ))}
@@ -323,8 +311,8 @@ export default function Elsa() {
         <SiteText
           variant="supporting"
           as="p"
-          className="mt-10 border-t pt-4"
-          style={{ borderColor: 'var(--rail-strong)', color: 'var(--ink-label)' }}
+          className="mt-12"
+          style={{ color: 'var(--ink-label)' }}
         >
           Last updated September 2026
         </SiteText>
