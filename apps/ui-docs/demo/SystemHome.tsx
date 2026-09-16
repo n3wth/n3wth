@@ -1,37 +1,37 @@
-import { useState } from 'react'
-import { Button } from '@n3wth/ui/primitives'
 import { Link } from 'react-router'
 import { PageHeader, SiteContainer, SiteSection, SiteHeading, SiteText, SiteFooter } from '@n3wth/ui/site'
 import { siteUrls } from '@n3wth/site-config'
 import { SiteNav } from './SiteNav'
 import { docPageMeta } from './docPages'
-import { CodeSnippet } from './sections/CodeSnippet'
+import { SystemGarden } from './SystemGarden'
 import { SEO, JsonLdWebSite } from './SEO'
 
 const layers = [
-  { name: 'Sites', href: 'https://github.com/n3wth/n3wth/tree/main/apps', description: 'Content and product logic.' },
-  { name: '@n3wth/ui', href: 'https://github.com/n3wth/n3wth/tree/main/packages/ui', description: 'Shared theme and page components.' },
-  { name: 'Astryx', href: 'https://github.com/facebook/astryx', description: 'External primitives and interactions.' },
+  { name: 'Sites', href: 'https://github.com/n3wth/n3wth/tree/main/apps', description: 'Your content, routes and ideas. The part that makes each site its own.' },
+  { name: '@n3wth/ui', href: 'https://github.com/n3wth/n3wth/tree/main/packages/ui', description: 'Type, colour and page compositions. A common foundation across the family.' },
+  { name: 'Astryx', href: 'https://github.com/facebook/astryx', description: 'The controls underneath, with native interactions and keyboard behaviour.' },
 ]
 
 export function SystemHome() {
-  const [count, setCount] = useState(0)
   return <>
-    <SEO title="n3wth/ui design system" description="Shared components and styles, built on Astryx." path="/" />
+    <SEO title="n3wth/ui design system" description="A shared foundation for individual ideas. Explore typography, components and page patterns built on Astryx." path="/" />
     <JsonLdWebSite />
-    <a
-      href="#main-content"
-      className="sr-only focus:not-sr-only focus:absolute focus:top-20 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--color-accent)] focus:text-[var(--color-bg)] focus:rounded-lg focus:outline-none"
-      aria-label="Skip to main content"
-    >
-      Skip to main content
-    </a>
+    <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-20 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--color-accent)] focus:text-[var(--color-bg)] focus:rounded-lg focus:outline-none" aria-label="Skip to main content">Skip to main content</a>
     <SiteNav />
     <SiteContainer as="main" id="main-content" tabIndex={-1} className="n3wth-site-main">
-      <PageHeader title="n3wth/ui design system" description="Shared components and styles, built on Astryx." actions={<Link to="/docs/getting-started">Get started</Link>} />
+      <PageHeader
+        title="Make room for your next idea."
+        description="A shared foundation for individual sites. Thoughtful type, useful controls and space for your content to lead."
+        actions={<Link to="/docs/getting-started">Get started</Link>}
+        className="system-home-header"
+      />
+      <SystemGarden />
       <SiteSection aria-labelledby="documentation">
-        <SiteHeading id="documentation">Documentation</SiteHeading>
-        <ul className="system-docs">
+        <div className="system-section-intro">
+          <SiteHeading id="documentation">Start with what you need.</SiteHeading>
+          <SiteText>No new visual language to invent. Just the parts that help you build.</SiteText>
+        </div>
+        <ul className="system-docs system-docs-home">
           {docPageMeta.map(page => <li key={page.slug}>
             <SiteHeading variant="item"><Link to={`/docs/${page.slug}`}>{page.title}</Link></SiteHeading>
             <SiteText variant="supporting">{page.description}</SiteText>
@@ -39,73 +39,14 @@ export function SystemHome() {
         </ul>
       </SiteSection>
       <SiteSection aria-labelledby="architecture">
-        <SiteHeading id="architecture">Built in three layers</SiteHeading>
+        <SiteHeading id="architecture">One foundation. Different possibilities.</SiteHeading>
         <ol className="system-layers">
           {layers.map(layer => <li key={layer.name}>
             <SiteHeading variant="item"><a href={layer.href}>{layer.name}</a></SiteHeading>
             <SiteText variant="supporting">{layer.description}</SiteText>
           </li>)}
         </ol>
-      </SiteSection>
-      <SiteSection aria-labelledby="imports">
-        <SiteHeading id="imports">Choose the right entry point</SiteHeading>
-        <div className="system-table-wrap"><table className="system-table">
-          <thead><tr><th scope="col">You need</th><th scope="col">Import</th><th scope="col">Owner</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">A consistent page</th><td><code>@n3wth/ui/site</code></td><td>UI</td></tr>
-            <tr><th scope="row">A native control</th><td><code>@n3wth/ui/primitives</code></td><td>Astryx API, exposed by UI</td></tr>
-            <tr><th scope="row">Theme and fonts</th><td><code>@n3wth/ui/site.css</code></td><td>UI</td></tr>
-            <tr><th scope="row">Tailwind theme bridge</th><td><code>@n3wth/ui/tailwind-theme.css</code></td><td>Astryx tokens, exposed by UI</td></tr>
-            <tr><th scope="row">An existing component API</th><td><code>@n3wth/ui</code></td><td>UI compatibility layer</td></tr>
-          </tbody>
-        </table></div>
-        <SiteText variant="supporting">These paths describe the current workspace. Check a published package’s exports before using them outside this repository.</SiteText>
-      </SiteSection>
-      <SiteSection aria-labelledby="compose">
-        <SiteHeading id="compose">Compose a page once</SiteHeading>
-        <SiteText className="system-intro">This site uses the same navigation, page header, sections and footer as the rest of the family. Start from those components and add your content.</SiteText>
-        <CodeSnippet code={`import {
-  N3wthProvider, SiteNavigation, SiteContainer,
-  PageHeader, SiteSection, SiteHeading, SiteText, SiteFooter,
-} from '@n3wth/ui/site'
-import '@n3wth/ui/site.css'
-
-export function App() {
-  return <N3wthProvider mode="dark">
-    <SiteNavigation brand={<a href="/">My site</a>}
-      links={<a href="#work">Work</a>} />
-    <SiteContainer as="main" className="n3wth-site-main">
-      <PageHeader title="A useful idea" description="What it helps people do." />
-      <SiteSection id="work">
-        <SiteHeading>How it works</SiteHeading>
-        <SiteText>Your content goes here.</SiteText>
-      </SiteSection>
-    </SiteContainer>
-    <SiteFooter />
-  </N3wthProvider>
-}`} />
-      </SiteSection>
-      <SiteSection aria-labelledby="primitive">
-        <SiteHeading id="primitive">Astryx behavior, shared brand</SiteHeading>
-        <SiteText className="system-intro">This control is imported from the primitives facade. Its click state belongs to this page; its control implementation comes from Astryx and its appearance uses the Newth theme.</SiteText>
-        <div className="system-primitive-demo">
-          <Button onClick={() => setCount(value => value + 1)}>Try the primitive</Button>
-          <SiteText variant="supporting" role="status" aria-label="Primitive activation">Activated {count} {count === 1 ? 'time' : 'times'}</SiteText>
-        </div>
-        <CodeSnippet code={`import { Button } from '@n3wth/ui/primitives'
-
-<Button onClick={() => setCount(value => value + 1)}>
-  Try the primitive
-</Button>`} />
-      </SiteSection>
-      <SiteSection aria-labelledby="changes">
-        <SiteHeading id="changes">Make the change where it belongs</SiteHeading>
-        <ul className="system-guidance">
-          <li><strong>A new idea or route:</strong> change the site. Keep navigation links and product state there.</li>
-          <li><strong>A font, spacing or page pattern:</strong> change UI, then check every consuming site.</li>
-          <li><strong>A control’s keyboard behavior:</strong> use the Astryx primitive. Keep compatibility mapping in UI, rather than duplicating the behavior in an app.</li>
-        </ul>
-        <div className="n3wth-site-actions"><Link to="/docs/theming">Theme and typography</Link><Link to="/docs/components">Component boundaries</Link></div>
+        <div className="system-source-note"><SiteText variant="supporting">These examples use the workspace package. Check the published exports before using them outside this repository.</SiteText></div>
       </SiteSection>
     </SiteContainer>
     <SiteFooter sourceHref="https://github.com/n3wth/n3wth/tree/main/packages/ui" legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
