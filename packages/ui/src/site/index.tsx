@@ -51,7 +51,7 @@ export function SiteText({ variant = 'body', as = 'p', className, children, ...p
 }
 
 /** Titled stack for long-form / legal pages. Rhythm lives in site.css. */
-export interface SiteDocSectionProps extends HTMLAttributes<HTMLElement> {
+export interface SiteDocSectionProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   title?: ReactNode
   level?: 2 | 3
 }
