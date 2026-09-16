@@ -128,8 +128,10 @@ const routes = [
       "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992 (Telnyx) and +1 (415) 360-0751 (Twilio).",
     ogImage: '/og-image.png',
     body: `
-      <h1>Elsa — SMS Messaging Consent</h1>
-      <p>Last updated: September 2026</p>
+      <img src="https://r2.n3wth.com/email/marks/elsa-mark.png?v=3" alt="" width="64" height="64" style="display:block;margin:0 auto 1.25rem;border-radius:9999px" />
+      <h1>Elsa</h1>
+      <p>Personal AI assistant over SMS for Oliver Newth on n3wth.com. Text for help with email, scheduling, purchases, and other tasks Oliver authorizes.</p>
+      <p>SMS messaging consent · Last updated September 2026</p>
       <h2>About Elsa</h2>
       <p>Elsa is Oliver Newth's personal AI assistant for n3wth.com. People text Elsa at <strong>+1 (415) 718-0992</strong> (Telnyx, primary) or <strong>+1 (415) 360-0751</strong> (Twilio, alternate).</p>
       <h2>What messages you may receive</h2>
