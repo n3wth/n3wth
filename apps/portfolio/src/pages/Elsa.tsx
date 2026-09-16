@@ -89,6 +89,21 @@ export default function Elsa() {
           </Prose>
         </Section>
 
+
+        <Section title="How opt-in works (no web form)">
+          <BulletList
+            items={[
+              <>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com.</>,
+              <>
+                Consumers opt in only by voluntarily texting{' '}
+                <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or{' '}
+                <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> after reading this page.
+              </>,
+              <>SMS is optional and is not required to use n3wth.com.</>,
+            ]}
+          />
+        </Section>
+
         <Section title="How to opt in">
           <Prose>
             You opt in by texting <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or{' '}

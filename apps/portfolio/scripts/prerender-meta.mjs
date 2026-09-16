@@ -134,6 +134,8 @@ const routes = [
       <p>Elsa is Oliver Newth's personal AI assistant for n3wth.com. People text Elsa at <strong>+1 (415) 718-0992</strong> (Telnyx, primary) or <strong>+1 (415) 360-0751</strong> (Twilio, alternate).</p>
       <h2>What messages you may receive</h2>
       <p>Automated SMS/MMS for assistant conversations, verification codes, transactional notices, and service notices. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
+      <h2>How opt-in works (no web form)</h2>
+      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting +1 (415) 718-0992 or +1 (415) 360-0751 after reading this page. SMS is optional and is not required to use n3wth.com.</p>
       <h2>Opt in / opt out</h2>
       <p>Opt in by texting +1 (415) 718-0992 or +1 (415) 360-0751. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <p>We do not sell or share mobile numbers with third parties or affiliates for their marketing.</p>`,
