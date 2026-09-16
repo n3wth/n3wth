@@ -138,9 +138,19 @@ const routes = [
       </div>
       <h2>What Elsa does</h2>
       <p>Elsa is the personal AI assistant product name for messaging operated by Oliver Newth (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other tasks Oliver authorizes, over a simple text thread.</p>
+      <ul>
+        <li><strong>Email</strong>: Draft, triage, and follow up when Oliver asks.</li>
+        <li><strong>Scheduling</strong>: Coordinate times and reminders over SMS.</li>
+        <li><strong>Purchases</strong>: Run authorized buys and status updates.</li>
+        <li><strong>Tasks</strong>: Anything else Oliver greenlights for Elsa.</li>
+      </ul>
       <h2>How to text her</h2>
       <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>+1 (415) 718-0992</strong> (Telnyx, primary) or <strong>+1 (415) 360-0751</strong> (Twilio, alternate) after reading this page. SMS is optional and is not required to use n3wth.com.</p>
-      <p>Primary (Telnyx): <a href="sms:+14157180992">+1 (415) 718-0992</a>. Alternate (Twilio): <a href="sms:+14153600751">+1 (415) 360-0751</a>. Send START, HELLO, or any first message. Or give Oliver / Elsa your mobile number and clearly agree to receive texts from either Elsa SMS line for assistant and transactional purposes.</p>
+      <ul>
+        <li>Primary (Telnyx): <a href="sms:+14157180992">+1 (415) 718-0992</a>. Send START, HELLO, or any first message.</li>
+        <li>Alternate (Twilio): <a href="sms:+14153600751">+1 (415) 360-0751</a>. Backup line for the same Elsa assistant.</li>
+      </ul>
+      <p>Or give Oliver / Elsa your mobile number and clearly agree to receive texts from either Elsa SMS line for assistant and transactional purposes.</p>
       <h2>What you will get</h2>
       <p>By opting in, you consent to receive automated SMS (and MMS when needed) from +1 (415) 718-0992 or +1 (415) 360-0751, including two-way assistant conversations, account and verification codes when Elsa is completing a task for Oliver that requires SMS OTP, transactional notices about tasks Elsa is running, and occasional service notices about the Elsa / n3wth assistant line. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
       <h2>Opt in and opt out</h2>
