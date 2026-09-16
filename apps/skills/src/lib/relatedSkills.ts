@@ -4,7 +4,7 @@ export function getRelatedSkills(currentSkill: Skill, allSkills: Skill[], limit:
   const byId = new Map(allSkills.map(skill => [skill.id, skill]))
   const pinned = (currentSkill.relatedSkillIds ?? [])
     .map(id => byId.get(id))
-    .filter((skill): skill is Skill => Boolean(skill) && skill.id !== currentSkill.id)
+    .filter((item): item is Skill => item !== undefined && item.id !== currentSkill.id)
 
   if (pinned.length >= limit) return pinned.slice(0, limit)
 
