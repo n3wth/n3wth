@@ -699,8 +699,8 @@ body {
   animation: elsa-slash 6s ease-in-out infinite;
 }
 
-/* Only when Elsa mark precedes copy — avoid other page headers */
-.elsa-hero-mark + .n3wth-site-page-header-copy {
+/* Elsa-only hero copy stack (avoid shared .n3wth-site-* selectors in app CSS) */
+.elsa-hero-mark + .elsa-hero-copy {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -708,7 +708,7 @@ body {
   width: 100%;
 }
 
-.elsa-hero-mark + .n3wth-site-page-header-copy .n3wth-site-description {
+.elsa-hero-copy .elsa-hero-description {
   margin-top: 0;
 }
 
