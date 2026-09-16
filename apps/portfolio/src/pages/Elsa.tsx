@@ -50,12 +50,29 @@ export default function Elsa() {
 
   return (
     <section aria-label="Elsa SMS messaging consent">
-      <PageHeader
-        data-reveal
-        className="site-content-gutter mx-auto max-w-3xl"
-        title="Elsa — SMS Messaging Consent"
-        description={<>Last updated: September 2026</>}
-      />
+      <div data-reveal className="site-content-gutter mx-auto max-w-3xl">
+        <img
+          src="https://r2.n3wth.com/email/marks/elsa-mark.png?v=3"
+          alt=""
+          width={64}
+          height={64}
+          className="mb-5"
+          style={{ display: 'block', marginInline: 'auto', borderRadius: '9999px' }}
+        />
+        <PageHeader
+          align="center"
+          title="Elsa"
+          description={
+            <>
+              Personal AI assistant over SMS for Oliver Newth on n3wth.com. Text for help with
+              email, scheduling, purchases, and other tasks Oliver authorizes.
+              <span className="mt-3 block">
+                SMS messaging consent · Last updated September 2026
+              </span>
+            </>
+          }
+        />
+      </div>
 
       <SiteSection data-reveal className="site-content-gutter mx-auto max-w-3xl">
         <Section title="About Elsa">
