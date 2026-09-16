@@ -1,44 +1,63 @@
 ---
-title: Tomatoes Self Pollinate
-description: Understanding tomato pollination for better fruit production
+title: Are Tomatoes Self-Pollinating?
+description: Yes. Tomato plants are self-pollinating: each flower has male and female parts. How tomatoes pollinate, why fruit still fails, and when to help.
 tags: [gardening, tomatoes, pollination]
 ---
 
-# Tomatoes Self Pollinate
+# Are Tomatoes Self-Pollinating?
 
-Tomatoes are self-pollinating plants, meaning each flower contains both male and female parts. However, they still benefit from assistance to ensure successful pollination, especially when growing indoors or in greenhouses.
+Yes. Tomatoes are self-pollinating plants. Each flower has both male parts (stamens that shed pollen) and a female part (the stigma and ovary that become the fruit). A single plant can set fruit without another variety nearby.
 
-## How Tomato Pollination Works
+That is the short answer to "are tomatoes self pollinating" and "are tomato plants self pollinating." The longer answer is that self-fertile is not the same as "pollination happens by itself with no help." Pollen still has to move a short distance from the anthers onto the stigma.
 
-### Natural Process
+## Are tomato plants self pollinating?
 
-- Wind and vibrations naturally shake pollen from anthers to stigma
-- Outdoor plants benefit from breeze and pollinator activity
-- Indoor plants may need human intervention
+Yes. A tomato plant does not need a second plant or a different variety in order to set fruit. Pollen from the same flower is enough. Isolation, containers, and indoor grow lights do not change that; they only change whether the flower gets shaken enough for pollen to land.
 
-### Manual Pollination Techniques
+## Do tomatoes self pollinate?
 
-- **Electric toothbrush method**: Gently vibrate the flower stems to release pollen into the ovary
-- **Gentle shaking**: Tap or shake the plant gently each day
-- **Small paintbrush**: Transfer pollen between flowers manually
-- **Best timing**: Mid-morning when humidity is moderate
+They do. Tomato flowers are perfect flowers: pollen from the same flower can fertilize that flower's ovary. You do not need a second plant, and you do not need bees, for fruit to form.
 
-## Why Assist Pollination?
+They are not wind-pollinated in the way corn is. The pollen is heavier and sticky. Outdoors, a breeze, a passing bee, or the plant shaking is usually enough. Indoors and in still greenhouses, flowers often open and drop without ever receiving pollen.
 
-1. **Increased fruit set**: More flowers develop into fruit
-2. **Better fruit quality**: Fully pollinated flowers produce larger, more uniform tomatoes
-3. **Essential indoors**: No natural wind or pollinators
-4. **Greenhouse necessity**: Limited air movement
+## How do tomatoes pollinate?
 
-## Tips for Success
+1. A flower opens. The anthers form a cone around the stigma.
+2. Ripe pollen sheds inside that cone.
+3. Vibration or a light knock sends pollen onto the stigma.
+4. If the stigma is receptive, pollen tubes grow and the ovary starts to swell into a tomato.
 
-- Pollinate every 2-3 days during flowering
-- Focus on newly opened flowers
-- Avoid over-vibrating which can damage flowers
-- Maintain 40-70% humidity for optimal pollen release
+Wind and insect visits help by shaking the flower. Buzz-pollinating bees (bumblebees especially) are good at this, but they are a bonus, not a requirement. The plant is doing most of the work; the shake is what finishes the job.
+
+Best window: mid-morning, once the flower is fully open and humidity is not so high that pollen clumps.
+
+## Why fruit still fails on self-pollinating plants
+
+Self-pollinating does not mean every blossom becomes a tomato.
+
+- **No vibration.** Indoor plants and sealed greenhouses often need a daily shake.
+- **Heat.** Pollen often fails above about 85–90°F (29–32°C) in the day, or when nights stay very hot.
+- **Cold.** Cool nights can slow pollen-tube growth.
+- **Humidity.** Very dry air dries pollen; very wet air makes it clump.
+- **Stress.** Irregular water, low light, or a nitrogen-heavy plant with few flowers.
+
+Blossom drop with a dry stem scar usually means the flower was never fertilized. A tiny fruit that yellows and falls is a different problem (often calcium or water).
+
+## When to help pollination
+
+Help when plants are flowering and you are not seeing fruit, especially indoors, on a patio with no breeze, or under glass.
+
+- **Gentle shake:** tap the stake or the flower cluster once a day.
+- **Electric toothbrush:** touch the stem behind an open flower for a second so the cone vibrates.
+- **Small brush:** if you want to move pollen between flowers on the same plant, though that is rarely needed for ordinary slicing tomatoes.
+
+Pollinate newly opened flowers every two or three days. Do not grind the blossom; over-vibrating bruises it.
+
+Cherry types usually set more easily than large beefsteaks. Heirlooms can be fussier in heat. None of that changes the basic fact: tomato plants are self-pollinating.
 
 ## Related Notes
 
 - [[Gardening Tips]] - General gardening principles
 - [[Raised Beds]] - Growing tomatoes in raised beds
+- [[Plants/Index]] - Other plant notes
 - [[MOCs/Gardening]] - Complete gardening knowledge

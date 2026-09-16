@@ -7,6 +7,11 @@
       "source": "/home",
       "destination": "/",
       "permanent": false
+    },
+    {
+      "source": "/atomic-notess",
+      "destination": "/atomic-notes",
+      "permanent": true
     }
   ]
 }

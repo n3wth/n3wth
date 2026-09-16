@@ -22,6 +22,15 @@ const nextConfig: NextConfig = {
     );
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: "/atomic-notess",
+        destination: "/atomic-notes",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withAxiom(nextConfig);

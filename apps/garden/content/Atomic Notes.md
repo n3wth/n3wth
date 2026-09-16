@@ -1,9 +1,13 @@
 ---
 title: Atomic Notes
-description: "Defines atomic notes as self-contained, concise building blocks for a Zettelkasten system"
+description: An atomic note is a self-contained, single-idea note in a Zettelkasten: concise, linked, and understandable on its own.
+tags:
+  - knowledge-management
+  - note-taking
+  - zettelkasten
 ---
 
-Atomic notes are the fundamental building blocks of the [[Zettelkasten Method]]. They are:
+An atomic note is one idea, written so you can reread it later without the rest of the vault. Atomic notes are the fundamental building blocks of the [[Zettelkasten Method]]. They are:
 
 1. **Self-contained**: Each note should express a single, complete idea.
 2. **Concise**: Typically no longer than a paragraph or two.

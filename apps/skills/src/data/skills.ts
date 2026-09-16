@@ -12,6 +12,18 @@ export interface SamplePrompt {
   output: string
 }
 
+export interface SkillFaq {
+  question: string
+  answer: string
+  links?: Array<{ label: string; href: string }>
+}
+
+export interface ExtraInstallCommand {
+  name: string
+  command: string
+  verifyCommand?: string
+}
+
 // Re-export CategoryId as SkillCategory for backwards compatibility
 export type SkillCategory = CategoryId
 
@@ -33,6 +45,12 @@ export interface Skill {
   contributor?: Contributor
   samplePrompts?: SamplePrompt[]
   skillFile?: string
+  seoTitle?: string
+  seoDescription?: string
+  relatedSkillIds?: string[]
+  faq?: SkillFaq[]
+  extraInstallCommands?: ExtraInstallCommand[]
+  installHint?: string
 }
 
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills'
@@ -118,34 +136,77 @@ export const skills: Skill[] = [
   {
     id: 'skill-creator',
     name: 'Skill Creator',
-    description: 'Create reusable AI coding skills with Markdown templates, clear triggers, step-by-step instructions, and validation prompts.',
-    longDescription: 'Create reusable AI coding skills with Markdown templates, clear triggers, step-by-step instructions, and validation prompts. Start with one task, define when the skill should run, and write the steps your assistant should follow. Add an example and test both a matching request and an unrelated request before sharing it. This catalog version provides installation instructions for Antigravity CLI.',
+    description: 'Create Claude Code Agent Skills with skill-creator: SKILL.md templates, triggers, and checks for Claude Code or Antigravity CLI.',
+    longDescription: 'A skill is a markdown file that teaches a coding agent one job. skill-creator walks through the Agent Skills format used by Claude Code — a SKILL.md with a name, description, and instructions — and the same pattern this catalog uses for Antigravity CLI. Start with one task, define when the skill should run, write the steps, add an example, then test a matching request and an unrelated one before you share it.',
+    seoTitle: 'Skill Creator for Claude Code Agent Skills',
+    seoDescription: 'Build Claude Code Agent Skills with skill-creator. SKILL.md templates, triggers, and install steps for Claude Code and Antigravity CLI.',
     category: 'development',
-    tags: ['skills', 'skill-creator', 'skill template', 'gemini', 'automation'],
+    tags: ['skill-creator', 'claude-code', 'agent-skills', 'skill-template', 'skills-md'],
     icon: '◈',
     color: 'oklch(0.70 0.15 280)',
     skillFile: `${GITHUB_RAW_BASE}/skill-creator.md`,
     features: [
-      'Skill structure and conventions',
-      'Trigger word design',
-      'Context and instruction writing',
-      'Tool integration patterns',
-      'Testing and iteration'
+      'SKILL.md and skill-creator file structure',
+      'Trigger and description writing for Claude Code',
+      'Step-by-step instruction patterns',
+      'Validation prompts before you share a skill',
+      'Install paths for Claude Code and Antigravity CLI'
     ],
     useCases: [
-      'Creating domain-specific skills',
-      'Workflow automation',
-      'Knowledge encapsulation',
-      'Team skill sharing',
-      'Custom tooling'
+      'How to build a skill in Claude Code',
+      'Packaging a workflow as an Agent Skill',
+      'Writing a skills.md / SKILL.md template',
+      'Sharing team conventions with coding agents',
+      'Testing that a skill stays on-task'
     ],
     compatibility: ['gemini'],
-    version: '1.1.0',
-    lastUpdated: '2026-01-10',
+    version: '1.2.0',
+    lastUpdated: '2026-09-16',
+    relatedSkillIds: ['git-workflow', 'code-reviewer', 'frontend-design'],
+    extraInstallCommands: [
+      {
+        name: 'Claude Code',
+        command: `mkdir -p ~/.claude/skills/skill-creator && curl -fsSL ${GITHUB_RAW_BASE}/skill-creator.md -o ~/.claude/skills/skill-creator/SKILL.md`,
+        verifyCommand: 'ls ~/.claude/skills/skill-creator/SKILL.md',
+      },
+    ],
+    installHint: 'Claude Code loads Agent Skills from a SKILL.md file in a skill folder. Antigravity CLI still uses a flat markdown file in ~/.gemini/skills/.',
+    faq: [
+      {
+        question: 'What are Claude skills?',
+        answer: 'Claude skills, also called Claude Code Agent Skills, are markdown files that teach Claude how to do one job well. Each skill is a folder with a SKILL.md file: YAML frontmatter (name and description) plus the instructions Claude should follow when the skill matches the request.',
+        links: [
+          { label: 'What are skills?', href: '/about' },
+        ],
+      },
+      {
+        question: 'How do I build a skill in Claude Code?',
+        answer: 'Pick one task. Create a folder with a SKILL.md file. Write a short description that says when to use the skill, then step-by-step instructions and one example. Install it under ~/.claude/skills/ or .claude/skills/ in a project, then test a matching prompt and an unrelated prompt. skill-creator is a template for that workflow.',
+        links: [
+          { label: 'Create a skill', href: '/create' },
+        ],
+      },
+      {
+        question: 'What is skill-creator?',
+        answer: 'skill-creator is this catalog’s template for writing reusable coding-agent skills. It covers structure, triggers, instructions, examples, and validation so you can turn a workflow into a skill instead of repeating the same prompt.',
+      },
+      {
+        question: 'How do I install skill-creator in Claude Code?',
+        answer: 'Save this file as ~/.claude/skills/skill-creator/SKILL.md, or copy the Claude Code command on this page. Restart or start a new Claude Code session so it can discover the skill. For Antigravity CLI, use the install command that writes to ~/.gemini/skills/.',
+      },
+      {
+        question: 'What is SKILL.md?',
+        answer: 'SKILL.md is the Agent Skills filename Claude Code looks for inside a skill folder. The frontmatter description is how Claude decides when to apply the skill. Some docs say skills.md; in Claude Code the file to create is SKILL.md.',
+      },
+      {
+        question: 'Does skill-creator work with Antigravity CLI?',
+        answer: 'Yes. The same markdown template installs as a flat .md file for Antigravity CLI. Use the Antigravity command on this page if that is your assistant; use the Claude Code command if you want an Agent Skills folder.',
+      },
+    ],
     samplePrompts: [
       {
-        prompt: "Create a skill for React component development",
-        output: "Save the following as react-components.md. It defines when to use the skill, what to produce, and how to check the result.\n\n```markdown\n---\nname: React Components\nversion: 1.0.0\ncategory: development\ntags:\n  - react\n  - typescript\ncompatibility:\n  - gemini\n---\n\n# React Components\n\nCreate React components that follow the current project conventions.\n\n## Triggers\n\nUse when asked to create a React component or add a reusable UI control.\n\n## Instructions\n\n1. Read the package manifest and an existing component before writing code.\n2. Define typed props and use the project styling conventions.\n3. Use native HTML controls with accessible names and keyboard support.\n4. Include an example that uses the new component.\n5. Run the project checks and report any failures.\n\n## Validation\n\nTry: Create a button with a label, disabled state, and click handler.\nCheck: The button has an accessible name, responds to keyboard input,\nand cannot be activated while disabled.\n\nTry: Explain how this project handles routing.\nCheck: Do not apply this component-creation workflow to that request.\n```\n\nTest the skill in a fresh conversation with both prompts. Revise any instruction the assistant misses, then repeat the checks."
+        prompt: "Create a Claude Code skill for React component development",
+        output: "Save the following as SKILL.md inside a skill folder (for Claude Code) or as react-components.md for Antigravity CLI. It defines when to use the skill, what to produce, and how to check the result.\n\n```markdown\n---\nname: React Components\ndescription: Create React components that follow the current project conventions. Use when asked to add a reusable UI control.\n---\n\n# React Components\n\nCreate React components that follow the current project conventions.\n\n## Triggers\n\nUse when asked to create a React component or add a reusable UI control.\n\n## Instructions\n\n1. Read the package manifest and an existing component before writing code.\n2. Define typed props and use the project styling conventions.\n3. Use native HTML controls with accessible names and keyboard support.\n4. Include an example that uses the new component.\n5. Run the project checks and report any failures.\n\n## Validation\n\nTry: Create a button with a label, disabled state, and click handler.\nCheck: The button has an accessible name, responds to keyboard input,\nand cannot be activated while disabled.\n\nTry: Explain how this project handles routing.\nCheck: Do not apply this component-creation workflow to that request.\n```\n\nTest the skill in a fresh conversation with both prompts. Revise any instruction the assistant misses, then repeat the checks."
       }
     ]
   },

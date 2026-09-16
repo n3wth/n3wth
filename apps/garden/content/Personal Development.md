@@ -29,7 +29,7 @@ Effective personal development often involves:
 Tools and techniques for personal development:
 
 - [[Zettelkasten Method]] for knowledge management and synthesis
-- [[Atomic Notess]] for capturing and connecting ideas
+- [[Atomic Notes]] for capturing and connecting ideas
 - [[Behavior Change]] strategies for implementing lasting improvements
 - [[Motivation Techniques]] to maintain momentum and overcome obstacles
 
