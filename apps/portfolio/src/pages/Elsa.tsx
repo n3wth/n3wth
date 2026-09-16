@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react'
 import { MessageSquare } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
-import { Avatar, Badge } from '@n3wth/ui'
 import { PageHeader, SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { RouterLink } from '../components/RouterLink'
 
 const TITLE = 'Elsa · SMS Messaging Consent'
 const DESCRIPTION =
-  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992 (Telnyx) and +1 (415) 360-0751 (Twilio)."
+  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992 and +1 (415) 360-0751."
 
 const PRIMARY_SMS = 'sms:+14157180992'
 const ALT_SMS = 'sms:+14153600751'
@@ -22,22 +21,62 @@ const FEATURES = [
 
 const NUMBERS = [
   {
-    badge: 'Primary · Telnyx',
+    label: 'Main line',
     display: '+1 (415) 718-0992',
     href: PRIMARY_SMS,
-    copy: 'Tap to open Messages. Send START, HELLO, or any first message.',
+    copy: 'Preferred number. Same Elsa assistant. Tap to open Messages and send START, HELLO, or any first message.',
     buttonLabel: 'Text Elsa',
     variant: 'primary' as const,
   },
   {
-    badge: 'Alternate · Twilio',
+    label: 'Alternate line',
     display: '+1 (415) 360-0751',
     href: ALT_SMS,
-    copy: 'Backup line for the same Elsa assistant.',
-    buttonLabel: 'Text backup line',
+    copy: 'Use if the main line is busy or unavailable. Same Elsa assistant on either number.',
+    buttonLabel: 'Text alternate line',
     variant: 'secondary' as const,
   },
 ] as const
+
+function ElsaMark({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 512 512"
+      width="160"
+      height="160"
+      role="img"
+      aria-label="Elsa"
+      focusable="false"
+    >
+      <circle cx="256" cy="256" r="256" fill="#4B82C4" />
+      <g className="elsa-eyes">
+        <g transform="translate(269.4 207.5) rotate(72.4)">
+          <rect
+            className="elsa-eye-pill"
+            x="-21.3"
+            y="-47.8"
+            width="42.6"
+            height="95.6"
+            rx="21.3"
+            fill="#fff"
+          />
+        </g>
+        <g transform="translate(414 182.5) rotate(70.8)">
+          <rect
+            className="elsa-eye-pill"
+            x="-20.9"
+            y="-48.9"
+            width="41.8"
+            height="97.7"
+            rx="20.9"
+            fill="#fff"
+          />
+        </g>
+      </g>
+    </svg>
+  )
+}
 
 function Prose({ children }: { children: ReactNode }) {
   return (
@@ -49,7 +88,7 @@ function Prose({ children }: { children: ReactNode }) {
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="mt-14 first:mt-0">
+    <div className="mt-8 first:mt-0">
       <SiteHeading variant="item" level={2}>
         {title}
       </SiteHeading>
@@ -61,7 +100,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 function BulletList({ items }: { items: ReactNode[] }) {
   return (
     <ul
-      className="mt-4 list-disc space-y-2.5 pl-5 text-base leading-relaxed"
+      className="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed"
       style={{ color: 'var(--ink-dim)' }}
     >
       {items.map((item, i) => (
@@ -88,15 +127,7 @@ export default function Elsa() {
   return (
     <section aria-label="Elsa SMS messaging consent">
       <div data-reveal className="elsa-hero site-content-gutter mx-auto max-w-3xl">
-        <Avatar
-          src="https://r2.n3wth.com/email/marks/elsa-mark.png?v=3"
-          alt=""
-          size="xl"
-          className="elsa-hero-mark"
-        />
-        <Badge variant="outline" size="md" className="elsa-hero-pill">
-          SMS assistant
-        </Badge>
+        <ElsaMark className="elsa-hero-mark" />
         <PageHeader
           align="center"
           className="elsa-hero-header"
@@ -124,24 +155,24 @@ export default function Elsa() {
         />
       </div>
 
-      <SiteSection data-reveal className="site-content-gutter mx-auto max-w-3xl">
+      <SiteSection data-reveal className="elsa-body site-content-gutter mx-auto max-w-3xl">
         <Section title="What Elsa does">
           <Prose>
             Elsa is the personal AI assistant product name for messaging operated by Oliver Newth
             (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other
             tasks Oliver authorizes, over a simple text thread.
           </Prose>
-          <ul className="mt-6 grid gap-x-10 gap-y-10 sm:grid-cols-2">
+          <ul className="mt-5 grid gap-x-10 gap-y-6 sm:grid-cols-2">
             {FEATURES.map((feature) => (
               <li
                 key={feature.title}
-                className="border-t pt-5"
+                className="border-t pt-4"
                 style={{ borderColor: 'var(--rail-strong)' }}
               >
                 <SiteHeading variant="item" level={3}>
                   {feature.title}
                 </SiteHeading>
-                <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+                <p className="mt-2 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                   {feature.copy}
                 </p>
               </li>
@@ -157,29 +188,33 @@ export default function Elsa() {
             <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> after reading this
             page. SMS is optional and is not required to use n3wth.com.
           </Prose>
-          <ul className="mt-6 grid gap-x-10 gap-y-10 sm:grid-cols-2">
+          <Prose>
+            Elsa has two numbers for the same assistant. Prefer the main line; use the alternate if
+            the main line is busy or unavailable. Either number reaches Elsa.
+          </Prose>
+          <ul className="mt-5 grid gap-x-10 gap-y-6 sm:grid-cols-2">
             {NUMBERS.map((number) => (
               <li
                 key={number.display}
-                className="border-t pt-5"
+                className="border-t pt-4"
                 style={{ borderColor: 'var(--rail-strong)' }}
               >
-                <Badge variant="outline" size="sm">
-                  {number.badge}
-                </Badge>
-                <SiteHeading variant="item" level={3} className="mt-3">
+                <SiteText variant="supporting" as="div" className="elsa-number-label">
+                  {number.label}
+                </SiteText>
+                <SiteHeading variant="item" level={3} className="mt-2">
                   <a href={number.href} className="link-underline">
                     {number.display}
                   </a>
                 </SiteHeading>
-                <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+                <p className="mt-2 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                   {number.copy}
                 </p>
                 <Button
                   label={number.buttonLabel}
                   variant={number.variant}
                   href={number.href}
-                  className="mt-4"
+                  className="mt-3"
                   endContent={
                     number.variant === 'primary' ? (
                       <MessageSquare size={16} strokeWidth={1.5} aria-hidden="true" />
@@ -218,8 +253,8 @@ export default function Elsa() {
         </Section>
 
         <Section title="Opt in and opt out">
-          <ul className="mt-4 grid gap-x-10 gap-y-10 sm:grid-cols-2">
-            <li className="border-t pt-5" style={{ borderColor: 'var(--rail-strong)' }}>
+          <ul className="mt-3 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+            <li className="border-t pt-4" style={{ borderColor: 'var(--rail-strong)' }}>
               <SiteHeading variant="item" level={3}>
                 Opt in
               </SiteHeading>
@@ -240,7 +275,7 @@ export default function Elsa() {
                 ]}
               />
             </li>
-            <li className="border-t pt-5" style={{ borderColor: 'var(--rail-strong)' }}>
+            <li className="border-t pt-4" style={{ borderColor: 'var(--rail-strong)' }}>
               <SiteHeading variant="item" level={3}>
                 Opt out / help
               </SiteHeading>
@@ -271,7 +306,7 @@ export default function Elsa() {
             required to browse the site, contact Oliver, or use other n3wth.com services.
           </Prose>
           <div
-            className="mt-6 rounded-lg border p-5"
+            className="mt-5 rounded-lg border p-4"
             style={{
               borderColor: 'var(--rail-strong)',
               background: 'color-mix(in srgb, var(--ink) 4%, transparent)',
@@ -309,33 +344,6 @@ export default function Elsa() {
             </RouterLink>
             .
           </Prose>
-        </Section>
-
-        <Section title="Contact">
-          <ul className="mt-4 grid gap-x-10 gap-y-10 sm:grid-cols-1">
-            <li className="border-t pt-5" style={{ borderColor: 'var(--rail-strong)' }}>
-              <SiteText variant="body">
-                n3wth.com · Oliver Newth ·{' '}
-                <a href="mailto:hey@n3wth.com" className="link-underline">
-                  hey@n3wth.com
-                </a>
-              </SiteText>
-              <div className="mt-4 grid gap-3">
-                <SiteText variant="supporting" as="div">
-                  <span className="elsa-contact-label">Primary (Telnyx)</span>{' '}
-                  <a href={PRIMARY_SMS} className="link-underline">
-                    +1 (415) 718-0992
-                  </a>
-                </SiteText>
-                <SiteText variant="supporting" as="div">
-                  <span className="elsa-contact-label">Alternate (Twilio)</span>{' '}
-                  <a href={ALT_SMS} className="link-underline">
-                    +1 (415) 360-0751
-                  </a>
-                </SiteText>
-              </div>
-            </li>
-          </ul>
         </Section>
       </SiteSection>
     </section>

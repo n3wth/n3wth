@@ -684,22 +684,75 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-block: 0.5rem 0.25rem;
+  padding-block: 0;
+}
+
+.elsa-hero.site-content-gutter {
+  padding-top: 0.5rem;
+  padding-bottom: 0;
 }
 
 .elsa-hero-mark {
-  width: 4.5rem !important;
-  height: 4.5rem !important;
-  margin-bottom: 1.1rem;
+  display: block;
+  width: 10rem;
+  height: 10rem;
+  max-width: 10rem;
+  margin: 0 auto 0.75rem;
+  flex-shrink: 0;
 }
 
-.elsa-hero-pill {
-  margin-bottom: 0.85rem;
-  letter-spacing: 0.06em;
+.elsa-eyes {
+  transform-origin: 342px 195px;
+  animation: elsa-look 7.5s ease-in-out infinite;
+}
+
+.elsa-eye-pill {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: elsa-blink 5.2s ease-in-out infinite;
+}
+
+.elsa-eye-pill:nth-of-type(1) {
+  animation-delay: 0s;
+}
+
+@keyframes elsa-look {
+  0%,
+  38%,
+  100% {
+    transform: translate(0, 0);
+  }
+  48% {
+    transform: translate(5px, -3px);
+  }
+  58% {
+    transform: translate(-4px, 2px);
+  }
+  68% {
+    transform: translate(3px, 1px);
+  }
+  78% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes elsa-blink {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+  93% {
+    transform: scaleY(0.12);
+  }
+  96% {
+    transform: scaleY(1);
+  }
 }
 
 .elsa-hero-header {
   width: 100%;
+  padding-block: 0.75rem 1.25rem !important;
 }
 
 .elsa-hero-meta {
@@ -711,13 +764,30 @@ body {
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: center;
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
 }
 
-.elsa-contact-label {
+.elsa-body.site-content-gutter,
+.elsa-body.n3wth-site-section {
+  padding-top: 1.25rem;
+}
+
+.elsa-number-label {
   color: var(--ink-label);
-  font-size: 0.8125rem;
   letter-spacing: 0.02em;
+}
+
+@media (min-width: 768px) {
+  .elsa-hero-mark {
+    width: 11.5rem;
+    height: 11.5rem;
+    max-width: 11.5rem;
+  }
+
+  .elsa-body.site-content-gutter,
+  .elsa-body.n3wth-site-section {
+    padding-top: 1.5rem;
+  }
 }
 
 /* ---------- Reduced motion ---------- */
