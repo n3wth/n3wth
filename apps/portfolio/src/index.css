@@ -679,6 +679,17 @@ body {
 /* ---------- Elsa landing (/elsa) ----------
    Mark + eye/slash motion only. Page rhythm comes from @n3wth/ui site
    page-header / section padding (48px / 64px md). No padding crushers. */
+
+.elsa-intro {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.elsa-last-updated {
+  margin-top: 4rem;
+}
+
 .elsa-hero-mark {
   display: block;
   width: 10rem;
