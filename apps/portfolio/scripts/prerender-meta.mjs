@@ -121,6 +121,80 @@ const routes = [
         <li><a href="https://theywontshutup.com" rel="noopener">theywontshutup.com</a> — AI voice hotline. support@n3wth.com</li>
       </ul>`,
   },
+  {
+    path: 'elsa',
+    title: 'Elsa — SMS Messaging Consent',
+    description:
+      "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 360-0751.",
+    ogImage: '/og-image.png',
+    body: `
+      <h1>Elsa — SMS Messaging Consent</h1>
+      <p>Last updated: September 2026</p>
+      <h2>About Elsa</h2>
+      <p>Elsa is Oliver Newth's personal AI assistant for n3wth.com. People text Elsa at <strong>+1 (415) 360-0751</strong>.</p>
+      <h2>What messages you may receive</h2>
+      <p>Automated SMS/MMS for assistant conversations, verification codes, transactional notices, and service notices. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
+      <h2>Opt in / opt out</h2>
+      <p>Opt in by texting +1 (415) 360-0751. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+      <p>We do not sell or share mobile numbers with third parties or affiliates for their marketing.</p>`,
+  },
+  {
+    path: 'privacy',
+    title: 'Privacy Policy — Oliver Newth',
+    description:
+      "Privacy policy for n3wth.com - Oliver Newth's personal website.",
+    ogImage: '/og-image.png',
+    body: `
+      <h1>Privacy Policy</h1>
+      <p>Last updated: September 2026</p>
+      <h2>Information Collection</h2>
+      <p>Portfolio pages do not require accounts or tracking cookies. SMS/voice lines collect phone numbers and message content needed to operate those services.</p>
+      <h2>They Won't Shut Up Hotline</h2>
+      <p>Calls to +1 (855) 580-0508 may collect your number for follow-up SMS. Numbers are not sold or shared for third-party marketing. Reply STOP to opt out. See <a href="/consent">SMS Consent</a>.</p>
+      <h2>Elsa assistant SMS</h2>
+      <p>Opting in at +1 (415) 360-0751 collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Twilio processes SMS. Reply STOP. See <a href="/elsa">/elsa</a>.</p>
+      <h2>SMS data retention</h2>
+      <p>SMS data retained up to 24 months unless needed longer for security, disputes, or law; deleted/anonymized sooner on verified STOP/deletion when feasible.</p>
+      <h2>California privacy rights (CCPA/CPRA)</h2>
+      <p>California residents may know/access, delete, and correct personal information. n3wth.com does not sell or share for cross-context behavioral advertising. Email hey@n3wth.com.</p>
+      <h2>Third-Party Services</h2>
+      <p>Hosted by Vercel. Twilio processes SMS for Elsa (+1 415 360-0751) and the hotline (+1 855 580-0508).</p>`,
+  },
+  {
+    path: 'terms',
+    title: 'Terms of Service — n3wth',
+    description:
+      "Terms of service for n3wth.com and They Won't Shut Up AI voice hotline.",
+    ogImage: '/og-image.png',
+    body: `
+      <h1>Terms of Service</h1>
+      <p>Last updated: September 2026</p>
+      <h2>1. Acceptance</h2>
+      <p>By using n3wth.com or calling +1 (855) 580-0508, you agree to these terms.</p>
+      <h2>4. SMS Messaging</h2>
+      <p>Hotline callers may opt in to SMS. See <a href="/consent">SMS Consent</a>. Message and data rates may apply. Reply STOP. Privacy in the <a href="/privacy">Privacy Policy</a>.</p>
+      <h2>Elsa assistant SMS</h2>
+      <p>By texting +1 (415) 360-0751 you agree to <a href="/elsa">/elsa</a>. Frequency varies. Message and data rates may apply. Reply STOP / HELP. See <a href="/privacy">Privacy Policy</a>.</p>
+      <h2>3. AI Disclosure</h2>
+      <p>Hotline voices are AI-generated; not professional advice.</p>`,
+  },
+  {
+    path: 'consent',
+    title: "SMS Consent — They Won't Shut Up",
+    description:
+      "Opt in to receive SMS messages from They Won't Shut Up, an AI voice hotline by n3wth.com.",
+    ogImage: '/og-image.png',
+    body: `
+      <h1>SMS Messaging Consent</h1>
+      <p>Last updated: February 2026</p>
+      <h2>About They Won't Shut Up</h2>
+      <p>AI voice hotline at <strong>+1 (855) 580-0508</strong> operated by n3wth.com.</p>
+      <h2>Messages</h2>
+      <p>Call follow-ups and service notifications, up to 5 messages per month. Message and data rates may apply.</p>
+      <h2>Opt in / opt out</h2>
+      <p>Opt in by calling the hotline. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. See <a href="/privacy">Privacy Policy</a>.</p>
+      <p>For the Elsa personal assistant SMS line (+1 415 360-0751), see <a href="/elsa">/elsa</a>.</p>`,
+  },
   /* Auth utility routes: prerendered so their noindex is in the static
      head (crawlers may never run the client-side usePageMeta noindex). */
   {
@@ -393,12 +467,6 @@ const sitemapEntries = [
       loc: `${ORIGIN}/${r.path}`,
       lastmod: r.article?.published,
     })),
-  /* Static pages served through Vercel rewrites (vercel.json), not SPA
-     routes. They carry a canonical and no noindex, so they belong here.
-     Include all public legal pages. */
-  { loc: `${ORIGIN}/privacy` },
-  { loc: `${ORIGIN}/terms` },
-  { loc: `${ORIGIN}/consent` },
 ]
 writeFileSync(
   join(dist, 'sitemap.xml'),

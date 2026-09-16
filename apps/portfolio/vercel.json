@@ -50,22 +50,6 @@
   ],
   "rewrites": [
     {
-      "source": "/privacy",
-      "destination": "/privacy.html"
-    },
-    {
-      "source": "/consent",
-      "destination": "/consent.html"
-    },
-    {
-      "source": "/elsa",
-      "destination": "/elsa.html"
-    },
-    {
-      "source": "/terms",
-      "destination": "/terms.html"
-    },
-    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     }
