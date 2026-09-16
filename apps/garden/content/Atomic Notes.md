@@ -1,6 +1,6 @@
 ---
 title: Atomic Notes
-description: An atomic note is a self-contained, single-idea note in a Zettelkasten: concise, linked, and understandable on its own.
+description: "An atomic note is a self-contained, single-idea note in a Zettelkasten: concise, linked, and understandable on its own."
 tags:
   - knowledge-management
   - note-taking

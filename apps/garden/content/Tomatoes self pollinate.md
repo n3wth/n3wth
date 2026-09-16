@@ -1,6 +1,6 @@
 ---
 title: Are Tomatoes Self-Pollinating?
-description: Yes. Tomato plants are self-pollinating: each flower has male and female parts. How tomatoes pollinate, why fruit still fails, and when to help.
+description: "Yes. Tomato plants are self-pollinating: each flower has male and female parts. How tomatoes pollinate, why fruit still fails, and when to help."
 tags: [gardening, tomatoes, pollination]
 ---
 
