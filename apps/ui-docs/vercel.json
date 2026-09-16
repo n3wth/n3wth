@@ -1,5 +1,5 @@
 {
-  "git": { "deploymentEnabled": false },
+  "git": { "deploymentEnabled": true },
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/ui-docs",
   "buildCommand": "cd ../.. && npm run build:ui-docs",
   "outputDirectory": "dist",

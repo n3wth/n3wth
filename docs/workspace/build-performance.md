@@ -31,7 +31,7 @@ After catching up to `d386c8f`, a local incremental install took 2.484 seconds. 
 
 A separate fresh checkout passed both install/build cycles: the cold install added 1,101 packages and the first build populated the UI cache; the next install reported up to date in one second and the next build restored verified UI output. Cache tests cover source additions/deletions, configuration and lockfile changes, runtime/environment changes, app-only edits, corrupt output, replacement of stale output, and default builds bypassing the cache.
 
-All six apps consume UI. The full root `npm run check` passed, including all six builds, UI's 415 tests, package export checks, design invariants, and built metadata. An injected TypeScript assignment error correctly failed the UI build; the temporary probe was removed. The first check encountered stale Kit `.next/types` referencing a removed route; moving the generated cache aside resolved it without source changes. Manual-only deployment policy remains in place.
+All six apps consume UI. The full root `npm run check` passed, including all six builds, UI's 415 tests, package export checks, design invariants, and built metadata. An injected TypeScript assignment error correctly failed the UI build; the temporary probe was removed. The first check encountered stale Kit `.next/types` referencing a removed route; moving the generated cache aside resolved it without source changes.
 
 The existing browser suite passed 83 checks with one skipped, covering portfolio, UI docs, and Kit at 390, 852, and 1440 pixels, including theme and navigation checks. The npm bootstrap's inherited `npm_config_call` and `npm_config_package` variables were unset for this run to allow the suite's nested `npm exec` server commands.
 

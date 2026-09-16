@@ -1,20 +1,23 @@
 # Workspace deployment
 
-## Manual release policy
+## Automatic Git deployment policy
 
-All six applications set `git.deploymentEnabled: false` in their own `vercel.json`. This disables automatic Git deployments for every branch, including main, while keeping the repository connected for manual deployments. GitHub CI continues to validate pushes and pull requests. Committing or merging code does not publish it. The site generator uses the same default.
+All six applications set `git.deploymentEnabled: true` in their own `vercel.json`, and the site generator uses the same default. Pushes to non-production branches and pull-request updates create Preview deployments. Commits on each project's configured production branch (`main`) create Production deployments.
 
-Vercel reads configuration from the commit being deployed. Bring older branches up to date with this policy before pushing them; their old configuration may still permit automatic deployments. Do not re-enable automatic deployments or add a deployment workflow without an explicit policy change.
+Reviewers must wait for passing GitHub CI checks before merging. The current branch ruleset does not enforce CI or pull requests, and Vercel deployments can start independently of GitHub CI.
 
-1. Choose the exact commit SHA with passing CI and identify the apps changed since each project's last release. Include consumers of changed shared packages; do not compare only the latest commit or assume all projects last released the same SHA.
-2. Open the chosen project in the n3wth Vercel team, then **Deployments → Create Deployment**. Enter the SHA and confirm the branch/environment before submitting. Use a feature-branch preview to validate the release before deploying production from main. A main-branch deployment can update the production domain immediately.
-3. If the ignore step cancels an intentionally requested deployment, use the dashboard's option to bypass the project's Ignored Build Step for that deployment. Keep the repository's manual-only policy in place.
-4. Verify the deployment is Ready, then check affected routes, assets, redirects, and APIs. Record the project, SHA, deployment URL/ID, environment, and checks. Repeat only for the other affected projects.
-5. Roll back a release by restoring the previous successful production deployment for that project. Do not rebuild an arbitrary newer commit as a rollback.
+1. Before merging, confirm CI passes and review the affected projects' Preview deployments. Include consumers of changed shared packages when deciding what should deploy.
+2. Merge the reviewed commit to `main`. Vercel creates Production deployments for affected projects and skips projects outside the change graph.
+3. Verify each affected deployment is Ready, then check routes, assets, redirects, and APIs. Record the project, commit SHA, deployment URL/ID, environment, and checks before reporting the release complete.
+4. If an expected deployment is skipped, inspect the changed-workspace graph first. Use the dashboard's Ignored Build Step bypass only for an intentional manual deployment or redeployment.
 
-Native **Skip deployments when there are no changes to the root directory or its dependencies** is enabled on all six projects. Each project uses its app root with access to files outside that root for shared workspaces. The ignore script is an additional filter for builds that reach the build stage: it compares against the previous deployed tree, or a first-preview merge-base, and builds conservatively when history is unavailable. Neither skipping mechanism replaces manual release intent.
+Vercel reads configuration from the commit being deployed. Bring older branches up to date before pushing them so `git.deploymentEnabled: true` is present and the current ignore logic is used.
 
-References: [Vercel's manual-only Git configuration](https://vercel.com/docs/project-configuration/git-configuration#turning-off-all-automatic-deployments), [deploying a Git reference](https://vercel.com/docs/git#creating-a-deployment-from-a-git-reference), and [monorepo setup](https://vercel.com/docs/monorepos).
+Native **Skip deployments when there are no changes to the root directory or its dependencies** is enabled on all six projects. Each project uses its app root with access to files outside that root for shared workspaces. The ignore script is an additional filter for builds that reach the build stage: it compares against the previous deployed tree, or a first-preview merge-base, and builds conservatively when history is unavailable.
+
+For rollback, restore the previous successful Production deployment for only the affected project. For an explicitly requested manual redeployment, choose the exact tested commit SHA and confirm the target environment before submitting. Do not rebuild an arbitrary newer commit as a rollback.
+
+References: [Vercel Git deployments](https://vercel.com/docs/git), [Git deployment configuration](https://vercel.com/docs/project-configuration/git-configuration), [deploying a Git reference](https://vercel.com/docs/git#creating-a-deployment-from-a-git-reference), and [monorepo setup](https://vercel.com/docs/monorepos).
 
 ## Project layout and migration history
 
