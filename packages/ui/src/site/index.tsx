@@ -59,7 +59,7 @@ export interface SiteDocSectionProps extends HTMLAttributes<HTMLElement> {
 export function SiteDocSection({ title, level = 2, className, children, ...props }: SiteDocSectionProps) {
   return (
     <div className={cn('n3wth-site-doc-section', className)} {...props}>
-      {title != null && title !== '' ? (
+      {title != null ? (
         <SiteHeading variant="section" level={level}>
           {title}
         </SiteHeading>
@@ -70,7 +70,7 @@ export function SiteDocSection({ title, level = 2, className, children, ...props
 }
 
 /** Disc list with site doc spacing (replaces per-page BulletList helpers). */
-export function SiteDocList({ items, className, ...props }: { items: ReactNode[] } & ComponentProps<'ul'>) {
+export function SiteDocList({ items, className, ...props }: { items: ReactNode[] } & Omit<ComponentProps<'ul'>, 'children'>) {
   return (
     <ul className={cn('n3wth-site-doc-list', className)} {...props}>
       {items.map((item, i) => (
