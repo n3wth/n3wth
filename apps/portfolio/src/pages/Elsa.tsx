@@ -84,11 +84,11 @@ export default function Elsa() {
         className="n3wth-site-page-header n3wth-site-page-header--center site-content-gutter mx-auto max-w-3xl"
       >
         <ElsaMark className="elsa-hero-mark" />
-        <div className="n3wth-site-page-header-copy">
+        <div className="n3wth-site-page-header-copy elsa-hero-copy">
           <SiteHeading variant="page" level={1}>
             Elsa
           </SiteHeading>
-          <SiteText className="n3wth-site-description">
+          <SiteText className="n3wth-site-description elsa-hero-description">
             A personal AI assistant in your texts.
           </SiteText>
           <div className="n3wth-site-actions elsa-hero-actions">
