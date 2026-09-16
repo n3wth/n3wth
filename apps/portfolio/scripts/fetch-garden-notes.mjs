@@ -1,6 +1,6 @@
 /**
  * Build-time snapshot of the most recently tended garden notes
- * (garden.n3wth.com/feed.xml), for the /thinking "Tended recently"
+ * (garden.n3wth.com/feed.xml), for the /thinking garden notes
  * section. Same contract as fetch-github-stats.mjs: never fails the
  * build, never invents content — on any error the committed snapshot
  * is left untouched.

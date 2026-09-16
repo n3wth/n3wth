@@ -41,7 +41,7 @@ export default function Support() {
 
   return (
     <section aria-label="Support">
-      <PageHeader data-reveal className="site-content-gutter" title="Need a hand with something I built?" description={<>
+      <PageHeader data-reveal align="center" className="site-content-gutter" title="Need a hand with something I built?" description={<>
           One inbox covers everything. Include the product name and what you
           were doing when things went sideways; screenshots help.
         </>} actions={

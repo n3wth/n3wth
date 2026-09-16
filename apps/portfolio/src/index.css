@@ -79,12 +79,17 @@ html {
 body {
   overflow-x: clip; /* full-bleed hero backdrop uses a 100vw breakout */
   margin: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg);
   line-height: 1.65;
 }
 
-#root { min-height: 100vh; }
+/* Keep footer at the bottom while Suspense fallback={null} leaves main empty. */
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
 
 ::selection {
   background: rgba(255, 255, 255, 0.18);
@@ -679,16 +684,6 @@ body {
 /* ---------- Elsa landing (/elsa) ----------
    Mark + eye/slash motion only. Page rhythm comes from @n3wth/ui site
    page-header / section padding (48px / 64px md). No padding crushers. */
-
-.elsa-intro {
-  font-size: 1.125rem;
-  line-height: 1.65;
-  color: var(--ink);
-}
-
-.elsa-last-updated {
-  margin-top: 4rem;
-}
 
 .elsa-hero-mark {
   display: block;

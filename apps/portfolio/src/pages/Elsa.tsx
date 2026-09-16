@@ -1,6 +1,5 @@
-import type { ReactNode } from 'react'
 import { Button } from '@n3wth/ui/primitives'
-import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
+import { SiteSection, SiteHeading, SiteText, SiteDocSection, SiteDocList } from '@n3wth/ui/site'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { RouterLink } from '../components/RouterLink'
 
@@ -64,36 +63,6 @@ function ElsaMark({ className }: { className?: string }) {
   )
 }
 
-function Prose({ children }: { children: ReactNode }) {
-  return <SiteText variant="body">{children}</SiteText>
-}
-
-function Section({ title, children }: { title?: string; children: ReactNode }) {
-  return (
-    <div className="mt-16 flex flex-col gap-6 first:mt-0">
-      {title ? (
-        <SiteHeading variant="section" level={2}>
-          {title}
-        </SiteHeading>
-      ) : null}
-      {children}
-    </div>
-  )
-}
-
-function BulletList({ items }: { items: ReactNode[] }) {
-  return (
-    <ul
-      className="list-disc space-y-3 pl-5 text-base leading-relaxed"
-      style={{ color: 'var(--ink-dim)' }}
-    >
-      {items.map((item, i) => (
-        <li key={i}>{item}</li>
-      ))}
-    </ul>
-  )
-}
-
 export default function Elsa() {
   usePageMeta(TITLE, DESCRIPTION, {
     ogImage: '/og-image.png',
@@ -130,8 +99,8 @@ export default function Elsa() {
       </header>
 
       <SiteSection data-reveal className="site-content-gutter mx-auto max-w-3xl">
-        <Section>
-          <SiteText variant="body" className="elsa-intro">
+        <SiteDocSection>
+          <SiteText variant="lede">
             Elsa is the personal AI assistant product name for messaging operated by Oliver Newth
             (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other
             tasks Oliver authorizes, over a simple text thread.
@@ -148,20 +117,20 @@ export default function Elsa() {
               </li>
             ))}
           </ul>
-        </Section>
+        </SiteDocSection>
 
-        <Section title="How to text her">
-          <Prose>
+        <SiteDocSection title="How to text her">
+          <SiteText>
             There is no website signup form, phone number field, or SMS consent checkbox on
             n3wth.com. Consumers opt in only by voluntarily texting{' '}
             <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or{' '}
             <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> after reading this
             page. SMS is optional and is not required to use n3wth.com.
-          </Prose>
-          <Prose>
+          </SiteText>
+          <SiteText>
             Elsa has two numbers for the same assistant. Prefer the main line; use the alternate if
             the main line is busy or unavailable. Either number reaches Elsa.
-          </Prose>
+          </SiteText>
           <ul className="grid items-stretch gap-x-10 gap-y-8 sm:grid-cols-2">
             {NUMBERS.map((number) => (
               <li key={number.display} className="flex h-full flex-col gap-3">
@@ -186,19 +155,19 @@ export default function Elsa() {
               </li>
             ))}
           </ul>
-          <Prose>
+          <SiteText>
             Or give Oliver / Elsa your mobile number and clearly agree to receive texts from either
             Elsa SMS line for assistant and transactional purposes.
-          </Prose>
-        </Section>
+          </SiteText>
+        </SiteDocSection>
 
-        <Section title="What you will get">
-          <Prose>
+        <SiteDocSection title="What you will get">
+          <SiteText>
             By opting in, you consent to receive automated SMS (and MMS when needed) from{' '}
             <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or{' '}
             <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong>, including:
-          </Prose>
-          <BulletList
+          </SiteText>
+          <SiteDocList
             items={[
               'Two-way assistant conversations (replies to texts you send Elsa)',
               'Account and verification codes when Elsa is completing a task for Oliver that requires SMS OTP',
@@ -206,21 +175,21 @@ export default function Elsa() {
               'Occasional service notices about the Elsa / n3wth assistant line',
             ]}
           />
-          <Prose>
+          <SiteText>
             Message frequency varies. You may receive multiple messages in a day when actively
             texting Elsa or when a verification flow is in progress; otherwise expect low volume
             (typically under 50 messages per month).{' '}
             <strong style={{ color: 'var(--ink)' }}>Message and data rates may apply.</strong>
-          </Prose>
-        </Section>
+          </SiteText>
+        </SiteDocSection>
 
-        <Section>
+        <SiteDocSection>
           <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
             <li className="flex flex-col gap-5">
               <SiteHeading variant="item" level={3}>
                 Opt in
               </SiteHeading>
-              <BulletList
+              <SiteDocList
                 items={[
                   <>
                     Text{' '}
@@ -241,7 +210,7 @@ export default function Elsa() {
               <SiteHeading variant="item" level={3}>
                 Opt out / help
               </SiteHeading>
-              <BulletList
+              <SiteDocList
                 items={[
                   <>
                     Reply <strong style={{ color: 'var(--ink)' }}>STOP</strong> to any message from
@@ -261,13 +230,13 @@ export default function Elsa() {
               />
             </li>
           </ul>
-          <Prose>
+          <SiteText>
             After opting out you will receive a one-time confirmation and no further messages will
             be sent unless you opt in again (for example reply START). SMS is optional. You can use
             n3wth.com without texting Elsa. Consent to receive messages is voluntary and is not
             required to browse the site, contact Oliver, or use other n3wth.com services.
-          </Prose>
-          <Prose>
+          </SiteText>
+          <SiteText>
             By texting +1 (415) 718-0992 or +1 (415) 360-0751 or otherwise opting in, you agree to
             receive automated SMS messages from Elsa (n3wth.com / Oliver Newth). Message frequency
             varies. Message and data rates may apply. Reply STOP to opt out. Consent is not a
@@ -280,11 +249,11 @@ export default function Elsa() {
               Terms of Service
             </RouterLink>
             .
-          </Prose>
-        </Section>
+          </SiteText>
+        </SiteDocSection>
 
-        <Section title="Privacy">
-          <Prose>
+        <SiteDocSection title="Privacy">
+          <SiteText>
             Your phone number is used only to deliver Elsa / n3wth assistant-related SMS and to
             operate conversations you start. We do{' '}
             <strong style={{ color: 'var(--ink)' }}>not</strong> sell or share mobile numbers with
@@ -297,15 +266,10 @@ export default function Elsa() {
               Terms of Service
             </RouterLink>
             .
-          </Prose>
-        </Section>
+          </SiteText>
+        </SiteDocSection>
 
-        <SiteText
-          variant="supporting"
-          as="p"
-          className="elsa-last-updated"
-          style={{ color: 'var(--ink-label)' }}
-        >
+        <SiteText variant="supporting" as="p" className="n3wth-site-doc-meta">
           Last updated September 2026
         </SiteText>
       </SiteSection>

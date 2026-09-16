@@ -40,12 +40,44 @@ export function SiteHeading({ variant = 'section', level, className, children, .
 }
 
 export interface SiteTextProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
-  variant?: 'body' | 'supporting'
+  /** lede is body-sized Astryx Text with larger site CSS. */
+  variant?: 'body' | 'supporting' | 'lede'
   as?: 'p' | 'span' | 'div'
 }
 
 export function SiteText({ variant = 'body', as = 'p', className, children, ...props }: SiteTextProps) {
-  return <Text as={as} type={variant} display={as === 'span' ? 'inline' : 'block'} className={cn('n3wth-site-text', `n3wth-site-text--${variant}`, className)} {...props}>{children}</Text>
+  const textType = variant === 'lede' ? 'body' : variant
+  return <Text as={as} type={textType} display={as === 'span' ? 'inline' : 'block'} className={cn('n3wth-site-text', `n3wth-site-text--${variant}`, className)} {...props}>{children}</Text>
+}
+
+/** Titled stack for long-form / legal pages. Rhythm lives in site.css. */
+export interface SiteDocSectionProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
+  title?: ReactNode
+  level?: 2 | 3
+}
+
+export function SiteDocSection({ title, level = 2, className, children, ...props }: SiteDocSectionProps) {
+  return (
+    <div className={cn('n3wth-site-doc-section', className)} {...props}>
+      {title != null ? (
+        <SiteHeading variant="section" level={level}>
+          {title}
+        </SiteHeading>
+      ) : null}
+      {children}
+    </div>
+  )
+}
+
+/** Disc list with site doc spacing (replaces per-page BulletList helpers). */
+export function SiteDocList({ items, className, ...props }: { items: ReactNode[] } & Omit<ComponentProps<'ul'>, 'children'>) {
+  return (
+    <ul className={cn('n3wth-site-doc-list', className)} {...props}>
+      {items.map((item, i) => (
+        <li key={i}>{item}</li>
+      ))}
+    </ul>
+  )
 }
 
 export interface PageHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {

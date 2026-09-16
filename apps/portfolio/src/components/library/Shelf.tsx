@@ -1,16 +1,18 @@
 import type { ReactNode } from 'react'
 
+const SHELF_LABEL: Record<string, string> = {
+  kit: 'Essay kit',
+  ui: 'UI',
+  garden: 'Garden',
+  skills: 'Skills',
+}
+
 /**
  * One shelf of /library. Every shelf is the same three moves: a hairline
- * rail, a masthead line carrying the shelf's own anchor plus whatever
- * count is real for it, then the heading and a short intro before the
- * content itself.
- *
- * The anchor is rendered as a visible `#kit` / `#garden` link on purpose.
- * The command palette deep-links into these sections, so the fragment is
- * functional information, not decoration — showing it means someone can
- * copy the exact link they landed on. It's also the one place Geist Mono
- * earns its keep in the chrome: a URL fragment is literal machine output.
+ * rail, a masthead line with a plain shelf label plus whatever count is
+ * real for it, then the heading and a short intro before the content.
+ * Section ids stay for command-palette deep links; the visible label is
+ * plain text, not a hashtag.
  *
  * No boxes. Shelves are separated by rails and vertical space, which is
  * the same grammar the Thinking pieces use.
@@ -21,13 +23,16 @@ export function Shelf({
   title,
   intro,
   children,
+  label,
 }: {
   id: string
   meta?: ReactNode
   title: string
   intro: ReactNode
   children: ReactNode
+  label?: string
 }) {
+  const shelfLabel = label ?? SHELF_LABEL[id] ?? id
   return (
     <section
       id={id}
@@ -38,7 +43,7 @@ export function Shelf({
         <div data-reveal>
           <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
             <a href={`#${id}`} className="mono link-underline">
-              #{id}
+              {shelfLabel}
             </a>
             {meta && <p className="mono">{meta}</p>}
           </div>

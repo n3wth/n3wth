@@ -10,7 +10,7 @@ export function UtilityPage({ title, description, actions, children, label }: {
   label: string
 }) {
   return <SiteContainer as="section" aria-label={label}>
-    <PageHeader title={title} description={description} actions={actions} />
+    <PageHeader align="center" title={title} description={description} actions={actions} />
     {children && <SiteSection>{children}</SiteSection>}
   </SiteContainer>
 }
