@@ -64,13 +64,12 @@ export default function Privacy() {
         <SiteDocSection title="Elsa assistant SMS">
           <SiteText>
             When you text or otherwise opt in to Elsa at{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> (Telnyx, primary) or{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> (Twilio, alternate), your phone number
+            <strong style={{ color: 'var(--ink)' }}>+1 (424) 667-2214</strong> (primary) or{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> (alternate), your phone number
             and related SMS content/metadata may be collected to send and receive assistant-related
             SMS (conversations, verification codes, transactional notices). Your phone number is not
             sold or shared with third parties or affiliates for their marketing, and is not used for
-            cross-context behavioral advertising. Telnyx processes SMS for +1 415 718-0992; Twilio
-            processes SMS for +1 415 360-0751. Reply STOP to
+            cross-context behavioral advertising. Messaging providers process SMS for +1 424 667-2214 (main) and +1 415 360-0751 (alternate). Reply STOP to
             opt out. See{' '}
             <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>{' '}
             for full SMS consent details. Message frequency varies. Message and data rates may apply. Consent is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other site services. The messaging program is operated by Oliver Newth (sole proprietor); Elsa is the assistant product name.
@@ -100,17 +99,7 @@ export default function Privacy() {
             for more information.
           </SiteText>
           <SiteText>
-            Telnyx processes SMS (and related telephony metadata) for the Elsa assistant line
-            at +1 415 718-0992 as a service provider / processor on our behalf. See{' '}
-            <a
-              href="https://telnyx.com/privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-underline"
-            >
-              Telnyx&apos;s Privacy Policy
-            </a>
-            . Twilio processes SMS for the Elsa alternate line at +1 415 360-0751 and for the They
+            Twilio processes SMS for the Elsa alternate line at +1 415 360-0751 and for the They
             Won&apos;t Shut Up hotline (+1 855 580-0508) as a service provider / processor on our
             behalf. Twilio may retain data under its own
             policies. See{' '}
@@ -135,12 +124,11 @@ export default function Privacy() {
 
         <SiteDocSection title="SMS data retention">
           <SiteText>
-            Phone numbers and SMS conversation content or metadata related to Elsa (+1 415 718-0992
-            and +1 415 360-0751)
+            Phone numbers and SMS conversation content or metadata related to Elsa (+1 424 667-2214 and +1 415 360-0751)
             and the They Won&apos;t Shut Up hotline (+1 855 580-0508) are retained for up to 24
             months, unless a longer period is needed for security, disputes, or legal obligations.
             On a verified STOP or deletion request, we delete or anonymize that data sooner when
-            feasible. Telnyx and Twilio may retain copies under their own processor policies.
+            feasible. Messaging providers may retain copies under their own processor policies.
           </SiteText>
         </SiteDocSection>
 
