@@ -1,20 +1,9 @@
 'use client'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import type { Skill } from '../data/skills'
-import { filterAndSortSkills, type SortOption } from '../lib/skillSearch'
+import { filterAndSortSkills } from '../lib/skillSearch'
 
-export type { SortOption }
-
-const SORT_STORAGE_KEY = 'newth-skills-sort-preference'
-
-function getStoredSortPreference(): SortOption {
-  if (typeof window === 'undefined') return 'name-asc'
-  const stored = localStorage.getItem(SORT_STORAGE_KEY)
-  if (stored && ['name-asc', 'name-desc', 'category', 'recently-updated'].includes(stored)) {
-    return stored as SortOption
-  }
-  return 'name-asc'
-}
+export type { SortOption } from '../lib/skillSearch'
 
 /**
  * Hook for filtering, sorting, and searching skills.
@@ -23,7 +12,6 @@ function getStoredSortPreference(): SortOption {
 export function useSkillSearch(skills: Skill[]) {
   const [category, setCategory] = useState('all')
   const [query, setQuery] = useState('')
-  const [sort, setSort] = useState<SortOption>(getStoredSortPreference)
   const [debouncedQuery, setDebouncedQuery] = useState(query)
 
   useEffect(() => {
@@ -31,14 +19,9 @@ export function useSkillSearch(skills: Skill[]) {
     return () => clearTimeout(timer)
   }, [query])
 
-  const handleSortChange = useCallback((newSort: SortOption) => {
-    setSort(newSort)
-    localStorage.setItem(SORT_STORAGE_KEY, newSort)
-  }, [])
-
   const results = useMemo(
-    () => filterAndSortSkills(skills, { category, query: debouncedQuery, sort }),
-    [skills, category, debouncedQuery, sort]
+    () => filterAndSortSkills(skills, { category, query: debouncedQuery, sort: 'name-asc' }),
+    [skills, category, debouncedQuery]
   )
 
   const clearSearch = useCallback(() => setQuery(''), [])
@@ -46,11 +29,9 @@ export function useSkillSearch(skills: Skill[]) {
   return {
     category,
     query,
-    sort,
     results,
     setCategory,
     setQuery,
-    setSort: handleSortChange,
     clearSearch,
   }
 }

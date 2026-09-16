@@ -1,5 +1,39 @@
 import { test, expect } from '@playwright/test'
 
+test('catalog search and categories work without a sort control', async ({ page }) => {
+  await page.goto('/')
+  const catalog = page.getByRole('region', { name: 'Skill catalog' })
+  await expect(page.getByRole('button', { name: /^Sort by:/ })).toHaveCount(0)
+  await expect(page.getByText(/skills across \d+ categories/)).toHaveCount(0)
+  const search = page.getByRole('textbox', { name: /Search skills by name/ })
+  await search.fill('pdf')
+  await expect(catalog.getByRole('heading', { name: 'PDF Toolkit', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Development', exact: true }).click()
+  await expect(catalog.getByText('No skills match that yet')).toBeVisible()
+  await page.getByRole('button', { name: 'Documents', exact: true }).click()
+  await expect(catalog.getByRole('heading', { name: 'PDF Toolkit', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Clear search', exact: true }).click()
+  await expect(search).toHaveValue('')
+})
+
+test('install command reports clipboard success and failure honestly', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
+      writeText: async (text: string) => { if (!text.includes('bash -s -- gemini')) throw new Error('Wrong command') },
+    } })
+  })
+  await page.getByRole('button', { name: 'Copy install command', exact: true }).click()
+  await expect(page.getByRole('status')).toHaveText('Command copied. Run it in your terminal to install.')
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
+      writeText: async () => { throw new Error('Clipboard unavailable') },
+    } })
+  })
+  await page.getByRole('button', { name: 'Copy install command', exact: true }).click()
+  await expect(page.getByRole('status')).toHaveText('Copy failed. Select the command and copy it manually.')
+})
+
 for (const route of ['/', '/skill/pdf', '/about', '/bundles']) {
   test(`${route} renders from the production build`, async ({ page }, testInfo) => {
     const errors: string[] = []
