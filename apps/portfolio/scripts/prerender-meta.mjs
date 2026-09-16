@@ -125,17 +125,17 @@ const routes = [
     path: 'elsa',
     title: 'Elsa — SMS Messaging Consent',
     description:
-      "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992.",
+      "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992 (Telnyx) and +1 (415) 360-0751 (Twilio).",
     ogImage: '/og-image.png',
     body: `
       <h1>Elsa — SMS Messaging Consent</h1>
       <p>Last updated: September 2026</p>
       <h2>About Elsa</h2>
-      <p>Elsa is Oliver Newth's personal AI assistant for n3wth.com. People text Elsa at <strong>+1 (415) 718-0992</strong>.</p>
+      <p>Elsa is Oliver Newth's personal AI assistant for n3wth.com. People text Elsa at <strong>+1 (415) 718-0992</strong> (Telnyx, primary) or <strong>+1 (415) 360-0751</strong> (Twilio, alternate).</p>
       <h2>What messages you may receive</h2>
       <p>Automated SMS/MMS for assistant conversations, verification codes, transactional notices, and service notices. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
       <h2>Opt in / opt out</h2>
-      <p>Opt in by texting +1 (415) 718-0992. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+      <p>Opt in by texting +1 (415) 718-0992 or +1 (415) 360-0751. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is not a condition of purchase. See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <p>We do not sell or share mobile numbers with third parties or affiliates for their marketing.</p>`,
   },
   {
@@ -152,13 +152,13 @@ const routes = [
       <h2>They Won't Shut Up Hotline</h2>
       <p>Calls to +1 (855) 580-0508 may collect your number for follow-up SMS. Numbers are not sold or shared for third-party marketing. Reply STOP to opt out. See <a href="/consent">SMS Consent</a>.</p>
       <h2>Elsa assistant SMS</h2>
-      <p>Opting in at +1 (415) 718-0992 collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Telnyx processes SMS. Reply STOP. Consent is not a condition of purchase. See <a href="/elsa">/elsa</a>.</p>
+      <p>Opting in at +1 (415) 718-0992 (Telnyx) or +1 (415) 360-0751 (Twilio) collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Telnyx processes 718-0992; Twilio processes 360-0751. Reply STOP. Consent is not a condition of purchase. See <a href="/elsa">/elsa</a>.</p>
       <h2>SMS data retention</h2>
       <p>SMS data retained up to 24 months unless needed longer for security, disputes, or law; deleted/anonymized sooner on verified STOP/deletion when feasible.</p>
       <h2>California privacy rights (CCPA/CPRA)</h2>
       <p>California residents may know/access, delete, and correct personal information. n3wth.com does not sell or share for cross-context behavioral advertising. Email hey@n3wth.com.</p>
       <h2>Third-Party Services</h2>
-      <p>Hosted by Vercel. Telnyx processes SMS for Elsa (+1 415 718-0992). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
+      <p>Hosted by Vercel. Telnyx processes SMS for Elsa (+1 415 718-0992). Twilio processes SMS for Elsa alternate (+1 415 360-0751) and the hotline (+1 855 580-0508).</p>`,
   },
   {
     path: 'terms',
@@ -174,7 +174,7 @@ const routes = [
       <h2>4. SMS Messaging</h2>
       <p>Hotline callers may opt in to SMS. See <a href="/consent">SMS Consent</a>. Message and data rates may apply. Reply STOP. Privacy in the <a href="/privacy">Privacy Policy</a>.</p>
       <h2>Elsa assistant SMS</h2>
-      <p>By texting +1 (415) 718-0992 you agree to <a href="/elsa">/elsa</a>. Frequency varies. Message and data rates may apply. Reply STOP / HELP. See <a href="/privacy">Privacy Policy</a>.</p>
+      <p>By texting +1 (415) 718-0992 or +1 (415) 360-0751 you agree to <a href="/elsa">/elsa</a>. Frequency varies. Message and data rates may apply. Reply STOP / HELP. See <a href="/privacy">Privacy Policy</a>.</p>
       <h2>3. AI Disclosure</h2>
       <p>Hotline voices are AI-generated; not professional advice.</p>`,
   },
@@ -193,7 +193,7 @@ const routes = [
       <p>Call follow-ups and service notifications, up to 5 messages per month. Message and data rates may apply.</p>
       <h2>Opt in / opt out</h2>
       <p>Opt in by calling the hotline. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. See <a href="/privacy">Privacy Policy</a>.</p>
-      <p>For the Elsa personal assistant SMS line (+1 415 718-0992), see <a href="/elsa">/elsa</a>.</p>`,
+      <p>For the Elsa personal assistant SMS lines (+1 415 718-0992 Telnyx; +1 415 360-0751 Twilio), see <a href="/elsa">/elsa</a>.</p>`,
   },
   /* Auth utility routes: prerendered so their noindex is in the static
      head (crawlers may never run the client-side usePageMeta noindex). */
