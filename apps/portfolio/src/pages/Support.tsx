@@ -19,6 +19,12 @@ const projects = [
     contact: 'support@hop.flights',
   },
   {
+    name: 'lunchmoney.sh',
+    href: 'https://lunchmoney.sh',
+    purpose: 'Unofficial Lunch Money plugin for Claude, Codex, and Cursor.',
+    contact: 'support@n3wth.com',
+  },
+  {
     name: 'theywontshutup.com',
     href: 'https://theywontshutup.com',
     purpose: 'AI voice hotline — call and chat with AI characters.',
@@ -29,7 +35,7 @@ const projects = [
 export default function Support() {
   usePageMeta(
     'Support — Oliver Newth',
-    'Support for n3wth projects — n3wth.com, hop.flights, and theywontshutup.com. Email support@n3wth.com.',
+    'Support for n3wth projects — n3wth.com, hop.flights, lunchmoney.sh, and theywontshutup.com. Email support@n3wth.com.',
     { noindex: false }
   )
 

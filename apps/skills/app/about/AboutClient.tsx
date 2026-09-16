@@ -1,5 +1,6 @@
 'use client'
 import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
+import { siteUrls } from '@n3wth/site-config'
 
 import Link from 'next/link'
 import { IslandNav } from '../../src/components/IslandNav'
@@ -54,6 +55,22 @@ export default function AboutClient() {
                 style={{ color: 'var(--color-grey-200)' }}
               >
                 MCP servers connect your AI to live systems: databases, APIs, real-time data. Skills are different. They're static files. No server process, no infrastructure.
+              </p>
+              <p
+                className="text-lg leading-relaxed mb-4"
+                style={{ color: 'var(--color-grey-200)' }}
+              >
+                For live financial data,{' '}
+                <a
+                  href={siteUrls.lunch}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-hover"
+                  style={{ color: 'var(--color-white)' }}
+                >
+                  lunchmoney.sh
+                </a>
+                {' '}is an unofficial Lunch Money MCP plugin for Claude, Codex, and Cursor. Skills stay local markdown; that plugin reads Lunch Money records when you ask.
               </p>
               <p
                 className="text-lg leading-relaxed mb-4"

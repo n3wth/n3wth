@@ -80,7 +80,7 @@ Installable pieces from across the n3wth properties:
 hey@n3wth.com — product, AI safety, LED art, or coffee in San Francisco.
 
 #### Support (https://n3wth.com/support)
-support@n3wth.com — one inbox covering every n3wth project (n3wth.com, hop.flights, theywontshutup.com).
+support@n3wth.com — one inbox covering every n3wth project (n3wth.com, hop.flights, lunchmoney.sh, theywontshutup.com).
 
 ## Live Products
 
@@ -89,6 +89,11 @@ Products designed by Oliver, kept shipping by an autonomous agent team:
 ### hop.flights (https://hop.flights/)
 Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.
 - Tech: Next.js, AI SDK, Duffel
+
+### lunchmoney.sh (https://lunchmoney.sh/)
+Unofficial Lunch Money plugin for Claude, Codex, and Cursor. Ask about spending, budgets, and bills; financial access is read-only. Auth at auth.n3wth.com.
+- Tech: MCP, TypeScript, Cloudflare
+- GitHub: https://github.com/n3wth/lunchmoney-mcp
 
 ### r3 (https://r3.n3wth.com/)
 Memory for AI apps using vector search and knowledge graphs.

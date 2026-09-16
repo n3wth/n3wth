@@ -1,11 +1,13 @@
+import { siteUrls } from '@n3wth/site-config'
 import { site } from '@/lib/site'
 
 const familyLinks = [
-  { label: 'hop.flights', href: 'https://hop.flights' },
-  { label: 'r3', href: 'https://r3.n3wth.com' },
-  { label: 'kit', href: 'https://kit.n3wth.com' },
-  { label: 'skills', href: 'https://skills.n3wth.com' },
-  { label: 'ui', href: 'https://ui.n3wth.com' },
+  { label: 'hop.flights', href: siteUrls.hop },
+  { label: 'lunchmoney.sh', href: siteUrls.lunch },
+  { label: 'r3', href: siteUrls.r3 },
+  { label: 'kit', href: siteUrls.kit },
+  { label: 'skills', href: siteUrls.skills },
+  { label: 'ui', href: siteUrls.ui },
   { label: 'n3wth.com', href: site.parentUrl },
 ]
 

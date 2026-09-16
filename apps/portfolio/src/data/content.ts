@@ -28,6 +28,7 @@ export const navigation: NavItem[] = [
 /** Family sites for quiet access in the scene or keyboard nav */
 export const familySites = [
   { name: 'hop.flights', href: siteUrls.hop },
+  { name: 'lunchmoney.sh', href: siteUrls.lunch },
   { name: 'r3', href: siteUrls.r3 },
   { name: 'kit', href: siteUrls.kit },
   { name: 'garden', href: siteUrls.garden },
@@ -211,6 +212,14 @@ export const projects: Project[] = [
     description: 'A flight comparison tool that weighs cash fares against points and taxes.',
     tech: ['Next.js', 'AI SDK', 'Duffel'],
     url: siteUrls.hop,
+  },
+  {
+    id: 'lunchmoney',
+    name: 'lunchmoney.sh',
+    description: 'An unofficial Lunch Money plugin for Claude, Codex, and Cursor. Ask about spending, budgets, and bills; access is read-only.',
+    tech: ['MCP', 'TypeScript', 'Cloudflare'],
+    url: siteUrls.lunch,
+    github: 'https://github.com/n3wth/lunchmoney-mcp',
   },
   {
     id: 'skills',

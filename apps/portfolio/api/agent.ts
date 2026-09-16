@@ -21,6 +21,7 @@ OPEN SOURCE:
 - r3: Intelligent memory MCP for AI apps (TypeScript, Redis, vector embeddings)
 - kit: AI-native component registry for design systems (49 components with AI context packs)
 - hop.flights: Points-vs-cash flight optimizer
+- lunchmoney.sh: Unofficial Lunch Money MCP plugin for Claude, Codex, and Cursor (read-only)
 - skills: Markdown skills that teach AI assistants new tricks
 
 CREATIVE:
@@ -48,6 +49,7 @@ const FALLBACK_RESPONSES: Record<string, string> = {
   google: 'Oliver is an AI product lead at Google, building platforms that put DeepMind models into products.',
   work: 'Four companies, one thread: shipping AI from research to production. Google (DeepMind model platforms), Covariant (through Amazon\'s acquisition), Meta (video calling on Instagram and Portal), Microsoft (Azure Cognitive Services).',
   build: 'r3 gives AI apps persistent memory. kit ships design systems to AI coding tools. hop.flights finds the cheapest way to fly, miles or money. All open source.',
+  lunch: 'lunchmoney.sh is an unofficial Lunch Money plugin for Claude, Codex, and Cursor. Read-only spending, budgets, and bills.',
   creative: "Circle of Light is his World AIDS Day memorial for the National AIDS Memorial, in the AIDS Memorial Grove (2021). On THEM he did the lighting and the Circle of Light ring, design by Simón Malvaez and fabrication by Brenden Blaine Darby (2022). Pink Triangle was project coordination as part of Illuminate (2022).",
   trust: 'Trust is a runtime property, not a benchmark score. Safety classifiers need to run at feature latency. Feedback loops beat filters. Most teams never build the observability to know.',
   agent: 'AI should be present, not summoned. The next generation of AI products will be ambient -- multi-agent systems where the coordination protocol matters more than any individual model.',
