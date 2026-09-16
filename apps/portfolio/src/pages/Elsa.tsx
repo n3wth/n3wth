@@ -65,20 +65,16 @@ function ElsaMark({ className }: { className?: string }) {
 }
 
 function Prose({ children }: { children: ReactNode }) {
-  return (
-    <SiteText variant="body" className="mt-3">
-      {children}
-    </SiteText>
-  )
+  return <SiteText variant="body">{children}</SiteText>
 }
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="mt-12 first:mt-0">
-      <SiteHeading variant="item" level={2}>
+    <div className="mt-16 first:mt-0">
+      <SiteHeading variant="item" level={2} className="mb-6">
         {title}
       </SiteHeading>
-      {children}
+      <div className="flex flex-col gap-6">{children}</div>
     </div>
   )
 }
@@ -86,7 +82,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 function BulletList({ items }: { items: ReactNode[] }) {
   return (
     <ul
-      className="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed"
+      className="list-disc space-y-3 pl-5 text-base leading-relaxed"
       style={{ color: 'var(--ink-dim)' }}
     >
       {items.map((item, i) => (
@@ -138,16 +134,16 @@ export default function Elsa() {
             (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other
             tasks Oliver authorizes, over a simple text thread.
           </Prose>
-          <ul className="mt-5 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+          <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
             {FEATURES.map((feature) => (
               <li
                 key={feature.title}
-                className="pt-1"
+                className="flex flex-col gap-3"
               >
-                <SiteHeading variant="item" level={3}>
+                <SiteHeading variant="item" level={3} className="mb-3">
                   {feature.title}
                 </SiteHeading>
-                <p className="mt-2 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                   {feature.copy}
                 </p>
               </li>
@@ -167,21 +163,18 @@ export default function Elsa() {
             Elsa has two numbers for the same assistant. Prefer the main line; use the alternate if
             the main line is busy or unavailable. Either number reaches Elsa.
           </Prose>
-          <ul className="mt-5 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+          <ul className="grid items-stretch gap-x-10 gap-y-8 sm:grid-cols-2">
             {NUMBERS.map((number) => (
-              <li
-                key={number.display}
-                className="pt-1"
-              >
+              <li key={number.display} className="flex h-full flex-col gap-3">
                 <SiteText variant="supporting" as="div" className="elsa-number-label">
                   {number.label}
                 </SiteText>
-                <SiteHeading variant="item" level={3} className="mt-2">
+                <SiteHeading variant="item" level={3}>
                   <a href={number.href} className="link-underline">
                     {number.display}
                   </a>
                 </SiteHeading>
-                <p className="mt-2 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+                <p className="grow text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                   {number.copy}
                 </p>
                 <Button
@@ -189,7 +182,7 @@ export default function Elsa() {
                   variant={number.variant}
                   size="md"
                   href={number.href}
-                  className="mt-4"
+                  className="mt-auto"
                 />
               </li>
             ))}
@@ -223,8 +216,8 @@ export default function Elsa() {
         </Section>
 
         <Section title="Opt in and opt out">
-          <ul className="mt-3 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-            <li className="pt-1">
+          <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+            <li className="flex flex-col gap-3">
               <SiteHeading variant="item" level={3}>
                 Opt in
               </SiteHeading>
@@ -245,7 +238,7 @@ export default function Elsa() {
                 ]}
               />
             </li>
-            <li className="pt-1">
+            <li className="flex flex-col gap-3">
               <SiteHeading variant="item" level={3}>
                 Opt out / help
               </SiteHeading>
@@ -311,7 +304,7 @@ export default function Elsa() {
         <SiteText
           variant="supporting"
           as="p"
-          className="mt-12"
+          className="mt-16"
           style={{ color: 'var(--ink-label)' }}
         >
           Last updated September 2026
