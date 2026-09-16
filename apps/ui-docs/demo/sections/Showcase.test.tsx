@@ -28,12 +28,12 @@ describe('documentation specimens', () => {
 
   it('preserves interactive controls and input state in compact layouts', () => {
     render(<N3wthProvider><AtomsSection /></N3wthProvider>)
-    const buttonBlock = screen.getByRole('heading', { name: 'Button', exact: true }).parentElement!.parentElement!
-    const secondary = within(buttonBlock).getByRole('button', { name: 'secondary', exact: true })
+    const buttonBlock = screen.getByRole('heading', { name: 'Button' }).parentElement!.parentElement!
+    const secondary = within(buttonBlock).getByRole('button', { name: 'secondary' })
     fireEvent.click(secondary)
     expect(secondary).toHaveAttribute('aria-pressed', 'true')
-    fireEvent.click(within(buttonBlock).getByRole('button', { name: 'Loading', exact: true }))
-    expect(within(buttonBlock).getByRole('button', { name: 'Loading', exact: true })).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.click(within(buttonBlock).getByRole('button', { name: 'Loading' }))
+    expect(within(buttonBlock).getByRole('button', { name: 'Loading' })).toHaveAttribute('aria-pressed', 'true')
     const input = screen.getByRole('textbox', { name: 'Example input' })
     fireEvent.change(input, { target: { value: 'Readable examples' } })
     expect(input).toHaveValue('Readable examples')
