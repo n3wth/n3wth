@@ -56,7 +56,7 @@ jobs:
         if: contains(steps.affected.outputs.workspaces, '@n3wth/skills')
         run: node --test apps/skills/scripts/install.test.mjs
       - name: Install browser
-        if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/kit') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/ui') || contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/kit') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
         run: npx playwright install --with-deps chromium
       - name: Check standalone UI package
         if: contains(steps.affected.outputs.workspaces, '@n3wth/ui')
