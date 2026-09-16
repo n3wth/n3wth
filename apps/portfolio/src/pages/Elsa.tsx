@@ -128,9 +128,6 @@ export default function Elsa() {
             <>
               Personal AI assistant over SMS for Oliver Newth on n3wth.com. Text for help with
               email, scheduling, purchases, and other tasks Oliver authorizes.
-              <SiteText variant="supporting" as="span" className="elsa-hero-meta mt-3 block">
-                SMS messaging consent · Last updated September 2026
-              </SiteText>
             </>
           }
           actions={
@@ -337,6 +334,15 @@ export default function Elsa() {
             .
           </Prose>
         </Section>
+
+        <SiteText
+          variant="supporting"
+          as="p"
+          className="mt-10 border-t pt-4"
+          style={{ borderColor: 'var(--rail-strong)', color: 'var(--ink-label)' }}
+        >
+          Last updated September 2026
+        </SiteText>
       </SiteSection>
     </section>
   )

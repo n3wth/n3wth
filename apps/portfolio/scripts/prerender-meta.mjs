@@ -142,7 +142,6 @@ const routes = [
         </svg>
         <h1>Elsa</h1>
         <p>Personal AI assistant over SMS for Oliver Newth on n3wth.com. Text for help with email, scheduling, purchases, and other tasks Oliver authorizes.</p>
-        <p>SMS messaging consent · Last updated September 2026</p>
         <p><a href="sms:+14157180992">+1 (415) 718-0992</a> · <a href="sms:+14153600751">+1 (415) 360-0751</a></p>
       </div>
       <h2>What Elsa does</h2>
@@ -166,7 +165,8 @@ const routes = [
       <h2>Opt in and opt out</h2>
       <p>Opt in by texting +1 (415) 718-0992 or +1 (415) 360-0751, or by clearly agreeing with Oliver / Elsa to receive assistant texts. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <h2>Privacy</h2>
-      <p>Your phone number is used only to deliver Elsa / n3wth assistant-related SMS and to operate conversations you start. We do not sell or share mobile numbers with third parties or affiliates for their marketing. See the full <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>`,
+      <p>Your phone number is used only to deliver Elsa / n3wth assistant-related SMS and to operate conversations you start. We do not sell or share mobile numbers with third parties or affiliates for their marketing. See the full <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+      <p>Last updated September 2026</p>`,
   },
   {
     path: 'privacy',
