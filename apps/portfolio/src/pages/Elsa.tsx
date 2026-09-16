@@ -68,13 +68,15 @@ function Prose({ children }: { children: ReactNode }) {
   return <SiteText variant="body">{children}</SiteText>
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
+function Section({ title, children }: { title?: string; children: ReactNode }) {
   return (
-    <div className="mt-16 first:mt-0">
-      <SiteHeading variant="item" level={2} className="mb-6">
-        {title}
-      </SiteHeading>
-      <div className="flex flex-col gap-6">{children}</div>
+    <div className="mt-16 flex flex-col gap-6 first:mt-0">
+      {title ? (
+        <SiteHeading variant="section" level={2}>
+          {title}
+        </SiteHeading>
+      ) : null}
+      {children}
     </div>
   )
 }
@@ -118,7 +120,7 @@ export default function Elsa() {
             Elsa
           </SiteHeading>
           <SiteText className="n3wth-site-description">
-            Personal AI assistant over SMS for Oliver Newth on n3wth.com.
+            A personal AI assistant in your texts.
           </SiteText>
           <div className="n3wth-site-actions elsa-hero-actions">
             <Button label="+1 (415) 718-0992" variant="primary" size="md" href={PRIMARY_SMS} />
@@ -128,19 +130,16 @@ export default function Elsa() {
       </header>
 
       <SiteSection data-reveal className="site-content-gutter mx-auto max-w-3xl">
-        <Section title="What Elsa does">
-          <Prose>
+        <Section>
+          <SiteText variant="body" className="elsa-intro">
             Elsa is the personal AI assistant product name for messaging operated by Oliver Newth
             (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other
             tasks Oliver authorizes, over a simple text thread.
-          </Prose>
+          </SiteText>
           <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
             {FEATURES.map((feature) => (
-              <li
-                key={feature.title}
-                className="flex flex-col gap-3"
-              >
-                <SiteHeading variant="item" level={3} className="mb-3">
+              <li key={feature.title} className="flex flex-col gap-3">
+                <SiteHeading variant="item" level={3}>
                   {feature.title}
                 </SiteHeading>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
@@ -215,9 +214,9 @@ export default function Elsa() {
           </Prose>
         </Section>
 
-        <Section title="Opt in and opt out">
+        <Section>
           <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
-            <li className="flex flex-col gap-3">
+            <li className="flex flex-col gap-5">
               <SiteHeading variant="item" level={3}>
                 Opt in
               </SiteHeading>
@@ -238,7 +237,7 @@ export default function Elsa() {
                 ]}
               />
             </li>
-            <li className="flex flex-col gap-3">
+            <li className="flex flex-col gap-5">
               <SiteHeading variant="item" level={3}>
                 Opt out / help
               </SiteHeading>
@@ -304,7 +303,7 @@ export default function Elsa() {
         <SiteText
           variant="supporting"
           as="p"
-          className="mt-16"
+          className="elsa-last-updated"
           style={{ color: 'var(--ink-label)' }}
         >
           Last updated September 2026
