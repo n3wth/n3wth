@@ -702,50 +702,69 @@ body {
 }
 
 .elsa-eyes {
-  transform-origin: 342px 195px;
-  animation: elsa-look 7.5s ease-in-out infinite;
+  transform-origin: 256px 210px;
+  animation: elsa-look 8s ease-in-out infinite;
 }
 
-.elsa-eye-pill {
+.elsa-eye-white {
   transform-box: fill-box;
   transform-origin: center;
-  animation: elsa-blink 5.2s ease-in-out infinite;
+  animation: elsa-blink 5.6s ease-in-out infinite;
 }
 
-.elsa-eye-pill:nth-of-type(1) {
-  animation-delay: 0s;
+.elsa-eye:nth-of-type(2) .elsa-eye-white {
+  animation-delay: 0.08s;
+}
+
+.elsa-pupil {
+  transform-origin: 0px 4px;
+  animation: elsa-pupil 8s ease-in-out infinite;
 }
 
 @keyframes elsa-look {
   0%,
-  38%,
+  42%,
   100% {
     transform: translate(0, 0);
   }
-  48% {
+  52% {
+    transform: translate(6px, -2px);
+  }
+  64% {
+    transform: translate(-5px, 2px);
+  }
+  76% {
+    transform: translate(2px, 1px);
+  }
+}
+
+@keyframes elsa-pupil {
+  0%,
+  42%,
+  100% {
+    transform: translate(0, 0);
+  }
+  52% {
     transform: translate(5px, -3px);
   }
-  58% {
-    transform: translate(-4px, 2px);
+  64% {
+    transform: translate(-6px, 2px);
   }
-  68% {
-    transform: translate(3px, 1px);
-  }
-  78% {
-    transform: translate(0, 0);
+  76% {
+    transform: translate(2px, 1px);
   }
 }
 
 @keyframes elsa-blink {
   0%,
-  90%,
+  88%,
   100% {
     transform: scaleY(1);
   }
-  93% {
-    transform: scaleY(0.12);
+  91% {
+    transform: scaleY(0.08);
   }
-  96% {
+  94% {
     transform: scaleY(1);
   }
 }

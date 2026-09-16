@@ -51,27 +51,19 @@ function ElsaMark({ className }: { className?: string }) {
     >
       <circle cx="256" cy="256" r="256" fill="#4B82C4" />
       <g className="elsa-eyes">
-        <g transform="translate(269.4 207.5) rotate(72.4)">
-          <rect
-            className="elsa-eye-pill"
-            x="-21.3"
-            y="-47.8"
-            width="42.6"
-            height="95.6"
-            rx="21.3"
-            fill="#fff"
-          />
+        <g className="elsa-eye" transform="translate(178 210)">
+          <ellipse className="elsa-eye-white" cx="0" cy="0" rx="46" ry="52" fill="#fff" />
+          <g className="elsa-pupil">
+            <circle cx="0" cy="4" r="18" fill="#1B2A44" />
+            <circle cx="7" cy="-2" r="6" fill="#fff" opacity="0.9" />
+          </g>
         </g>
-        <g transform="translate(414 182.5) rotate(70.8)">
-          <rect
-            className="elsa-eye-pill"
-            x="-20.9"
-            y="-48.9"
-            width="41.8"
-            height="97.7"
-            rx="20.9"
-            fill="#fff"
-          />
+        <g className="elsa-eye" transform="translate(334 210)">
+          <ellipse className="elsa-eye-white" cx="0" cy="0" rx="46" ry="52" fill="#fff" />
+          <g className="elsa-pupil">
+            <circle cx="0" cy="4" r="18" fill="#1B2A44" />
+            <circle cx="7" cy="-2" r="6" fill="#fff" opacity="0.9" />
+          </g>
         </g>
       </g>
     </svg>
