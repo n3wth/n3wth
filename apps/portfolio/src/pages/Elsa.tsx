@@ -224,7 +224,7 @@ export default function Elsa() {
 
         <Section title="Opt in and opt out">
           <ul className="mt-3 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-            <li className="border-t pt-4" style={{ borderColor: 'var(--rail-strong)' }}>
+            <li className="pt-1">
               <SiteHeading variant="item" level={3}>
                 Opt in
               </SiteHeading>
@@ -245,7 +245,7 @@ export default function Elsa() {
                 ]}
               />
             </li>
-            <li className="border-t pt-4" style={{ borderColor: 'var(--rail-strong)' }}>
+            <li className="pt-1">
               <SiteHeading variant="item" level={3}>
                 Opt out / help
               </SiteHeading>
