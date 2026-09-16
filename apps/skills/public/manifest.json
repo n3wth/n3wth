@@ -1,6 +1,6 @@
 {
-  "name": "Skills for AI Coding Assistants",
-  "short_name": "AI Skills",
+  "name": "Agent Skills",
+  "short_name": "Agent Skills",
   "description": "Markdown skills for Antigravity CLI.",
   "start_url": "/",
   "display": "standalone",

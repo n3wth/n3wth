@@ -1,4 +1,5 @@
 import Script from 'next/script'
+import { siteConfig } from '@/src/config/site'
 
 interface JsonLdProps {
   data: Record<string, unknown>
@@ -21,7 +22,8 @@ export function WebSiteJsonLd() {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'n3wth/skills',
+    name: siteConfig.name,
+    alternateName: ['n3wth/skills', 'skills.n3wth.com'],
     description: 'Markdown skills for Antigravity CLI',
     url: 'https://skills.n3wth.com',
     potentialAction: {
@@ -65,7 +67,7 @@ export function WebPageJsonLd({ title, description, url, dateModified, breadcrum
     url,
     isPartOf: {
       '@type': 'WebSite',
-      name: 'n3wth/skills',
+      name: siteConfig.name,
       url: 'https://skills.n3wth.com',
     },
   }

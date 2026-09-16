@@ -1,4 +1,5 @@
 import { siteUrls } from '@n3wth/site-config'
+import { siteConfig } from '../config/site'
 interface SEOProps {
   title?: string
   description?: string
@@ -9,7 +10,7 @@ interface SEOProps {
 }
 
 const BASE_URL = siteUrls.skills
-const DEFAULT_TITLE = 'n3wth skills - Extend Your AI Coding Assistant'
+const DEFAULT_TITLE = `${siteConfig.name} — Extend Your AI Coding Assistant`
 const DEFAULT_DESCRIPTION = 'Skills for Antigravity CLI. Extend your AI coding assistant with specialized capabilities. Install with one command.'
 const DEFAULT_OG_IMAGE = `${BASE_URL}/opengraph-image`
 
@@ -40,7 +41,7 @@ export function SEO({
       <meta property="og:url" content={fullCanonicalUrl} />
       <meta property="og:image" content={fullOgImage} />
       <meta property="og:image:alt" content={title} />
-      <meta property="og:site_name" content="n3wth skills" />
+      <meta property="og:site_name" content={siteConfig.name} />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
