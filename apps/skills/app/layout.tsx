@@ -5,13 +5,14 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import { Providers } from './providers'
 import { PostHogProvider } from '../src/components/PostHogProvider'
 import { WebSiteJsonLd } from '../src/components/seo/JsonLd'
+import { siteConfig } from '../src/config/site'
 import '../src/index.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrls.skills),
   title: {
-    default: 'n3wth/skills — Markdown skills for Antigravity CLI',
-    template: '%s | n3wth/skills',
+    default: `${siteConfig.name} — Markdown skills for Antigravity CLI`,
+    template: `%s | ${siteConfig.name}`,
   },
   description:
     'Markdown skills for Antigravity CLI. One install, works offline.',
@@ -33,8 +34,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: siteUrls.skills,
-    siteName: 'n3wth/skills',
-    title: 'n3wth/skills — Markdown skills for Antigravity CLI',
+    siteName: siteConfig.name,
+    title: `${siteConfig.name} — Markdown skills for Antigravity CLI`,
     description:
       'Markdown skills for Antigravity CLI. One install, works offline.',
     images: [
@@ -42,14 +43,14 @@ export const metadata: Metadata = {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'n3wth/skills',
+        alt: siteConfig.name,
         type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'n3wth/skills — Markdown skills for Antigravity CLI',
+    title: `${siteConfig.name} — Markdown skills for Antigravity CLI`,
     description:
       'Markdown skills for coding agents. One install, works offline.',
     images: ['/twitter-image'],
@@ -84,7 +85,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="AI Skills" />
+        <meta name="apple-mobile-web-app-title" content={siteConfig.name} />
         <WebSiteJsonLd />
       </head>
       <body>

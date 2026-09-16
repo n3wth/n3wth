@@ -32,7 +32,7 @@ export const familySites = [
   { name: 'r3', href: siteUrls.r3 },
   { name: 'kit', href: siteUrls.kit },
   { name: 'garden', href: siteUrls.garden },
-  { name: 'skills', href: siteUrls.skills },
+  { name: 'Agent Skills', href: siteUrls.skills },
   { name: 'ui', href: siteUrls.ui },
 ]
 
@@ -223,7 +223,7 @@ export const projects: Project[] = [
   },
   {
     id: 'skills',
-    name: 'skills',
+    name: 'Agent Skills',
     focus: 'Reusable skills',
     question: 'Turn a way of working into something others can use',
     description: 'A registry of installable markdown skills for coding agents. Each skill packages instructions for a specific task.',

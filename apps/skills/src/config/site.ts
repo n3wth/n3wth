@@ -1,7 +1,7 @@
 import { siteUrls } from '@n3wth/site-config'
 // Site-wide configuration
 export const siteConfig = {
-  name: 'n3wth/skills',
+  name: 'Agent Skills',
   description: 'Markdown skills for coding agents.',
   tagline: 'One install, local, offline.',
   author: 'Oliver Newth',
@@ -13,7 +13,7 @@ export const siteConfig = {
     docs: 'https://github.com/n3wth/n3wth/tree/main/apps/skills#readme',
   },
   hero: {
-    title: ['Skills for', 'coding agents'],
+    title: ['Agent Skills'],
   },
   sections: {
     install: {

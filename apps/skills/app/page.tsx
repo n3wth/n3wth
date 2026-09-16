@@ -1,22 +1,23 @@
 import type { Metadata } from 'next'
 import HomeClient from './HomeClient'
 import { ItemListJsonLd } from '@/src/components/seo/JsonLd'
+import { siteConfig } from '@/src/config/site'
 import { skills } from '@/src/data/skills'
 
 export const metadata: Metadata = {
-  title: 'n3wth/skills',
+  title: { absolute: siteConfig.name },
   description:
     'Markdown skills for Antigravity CLI. One install, works offline.',
   alternates: { canonical: 'https://skills.n3wth.com' },
   openGraph: { type: 'website',
-    title: 'n3wth/skills',
+    title: siteConfig.name,
     description:
       'Markdown skills for Antigravity CLI. One install, works offline.',
     url: 'https://skills.n3wth.com',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'n3wth/skills',
+    title: siteConfig.name,
     description:
       'Markdown skills for coding agents. One install, works offline.',
   },

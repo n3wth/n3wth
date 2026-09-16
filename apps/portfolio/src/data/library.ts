@@ -267,7 +267,7 @@ export const ecosystem: EcosystemProperty[] = [
   },
   {
     id: 'skills',
-    name: 'n3wth/skills',
+    name: 'Agent Skills',
     href: 'https://skills.n3wth.com',
     purpose: 'Skills to install locally for coding agents.',
   },

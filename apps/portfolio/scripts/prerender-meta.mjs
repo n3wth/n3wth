@@ -48,7 +48,7 @@ const routes = [
           <li><a href="https://lunchmoney.sh" rel="noopener">lunchmoney.sh</a> — unofficial Lunch Money plugin for Claude, Codex, and Cursor.</li>
           <li><a href="https://r3.n3wth.com" rel="noopener">r3</a>: memory for AI apps using vector search and knowledge graphs.</li>
           <li><a href="https://kit.n3wth.com" rel="noopener">kit</a>: a design system with context for coding agents.</li>
-          <li><a href="https://skills.n3wth.com" rel="noopener">skills</a>: reusable instructions for coding agents.</li>
+          <li><a href="https://skills.n3wth.com" rel="noopener">Agent Skills</a>: reusable instructions for coding agents.</li>
           <li><a href="https://github.com/n3wth/markup" rel="noopener">markup</a>: an independent prototype exploring personal AI agents in shared documents and chat.</li>
           <li><a href="https://garden.n3wth.com" rel="noopener">garden</a> — a digital garden of working notes.</li>
         </ul>
@@ -92,7 +92,7 @@ const routes = [
       </section>
       <section>
         <h2>Agent skills</h2>
-        <p>Skills for coding assistants at <a href="https://skills.n3wth.com" rel="noopener">skills.n3wth.com</a> covering development, documents, creative work, productivity and business. They run locally and work offline.</p>
+        <p>Skills for coding assistants at <a href="https://skills.n3wth.com" rel="noopener">Agent Skills</a> covering development, documents, creative work, productivity and business. They run locally and work offline.</p>
       </section>`,
   },
   {
