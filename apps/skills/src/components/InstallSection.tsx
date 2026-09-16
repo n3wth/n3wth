@@ -1,84 +1,38 @@
 'use client'
-import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { useState } from 'react'
+import { CodeBlock } from '@n3wth/ui'
+import { Button } from '@n3wth/ui/primitives'
+import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { installCommands } from '../config/commands'
-import { assistantList } from '../config/assistants'
-import { CommandBox } from './CommandBox'
-import { AssistantIcon } from './AssistantIcon'
+import { trackCopyEvent } from '../lib/analytics'
 
-const publicAssistantList = assistantList
+const command = installCommands.find(item => item.assistantId === 'gemini')!.command
 
 export function InstallSection() {
-  const [showAll, setShowAll] = useState(false)
-  
-  const primaryCommands = installCommands.filter(cmd => 
-    cmd.assistantId === 'gemini' || cmd.assistantId === 'all'
-  )
-  const additionalCommands = installCommands.filter(cmd => 
-    cmd.assistantId !== 'gemini' && cmd.assistantId !== 'all'
-  )
+  const [copyStatus, setCopyStatus] = useState('')
+
+  const copyCommand = async () => {
+    try {
+      await navigator.clipboard.writeText(command)
+    } catch {
+      setCopyStatus('Copy failed. Select the command and copy it manually.')
+      return
+    }
+    setCopyStatus('Command copied. Run it in your terminal to install.')
+    trackCopyEvent('for-antigravity-cli')
+  }
 
   return (
     <SiteSection>
-      <div>
-        <SiteHeading variant="section" className="mb-2">
-          Install
-        </SiteHeading>
-        <SiteText className="mb-6">One command. Skills install locally and work offline.</SiteText>
-      </div>
-
-      <div className="flex flex-wrap gap-2 mb-6">
-        {publicAssistantList.map(assistant => (
-          <span
-            key={assistant.id}
-            className="text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1.5"
-            style={{
-              color: assistant.color,
-              backgroundColor: assistant.bgColor,
-              border: `1px solid ${assistant.borderColor}`,
-            }}
-            title={assistant.description}
-          >
-            <AssistantIcon assistant={assistant.id} size={12} />
-            {assistant.shortName}
-          </span>
-        ))}
-      </div>
-
-      <div className="space-y-3">
-        {primaryCommands.map((cmd) => (
-          <CommandBox
-            key={cmd.name}
-            name={cmd.name}
-            command={cmd.command}
-            primary={cmd.primary}
-            assistantId={cmd.assistantId}
-          />
-        ))}
-        
-        {!showAll && additionalCommands.length > 0 && (
-          <button
-            onClick={() => setShowAll(true)}
-            className="w-full py-3 text-sm font-medium rounded-xl transition-colors"
-            style={{
-              color: 'var(--color-grey-400)',
-              backgroundColor: 'var(--glass-bg)',
-              border: '1px solid var(--glass-border)',
-            }}
-          >
-            Show additional commands
-          </button>
-        )}
-        
-        {showAll && additionalCommands.map((cmd) => (
-          <CommandBox
-            key={cmd.name}
-            name={cmd.name}
-            command={cmd.command}
-            primary={cmd.primary}
-            assistantId={cmd.assistantId}
-          />
-        ))}
+      <div className="flex flex-col items-start gap-4">
+        <SiteHeading variant="section">Install skills</SiteHeading>
+        <div className="max-w-2xl"><SiteText>
+          Run this command to copy the catalog to <code>~/.gemini/skills</code>.
+          {' '}Requires Bash, curl, and Git. Existing skill files are skipped.
+        </SiteText></div>
+        <CodeBlock code={command} language="bash" size="sm" />
+        <Button label="Copy install command" onClick={copyCommand} style={{ minHeight: 44 }} />
+        <SiteText role="status" aria-live="polite">{copyStatus}</SiteText>
       </div>
     </SiteSection>
   )

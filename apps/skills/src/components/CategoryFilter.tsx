@@ -1,5 +1,4 @@
 'use client'
-import { useRef } from 'react'
 import { categories } from '../data/skills'
 import { CategoryShape } from './CategoryShape'
 
@@ -9,14 +8,11 @@ interface CategoryFilterProps {
 }
 
 export function CategoryFilter({ activeCategory, onCategoryChange }: CategoryFilterProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  // No GSAP scale animation - text buttons use CSS transitions only
-
   return (
     <div
-      ref={containerRef}
-      className="flex gap-1 overflow-x-auto pb-2 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible scrollbar-hidden"
+      role="group"
+      aria-label="Filter skills by category"
+      className="flex flex-wrap gap-x-3 gap-y-1"
     >
       {categories.map(cat => (
         <button
@@ -24,7 +20,7 @@ export function CategoryFilter({ activeCategory, onCategoryChange }: CategoryFil
           type="button"
           aria-pressed={activeCategory === cat.id}
           onClick={() => onCategoryChange(cat.id)}
-          className={`category-filter-btn px-3 md:px-4 py-2 text-xs md:text-sm font-medium flex items-center gap-2 shrink-0 min-h-[44px] relative ${
+          className={`category-filter-btn px-1 py-2 text-sm font-medium flex items-center gap-2 shrink-0 min-h-[44px] relative ${
             activeCategory === cat.id ? 'category-filter-active' : ''
           }`}
         >
