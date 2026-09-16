@@ -693,9 +693,22 @@ body {
   animation: elsa-slash 6s ease-in-out infinite;
 }
 
+/* Only when Elsa mark precedes copy — avoid other page headers */
+.elsa-hero-mark + .n3wth-site-page-header-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.elsa-hero-mark + .n3wth-site-page-header-copy .n3wth-site-description {
+  margin-top: 0;
+}
+
 .elsa-hero-actions {
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 0;
 }
 
 .elsa-number-label {
