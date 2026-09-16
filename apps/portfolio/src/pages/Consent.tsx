@@ -140,7 +140,7 @@ export default function Consent() {
             more information.
           </Prose>
           <Prose>
-            For the Elsa personal assistant SMS line (+1 415 718-0992), see{' '}
+            For the Elsa personal assistant SMS lines (+1 415 718-0992 Telnyx primary; +1 415 360-0751 Twilio alternate), see{' '}
             <RouterLink href="/elsa" className="link-underline">/elsa</RouterLink>.
           </Prose>
         </Section>

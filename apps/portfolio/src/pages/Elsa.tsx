@@ -5,7 +5,7 @@ import { RouterLink } from '../components/RouterLink'
 
 const TITLE = 'Elsa — SMS Messaging Consent'
 const DESCRIPTION =
-  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992."
+  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992 (Telnyx) and +1 (415) 360-0751 (Twilio)."
 
 function Prose({ children }: { children: ReactNode }) {
   return (
@@ -62,14 +62,16 @@ export default function Elsa() {
           <Prose>
             Elsa is the personal AI assistant product name for messaging operated by Oliver Newth (sole proprietor) on n3wth.com. Elsa helps with email,
             scheduling, purchases, and other tasks Oliver authorizes. People text Elsa at{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong>.
+            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> (Telnyx, primary)
+            and <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> (Twilio, alternate).
           </Prose>
         </Section>
 
         <Section title="What messages you may receive">
           <Prose>
             By opting in, you consent to receive automated SMS (and MMS when needed) from{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong>, including:
+            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong>, including:
           </Prose>
           <BulletList
             items={[
@@ -89,19 +91,20 @@ export default function Elsa() {
 
         <Section title="How to opt in">
           <Prose>
-            You opt in by texting <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong>{' '}
+            You opt in by texting <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong>{' '}
             (for example START, HELLO, or any first message), or by giving Oliver / Elsa your mobile
-            number and clearly agreeing to receive texts from this line for assistant and transactional
-            purposes.
+            number and clearly agreeing to receive texts from either Elsa SMS line for assistant and
+            transactional purposes.
           </Prose>
           <div
             className="mt-6 rounded-lg border p-5"
             style={{ borderColor: 'var(--rail-strong)', background: 'color-mix(in srgb, var(--ink) 4%, transparent)' }}
           >
             <p className="text-base leading-relaxed" style={{ color: 'var(--ink)' }}>
-              By texting +1 (415) 718-0992 or otherwise opting in, you agree to receive automated SMS
+              By texting +1 (415) 718-0992 or +1 (415) 360-0751 or otherwise opting in, you agree to receive automated SMS
               messages from Elsa (n3wth.com / Oliver Newth). Message frequency varies. Message and data
-              rates may apply. Reply STOP to opt out.  Consent is not a condition of purchase. Reply HELP for help. See{' '}
+              rates may apply. Reply STOP to opt out. Consent is not a condition of purchase. Reply HELP for help. See{' '}
               <RouterLink href="/privacy" className="link-underline">Privacy Policy</RouterLink> and{' '}
               <RouterLink href="/terms" className="link-underline">Terms of Service</RouterLink>.
             </p>
@@ -111,7 +114,7 @@ export default function Elsa() {
         <Section title="How to opt out">
           <BulletList
             items={[
-              <>Replying <strong style={{ color: 'var(--ink)' }}>STOP</strong> to any message from +1 (415) 718-0992</>,
+              <>Replying <strong style={{ color: 'var(--ink)' }}>STOP</strong> to any message from +1 (415) 718-0992 or +1 (415) 360-0751</>,
               <>Emailing <a href="mailto:hey@n3wth.com" className="link-underline">hey@n3wth.com</a> with your phone number and a request to unsubscribe</>,
             ]}
           />
@@ -142,7 +145,9 @@ export default function Elsa() {
           <Prose>
             n3wth.com — Oliver Newth — <a href="mailto:hey@n3wth.com" className="link-underline">hey@n3wth.com</a>
             <br />
-            Elsa SMS: +1 (415) 718-0992
+            Elsa SMS (primary, Telnyx): +1 (415) 718-0992
+            <br />
+            Elsa SMS (alternate, Twilio): +1 (415) 360-0751
           </Prose>
         </Section>
       </SiteSection>
