@@ -135,7 +135,7 @@ const routes = [
       <h2>What messages you may receive</h2>
       <p>Automated SMS/MMS for assistant conversations, verification codes, transactional notices, and service notices. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
       <h2>Opt in / opt out</h2>
-      <p>Opt in by texting +1 (415) 718-0992 or +1 (415) 360-0751. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is not a condition of purchase. See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+      <p>Opt in by texting +1 (415) 718-0992 or +1 (415) 360-0751. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <p>We do not sell or share mobile numbers with third parties or affiliates for their marketing.</p>`,
   },
   {
@@ -152,7 +152,7 @@ const routes = [
       <h2>They Won't Shut Up Hotline</h2>
       <p>Calls to +1 (855) 580-0508 may collect your number for follow-up SMS. Numbers are not sold or shared for third-party marketing. Reply STOP to opt out. See <a href="/consent">SMS Consent</a>.</p>
       <h2>Elsa assistant SMS</h2>
-      <p>Opting in at +1 (415) 718-0992 (Telnyx) or +1 (415) 360-0751 (Twilio) collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Telnyx processes 718-0992; Twilio processes 360-0751. Reply STOP. Consent is not a condition of purchase. See <a href="/elsa">/elsa</a>.</p>
+      <p>Opting in at +1 (415) 718-0992 (Telnyx) or +1 (415) 360-0751 (Twilio) collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Telnyx processes 718-0992; Twilio processes 360-0751. Reply STOP. Consent is not a condition of purchase. SMS is optional and is not required to use n3wth.com. See <a href="/elsa">/elsa</a>.</p>
       <h2>SMS data retention</h2>
       <p>SMS data retained up to 24 months unless needed longer for security, disputes, or law; deleted/anonymized sooner on verified STOP/deletion when feasible.</p>
       <h2>California privacy rights (CCPA/CPRA)</h2>
@@ -174,7 +174,7 @@ const routes = [
       <h2>4. SMS Messaging</h2>
       <p>Hotline callers may opt in to SMS. See <a href="/consent">SMS Consent</a>. Message and data rates may apply. Reply STOP. Privacy in the <a href="/privacy">Privacy Policy</a>.</p>
       <h2>Elsa assistant SMS</h2>
-      <p>By texting +1 (415) 718-0992 or +1 (415) 360-0751 you agree to <a href="/elsa">/elsa</a>. Frequency varies. Message and data rates may apply. Reply STOP / HELP. See <a href="/privacy">Privacy Policy</a>.</p>
+      <p>By texting +1 (415) 718-0992 or +1 (415) 360-0751 you agree to <a href="/elsa">/elsa</a>. Frequency varies. Message and data rates may apply. Reply STOP / HELP. SMS is optional and is not required to use n3wth.com. See <a href="/privacy">Privacy Policy</a>.</p>
       <h2>3. AI Disclosure</h2>
       <p>Hotline voices are AI-generated; not professional advice.</p>`,
   },

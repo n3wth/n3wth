@@ -101,7 +101,8 @@ export default function Terms() {
             opting in to Elsa SMS, you agree to the messaging terms on{' '}
             <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>.
             Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe.
-            Reply HELP for help. Privacy, retention, and California privacy rights for SMS are
+            Reply HELP for help. SMS is optional and is not required to use n3wth.com or other site
+            services. Privacy, retention, and California privacy rights for SMS are
             described in the{' '}
             <RouterLink href="/privacy" className="link-underline">Privacy Policy</RouterLink>.
           </Prose>
