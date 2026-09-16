@@ -1,32 +1,37 @@
 ---
 title: Non-Comedogenic
-description: Understanding products that won't clog pores
+description: Non-comedogenic means a product is formulated not to clog pores (comedones). Definition, why the label is unregulated, and when it matters for acne-prone skin.
 tags:
   - health
   - skincare
   - cosmetics
 ---
 
-Non-comedogenic refers to products or ingredients that are formulated to not clog pores or cause acne. This term is commonly used in skincare and cosmetics.
+Non-comedogenic means a product is less likely to clog pores. A comedone is a clogged follicle: a blackhead or whitehead. "Non-comed" on a label is shorthand for that claim — the product is marketed as unlikely to cause comedones.
 
-Key points about non-comedogenic products:
+## What non-comedogenic means
 
-1. **Definition**: "Non-comedogenic" means the product is less likely to cause comedones (clogged pores that can lead to acne).
+Define non-comedogenic this way: the formula is intended not to block pores or leave a film that traps oil and dead skin. Moisturizers, sunscreens, and makeup aimed at acne-prone or oily skin often use the term.
 
-2. **Ingredients**: Non-comedogenic products often avoid or minimize the use of potentially pore-clogging ingredients like certain oils and waxes.
+It is not a medical grade, and it is not a guarantee you will not break out. There is no single required test behind the words. One lab's panel of volunteers is not another lab's, and your follicles are not theirs.
 
-3. **Skin types**: These products are particularly beneficial for people with acne-prone or oily skin.
+## How to read the label
 
-4. **No guarantee**: While non-comedogenic products are less likely to cause breakouts, they don't guarantee acne prevention for everyone.
+- **Useful signal:** the brand is at least trying to avoid heavy, occlusive oils and waxes for face use.
+- **Not a standard:** "non-comedogenic" is marketing language. Treat it as a starting filter, not proof.
+- **Ingredients still matter:** some oils and butters clog more people than others; some "oil-free" gels still irritate.
+- **Body ≠ face:** a lotion that is fine on arms can still congest the T-zone.
 
-5. **Label interpretation**: There's no standardized definition or testing for "non-comedogenic," so claims should be viewed critically.
+[[Acne Prevention]] and [[Skincare]] routines still matter more than any one badge: gentle cleanse, moisturizer, sunscreen, and not stacking five new products at once.
 
-6. **Common products**: Many moisturizers, sunscreens, and makeup products are formulated to be non-comedogenic.
+## Who it helps
 
-7. **Individual variation**: What's non-comedogenic for one person may still cause issues for another due to individual skin differences.
+People with acne-prone, oily, or congestion-prone skin usually do better starting with non-comedogenic face products — especially leave-on moisturizers and SPF. Dry or eczema-prone skin may need richer occlusives anyway; "won't clog pores" is the wrong priority if the barrier is cracked.
+
+Patch-test new products. If a "non-comedogenic" cream still causes closed comedones along the hairline or jaw, stop it. Individual reaction beats the label.
 
 > [!tip] Skincare Advice
-> When choosing skincare products, consider your skin type and specific concerns. Non-comedogenic products can be a good starting point for those prone to acne or clogged pores, but always patch test new products and consult a dermatologist for persistent skin issues.
+> Use non-comedogenic as a filter for face moisturizers and sunscreen if you clog easily, then judge the ingredient list and your own skin. See a dermatologist for persistent acne; a label will not replace treatment.
 
 ## Related Notes
 

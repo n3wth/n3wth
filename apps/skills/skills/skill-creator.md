@@ -1,33 +1,65 @@
 ---
 name: Skill Creator
-version: 1.1.0
+version: 1.2.0
 author: n3wth
 category: development
 tags:
-  - skills
-  - automation
+  - skill-creator
+  - claude-code
+  - agent-skills
 compatibility:
   - gemini
 ---
 
 # Skill Creator
 
-Guide for creating effective Antigravity CLI skills with specialized knowledge, workflows, and tool integrations. Build skills that extend AI coding assistants with domain expertise.
+Guide for creating effective coding-agent skills — including Claude Code Agent Skills (`SKILL.md`) and Antigravity CLI markdown skills. Build skills that extend an assistant with domain expertise, workflows, and tool guidance.
 
 ## Triggers
 
 Use this skill when the user wants to:
-- Create a new skill for Antigravity CLI
-- Design a skill structure
-- Write skill instructions
-- Package domain knowledge as a skill
-- Share workflows as reusable skills
+- Create a new skill for Claude Code or Antigravity CLI
+- Write a SKILL.md / skills.md template
+- Design a skill structure, triggers, and validation checks
+- Package a workflow as a reusable Agent Skill
+- Learn how to build a skill in Claude
 
-Keywords: "create skill", "new skill", "skill template", "skill structure"
+Keywords: "create skill", "skill-creator", "claude skill creator", "claude code skill creator", "SKILL.md", "agent skills"
 
 ## Skill File Structure
 
-Skills are markdown files with YAML frontmatter:
+Claude Code Agent Skills live in a folder with a `SKILL.md` file. The description in the frontmatter is how Claude decides when to apply the skill:
+
+```markdown
+---
+name: my-skill-name
+description: What the skill does, and when to use it.
+---
+
+# Skill Name
+
+Brief description of what the skill does.
+
+## Triggers
+
+When should this skill be activated? List keywords and phrases.
+
+## Instructions
+
+The steps the assistant should follow.
+
+## Example
+
+One input and the expected output.
+
+## Constraints
+
+What the skill should not do.
+```
+
+This catalog also uses a slightly richer frontmatter for Antigravity CLI skills (version, category, tags, compatibility). Claude Code only needs `name` and `description`; extra keys are ignored.
+
+Skills in this catalog are markdown files with YAML frontmatter:
 
 ```markdown
 ---
@@ -150,6 +182,20 @@ Specify what the skill should and shouldn't do:
 ```
 
 ## Skill Installation
+
+### Claude Code (Agent Skills)
+
+Install as a `SKILL.md` in a skill folder:
+
+```bash
+mkdir -p ~/.claude/skills/skill-creator && curl -fsSL https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills/skill-creator.md -o ~/.claude/skills/skill-creator/SKILL.md
+```
+
+Project-local install: `.claude/skills/skill-creator/SKILL.md`. Start a new Claude Code session after copying the file.
+
+For skills you create, use the same folder layout: `~/.claude/skills/<skill-name>/SKILL.md`.
+
+### Antigravity CLI
 
 Skills are installed via CLI:
 

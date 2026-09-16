@@ -7,6 +7,7 @@ import { track } from '../lib/analytics'
 import type { ResultGroup, SearchItem } from '../lib/search'
 import { registeredPieces } from './thinking/registry'
 import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
+import { siteUrls } from '../data/sites'
 
 /** Minimum query length before auto-triggering AI search */
 const AI_MIN_CHARS = 2
@@ -81,7 +82,7 @@ const PAGES: SearchItem[] = [
   {
     id: 'page-support',
     title: 'Support',
-    subtitle: 'One inbox for n3wth.com, hop.flights and theywontshutup.com',
+    subtitle: 'One inbox for n3wth.com, hop.flights, lunchmoney.sh and theywontshutup.com',
     href: '/support',
     group: 'Pages',
   },
@@ -130,14 +131,24 @@ const UI: SearchItem[] = uiTiers.flatMap((tier) => {
 
 /* n3wth.com is one of the four, and its href is a route rather than a URL,
    so `external` is read off the href instead of assumed. */
-const ELSEWHERE: SearchItem[] = ecosystem.map((property) => ({
-  id: `elsewhere-${property.id}`,
-  title: property.name,
-  subtitle: property.purpose,
-  href: property.href,
-  external: property.href.startsWith('http'),
-  group: 'Elsewhere',
-}))
+const ELSEWHERE: SearchItem[] = [
+  ...ecosystem.map((property) => ({
+    id: `elsewhere-${property.id}`,
+    title: property.name,
+    subtitle: property.purpose,
+    href: property.href,
+    external: property.href.startsWith('http'),
+    group: 'Elsewhere' as const,
+  })),
+  {
+    id: 'elsewhere-lunchmoney',
+    title: 'lunchmoney.sh',
+    subtitle: 'Unofficial Lunch Money plugin for Claude, Codex, and Cursor',
+    href: siteUrls.lunch,
+    external: true,
+    group: 'Elsewhere' as const,
+  },
+]
 
 const STATIC_ITEMS: SearchItem[] = [...PAGES, ...THINKING, ...KIT, ...UI, ...HOOKS, ...ELSEWHERE]
 

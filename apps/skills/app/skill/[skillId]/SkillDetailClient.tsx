@@ -3,7 +3,7 @@ import { PageHeader } from '@n3wth/ui/site'
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { skills, type Skill } from '@/src/data/skills'
+import { skills } from '@/src/data/skills'
 import { CategoryShape } from '@/src/components/CategoryShape'
 import { CommandBox } from '@/src/components/CommandBox'
 import { IslandNav } from '@/src/components/IslandNav'
@@ -21,27 +21,7 @@ import { assistants, type AssistantId } from '@/src/config/assistants'
 import { getSkillInstallCommand } from '@/src/config/commands'
 import { useKeyboardShortcuts } from '@/src/hooks'
 import { trackViewEvent } from '@/src/lib/analytics'
-
-function getRelatedSkills(currentSkill: Skill, allSkills: Skill[], limit: number = 4): Skill[] {
-  const otherSkills = allSkills.filter(s => s.id !== currentSkill.id)
-
-  const scored = otherSkills.map(skill => {
-    let score = 0
-
-    if (skill.category === currentSkill.category) {
-      score += 10
-    }
-
-    const matchingTags = skill.tags.filter(tag => currentSkill.tags.includes(tag))
-    score += matchingTags.length * 2
-
-    return { skill, score }
-  })
-
-  scored.sort((a, b) => b.score - a.score)
-
-  return scored.slice(0, limit).map(item => item.skill)
-}
+import { getRelatedSkills } from '@/src/lib/relatedSkills'
 
 type Props = {
   skillId: string
@@ -292,6 +272,53 @@ export function SkillDetailClient({ skillId }: Props) {
             </div>
           )}
 
+          {skill.faq && skill.faq.length > 0 && (
+            <div className="mb-12">
+              <h2 className="section-title mb-6">
+                FAQ
+              </h2>
+              <div className="space-y-4">
+                {skill.faq.map((item) => (
+                  <div
+                    key={item.question}
+                    className="rounded-xl p-5"
+                    style={{
+                      backgroundColor: 'var(--glass-bg)',
+                      border: '1px solid var(--glass-border)',
+                    }}
+                  >
+                    <h3
+                      className="text-base font-medium mb-2"
+                      style={{ color: 'var(--color-grey-100)' }}
+                    >
+                      {item.question}
+                    </h3>
+                    <p
+                      className="text-sm leading-relaxed"
+                      style={{ color: 'var(--color-grey-200)' }}
+                    >
+                      {item.answer}
+                    </p>
+                    {item.links && item.links.length > 0 && (
+                      <p className="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-sm">
+                        {item.links.map(link => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            className="hover:opacity-70 transition-opacity"
+                            style={{ color: 'var(--color-grey-300)' }}
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {skill.samplePrompts && skill.samplePrompts.length > 0 && (
             <div className="mb-12">
               <h2 className="section-title mb-2">
@@ -364,20 +391,33 @@ export function SkillDetailClient({ skillId }: Props) {
           <div className="glass-card p-6 md:p-8">
             <h2 className="section-title mb-2">Add to your AI assistant</h2>
             <p className="text-sm mb-6" style={{ color: 'var(--color-grey-400)' }}>
-              {skill.skillFile
-                ? 'Choose your AI assistant and run the command in your terminal'
-                : 'A downloadable file is not available for this skill yet.'}
+              {skill.installHint
+                ? skill.installHint
+                : skill.skillFile
+                  ? 'Choose your AI assistant and run the command in your terminal'
+                  : 'A downloadable file is not available for this skill yet.'}
             </p>
             <div className="space-y-3">
+              {skill.extraInstallCommands?.map((extra, index) => (
+                <CommandBox
+                  key={extra.name}
+                  name={extra.name}
+                  command={extra.command}
+                  primary={index === 0}
+                  skillId={`${skill.id}-${extra.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  verifyCommand={extra.verifyCommand}
+                />
+              ))}
               {skill.skillFile && (skill.compatibility || ['gemini'] as AssistantId[]).map((assistantId, index) => {
                 const assistant = assistants[assistantId]
                 const command = getSkillInstallCommand(assistantId, skill.id, skill.skillFile)
+                const extraCount = skill.extraInstallCommands?.length ?? 0
                 return (
                   <CommandBox
                     key={assistantId}
                     name={assistant.shortName}
                     command={command}
-                    primary={index === 0}
+                    primary={extraCount === 0 && index === 0}
                     skillId={`${skill.id}-${assistantId}`}
                   />
                 )
@@ -390,7 +430,8 @@ export function SkillDetailClient({ skillId }: Props) {
           </div>
 
           {(() => {
-            const relatedSkills = getRelatedSkills(skill, skills, 2)
+            const relatedLimit = skill.relatedSkillIds?.length ? Math.min(skill.relatedSkillIds.length, 3) : 2
+            const relatedSkills = getRelatedSkills(skill, skills, relatedLimit)
             if (relatedSkills.length === 0) return null
             return (
               <div className="mt-16">

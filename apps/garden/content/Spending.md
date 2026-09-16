@@ -26,6 +26,10 @@ Understanding where money goes is the first step to making intentional financial
 
 - [[Actual Gardening Costs]]
 
+## Tools
+
+- [[Lunch Money]] — unofficial plugin for coding agents; read-only spending, budgets, and bills
+
 ## Categories Worth Watching
 
 **Often underestimated**:
@@ -42,3 +46,4 @@ Understanding where money goes is the first step to making intentional financial
 ## Related
 
 - [[Personal Development]]
+- [[Lunch Money]]

@@ -45,6 +45,7 @@ const routes = [
         <p>I build and operate these projects independently with coding agents. They are separate from my work at Google.</p>
         <ul>
           <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — points-vs-cash flight optimizer.</li>
+          <li><a href="https://lunchmoney.sh" rel="noopener">lunchmoney.sh</a> — unofficial Lunch Money plugin for Claude, Codex, and Cursor.</li>
           <li><a href="https://r3.n3wth.com" rel="noopener">r3</a>: memory for AI apps using vector search and knowledge graphs.</li>
           <li><a href="https://kit.n3wth.com" rel="noopener">kit</a>: a design system with context for coding agents.</li>
           <li><a href="https://skills.n3wth.com" rel="noopener">skills</a>: reusable instructions for coding agents.</li>
@@ -108,7 +109,7 @@ const routes = [
     path: 'support',
     title: 'Support — Oliver Newth',
     description:
-      'Support for n3wth projects — n3wth.com, hop.flights, and theywontshutup.com. Email support@n3wth.com.',
+      'Support for n3wth projects — n3wth.com, hop.flights, lunchmoney.sh, and theywontshutup.com. Email support@n3wth.com.',
     ogImage: '/og-image.png',
     body: `
       <h1>Support</h1>
@@ -116,6 +117,7 @@ const routes = [
       <ul>
         <li><a href="https://n3wth.com">n3wth.com</a> — portfolio, writing, and experiments. support@n3wth.com</li>
         <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — flight search and booking tools. support@hop.flights</li>
+        <li><a href="https://lunchmoney.sh" rel="noopener">lunchmoney.sh</a> — unofficial Lunch Money plugin. support@n3wth.com</li>
         <li><a href="https://theywontshutup.com" rel="noopener">theywontshutup.com</a> — AI voice hotline. support@n3wth.com</li>
       </ul>`,
   },

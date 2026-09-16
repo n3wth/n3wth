@@ -11,6 +11,7 @@ interface CommandBoxProps {
   primary: boolean
   skillId?: string
   assistantId?: AssistantId | 'all'
+  verifyCommand?: string
 }
 
 function getVerificationCommand(assistantId: AssistantId | 'all' | undefined): string {
@@ -52,7 +53,8 @@ function triggerConfetti() {
   frame()
 }
 
-export function CommandBox({ name, command, primary, skillId, assistantId }: CommandBoxProps) {
+export function CommandBox({ name, command, primary, skillId, assistantId, verifyCommand }: CommandBoxProps) {
+  const verificationCommand = verifyCommand || getVerificationCommand(assistantId)
   const [copied, setCopied] = useState(false)
   const [copyFailed, setCopyFailed] = useState(false)
   const [showVerification, setShowVerification] = useState(false)
@@ -86,9 +88,8 @@ export function CommandBox({ name, command, primary, skillId, assistantId }: Com
   const [verificationFailed, setVerificationFailed] = useState(false)
 
   const handleVerificationCopy = async () => {
-    const verifyCommand = getVerificationCommand(assistantId)
     try {
-      await navigator.clipboard.writeText(verifyCommand)
+      await navigator.clipboard.writeText(verificationCommand)
     } catch {
       setVerificationFailed(true)
       announce('Copy failed. Select the command and copy it manually.')
@@ -199,7 +200,7 @@ export function CommandBox({ name, command, primary, skillId, assistantId }: Com
                 className="flex-1 text-xs font-mono overflow-x-auto whitespace-nowrap"
                 style={{ color: 'var(--color-grey-300)' }}
               >
-                {getVerificationCommand(assistantId)}
+                {verificationCommand}
               </code>
               <span
                 className="label text-xs px-2 py-1 rounded"

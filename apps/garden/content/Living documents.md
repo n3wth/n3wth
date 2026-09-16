@@ -38,5 +38,5 @@ This approach supports:
 ## Related
 
 - [[Progressive Summarization]]
-- [[Atomic Notess]]
+- [[Atomic Notes]]
 - [[Note Linking]]

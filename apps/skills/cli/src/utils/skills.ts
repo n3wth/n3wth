@@ -64,10 +64,10 @@ const skills: Skill[] = [
   {
     id: 'skill-creator',
     name: 'Skill Creator',
-    description: 'Guide for creating effective AI coding skills with specialized knowledge, workflows, and tool integrations.',
-    longDescription: 'Learn how to create your own skills that extend AI coding assistants. This skill covers the structure, best practices, and patterns for building effective skills that provide specialized knowledge and workflows.',
+    description: 'Create Claude Code Agent Skills with skill-creator: SKILL.md templates, triggers, and checks for Claude Code or Antigravity CLI.',
+    longDescription: 'A skill is a markdown file that teaches a coding agent one job. skill-creator walks through the Agent Skills format used by Claude Code — a SKILL.md with a name, description, and instructions — and the same pattern this catalog uses for Antigravity CLI.',
     category: 'development',
-    tags: ['skills', 'gemini', 'automation'],
+    tags: ['skill-creator', 'claude-code', 'agent-skills', 'skill-template', 'skills-md'],
     featured: true,
     icon: '◈',
     color: 'oklch(0.70 0.15 280)',
@@ -87,8 +87,8 @@ const skills: Skill[] = [
       'Custom tooling'
     ],
     compatibility: ['gemini'],
-    version: '1.1.0',
-    lastUpdated: '2026-01-10',
+    version: '1.2.0',
+    lastUpdated: '2026-09-16',
   },
   {
     id: 'algorithmic-art',

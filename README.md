@@ -12,6 +12,7 @@ I build agent infrastructure — memory, tooling, and interfaces that make AI sy
 - [canvas](https://github.com/n3wth/canvas) — live canvases with realtime sync
 - [gbrain](https://github.com/n3wth/gbrain) — personal knowledge base an agent can read and write
 - [skills](apps/skills) — reusable agent skills
+- [lunchmoney](https://lunchmoney.sh) — unofficial Lunch Money plugin for Claude, Codex, and Cursor
 
 ## Site
 

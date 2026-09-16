@@ -20,7 +20,7 @@ Key components of effective behavior change:
 
 Strategies for successful behavior change:
 
-- Start small with [[Atomic Notess|atomic]] changes
+- Start small with [[Atomic Notes|atomic]] changes
 - Use positive reinforcement and reward systems
 - Practice mindfulness and self-reflection
 - Leverage social support and accountability partners

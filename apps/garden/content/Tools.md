@@ -14,6 +14,10 @@ tags: [tools, software, productivity, development]
 - [Things](https://culturedcode.com/things/) - Task management app
 - [Hookmark](https://hookproductivity.com/) - Linking and automation tool
 
+## Finance
+
+- [[Lunch Money]] — unofficial plugin at [lunchmoney.sh](https://lunchmoney.sh) for read-only spending, budgets, and bills
+
 ## Development
 
 - [Visual Studio Code](https://code.visualstudio.com/) - Powerful code editor

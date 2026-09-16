@@ -11,7 +11,7 @@ const SKILL_CATALOG = [
   { id: 'pdf', name: 'PDF Toolkit', keywords: 'PDF extraction, forms, merge, split, text extraction' },
   { id: 'xlsx', name: 'Spreadsheets', keywords: 'Excel, spreadsheets, formulas, data analysis, CSV' },
   { id: 'pptx', name: 'Presentations', keywords: 'PowerPoint, slides, speaker notes, presentations' },
-  { id: 'skill-creator', name: 'Skill Creator', keywords: 'create skills, skill development, AI coding skills' },
+  { id: 'skill-creator', name: 'Skill Creator', keywords: 'skill-creator, claude skill creator, claude code skills, SKILL.md, agent skills' },
   { id: 'business-panel', name: 'Business Panel', keywords: 'business strategy, analysis, Porter, Christensen, consulting' },
   { id: 'algorithmic-art', name: 'Algorithmic Art', keywords: 'generative art, p5.js, creative coding, particles, flow fields' },
   { id: 'slack-gif-creator', name: 'Slack GIF Creator', keywords: 'GIF animations, Slack, animated images' },

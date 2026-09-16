@@ -178,3 +178,31 @@ export function ItemListJsonLd({ name, description, url, items }: ItemListJsonLd
     />
   )
 }
+
+interface FaqJsonLdProps {
+  questions: Array<{ question: string; answer: string }>
+}
+
+export function FaqJsonLd({ questions }: FaqJsonLdProps) {
+  if (questions.length === 0) return null
+
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: questions.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: answer,
+      },
+    })),
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
+}

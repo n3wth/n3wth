@@ -18,6 +18,7 @@
 Products designed by Oliver, kept shipping by an autonomous agent team:
 
 - [hop.flights](https://hop.flights/): Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.
+- [lunchmoney.sh](https://lunchmoney.sh/): Unofficial Lunch Money plugin for Claude, Codex, and Cursor. Read-only spending, budgets, and bills.
 - [r3](https://r3.n3wth.com/): Memory for AI apps using vector search and knowledge graphs.
 - [kit](https://kit.n3wth.com/): 49 components with AI context packs. Ships your design system straight to your editor and coding agents.
 - [skills](https://skills.n3wth.com/): A registry of markdown skills for coding agents. Install with one command, run locally, work offline.
