@@ -125,30 +125,41 @@ const routes = [
     path: 'elsa',
     title: 'Elsa · SMS Messaging Consent',
     description:
-      "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992 (Telnyx) and +1 (415) 360-0751 (Twilio).",
+      "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992 and +1 (415) 360-0751.",
     ogImage: '/og-image.png',
     body: `
       <div class="elsa-hero">
-        <img class="elsa-hero-mark" src="https://r2.n3wth.com/email/marks/elsa-mark.png?v=3" alt="" width="72" height="72" style="display:block;margin:0 auto 1.1rem;border-radius:9999px" />
-        <p>SMS assistant</p>
+        <svg class="elsa-hero-mark" viewBox="0 0 512 512" width="160" height="160" role="img" aria-label="Elsa" focusable="false" style="display:block;margin:0 auto 1.5rem">
+          <rect width="512" height="512" rx="96" fill="#000"></rect>
+          <g class="elsa-slash">
+            <rect x="236" y="96" width="40" height="320" rx="20" fill="#fff" transform="rotate(28 256 256)"></rect>
+          </g>
+        </svg>
         <h1>Elsa</h1>
-        <p>Personal AI assistant over SMS for Oliver Newth on n3wth.com. Text for help with email, scheduling, purchases, and other tasks Oliver authorizes.</p>
-        <p>SMS messaging consent · Last updated September 2026</p>
+        <p>A personal AI assistant in your texts.</p>
         <p><a href="sms:+14157180992">+1 (415) 718-0992</a> · <a href="sms:+14153600751">+1 (415) 360-0751</a></p>
       </div>
-      <h2>What Elsa does</h2>
-      <p>Elsa is the personal AI assistant product name for messaging operated by Oliver Newth (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other tasks Oliver authorizes, over a simple text thread.</p>
+            <p>Elsa is the personal AI assistant product name for messaging operated by Oliver Newth (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other tasks Oliver authorizes, over a simple text thread.</p>
+      <ul>
+        <li><strong>Email</strong>: Draft, triage, and follow up when Oliver asks.</li>
+        <li><strong>Scheduling</strong>: Coordinate times and reminders over SMS.</li>
+        <li><strong>Purchases</strong>: Run authorized buys and status updates.</li>
+        <li><strong>Tasks</strong>: Anything else Oliver greenlights for Elsa.</li>
+      </ul>
       <h2>How to text her</h2>
-      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>+1 (415) 718-0992</strong> (Telnyx, primary) or <strong>+1 (415) 360-0751</strong> (Twilio, alternate) after reading this page. SMS is optional and is not required to use n3wth.com.</p>
-      <p>Primary (Telnyx): <a href="sms:+14157180992">+1 (415) 718-0992</a>. Alternate (Twilio): <a href="sms:+14153600751">+1 (415) 360-0751</a>. Send START, HELLO, or any first message. Or give Oliver / Elsa your mobile number and clearly agree to receive texts from either Elsa SMS line for assistant and transactional purposes.</p>
+      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>+1 (415) 718-0992</strong> or <strong>+1 (415) 360-0751</strong> after reading this page. SMS is optional and is not required to use n3wth.com.</p>
+      <p>Elsa has two numbers for the same assistant. Prefer the main line; use the alternate if the main line is busy or unavailable. Either number reaches Elsa.</p>
+      <ul>
+        <li>Main line: <a href="sms:+14157180992">+1 (415) 718-0992</a>. Preferred number. Same Elsa assistant. Send START, HELLO, or any first message.</li>
+        <li>Alternate line: <a href="sms:+14153600751">+1 (415) 360-0751</a>. Use if the main line is busy or unavailable. Same Elsa assistant on either number.</li>
+      </ul>
+      <p>Or give Oliver / Elsa your mobile number and clearly agree to receive texts from either Elsa SMS line for assistant and transactional purposes.</p>
       <h2>What you will get</h2>
       <p>By opting in, you consent to receive automated SMS (and MMS when needed) from +1 (415) 718-0992 or +1 (415) 360-0751, including two-way assistant conversations, account and verification codes when Elsa is completing a task for Oliver that requires SMS OTP, transactional notices about tasks Elsa is running, and occasional service notices about the Elsa / n3wth assistant line. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
-      <h2>Opt in and opt out</h2>
-      <p>Opt in by texting +1 (415) 718-0992 or +1 (415) 360-0751, or by clearly agreeing with Oliver / Elsa to receive assistant texts. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+            <p>Opt in by texting +1 (415) 718-0992 or +1 (415) 360-0751, or by clearly agreeing with Oliver / Elsa to receive assistant texts. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <h2>Privacy</h2>
       <p>Your phone number is used only to deliver Elsa / n3wth assistant-related SMS and to operate conversations you start. We do not sell or share mobile numbers with third parties or affiliates for their marketing. See the full <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
-      <h2>Contact</h2>
-      <p>n3wth.com · Oliver Newth · <a href="mailto:hey@n3wth.com">hey@n3wth.com</a>. Elsa SMS (primary, Telnyx): +1 (415) 718-0992. Elsa SMS (alternate, Twilio): +1 (415) 360-0751.</p>`,
+      <p>Last updated September 2026</p>`,
   },
   {
     path: 'privacy',
