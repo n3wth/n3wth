@@ -1,5 +1,7 @@
 {
-  "git": { "deploymentEnabled": false },
+  "git": {
+    "deploymentEnabled": false
+  },
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/portfolio",
   "installCommand": "node ../../scripts/vercel-install.mjs",
   "buildCommand": "cd ../.. && npm run build:portfolio -- --cache-ui",
@@ -54,6 +56,10 @@
     {
       "source": "/consent",
       "destination": "/consent.html"
+    },
+    {
+      "source": "/elsa",
+      "destination": "/elsa.html"
     },
     {
       "source": "/terms",
