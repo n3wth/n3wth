@@ -90,7 +90,7 @@ export default function Privacy() {
             processes SMS for +1 415 360-0751. Reply STOP to
             opt out. See{' '}
             <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>{' '}
-            for full SMS consent details. Message frequency varies. Message and data rates may apply. Consent is not a condition of purchase. The messaging program is operated by Oliver Newth (sole proprietor); Elsa is the assistant product name.
+            for full SMS consent details. Message frequency varies. Message and data rates may apply. Consent is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other site services. The messaging program is operated by Oliver Newth (sole proprietor); Elsa is the assistant product name.
           </Prose>
         </Section>
 

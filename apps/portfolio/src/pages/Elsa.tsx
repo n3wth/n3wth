@@ -97,6 +97,9 @@ export default function Elsa() {
             number and clearly agreeing to receive texts from either Elsa SMS line for assistant and
             transactional purposes.
           </Prose>
+          <Prose>
+            SMS is optional. You can use n3wth.com without texting Elsa. Consent to receive messages is voluntary and is not required to browse the site, contact Oliver, or use other n3wth.com services.
+          </Prose>
           <div
             className="mt-6 rounded-lg border p-5"
             style={{ borderColor: 'var(--rail-strong)', background: 'color-mix(in srgb, var(--ink) 4%, transparent)' }}
