@@ -140,7 +140,7 @@ export default function Consent() {
             more information.
           </Prose>
           <Prose>
-            For the Elsa personal assistant SMS line (+1 415 360-0751), see{' '}
+            For the Elsa personal assistant SMS line (+1 415 718-0992), see{' '}
             <RouterLink href="/elsa" className="link-underline">/elsa</RouterLink>.
           </Prose>
         </Section>
