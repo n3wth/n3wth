@@ -1,5 +1,5 @@
 {
-  "git": { "deploymentEnabled": false },
+  "git": { "deploymentEnabled": true },
   "buildCommand": "cd ../.. && npm run build:garden",
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/garden",
   "redirects": [

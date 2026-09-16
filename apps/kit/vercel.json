@@ -1,5 +1,5 @@
 {
-  "git": { "deploymentEnabled": false },
+  "git": { "deploymentEnabled": true },
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
   "buildCommand": "cd ../.. && npm run build:kit",
