@@ -677,118 +677,25 @@ body {
 
 
 /* ---------- Elsa landing (/elsa) ----------
-   Flat layout only: flex-centered hero, rail borders live in markup.
-   No glows, radial gradients, box-shadow halos, or tinted cards. */
-.elsa-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding-block: 0;
-}
-
-.elsa-hero.site-content-gutter {
-  padding-top: 0.5rem;
-  padding-bottom: 0;
-}
-
+   Mark + eye/slash motion only. Page rhythm comes from @n3wth/ui site
+   page-header / section padding (48px / 64px md). No padding crushers. */
 .elsa-hero-mark {
   display: block;
   width: 10rem;
   height: 10rem;
   max-width: 10rem;
-  margin: 0 auto 0.75rem;
+  margin: 0 auto 1.5rem;
   flex-shrink: 0;
 }
 
-.elsa-eyes {
-  transform-origin: 256px 210px;
-  animation: elsa-look 8s ease-in-out infinite;
-}
-
-.elsa-eye-white {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: elsa-blink 5.6s ease-in-out infinite;
-}
-
-.elsa-eye:nth-of-type(2) .elsa-eye-white {
-  animation-delay: 0.08s;
-}
-
-.elsa-pupil {
-  transform-origin: 0px 4px;
-  animation: elsa-pupil 8s ease-in-out infinite;
-}
-
-@keyframes elsa-look {
-  0%,
-  42%,
-  100% {
-    transform: translate(0, 0);
-  }
-  52% {
-    transform: translate(6px, -2px);
-  }
-  64% {
-    transform: translate(-5px, 2px);
-  }
-  76% {
-    transform: translate(2px, 1px);
-  }
-}
-
-@keyframes elsa-pupil {
-  0%,
-  42%,
-  100% {
-    transform: translate(0, 0);
-  }
-  52% {
-    transform: translate(5px, -3px);
-  }
-  64% {
-    transform: translate(-6px, 2px);
-  }
-  76% {
-    transform: translate(2px, 1px);
-  }
-}
-
-@keyframes elsa-blink {
-  0%,
-  88%,
-  100% {
-    transform: scaleY(1);
-  }
-  91% {
-    transform: scaleY(0.08);
-  }
-  94% {
-    transform: scaleY(1);
-  }
-}
-
-.elsa-hero-header {
-  width: 100%;
-  padding-block: 0.75rem 1.25rem !important;
-}
-
-.elsa-hero-meta {
-  color: var(--ink-label);
+.elsa-slash {
+  transform-origin: 256px 256px;
+  animation: elsa-slash 6s ease-in-out infinite;
 }
 
 .elsa-hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
   justify-content: center;
-  margin-top: 0.15rem;
-}
-
-.elsa-body.site-content-gutter,
-.elsa-body.n3wth-site-section {
-  padding-top: 1.25rem;
+  margin-top: 1.5rem;
 }
 
 .elsa-number-label {
@@ -796,16 +703,25 @@ body {
   letter-spacing: 0.02em;
 }
 
+@keyframes elsa-slash {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(4deg);
+  }
+  70% {
+    transform: rotate(-3deg);
+  }
+}
+
 @media (min-width: 768px) {
   .elsa-hero-mark {
     width: 11.5rem;
     height: 11.5rem;
     max-width: 11.5rem;
-  }
-
-  .elsa-body.site-content-gutter,
-  .elsa-body.n3wth-site-section {
-    padding-top: 1.5rem;
+    margin-bottom: 1.75rem;
   }
 }
 

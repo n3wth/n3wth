@@ -129,19 +129,14 @@ const routes = [
     ogImage: '/og-image.png',
     body: `
       <div class="elsa-hero">
-        <svg class="elsa-hero-mark" viewBox="0 0 512 512" width="160" height="160" role="img" aria-label="Elsa" focusable="false" style="display:block;margin:0 auto 0.75rem">
-          <circle cx="256" cy="256" r="256" fill="#4B82C4"></circle>
-          <g class="elsa-eyes">
-            <g transform="translate(269.4 207.5) rotate(72.4)">
-              <rect class="elsa-eye-pill" x="-21.3" y="-47.8" width="42.6" height="95.6" rx="21.3" fill="#fff"></rect>
-            </g>
-            <g transform="translate(414 182.5) rotate(70.8)">
-              <rect class="elsa-eye-pill" x="-20.9" y="-48.9" width="41.8" height="97.7" rx="20.9" fill="#fff"></rect>
-            </g>
+        <svg class="elsa-hero-mark" viewBox="0 0 512 512" width="160" height="160" role="img" aria-label="Elsa" focusable="false" style="display:block;margin:0 auto 1.5rem">
+          <rect width="512" height="512" rx="96" fill="#000"></rect>
+          <g class="elsa-slash">
+            <rect x="236" y="96" width="40" height="320" rx="20" fill="#fff" transform="rotate(28 256 256)"></rect>
           </g>
         </svg>
         <h1>Elsa</h1>
-        <p>Personal AI assistant over SMS for Oliver Newth on n3wth.com. Text for help with email, scheduling, purchases, and other tasks Oliver authorizes.</p>
+        <p>Personal AI assistant over SMS for Oliver Newth on n3wth.com.</p>
         <p><a href="sms:+14157180992">+1 (415) 718-0992</a> · <a href="sms:+14153600751">+1 (415) 360-0751</a></p>
       </div>
       <h2>What Elsa does</h2>

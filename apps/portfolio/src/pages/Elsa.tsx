@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { MessageSquare } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
-import { PageHeader, SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
+import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { RouterLink } from '../components/RouterLink'
 
@@ -49,22 +49,17 @@ function ElsaMark({ className }: { className?: string }) {
       aria-label="Elsa"
       focusable="false"
     >
-      <circle cx="256" cy="256" r="256" fill="#4B82C4" />
-      <g className="elsa-eyes">
-        <g className="elsa-eye" transform="translate(178 210)">
-          <ellipse className="elsa-eye-white" cx="0" cy="0" rx="46" ry="52" fill="#fff" />
-          <g className="elsa-pupil">
-            <circle cx="0" cy="4" r="18" fill="#1B2A44" />
-            <circle cx="7" cy="-2" r="6" fill="#fff" opacity="0.9" />
-          </g>
-        </g>
-        <g className="elsa-eye" transform="translate(334 210)">
-          <ellipse className="elsa-eye-white" cx="0" cy="0" rx="46" ry="52" fill="#fff" />
-          <g className="elsa-pupil">
-            <circle cx="0" cy="4" r="18" fill="#1B2A44" />
-            <circle cx="7" cy="-2" r="6" fill="#fff" opacity="0.9" />
-          </g>
-        </g>
+      <rect width="512" height="512" rx="96" fill="#000" />
+      <g className="elsa-slash">
+        <rect
+          x="236"
+          y="96"
+          width="40"
+          height="320"
+          rx="20"
+          fill="#fff"
+          transform="rotate(28 256 256)"
+        />
       </g>
     </svg>
   )
@@ -80,7 +75,7 @@ function Prose({ children }: { children: ReactNode }) {
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="mt-8 first:mt-0">
+    <div className="mt-12 first:mt-0">
       <SiteHeading variant="item" level={2}>
         {title}
       </SiteHeading>
@@ -117,34 +112,32 @@ export default function Elsa() {
   })
 
   return (
-    <section aria-label="Elsa SMS messaging consent">
-      <div data-reveal className="elsa-hero site-content-gutter mx-auto max-w-3xl">
+    <section aria-label="Elsa">
+      <header
+        data-reveal
+        className="n3wth-site-page-header n3wth-site-page-header--center site-content-gutter mx-auto max-w-3xl"
+      >
         <ElsaMark className="elsa-hero-mark" />
-        <PageHeader
-          align="center"
-          className="elsa-hero-header"
-          title="Elsa"
-          description={
-            <>
-              Personal AI assistant over SMS for Oliver Newth on n3wth.com. Text for help with
-              email, scheduling, purchases, and other tasks Oliver authorizes.
-            </>
-          }
-          actions={
-            <div className="elsa-hero-actions">
-              <Button
-                label="+1 (415) 718-0992"
-                variant="primary"
-                href={PRIMARY_SMS}
-                endContent={<MessageSquare size={16} strokeWidth={1.5} aria-hidden="true" />}
-              />
-              <Button label="+1 (415) 360-0751" variant="secondary" href={ALT_SMS} />
-            </div>
-          }
-        />
-      </div>
+        <div className="n3wth-site-page-header-copy">
+          <SiteHeading variant="page" level={1}>
+            Elsa
+          </SiteHeading>
+          <SiteText className="n3wth-site-description">
+            Personal AI assistant over SMS for Oliver Newth on n3wth.com.
+          </SiteText>
+          <div className="n3wth-site-actions elsa-hero-actions">
+            <Button
+              label="+1 (415) 718-0992"
+              variant="primary"
+              href={PRIMARY_SMS}
+              endContent={<MessageSquare size={16} strokeWidth={1.5} aria-hidden="true" />}
+            />
+            <Button label="+1 (415) 360-0751" variant="secondary" href={ALT_SMS} />
+          </div>
+        </div>
+      </header>
 
-      <SiteSection data-reveal className="elsa-body site-content-gutter mx-auto max-w-3xl">
+      <SiteSection data-reveal className="site-content-gutter mx-auto max-w-3xl">
         <Section title="What Elsa does">
           <Prose>
             Elsa is the personal AI assistant product name for messaging operated by Oliver Newth
