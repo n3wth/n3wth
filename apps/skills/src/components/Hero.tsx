@@ -6,6 +6,7 @@ export function Hero() {
   return (
     <SiteContainer className="n3wth-site-main">
       <PageHeader
+        align="center"
         title="Skills for coding agents"
         description={`${siteConfig.description} ${siteConfig.tagline}`}
       />

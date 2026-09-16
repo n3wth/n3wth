@@ -79,19 +79,10 @@ describe('useSkillSearch', () => {
     expect(result.current.results).toHaveLength(3)
   })
 
-  it('persists sort preference to localStorage when setSort is called', () => {
-    const { result } = renderHook(() => useSkillSearch(skills))
-    act(() => {
-      result.current.setSort('name-desc')
-    })
-    expect(localStorage.setItem).toHaveBeenCalledWith('newth-skills-sort-preference', 'name-desc')
-    expect(result.current.sort).toBe('name-desc')
-    expect(result.current.results.map((s) => s.name)).toEqual(['Gamma', 'Beta', 'Alpha'])
-  })
-
-  it('uses stored sort preference from localStorage on init', () => {
-    vi.mocked(localStorage.getItem).mockReturnValue('recently-updated')
-    const { result } = renderHook(() => useSkillSearch(skills))
-    expect(result.current.sort).toBe('recently-updated')
+  it('keeps a predictable alphabetical order despite an old saved sort preference', () => {
+    vi.mocked(localStorage.getItem).mockReturnValue('name-desc')
+    const { result } = renderHook(() => useSkillSearch([...skills].reverse()))
+    expect(result.current.results.map((s) => s.name)).toEqual(['Alpha', 'Beta', 'Gamma'])
+    expect(localStorage.setItem).not.toHaveBeenCalled()
   })
 })

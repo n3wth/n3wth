@@ -3,18 +3,16 @@
 import { useState, useMemo, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { SiteContainer, SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
-import { skills, categories } from '../src/data/skills'
+import { skills } from '../src/data/skills'
 import { IslandNav } from '../src/components/IslandNav'
 import { Footer } from '../src/components/Footer'
 import { Hero } from '../src/components/Hero'
 import { InstallSection } from '../src/components/InstallSection'
-import { TerminalDemo } from '../src/components/TerminalDemo'
 import { StatsRow } from '../src/components/StatsRow'
 import { SkillCard } from '../src/components/SkillCard'
 import { CategoryFilter } from '../src/components/CategoryFilter'
 import { SearchInput } from '../src/components/SearchInput'
 import { KeyboardShortcutsHelp } from '../src/components/KeyboardShortcutsHelp'
-import { SortDropdown } from '../src/components/SortDropdown'
 import { TaskInput } from '../src/components/TaskInput'
 import { SkillRecommendations } from '../src/components/SkillRecommendations'
 import { ComparisonBar } from '../src/components/ComparisonBar'
@@ -30,11 +28,9 @@ export default function HomeClient() {
   const {
     category,
     query,
-    sort,
     results: filteredSkills,
     setCategory,
     setQuery,
-    setSort,
     clearSearch,
   } = useSkillSearch(skills)
 
@@ -76,32 +72,18 @@ export default function HomeClient() {
       <Hero />
 
       <SiteContainer as="main" id="main-content" tabIndex={-1}>
-        <SiteSection>
-        {/* Browse Section Header */}
-        <div className="mb-6 md:mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-          <div>
-            <SiteHeading variant="section" className="mb-2">
-              All skills
-            </SiteHeading>
-            <SiteText>
-              {skills.length} skills across {categories.length - 1} categories
-            </SiteText>
-          </div>
-          <Link
-            href="/request-skill"
-            className="glass-pill px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity md:self-start"
-          >
-            Request a new skill
-          </Link>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 md:mb-10">
-          <CategoryFilter activeCategory={category} onCategoryChange={setCategory} />
-          <div className="flex items-center gap-3">
-            <SortDropdown value={sort} onChange={setSort} />
+        <SiteSection aria-label="Skill catalog" style={{ paddingTop: 0 }}>
+        <div className="mb-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <SearchInput ref={searchInputRef} value={query} onChange={setQuery} />
+            <Link
+              href="/request-skill"
+              className="inline-flex min-h-11 items-center text-sm text-grey-400 hover:text-white underline-offset-4 hover:underline"
+            >
+              Request a new skill
+            </Link>
           </div>
+          <CategoryFilter activeCategory={category} onCategoryChange={setCategory} />
         </div>
 
         {/* Skills Grid */}
@@ -186,7 +168,6 @@ export default function HomeClient() {
         <StatsRow />
 
         <InstallSection />
-        <TerminalDemo />
 
         <SkillOfTheDay />
       </SiteContainer>
