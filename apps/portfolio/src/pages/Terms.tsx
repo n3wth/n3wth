@@ -52,12 +52,12 @@ export default function Terms() {
     <section aria-label="Terms of Service">
       <PageHeader
         data-reveal
-        className="site-content-gutter"
+        className="site-content-gutter mx-auto max-w-3xl"
         title="Terms of Service"
         description={<>Last updated: September 2026</>}
       />
 
-      <SiteSection data-reveal className="site-content-gutter max-w-3xl">
+      <SiteSection data-reveal className="site-content-gutter mx-auto max-w-3xl">
         <Section title="1. Acceptance">
           <Prose>
             By using n3wth.com or calling the They Won&apos;t Shut Up hotline at{' '}

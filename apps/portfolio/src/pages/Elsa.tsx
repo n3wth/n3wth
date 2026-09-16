@@ -52,12 +52,12 @@ export default function Elsa() {
     <section aria-label="Elsa SMS messaging consent">
       <PageHeader
         data-reveal
-        className="site-content-gutter"
+        className="site-content-gutter mx-auto max-w-3xl"
         title="Elsa — SMS Messaging Consent"
         description={<>Last updated: September 2026</>}
       />
 
-      <SiteSection data-reveal className="site-content-gutter max-w-3xl">
+      <SiteSection data-reveal className="site-content-gutter mx-auto max-w-3xl">
         <Section title="About Elsa">
           <Prose>
             Elsa is the personal AI assistant product name for messaging operated by Oliver Newth (sole proprietor) on n3wth.com. Elsa helps with email,
