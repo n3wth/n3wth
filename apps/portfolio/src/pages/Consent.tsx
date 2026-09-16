@@ -113,7 +113,7 @@ export default function Consent() {
             more information.
           </SiteText>
           <SiteText>
-            For the Elsa personal assistant SMS lines (+1 415 718-0992 Telnyx primary; +1 415 360-0751 Twilio alternate), see{' '}
+            For the Elsa personal assistant SMS lines (+1 424 667-2214 main; +1 415 360-0751 alternate), see{' '}
             <RouterLink href="/elsa" className="link-underline">/elsa</RouterLink>.
           </SiteText>
         </SiteDocSection>
