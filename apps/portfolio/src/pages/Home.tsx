@@ -48,39 +48,12 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
   }
 }
 
-const SCENE_LINKS = [
-  { name: 'Work', href: '/work' },
-  { name: 'Art', href: '/art' },
-  { name: 'Thinking', href: '/thinking' },
-  { name: 'Contact', href: '/contact' },
-  { name: 'Garden', href: 'https://garden.n3wth.com', external: true },
-] as const
-
 function WorldOverlay() {
   return (
     <div className="world-identity-layer">
       <div className="world-identity">
         <p className="world-identity-name">{siteConfig.name}</p>
         <p>AI product lead at Google. Independent projects and large-scale light art.</p>
-      </div>
-      <div className="world-atlas">
-        <div className="world-atlas-copy">
-          <p>Each light is a piece of work.</p>
-          <span>Open one from the field, or from this list.</span>
-        </div>
-        <nav aria-label="Scene destinations">
-          <ul className="world-atlas-links">
-            {SCENE_LINKS.map((link) => (
-              <li key={link.href}>
-                {'external' in link && link.external ? (
-                  <a href={link.href}>{link.name}</a>
-                ) : (
-                  <Link to={link.href}>{link.name}</Link>
-                )}
-              </li>
-            ))}
-          </ul>
-        </nav>
       </div>
     </div>
   )

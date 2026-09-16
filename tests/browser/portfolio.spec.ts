@@ -103,19 +103,22 @@ for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact'])
   })
 }
 
-test('home identity and scene destinations work before the scene settles', async ({ page }) => {
+test('home identity and primary navigation work before the scene settles', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('.world-identity-name')).toHaveText('Oliver Newth')
-  const atlas = page.getByRole('navigation', { name: 'Scene destinations' })
-  await expect(atlas).toBeVisible()
-  for (const name of ['Work', 'Art', 'Thinking', 'Contact', 'Garden']) {
-    const link = atlas.getByRole('link', { name, exact: true })
+  await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
+  const navigation = page.locator('#primary-navigation')
+  if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {
+    await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+  }
+  for (const name of ['Work', 'Art', 'Thinking', 'Library']) {
+    const link = navigation.getByRole('link', { name, exact: true })
     await expect(link).toBeVisible()
     const box = await link.boundingBox()
     expect(box?.height).toBeGreaterThanOrEqual(44)
   }
   await expect(page.locator('h1')).toHaveCount(1)
-  await atlas.getByRole('link', { name: 'Work', exact: true }).click()
+  await navigation.getByRole('link', { name: 'Work', exact: true }).click()
   await expect(page).toHaveURL(/\/work$/)
 })
 
