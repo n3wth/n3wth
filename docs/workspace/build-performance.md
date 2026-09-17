@@ -82,4 +82,44 @@ Garden, 963 static pages, one observation each, excluding install:
 
 Every emitted font is content-hashed into `.next/static/media` and referenced from the built CSS; no `@n3wth/ui/fonts` specifier survives unresolved into the output.
 
-These are local single-run observations. No Vercel deployment was measured: the CLI token was invalid and the Vercel connector was not authorized during this work. The package counts are lockfile arithmetic, not measured install time. Confirm install duration, build duration and cache hit rate on the first authorized preview for each project, and check whether any project overrides its install or build command in the dashboard, since a dashboard override shadows `vercel.json`.
+These are local single-run observations. No Vercel deployment was measured at the time of writing: the CLI token was invalid and the Vercel connector was not authorized during that work. The package counts are lockfile arithmetic, not measured install time.
+
+## Measured on Vercel
+
+Measured on September 16, 2026 from `vercel inspect --logs`, comparing production deployments of `fd02504` before the change against `9793c75` after it. Every deployment in both sets restored its build cache, so these are warm-cache figures. All six projects run on 2 cores and 8 GB and build in `cle1`.
+
+| Project | Install before | Install after | Total before | Total after |
+| --- | ---: | ---: | ---: | ---: |
+| n3wth (portfolio) | 8.5s | 8.5s | 1m | 1m |
+| ui | 89s | 12s | 2m | 40s |
+| kit | 89s | 17s | 2m | 57s |
+| skills | 89s | 17s | 3m | 2m |
+| garden | 91s | 12s | 3m | 2m |
+| r3 | 113s | 15s | 3m | 1m |
+
+The five converted projects save 72 to 98 seconds each, about 6.6 minutes per full fan-out. Portfolio was already on this path and does not move.
+
+The saving comes from replacing `npm ci` with `npm install`, so the restored `node_modules` is reused instead of deleted. It does not come from filtering the workspace set. Portfolio installs nothing at all and reports `up to date in 3s`, where filtering alone would still install its own 861 packages. The package table above states what each app needs, not what the change saves. After the change the five report `added 4` to `added 10` packages rather than `added 2128`.
+
+### Dashboard settings do not shadow vercel.json
+
+All six projects also carry an install and a build command in the Vercel dashboard, and several disagree with the repository. `vercel.json` wins. The portfolio project's dashboard sets `cd ../.. && npx --yes npm@11.19.1 ci`, and its log shows `node ../../scripts/vercel-install.mjs` ran instead. Treat `vercel.json` as the source and clear the dashboard fields.
+
+Garden is the exception worth noting: its `vercel.json` set no `installCommand` before this change, so it inherited the dashboard `npm ci` by default.
+
+### The build cache still holds the old dependency tree
+
+The caveat recorded under "Dependency cleanup" is real and is not yet resolved. `npm install` does not prune packages belonging to unselected workspaces, so each project's restored cache still contains the full tree that `npm ci` built.
+
+| Project | Build cache uploaded | Cache creation |
+| --- | ---: | ---: |
+| n3wth (portfolio) | 134 MB | 57s |
+| ui | 574 MB | 2m |
+| kit | 617 MB | 3m |
+| garden | 656 MB | 3m |
+
+Portfolio, which has been on the filtered install longest, writes a cache a quarter the size in a third of the time. Cache creation runs after `Build Completed` and so falls outside the duration Vercel reports, but it still consumes build machine time, and on ui, kit and r3 it currently costs more than the install saving. Clear the build cache once per project to collapse the tree, then let normal deployments reuse the lean cache.
+
+### The UI artifact cache has not yet been observed to hit
+
+`--cache-ui` missed on all six projects before and after the change. Each miss is correct: `packages/ui` changed in every commit deployed during this window, so the content key changed each time. There is no fault in `scripts/affected.mjs` or in the cache itself. A hit saves roughly 46 seconds. Do not claim a saving for this until a deployment whose UI inputs are unchanged is observed to restore the artifact.
