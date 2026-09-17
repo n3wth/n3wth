@@ -77,21 +77,21 @@ function App() {
         <a href="#main" className="skip-link">Skip to content</a>
         <Nav onOpenSearch={toggleSearch} searchOpen={searchOpen} />
         <CommandPalette open={searchOpen} onClose={closeSearch} />
-        <ScrollToTop />
-        <div className="n3wth-site-main">
-          <div className="frame">
-            {/* tabIndex so the skip link moves DOM focus here, not just
-                the scroll position */}
-            <main id="main" tabIndex={-1}>
-              <Suspense fallback={null}>
+        <Suspense fallback={
+          <main id="main" tabIndex={-1} className="n3wth-site-main" aria-busy="true">
+            <span className="sr-only" role="status">Loading page</span>
+          </main>
+        }>
+          <ScrollToTop />
+          <div className="n3wth-site-main">
+            <div className="frame">
+              <main id="main" tabIndex={-1}>
                 <Outlet />
-              </Suspense>
-            </main>
+              </main>
+            </div>
           </div>
-        </div>
-        {/* the home page is a single full-viewport scene — no footer,
-            nothing to scroll to */}
-        {!isHome && <Footer />}
+          {!isHome && <Footer />}
+        </Suspense>
       </LinkProvider>
     </N3wthProvider>
   )

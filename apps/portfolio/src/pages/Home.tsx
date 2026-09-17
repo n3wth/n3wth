@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../data/content'
 import { PageHeader } from '@n3wth/ui/site'
+import { track } from '../lib/analytics'
 
 /* The front door is a field at night (three.js, lazy so the rest of the
    site never pays for it): every glowing structure is one of Oliver's
@@ -121,7 +122,7 @@ export default function Home() {
       <span className="block mt-5">
         My independent projects explore personal agents, tools for creating software, and skills that help people use both.
       </span>
-    </>} actions={<Link className="btn" to="/work#building">Explore my projects</Link>} />
+    </>} actions={<Link className="btn" to="/work#building" onClick={() => track('home_projects_clicked', { source_page: '/' })}>Explore my projects</Link>} />
     </>
   )
 }
