@@ -1,6 +1,7 @@
 {
   "git": { "deploymentEnabled": true },
-  "buildCommand": "cd ../.. && npm run build:garden",
+  "installCommand": "node ../../scripts/vercel-install.mjs @n3wth/garden",
+  "buildCommand": "cd ../.. && npm run build:garden -- --cache-ui",
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/garden",
   "redirects": [
     {
