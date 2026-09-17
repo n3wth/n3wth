@@ -8,9 +8,10 @@
   },
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/fetch-github-stats.mjs && node scripts/fetch-garden-notes.mjs && node scripts/fetch-garden-index.mjs && node scripts/fetch-ui-meta.mjs",
+    "prebuild": "node scripts/verify-content.mjs",
     "build": "tsc -b && vite build",
     "postbuild": "node scripts/prerender-meta.mjs",
+    "content:refresh": "node scripts/refresh-content.mjs",
     "og:cards": "node scripts/generate-og-images.mjs",
     "og:plates": "node scripts/extract-og-plates.mjs",
     "lint": "eslint .",

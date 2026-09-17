@@ -1,6 +1,6 @@
 {
-  "noteCount": 252,
-  "indexedCount": 249,
+  "noteCount": 254,
+  "indexedCount": 251,
   "topics": [
     {
       "name": "books",
@@ -33,6 +33,11 @@
       "count": 27
     },
     {
+      "name": "development",
+      "href": "https://garden.n3wth.com/tags/development",
+      "count": 18
+    },
+    {
       "name": "productivity",
       "href": "https://garden.n3wth.com/tags/productivity",
       "count": 18
@@ -41,11 +46,6 @@
       "name": "wellness",
       "href": "https://garden.n3wth.com/tags/wellness",
       "count": 18
-    },
-    {
-      "name": "development",
-      "href": "https://garden.n3wth.com/tags/development",
-      "count": 17
     },
     {
       "name": "strategy",
@@ -60,7 +60,7 @@
     {
       "name": "knowledge-management",
       "href": "https://garden.n3wth.com/tags/knowledge-management",
-      "count": 11
+      "count": 12
     },
     {
       "name": "skills",

@@ -8,8 +8,9 @@ import uiMeta from '../../data/ui-meta.json'
  * code identifiers, so they're set in Geist Mono; the tier labels beside
  * them are not, so they're not.
  *
- * Version and install line come from src/data/ui-meta.json (fetched at
- * build time by scripts/fetch-ui-meta.mjs) and the totals are summed from
+ * Version and install line come from src/data/ui-meta.json, a committed
+ * snapshot refreshed by scripts/refresh-content.mjs (npm run
+ * content:refresh), not fetched at build time; the totals are summed from
  * the tiers, so nothing on this shelf is a number typed by hand.
  */
 

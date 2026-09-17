@@ -128,7 +128,7 @@ This is a **React + TypeScript SPA** (personal portfolio site) built with Vite 7
 ### Notes
 
 - Tests run on **Vitest** with jsdom (`src/test/setup.ts`); test files live under `src/**/__tests__`. `npm test` starts watch mode, so use `npm test -- --run` for a single non-interactive pass.
-- `npm run build` runs `prebuild` scripts that fetch GitHub/garden data over the network; they fail gracefully and keep the committed snapshot when offline or rate-limited, so the build still succeeds without network access.
+- `npm run build` never fetches over the network. The GitHub stats, garden notes, garden index, and `@n3wth/ui` version snapshots in `src/data/*.json` are committed source, and `prebuild` (`scripts/verify-content.mjs`) only validates their shape offline; it fails the build if a snapshot is missing or malformed. Run `npm run content:refresh` (`scripts/refresh-content.mjs`) to pull fresh data from the live sources and rewrite those snapshots — it always contacts every source, is never cached, and exits 1 if any source fails, leaving that source's files untouched. Commit the result. See `scripts/lib/content-sources.mjs` for the source registry.
 - The `@n3wth/ui` package is a custom component library fetched from the npm registry; no special auth is needed.
 - GSAP animations are scroll-driven; manual browser testing is needed to verify animation behavior.
 - When running the dev server in a headless/cloud environment, use `--host 0.0.0.0` to bind to all interfaces: `npm run dev -- --host 0.0.0.0`.
