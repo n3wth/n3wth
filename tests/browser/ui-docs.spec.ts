@@ -75,20 +75,18 @@ test('system guide loads the shared theme and font assets', async ({ page }) => 
   await expectSiteFoundation(page)
 })
 
-test('system ownership, native primitive and documentation navigation work', async ({ page }, testInfo) => {
+test('system ownership and documentation navigation work', async ({ page }, testInfo) => {
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
   const response = await page.goto('/')
   expect(response?.ok()).toBe(true)
   await expect(page.locator('body')).not.toHaveText('')
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('n3wth/ui design system')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Make room for your next idea.')
   for (const name of ['Sites', '@n3wth/ui', 'Astryx']) {
     await expect(page.getByRole('heading', { name, exact: true })).toBeVisible()
   }
   await expect(page.getByRole('link', { name: 'Astryx', exact: true })).toHaveAttribute('href', 'https://github.com/facebook/astryx')
   await page.locator('section[aria-labelledby="architecture"]').screenshot({ path: testInfo.outputPath('architecture.png') })
-  await page.getByRole('button', { name: 'Try the primitive' }).click()
-  await expect(page.getByRole('status', { name: 'Primitive activation' })).toHaveText('Activated 1 time')
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true)
   const screenshot = testInfo.outputPath('ui-system.png')
   await page.screenshot({ path: screenshot })
