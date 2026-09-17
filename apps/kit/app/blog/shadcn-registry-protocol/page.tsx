@@ -102,7 +102,7 @@ export default function Post() {
         <CodeBlock size="sm" language="bash" showCopyButton code={`npx shadcn add https://kit.n3wth.com/r/card.json`} />
       </div>
 
-      <ol className="list-inside list-decimal space-y-2">
+      <ol className="list-outside list-decimal space-y-2 ps-6 text-ink">
         <li>Fetch the registry JSON from the URL</li>
         <li>Resolve registryDependencies recursively</li>
         <li>Install any npm dependencies not already in the project</li>
@@ -124,7 +124,7 @@ export default function Post() {
         You just need a web server that serves JSON files.
       </p>
 
-      <ul className="list-inside list-disc space-y-2">
+      <ul className="list-outside list-disc space-y-2 ps-6 text-ink">
         <li>
           <span className="text-ink">Teams can run private registries</span> &mdash;
           internal component libraries distributed via the same protocol

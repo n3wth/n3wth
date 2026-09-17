@@ -1,10 +1,26 @@
+import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Button } from '@n3wth/ui/primitives'
 import { usePageMeta } from '../hooks/usePageMeta'
+import { track } from '../lib/analytics'
 
 /* Unknown URLs used to silently render the homepage, which made bad
    links (and typos) indistinguishable from working ones. */
 export default function NotFound() {
+  const location = useLocation()
+  const viewedLocationKey = useRef<string | null>(null)
+
   usePageMeta('Not found — Oliver Newth', 'This page does not exist.', { noindex: true })
+
+  useEffect(() => {
+    if (viewedLocationKey.current === location.key) return
+    viewedLocationKey.current = location.key
+    track('not_found_viewed', { source_page: '/404' })
+  }, [location.key])
+
+  const trackRecovery = (destination: 'home' | 'work' | 'contact') => {
+    track('not_found_recovery_clicked', { source_page: '/404', destination })
+  }
 
   return (
     <section
@@ -39,8 +55,9 @@ export default function NotFound() {
           The link may be old, or the address mistyped (404).
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-4">
-          <Button label="Go home" variant="primary" href="/" />
-          <Button label="View work" variant="ghost" href="/work" />
+          <Button label="Go home" variant="primary" href="/" clickAction={() => trackRecovery('home')} />
+          <Button label="View work" variant="ghost" href="/work" clickAction={() => trackRecovery('work')} />
+          <Button label="Contact" variant="ghost" href="/contact" clickAction={() => trackRecovery('contact')} />
         </div>
       </div>
       </div>

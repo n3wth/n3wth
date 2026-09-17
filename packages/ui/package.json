@@ -40,7 +40,10 @@
   "files": [
     "dist",
     "tailwind.preset.cjs",
-    "public/fonts",
+    "public/fonts/Geist-*.woff2",
+    "public/fonts/GeistMono-*.woff2",
+    "public/fonts/MonaSans-*.woff2",
+    "public/fonts/Satoshi-*.woff2",
     "v0",
     "CHANGELOG.md"
   ],

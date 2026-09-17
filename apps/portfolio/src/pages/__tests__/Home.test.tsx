@@ -1,14 +1,17 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Home from '../Home'
 import { Nav } from '../../components/Nav'
+import { track } from '../../lib/analytics'
 
 vi.mock('../../components/NightField', () => new Promise(() => {}))
+vi.mock('../../lib/analytics', () => ({ track: vi.fn() }))
 
 afterEach(() => {
   cleanup()
   vi.restoreAllMocks()
+  vi.clearAllMocks()
 })
 
 describe('Homepage without a ready scene', () => {
@@ -27,5 +30,15 @@ describe('Homepage without a ready scene', () => {
     expect(screen.queryByRole('navigation', { name: 'Scene destinations' })).toBeNull()
     expect(screen.getByRole('link', { name: 'Explore my projects' })).toHaveAttribute('href', '/work#building')
     expect(screen.queryByRole('navigation', { name: 'Site chapters' })).toBeNull()
+  })
+
+  it('tracks the existing project exploration link', () => {
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null)
+    render(<MemoryRouter><Home /></MemoryRouter>)
+
+    fireEvent.click(screen.getByRole('link', { name: 'Explore my projects' }))
+
+    expect(track).toHaveBeenCalledOnce()
+    expect(track).toHaveBeenCalledWith('home_projects_clicked', { source_page: '/' })
   })
 })

@@ -1,8 +1,8 @@
 {
   "git": { "deploymentEnabled": true },
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
-  "buildCommand": "cd ../.. && npm run build:kit",
+  "installCommand": "node ../../scripts/vercel-install.mjs @n3wth/kit",
+  "buildCommand": "cd ../.. && npm run build:kit -- --cache-ui",
   "framework": "nextjs",
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/kit"
 }

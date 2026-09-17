@@ -30,6 +30,8 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 
 ## Review
 
+UI documentation groups live semantic swatches by purpose (surfaces, text and borders, status). Typography specimens render shared type roles; compact comparison layouts preserve interactive examples and code. These are documentation layouts, not new application control styles.
+
 Check the rendered result at narrow mobile, intermediate and desktop widths, in every supported theme. Look for overwritten spacing, doubled headers, code overflow, misleading active states and footer inconsistencies. Test a cold load and navigation from a scrolled page. Shared changes require checking relevant consumers, not only the UI showcase.
 
 See [style.md](style.md) for implementation rules and [the architecture guide](docs/workspace/design-system.md) for package entry points and setup.

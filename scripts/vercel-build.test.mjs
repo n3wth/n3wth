@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, resolve } from 'node:path'
-import { installPortfolio } from './vercel-install.mjs'
+import { deploymentWorkspaces, installWorkspace } from './vercel-install.mjs'
 import { restoreUiBuild, saveUiBuild, uiBuildKey } from './ui-build-cache.mjs'
 import { runWorkspaceBuilds } from './build.mjs'
 
@@ -15,17 +15,27 @@ function fixture(t) {
     writeFileSync(resolve(root, path), value)
   }
   for (const path of [
-    'package.json', 'package-lock.json', 'scripts/build.mjs', 'scripts/ui-build-cache.mjs',
+    'package-lock.json', 'scripts/build.mjs', 'scripts/ui-build-cache.mjs',
     'packages/ui/src/index.ts', 'packages/ui/scripts/build.mjs', 'packages/ui/public/font.woff2',
-    'packages/ui/package.json', 'packages/ui/tsconfig.json', 'packages/ui/vite.config.ts',
+    'packages/ui/tsconfig.json', 'packages/ui/vite.config.ts',
     'packages/ui/tailwind.preset.cjs', 'packages/ui/dist/index.js',
   ]) write(path)
+  // Two apps sharing the packages, so selection can be shown to exclude the other.
+  write('package.json', JSON.stringify({ workspaces: ['apps/*', 'packages/*'] }))
+  write('packages/ui/package.json', JSON.stringify({ name: '@n3wth/ui' }))
+  write('packages/site-config/package.json', JSON.stringify({ name: '@n3wth/site-config' }))
+  for (const name of ['portfolio', 'kit']) {
+    write(`apps/${name}/package.json`, JSON.stringify({
+      name: `@n3wth/${name}`,
+      dependencies: { '@n3wth/ui': '2.0.0', '@n3wth/site-config': '*' },
+    }))
+  }
   return { root, write }
 }
 
 test('install reuses dependencies with pinned npm and preserves lockfile', t => {
   const { root } = fixture(t)
-  installPortfolio(root, (command, args, options) => {
+  installWorkspace(root, '@n3wth/portfolio', (command, args, options) => {
     assert.equal(command, 'npx')
     assert.ok(args.includes('npm@11.19.1'))
     assert.ok(args.includes('install'))
@@ -37,10 +47,26 @@ test('install reuses dependencies with pinned npm and preserves lockfile', t => 
   })
 })
 
+test('install selects the app and its workspace packages, never another app', t => {
+  const { root } = fixture(t)
+  assert.deepEqual(
+    deploymentWorkspaces(root, '@n3wth/portfolio', {}).sort(),
+    ['@n3wth/portfolio', '@n3wth/site-config', '@n3wth/ui'],
+  )
+  installWorkspace(root, '@n3wth/portfolio', (command, args) => {
+    assert.ok(args.includes('--workspace=@n3wth/portfolio'))
+    assert.ok(args.includes('--workspace=@n3wth/ui'))
+    assert.ok(args.includes('--workspace=@n3wth/site-config'))
+    assert.ok(!args.includes('--workspace=@n3wth/kit'))
+    return { status: 0 }
+  })
+  assert.throws(() => deploymentWorkspaces(root, '@n3wth/absent', {}), /Unknown workspace/)
+})
+
 test('install fails on dependency resolution drift or a failed subprocess', t => {
   const { root, write } = fixture(t)
-  assert.throws(() => installPortfolio(root, () => ({ status: 1 })), /install failed/)
-  assert.throws(() => installPortfolio(root, () => {
+  assert.throws(() => installWorkspace(root, '@n3wth/portfolio', () => ({ status: 1 })), /install failed/)
+  assert.throws(() => installWorkspace(root, '@n3wth/portfolio', () => {
     write('package-lock.json', '{"changed":true}')
     return { status: 0 }
   }), /changed package-lock/)
@@ -51,7 +77,7 @@ test('install retains the exact committed lockfile when npm only records extrane
   const lock = { packages: { 'node_modules/real': { version: '1.0.0' } } }
   const before = JSON.stringify(lock)
   write('package-lock.json', before)
-  installPortfolio(root, () => {
+  installWorkspace(root, '@n3wth/portfolio', () => {
     lock.packages['node_modules/bundled-extra'] = { version: '2.0.0', extraneous: true }
     write('package-lock.json', JSON.stringify(lock))
     return { status: 0 }

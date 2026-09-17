@@ -1,9 +1,9 @@
 {
   "git": { "deploymentEnabled": true },
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/ui-docs",
-  "buildCommand": "cd ../.. && npm run build:ui-docs",
+  "buildCommand": "cd ../.. && npm run build:ui-docs -- --cache-ui",
   "outputDirectory": "dist",
-  "installCommand": "cd ../.. && npx --yes npm@11.19.1 ci",
+  "installCommand": "node ../../scripts/vercel-install.mjs @n3wth/ui-docs",
   "framework": null,
   "cleanUrls": true,
   "redirects": [{ "source": "/docs", "destination": "/docs/getting-started", "permanent": true }],

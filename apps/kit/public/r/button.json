@@ -4,7 +4,7 @@
   "title": "Button",
   "description": "Multi-variant button with responsive sizes, loading state, and asChild support.",
   "registryDependencies": [
-    "cn"
+    "https://kit.n3wth.com/r/cn.json"
   ],
   "files": [
     {
