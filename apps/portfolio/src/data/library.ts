@@ -281,7 +281,8 @@ export interface GardenTopic {
 
 /**
  * No populated array here on purpose: real topic counts live in
- * src/data/garden-index.json (Agent DATA's file, fetched from the live
- * site). This type exists so that JSON, and whatever in src/pages/Library.tsx
+ * src/data/garden-index.json, a committed snapshot refreshed by
+ * scripts/refresh-content.mjs (npm run content:refresh), not this file.
+ * This type exists so that JSON, and whatever in src/pages/Library.tsx
  * or src/components/library/* reads it, has one shared shape to agree on.
  */

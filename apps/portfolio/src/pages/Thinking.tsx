@@ -13,9 +13,9 @@ interface GardenNote {
   date: string
 }
 
-/* Recent garden notes, snapshotted at build time
-   (scripts/fetch-garden-notes.mjs). If the feed is down, the last
-   committed snapshot ships. */
+/* Recent garden notes, a committed snapshot refreshed by
+   scripts/refresh-content.mjs (npm run content:refresh), not fetched at
+   build time. If a refresh fails, the last committed snapshot ships. */
 function GardenNotes() {
   const notes = (gardenNotes as GardenNote[]).slice(0, 4)
   if (notes.length === 0) return null

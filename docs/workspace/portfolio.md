@@ -5,7 +5,10 @@ Verified 2026-09-06 against local source and GitHub/Vercel CLIs.
 - Source: n3wth/n3wth main at 2452a9d4754dae5554df68e8ae2cf933223466a7.
 - Destination feature branch: feature/personal-sites-workspace in work/sites-workspace. Existing repository history is retained.
 - React 19, Vite 7, Tailwind 4, TypeScript 5.9, Node 24 and npm lockfile.
-- Required local command: npm run check (ESLint, Vitest and production build). Build also snapshots upstream metadata and prerenders routes.
+- Required local command: npm run check (ESLint, Vitest and production build).
+- The build reads committed content snapshots in `src/data/*.json` (garden notes/index, `@n3wth/ui` version). It validates them offline. It does not fetch them.
+- Refreshing those snapshots from their live sources is a separate command: `npm run content:refresh` (`apps/portfolio/scripts/refresh-content.mjs`). It never runs as part of a build.
+- Build also prerenders routes from that source tree.
 - Vercel project n3wth (prj_ZiimaNLqgocwBC7elQp5cRQuu9cH), team n3wth, root '.', Vite, Node 24.x. Domain n3wth.com.
 - Current vercel.json skips all preview builds. Preserve redirect/header/API rules while enabling pilot previews separately.
 - Routes: /, /work, /art, /thinking, /thinking/:slug, /library, /contact, /error, /login, /logout, /support, plus static /privacy /consent /terms. Redirects /blog /news /press to /thinking, including trailing slash variants. Preserve public assets and API functions.

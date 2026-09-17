@@ -9,7 +9,7 @@
     {
       "title": "5-Year Health and Wellness Plan",
       "href": "https://garden.n3wth.com/health/5-year-health-and-wellness-plan",
-      "description": "Comprehensive evidence-based health roadmap for 2025-2030",
+      "description": "Structured health goals and checkpoints from 2025–2030",
       "section": "health"
     },
     {
@@ -73,9 +73,15 @@
       "section": null
     },
     {
+      "title": "Are Tomatoes Self-Pollinating?",
+      "href": "https://garden.n3wth.com/tomatoes-self-pollinate",
+      "description": "Yes. Tomato plants are self-pollinating: each flower has male and female parts. How tomatoes pollinate, why fruit still fails, and when to help.",
+      "section": null
+    },
+    {
       "title": "Astryx vs shadcn: which design system for LLM-written UI",
       "href": "https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material",
-      "description": "Astryx vs shadcn (and Angular Material): field notes from rebuilding this garden with an LLM writing the UI, and which system makes accessible design easiest.",
+      "description": "Field notes from this garden: Astryx, shadcn and component ownership, with a reproducible table of contents example and the limits of type-level accessibility checks.",
       "section": null
     },
     {
@@ -147,7 +153,7 @@
     {
       "title": "Book Learning Synthesis",
       "href": "https://garden.n3wth.com/book-learning-synthesis",
-      "description": "How books interconnect to create a comprehensive learning and growth framework",
+      "description": "How the books I've read connect to each other",
       "section": null
     },
     {
@@ -262,6 +268,12 @@
       "title": "Change Management",
       "href": "https://garden.n3wth.com/change-management",
       "description": "Strategies for managing organizational change effectively",
+      "section": null
+    },
+    {
+      "title": "Choose UI component ownership",
+      "href": "https://garden.n3wth.com/choose-ui-component-ownership",
+      "description": "A practical checklist for deciding where a UI component should live and who maintains it",
       "section": null
     },
     {
@@ -423,7 +435,7 @@
     {
       "title": "Exercise",
       "href": "https://garden.n3wth.com/health/exercise",
-      "description": "Comprehensive guide to physical activity and fitness",
+      "description": "Current workout structure and movement philosophy",
       "section": "health"
     },
     {
@@ -543,7 +555,7 @@
     {
       "title": "GTD",
       "href": "https://garden.n3wth.com/frameworks/gtd",
-      "description": "A comprehensive productivity system for organizing work and life",
+      "description": "David Allen's five-step task management system",
       "section": "frameworks"
     },
     {
@@ -561,7 +573,7 @@
     {
       "title": "Health",
       "href": "https://garden.n3wth.com/health/health-map",
-      "description": "Personal health tracking, research, and wellness strategies",
+      "description": "Physical and mental health tracking and routines",
       "section": "health"
     },
     {
@@ -675,13 +687,13 @@
     {
       "title": "Interview Prep Checklist",
       "href": "https://garden.n3wth.com/interview-prep-checklist",
-      "description": "Comprehensive preparation guide for product management interviews",
+      "description": "Daily and weekly prep tasks for PM interviews",
       "section": null
     },
     {
       "title": "Interview Preparation",
       "href": "https://garden.n3wth.com/interview-preparation",
-      "description": "Comprehensive guide to interview success",
+      "description": "Checklists and frameworks I use before interviews",
       "section": null
     },
     {
@@ -835,6 +847,12 @@
       "section": null
     },
     {
+      "title": "Lunch Money",
+      "href": "https://garden.n3wth.com/lunch-money",
+      "description": "Unofficial Lunch Money plugin at lunchmoney.sh: read-only spending, budgets, and bills for coding agents.",
+      "section": null
+    },
+    {
       "title": "Madwoman",
       "href": "https://garden.n3wth.com/references/books/madwoman",
       "description": "Publisher blurb for Chelsea Bieker's Madwoman, a novel about a mother's buried past resurfacing",
@@ -915,7 +933,7 @@
     {
       "title": "Non-Comedogenic",
       "href": "https://garden.n3wth.com/health/non-comedogenic",
-      "description": "Understanding products that won't clog pores",
+      "description": "Non-comedogenic means a product is formulated not to clog pores (comedones). Definition, why the label is unregulated, and when it matters for acne-prone skin.",
       "section": "health"
     },
     {
@@ -1041,7 +1059,7 @@
     {
       "title": "Productivity Systems Hub",
       "href": "https://garden.n3wth.com/productivity-systems-hub",
-      "description": "Master productivity through proven systems and frameworks",
+      "description": "Task management, prioritization, and time-blocking methods I actually use",
       "section": null
     },
     {
@@ -1053,7 +1071,7 @@
     {
       "title": "Professional Writing Hub",
       "href": "https://garden.n3wth.com/professional-writing-hub",
-      "description": "Master the art of professional and technical writing",
+      "description": "Templates and notes on technical docs, emails, and content",
       "section": null
     },
     {
@@ -1117,9 +1135,9 @@
       "section": null
     },
     {
-      "title": "Remote Work Excellence Guide",
+      "title": "Remote Work Notes",
       "href": "https://garden.n3wth.com/remote-work-excellence-guide",
-      "description": "Comprehensive guide for thriving in remote and distributed tech teams",
+      "description": "What I've learned working remotely since 2020",
       "section": null
     },
     {
@@ -1433,12 +1451,6 @@
       "href": "https://garden.n3wth.com/references/books/this-book-is-full-of-spiders",
       "description": "Publisher blurb for David Wong's horror comedy sequel to John Dies at the End",
       "section": "references"
-    },
-    {
-      "title": "Tomatoes Self Pollinate",
-      "href": "https://garden.n3wth.com/tomatoes-self-pollinate",
-      "description": "Understanding tomato pollination for better fruit production",
-      "section": null
     },
     {
       "title": "Tools",

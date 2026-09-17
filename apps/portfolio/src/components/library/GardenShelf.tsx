@@ -2,9 +2,10 @@ import { Shelf } from './Shelf'
 import gardenIndex from '../../data/garden-index.json'
 
 /**
- * The garden shelf. Note count comes from src/data/garden-index.json,
- * which scripts/fetch-garden-index.mjs pulls from the live site at build
- * time; link and grove totals are from the same source's llms.txt.
+ * The garden shelf. Note count comes from src/data/garden-index.json, a
+ * committed snapshot refreshed by scripts/refresh-content.mjs (npm run
+ * content:refresh), not fetched at build time; link and grove totals are
+ * from the same source's llms.txt.
  *
  * The grove list is a multi-column index rather than a grid of tag chips:
  * fifteen topics with counts is a table of contents, and a table of
