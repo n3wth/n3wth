@@ -230,7 +230,7 @@ export function ButtonExample() {
         Check pointer and keyboard input
       </SiteHeading>
 
-      <ol className="list-inside list-decimal space-y-2">
+      <ol className="list-outside list-decimal space-y-2 ps-6 text-ink">
         <li>Click or tap the button. The count must increase once.</li>
         <li>Press Tab until the button has a visible focus indicator.</li>
         <li>Press Enter. The count must increase once.</li>
@@ -251,7 +251,7 @@ export function ButtonExample() {
         Fix common failures
       </SiteHeading>
 
-      <ul className="list-inside list-disc space-y-3">
+      <ul className="list-outside list-disc space-y-3 ps-6 text-ink">
         <li>
           <span className="font-medium text-ink">The CLI cannot find components.json:</span>{' '}
           initialize shadcn in the app, then run the install command again.

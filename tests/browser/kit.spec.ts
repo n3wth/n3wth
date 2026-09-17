@@ -71,3 +71,24 @@ test('button tutorial copies the actual registry command', async ({ page, contex
   await expect.poll(() => page.evaluate(() => navigator.clipboard.readText()))
     .toBe('npx shadcn add https://kit.n3wth.com/r/button.json')
 })
+
+for (const slug of ['install-and-check-a-kit-button', 'shadcn-registry-protocol', 'shadcn-registry-protocol-deep-dive']) {
+  test(`article lists keep markers outside wrapped text: ${slug}`, async ({ page }, testInfo) => {
+    await page.goto(`/blog/${slug}`)
+    const paragraphColor = await page.locator('main p').last().evaluate(element => getComputedStyle(element).color)
+    for (const list of await page.locator('main ol, main ul').all()) {
+      const styles = await list.evaluate(element => {
+        const computed = getComputedStyle(element)
+        return { position: computed.listStylePosition, padding: parseFloat(computed.paddingInlineStart), color: computed.color }
+      })
+      expect(styles.position).toBe('outside')
+      expect(styles.padding).toBeGreaterThanOrEqual(24)
+      expect(styles.color).toBe(paragraphColor)
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
+    await page.locator('main ol').first().scrollIntoViewIfNeeded()
+    await page.screenshot({ path: testInfo.outputPath('numbered-list.png') })
+    await page.locator('main ul').first().scrollIntoViewIfNeeded()
+    await page.screenshot({ path: testInfo.outputPath('bulleted-list.png') })
+  })
+}

@@ -266,7 +266,7 @@ registry:file       // Arbitrary files (config, types, etc.)`} />
         Step by step:
       </p>
 
-      <ol className="list-inside list-decimal space-y-3 marker:text-ink-faint">
+      <ol className="list-outside list-decimal space-y-3 ps-6 text-ink marker:text-ink-faint">
         <li>
           <span className="font-medium text-ink">Fetch the item JSON</span>{' '}
           — the CLI fetches the URL and parses the registry-item JSON. It
@@ -416,7 +416,7 @@ registry/
         want a build step. The key requirements are:
       </p>
 
-      <ul className="list-inside list-disc space-y-2 marker:text-ink-faint">
+      <ul className="list-outside list-disc space-y-2 ps-6 text-ink marker:text-ink-faint">
         <li>
           <span className="font-medium text-ink">Single source of truth</span>{' '}
           — the manifest drives the build. Do not manually maintain per-item JSON.
@@ -504,7 +504,7 @@ registry/
         distributing files. It does not handle:
       </p>
 
-      <ul className="list-inside list-disc space-y-2 marker:text-ink-faint">
+      <ul className="list-outside list-disc space-y-2 ps-6 text-ink marker:text-ink-faint">
         <li>
           <span className="font-medium text-ink">Versioning</span>{' '}
           — there is no version field in the schema. If you want versioning, you
@@ -589,7 +589,7 @@ Constraints:
         The shadcn registry protocol is:
       </p>
 
-      <ul className="list-inside list-disc space-y-2 marker:text-ink-faint">
+      <ul className="list-outside list-disc space-y-2 ps-6 text-ink marker:text-ink-faint">
         <li>
           A JSON schema for describing components and their dependencies
         </li>
