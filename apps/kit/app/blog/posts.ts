@@ -1,5 +1,12 @@
 export const posts = [
   {
+    slug: 'install-and-check-a-kit-button',
+    title: 'Install and check a Kit button',
+    date: 'September 16, 2026',
+    publishedIso: '2026-09-16T00:00:00Z',
+    excerpt: 'Install the Kit button, render it, and check its pointer and keyboard behavior.',
+  },
+  {
     slug: 'shadcn-registry-protocol-deep-dive',
     title: 'The shadcn Registry Protocol: A Technical Deep Dive',
     date: 'April 9, 2026',

@@ -53,7 +53,7 @@
       "type": "registry:ui",
       "title": "Button",
       "description": "Multi-variant button with responsive sizes, loading state, and asChild support.",
-      "registryDependencies": ["cn"],
+      "registryDependencies": ["https://kit.n3wth.com/r/cn.json"],
       "files": [
         { "path": "registry/new-york/button/button.tsx", "type": "registry:ui" }
       ]
