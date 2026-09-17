@@ -69,8 +69,8 @@ export default function Terms() {
 
         <SiteDocSection title="Elsa assistant SMS">
           <SiteText>
-            By texting <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or
-            opting in to Elsa SMS, you agree to the messaging terms on{' '}
+            By texting START, HELLO, or a first message to <strong style={{ color: 'var(--ink)' }}>+1 (463) 258-8004</strong>
+            after reading the disclosures on /elsa, you agree to the messaging terms on{' '}
             <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>.
             Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe.
             Reply HELP for help. SMS is optional and is not required to use n3wth.com or other site
