@@ -51,7 +51,7 @@
 
 * { box-sizing: border-box; }
 
-/* Display voice: Satoshi carries the headers — a premium grotesque with
+/* Display voice: Suisse Intl carries the headers — a premium grotesque with
    its own drawing — while Geist stays on UI, body, and nav. Tight display
    tracking per-element comes from the inline styles tuned for grotesques. */
 
@@ -588,71 +588,9 @@ body {
   transition: transform 0.22s linear;
 }
 
-/* Identity above the loader: name and credentials paint with the
-   first frame instead of waiting out the progress bar. */
-.world-identity-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 31;
-}
-
-.world-identity {
-  position: absolute;
-  top: calc(6.75rem + env(safe-area-inset-top));
-  /* Below md the nav-island is pinned left (inset-x-3 + its own pl-4),
-     not centered — line the name up under it instead of the page
-     gutter, which sat 5px further left than the wordmark. At md+ the
-     island centers itself, decoupled from the left edge, so the page
-     gutter is the only reference left and takes back over. */
-  left: 1.75rem;
-  max-width: min(34rem, 72vw);
-}
-@media (min-width: 768px) {
-  .world-identity {
-    left: var(--gutter);
-  }
-}
-.world-identity-name {
-  margin: 0;
-  max-width: none;
-  font-family: var(--font-display);
-  font-size: var(--display-h1);
-  font-weight: 600;
-  line-height: 0.95;
-  color: var(--ink);
-  letter-spacing: -0.045em;
-}
-.world-identity > p:last-child {
-  margin: 0.7rem 0 0;
-  font-size: 14px;
-  line-height: 1.45;
-  color: rgba(242, 243, 245, 0.68);
-}
-
 @media (max-width: 767px) {
-  .world-identity {
-    top: calc(5.85rem + env(safe-area-inset-top));
-    max-width: calc(100vw - 2 * var(--gutter));
-  }
-  .world-identity-name {
-    font-size: clamp(2rem, 10vw, 2.65rem);
-  }
-  .world-identity > p:last-child {
-    margin-top: 0.55rem;
-    font-size: 13px;
-  }
   .night-field-loader-status {
     bottom: calc(7.5rem + env(safe-area-inset-bottom));
-  }
-}
-
-@media (max-height: 620px) {
-  .world-identity > p:last-child {
-    display: none;
-  }
-  .world-identity {
-    top: calc(5.2rem + env(safe-area-inset-top));
   }
 }
 

@@ -34,7 +34,7 @@ export function Beat({
         <div>
           {stage && (
             /* h2 so heading nav works inside long pieces; font-sans keeps
-               the visual identical (headings otherwise inherit Satoshi). */
+               the visual identical (headings otherwise inherit Suisse Intl). */
             <h2 className="font-sans text-xs uppercase tracking-wide" style={{ color: 'var(--ink-dim)' }}>
               {stage.n} {stage.label}
             </h2>

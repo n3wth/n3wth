@@ -33,7 +33,7 @@ export default function GlobalError({
           justifyContent: 'center',
           background: '#08090b',
           color: '#f2f3f5',
-          fontFamily: '"Geist Sans", system-ui, -apple-system, sans-serif',
+          fontFamily: '"Suisse Intl", system-ui, -apple-system, sans-serif',
           textAlign: 'center',
           padding: '2rem',
         }}

@@ -74,7 +74,7 @@ function KitRow({ primitive }: { primitive: KitPrimitive }) {
           <div>
             <h3
               className="display text-xl md:text-2xl"
-              style={{ letterSpacing: '-0.025em', lineHeight: 1.1 }}
+              style={{ lineHeight: 1.1 }}
             >
               {primitive.name}
             </h3>

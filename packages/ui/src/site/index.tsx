@@ -95,9 +95,10 @@ export function PageHeader({ title, level = 1, description, actions, aside, alig
       <div className="n3wth-site-page-header-copy">
         <SiteHeading variant={level === 1 ? 'page' : 'section'} level={level}>{title}</SiteHeading>
         {description != null && <SiteText className="n3wth-site-description">{description}</SiteText>}
-        {aside != null && actions != null && <div className="n3wth-site-actions">{actions}</div>}
+        {/* Actions always follow the copy. Never place them beside it, where
+            a short label drifts to the far right of the heading it belongs to. */}
+        {actions != null && <div className="n3wth-site-actions">{actions}</div>}
       </div>
-      {aside == null && actions != null && <div className="n3wth-site-actions">{actions}</div>}
       {aside != null && <div className="n3wth-site-page-header-aside">{aside}</div>}
     </header>
   )

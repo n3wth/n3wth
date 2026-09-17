@@ -42,7 +42,6 @@ const routes = [
       </section>
       <section>
         <h2>Independent projects</h2>
-        <p>I build and operate these projects independently with coding agents. They are separate from my work at Google.</p>
         <ul>
           <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — points-vs-cash flight optimizer.</li>
           <li><a href="https://lunchmoney.sh" rel="noopener">lunchmoney.sh</a> — unofficial Lunch Money plugin for Claude, Codex, and Cursor.</li>

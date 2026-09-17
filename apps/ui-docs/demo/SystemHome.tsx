@@ -23,6 +23,7 @@ export function SystemHome() {
         title="Make room for your next idea."
         description="A shared foundation for individual sites. Thoughtful type, useful controls and space for your content to lead."
         actions={<Link to="/docs/getting-started">Get started</Link>}
+        align="center"
         className="system-home-header"
       />
       <SystemGarden />

@@ -7,7 +7,6 @@ export function SiteNav() {
     <SiteNavigation
       brand={<NavLink to="/">n3wth/ui</NavLink>}
       links={<>
-        <NavLink to="/" end>System</NavLink>
         <NavLink to="/components">Components</NavLink>
         <NavLink to="/docs/getting-started">Docs</NavLink>
       </>}

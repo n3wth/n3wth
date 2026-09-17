@@ -64,12 +64,10 @@
     <!-- Preload Home's night backdrop (also the loader/no-WebGL still) -->
     <link rel="preload" href="/images/hero-playa.webp" as="image" type="image/webp" fetchpriority="high" />
 
-    <!-- Preload critical fonts to improve FCP/LCP
-         LCP element is display text (Satoshi-Bold), so it gets highest priority.
-         Geist-SemiBold used in nav and labels comes next. -->
-    <link rel="preload" href="/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
-    <link rel="preload" href="/fonts/Geist-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- No static font preloads. Suisse Intl arrives through
+         @n3wth/ui/site.css, so Vite content-hashes the files and their names
+         are not knowable here. Preloading the old /fonts/ copies would fetch
+         faces this page never renders. -->
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -170,14 +168,14 @@
         margin: 0;
         background: #08090b;
         color: #9aa0a8;
-        font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
+        font-family: 'Suisse Intl', system-ui, -apple-system, sans-serif;
         -webkit-font-smoothing: antialiased;
       }
       #root { min-height: 100vh; }
       /* SEO fallback visible by default for fast first paint (LCP text).
          Hidden only after React mounts via .hydrated class. */
       .seo-fallback { padding: 2rem; max-width: 42rem; }
-      .seo-fallback h1 { font-family: 'Satoshi', system-ui, sans-serif; font-size: 2rem; font-weight: 700; color: #fff; margin: 0 0 1.5rem; }
+      .seo-fallback h1 { font-family: 'Suisse Intl', system-ui, sans-serif; font-size: 2rem; font-weight: 700; color: #fff; margin: 0 0 1.5rem; }
       .seo-fallback h2 { font-size: 1.125rem; font-weight: 600; color: #fff; margin: 1.5rem 0 0.5rem; }
       .seo-fallback h3 { font-size: 1rem; font-weight: 600; color: #9aa0a8; margin: 1rem 0 0.25rem; }
       .seo-fallback p, .seo-fallback li { line-height: 1.6; }
