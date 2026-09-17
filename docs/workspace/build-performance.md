@@ -120,6 +120,14 @@ The caveat recorded under "Dependency cleanup" is real and is not yet resolved. 
 
 Portfolio, which has been on the filtered install longest, writes a cache a quarter the size in a third of the time. Cache creation runs after `Build Completed` and so falls outside the duration Vercel reports, but it still consumes build machine time, and on ui, kit and r3 it currently costs more than the install saving. Clear the build cache once per project to collapse the tree, then let normal deployments reuse the lean cache.
 
+Clearing the cache is a one-time manual step on ui, kit, garden, skills and r3. Use Redeploy without existing Build Cache, or set `VERCEL_FORCE_NO_BUILD_CACHE=1` for a single deployment. The pinned Vercel CLI has no command for it, so use the dashboard or the REST API. Confirm afterwards that each project's uploaded cache size and creation time fall towards portfolio's figures. No source change prunes the tree, so a project that is never cleared keeps re-uploading the old cache.
+
+## Dependabot regenerates the lockfile
+
+`npm install` reuses the restored `node_modules`, but the lockfile-drift guard in `scripts/vercel-install.mjs` still rejects a lockfile that npm would not produce. Dependabot rewrites the version specifiers that third-party packages declare inside `package-lock.json`, so every weekly Dependabot pull request fails the guard on all six Vercel projects even though the update itself is valid. The guard is correct; the committed lockfile genuinely does not match what npm resolves.
+
+The `Dependabot lockfile` workflow (`.github/workflows/dependabot-lockfile.yml`) fixes this at the source. On a Dependabot pull request it runs `npm install --package-lock-only` with the pinned npm 11.19.1, then commits the canonical lockfile back to the branch. The follow-up push triggers fresh previews that pass the guard. The workflow does not weaken the guard, and a lockfile that already matches produces no commit.
+
 ### The UI artifact cache has not yet been observed to hit
 
 `--cache-ui` missed on all six projects before and after the change. Each miss is correct: `packages/ui` changed in every commit deployed during this window, so the content key changed each time. There is no fault in `scripts/affected.mjs` or in the cache itself. A hit saves roughly 46 seconds. Do not claim a saving for this until a deployment whose UI inputs are unchanged is observed to restore the artifact.
