@@ -12,9 +12,6 @@
  * failure handling.
  */
 
-// Repos referenced by src/data/content.ts project entries.
-const REPOS = ['n3wth/r3', 'n3wth/kit', 'n3wth/skills']
-
 // Pages that show up in the garden's feed/index but aren't notes.
 const FEED_NON_NOTE_TITLES = ['Home', 'About']
 const INDEX_NON_NOTE_TITLES = new Set(['Home', 'About', 'About This Vault'])
@@ -189,7 +186,16 @@ export function validateGardenSearch(search) {
   }
   if (!Array.isArray(search.notes) || search.notes.length === 0) {
     errors.push('garden-search.json.notes: expected a non-empty array')
+    return errors
   }
+  search.notes.forEach((note, i) => {
+    if (typeof note?.title !== 'string' || !note.title) {
+      errors.push(`garden-search.json.notes[${i}].title: expected a non-empty string`)
+    }
+    if (typeof note?.href !== 'string' || !note.href) {
+      errors.push(`garden-search.json.notes[${i}].href: expected a non-empty string`)
+    }
+  })
   return errors
 }
 
@@ -213,40 +219,6 @@ export function validateUiMeta(meta) {
   }
   if (typeof meta.install !== 'string' || !meta.install) {
     errors.push('ui-meta.json.install: expected a non-empty string')
-  }
-  return errors
-}
-
-// ---------------------------------------------------------------------------
-// github-stats.json <- https://api.github.com/repos/<repo> (one per repo)
-// ---------------------------------------------------------------------------
-
-/** `texts` and `repos` are matched by index (one GitHub API response per repo). */
-export function parseGithubStats(texts, repos = REPOS) {
-  const stats = {}
-  texts.forEach((text, i) => {
-    const repo = repos[i]
-    const data = JSON.parse(text)
-    if (typeof data.stargazers_count !== 'number') {
-      throw new Error(`${repo}: response missing stargazers_count`)
-    }
-    stats[repo] = { stars: data.stargazers_count, forks: data.forks_count ?? 0 }
-  })
-  return stats
-}
-
-export function validateGithubStats(stats) {
-  const errors = []
-  if (typeof stats !== 'object' || stats === null || Array.isArray(stats)) {
-    errors.push('github-stats.json: expected an object')
-    return errors
-  }
-  const keys = Object.keys(stats)
-  if (keys.length === 0) errors.push('github-stats.json: expected at least one repo entry')
-  for (const repo of keys) {
-    const entry = stats[repo]
-    if (typeof entry?.stars !== 'number') errors.push(`github-stats.json.${repo}.stars: expected a number`)
-    if (typeof entry?.forks !== 'number') errors.push(`github-stats.json.${repo}.forks: expected a number`)
   }
   return errors
 }
@@ -289,12 +261,5 @@ export const SOURCES = [
     files: ['ui-meta.json'],
     parse: ([registryJson]) => ({ 'ui-meta.json': parseUiRegistry(registryJson) }),
     validate: (value) => validateUiMeta(value['ui-meta.json']),
-  },
-  {
-    name: 'github-stats',
-    urls: REPOS.map((repo) => `https://api.github.com/repos/${repo}`),
-    files: ['github-stats.json'],
-    parse: (texts) => ({ 'github-stats.json': parseGithubStats(texts) }),
-    validate: (value) => validateGithubStats(value['github-stats.json']),
   },
 ]

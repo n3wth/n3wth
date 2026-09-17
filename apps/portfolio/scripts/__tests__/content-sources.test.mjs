@@ -3,12 +3,10 @@ import {
   parseGardenFeed,
   parseGardenLlmsTxt,
   parseUiRegistry,
-  parseGithubStats,
   validateGardenNotes,
   validateGardenIndex,
   validateGardenSearch,
   validateUiMeta,
-  validateGithubStats,
   canonical,
   SOURCES,
 } from '../lib/content-sources.mjs'
@@ -41,9 +39,6 @@ const LLMS_TXT_FIXTURE = `# Garden
 `
 
 const REGISTRY_FIXTURE = JSON.stringify({ version: '2.1.0', name: '@n3wth/ui' })
-
-const GITHUB_REPO_FIXTURE = (stars, forks) =>
-  JSON.stringify({ stargazers_count: stars, forks_count: forks })
 
 describe('parseGardenFeed', () => {
   it('filters Home/About and caps at 5 notes', () => {
@@ -116,28 +111,6 @@ describe('parseUiRegistry', () => {
   })
 })
 
-describe('parseGithubStats', () => {
-  it('maps each repo to its stars/forks by index', () => {
-    const stats = parseGithubStats(
-      [GITHUB_REPO_FIXTURE(10, 2), GITHUB_REPO_FIXTURE(0, 0)],
-      ['n3wth/r3', 'n3wth/kit']
-    )
-    expect(stats).toEqual({
-      'n3wth/r3': { stars: 10, forks: 2 },
-      'n3wth/kit': { stars: 0, forks: 0 },
-    })
-  })
-
-  it('defaults missing forks_count to 0', () => {
-    const stats = parseGithubStats([JSON.stringify({ stargazers_count: 5 })], ['n3wth/r3'])
-    expect(stats['n3wth/r3'].forks).toBe(0)
-  })
-
-  it('throws when a response has no stargazers_count', () => {
-    expect(() => parseGithubStats([JSON.stringify({})], ['n3wth/r3'])).toThrow(/stargazers_count/)
-  })
-})
-
 describe('validators reject empty/placeholder shapes', () => {
   it('validateGardenNotes rejects an empty array', () => {
     expect(validateGardenNotes([])).not.toEqual([])
@@ -161,20 +134,21 @@ describe('validators reject empty/placeholder shapes', () => {
     expect(validateGardenSearch({ notes: [] })).not.toEqual([])
   })
 
+  it('validateGardenSearch rejects a note missing a title or href', () => {
+    expect(validateGardenSearch({ notes: [{ title: '', href: 'https://x' }] })).not.toEqual([])
+    expect(validateGardenSearch({ notes: [{ title: 'A', href: '' }] })).not.toEqual([])
+  })
+
+  it('validateGardenSearch accepts a well-formed notes array', () => {
+    expect(validateGardenSearch({ notes: [{ title: 'A', href: 'https://x' }] })).toEqual([])
+  })
+
   it('validateUiMeta rejects a blank version (the pre-fix placeholder)', () => {
     expect(validateUiMeta({ version: '', install: 'npm install @n3wth/ui' })).not.toEqual([])
   })
 
   it('validateUiMeta accepts a semver-like version', () => {
     expect(validateUiMeta({ version: '2.0.0', install: 'npm install @n3wth/ui' })).toEqual([])
-  })
-
-  it('validateGithubStats rejects an empty object', () => {
-    expect(validateGithubStats({})).not.toEqual([])
-  })
-
-  it('validateGithubStats rejects a non-numeric star count', () => {
-    expect(validateGithubStats({ 'n3wth/r3': { stars: '2', forks: 0 } })).not.toEqual([])
   })
 })
 
@@ -186,9 +160,7 @@ describe('canonical', () => {
 
 describe('SOURCES', () => {
   it('has one entry per known content source', () => {
-    expect(SOURCES.map((s) => s.name).sort()).toEqual(
-      ['garden-index', 'garden-notes', 'github-stats', 'ui-meta'].sort()
-    )
+    expect(SOURCES.map((s) => s.name).sort()).toEqual(['garden-index', 'garden-notes', 'ui-meta'].sort())
   })
 
   it('every source has matching urls, files, parse and validate', () => {

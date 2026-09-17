@@ -11,7 +11,7 @@
  */
 import { readFileSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { dirname, join } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { SOURCES } from './lib/content-sources.mjs'
 
 const DEFAULT_DATA_DIR = join(dirname(fileURLToPath(import.meta.url)), '../src/data')
@@ -63,6 +63,6 @@ function main() {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main()
 }

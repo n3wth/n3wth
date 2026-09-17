@@ -1,15 +1,16 @@
 /**
  * Refreshes the committed content snapshots in src/data/*.json from their
- * live sources (garden feed/index, the npm registry, GitHub). This is the
- * ONLY place this repo makes those network calls — `npm run build` no
- * longer does, so the same commit always compiles to the same output
- * regardless of network state (see scripts/verify-content.mjs).
+ * live sources (garden feed/index, the npm registry). This is the ONLY
+ * place this repo makes those network calls — `npm run build` no longer
+ * does, so the same commit always compiles to the same output regardless
+ * of network state (see scripts/verify-content.mjs).
  *
- * Run manually, or on a schedule (see
- * .github/workflows/refresh-portfolio-content.yml if present). This script
- * is not part of `prebuild`, `build`, or `check`, and is not wired into
- * scripts/build.mjs or scripts/affected.mjs, so no task cache can skip it —
- * every run always contacts every selected source.
+ * Run manually, or on a schedule. This repo has no
+ * refresh-portfolio-content workflow yet; add one under .github/workflows
+ * if a schedule is needed. This script is not part of `prebuild`, `build`,
+ * or `check`, and is not wired into scripts/build.mjs or
+ * scripts/affected.mjs, so no task cache can skip it — every run always
+ * contacts every selected source.
  *
  * Unlike the old fetch-*.mjs scripts, a failed source does NOT keep quiet
  * and does NOT touch its files: it's reported in `failed` and the CLI exits
@@ -20,7 +21,7 @@
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { dirname, join } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { SOURCES, canonical } from './lib/content-sources.mjs'
 
 const DEFAULT_DATA_DIR = join(dirname(fileURLToPath(import.meta.url)), '../src/data')
@@ -89,12 +90,16 @@ export async function refreshContent({
 async function main() {
   const args = process.argv.slice(2)
   const onlyIndex = args.indexOf('--only')
-  const only = onlyIndex !== -1 ? args[onlyIndex + 1] : undefined
+  let only
+  if (onlyIndex !== -1) {
+    only = args[onlyIndex + 1]
+    if (!only) throw new Error('content:refresh: --only requires a source name')
+  }
 
   const result = await refreshContent({ only })
   if (result.failed.length > 0) process.exit(1)
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main()
 }

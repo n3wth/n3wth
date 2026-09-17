@@ -67,7 +67,7 @@ describe('verifyContent', () => {
   it('only reports validate errors for a source whose files all read cleanly', () => {
     dataDir = mkdtempSync(join(tmpdir(), 'content-verify-'))
     copyRealSnapshots(dataDir)
-    // garden-search.json missing should not crash validation of garden-notes/ui-meta/github-stats
+    // garden-search.json missing should not crash validation of garden-notes/ui-meta
     unlinkSync(join(dataDir, 'garden-search.json'))
 
     const errors = verifyContent({ dataDir })
