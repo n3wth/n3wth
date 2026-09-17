@@ -26,6 +26,7 @@ Use the existing system; do not introduce another visual scale or a new set of c
 - Forward native icon, size and interaction props through adapters instead of recreating their layout inside labels.
 - Preserve client boundaries in emitted package chunks used by Next server components. A source directive stripped by the bundler is insufficient.
 - Keep router and framework bindings in apps; share framework-neutral behavior where it avoids real duplication.
+- Keep a route's content and footer in the same loading boundary. Restore anchor positions after the route content mounts.
 - Follow each repo file's code conventions. Use the root lockfile and pinned workspace UI version; no extra package copies or framework upgrades for cosmetic fixes.
 
 ## Validation

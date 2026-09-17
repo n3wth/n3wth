@@ -84,7 +84,6 @@ body {
   line-height: 1.65;
 }
 
-/* Keep footer at the bottom while Suspense fallback={null} leaves main empty. */
 #root {
   min-height: 100dvh;
   display: flex;

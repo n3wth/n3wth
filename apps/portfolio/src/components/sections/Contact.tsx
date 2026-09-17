@@ -4,17 +4,23 @@ import { Button } from '@n3wth/ui/primitives'
 import { ConvergeLight, VisualBand } from '@n3wth/ui/visuals'
 import { siteConfig } from '../../data/content'
 import { PageHeader } from '@n3wth/ui/site'
+import { track } from '../../lib/analytics'
+
+const contactEventProps = { source_page: '/contact' } as const
 
 export function Contact() {
   const [copyStatus, setCopyStatus] = useState('')
 
   const copyEmail = async () => {
     setCopyStatus('')
+    track('contact_intent', { ...contactEventProps, method: 'copy' })
     try {
       await navigator.clipboard.writeText(siteConfig.email)
       setCopyStatus('Email copied.')
+      track('contact_copy_succeeded', { ...contactEventProps, method: 'copy' })
     } catch {
       setCopyStatus(`Could not copy. Select the address above: ${siteConfig.email}`)
+      track('contact_copy_failed', { ...contactEventProps, method: 'copy' })
     }
   }
 
@@ -38,6 +44,7 @@ export function Contact() {
                 variant="primary"
                 size="md"
                 href={`mailto:${siteConfig.email}`}
+                clickAction={() => track('contact_intent', { ...contactEventProps, method: 'email' })}
                 endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
               />
               <Button label="Copy email" variant="secondary" size="md" clickAction={copyEmail} />
@@ -47,6 +54,7 @@ export function Contact() {
                 size="md"
                 href={siteConfig.social.linkedin}
                 rel="me noopener"
+                clickAction={() => track('contact_intent', { ...contactEventProps, method: 'linkedin' })}
               />
             </>
           }

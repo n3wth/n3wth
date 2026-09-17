@@ -1,6 +1,54 @@
 import { test, expect } from '@playwright/test'
 import { expectSiteFoundation } from './site-foundation'
 
+test.beforeEach(async ({ page }) => {
+  await page.route(/https:\/\/(elephant\.n3wth\.com|[^/]*posthog\.(com|net))\//, route => route.abort())
+})
+
+test('lazy content and its footer appear together', async ({ page }) => {
+  let releasePage: () => void = () => {}
+  const pendingPage = new Promise<void>(resolve => { releasePage = resolve })
+  await page.route('**/assets/Thinking-*.js', async route => {
+    await pendingPage
+    await route.continue()
+  })
+  try {
+    await page.goto('/thinking', { waitUntil: 'domcontentloaded' })
+    await expect(page.locator('main[aria-busy="true"]')).toBeAttached()
+    await expect(page.locator('header').first()).toBeVisible()
+    await expect(page.locator('.n3wth-site-footer')).toHaveCount(0)
+  } finally {
+    releasePage()
+  }
+  await expect(page.locator('main[aria-busy="true"]')).toHaveCount(0)
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+  await expect(page).toHaveTitle('Thinking — Oliver Newth')
+  await expect(page.locator('.n3wth-site-footer')).toHaveCount(1)
+})
+
+test('the project action reaches its anchor after a cold route load', async ({ page }) => {
+  await page.route('**/assets/Work-*.js', async route => {
+    await new Promise(resolve => setTimeout(resolve, 600))
+    await route.continue()
+  })
+  await page.goto('/')
+  await page.getByRole('link', { name: 'Explore my projects', exact: true }).click()
+  await expect(page).toHaveURL(/\/work#building$/)
+  await expect(page.locator('#building')).toBeInViewport()
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+})
+
+test('missing-page recovery works with the keyboard', async ({ page }) => {
+  for (const [label, destination] of [['Go home', '/'], ['View work', '/work'], ['Contact', '/contact']]) {
+    await page.goto('/missing-portfolio-page')
+    const recovery = page.getByRole('link', { name: label, exact: true }).first()
+    await recovery.focus()
+    await page.keyboard.press('Enter')
+    await expect(page).toHaveURL(destination)
+    await expect(page.locator('main')).toBeVisible()
+  }
+})
+
 test('public navigation clears article and utility metadata', async ({ page }) => {
   for (const initial of ['/error', '/thinking/gtd-mini']) {
     await page.goto(initial)
