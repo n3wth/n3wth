@@ -87,6 +87,8 @@ I would consider shadcn where owning and changing component source is a central 
 
 Next: [shared UI examples](https://ui.n3wth.com/components) · [theme ownership](https://ui.n3wth.com/docs/theming) · [garden table of contents source](https://github.com/n3wth/n3wth/blob/main/apps/garden/src/components/TableOfContents.tsx)
 
+Follow-up: [Choose UI component ownership](/choose-ui-component-ownership) explains the maintenance decision behind the shared layer.
+
 ---
 
 *Oliver Newth · July 2026 · [garden.n3wth.com/astryx-vs-shadcn-vs-angular-material](https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material)*

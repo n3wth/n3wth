@@ -65,3 +65,18 @@ test('discovery feeds and note OG assets remain available', async ({ request }) 
     expect(response.headers()['content-type']).toContain(type)
   }
 })
+
+test('comparison leads to the ownership guide', async ({ page, request }, testInfo) => {
+  await page.goto('/astryx-vs-shadcn-vs-angular-material')
+  await page.getByRole('link', { name: 'Choose UI component ownership', exact: true }).click()
+  await expect(page).toHaveURL(/\/choose-ui-component-ownership$/)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Choose UI component ownership')
+  await expect(page.getByRole('heading', { name: 'Assign fixes and checks', exact: true })).toBeAttached()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
+  expect(await page.evaluate(() => window.scrollY)).toBe(0)
+  await page.screenshot({ path: testInfo.outputPath('ownership.png') })
+  await page.goBack()
+  await expect(page).toHaveURL(/\/astryx-vs-shadcn-vs-angular-material$/)
+  const sitemap = await request.get('/sitemap.xml')
+  expect(await sitemap.text()).toContain('https://garden.n3wth.com/choose-ui-component-ownership')
+})
