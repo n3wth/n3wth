@@ -5,35 +5,16 @@ import { RouterLink } from '../components/RouterLink'
 
 const TITLE = 'Elsa · SMS Messaging Consent'
 const DESCRIPTION =
-  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (424) 667-2214 and +1 (415) 360-0751."
+  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992."
 
-const PRIMARY_SMS = 'sms:+14246672214'
-const ALT_SMS = 'sms:+14153600751'
+const ELSA_SMS = 'sms:+14157180992'
+const ELSA_DISPLAY = '+1 (415) 718-0992'
 
 const FEATURES = [
   { title: 'Email', copy: 'Draft, triage, and follow up when Oliver asks.' },
   { title: 'Scheduling', copy: 'Coordinate times and reminders over SMS.' },
   { title: 'Purchases', copy: 'Run authorized buys and status updates.' },
   { title: 'Tasks', copy: 'Anything else Oliver greenlights for Elsa.' },
-] as const
-
-const NUMBERS = [
-  {
-    label: 'Main line',
-    display: '+1 (424) 667-2214',
-    href: PRIMARY_SMS,
-    copy: 'Preferred number. Same Elsa assistant. Tap to open Messages and send START, HELLO, or any first message.',
-    buttonLabel: 'Text Elsa',
-    variant: 'primary' as const,
-  },
-  {
-    label: 'Alternate line',
-    display: '+1 (415) 360-0751',
-    href: ALT_SMS,
-    copy: 'Use if the main line is busy or unavailable. Same Elsa assistant on either number.',
-    buttonLabel: 'Text alternate line',
-    variant: 'secondary' as const,
-  },
 ] as const
 
 function ElsaMark({ className }: { className?: string }) {
@@ -92,8 +73,7 @@ export default function Elsa() {
             A personal AI assistant in your texts.
           </SiteText>
           <div className="n3wth-site-actions elsa-hero-actions">
-            <Button label="+1 (424) 667-2214" variant="primary" size="md" href={PRIMARY_SMS} />
-            <Button label="+1 (415) 360-0751" variant="secondary" size="md" href={ALT_SMS} />
+            <Button label={ELSA_DISPLAY} variant="primary" size="md" href={ELSA_SMS} />
           </div>
         </div>
       </header>
@@ -123,49 +103,30 @@ export default function Elsa() {
           <SiteText>
             There is no website signup form, phone number field, or SMS consent checkbox on
             n3wth.com. Consumers opt in only by voluntarily texting{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (424) 667-2214</strong> or{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> after reading this
-            page. SMS is optional and is not required to use n3wth.com.
+            <strong style={{ color: 'var(--ink)' }}>{ELSA_DISPLAY}</strong> after reading this page.
+            SMS is optional and is not required to use n3wth.com.
           </SiteText>
+          <div className="flex flex-col gap-3">
+            <SiteHeading variant="item" level={3}>
+              <a href={ELSA_SMS} className="link-underline">
+                {ELSA_DISPLAY}
+              </a>
+            </SiteHeading>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
+              Tap to open Messages and send START, HELLO, or any first message.
+            </p>
+            <Button label="Text Elsa" variant="primary" size="md" href={ELSA_SMS} />
+          </div>
           <SiteText>
-            Elsa has two numbers for the same assistant. Prefer the main line; use the alternate if
-            the main line is busy or unavailable. Either number reaches Elsa.
-          </SiteText>
-          <ul className="grid items-stretch gap-x-10 gap-y-8 sm:grid-cols-2">
-            {NUMBERS.map((number) => (
-              <li key={number.display} className="flex h-full flex-col gap-3">
-                <SiteText variant="supporting" as="div" className="elsa-number-label">
-                  {number.label}
-                </SiteText>
-                <SiteHeading variant="item" level={3}>
-                  <a href={number.href} className="link-underline">
-                    {number.display}
-                  </a>
-                </SiteHeading>
-                <p className="grow text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-                  {number.copy}
-                </p>
-                <Button
-                  label={number.buttonLabel}
-                  variant={number.variant}
-                  size="md"
-                  href={number.href}
-                  className="mt-auto"
-                />
-              </li>
-            ))}
-          </ul>
-          <SiteText>
-            Or give Oliver / Elsa your mobile number and clearly agree to receive texts from either
-            Elsa SMS line for assistant and transactional purposes.
+            Or give Oliver / Elsa your mobile number and clearly agree to receive texts from the Elsa
+            SMS line for assistant and transactional purposes.
           </SiteText>
         </SiteDocSection>
 
         <SiteDocSection title="What you will get">
           <SiteText>
             By opting in, you consent to receive automated SMS (and MMS when needed) from{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (424) 667-2214</strong> or{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong>, including:
+            <strong style={{ color: 'var(--ink)' }}>{ELSA_DISPLAY}</strong>, including:
           </SiteText>
           <SiteDocList
             items={[
@@ -193,12 +154,8 @@ export default function Elsa() {
                 items={[
                   <>
                     Text{' '}
-                    <a href={PRIMARY_SMS} className="link-underline">
-                      +1 (424) 667-2214
-                    </a>{' '}
-                    or{' '}
-                    <a href={ALT_SMS} className="link-underline">
-                      +1 (415) 360-0751
+                    <a href={ELSA_SMS} className="link-underline">
+                      {ELSA_DISPLAY}
                     </a>
                   </>,
                   'Or clearly agree with Oliver / Elsa to receive assistant texts',
@@ -214,7 +171,7 @@ export default function Elsa() {
                 items={[
                   <>
                     Reply <strong style={{ color: 'var(--ink)' }}>STOP</strong> to any message from
-                    either Elsa number
+                    the Elsa number
                   </>,
                   <>
                     Or email{' '}
@@ -237,10 +194,10 @@ export default function Elsa() {
             required to browse the site, contact Oliver, or use other n3wth.com services.
           </SiteText>
           <SiteText>
-            By texting +1 (424) 667-2214 or +1 (415) 360-0751 or otherwise opting in, you agree to
-            receive automated SMS messages from Elsa (n3wth.com / Oliver Newth). Message frequency
-            varies. Message and data rates may apply. Reply STOP to opt out. Consent is not a
-            condition of purchase. Reply HELP for help. See{' '}
+            By texting {ELSA_DISPLAY} or otherwise opting in, you agree to receive automated SMS
+            messages from Elsa (n3wth.com / Oliver Newth). Message frequency varies. Message and data
+            rates may apply. Reply STOP to opt out. Consent is not a condition of purchase. Reply HELP
+            for help. See{' '}
             <RouterLink href="/privacy" className="link-underline">
               Privacy Policy
             </RouterLink>{' '}

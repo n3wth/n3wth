@@ -69,8 +69,7 @@ export default function Terms() {
 
         <SiteDocSection title="Elsa assistant SMS">
           <SiteText>
-            By texting <strong style={{ color: 'var(--ink)' }}>+1 (424) 667-2214</strong> or{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 360-0751</strong> or
+            By texting <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> or
             opting in to Elsa SMS, you agree to the messaging terms on{' '}
             <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>.
             Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe.
