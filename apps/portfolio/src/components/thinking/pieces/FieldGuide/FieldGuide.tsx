@@ -99,7 +99,7 @@ export default function FieldGuide() {
       if (!root || reduced) return
 
       // Opening line: masked line reveal, the one autonomous flourish that
-      // plays on load. autoSplit re-splits when Satoshi finishes loading.
+      // plays on load. autoSplit re-splits when Suisse Intl finishes loading.
       let anim: gsap.core.Tween | undefined
       const split = SplitText.create(openerRef.current, {
         type: 'lines',

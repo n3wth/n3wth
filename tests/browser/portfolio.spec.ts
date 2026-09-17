@@ -151,9 +151,8 @@ for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact'])
   })
 }
 
-test('home identity and primary navigation work before the scene settles', async ({ page }) => {
+test('home primary navigation works before the scene settles', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('.world-identity-name')).toHaveText('Oliver Newth')
   await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
   const navigation = page.locator('#primary-navigation')
   if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {

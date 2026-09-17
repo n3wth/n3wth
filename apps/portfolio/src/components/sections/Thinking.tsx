@@ -35,7 +35,7 @@ export function Thinking() {
             <div className="mb-8 md:mb-0">
               <h2
                 className="display text-[clamp(1.5rem,2.6vw,2.2rem)] max-w-[16ch]"
-                style={{ letterSpacing: '-0.025em', lineHeight: 1.08 }}
+                style={{ lineHeight: 1.08 }}
               >
                 {piece.title}
               </h2>

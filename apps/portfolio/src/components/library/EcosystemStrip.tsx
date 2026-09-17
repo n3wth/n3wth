@@ -32,7 +32,7 @@ export function EcosystemStrip() {
                 className="border-t pt-5"
                 style={{ borderColor: 'var(--rail-strong)' }}
               >
-                <h3 className="display text-lg" style={{ letterSpacing: '-0.025em', lineHeight: 1.1 }}>
+                <h3 className="display text-lg" style={{ lineHeight: 1.1 }}>
                   <RouterLink href={property.href} className="link-underline">
                     {property.name}
                   </RouterLink>

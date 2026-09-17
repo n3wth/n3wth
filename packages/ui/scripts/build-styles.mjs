@@ -9,7 +9,7 @@ export async function buildStyles() {
   const site = readFileSync('src/site/site.css', 'utf8')
     + readFileSync('src/site/reading-outline.css', 'utf8')
     + ['band', 'field', 'light'].map(name => readFileSync(`src/visuals/${name}.css`, 'utf8')).join('\n')
-  const canonicalFamilies = /font-family:\s*'(?:Satoshi|Geist Sans|Geist Mono)'\s*;/
+  const canonicalFamilies = /font-family:\s*'(?:Suisse Intl|Satoshi|Geist Sans|Geist Mono)'\s*;/
   const css = readFileSync('src/styles.css', 'utf8')
     .replace(/@import 'tailwindcss';\n/, '')
     .replace(/@import '@astryxdesign\/core\/astryx.css';\n\n/, '')

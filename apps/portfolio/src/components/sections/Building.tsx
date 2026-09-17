@@ -26,8 +26,7 @@ export function Building() {
   const others = projects.filter((project) => !selected.includes(project))
   return (
     <SiteSection id="building" aria-labelledby="selected-projects" className="site-content-gutter scroll-mt-24">
-      <SiteHeading id="selected-projects" className="mb-5">Selected independent projects</SiteHeading>
-      <p className="mb-8 max-w-xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>I build and operate these projects independently with coding agents. They are separate from my work at Google.</p>
+      <SiteHeading id="selected-projects" className="mb-8">Selected independent projects</SiteHeading>
       {selected.map((project) => <ProjectCard key={project.id} project={project} />)}
       <div className="border-t border-[var(--rail-strong)] pt-8">
         <SiteHeading className="mb-6">Other explorations</SiteHeading>

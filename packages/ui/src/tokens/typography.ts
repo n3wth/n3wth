@@ -1,7 +1,7 @@
 export const typography = {
   fontFamily: {
     display: "'Mona Sans', system-ui, sans-serif",
-    sans: "'Geist Sans', system-ui, sans-serif",
+    sans: "'Suisse Intl', system-ui, sans-serif",
     mono: "'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace",
   },
   fontSize: {

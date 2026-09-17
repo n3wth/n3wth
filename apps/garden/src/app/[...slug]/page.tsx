@@ -185,7 +185,7 @@ export default async function NotePage({ params }: PageProps) {
                   across the navigation instead of cutting. */}
               <div className="flex items-center justify-between gap-8 mb-2">
                 <h1
-                  className="font-display text-[2rem] md:text-[2.5rem] leading-[1.12] font-semibold tracking-[-0.025em] text-[var(--color-text-primary)]"
+                  className="font-display text-[2rem] md:text-[2.5rem] leading-[1.12] font-semibold text-[var(--color-text-primary)]"
                 >
                   {note.title}
                 </h1>

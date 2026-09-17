@@ -15,8 +15,8 @@ try {
   })
   await page.goto(url)
   await page.evaluate(async () => {
-    await document.fonts.load('600 39px Satoshi')
-    await document.fonts.load('400 16px "Geist Sans"')
+    await document.fonts.load('600 39px "Suisse Intl"')
+    await document.fonts.load('400 16px "Suisse Intl"')
     await document.fonts.ready
   })
   const actual = await page.evaluate(() => ({
@@ -30,9 +30,8 @@ try {
   assert.equal(actual.background, 'rgb(8, 9, 11)')
   assert.equal(actual.scheme, 'dark')
   assert.equal(actual.titleColor, 'rgb(242, 243, 245)')
-  assert.match(actual.titleFont, /Satoshi/)
-  assert(actual.loaded.includes('Satoshi'))
-  assert(actual.loaded.includes('Geist Sans'))
+  assert.match(actual.titleFont, /Suisse Intl/)
+  assert(actual.loaded.includes('Suisse Intl'))
   assert(fonts.length >= 2)
   assert(fonts.every(font => font.status === 200))
   assert.equal(actual.overflow, false)

@@ -49,17 +49,6 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
   }
 }
 
-function WorldOverlay() {
-  return (
-    <div className="world-identity-layer">
-      <div className="world-identity">
-        <p className="world-identity-name">{siteConfig.name}</p>
-        <p>AI product lead at Google. Independent projects and large-scale light art.</p>
-      </div>
-    </div>
-  )
-}
-
 export default function Home() {
   usePageMeta(siteConfig.title, siteConfig.description, {
     ogImage: '/og-image.png',
@@ -112,7 +101,6 @@ export default function Home() {
           <div className="night-field-loader-tint" />
         </>
       )}
-      <WorldOverlay />
     </section>
     <PageHeader className="site-content-gutter" title={<span data-nosnippet>I build new ways to work with AI.</span>} description={<>
       <span className="block mb-4">{siteConfig.name}</span>
