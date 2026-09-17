@@ -5,10 +5,10 @@ import { RouterLink } from '../components/RouterLink'
 
 const TITLE = 'Elsa · SMS Messaging Consent'
 const DESCRIPTION =
-  "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992."
+  "SMS messaging consent for Elsa, Oliver Grosvenor-Newth's personal AI assistant on n3wth.com at +1 (463) 258-8004."
 
-const ELSA_SMS = 'sms:+14157180992'
-const ELSA_DISPLAY = '+1 (415) 718-0992'
+const ELSA_SMS = 'sms:+14632588004'
+const ELSA_DISPLAY = '+1 (463) 258-8004'
 
 const FEATURES = [
   { title: 'Email', copy: 'Draft, triage, and follow up when Oliver asks.' },
@@ -81,7 +81,7 @@ export default function Elsa() {
       <SiteSection data-reveal className="site-content-gutter mx-auto max-w-3xl">
         <SiteDocSection>
           <SiteText variant="lede">
-            Elsa is the personal AI assistant product name for messaging operated by Oliver Newth
+            Elsa is the AI assistant service name for messaging operated by Oliver Grosvenor-Newth
             (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other
             tasks Oliver authorizes, over a simple text thread.
           </SiteText>
@@ -103,6 +103,8 @@ export default function Elsa() {
           <SiteText>
             There is no website signup form, phone number field, or SMS consent checkbox on
             n3wth.com. Consumers opt in only by voluntarily texting{' '}
+            <strong style={{ color: 'var(--ink)' }}>START</strong>,{' '}
+            <strong style={{ color: 'var(--ink)' }}>HELLO</strong>, or a first message to{' '}
             <strong style={{ color: 'var(--ink)' }}>{ELSA_DISPLAY}</strong> after reading this page.
             SMS is optional and is not required to use n3wth.com.
           </SiteText>
@@ -117,16 +119,13 @@ export default function Elsa() {
             </p>
             <Button label="Text Elsa" variant="primary" size="md" href={ELSA_SMS} />
           </div>
-          <SiteText>
-            Or give Oliver / Elsa your mobile number and clearly agree to receive texts from the Elsa
-            SMS line for assistant and transactional purposes.
-          </SiteText>
         </SiteDocSection>
 
         <SiteDocSection title="What you will get">
           <SiteText>
-            By opting in, you consent to receive automated SMS (and MMS when needed) from{' '}
-            <strong style={{ color: 'var(--ink)' }}>{ELSA_DISPLAY}</strong>, including:
+            By opting in, you consent to receive automated assistant and transactional SMS (and MMS
+            when needed) from <strong style={{ color: 'var(--ink)' }}>{ELSA_DISPLAY}</strong>,
+            including:
           </SiteText>
           <SiteDocList
             items={[
@@ -154,11 +153,13 @@ export default function Elsa() {
                 items={[
                   <>
                     Text{' '}
+                    <strong style={{ color: 'var(--ink)' }}>START</strong>,{' '}
+                    <strong style={{ color: 'var(--ink)' }}>HELLO</strong>, or a first message to{' '}
                     <a href={ELSA_SMS} className="link-underline">
                       {ELSA_DISPLAY}
-                    </a>
+                    </a>{' '}
+                    after reading the disclosures on this page
                   </>,
-                  'Or clearly agree with Oliver / Elsa to receive assistant texts',
                   'Consent is voluntary and is not a condition of purchase',
                 ]}
               />
@@ -194,10 +195,11 @@ export default function Elsa() {
             required to browse the site, contact Oliver, or use other n3wth.com services.
           </SiteText>
           <SiteText>
-            By texting {ELSA_DISPLAY} or otherwise opting in, you agree to receive automated SMS
-            messages from Elsa (n3wth.com / Oliver Newth). Message frequency varies. Message and data
-            rates may apply. Reply STOP to opt out. Consent is not a condition of purchase. Reply HELP
-            for help. See{' '}
+            By texting START, HELLO, or a first message to {ELSA_DISPLAY} after reading this page,
+            you agree to receive automated assistant and transactional SMS messages from Elsa
+            (n3wth.com / Oliver Grosvenor-Newth, sole proprietor). Message frequency varies. Message
+            and data rates may apply. Reply STOP to opt out. Consent is not a condition of purchase.
+            Reply HELP for help. See{' '}
             <RouterLink href="/privacy" className="link-underline">
               Privacy Policy
             </RouterLink>{' '}

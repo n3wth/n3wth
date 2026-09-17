@@ -63,15 +63,15 @@ export default function Privacy() {
 
         <SiteDocSection title="Elsa assistant SMS">
           <SiteText>
-            When you text or otherwise opt in to Elsa at{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong>, your phone number
+            When you opt in to Elsa by texting START, HELLO, or a first message to{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (463) 258-8004</strong>, your phone number
             and related SMS content/metadata may be collected to send and receive assistant-related
             SMS (conversations, verification codes, transactional notices). Your phone number is not
             sold or shared with third parties or affiliates for their marketing, and is not used for
-            cross-context behavioral advertising. Telnyx processes SMS for +1 415 718-0992. Reply STOP to
+            cross-context behavioral advertising. A messaging service provider processes SMS for +1 463 258-8004 on our behalf. Reply STOP to
             opt out. See{' '}
             <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>{' '}
-            for full SMS consent details. Message frequency varies. Message and data rates may apply. Consent is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other site services. The messaging program is operated by Oliver Newth (sole proprietor); Elsa is the assistant product name.
+            for full SMS consent details. Message frequency varies. Message and data rates may apply. Consent is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other site services. The messaging program is operated by Oliver Grosvenor-Newth (sole proprietor); Elsa is the AI assistant service name.
           </SiteText>
         </SiteDocSection>
 
@@ -98,17 +98,8 @@ export default function Privacy() {
             for more information.
           </SiteText>
           <SiteText>
-            Telnyx processes SMS for the Elsa assistant line at +1 415 718-0992 as a service provider
-            / processor on our behalf. See{' '}
-            <a
-              href="https://telnyx.com/privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-underline"
-            >
-              Telnyx&apos;s Privacy Policy
-            </a>
-            .
+            Messaging service providers process SMS for the Elsa assistant line at +1 463 258-8004
+            as service providers / processors on our behalf.
           </SiteText>
           <SiteText>
             Twilio processes SMS for the They Won&apos;t Shut Up hotline (+1 855 580-0508) as a
@@ -135,7 +126,7 @@ export default function Privacy() {
 
         <SiteDocSection title="SMS data retention">
           <SiteText>
-            Phone numbers and SMS conversation content or metadata related to Elsa (+1 415 718-0992)
+            Phone numbers and SMS conversation content or metadata related to Elsa (+1 463 258-8004)
             and the They Won&apos;t Shut Up hotline (+1 855 580-0508) are retained for up to 24
             months, unless a longer period is needed for security, disputes, or legal obligations.
             On a verified STOP or deletion request, we delete or anonymize that data sooner when
