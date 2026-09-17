@@ -1,8 +1,9 @@
 /* Package URLs survive both Tailwind imports and direct CSS imports. */
-@font-face { font-family: 'Geist Sans'; src: url('@n3wth/ui/fonts/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Geist Sans'; src: url('@n3wth/ui/fonts/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Geist Sans'; src: url('@n3wth/ui/fonts/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Satoshi'; src: url('@n3wth/ui/fonts/Satoshi-Variable.woff2') format('woff2'); font-weight: 400 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Suisse Intl'; src: url('@n3wth/ui/fonts/SuisseIntl-Book.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Suisse Intl'; src: url('@n3wth/ui/fonts/SuisseIntl-BookItalic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Suisse Intl'; src: url('@n3wth/ui/fonts/SuisseIntl-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Suisse Intl'; src: url('@n3wth/ui/fonts/SuisseIntl-Semibold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Suisse Intl'; src: url('@n3wth/ui/fonts/SuisseIntl-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Geist Mono'; src: url('@n3wth/ui/fonts/GeistMono-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Geist Mono'; src: url('@n3wth/ui/fonts/GeistMono-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
 

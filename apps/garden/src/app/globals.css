@@ -9,39 +9,15 @@
 /* ============================================================
    Astryx with the shared @n3wth/ui/site theme
    — the canonical @n3wth/ui wireframe palette: near-black
-   canvas, hairline rails, grayscale ink, Geist type.
+   canvas, hairline rails, grayscale ink, Suisse Intl type.
    Bridge Astryx font tokens into Tailwind font utilities so
    `font-display` / `font-mono` classes keep working.
    ============================================================ */
 
-/* Fonts are supplied by @n3wth/ui/site.css. */
-
-/* Source Serif 4 — the reading face, and only that. Note bodies are the
-   one long-form surface here, and a text face earns its keep on them in
-   a way it never would in the UI. Chosen for low stroke contrast and an
-   optical-size axis: high-contrast serifs go spindly on a near-black
-   canvas. Interface, nav, and metadata stay Geist; headings stay
-   Satoshi. Variable, so the whole range is two files. */
-@font-face {
-  font-family: 'Source Serif 4';
-  src: url('/fonts/SourceSerif4-Variable.woff2') format('woff2-variations');
-  font-weight: 200 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Source Serif 4';
-  src: url('/fonts/SourceSerif4-VariableItalic.woff2') format('woff2-variations');
-  font-weight: 200 900;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Display voice: Satoshi carries headings (matches n3wth.com); Geist
-   stays on UI and nav; Source Serif 4 carries note bodies. The heading
-   family lives in the shared Astryx theme — declaring it here could
-   never win, because the generated theme sets it on a closer scope. */
+/* Fonts are supplied by @n3wth/ui/site.css: Suisse Intl for headings,
+   note bodies and interface, Geist Mono for code. The families live in
+   the shared Astryx theme — declaring them here could never win,
+   because the generated theme sets them on a closer scope. */
 
 /* Balanced line wrapping: headings never break into lopsided lines, and
    paragraphs never orphan a single word onto the last line. */

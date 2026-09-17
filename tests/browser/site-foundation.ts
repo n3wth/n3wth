@@ -5,7 +5,7 @@ export async function expectSiteFoundation(page: Page) {
   await expect(page.locator('html')).toHaveAttribute('data-astryx-theme', 'n3wth')
   const heading = page.locator('.n3wth-site-heading--page').first()
   await expect(heading).toBeVisible()
-  await expect(heading).toHaveCSS('font-family', /Satoshi/)
+  await expect(heading).toHaveCSS('font-family', /Suisse Intl/)
   const sectionSpacing = (page.viewportSize()?.width ?? 1440) >= 768 ? '64px' : '48px'
   await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-top', sectionSpacing)
   await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-bottom', sectionSpacing)
@@ -15,8 +15,8 @@ export async function expectSiteFoundation(page: Page) {
     await expect(section).toHaveCSS('padding-bottom', sectionSpacing)
   }
   const fonts = await page.evaluate(async () => {
-    const headingFonts = await document.fonts.load('600 24px "Satoshi"')
-    const bodyFonts = await document.fonts.load('400 16px "Geist Sans"')
+    const headingFonts = await document.fonts.load('600 24px "Suisse Intl"')
+    const bodyFonts = await document.fonts.load('400 16px "Suisse Intl"')
     return [headingFonts.length, bodyFonts.length]
   })
   expect(fonts.every(count => count > 0)).toBe(true)

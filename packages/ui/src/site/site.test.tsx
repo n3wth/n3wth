@@ -41,8 +41,7 @@ describe('shared site composition', () => {
 
   it('generates the canonical theme with the shared brand fonts and neutral palette', () => {
     const { component } = generateThemeCSS(n3wthTheme)
-    expect(component).toContain('Satoshi')
-    expect(component).toContain('Geist Sans')
+    expect(component).toContain('Suisse Intl')
     expect(component).toContain('#08090b')
     expect(component).toContain('#f2f3f5')
   })
