@@ -46,3 +46,40 @@ A fresh filtered install now adds 873 packages versus 1,101 before: 228 fewer (2
 An incremental install over an older restored cache can retain tools belonging to unselected workspaces. Clear the Vercel build cache once on the next authorized deployment to get the lean dependency tree; normal subsequent deployments can reuse that cache. No deployment or cache reset is performed by this source change.
 
 Cleanup validation passed: fresh root `npm ci`, full `npm run check`, 132 browser checks with one existing skip, and the non-writing portfolio `og:cards -- --check` command. The asset command reported small pixel differences against the committed images (0.08%) but generated no files; this cleanup changes no image-generation code or assets.
+
+## Extending the deployment path to every app
+
+Measured against main at `fd02504` on September 16, 2026, using Node 24.21.0 and npm 11.19.1 in a clean worktree.
+
+Portfolio alone used the filtered install and the UI artifact cache. The other five apps ran `cd ../.. && npx --yes npm@11.19.1 ci`, which installs every workspace in the repository and deletes the `node_modules` Vercel restored from its build cache before installing. Counting each app's transitive closure in the lockfile shows what that costs: a full install resolves 1,924 packages, while no single app needs more than 1,041.
+
+| App | Packages needed | Share of the full install |
+| --- | ---: | ---: |
+| ui-docs | 749 | 39% |
+| portfolio | 861 | 45% |
+| r3-web | 918 | 48% |
+| garden | 959 | 50% |
+| skills | 1,024 | 53% |
+| kit | 1,041 | 54% |
+
+### Changes
+
+- `scripts/vercel-install.mjs` takes the workspace name. It resolves the app and the workspace packages it builds from through `orderSelectedWorkspaces`, the same graph the affected checker uses, so a new internal dependency is picked up without editing the install script. All six apps now install this way, and the lockfile-drift guard is unchanged.
+- All six apps pass `--cache-ui`, so a deployment whose UI inputs are unchanged restores the verified artifact instead of rebuilding the library.
+- `scripts/create-site.mjs` generates both settings, so a new site does not start on the full-install path.
+- Garden builds with Turbopack. Its webpack configuration existed to alias `@` and to redirect the `./@n3wth/ui/fonts` request that webpack's CSS loader produces. Turbopack reads the `@/*` path from tsconfig and resolves the font URL through the UI package's `./fonts/*` export, which is why kit, skills and r3 already build with Turbopack and declare no font alias.
+- Garden no longer sets `productionBrowserSourceMaps`. It wraps `withAxiom` only, so nothing consumed the published maps.
+
+### Observations
+
+Garden, 963 static pages, one observation each, excluding install:
+
+| Variant | Build | `.next` size | Browser source maps |
+| --- | ---: | ---: | ---: |
+| Baseline: webpack, source maps, UI rebuilt | 24s | 831 MB | 35 |
+| Turbopack, no source maps, UI rebuilt | 13s | 312 MB | 0 |
+| Turbopack, no source maps, UI cache restored | 10s | 312 MB | 0 |
+
+Every emitted font is content-hashed into `.next/static/media` and referenced from the built CSS; no `@n3wth/ui/fonts` specifier survives unresolved into the output.
+
+These are local single-run observations. No Vercel deployment was measured: the CLI token was invalid and the Vercel connector was not authorized during this work. The package counts are lockfile arithmetic, not measured install time. Confirm install duration, build duration and cache hit rate on the first authorized preview for each project, and check whether any project overrides its install or build command in the dashboard, since a dashboard override shadows `vercel.json`.

@@ -3,7 +3,7 @@
     "deploymentEnabled": true
   },
   "ignoreCommand": "node ../../scripts/vercel-ignore.mjs @n3wth/portfolio",
-  "installCommand": "node ../../scripts/vercel-install.mjs",
+  "installCommand": "node ../../scripts/vercel-install.mjs @n3wth/portfolio",
   "buildCommand": "cd ../.. && npm run build:portfolio -- --cache-ui",
   "outputDirectory": "dist",
   "redirects": [

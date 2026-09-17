@@ -9,6 +9,7 @@ import { useTheme } from '@n3wth/ui'
 import { DocsSidebar } from './DocsSidebar'
 import { SystemHome } from './SystemHome'
 import { TokensSection } from './sections/TokensSection'
+import { TypographySection } from './sections/TypographySection'
 import { AtomsSection } from './sections/AtomsSection'
 import { MoleculesSection } from './sections/MoleculesSection'
 import { OrganismsSection } from './sections/OrganismsSection'
@@ -19,6 +20,7 @@ import { NotFound } from './NotFound'
 
 const sidebarItems = [
   { id: 'tokens', label: 'Design Tokens', icon: 'grid' as const },
+  { id: 'typography', label: 'Typography', icon: 'code' as const },
   { id: 'atoms', label: 'Controls', icon: 'grid' as const },
   { id: 'molecules', label: 'Compositions', icon: 'code' as const },
   { id: 'organisms', label: 'Site patterns', icon: 'list' as const },
@@ -94,6 +96,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
           {/* Content */}
           <main id="main-content" tabIndex={-1} className="min-w-0">
             <TokensSection />
+            <TypographySection />
             <AtomsSection />
             <MoleculesSection theme={theme} onThemeToggle={toggleTheme} />
             <OrganismsSection />

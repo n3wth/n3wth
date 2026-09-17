@@ -45,8 +45,9 @@ export function AtomsSection() {
 
   return (
     <DemoSection id="atoms" title="Controls" description="Interactive examples of the existing UI compatibility API. Native Astryx props are available through @n3wth/ui/primitives.">
+      <div className="docs-demo-grid">
       {/* Buttons */}
-      <DemoBlock title="Button">
+      <DemoBlock title="Button" className="docs-demo-paired">
         <div className="space-y-6">
           {/* Controls */}
           <div className="flex flex-wrap gap-2 items-center">
@@ -82,7 +83,7 @@ export function AtomsSection() {
           </div>
 
           {/* Preview */}
-          <div className="p-8 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] flex flex-wrap items-center justify-center gap-4">
+          <div className="docs-demo-preview">
             <Button variant={btnVariant} size={btnSize} isLoading={btnLoading}>
               Button
             </Button>
@@ -101,7 +102,7 @@ export function AtomsSection() {
       </DemoBlock>
 
       {/* Badges */}
-      <DemoBlock title="Badge">
+      <DemoBlock title="Badge" className="docs-demo-paired">
         <div className="space-y-6">
           {/* Controls */}
           <div className="flex flex-wrap gap-2 items-center">
@@ -130,7 +131,7 @@ export function AtomsSection() {
           </div>
 
           {/* Preview */}
-          <div className="p-8 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] flex flex-wrap gap-3 items-center justify-center">
+          <div className="docs-demo-preview">
             <Badge variant={badgeVariant} size={badgeSize}>
               {badgeVariant === 'default' ? 'Default' : badgeVariant.charAt(0).toUpperCase() + badgeVariant.slice(1)}
             </Badge>
@@ -145,7 +146,7 @@ export function AtomsSection() {
       </DemoBlock>
 
       {/* Input */}
-      <DemoBlock title="Input">
+      <DemoBlock title="Input" className="docs-demo-wide">
         <div className="space-y-6">
           {/* Controls */}
           <div className="flex flex-wrap gap-2 items-center">
@@ -188,12 +189,13 @@ export function AtomsSection() {
           </div>
 
           {/* Preview */}
-          <div className="p-8 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] flex items-center justify-center">
+          <div className="docs-demo-preview">
             <div className="w-full max-w-sm">
               <Input
                 variant={inputVariant}
                 inputSize={inputSize}
                 placeholder={inputError ? 'Invalid input' : 'Type something...'}
+                aria-label="Example input"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 leftIcon={inputIcon ? <Icon name="search" size="sm" /> : undefined}
@@ -211,7 +213,7 @@ export function AtomsSection() {
       </DemoBlock>
 
       {/* Icons */}
-      <DemoBlock title="Icon (Iconoir)">
+      <DemoBlock title="Icon (Iconoir)" className="docs-demo-wide">
         <div className="space-y-6">
           {/* Controls */}
           <div className="flex flex-wrap gap-2 items-center">
@@ -269,7 +271,7 @@ export function AtomsSection() {
       </DemoBlock>
 
       {/* CodeBlock */}
-      <DemoBlock title="CodeBlock">
+      <DemoBlock title="CodeBlock" className="docs-demo-wide">
         <div className="space-y-4">
           <CodeSnippet showLineNumbers code={`import { Nav, Hero, Button, useTheme } from '@n3wth/ui'
 import '@n3wth/ui/styles'
@@ -295,6 +297,7 @@ function App() {
 npm install @n3wth/ui`} />
         </div>
       </DemoBlock>
+      </div>
     </DemoSection>
   )
 }

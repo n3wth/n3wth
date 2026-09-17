@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
+import { orderSelectedWorkspaces, readWorkspaces } from './affected.mjs'
 
 // npm install preserves Vercel's restored node_modules. CI still uses npm ci.
 // Fail closed if npm needs to change the committed dependency resolution.
@@ -16,13 +17,23 @@ function dependencyResolution(bytes) {
   return JSON.stringify(lock)
 }
 
-export function installPortfolio(root, spawn = spawnSync) {
+// A deployment needs its app plus the workspace packages that app builds from.
+// Every other app's dependencies, and root-only browser and asset-generation
+// tooling, stay out of the tree.
+export function deploymentWorkspaces(root, workspace, lockfile) {
+  const workspaces = readWorkspaces(root)
+  if (!workspaces.some(item => item.name === workspace)) throw new Error(`Unknown workspace ${workspace}`)
+  return orderSelectedWorkspaces(workspaces, new Set([workspace]), lockfile)
+}
+
+export function installWorkspace(root, workspace, spawn = spawnSync) {
   const lockPath = resolve(root, 'package-lock.json')
   const before = readFileSync(lockPath)
+  const selected = deploymentWorkspaces(root, workspace, JSON.parse(before))
   const result = spawn('npx', [
     '--prefer-offline', '--yes', 'npm@11.19.1', 'install',
-    '--workspace=@n3wth/portfolio', '--workspace=@n3wth/ui',
-    '--workspace=@n3wth/site-config', '--include-workspace-root=false',
+    ...selected.map(name => `--workspace=${name}`),
+    '--include-workspace-root=false',
     '--include=dev', '--prefer-offline', '--no-audit', '--no-fund',
   ], { cwd: root, stdio: 'inherit' })
   if (result.error) throw result.error
@@ -35,5 +46,7 @@ export function installPortfolio(root, spawn = spawnSync) {
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  installPortfolio(fileURLToPath(new URL('../', import.meta.url)))
+  const workspace = process.argv[2]
+  if (!workspace) throw new Error('vercel-install requires a workspace name')
+  installWorkspace(fileURLToPath(new URL('../', import.meta.url)), workspace)
 }

@@ -4,6 +4,25 @@
 @source "../../../packages/ui/dist/**/*.js";
 @source "../demo/**/*.tsx";
 
+/* Documentation-owned layouts; shared controls keep their own styles. */
+.docs-swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 24px 16px; list-style: none; padding: 0; margin: 0; }
+.docs-swatches li { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.docs-swatch { height: 64px; border: 1px solid var(--color-border-emphasized); border-radius: 8px; }
+.docs-swatches code { font-size: var(--font-size-xs); color: var(--color-text-secondary); overflow-wrap: anywhere; }
+.docs-type-grid, .docs-demo-grid { display: grid; gap: 32px; }
+.docs-type-specimen { display: flex; flex-direction: column; gap: 24px; min-width: 0; padding-block: 24px; border-top: 1px solid var(--color-border); }
+.docs-type-specimen > * { min-width: 0; }
+.docs-demo-grid > div { min-width: 0; margin-bottom: 0; }
+.docs-demo-preview { min-height: 160px; padding: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px; background: var(--color-background-surface); border: 1px solid var(--color-border); border-radius: 8px; }
+#atoms, #typography { container-type: inline-size; }
+@container (min-width: 760px) {
+  .docs-demo-grid, .docs-type-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .docs-demo-wide { grid-column: 1 / -1; }
+  .docs-demo-paired { display: grid; grid-template-rows: subgrid; grid-row: span 4; }
+  .docs-demo-paired > div:last-child { display: contents; }
+  .docs-demo-paired > div:first-child, .docs-demo-paired > div:last-child > * { margin: 0; }
+}
+
 /* Existing component examples use legacy names. Resolve them through the
    shared Astryx theme so the documentation and examples switch together. */
 [data-astryx-theme='n3wth'] {
@@ -288,6 +307,22 @@ html[data-astryx-theme='n3wth'] body {
 }
 
 /* Architecture guide uses the shared type scale and flat section rhythm. */
+.system-home-header { max-width: 760px; }
+.system-garden { margin-top: -32px; margin-bottom: 48px; }
+.system-garden-canvas { width: 100%; height: clamp(280px, 38vw, 440px); touch-action: pan-y; }
+.system-garden-canvas canvas { display: block; width: 100%; height: 100%; }
+.system-garden-paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; text-align: center; }
+.system-garden-paths a { display: flex; flex-direction: column; gap: 8px; padding: 12px 0; text-decoration: none; color: var(--color-text-primary); }
+.system-garden-paths a:hover span { text-decoration: underline; text-underline-offset: 4px; }
+.system-garden-paths small { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.system-section-intro { display: grid; gap: 12px; max-width: 60ch; margin-bottom: 32px; }
+.system-docs-home { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
+.system-source-note { margin-top: 32px; max-width: 65ch; }
+@media (max-width: 599px) {
+  .system-garden { margin-top: -16px; }
+  .system-garden-paths { gap: 8px; }
+  .system-garden-paths small { display: none; }
+}
 .system-intro { max-width: 68ch; margin-bottom: 24px; }
 .system-layers { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 24px; }
 .system-docs { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 16px; }

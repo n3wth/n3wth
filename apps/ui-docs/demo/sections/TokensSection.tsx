@@ -1,99 +1,51 @@
+import { SiteText } from '@n3wth/ui/site'
 import { DemoSection, DemoBlock } from './DemoSection'
 import { CodeSnippet } from './CodeSnippet'
 
-const colorTokens = [
-  { name: '--color-bg', value: 'var(--color-bg)', label: 'Background' },
-  { name: '--color-bg-secondary', value: 'var(--color-bg-secondary)', label: 'Background Secondary' },
-  { name: '--color-white', value: 'var(--color-white)', label: 'White (foreground)' },
-  { name: '--color-grey-100', value: 'var(--color-grey-100)', label: 'Grey 100' },
-  { name: '--color-grey-200', value: 'var(--color-grey-200)', label: 'Grey 200' },
-  { name: '--color-grey-300', value: 'var(--color-grey-300)', label: 'Grey 300' },
-  { name: '--color-grey-400', value: 'var(--color-grey-400)', label: 'Grey 400' },
-  { name: '--color-grey-600', value: 'var(--color-grey-600)', label: 'Grey 600' },
-  { name: '--color-grey-800', value: 'var(--color-grey-800)', label: 'Grey 800' },
-]
-
-const accentTokens = [
-  { name: '--color-sage', value: 'var(--color-sage)', label: 'Sage' },
-  { name: '--color-coral', value: 'var(--color-coral)', label: 'Coral' },
-  { name: '--color-mint', value: 'var(--color-mint)', label: 'Mint' },
-  { name: '--color-gold', value: 'var(--color-gold)', label: 'Gold' },
-]
-
-const glassTokens = [
-  { name: '--glass-bg', value: 'var(--glass-bg)', label: 'Glass Background' },
-  { name: '--glass-border', value: 'var(--glass-border)', label: 'Glass Border' },
-  { name: '--glass-highlight', value: 'var(--glass-highlight)', label: 'Glass Highlight' },
-]
-
-function ColorSwatch({ name, value, label }: { name: string; value: string; label: string }) {
-  return (
-    <div className="flex items-center gap-3">
-      <div
-        className="w-10 h-10 rounded-lg border border-[var(--glass-border)] shrink-0"
-        style={{ backgroundColor: value }}
-      />
-      <div className="min-w-0">
-        <div className="text-xs font-medium text-[var(--color-white)] truncate">{label}</div>
-        <div className="text-[10px] font-mono text-[var(--color-grey-400)] truncate">{name}</div>
-      </div>
-    </div>
-  )
-}
+export const tokenGroups = [
+  { title: 'Surfaces', tokens: [
+    ['--color-background-body', 'Canvas'],
+    ['--color-background-surface', 'Surface'],
+    ['--color-background-muted', 'Muted surface'],
+    ['--color-background-popover', 'Popover'],
+  ] },
+  { title: 'Text and borders', tokens: [
+    ['--color-text-primary', 'Primary text'],
+    ['--color-text-secondary', 'Secondary text'],
+    ['--color-text-disabled', 'Disabled text'],
+    ['--color-border', 'Border'],
+    ['--color-border-emphasized', 'Emphasized border'],
+  ] },
+  { title: 'Status', tokens: [
+    ['--color-success', 'Success'],
+    ['--color-warning', 'Warning'],
+    ['--color-error', 'Error'],
+  ] },
+] as const
 
 export function TokensSection() {
   return (
-    <DemoSection id="tokens" title="Design Tokens" description="Compatibility token names resolved through the shared Newth theme. Prefer semantic Astryx tokens for new site-specific styles.">
-      <DemoBlock title="Core Colors">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {colorTokens.map((token) => (
-            <ColorSwatch key={token.name} {...token} />
-          ))}
-        </div>
-      </DemoBlock>
-
-      <DemoBlock title="Category Colors">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {accentTokens.map((token) => (
-            <ColorSwatch key={token.name} {...token} />
-          ))}
-        </div>
-      </DemoBlock>
-
-      <DemoBlock title="Legacy surface aliases">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-          {glassTokens.map((token) => (
-            <ColorSwatch key={token.name} {...token} />
-          ))}
-        </div>
-        <div className="flex gap-4 mt-6">
-          <div className="flex-1 p-6 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] ">
-            <p className="text-sm text-[var(--color-grey-400)]">Compatibility surface</p>
-          </div>
-          <div className="flex-1 p-6 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-highlight)]">
-            <p className="text-sm text-[var(--color-grey-400)]">Compatibility border</p>
-          </div>
-        </div>
-      </DemoBlock>
-
-      <DemoBlock title="Typography">
-        <div className="space-y-3">
-          <p className="font-display text-3xl font-semibold tracking-tight text-[var(--color-white)]">Satoshi (Display)</p>
-          <p className="font-sans text-base text-[var(--color-white)]">Geist Sans (Body/UI)</p>
-          <p className="font-mono text-sm text-[var(--color-grey-400)]">Geist Mono (Code)</p>
-        </div>
-      </DemoBlock>
-
-      <DemoBlock title="Usage">
-        <CodeSnippet code={`/* CSS custom properties */
-.my-component {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  color: var(--color-white);
-}
-
-/* Tailwind classes via preset */
-<div className="bg-glass-bg border-glass-border text-white" />`} />
+    <DemoSection id="tokens" title="Design tokens" description="Choose colours by purpose. These swatches use the live shared theme and change with light and dark mode.">
+      {tokenGroups.map(group => (
+        <DemoBlock title={group.title} key={group.title}>
+          <ul className="docs-swatches">
+            {group.tokens.map(([token, label]) => (
+              <li key={token}>
+                <div className="docs-swatch" style={{ backgroundColor: `var(${token})` }} aria-hidden="true" />
+                <SiteText variant="supporting">{label}</SiteText>
+                <code>{token}</code>
+              </li>
+            ))}
+          </ul>
+        </DemoBlock>
+      ))}
+      <DemoBlock title="Use semantic tokens">
+        <CodeSnippet language="css" code={`.example {
+  background: var(--color-background-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}`} />
+        <div className="mt-4"><SiteText variant="supporting">Existing aliases such as --color-bg and --glass-border remain available for compatibility. Use semantic names in new code.</SiteText></div>
       </DemoBlock>
     </DemoSection>
   )
