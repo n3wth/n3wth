@@ -124,7 +124,7 @@ const routes = [
     path: 'elsa',
     title: 'Elsa · SMS Messaging Consent',
     description:
-      "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (424) 667-2214 and +1 (415) 360-0751.",
+      "SMS messaging consent for Elsa, Oliver Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992.",
     ogImage: '/og-image.png',
     body: `
       <div class="elsa-hero">
@@ -136,7 +136,7 @@ const routes = [
         </svg>
         <h1>Elsa</h1>
         <p>A personal AI assistant in your texts.</p>
-        <p><a href="sms:+14246672214">+1 (424) 667-2214</a> · <a href="sms:+14153600751">+1 (415) 360-0751</a></p>
+        <p><a href="sms:+14157180992">+1 (415) 718-0992</a></p>
       </div>
       <p>Elsa is the personal AI assistant product name for messaging operated by Oliver Newth (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other tasks Oliver authorizes, over a simple text thread.</p>
       <ul>
@@ -146,16 +146,14 @@ const routes = [
         <li><strong>Tasks</strong>: Anything else Oliver greenlights for Elsa.</li>
       </ul>
       <h2>How to text her</h2>
-      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>+1 (424) 667-2214</strong> or <strong>+1 (415) 360-0751</strong> after reading this page. SMS is optional and is not required to use n3wth.com.</p>
-      <p>Elsa has two numbers for the same assistant. Prefer the main line; use the alternate if the main line is busy or unavailable. Either number reaches Elsa.</p>
+      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>+1 (415) 718-0992</strong> after reading this page. SMS is optional and is not required to use n3wth.com.</p>
       <ul>
-        <li>Main line: <a href="sms:+14246672214">+1 (424) 667-2214</a>. Preferred number. Same Elsa assistant. Send START, HELLO, or any first message.</li>
-        <li>Alternate line: <a href="sms:+14153600751">+1 (415) 360-0751</a>. Use if the main line is busy or unavailable. Same Elsa assistant on either number.</li>
+        <li><a href="sms:+14157180992">+1 (415) 718-0992</a>. Send START, HELLO, or any first message.</li>
       </ul>
-      <p>Or give Oliver / Elsa your mobile number and clearly agree to receive texts from either Elsa SMS line for assistant and transactional purposes.</p>
+      <p>Or give Oliver / Elsa your mobile number and clearly agree to receive texts from the Elsa SMS line for assistant and transactional purposes.</p>
       <h2>What you will get</h2>
-      <p>By opting in, you consent to receive automated SMS (and MMS when needed) from +1 (424) 667-2214 or +1 (415) 360-0751, including two-way assistant conversations, account and verification codes when Elsa is completing a task for Oliver that requires SMS OTP, transactional notices about tasks Elsa is running, and occasional service notices about the Elsa / n3wth assistant line. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
-      <p>Opt in by texting +1 (424) 667-2214 or +1 (415) 360-0751, or by clearly agreeing with Oliver / Elsa to receive assistant texts. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+      <p>By opting in, you consent to receive automated SMS (and MMS when needed) from +1 (415) 718-0992, including two-way assistant conversations, account and verification codes when Elsa is completing a task for Oliver that requires SMS OTP, transactional notices about tasks Elsa is running, and occasional service notices about the Elsa / n3wth assistant line. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
+      <p>Opt in by texting +1 (415) 718-0992, or by clearly agreeing with Oliver / Elsa to receive assistant texts. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <h2>Privacy</h2>
       <p>Your phone number is used only to deliver Elsa / n3wth assistant-related SMS and to operate conversations you start. We do not sell or share mobile numbers with third parties or affiliates for their marketing. See the full <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <p>Last updated September 2026</p>`,
@@ -174,13 +172,13 @@ const routes = [
       <h2>They Won't Shut Up Hotline</h2>
       <p>Calls to +1 (855) 580-0508 may collect your number for follow-up SMS. Numbers are not sold or shared for third-party marketing. Reply STOP to opt out. See <a href="/consent">SMS Consent</a>.</p>
       <h2>Elsa assistant SMS</h2>
-      <p>Opting in at +1 (424) 667-2214 or +1 (415) 360-0751 collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Reply STOP. Consent is not a condition of purchase. SMS is optional and is not required to use n3wth.com. See <a href="/elsa">/elsa</a>.</p>
+      <p>Opting in at +1 (415) 718-0992 collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Telnyx processes SMS for +1 415 718-0992. Reply STOP. Consent is not a condition of purchase. SMS is optional and is not required to use n3wth.com. See <a href="/elsa">/elsa</a>.</p>
       <h2>SMS data retention</h2>
       <p>SMS data retained up to 24 months unless needed longer for security, disputes, or law; deleted/anonymized sooner on verified STOP/deletion when feasible.</p>
       <h2>California privacy rights (CCPA/CPRA)</h2>
       <p>California residents may know/access, delete, and correct personal information. n3wth.com does not sell or share for cross-context behavioral advertising. Email hey@n3wth.com.</p>
       <h2>Third-Party Services</h2>
-      <p>Hosted by Vercel. Messaging providers process SMS for Elsa (+1 424 667-2214 main; +1 415 360-0751 alternate). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
+      <p>Hosted by Vercel. Telnyx processes SMS for Elsa (+1 415 718-0992). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
   },
   {
     path: 'terms',
@@ -196,7 +194,7 @@ const routes = [
       <h2>4. SMS Messaging</h2>
       <p>Hotline callers may opt in to SMS. See <a href="/consent">SMS Consent</a>. Message and data rates may apply. Reply STOP. Privacy in the <a href="/privacy">Privacy Policy</a>.</p>
       <h2>Elsa assistant SMS</h2>
-      <p>By texting +1 (424) 667-2214 or +1 (415) 360-0751 you agree to <a href="/elsa">/elsa</a>. Frequency varies. Message and data rates may apply. Reply STOP / HELP. SMS is optional and is not required to use n3wth.com. See <a href="/privacy">Privacy Policy</a>.</p>
+      <p>By texting +1 (415) 718-0992 you agree to <a href="/elsa">/elsa</a>. Frequency varies. Message and data rates may apply. Reply STOP / HELP. SMS is optional and is not required to use n3wth.com. See <a href="/privacy">Privacy Policy</a>.</p>
       <h2>3. AI Disclosure</h2>
       <p>Hotline voices are AI-generated; not professional advice.</p>`,
   },
@@ -215,7 +213,7 @@ const routes = [
       <p>Call follow-ups and service notifications, up to 5 messages per month. Message and data rates may apply.</p>
       <h2>Opt in / opt out</h2>
       <p>Opt in by calling the hotline. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. See <a href="/privacy">Privacy Policy</a>.</p>
-      <p>For the Elsa personal assistant SMS lines (+1 424 667-2214 main; +1 415 360-0751 alternate), see <a href="/elsa">/elsa</a>.</p>`,
+      <p>For the Elsa personal assistant SMS line (+1 415 718-0992), see <a href="/elsa">/elsa</a>.</p>`,
   },
   /* Auth utility routes: prerendered so their noindex is in the static
      head (crawlers may never run the client-side usePageMeta noindex). */
