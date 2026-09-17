@@ -2,68 +2,52 @@
 @import '@astryxdesign/core/astryx.css';
 
 /* ============================================================
-   Satoshi (Display/Titles) - Variable Font
+   Suisse Intl (Display/Titles and Body/UI)
    ============================================================ */
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Variable.woff2') format('woff2-variations');
-  font-weight: 300 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Regular.woff2') format('woff2');
+  font-family: 'Suisse Intl';
+  src: url('/fonts/SuisseIntl-Book.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
+  font-family: 'Suisse Intl';
+  src: url('/fonts/SuisseIntl-BookItalic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url('/fonts/SuisseIntl-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
+  font-family: 'Suisse Intl';
+  src: url('/fonts/SuisseIntl-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url('/fonts/SuisseIntl-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 /* ============================================================
-   Geist Font Faces (Body/UI)
+   Geist Mono (Code)
    ============================================================ */
-
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
 
 @font-face {
   font-family: 'Geist Mono';
@@ -87,8 +71,8 @@
 
 @theme {
   /* Typography */
-  --font-display: 'Satoshi', system-ui, sans-serif;
-  --font-sans: 'Geist Sans', system-ui, sans-serif;
+  --font-display: 'Suisse Intl', system-ui, sans-serif;
+  --font-sans: 'Suisse Intl', system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 
   /* ----------------------------------------------------------------
@@ -155,8 +139,8 @@
 :root,
 [data-theme='dark'] {
   color-scheme: dark;
-  --font-display: 'Satoshi', system-ui, sans-serif;
-  --font-sans: 'Geist Sans', system-ui, sans-serif;
+  --font-display: 'Suisse Intl', system-ui, sans-serif;
+  --font-sans: 'Suisse Intl', system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
 
   /* n3wth canonical palette (matches production) */
