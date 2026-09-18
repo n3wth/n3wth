@@ -1,17 +1,20 @@
-import { readFileSync } from 'fs'
-import path from 'path'
 import { createElement } from 'react'
 import { ImageResponse } from 'next/og'
 import { socialCard } from '@n3wth/site-config/social'
+import manifest from './content-manifest.json' with { type: 'json' }
 
 export const OG_SIZE = { width: 1200, height: 630 }
 
-// Keep font IO lazy: ordinary note routes also import this module.
+/* Fonts ship inside the bundled manifest (base64) — the workerd preview
+   has no filesystem, and outputFileTracingIncludes could not help there.
+   Decode lazily: ordinary note routes also import this module. */
 let fonts: { regular: Buffer; semibold: Buffer } | undefined
 function loadFonts() {
   if (!fonts) {
-    const directory = path.join(process.cwd(), 'src/lib/og-fonts')
-    fonts = { regular: readFileSync(path.join(directory, 'Geist-Regular.ttf')), semibold: readFileSync(path.join(directory, 'Geist-SemiBold.ttf')) }
+    fonts = {
+      regular: Buffer.from(manifest.fonts.regular, 'base64'),
+      semibold: Buffer.from(manifest.fonts.semibold, 'base64'),
+    }
   }
   return fonts
 }
