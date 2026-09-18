@@ -1,7 +1,7 @@
 {
   "name": "@n3wth/portfolio",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "engines": {
     "node": "24.x"
@@ -20,7 +20,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@n3wth/ui": "2.0.0",
+    "@n3wth/ui": "2.1.0",
     "@gsap/react": "^2.1.2",
     "@n3wth/site-config": "*",
     "@react-three/drei": "^10.7.7",
