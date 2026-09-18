@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { posix, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readWorkspaces } from './affected.mjs'
 import { buildOrder } from './build.mjs'
@@ -17,8 +17,35 @@ function isValidInternalSpecifier(declared, workspace) {
   return declared === '*' || declared === 'workspace:*' || declared === workspace.version || declared === `workspace:${workspace.version}`
 }
 
+export function checkNativeOptionals(packages) {
+  const errors = []
+  const native = /^(?:@next\/swc-|@tailwindcss\/oxide-|lightningcss-|@rollup\/rollup-|@esbuild\/)/
+  for (const [path, entry] of Object.entries(packages)) {
+    for (const [name, version] of Object.entries(entry.optionalDependencies ?? {})) {
+      if (!native.test(name)) continue
+      let directory = path
+      let installed
+      while (true) {
+        installed = packages[posix.join(directory, 'node_modules', name)]
+        if (installed || !directory) break
+        directory = posix.dirname(directory)
+        if (directory === '.') directory = ''
+      }
+      if (installed?.version !== version) {
+        errors.push(`package-lock.json: ${path} requires ${name}@${version} for cross-platform builds`)
+      }
+    }
+  }
+  return errors
+}
+
 export function checkInvariants(root) {
   const errors = []
+  const lockPath = resolve(root, 'package-lock.json')
+  if (existsSync(lockPath)) {
+    const lock = JSON.parse(readFileSync(lockPath, 'utf8'))
+    errors.push(...checkNativeOptionals(lock.packages ?? {}))
+  }
   const workspaces = readWorkspaces(root).toSorted((left, right) => left.path.localeCompare(right.path))
   const byName = new Map()
   const pathsByName = new Map()
