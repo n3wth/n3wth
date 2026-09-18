@@ -1,0 +1,94 @@
+name: Cloudflare previews
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+# Deploys and cleanup share a queue. Each deploy also checks the current PR
+# state and SHA, so a delayed build cannot resurrect a closed preview.
+concurrency:
+  group: cloudflare-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - name: Select supported affected apps
+        id: affected
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          EVENT_ACTION: ${{ github.event.action }}
+        shell: bash
+        run: |
+          if [ "$EVENT_ACTION" = closed ]; then
+            echo 'ui=true' >> "$GITHUB_OUTPUT"
+          else
+            node --input-type=module <<'JS'
+          import { appendFileSync } from 'node:fs'
+          import { execFileSync } from 'node:child_process'
+          const base = process.env.BASE_SHA
+          const workspaces = JSON.parse(execFileSync(process.execPath, ['scripts/affected.mjs', '--base', base, '--list', '--deployment'], { encoding: 'utf8' }))
+          const files = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`, '--'], { encoding: 'utf8' }).split('\n')
+          const infrastructure = files.some(file => file === '.github/workflows/cloudflare-preview.yml' || file.startsWith('scripts/cloudflare-preview'))
+          appendFileSync(process.env.GITHUB_OUTPUT, `ui=${infrastructure || workspaces.includes('@n3wth/ui-docs')}\n`)
+          JS
+          fi
+      - run: npm install --global npm@11.19.1
+        if: steps.affected.outputs.ui == 'true'
+      - run: npm ci
+        if: steps.affected.outputs.ui == 'true'
+      - name: Build and check UI docs
+        if: steps.affected.outputs.ui == 'true' && github.event.action != 'closed'
+        run: |
+          npm run build:ui-docs
+          npm run typecheck -w @n3wth/ui-docs
+          npm test -w @n3wth/ui-docs
+          (cd apps/ui-docs && node --test scripts/prerender.test.mjs)
+      - name: Check preview lifecycle
+        if: steps.affected.outputs.ui == 'true'
+        run: node --test scripts/cloudflare-preview.test.mjs
+      - name: Verify current PR state
+        if: steps.affected.outputs.ui == 'true' && github.event.action != 'closed'
+        id: current
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: context.issue.number })
+            core.setOutput('deploy', pr.state === 'open' && pr.head.sha === context.payload.pull_request.head.sha && pr.head.repo.full_name === `${context.repo.owner}/${context.repo.repo}`)
+      - name: Deploy preview
+        if: steps.affected.outputs.ui == 'true' && steps.current.outputs.deploy == 'true'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ac23513945eb49f73a89faf1be12384e
+          CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
+          node scripts/cloudflare-preview.mjs deploy --app ui-docs --pr "$PR_NUMBER"
+          echo "Preview: https://ui-docs-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
+      - name: Delete closed preview
+        if: steps.affected.outputs.ui == 'true' && github.event.action == 'closed'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ac23513945eb49f73a89faf1be12384e
+          CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
+          node scripts/cloudflare-preview.mjs delete --app ui-docs --pr "$PR_NUMBER"
