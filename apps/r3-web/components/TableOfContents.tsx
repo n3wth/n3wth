@@ -77,13 +77,13 @@ export function TableOfContents() {
   return (
     <div className="space-y-3">
       <h4 className="text-sm font-medium text-ink">On this page</h4>
-      <nav className="space-y-1">
+      <nav aria-label="On this page" className="space-y-1">
         {headings.map((heading) => (
           <a
             key={heading.id}
             href={`#${heading.id}`}
             className={`
-              block text-sm transition-colors
+              flex min-h-9 items-center py-1.5 text-sm leading-5 transition-colors
               ${heading.level === 3 ? "ml-4" : ""}
               ${
                 activeId === heading.id

@@ -7,26 +7,18 @@ title: Introduction
 
 MCP server for persistent AI memory. Local Redis storage with optional cloud sync.
 
-## Start building
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-  <a href="/docs/quickstart" className="block p-6 rounded-lg border border-rail hover:border-rail-strong transition-colors">
-    <h3 className="text-lg font-medium text-ink mb-2">Quickstart</h3>
-    <div className="text-ink-dim text-sm">Get started in 30 seconds</div>
-  </a>
-
-  <a href="/docs/api-reference" className="block p-6 rounded-lg border border-rail hover:border-rail-strong transition-colors">
-    <h3 className="text-lg font-medium text-ink mb-2">API Reference</h3>
-    <div className="text-ink-dim text-sm">MCP tools</div>
-  </a>
+<div className="flex flex-wrap gap-x-6 gap-y-1">
+  <a href="/docs/quickstart" className="inline-flex min-h-11 items-center text-sm text-ink underline underline-offset-4">Quickstart</a>
+  <a href="/docs/api-reference" className="inline-flex min-h-11 items-center text-sm text-ink underline underline-offset-4">API reference</a>
 </div>
 
 ## How r3 works
 
 r3 is an MCP server that gives AI applications persistent memory. By default, it uses an embedded Redis server for local storage. No setup required. Optionally add cloud sync with Mem0.
 
+Add r3 to your MCP client's configuration:
+
 ```json
-// MCP client config (e.g. .gemini/settings.json)
 {
   "mcpServers": {
     "r3": {
@@ -37,16 +29,7 @@ r3 is an MCP server that gives AI applications persistent memory. By default, it
 }
 ```
 
-Once configured, your AI assistant can remember context across conversations:
-
-```
-You: Remember that I prefer TypeScript over JavaScript
-AI: I'll remember your preference for TypeScript.
-
-[New conversation]
-You: What language should I use for this project?
-AI: Based on your preferences, I'd recommend TypeScript.
-```
+Tell your assistant, “Remember that I prefer TypeScript.” In a later conversation, it can use that preference when recommending a language for your project.
 
 ## Architecture
 

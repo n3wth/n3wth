@@ -49,7 +49,10 @@ export const docsConfig: DocSection[] = [
   },
   {
     title: "Support",
-    items: [{ title: "Troubleshooting", slug: "troubleshooting" }],
+    items: [
+      { title: "Troubleshooting", slug: "troubleshooting" },
+      { title: "Changelog", slug: "changelog" },
+    ],
   },
 ];
 

@@ -10,7 +10,7 @@ Use the existing system; do not introduce another visual scale or a new set of c
 - Reading outlines use `--font-size-sm` for labels, counts and links. Do not introduce a smaller count size or disabled ink for readable metadata.
 - Use `n3wth-site-prose` on reading bodies so lists share the softer paragraph ink.
 - Use existing semantic colors for canvas, surfaces, text and borders. Flat surfaces, subtle borders, no added glows, shadows or gradients. No sparkle icons.
-- Documentation examples use `CodeBlock size="sm"`. Preserve horizontal scrolling and copy controls. Add line numbers or language labels only when useful.
+- Documentation examples use `CodeBlock size="sm"`. Use `isWrapped` when long lines should remain readable without sideways scrolling; preserve scrolling when wrapping is disabled. Keep copy controls inset from the edge with space reserved beside code. Add line numbers or language labels only when useful.
 - Code punctuation is readable content, not disabled text. Measure contrast against the actual code surface in both themes.
 
 ## CSS and layout
@@ -20,6 +20,7 @@ Use the existing system; do not introduce another visual scale or a new set of c
 - Keep the reset layer below Astryx component styles. Check computed styles: utility classes can be overridden by component resets or layer order even when present in markup.
 - Parents own spacing between components. Put documentation margins or gaps on layout wrappers when the child owns its own margin reset. Do not escalate to `!important` or per-app shared-selector overrides.
 - Use shared container gutters and section spacing. A bulletless list has no leftover bullet indentation.
+- Prose lists use outside markers and inline padding so wrapped lines align with the text, not the marker.
 - Shared footer containers inherit footer color. Do not reset nested text to primary ink.
 - Put responsive visibility on a wrapper when a shared component owns its display layout.
 
