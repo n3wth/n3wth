@@ -47,7 +47,7 @@ export function SystemHome() {
             <SiteText variant="supporting">{layer.description}</SiteText>
           </li>)}
         </ol>
-        <div className="system-source-note"><SiteText variant="supporting" className="max-w-[65ch]">These examples use the workspace package. Check the published exports before using them outside this repository.</SiteText></div>
+        <div className="system-source-note"><SiteText variant="supporting" className="max-w-[52ch]">These examples use the workspace package. Check the published exports before using them outside this repository.</SiteText></div>
       </SiteSection>
     </SiteContainer>
     <SiteFooter sourceHref="https://github.com/n3wth/n3wth/tree/main/packages/ui" legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
