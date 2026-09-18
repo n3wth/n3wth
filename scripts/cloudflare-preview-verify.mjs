@@ -6,8 +6,13 @@
 // stays on: a preview served over an invalid certificate must fail, not pass.
 import { setTimeout as delay } from 'node:timers/promises'
 
-const DEFAULT_ATTEMPTS = 10
-const DEFAULT_DELAY_MS = 6000
+// A brand-new preview hostname needs its edge TLS certificate issued before the
+// host answers over HTTPS, which takes a few minutes on the first deploy. The
+// default budget (about five minutes) covers that first-time provisioning; a
+// healthy deploy succeeds on the first attempt once the certificate is ready, so
+// the ceiling only costs wall-clock time when a certificate is genuinely slow.
+const DEFAULT_ATTEMPTS = 30
+const DEFAULT_DELAY_MS = 10000
 
 export function classifyFetchError(error) {
   const code = `${error?.cause?.code || error?.code || ''}`.toUpperCase()
