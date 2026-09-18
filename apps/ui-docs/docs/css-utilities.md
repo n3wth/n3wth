@@ -31,3 +31,5 @@ Do not use legacy glass, glow or entrance-animation utilities to define a compet
 ## Accessibility checks
 
 Keep focus indicators visible. Use semantic elements before adding ARIA. Check keyboard navigation, text contrast, reduced motion, narrow screens and zoom. Do not hide content behind animation or make hover the only way to discover an action.
+
+Verify these checks in both themes where a site supports them, and at mobile and desktop widths.
