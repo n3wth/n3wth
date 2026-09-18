@@ -1,0 +1,46 @@
+name: Editorial evidence
+
+on:
+  pull_request:
+    paths:
+      - 'docs/editorial/**'
+      - 'apps/garden/content/**'
+      - 'apps/portfolio/src/components/thinking/**'
+      - '.github/workflows/editorial-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: node --test docs/editorial/check.test.mjs
+      - run: node docs/editorial/check.mjs backlog
+      - name: Require a review for each new public manuscript
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}
+        run: node docs/editorial/require-reviews.mjs "$BASE_SHA"
+      - name: Verify reviewed manuscripts and current outbound links
+        shell: bash
+        run: |
+          for review in docs/editorial/reviews/*.json; do
+            id=$(basename "$review" .json)
+            node docs/editorial/check.mjs review "$id"
+            node docs/editorial/check.mjs links "$id" "$RUNNER_TEMP/links-$id.json"
+            node docs/editorial/check.mjs release "$id" "$RUNNER_TEMP/links-$id.json"
+          done
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: editorial-link-reports
+          path: ${{ runner.temp }}/links-*.json
+          retention-days: 14

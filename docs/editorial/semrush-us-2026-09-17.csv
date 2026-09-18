@@ -1,0 +1,31 @@
+Keyword;Search Volume;Keyword Difficulty Index;Intent
+agent memory;480;58;1
+agent evaluation;480;43;1
+context engineering;3600;65;1
+retrieval augmented generation;8100;95;1,0
+hybrid search;260;45;1
+knowledge graph;6600;59;1
+semantic search;5400;72;1
+prompt injection;4400;50;1
+idempotency;14800;45;1
+human in the loop;3600;67;1
+ai observability;1900;52;1
+retrieval evaluation;20;0;
+reranking;170;44;1
+model context protocol;14800;78;1,0
+product discovery;1300;35;1
+sample ratio mismatch;140;31;1
+decision log;390;31;1
+opportunity solution tree;590;28;1
+continuous experimentation;20;0;
+spaced repetition;5400;65;1
+progressive summarization;50;12;1
+retrieval practice;2400;53;1
+digital garden;1000;45;1
+knowledge management;8100;45;1
+ai product management;880;54;1
+agent orchestration;720;54;1
+ai reliability;140;41;1
+design system governance;70;25;1
+ambient computing;260;35;1
+

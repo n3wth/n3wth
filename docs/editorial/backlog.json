@@ -1,0 +1,1096 @@
+{
+  "version": 1,
+  "researchedOn": "2026-09-17",
+  "metrics": {
+    "provider": "Semrush",
+    "database": "us",
+    "report": "phrase_these",
+    "observedOn": "2026-09-17",
+    "notes": "Estimated monthly search volume and difficulty for seed keywords, not traffic forecasts or exact long-tail demand. Missing rows are null, not zero. Zero difficulty on sparse terms is not proof of easy ranking."
+  },
+  "cadence": {
+    "timezone": "America/Los_Angeles",
+    "time": "08:30",
+    "piecesPerDay": 1,
+    "allocation": "20 garden notes and 10 portfolio essays in first 30 releases",
+    "order": [
+      "G01",
+      "G02",
+      "P01",
+      "G03",
+      "G04",
+      "P03",
+      "G07",
+      "G08",
+      "P02",
+      "G10",
+      "G11",
+      "P04",
+      "G13",
+      "G14",
+      "P06",
+      "G15",
+      "G16",
+      "P05",
+      "G18",
+      "G20",
+      "P08",
+      "G19",
+      "G05",
+      "P09",
+      "G06",
+      "G09",
+      "P07",
+      "G12",
+      "G17",
+      "P10"
+    ]
+  },
+  "items": [
+    {
+      "id": "G01",
+      "site": "garden",
+      "title": "Audit retrieval before trusting an answer",
+      "slug": "audit-retrieval-before-trusting-an-answer",
+      "status": "drafted",
+      "priority": "P1",
+      "keyword": "retrieval evaluation",
+      "searchMetrics": {
+        "volume": 20,
+        "difficulty": 0,
+        "intentCode": ""
+      },
+      "angle": "A repeatable audit separating missing ingestion, missed retrieval and unsupported answers.",
+      "outline": [
+        "Define corpus",
+        "label queries",
+        "compute precision and recall",
+        "inspect provenance",
+        "record failures"
+      ],
+      "sources": [
+        "beir",
+        "memory",
+        "prov"
+      ],
+      "internalLinks": [
+        "Knowledge Management Systems",
+        "Note Linking",
+        "System Design"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Ship a small labeled retrieval worksheet.",
+      "url": "https://garden.n3wth.com/audit-retrieval-before-trusting-an-answer"
+    },
+    {
+      "id": "G02",
+      "site": "garden",
+      "title": "Give every durable fact one authoritative home",
+      "slug": "canonical-memory-authority",
+      "status": "planned",
+      "priority": "P1",
+      "keyword": "agent memory",
+      "searchMetrics": {
+        "volume": 480,
+        "difficulty": 58,
+        "intentCode": "1"
+      },
+      "angle": "A decision table for working memory, durable facts, procedures and archives.",
+      "outline": [
+        "Assign authority",
+        "replace copies with pointers",
+        "define conflict resolution",
+        "test stale duplicates"
+      ],
+      "sources": [
+        "memory",
+        "prov-dm"
+      ],
+      "internalLinks": [
+        "Knowledge Management Systems",
+        "Atomic Notes"
+      ],
+      "grounding": [
+        "wiki/originals/ideas/2026-09-11-agent-memory-hierarchy-and-canonical-authority-321a0c"
+      ],
+      "originalAsset": "Publish a portable memory-location decision table.",
+      "url": "https://garden.n3wth.com/canonical-memory-authority"
+    },
+    {
+      "id": "G03",
+      "site": "garden",
+      "title": "Store when a fact was true",
+      "slug": "temporal-memory-records",
+      "status": "planned",
+      "priority": "P1",
+      "keyword": "agent memory",
+      "searchMetrics": {
+        "volume": 480,
+        "difficulty": 58,
+        "intentCode": "1"
+      },
+      "angle": "A practical distinction between event time, capture time and invalidation.",
+      "outline": [
+        "Define time fields",
+        "supersede corrections",
+        "answer as-of questions",
+        "test unknown dates"
+      ],
+      "sources": [
+        "memory",
+        "prov-dm"
+      ],
+      "internalLinks": [
+        "Knowledge Management Systems",
+        "Living documents"
+      ],
+      "grounding": [
+        "wiki/originals/ideas/2026-09-11-agent-memory-hierarchy-and-canonical-authority-321a0c"
+      ],
+      "originalAsset": "Provide date-update fixtures and expected answers.",
+      "url": "https://garden.n3wth.com/temporal-memory-records"
+    },
+    {
+      "id": "G04",
+      "site": "garden",
+      "title": "Build a small retrieval regression set",
+      "slug": "retrieval-regression-set",
+      "status": "planned",
+      "priority": "P1",
+      "keyword": "agent evaluation",
+      "searchMetrics": {
+        "volume": 480,
+        "difficulty": 43,
+        "intentCode": "1"
+      },
+      "angle": "A starter set covering exact names, synonyms, missing records and contradictory updates.",
+      "outline": [
+        "Choose cases",
+        "label records",
+        "freeze corpus",
+        "compare failures across changes"
+      ],
+      "sources": [
+        "beir",
+        "locomo"
+      ],
+      "internalLinks": [
+        "System Design",
+        "Technical Skills"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Release a small synthetic fixture set with a clear license.",
+      "url": "https://garden.n3wth.com/retrieval-regression-set"
+    },
+    {
+      "id": "G05",
+      "site": "garden",
+      "title": "Compare keyword and vector search on the same questions",
+      "slug": "hybrid-search-comparison",
+      "status": "planned",
+      "priority": "P1",
+      "keyword": "hybrid search",
+      "searchMetrics": {
+        "volume": 260,
+        "difficulty": 45,
+        "intentCode": "1"
+      },
+      "angle": "A reproducible baseline comparison with latency and support quality.",
+      "outline": [
+        "Fix corpus",
+        "run lexical baseline",
+        "add vectors",
+        "fuse results",
+        "record cost and misses"
+      ],
+      "sources": [
+        "beir",
+        "pgvector"
+      ],
+      "internalLinks": [
+        "System Design",
+        "Knowledge Organization"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Contribute a reproducible example only if an upstream documentation gap exists.",
+      "url": "https://garden.n3wth.com/hybrid-search-comparison"
+    },
+    {
+      "id": "G06",
+      "site": "garden",
+      "title": "Decide when reranking is worth the extra latency",
+      "slug": "reranking-budget",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "reranking",
+      "searchMetrics": {
+        "volume": 170,
+        "difficulty": 44,
+        "intentCode": "1"
+      },
+      "angle": "A decision worksheet connecting ranking gains to a latency budget.",
+      "outline": [
+        "Hold first-stage retrieval fixed",
+        "evaluate top-k",
+        "measure latency",
+        "establish stop rule"
+      ],
+      "sources": [
+        "beir",
+        "pgvector"
+      ],
+      "internalLinks": [
+        "System Design",
+        "Technical Skills"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Share the experiment protocol and measured results when available.",
+      "url": "https://garden.n3wth.com/reranking-budget"
+    },
+    {
+      "id": "G07",
+      "site": "garden",
+      "title": "Verify a memory write by reading the same record",
+      "slug": "memory-write-readback",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "agent memory",
+      "searchMetrics": {
+        "volume": 480,
+        "difficulty": 58,
+        "intentCode": "1"
+      },
+      "angle": "An operational checklist for IDs, source scope and visibility after writes.",
+      "outline": [
+        "Capture receipt",
+        "read by ID and scope",
+        "compare value",
+        "handle duplicates and ambiguous writes"
+      ],
+      "sources": [
+        "prov",
+        "retries"
+      ],
+      "internalLinks": [
+        "Knowledge Management Systems",
+        "System Design"
+      ],
+      "grounding": [
+        "wiki/originals/ideas/2026-09-11-agent-memory-hierarchy-and-canonical-authority-321a0c"
+      ],
+      "originalAsset": "Offer a read-back example with no private records.",
+      "url": "https://garden.n3wth.com/memory-write-readback"
+    },
+    {
+      "id": "G08",
+      "site": "garden",
+      "title": "Make retries safe for tools that change things",
+      "slug": "idempotent-agent-tools",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "idempotency",
+      "searchMetrics": {
+        "volume": 14800,
+        "difficulty": 45,
+        "intentCode": "1"
+      },
+      "angle": "A request-ID example covering timeout, retry and different-intent mistakes.",
+      "outline": [
+        "Define action identity",
+        "persist receipts",
+        "bound retries",
+        "reconcile ambiguous responses"
+      ],
+      "sources": [
+        "retries",
+        "mcp"
+      ],
+      "internalLinks": [
+        "System Design",
+        "Technical Skills"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Offer a tested idempotency example to a relevant SDK.",
+      "url": "https://garden.n3wth.com/idempotent-agent-tools"
+    },
+    {
+      "id": "G09",
+      "site": "garden",
+      "title": "Treat retrieved instructions as untrusted text",
+      "slug": "retrieval-prompt-injection",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "prompt injection",
+      "searchMetrics": {
+        "volume": 4400,
+        "difficulty": 50,
+        "intentCode": "1"
+      },
+      "angle": "A concrete data-versus-authority boundary for retrieved documents.",
+      "outline": [
+        "Trace entry points",
+        "constrain tools",
+        "separate instructions from evidence",
+        "test adversarial records"
+      ],
+      "sources": [
+        "injection",
+        "mcp"
+      ],
+      "internalLinks": [
+        "System Design",
+        "Knowledge Management Systems"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Contribute a regression fixture where maintainers welcome it.",
+      "url": "https://garden.n3wth.com/retrieval-prompt-injection"
+    },
+    {
+      "id": "G10",
+      "site": "garden",
+      "title": "Trace the outcome of an agent action",
+      "slug": "agent-outcome-tracing",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "ai observability",
+      "searchMetrics": {
+        "volume": 1900,
+        "difficulty": 52,
+        "intentCode": "1"
+      },
+      "angle": "Trace fields that distinguish tool requests, receipts and verified outcomes.",
+      "outline": [
+        "Choose operation IDs",
+        "join tool spans",
+        "redact content",
+        "verify external state"
+      ],
+      "sources": [
+        "otel",
+        "retries"
+      ],
+      "internalLinks": [
+        "System Design",
+        "Technical Skills"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Offer a minimal trace example to telemetry docs.",
+      "url": "https://garden.n3wth.com/agent-outcome-tracing"
+    },
+    {
+      "id": "G11",
+      "site": "garden",
+      "title": "Write an escalation contract for an agent",
+      "slug": "agent-escalation-contract",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "human in the loop",
+      "searchMetrics": {
+        "volume": 3600,
+        "difficulty": 67,
+        "intentCode": "1"
+      },
+      "angle": "A template for authority, uncertainty and the evidence a reviewer needs.",
+      "outline": [
+        "List consequential actions",
+        "define evidence",
+        "assign owner",
+        "test ambiguous states"
+      ],
+      "sources": [
+        "injection",
+        "retries"
+      ],
+      "internalLinks": [
+        "Delegation Skills",
+        "System Design"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Share a reusable permission-and-evidence template.",
+      "url": "https://garden.n3wth.com/agent-escalation-contract"
+    },
+    {
+      "id": "G12",
+      "site": "garden",
+      "title": "Test the workflow before adding another agent",
+      "slug": "workflow-before-multi-agent",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "agent orchestration",
+      "searchMetrics": {
+        "volume": 720,
+        "difficulty": 54,
+        "intentCode": "1"
+      },
+      "angle": "A comparison protocol for deterministic workflows and open-ended coordination.",
+      "outline": [
+        "State task boundary",
+        "benchmark simple workflow",
+        "add agent decisions",
+        "measure regressions"
+      ],
+      "sources": [
+        "memory",
+        "otel"
+      ],
+      "internalLinks": [
+        "System Design",
+        "Delegation Skills"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Publish a reproducible comparison rather than unsupported speed claims.",
+      "url": "https://garden.n3wth.com/workflow-before-multi-agent"
+    },
+    {
+      "id": "G13",
+      "site": "garden",
+      "title": "Keep a decision log that can change your mind",
+      "slug": "revisitable-decision-log",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "decision log",
+      "searchMetrics": {
+        "volume": 390,
+        "difficulty": 31,
+        "intentCode": "1"
+      },
+      "angle": "A decision record with alternatives, confidence and an explicit revisit trigger.",
+      "outline": [
+        "Record decision",
+        "separate evidence and urgency",
+        "name reversal cost",
+        "schedule reassessment"
+      ],
+      "sources": [
+        "experiments",
+        "discovery"
+      ],
+      "internalLinks": [
+        "Product Management",
+        "Career Frameworks"
+      ],
+      "grounding": [
+        "concepts/evidence-guided-product-management"
+      ],
+      "originalAsset": "Provide a downloadable decision-log template.",
+      "url": "https://garden.n3wth.com/revisitable-decision-log"
+    },
+    {
+      "id": "G14",
+      "site": "garden",
+      "title": "Check sample ratios before reading experiment lift",
+      "slug": "sample-ratio-mismatch",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "sample ratio mismatch",
+      "searchMetrics": {
+        "volume": 140,
+        "difficulty": 31,
+        "intentCode": "1"
+      },
+      "angle": "A worked data-quality example and root-cause checklist.",
+      "outline": [
+        "Specify allocation",
+        "compare observed counts",
+        "test mismatch",
+        "inspect assignment and logging"
+      ],
+      "sources": [
+        "srm",
+        "experiments"
+      ],
+      "internalLinks": [
+        "Product Management",
+        "Frameworks/HEART"
+      ],
+      "grounding": [
+        "concepts/evidence-guided-product-management"
+      ],
+      "originalAsset": "Share a tested SRM worksheet with assumptions.",
+      "url": "https://garden.n3wth.com/sample-ratio-mismatch"
+    },
+    {
+      "id": "G15",
+      "site": "garden",
+      "title": "Choose evidence when traffic is too low for an A/B test",
+      "slug": "low-traffic-product-evidence",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "low traffic ab testing",
+      "searchMetrics": {
+        "volume": null,
+        "difficulty": null,
+        "intentCode": null
+      },
+      "angle": "A method-selection guide that avoids pretending interviews estimate causal lift.",
+      "outline": [
+        "State decision",
+        "calculate detectable effect",
+        "select usability or observational evidence",
+        "label uncertainty"
+      ],
+      "sources": [
+        "experiments",
+        "discovery"
+      ],
+      "internalLinks": [
+        "Product Management",
+        "Frameworks/JTBD"
+      ],
+      "grounding": [
+        "concepts/evidence-guided-product-management"
+      ],
+      "originalAsset": "Release a method selection table.",
+      "url": "https://garden.n3wth.com/low-traffic-product-evidence"
+    },
+    {
+      "id": "G16",
+      "site": "garden",
+      "title": "Attach evidence to an opportunity tree",
+      "slug": "evidence-opportunity-tree",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "opportunity solution tree",
+      "searchMetrics": {
+        "volume": 590,
+        "difficulty": 28,
+        "intentCode": "1"
+      },
+      "angle": "An evidence ledger for opportunity nodes, competing explanations and assumptions.",
+      "outline": [
+        "Map outcome",
+        "link observations",
+        "test assumptions",
+        "record conflicting evidence"
+      ],
+      "sources": [
+        "discovery",
+        "prov"
+      ],
+      "internalLinks": [
+        "Product Management",
+        "Frameworks/JTBD"
+      ],
+      "grounding": [
+        "concepts/evidence-guided-product-management"
+      ],
+      "originalAsset": "Share a worked public or synthetic discovery example.",
+      "url": "https://garden.n3wth.com/evidence-opportunity-tree"
+    },
+    {
+      "id": "G17",
+      "site": "garden",
+      "title": "Turn production failures into evaluation cases",
+      "slug": "incident-derived-evaluations",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "agent evaluation",
+      "searchMetrics": {
+        "volume": 480,
+        "difficulty": 43,
+        "intentCode": "1"
+      },
+      "angle": "A procedure for turning a failure trace into a deterministic regression case.",
+      "outline": [
+        "Preserve minimal trace",
+        "remove private data",
+        "define expected outcome",
+        "test the fix"
+      ],
+      "sources": [
+        "otel",
+        "injection"
+      ],
+      "internalLinks": [
+        "System Design",
+        "Technical Skills"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Submit the regression alongside the fix upstream.",
+      "url": "https://garden.n3wth.com/incident-derived-evaluations"
+    },
+    {
+      "id": "G18",
+      "site": "garden",
+      "title": "Keep source notes separate from your conclusions",
+      "slug": "source-notes-and-synthesis",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "progressive summarization",
+      "searchMetrics": {
+        "volume": 50,
+        "difficulty": 12,
+        "intentCode": "1"
+      },
+      "angle": "A provenance pattern linking excerpts, interpretations and later corrections.",
+      "outline": [
+        "Capture source",
+        "mark quotation and inference",
+        "preserve links",
+        "revise synthesis on source changes"
+      ],
+      "sources": [
+        "prov",
+        "prov-dm"
+      ],
+      "internalLinks": [
+        "Progressive Summarization",
+        "Atomic Notes",
+        "Note Linking"
+      ],
+      "grounding": [
+        "topics/compound-writing",
+        "atoms/2026-09-06/integrating-compound-writing-with-coding-loops-a4a1167a"
+      ],
+      "originalAsset": "Share a note template, not a duplicate introduction to summarization.",
+      "url": "https://garden.n3wth.com/source-notes-and-synthesis"
+    },
+    {
+      "id": "G19",
+      "site": "garden",
+      "title": "Give shared components a release owner",
+      "slug": "design-system-release-ownership",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "design system governance",
+      "searchMetrics": {
+        "volume": 70,
+        "difficulty": 25,
+        "intentCode": "1"
+      },
+      "angle": "A release checklist spanning package ownership, consumers and rollback.",
+      "outline": [
+        "Name owner",
+        "map consumers",
+        "verify accessibility",
+        "stage upgrade",
+        "record rollback"
+      ],
+      "sources": [
+        "aria",
+        "c4"
+      ],
+      "internalLinks": [
+        "Choose UI Component Ownership",
+        "System Design"
+      ],
+      "grounding": [
+        "Public n3wth/n3wth AGENTS.md and docs/workspace/deployment.md"
+      ],
+      "originalAsset": "Use this monorepo history as the public worked example.",
+      "url": "https://garden.n3wth.com/design-system-release-ownership"
+    },
+    {
+      "id": "G20",
+      "site": "garden",
+      "title": "Review technical writing with a claim ledger",
+      "slug": "technical-writing-claim-ledger",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "knowledge management",
+      "searchMetrics": {
+        "volume": 8100,
+        "difficulty": 45,
+        "intentCode": "1"
+      },
+      "angle": "A reusable checklist mapping factual claims to supporting passages and limitations.",
+      "outline": [
+        "Classify claim",
+        "attach exact evidence",
+        "check link and date",
+        "challenge inference",
+        "recheck after edits"
+      ],
+      "sources": [
+        "prov",
+        "experiments"
+      ],
+      "internalLinks": [
+        "Professional Writing Hub",
+        "Content Strategy"
+      ],
+      "grounding": [
+        "topics/compound-writing",
+        "atoms/2026-09-06/integrating-compound-writing-with-coding-loops-a4a1167a"
+      ],
+      "originalAsset": "Publish the claim-ledger schema and editorial checklist.",
+      "url": "https://garden.n3wth.com/technical-writing-claim-ledger"
+    },
+    {
+      "id": "P01",
+      "site": "portfolio",
+      "title": "Memory systems need an authority model",
+      "slug": "memory-authority-model",
+      "status": "planned",
+      "priority": "P1",
+      "keyword": "agent memory",
+      "searchMetrics": {
+        "volume": 480,
+        "difficulty": 58,
+        "intentCode": "1"
+      },
+      "angle": "A deeper architecture essay about corrections, canonical facts and competing stores.",
+      "outline": [
+        "Diagram authority",
+        "work through correction lifecycle",
+        "show failure cases",
+        "compare alternatives"
+      ],
+      "sources": [
+        "memory",
+        "prov-dm"
+      ],
+      "internalLinks": [
+        "personal-knowledge-graph",
+        "G02",
+        "G03",
+        "G07"
+      ],
+      "grounding": [
+        "wiki/originals/ideas/2026-09-11-agent-memory-hierarchy-and-canonical-authority-321a0c"
+      ],
+      "originalAsset": "Include a synthetic correction trace; differs from the existing graph-traversal essay.",
+      "url": "https://n3wth.com/thinking/memory-authority-model"
+    },
+    {
+      "id": "P02",
+      "site": "portfolio",
+      "title": "An agent task ends at the verified outcome",
+      "slug": "verified-agent-outcomes",
+      "status": "planned",
+      "priority": "P1",
+      "keyword": "ai reliability",
+      "searchMetrics": {
+        "volume": 140,
+        "difficulty": 41,
+        "intentCode": "1"
+      },
+      "angle": "An argument for measuring external outcomes rather than convincing transcripts.",
+      "outline": [
+        "Define outcome contract",
+        "trace timeout case",
+        "add read-back",
+        "discuss costs and uncertainty"
+      ],
+      "sources": [
+        "retries",
+        "otel"
+      ],
+      "internalLinks": [
+        "autonomous-agents",
+        "trust-production",
+        "G07",
+        "G10"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Publish a state diagram and minimal receipt example; avoid repeating autonomy boundaries.",
+      "url": "https://n3wth.com/thinking/verified-agent-outcomes"
+    },
+    {
+      "id": "P03",
+      "site": "portfolio",
+      "title": "Evaluate retrieval before rewriting the prompt",
+      "slug": "retrieval-before-prompts",
+      "status": "planned",
+      "priority": "P1",
+      "keyword": "retrieval augmented generation",
+      "searchMetrics": {
+        "volume": 8100,
+        "difficulty": 95,
+        "intentCode": "1,0"
+      },
+      "angle": "A diagnostic essay on separating ingestion, ranking, reading and unsupported synthesis.",
+      "outline": [
+        "Introduce failure taxonomy",
+        "show labeled corpus",
+        "compare interventions",
+        "state transfer limits"
+      ],
+      "sources": [
+        "beir",
+        "memory",
+        "locomo"
+      ],
+      "internalLinks": [
+        "personal-knowledge-graph",
+        "G01",
+        "G04",
+        "G05"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Release evaluation fixture pack and report measured results only.",
+      "url": "https://n3wth.com/thinking/retrieval-before-prompts"
+    },
+    {
+      "id": "P04",
+      "site": "portfolio",
+      "title": "Agent operating costs include the review queue",
+      "slug": "agent-review-economics",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "agent orchestration",
+      "searchMetrics": {
+        "volume": 720,
+        "difficulty": 54,
+        "intentCode": "1"
+      },
+      "angle": "A cost model that includes review, retries, failures and maintenance.",
+      "outline": [
+        "Define total cost",
+        "expose assumptions",
+        "simulate review backlog",
+        "identify break-even decisions"
+      ],
+      "sources": [
+        "retries",
+        "otel"
+      ],
+      "internalLinks": [
+        "agents-org-design",
+        "agent-desks",
+        "G11",
+        "G12"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Use an explicitly illustrative calculator, not invented business results.",
+      "url": "https://n3wth.com/thinking/agent-review-economics"
+    },
+    {
+      "id": "P05",
+      "site": "portfolio",
+      "title": "Build product roadmaps around unresolved decisions",
+      "slug": "uncertainty-product-roadmaps",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "product discovery",
+      "searchMetrics": {
+        "volume": 1300,
+        "difficulty": 35,
+        "intentCode": "1"
+      },
+      "angle": "A worked roadmap that links each proposed feature to evidence that could change it.",
+      "outline": [
+        "List uncertainties",
+        "choose methods",
+        "prioritize decisions",
+        "add revisit triggers"
+      ],
+      "sources": [
+        "experiments",
+        "discovery"
+      ],
+      "internalLinks": [
+        "G13",
+        "G15",
+        "G16"
+      ],
+      "grounding": [
+        "concepts/evidence-guided-product-management"
+      ],
+      "originalAsset": "Publish a public/synthetic example and reusable planning sheet.",
+      "url": "https://n3wth.com/thinking/uncertainty-product-roadmaps"
+    },
+    {
+      "id": "P06",
+      "site": "portfolio",
+      "title": "A positive experiment can still be unusable",
+      "slug": "unusable-positive-experiments",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "sample ratio mismatch",
+      "searchMetrics": {
+        "volume": 140,
+        "difficulty": 31,
+        "intentCode": "1"
+      },
+      "angle": "An evidence essay showing how a promising lift can coexist with broken assignment.",
+      "outline": [
+        "Walk through mismatch",
+        "diagnose logs",
+        "separate statistical and practical significance",
+        "define ship criteria"
+      ],
+      "sources": [
+        "srm",
+        "experiments"
+      ],
+      "internalLinks": [
+        "G14",
+        "G15"
+      ],
+      "grounding": [
+        "concepts/evidence-guided-product-management"
+      ],
+      "originalAsset": "Build an illustrative SRM explainer and link the original research.",
+      "url": "https://n3wth.com/thinking/unusable-positive-experiments"
+    },
+    {
+      "id": "P07",
+      "site": "portfolio",
+      "title": "A knowledge graph needs a correction path",
+      "slug": "knowledge-graph-corrections",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "knowledge graph",
+      "searchMetrics": {
+        "volume": 6600,
+        "difficulty": 59,
+        "intentCode": "1"
+      },
+      "angle": "A lifecycle essay about provenance, supersession, deletion and downstream conclusions.",
+      "outline": [
+        "Follow one correction",
+        "identify dependent claims",
+        "update retrieval",
+        "preserve audit history"
+      ],
+      "sources": [
+        "prov-dm",
+        "memory"
+      ],
+      "internalLinks": [
+        "personal-knowledge-graph",
+        "G03",
+        "G18"
+      ],
+      "grounding": [
+        "wiki/originals/ideas/2026-09-11-agent-memory-hierarchy-and-canonical-authority-321a0c"
+      ],
+      "originalAsset": "Add a correction-propagation diagram rather than another graph introduction.",
+      "url": "https://n3wth.com/thinking/knowledge-graph-corrections"
+    },
+    {
+      "id": "P08",
+      "site": "portfolio",
+      "title": "Make technical writing reproducible",
+      "slug": "reproducible-technical-writing",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "knowledge management",
+      "searchMetrics": {
+        "volume": 8100,
+        "difficulty": 45,
+        "intentCode": "1"
+      },
+      "angle": "A case study of this research-to-release pipeline with inspectable evidence.",
+      "outline": [
+        "Show brief",
+        "inspect claim ledger",
+        "test links",
+        "review edits",
+        "verify deployment and distribution"
+      ],
+      "sources": [
+        "prov",
+        "experiments"
+      ],
+      "internalLinks": [
+        "compound-engineering",
+        "G18",
+        "G20"
+      ],
+      "grounding": [
+        "topics/compound-writing",
+        "atoms/2026-09-06/integrating-compound-writing-with-coding-loops-a4a1167a"
+      ],
+      "originalAsset": "Use actual repository files and run receipts; no fabricated reach or rankings.",
+      "url": "https://n3wth.com/thinking/reproducible-technical-writing"
+    },
+    {
+      "id": "P09",
+      "site": "portfolio",
+      "title": "The maintenance boundary of a design system",
+      "slug": "design-system-maintenance-boundary",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "design system governance",
+      "searchMetrics": {
+        "volume": 70,
+        "difficulty": 25,
+        "intentCode": "1"
+      },
+      "angle": "A case study linking source ownership, release graph and real consumer validation.",
+      "outline": [
+        "Trace shared change",
+        "assign release responsibility",
+        "test consumers",
+        "inspect rollback cost"
+      ],
+      "sources": [
+        "aria",
+        "c4"
+      ],
+      "internalLinks": [
+        "ai-design-slop",
+        "G19"
+      ],
+      "grounding": [
+        "Public n3wth/n3wth AGENTS.md and docs/workspace/deployment.md"
+      ],
+      "originalAsset": "Ground diagrams in the current public monorepo, not confidential work.",
+      "url": "https://n3wth.com/thinking/design-system-maintenance-boundary"
+    },
+    {
+      "id": "P10",
+      "site": "portfolio",
+      "title": "Design ambient systems that can explain an interruption",
+      "slug": "ambient-interruption-contracts",
+      "status": "planned",
+      "priority": "P2",
+      "keyword": "ambient computing",
+      "searchMetrics": {
+        "volume": 260,
+        "difficulty": 35,
+        "intentCode": "1"
+      },
+      "angle": "An interaction essay specifying evidence, authority and recovery around interruptions.",
+      "outline": [
+        "Define intervention trigger",
+        "state evidence",
+        "provide deferral and undo",
+        "test accessibility"
+      ],
+      "sources": [
+        "aria",
+        "injection",
+        "otel"
+      ],
+      "internalLinks": [
+        "ambient-ai",
+        "home-automation",
+        "G11"
+      ],
+      "grounding": [
+        "concepts/reliable-frontier-model-operating-system"
+      ],
+      "originalAsset": "Extend the existing ambient essay with concrete interruption contracts.",
+      "url": "https://n3wth.com/thinking/ambient-interruption-contracts"
+    }
+  ]
+}
