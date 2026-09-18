@@ -1,4 +1,4 @@
 ---
 title: garden
-description: Working notes. Linked.
+description: Interconnected notes on careers, learning, health, and building things.
 ---

@@ -4,6 +4,7 @@ import { getGraphData } from '@/lib/graph'
 import { WorldGardenClient } from '@/components/WorldGardenClient'
 import { HomePageClient } from '@/components/HomePageClient'
 import { ShimmerText } from '@/components/ShimmerText'
+import { Button } from '@n3wth/ui/primitives'
 import { PageHeader, SiteContainer } from '@n3wth/ui/site'
 
 import { site } from '@/lib/site'
@@ -47,7 +48,12 @@ export default async function HomePage() {
               building things.{' '}
               <span className="md:block">Each light is a note — the taller it grows, the more
               evergreen the idea.</span>
-            </>} />
+            </>} actions={
+              <>
+                <Button label="Browse all notes" variant="primary" href="/notes" />
+                <Button label="Open a random note" variant="secondary" href="/random" />
+              </>
+            } />
         </SiteContainer>
 
         <div className="home-garden-stage relative">

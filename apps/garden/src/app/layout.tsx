@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: 'n3wth/garden',
     template: '%s | n3wth/garden',
   },
-  description: 'Working notes. Linked.',
+  description: site.description,
   metadataBase: new URL(site.url),
   alternates: {
     canonical: './',
@@ -93,7 +93,7 @@ export default function RootLayout({
               '@type': 'WebSite',
               name: 'n3wth/garden',
               url: site.url,
-              description: 'Working notes. Linked.',
+              description: site.description,
               author: { '@type': 'Person', name: 'Oliver Newth', url: site.parentUrl },
             }),
           }}
