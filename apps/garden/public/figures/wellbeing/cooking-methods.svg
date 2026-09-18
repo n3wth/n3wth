@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="660" viewBox="0 0 960 660" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+}
+</style>
 <title id="title">Classify by heat and moisture</title>
 <desc id="desc">Comparison matrix distinguishes dry heat using air, radiation or fat; moist heat using water, other liquid or steam, including water-bath sous vide; and combination cooking with dry and moist stages.</desc>
 <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#6e6e73"/></marker></defs>

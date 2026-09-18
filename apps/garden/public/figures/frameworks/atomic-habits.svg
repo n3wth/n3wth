@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="770" viewBox="0 0 960 770" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [fill="#0071a4"] { fill: #054a6b; }
+  [fill="#0a5c22"] { fill: #0a5c22; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [stroke="#c7c7cc"] { stroke: rgba(8, 9, 11, 0.2); }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [fill="#0071a4"] { fill: #a9e5ff; }
+  [fill="#0a5c22"] { fill: #8ef2ab; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [stroke="#c7c7cc"] { stroke: rgba(255, 255, 255, 0.17); }
+}
+</style>
 <title id="title">Design the next repetition</title><desc id="desc">A four-part loop illustrates leaving a book visible, anticipating an enjoyable break, reading one page, then enjoying and recording the session. The example pairs each stage with one of Clear’s behavior-change levers.</desc>
 <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L9 4.5L0 9Z" fill="#6e6e73"/></marker></defs>
 <rect width="960" height="770" fill="#f5f5f7"/><g font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"><text x="40" y="59" font-size="36" font-weight="600" fill="#1d1d1f" text-anchor="start"><tspan x="40" dy="0">Design the next repetition</tspan></text><text x="40" y="98" font-size="24" font-weight="400" fill="#6e6e73" text-anchor="start"><tspan x="40" dy="0">An illustrative reading habit using the four behavior-change levers</tspan></text><text x="62" y="188" font-size="28" font-weight="600" fill="#0071a4" text-anchor="start"><tspan x="62" dy="0">Cue → obvious</tspan></text><text x="62" y="228" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start"><tspan x="62" dy="0">A book is visible</tspan><tspan x="62" dy="32.5">beside the chair.</tspan></text><text x="542" y="188" font-size="28" font-weight="600" fill="#0071a4" text-anchor="start"><tspan x="542" dy="0">Craving → attractive</tspan></text><text x="542" y="228" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start"><tspan x="542" dy="0">Anticipate a quiet</tspan><tspan x="542" dy="32.5">break with a good story.</tspan></text><text x="542" y="483" font-size="28" font-weight="600" fill="#0a5c22" text-anchor="start"><tspan x="542" dy="0">Response → easy</tspan></text><text x="542" y="523" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start"><tspan x="542" dy="0">Read one page</tspan><tspan x="542" dy="32.5">after sitting down.</tspan></text><text x="62" y="483" font-size="28" font-weight="600" fill="#0a5c22" text-anchor="start"><tspan x="62" dy="0">Reward → satisfying</tspan></text><text x="62" y="523" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start"><tspan x="62" dy="0">Enjoy the story;</tspan><tspan x="62" dy="32.5">mark the session complete.</tspan></text><path d="M440 235H507" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M720 320V432" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M520 530H453" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M240 445V333" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><text x="480" y="374" font-size="28" font-weight="600" fill="#1d1d1f" text-anchor="middle"><tspan x="480" dy="0">One small</tspan><tspan x="480" dy="36.4">reading habit</tspan></text><text x="40" y="674" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start"><tspan x="40" dy="0">Change the environment and the friction around the action.</tspan></text><path d="M40 708H920" fill="none" stroke="#c7c7cc" stroke-width="3"/><text x="40" y="742" font-size="22" font-weight="400" fill="#6e6e73" text-anchor="start"><tspan x="40" dy="0">Conceptual illustration • not measured data</tspan></text></g></svg>

@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="765" viewBox="0 0 960 765" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [fill="#054a6b"] { fill: #054a6b; }
+  [fill="#0a5c22"] { fill: #0a5c22; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [fill="#054a6b"] { fill: #a9e5ff; }
+  [fill="#0a5c22"] { fill: #8ef2ab; }
+}
+</style>
 <title id="title">Sequence the planting work</title>
 <desc id="desc">Two preparations run in parallel: acclimating seedlings and preparing supports and irrigation. They converge at transplanting, followed by observation and watering adjustments.</desc>
 <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#6e6e73"/></marker></defs>

@@ -1,4 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="850" viewBox="0 0 960 850" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [fill="#054a6b"] { fill: #054a6b; }
+  [fill="#ffffff"] { fill: #ffffff; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [fill="#e8e8ed"] { fill: #e8e8ed; }
+  [stroke="#e8e8ed"] { stroke: #e8e8ed; }
+  [stroke="#1d1d1f"] { stroke: #1d1d1f; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [fill="#054a6b"] { fill: #a9e5ff; }
+  [fill="#ffffff"] { fill: #0d0e10; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [fill="#e8e8ed"] { fill: #131316; }
+  [stroke="#e8e8ed"] { stroke: #131316; }
+  [stroke="#1d1d1f"] { stroke: #f2f3f5; }
+}
+</style>
 <title id="title">Adjust the workstation to the task</title>
 <desc id="desc">An original front-view workstation schematic shows a raised screen on a stand, a separate keyboard and a nearby mouse. Callouts identify screen top near eye level, display directly in front, keyboard just below elbow height, and mouse in line with the elbow. It is not a scale drawing or an individual ergonomic assessment.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6e73"/></marker></defs>

@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="730" viewBox="0 0 960 730" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [fill="#ffffff"] { fill: #ffffff; }
+  [stroke="#1d1d1f"] { stroke: #1d1d1f; }
+  [fill="#e8e8ed"] { fill: #e8e8ed; }
+  [stroke="#0071a4"] { stroke: #054a6b; }
+  [stroke="#8a1006"] { stroke: #8a1006; }
+  [fill="#054a6b"] { fill: #054a6b; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [fill="#ffffff"] { fill: #0d0e10; }
+  [stroke="#1d1d1f"] { stroke: #f2f3f5; }
+  [fill="#e8e8ed"] { fill: #131316; }
+  [stroke="#0071a4"] { stroke: #a9e5ff; }
+  [stroke="#8a1006"] { stroke: #ffb3ae; }
+  [fill="#054a6b"] { fill: #a9e5ff; }
+}
+</style>
 <title id="title">Design for cleaner indoor air</title>
 <desc id="desc">Conceptual room plan shows three indoor-air actions: remove or reduce pollution sources, ventilate appropriately, and supplement with air filtration. A crossed source symbol is distinct from a filter and an incoming-air opening.</desc>
 <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#6e6e73"/></marker></defs>
