@@ -1,15 +1,17 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "n3wth-skills-preview",
+  "name": "n3wth-skills",
   "compatibility_date": "2026-09-18",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "workers_dev": false,
   "preview_urls": false,
+  "routes": [{ "pattern": "skills.n3wth.com", "custom_domain": true }],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "vars": { "BETTER_AUTH_URL": "https://skills.n3wth.com" },
   "d1_databases": [
     {
       "binding": "DB",
@@ -21,7 +23,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "n3wth-skills-preview"
+      "service": "n3wth-skills"
     }
   ]
 }

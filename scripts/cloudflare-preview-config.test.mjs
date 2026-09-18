@@ -4,8 +4,31 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createPreviewConfig, noindexWrapper, parseJsonc, previewIdentity, writePreviewConfig } from './cloudflare-preview-config.mjs'
+import { siteUrls } from '../packages/site-config/index.js'
 
 const accountId = 'ac23513945eb49f73a89faf1be12384e'
+
+test('each production config has its canonical domain and preview replaces its identity', () => {
+  const sites = { portfolio: 'home', 'ui-docs': 'ui', garden: 'garden', kit: 'kit', skills: 'skills', 'r3-web': 'r3' }
+  for (const [app, site] of Object.entries(sites)) {
+    const source = parseJsonc(readFileSync(new URL(`../apps/${app}/wrangler.jsonc`, import.meta.url), 'utf8'))
+    assert.equal(source.name, `n3wth-${app}`)
+    assert.deepEqual(source.routes, [{ pattern: new URL(siteUrls[site]).hostname, custom_domain: true }])
+    if (source.services) assert.equal(source.services[0].service, source.name)
+    const original = structuredClone(source)
+    const { config } = createPreviewConfig({
+      source, sourcePath: `/repo/apps/${app}/wrangler.jsonc`, root: '/repo', app, pr: 23, accountId,
+      previewBindings: { d1_databases: [{ binding: 'DB', database_id: 'preview-only' }] },
+    })
+    assert.equal(config.name, `n3wth-${app}-pr-23`)
+    assert.notDeepEqual(config.routes, source.routes)
+    if (app === 'skills') {
+      assert.equal(config.vars.BETTER_AUTH_URL, 'https://skills-pr-23.preview.n3wth.com')
+      assert.equal(config.d1_databases[0].database_id, 'preview-only')
+    }
+    assert.deepEqual(source, original)
+  }
+})
 
 test('supports only fixed app slugs and deterministic identities', () => {
   assert.deepEqual(previewIdentity('skills', 23), { workerName: 'n3wth-skills-pr-23', host: 'skills-pr-23.preview.n3wth.com' })

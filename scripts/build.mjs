@@ -9,6 +9,10 @@ export function parseBuildArgs(args) {
   const parsed = { list: false, cacheUi: false, workspaces: [] }
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index]
+    if (arg === '--cloudflare') {
+      parsed.cloudflare = true
+      continue
+    }
     if (arg === '--cache-ui') {
       parsed.cacheUi = true
       continue
@@ -59,7 +63,20 @@ function readLockfile(root) {
   }
 }
 
-export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = false } = {}) {
+export function workspaceBuildArgs(workspace, cloudflare = false) {
+  const openNext = ['garden', 'kit', 'skills', 'r3-web'].map(app => `@n3wth/${app}`)
+  return cloudflare && openNext.includes(workspace)
+    ? ['exec', '--workspace', workspace, '--', 'opennextjs-cloudflare', 'build']
+    : ['run', 'build', '--workspace', workspace]
+}
+
+export function checkCloudflareToolchain(nodeVersion = process.versions.node, npmVersion) {
+  if (nodeVersion.split('.')[0] !== '24' || npmVersion !== '11.19.1') {
+    throw new Error('Cloudflare builds require Node 24 and npm 11.19.1. Run npm ci with these versions first.')
+  }
+}
+
+export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = false, cloudflare = false } = {}) {
   for (const workspace of order) {
     const key = cacheUi && workspace === '@n3wth/ui' ? uiBuildKey(cwd) : undefined
     if (key && restoreUiBuild(cwd, key)) {
@@ -67,7 +84,7 @@ export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = fa
       continue
     }
     if (key) console.log('@n3wth/ui: cache miss; building')
-    const result = spawn('npm', ['run', 'build', '--workspace', workspace], { cwd, stdio: 'inherit' })
+    const result = spawn('npm', workspaceBuildArgs(workspace, cloudflare), { cwd, stdio: 'inherit' })
     if (result.error) throw result.error
     if (result.status !== 0) process.exit(result.status ?? 1)
     if (key) saveUiBuild(cwd, key)
@@ -77,6 +94,11 @@ export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = fa
 function main() {
   const root = fileURLToPath(new URL('../', import.meta.url))
   const options = parseBuildArgs(process.argv.slice(2))
+  if (options.cloudflare && !options.list) {
+    const npm = spawnSync('npm', ['--version'], { encoding: 'utf8' })
+    if (npm.error) throw npm.error
+    checkCloudflareToolchain(process.versions.node, npm.stdout?.trim())
+  }
   const order = buildOrder(readWorkspaces(root), options.workspaces, readLockfile(root))
   if (options.list) {
     console.log(JSON.stringify(order))

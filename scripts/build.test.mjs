@@ -4,9 +4,15 @@ import { spawnSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { affectedWorkspaces, readWorkspaces } from './affected.mjs'
-import { buildOrder, parseBuildArgs } from './build.mjs'
+import { buildOrder, checkCloudflareToolchain, parseBuildArgs, runWorkspaceBuilds, workspaceBuildArgs } from './build.mjs'
 
 const repo = fileURLToPath(new URL('../', import.meta.url))
+
+test('Cloudflare builds reject unsupported Node and npm versions before building', () => {
+  assert.doesNotThrow(() => checkCloudflareToolchain('24.21.0', '11.19.1'))
+  assert.throws(() => checkCloudflareToolchain('22.22.3', '11.19.1'), /require Node 24/)
+  assert.throws(() => checkCloudflareToolchain('24.21.0', '10.9.8'), /require Node 24/)
+})
 const apps = ['@n3wth/garden', '@n3wth/kit', '@n3wth/portfolio', '@n3wth/r3-web', '@n3wth/skills', '@n3wth/ui-docs']
 const graph = [
   { name: '@n3wth/site-config', path: 'packages/site-config' },
@@ -25,6 +31,25 @@ const lock = {
     'node_modules/@n3wth/site-config': { link: true, resolved: 'packages/site-config' },
   },
 }
+
+test('Cloudflare uses the same dependency graph and builds each package only once', () => {
+  assert.equal(parseBuildArgs(['--cloudflare']).cloudflare, true)
+  const calls = []
+  const order = buildOrder(graph, apps, lock)
+  runWorkspaceBuilds(order, (command, args) => {
+    calls.push({ command, args })
+    return { status: 0 }
+  }, repo, { cloudflare: true })
+  assert.equal(calls.length, order.length)
+  assert.deepEqual(calls[0].args, ['run', 'build', '--workspace', '@n3wth/ui'])
+  for (const app of ['garden', 'kit', 'skills', 'r3-web']) {
+    assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'build'])
+    assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`), ['run', 'build', '--workspace', `@n3wth/${app}`])
+  }
+  for (const app of ['portfolio', 'ui-docs']) {
+    assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`, true), ['run', 'build', '--workspace', `@n3wth/${app}`])
+  }
+})
 
 test('root build covers all six apps and the UI package once, in dependency order', () => {
   const order = buildOrder(graph, [], lock)

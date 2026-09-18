@@ -27,6 +27,12 @@ Deployment cutover and rollback are separate from source preparation. See docs/w
 
 ## Deployment policy
 
+Cloudflare builds use `npm run build:cloudflare`, with optional repeated
+`--workspace @n3wth/<app>` arguments. This reuses the dependency-aware build
+script. Each app's `wrangler.jsonc` targets production; preview configs are
+generated with isolated identities and bindings. Do not copy generated OpenNext
+output between build environments. See the deployment runbook before deploying.
+
 All six Vercel sites use automatic Git deployments. Preserve `git.deploymentEnabled: true` in every app's vercel.json and the site generator. Feature branches and pull requests create Preview deployments; commits on the configured production branch (`main`) create Production deployments. Vercel project settings must keep `main` as the production branch.
 
 Keep GitHub CI enabled and wait for passing checks before merging. The current branch ruleset does not require CI or pull requests, and CI and Vercel deployments may run independently. Verify the target environment, successful deployment, and live behavior before reporting a release complete. Follow [the deployment runbook](docs/workspace/deployment.md), including its rollback guidance. Keep native Vercel unaffected-project skipping enabled so unchanged projects do not build.

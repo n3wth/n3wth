@@ -134,6 +134,9 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   config.preview_urls = false
   config.routes = [{ pattern: identity.host, custom_domain: true }]
   delete config.route
+  // Production-only environment sections must never survive a preview override.
+  delete config.env
+  if (app === 'skills') config.vars = { ...config.vars, BETTER_AUTH_URL: `https://${identity.host}` }
   if (config.assets?.directory) config.assets = { ...config.assets, directory: absolutePath(config.assets.directory, sourcePath) }
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)
   if (config.main) config.main = absolutePath(config.main, sourcePath)
