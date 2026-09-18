@@ -39,8 +39,32 @@ Never deploy generated preview config to production or point a preview at the
 production database.
 
 A build or dry run does not prove live readiness. Check TLS, page content, assets
-and the app's required API behavior on the target domain. Production automation,
-readiness gates, D1 setup and rollback tracking remain separate work.
+and the app's required API behavior on the target domain. Readiness gates, D1
+setup and rollback tracking remain separate work.
+
+## Automated production release
+
+`.github/workflows/cloudflare-release.yml` releases the six sites. It runs after
+Site CI, through a `workflow_run` trigger. It releases a commit only when the Site
+CI run for that same commit on main passed, so a merge to main no longer needs a
+manual Wrangler run.
+
+The release job selects the changed sites the same way the preview job does. It
+compares the merge commit against its first parent, the previously released tree,
+with `scripts/affected.mjs --list --deployment`. It builds them with
+`npm run build:cloudflare`, then runs `wrangler deploy --config
+apps/<app>/wrangler.jsonc` for each. A commit that changes no site releases
+nothing. A root commit has no parent, so the job releases every site.
+
+Releases run one at a time in commit order. A later main commit waits for the
+current release instead of cancelling it, so no commit skips its own deploy. The
+job needs the `CLOUDFLARE_API_TOKEN` repository secret. The set of deployed sites
+lives in `scripts/deploy-apps.mjs`, the one list both the preview and release
+workflows read.
+
+A green release still does not prove live readiness. Readiness gates and rollback
+tracking are separate work; verify the target domains after a release until those
+land.
 
 ## Vercel: manual fallback only
 
