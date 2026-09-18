@@ -8,7 +8,6 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import {
   cloudflareApi,
-  createGeneratedConfig,
   deployPreview,
   deletePreview,
   injectPreviewHeaders,
@@ -19,16 +18,25 @@ import {
   runWrangler,
   stagePreviewAssets,
 } from './cloudflare-preview.mjs'
+import { createPreviewConfig } from './cloudflare-preview-config.mjs'
+
+const accountId = 'ac23513945eb49f73a89faf1be12384e'
 
 test('accepts only the supported action, app, and positive PR syntax', () => {
   assert.deepEqual(parseCliArgs(['config', '--app', 'ui-docs', '--pr', '12']), { action: 'config', app: 'ui-docs', pr: 12 })
+  assert.deepEqual(parseCliArgs(['deploy', '--app', 'skills', '--pr', '5', '--bindings-json', '{"d1_databases":[]}']), {
+    action: 'deploy', app: 'skills', pr: 5, bindings: { d1_databases: [] },
+  })
   for (const args of [
-    ['deploy', '--app', 'portfolio', '--pr', '1'],
+    ['deploy', '--app', 'production', '--pr', '1'],
     ['deploy', '--app', 'ui-docs', '--pr', '0'],
     ['deploy', '--app', 'ui-docs', '--pr', '-1'],
     ['deploy', '--app', 'ui-docs', '--pr', '1.5'],
     ['deploy', '--app', 'ui-docs', '--pr', '9007199254740992'],
     ['deploy', '--app', 'ui-docs', '--pr', '1', '--name', 'production'],
+    ['deploy', '--app', 'garden', '--pr', '1', '--bindings-json', 'not-json'],
+    ['deploy', '--app', 'garden', '--pr', '1', '--bindings-json', '[1]'],
+    ['config', '--app', 'kit', '--pr', '2', '--bindings-json', '{}', '--bindings-json', '{}'],
   ]) assert.throws(() => parseCliArgs(args))
 })
 
@@ -37,23 +45,29 @@ test('preview identity is stable and scoped to the fixed app', () => {
     workerName: 'n3wth-ui-docs-pr-42',
     host: 'ui-docs-pr-42.preview.n3wth.com',
   })
+  assert.deepEqual(previewIdentity('portfolio', 9), {
+    workerName: 'n3wth-portfolio-pr-9',
+    host: 'portfolio-pr-9.preview.n3wth.com',
+  })
   assert.throws(() => previewIdentity('ui-docs', 0))
   assert.throws(() => previewIdentity('anything', 42))
 })
 
-test('reads JSONC and generates an exact custom-domain config without source mutation', () => {
+test('reads JSONC and generates an exact static custom-domain config without source mutation', () => {
   const sourcePath = '/repo/apps/ui-docs/wrangler.jsonc'
   const source = parseJsonc('{\n // comment\n "name": "source",\n "main": "./worker.js",\n "assets": { "directory": "./dist", },\n "routes": [{"pattern":"production.example"}]\n}')
-  const generated = createGeneratedConfig({
+  const generated = createPreviewConfig({
     source,
     sourcePath,
-    accountId: 'ac23513945eb49f73a89faf1be12384e',
-    identity: previewIdentity('ui-docs', 7),
-    assetsDirectory: '/repo/.cloudflare/ui-docs-pr-7/assets',
+    root: '/repo',
+    app: 'ui-docs',
+    pr: 7,
+    accountId,
   })
-  assert.equal(generated.name, 'n3wth-ui-docs-pr-7')
-  assert.equal(generated.main, '/repo/apps/ui-docs/worker.js')
-  assert.deepEqual(generated.routes, [{ pattern: 'ui-docs-pr-7.preview.n3wth.com', custom_domain: true }])
+  assert.equal(generated.config.name, 'n3wth-ui-docs-pr-7')
+  assert.equal(generated.config.main, '/repo/apps/ui-docs/worker.js')
+  assert.equal(generated.config.assets.directory, '/repo/apps/ui-docs/dist')
+  assert.deepEqual(generated.config.routes, [{ pattern: 'ui-docs-pr-7.preview.n3wth.com', custom_domain: true }])
   assert.equal(source.name, 'source')
   assert.deepEqual(source.routes, [{ pattern: 'production.example' }])
 })
@@ -190,6 +204,7 @@ test('deploy permits an unclaimed exact hostname and checks DNS before Wrangler'
   assert.match(requests[0][0], /workers\/domains\?hostname=ui-docs-pr-8\.preview\.n3wth\.com/)
   assert.match(requests[1][0], /dns_records\?name=ui-docs-pr-8\.preview\.n3wth\.com/)
   assert.equal(requests[0][1].headers.Authorization, 'Bearer test-token')
+  assert.equal(result.config.assets.directory, join(root, '.cloudflare', 'ui-docs-pr-8', 'assets'))
 })
 
 test('deploy refuses a custom domain owned by another Worker before Wrangler runs', async t => {
@@ -302,6 +317,109 @@ test('command errors preserve relevant context and redact token-shaped values', 
     run: () => ({ status: 1, stderr: 'Error: custom domain could not be removed\nSee request log', stdout: 'api_token=secret-value' }), log: () => {},
     fetchFn: async () => cloudflareResponse([]),
   }), error => error.message.includes('custom domain could not be removed') && !error.message.includes('secret-value'))
+})
+
+test('OpenNext deploy generates a noindex wrapper, rebinds self service, and skips staging', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-opennext-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const appRoot = join(root, 'apps', 'skills')
+  mkdirSync(join(appRoot, '.open-next', 'assets'), { recursive: true })
+  writeFileSync(join(appRoot, 'wrangler.jsonc'), JSON.stringify({
+    main: '.open-next/worker.js',
+    assets: { directory: '.open-next/assets', binding: 'ASSETS' },
+    services: [{ binding: 'WORKER_SELF_REFERENCE', service: 'n3wth-skills-preview' }],
+  }))
+  const calls = []
+  const result = await deployPreview({
+    appRoot,
+    root,
+    app: 'skills',
+    pr: 11,
+    env: {
+      CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
+      CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
+      CLOUDFLARE_API_TOKEN: 'test-token',
+    },
+    run: (...args) => { calls.push(args); return { status: 0, stdout: 'deployed' } },
+    log: () => {},
+    fetchFn: async () => cloudflareResponse([]),
+  })
+  assert.equal(result.workerName, 'n3wth-skills-pr-11')
+  assert.equal(result.host, 'skills-pr-11.preview.n3wth.com')
+  assert.equal(result.assetsDirectory, undefined)
+  assert.deepEqual(calls[0][1].slice(1), ['deploy', '--config', result.configPath])
+  assert.equal(result.config.main, join(result.directory, 'preview-noindex-worker.mjs'))
+  assert.equal(result.config.services[0].service, 'n3wth-skills-pr-11')
+  assert.equal(result.config.assets.directory, join(appRoot, '.open-next', 'assets'))
+  const wrapper = readFileSync(result.config.main, 'utf8')
+  assert.match(wrapper, /from ".*\.open-next\/worker\.js"/)
+  assert.match(wrapper, /X-Robots-Tag.*noindex, nofollow/)
+})
+
+test('OpenNext deploy fails without explicit per-preview stateful bindings', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-bindings-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const appRoot = join(root, 'apps', 'garden')
+  mkdirSync(join(appRoot, '.open-next', 'assets'), { recursive: true })
+  writeFileSync(join(appRoot, 'wrangler.jsonc'), JSON.stringify({
+    main: '.open-next/worker.js',
+    assets: { directory: '.open-next/assets', binding: 'ASSETS' },
+    d1_databases: [{ binding: 'DB', database_id: 'production-db' }],
+  }))
+  let ranWrangler = false
+  await assert.rejects(() => deployPreview({
+    appRoot,
+    root,
+    app: 'garden',
+    pr: 12,
+    env: {
+      CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
+      CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
+      CLOUDFLARE_API_TOKEN: 'test-token',
+    },
+    run: () => { ranWrangler = true; return { status: 0 } },
+    log: () => {},
+    fetchFn: async () => cloudflareResponse([]),
+  }), /d1_databases must use explicit per-preview bindings/)
+  assert.equal(ranWrangler, false)
+})
+
+test('portfolio stages dist with public headers and redirects under the noindex wrapper', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-portfolio-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const appRoot = join(root, 'apps', 'portfolio')
+  mkdirSync(join(appRoot, 'dist'), { recursive: true })
+  mkdirSync(join(appRoot, 'public'), { recursive: true })
+  writeFileSync(join(appRoot, 'dist', 'index.html'), '<html></html>')
+  writeFileSync(join(appRoot, 'public', '_headers'), '/*\n  X-Frame-Options: DENY\n')
+  writeFileSync(join(appRoot, 'public', '_redirects'), '/old /new 301\n')
+  writeFileSync(join(appRoot, 'wrangler.jsonc'), JSON.stringify({
+    main: './worker.ts',
+    assets: { directory: './dist', binding: 'ASSETS' },
+  }))
+  const result = await deployPreview({
+    appRoot,
+    root,
+    app: 'portfolio',
+    pr: 5,
+    env: {
+      CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
+      CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
+      CLOUDFLARE_API_TOKEN: 'test-token',
+    },
+    run: () => ({ status: 0, stdout: 'deployed' }),
+    log: () => {},
+    fetchFn: async () => cloudflareResponse([]),
+  })
+  const staged = readFileSync(join(result.assetsDirectory, '_headers'), 'utf8')
+  assert.match(staged, /X-Frame-Options: DENY/)
+  assert.match(staged, /X-Robots-Tag: noindex, nofollow/)
+  assert.equal(readFileSync(join(result.assetsDirectory, '_redirects'), 'utf8'), '/old /new 301\n')
+  assert.equal(readFileSync(join(appRoot, 'dist', 'index.html'), 'utf8'), '<html></html>')
+  assert.equal(readFileSync(join(appRoot, 'public', '_headers'), 'utf8'), '/*\n  X-Frame-Options: DENY\n')
+  assert.equal(result.config.main, join(result.directory, 'preview-noindex-worker.mjs'))
+  assert.match(readFileSync(result.config.main, 'utf8'), /worker\.ts/)
+  assert.equal(result.config.assets.directory, result.assetsDirectory)
 })
 
 function cloudflareResponse(result, { status = 200, success = true, errors = [] } = {}) {
