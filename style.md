@@ -18,6 +18,7 @@ Use the existing system; do not introduce another visual scale or a new set of c
 - Keep the reset layer below Astryx component styles. Check computed styles: utility classes can be overridden by component resets or layer order even when present in markup.
 - Parents own spacing between components. Put documentation margins or gaps on layout wrappers when the child owns its own margin reset. Do not escalate to `!important` or per-app shared-selector overrides.
 - Use shared container gutters and section spacing. A bulletless list has no leftover bullet indentation.
+- Prose lists use outside markers and inline padding so wrapped lines align with the text, not the marker.
 - Shared footer containers inherit footer color. Do not reset nested text to primary ink.
 - Put responsive visibility on a wrapper when a shared component owns its display layout.
 

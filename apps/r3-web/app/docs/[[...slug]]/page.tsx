@@ -99,12 +99,12 @@ const components = {
     <p className="text-ink-dim mb-4 leading-relaxed">{children}</p>
   ),
   ul: ({ children }: any) => (
-    <ul className="text-ink-dim mb-4 space-y-2 list-disc list-inside">
+    <ul className="text-ink-dim mb-4 space-y-2 list-disc list-outside pl-6">
       {children}
     </ul>
   ),
   ol: ({ children }: any) => (
-    <ol className="text-ink-dim mb-4 space-y-2 list-decimal list-inside">
+    <ol className="text-ink-dim mb-4 space-y-2 list-decimal list-outside pl-6">
       {children}
     </ol>
   ),

@@ -16,8 +16,9 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Use `SiteNavigation`, `PageHeader`, `SiteContainer`, `SiteSection` and `SiteFooter`.
 - One persistent top navbar. Do not stack a second sticky mobile heading or section selector beneath it.
 - For a few section or documentation destinations, use `SiteSectionLinks`: plain wrapping links in page flow, without a selected-section marker. Persistent desktop sidebars may track the current section.
+- For a grouped documentation hierarchy on compact screens, use one disclosure in page flow. Include every page, mark the current page and close it after navigation; do not duplicate it with a row of section links.
 - Use a clear title and short description in a hero. Omit actions that repeat navigation or merely jump to the content immediately below. Keep useful product actions such as installation or a resume download.
-- Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color.
+- Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color. Keep identity and links on one row whenever they fit, wrapping only when the content needs it.
 - Keep heading order semantic: one primary page heading, section headings below it, then item headings. Visual size does not determine heading level.
 - Paragraph copy uses regular weight (400) across all six sites, including article prose and lead paragraphs. Preserve heading, emphasis and control weights.
 

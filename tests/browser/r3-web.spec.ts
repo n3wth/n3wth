@@ -29,18 +29,23 @@ test('new page clicks start at top and Back restores the prior position', async 
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(700)
 })
 
-test('mobile docs section links wrap in the document and navigate', async ({ page }) => {
+test('compact docs menu supports keyboard access and closes after navigation', async ({ page }) => {
   await page.goto('/docs/introduction')
-  const sections = page.getByRole('navigation', { name: 'Documentation sections' })
+  const summary = page.locator('summary', { hasText: 'Browse docs' })
+  const all = page.getByRole('navigation', { name: 'All documentation', exact: true })
   if ((page.viewportSize()?.width ?? 1440) >= 1024) {
-    await expect(sections).toBeHidden()
+    await expect(summary).toBeHidden()
     return
   }
-  await expect(sections).toBeVisible()
-  await expect(sections).not.toHaveCSS('position', 'sticky')
-  await expect(sections.getByRole('link')).toHaveCount(7)
-  await sections.getByRole('link', { name: 'Integrations', exact: true }).click()
+  await expect(all).toBeHidden()
+  await summary.focus()
+  await summary.press('Enter')
+  await expect(all).toBeVisible()
+  await expect(all.getByRole('link', { name: 'Introduction', exact: true })).toHaveAttribute('aria-current', 'page')
+  await all.locator('a[href="/docs/integrations"]').click()
   await expect(page).toHaveURL(/\/docs\/integrations$/)
+  await expect(all).toBeHidden()
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
 })
 
@@ -56,7 +61,7 @@ test('docs navigation discloses its state on every viewport', async ({ page }) =
       page.getByRole('link', { name: 'Introduction', exact: true }).first()
     ).toHaveAttribute('aria-current', 'page')
   } else {
-    await page.locator('summary', { hasText: 'All documentation pages' }).click()
+    await page.locator('summary', { hasText: 'Browse docs' }).click()
     const all = page.getByRole('navigation', { name: 'All documentation', exact: true })
     await expect(all).toBeVisible()
     await all.getByRole('link', { name: 'Troubleshooting', exact: true }).click()
