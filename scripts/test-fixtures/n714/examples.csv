@@ -1,0 +1,2 @@
+id,occurred_at,recorded_at,payload,labels,total,count,enabled,note
+11111111-2222-4333-8444-555555555555,2025-01-02 03:04:05.123456+02:00,2025-01-02 03:04:05.654321,"{""z"":1,""a"":{""b"":2,""a"":1}}","{""first"",""second""}",900719925474099,42,t,synthetic note
