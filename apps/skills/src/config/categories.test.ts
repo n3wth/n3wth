@@ -1,9 +1,15 @@
 import { describe, it, expect } from 'vitest'
-import { categoryConfig } from './categories'
+import { categoryConfig, type CategoryId } from './categories'
 
 describe('categoryConfig', () => {
   it('should have configuration for all main categories', () => {
-    const expectedCategories = ['development', 'documents', 'creative', 'productivity', 'business']
+    const expectedCategories: CategoryId[] = [
+      'development',
+      'documents',
+      'creative',
+      'productivity',
+      'business',
+    ]
 
     expectedCategories.forEach(category => {
       expect(categoryConfig[category]).toBeDefined()
