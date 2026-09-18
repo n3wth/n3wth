@@ -1,5 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/src/lib/supabase-server'
+import { tryGetDatabase } from '@/src/server/db/d1'
+import { getAuth, getWorkerEnv, type SkillsWorkerEnv } from '@/src/server/auth/auth'
+import { commentsDelete, commentsGet, commentsPost } from '@/src/server/handlers/comments'
+
+async function commentsContext() {
+  const env = (await getWorkerEnv()) as SkillsWorkerEnv
+  const db = await tryGetDatabase()
+  let auth = null
+  if (db) {
+    try {
+      auth = getAuth(db, env)
+    } catch {
+      auth = null
+    }
+  }
+  return { db, auth }
+}
 
 /** GET /api/comments?skillId=x - list comments for a skill (flat, newest first) */
 export async function GET(request: NextRequest) {
@@ -8,90 +24,20 @@ export async function GET(request: NextRequest) {
   if (!skillId) {
     return NextResponse.json({ error: 'skillId required' }, { status: 400 })
   }
-
-  const supabase = await createServerSupabaseClient()
-  if (!supabase) {
+  const ctx = await commentsContext()
+  if (!ctx.db) {
     return NextResponse.json({ comments: [] })
   }
-
-  const { data, error } = await supabase
-    .from('comments')
-    .select('id, body, created_at, user_id')
-    .eq('skill_id', skillId)
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
-  }
-
-  // Fetch profiles for user_ids
-  const userIds = [...new Set((data || []).map((c: { user_id: string }) => c.user_id))]
-  const profileMap: Record<string, { username: string; display_name?: string }> = {}
-  if (userIds.length > 0) {
-    const { data: profiles } = await supabase
-      .from('profiles')
-      .select('id, username, display_name')
-      .in('id', userIds)
-    for (const p of profiles || []) {
-      profileMap[p.id] = { username: p.username, display_name: p.display_name }
-    }
-  }
-
-  return NextResponse.json({
-    comments: (data || []).map((c: { id: string; body: string; created_at: string; user_id: string }) => ({
-      id: c.id,
-      body: c.body,
-      created_at: c.created_at,
-      username: profileMap[c.user_id]?.username || 'Anonymous',
-      display_name: profileMap[c.user_id]?.display_name,
-    })),
-  })
+  const comments = await commentsGet(ctx.db, skillId)
+  return NextResponse.json({ comments })
 }
 
-/** POST /api/comments - create comment (auth required) */
+/** POST /api/comments - create comment (auth required; owner = session user) */
 export async function POST(request: NextRequest) {
-  const supabase = await createServerSupabaseClient()
-  if (!supabase) {
-    return NextResponse.json({ error: 'Auth not configured' }, { status: 503 })
-  }
+  return commentsPost(request, await commentsContext())
+}
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Sign in to comment' }, { status: 401 })
-  }
-
-  const body = await request.json().catch(() => ({}))
-  const { skillId, body: commentBody, parentId } = body as { skillId?: string; body?: string; parentId?: string }
-  if (!skillId || !commentBody?.trim()) {
-    return NextResponse.json({ error: 'skillId and body required' }, { status: 400 })
-  }
-
-  const { data, error } = await supabase
-    .from('comments')
-    .insert({
-      user_id: user.id,
-      skill_id: skillId,
-      parent_id: parentId || null,
-      body: commentBody.trim(),
-    })
-    .select('id, body, created_at, user_id')
-    .single()
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
-  }
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('username, display_name')
-    .eq('id', user.id)
-    .single()
-
-  return NextResponse.json({
-    comment: {
-      ...data,
-      username: profile?.username || user.user_metadata?.user_name || 'User',
-      display_name: profile?.display_name || user.user_metadata?.full_name,
-    },
-  })
+/** DELETE /api/comments?id=x - delete own comment (auth required) */
+export async function DELETE(request: NextRequest) {
+  return commentsDelete(request, await commentsContext())
 }

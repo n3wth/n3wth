@@ -62,3 +62,13 @@ CREATE TABLE IF NOT EXISTS verification (
   updatedAt TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS verification_identifier_idx ON verification(identifier);
+
+-- Durable rate limiting (better-auth rateLimit.storage = "database").
+-- Rows appear only when rateLimit.storage is "database"; counters persist in
+-- D1 so limits hold across requests/isolates.
+CREATE TABLE IF NOT EXISTS rateLimit (
+  id TEXT PRIMARY KEY NOT NULL,
+  key TEXT NOT NULL UNIQUE,
+  count INTEGER NOT NULL,
+  lastRequest INTEGER NOT NULL
+);
