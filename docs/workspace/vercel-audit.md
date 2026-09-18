@@ -110,3 +110,64 @@ Do this one app at a time, matching the migration contract's one-app-at-a-time r
 ## 7. Out-of-scope projects to preserve untouched
 
 lunchmoney-landing, lunchmoney-mcp, grosvenornewth, theywontshutup, markup, hop, n3wth-ui-v2. None of these are part of the Cloudflare migration. Do not change any config, billing or deployment setting for these projects as a result of this audit or the retirement checklist in section 6.
+
+## 8. Verified addendum (2026-09-18, CLI + Neon API)
+
+This section records live-verified facts that resolve the open items in sections 1-3. Read-only collection; no billing, project, or DNS change was made.
+
+### 8.1 Vercel project count and Node version
+
+`vercel projects ls --scope n3wth` confirms all 13 projects in section 1. Every project is on Node 24.x. Team `n3wth`.
+
+### 8.2 Integrations (resolved)
+
+`vercel integration list --scope n3wth --all` (run from the repo root, linked) returned the full integration inventory, resolving the "not confirmed" note in section 3. Neon and auth-relevant rows:
+
+| Integration | Product | Status | Attached project |
+| --- | --- | --- | --- |
+| newth-skills | Neon | Available | skills |
+| hop | Neon | Available | hop |
+| neon-indigo-nest | Neon | Available | none |
+| neon-red-mountain | Neon | Available | none |
+| neon-amethyst-park | Neon | Available | none |
+| neon-lime-car | Neon | Available | none |
+| newth-v0 | Neon | Available | none |
+| newth-ai | Neon | Available | none |
+| supabase-gray-school | Supabase | Suspended | none |
+| supabase-newth-v0 | Supabase | Suspended | none |
+
+Other available integrations (out of migration scope, preserve): posthog-n3wth (hop), firecrawl, ui-testing, parallel-hop, hopper/AssistLoop, upstash (x4, one suspended), Convex n3wth-canvas, AWS Aurora aws-apg-blue-island. Two Uninstalled rows (stripe-sandbox, upstash chat) are inert.
+
+Key findings:
+- Only `newth-skills` is attached to a migrating app (`skills`). It is the single Neon integration in cutover scope.
+- Both Supabase integrations are Suspended and unattached. Consistent with N-714's confirmation that there is no Supabase data to preserve.
+- `hop` Neon is attached to the out-of-scope `hop` project; leave untouched.
+
+### 8.3 Neon project inventory (Vercel-managed org)
+
+`neonctl projects list --org-id org-mute-wave-29181004` (the Vercel-managed "Vercel: n3wth" Launch org) returns 8 projects, all PostgreSQL 17. Sizes are synthetic storage:
+
+| Neon project | Created | Size (MB) | Maps to integration |
+| --- | --- | --- | --- |
+| newth-skills | 2026-01-27 | 31.7 | skills (migrating) |
+| newth-ai | 2026-01-16 | 33.1 | unattached |
+| hop | 2026-06-30 | 33.8 | hop (out of scope) |
+| neon-amethyst-park | 2026-04-06 | 32.4 | unattached |
+| newth-v0 | 2026-01-22 | 31.2 | unattached |
+| neon-lime-car | 2026-01-25 | 31.2 | unattached |
+| neon-indigo-nest | 2026-07-14 | 31.3 | unattached |
+| neon-red-mountain | 2026-06-03 | 31.0 | unattached |
+
+The personal (non-Vercel) org `oliver-newth-org-nameless-tree-03047938` (free plan) holds one project, `n3wth` (wispy-flower-13507303) — the hotline/agent database with `hop_*` tables. It is not Vercel-billed and is out of migration scope.
+
+### 8.4 Skills source-data snapshot (N-714 cross-reference)
+
+Read-only snapshot of `newth-skills` `neondb` on 2026-09-18 confirms the N-714 inventory: `public.votes` 7 rows, `public.analytics` 892 rows, `public.feature_requests` 0 rows, `neon_auth.users_sync` 0 rows. No `playground_usage` or `workflow_usage` tables. Data migration rehearsal tooling merged in PR #345.
+
+### 8.5 Remaining unconfirmed items
+
+- Whether the $100/month custom preview suffix add-on is actually billed (still dashboard-only).
+- Final per-integration billing plan lines (requires the Vercel billing page, not the CLI).
+- The one unlisted domain row from section 2 (cosmetic CLI output gap).
+
+No item in this addendum authorizes a billing, subscription, project, or data change.
