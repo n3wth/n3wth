@@ -14,7 +14,21 @@ I build agent infrastructure — memory, tooling, and interfaces that make AI sy
 - [skills](apps/skills) — reusable agent skills
 - [lunchmoney](https://lunchmoney.sh) — unofficial Lunch Money plugin for Claude, Codex, and Cursor
 
-## Site
+## Developer documentation
+
+The [developer documentation](docs/developers/index.mdx) covers UI, Kit, Skills,
+and r3 with installation guides, examples, reference material, and troubleshooting.
+It is a Docs7 project rooted at `docs/developers`:
+
+```bash
+npx @upstash/docs7 dev docs/developers
+```
+
+After the root `npm ci`, validate it with `node docs/developers/check.mjs`.
+See [publishing and setup](docs/developers/publishing.mdx) for the GitHub connection,
+production branch, and Context7 indexing configuration.
+
+## Workspace
 
 This repository contains six independently deployed sites in npm workspaces. Use Node 24 and install from the repository root.
 

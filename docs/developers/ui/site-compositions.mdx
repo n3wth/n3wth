@@ -1,0 +1,111 @@
+---
+title: "Site compositions"
+description: "Compose page frames, navigation, headings, document sections, and footers with @n3wth/ui/site."
+---
+
+Site components own the shared layout and typography. Your application supplies content, route links, and active state. Complete the [quickstart](/ui/quickstart) first; the examples here assume an ancestor `N3wthProvider` and an imported `site.css`.
+
+## Build a page frame
+
+```tsx
+import {
+  PageHeader,
+  SiteContainer,
+  SiteFooter,
+  SiteHeading,
+  SiteNavigation,
+  SiteSection,
+  SiteText,
+} from '@n3wth/ui/site'
+
+export function ReferencePage() {
+  return (
+    <>
+      <SiteNavigation
+        brand={<a href="/ui/quickstart">UI</a>}
+        links={<a href="/ui/site-compositions" aria-current="page">Compositions</a>}
+        actions={<a href="https://github.com/n3wth/n3wth">Source</a>}
+      />
+      <SiteContainer as="main" className="n3wth-site-main">
+        <PageHeader
+          title="Reference"
+          description="Shared page structure for a React application."
+          actions={<a href="#layout">Read the layout notes</a>}
+        />
+        <SiteSection id="layout">
+          <SiteHeading>Layout</SiteHeading>
+          <SiteText>Use one container to align the page content.</SiteText>
+        </SiteSection>
+      </SiteContainer>
+      <SiteFooter
+        brand={<a href="/ui/quickstart">UI documentation</a>}
+        links={<a href="https://github.com/n3wth/n3wth">Source</a>}
+      />
+    </>
+  )
+}
+```
+
+`n3wth-site-main` adds the top spacing used with site navigation. `SiteSection` adds vertical spacing; it does not add the container's horizontal constraints. Put sections inside a container, or put a container inside a full-width section when the section needs its own background.
+
+## Structure and typography reference
+
+| Component | Props and defaults | Use |
+| --- | --- | --- |
+| `SiteContainer` | `as`: `div` (default), `main`, `section`, `article`; HTML attributes | Constrain and align content |
+| `SiteSection` | Native section props | Separate page regions vertically |
+| `PageHeader` | Required `title`; optional `description`, `actions`, `aside`; `level`: 1 (default) or 2; `align`: `start` (default) or `center` | Introduce a page or major region |
+| `SiteHeading` | `variant`: `page`, `section` (default), `item`; optional `level`: 1–6 | Choose visual role and semantic heading level |
+| `SiteText` | `variant`: `body` (default), `supporting`, `lede`; `as`: `p` (default), `span`, `div` | Body text with shared typography |
+| `SiteSectionLinks` | Native nav props | In-flow links to sections or documents |
+| `SiteDocSection` | Optional `title`; `level`: 2 (default) or 3; HTML attributes | Group long-form content |
+| `SiteDocList` | Required `items`: React nodes; list attributes except `children` | Render a document list |
+
+Heading variants default to levels 1, 2, and 3 respectively. Set `level` explicitly when visual size and document hierarchy differ. `SiteDocSection` renders a `div`, not a semantic `section`.
+
+## Navigation behavior
+
+`SiteNavigation` requires `brand` and `links`, both React nodes. Optional props are `actions`, `navigationLabel` (default `Primary`), `navigationId`, and `menuLabel` (default `Open menu`). It accepts HTML attributes but does not take a `children` slot.
+
+Pass anchors or your router's link components. The current UI docs app passes React Router `NavLink` elements. The composition does not resolve routes or calculate which link is active.
+
+The mobile disclosure focuses the first link when opened. It closes on link selection, outside pointer interaction, Escape, or a transition to the desktop media query. Escape restores focus to the menu button. Keep navigation links as actual anchors so the click and focus behavior can find them.
+
+## Document content
+
+```tsx
+import { SiteDocList, SiteDocSection, SiteText } from '@n3wth/ui/site'
+
+export function Requirements() {
+  return (
+    <SiteDocSection title="Requirements">
+      <SiteText>Prepare the application before adding controls.</SiteText>
+      <SiteDocList items={[
+        'Use a supported React version.',
+        'Import the shared stylesheet once.',
+        'Mount the theme provider above the page.',
+      ]} />
+    </SiteDocSection>
+  )
+}
+```
+
+## Customize the footer deliberately
+
+`SiteFooter` defaults to an Oliver Newth brand link and Library, Contact, and GitHub links. For another product, pass your own `brand` and `links` as in the frame example.
+
+| Prop | Behavior |
+| --- | --- |
+| `brand` | React node; `null` omits the brand |
+| `links` | Replaces the complete default link group |
+| `sourceHref` | Changes the default GitHub link; defaults to the monorepo URL |
+| `legalLinks` | Appended only when using the default link group |
+| `children` | Additional footer metadata below the link row |
+
+Supplying `links` means `legalLinks` and `sourceHref` no longer construct that group. Include those links yourself when replacing it.
+
+## Sources
+
+- [Site component implementations and prop types](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/site/index.tsx)
+- [Shared layout CSS](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/site/site.css)
+- [Current documentation navigation](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/demo/SiteNav.tsx)

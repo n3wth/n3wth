@@ -1,0 +1,74 @@
+---
+title: Skills quickstart
+description: Choose and install your first skill, then understand catalog availability and assistant support.
+---
+
+Skills are Markdown instructions for a coding assistant. They describe when to apply a workflow, what steps to follow, and what output to produce. Installing a skill copies those instructions; it does not install the tools or libraries mentioned in them.
+
+Start with [installation](/skills/installation) to use an existing skill, or [authoring](/skills/authoring) to contribute one. The [CLI reference](/skills/cli) documents the separate command-line implementation and its limitations.
+
+## Install your first skill
+
+With Bash, Git, curl, and access to GitHub available, install `pdf` for the catalog's `gemini` target:
+
+```bash
+curl -fsSL https://skills.n3wth.com/install.sh -o /tmp/n3wth-skills-install.sh
+less /tmp/n3wth-skills-install.sh
+bash /tmp/n3wth-skills-install.sh gemini pdf
+test -s "$HOME/.gemini/skills/pdf.md"
+sed -n '1,60p' "$HOME/.gemini/skills/pdf.md"
+```
+
+The target is displayed as Antigravity CLI. The installer skips existing files; a successful file check confirms that instructions exist, not that the assistant has loaded them. Read the skill's prerequisites before asking the assistant to process a document. See [installation](/skills/installation) for staging, folder skills, and troubleshooting.
+
+## Find a skill
+
+Browse the [catalog](https://skills.n3wth.com). Search matches names, descriptions, and tags without case sensitivity. A category filter narrows the results. Sorting supports name in either direction, category, and the catalog's `lastUpdated` date. That date is maintained metadata, not a live Git timestamp.
+
+| Category ID | Scope |
+| --- | --- |
+| `development` | Coding, testing, and development workflows |
+| `documents` | PDF and office-document workflows |
+| `creative` | Art, animation, and visual design |
+| `productivity` | Tasks, automation, and workflows |
+| `business` | Strategy, analysis, and communication |
+
+Before installing, read the instruction file and check its tool prerequisites. For example, a PDF skill supplies guidance; it does not provision a Python environment or PDF dependencies.
+
+## Catalog entries and downloadable files
+
+The website reads the `skills` array in `apps/skills/src/data/skills.ts`. Each record contains an ID, descriptive metadata, version, and optional `skillFile` URL. Instructions live separately under `apps/skills/skills` in either layout:
+
+```text
+apps/skills/skills/pdf.md
+apps/skills/skills/gsap-animations/SKILL.md
+```
+
+A catalog record without `skillFile` is not a downloadable skill through the website's standard per-skill command. The command helper returns an empty string rather than installing the entire collection. Conversely, the shell installer selects files directly from the repository, not from the web catalog.
+
+| Distribution path | What it reads | What it installs |
+| --- | --- | --- |
+| Shell installer | `apps/skills/skills` from a fresh clone | A flat file or a complete skill directory; skips existing destinations |
+| Website per-skill command | The record's `skillFile` URL | One file saved as `~/.gemini/skills/<id>.md`; can overwrite an existing file |
+| `newth-skills` CLI source | Its own bundled catalog | One flat Markdown file plus a local tracking record; may generate fallback text |
+
+The CLI catalog is a separate array in `apps/skills/cli/src/utils/skills.ts`. It is not imported from the website, so names, versions, and available downloads can differ. See [CLI distribution caveats](/skills/cli).
+
+## Assistant support
+
+The general assistant configuration has one ID: `gemini`, displayed as **Antigravity CLI**. Its install directory is `~/.gemini/skills`. Keep using `gemini` in commands even though the displayed name differs.
+
+The `skill-creator` catalog entry additionally supplies a Claude Code recipe that writes `~/.claude/skills/skill-creator/SKILL.md`. This is a per-skill exception, not a `claude` target for the shell installer or CLI. The repository does not configure general installation targets for Codex, Cursor, or other assistants.
+
+## When a skill is missing
+
+- **Listed but no download:** inspect the record's `skillFile` and the committed instruction file. Metadata alone does not provide a downloadable workflow.
+- **Present on the website but absent from CLI search:** the two catalogs are maintained separately; use the website and shell installer for files present in the repository.
+- **Installed but not usable:** verify the destination and instruction content, then check the assistant's discovery behavior and any tools required by that particular skill.
+
+## Sources
+
+- [Web catalog and Skill interface](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/data/skills.ts)
+- [Web filtering and sorting](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/lib/skillSearch.ts)
+- [Assistant configuration](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/config/assistants.ts)
+- [Per-skill command generation](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/config/commands.ts)

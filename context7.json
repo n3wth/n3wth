@@ -1,0 +1,17 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "n3wth developer tools",
+  "description": "Developer guides for @n3wth/ui, Kit's component registry, agent Skills, and r3 memory: installation, working examples, configuration, and troubleshooting.",
+  "branch": "main",
+  "folders": ["docs/developers"],
+  "excludeFolders": ["node_modules", "dist"],
+  "excludeFiles": ["AGENTS.md", "CLAUDE.md", "README.md", "design.md", "style.md", "CHANGELOG.md", "LICENSE.md", "CODE_OF_CONDUCT.md"],
+  "rules": [
+    "Choose UI for an installed React design-system dependency and Kit for component source copied into the consuming project; their installation and update contracts differ.",
+    "Use @n3wth/ui/site for shared site compositions, @n3wth/ui/primitives for native controls, and one documented foundation stylesheet. Applications do not import Astryx directly.",
+    "Use Node 24 and npm 11.19.1 for monorepo development, install at the root, and build shared packages before consumers with root build commands.",
+    "The r3 website lives in apps/r3-web; its core runtime, Redis tests, and package release workflow remain in the separate n3wth/r3 repository.",
+    "Read and review skill instructions before installing them. Use the installation path documented for the chosen client; do not assume every client uses the same skill discovery format.",
+    "Verify commands, exports, and configuration against the relevant product guide. Keep credentials out of examples, client repositories, and documentation."
+  ]
+}
