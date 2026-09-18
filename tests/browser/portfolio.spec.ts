@@ -27,15 +27,28 @@ test('lazy content and its footer appear together', async ({ page }) => {
 })
 
 test('the project action reaches its anchor after a cold route load', async ({ page }) => {
+  // Keep GPU startup out of this routing check. Scene rendering is covered by
+  // the home-page checks; this also exercises navigation while it is loading.
+  let releaseScene: () => void = () => {}
+  const pendingScene = new Promise<void>(resolve => { releaseScene = resolve })
+  await page.route('**/assets/NightField-*.js', async route => {
+    await pendingScene
+    await route.continue()
+  })
   await page.route('**/assets/Work-*.js', async route => {
     await new Promise(resolve => setTimeout(resolve, 600))
     await route.continue()
   })
-  await page.goto('/')
-  await page.getByRole('link', { name: 'Explore my projects', exact: true }).click()
-  await expect(page).toHaveURL(/\/work#building$/)
-  await expect(page.locator('#building')).toBeInViewport()
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+  try {
+    await page.goto('/')
+    await page.getByRole('link', { name: 'Explore my projects', exact: true }).click()
+    await expect(page).toHaveURL(/\/work#building$/)
+    await expect(page.locator('#building')).toBeInViewport()
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+  } finally {
+    releaseScene()
+    await page.unrouteAll({ behavior: 'wait' })
+  }
 })
 
 test('missing-page recovery works with the keyboard', async ({ page }) => {

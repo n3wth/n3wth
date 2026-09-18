@@ -59,9 +59,11 @@ export function BentoCard({
           </div>
         )}
 
-        <SiteHeading variant="item" level={3} className="mb-2 break-words">
-          {title}
-        </SiteHeading>
+        <div className="mb-2">
+          <SiteHeading variant="item" level={3} className="break-words">
+            {title}
+          </SiteHeading>
+        </div>
 
         {description && (
           <SiteText className="break-words">

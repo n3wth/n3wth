@@ -173,9 +173,11 @@ export default function Home() {
           <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
             <div>
               <SiteText variant="supporting">1. Install components</SiteText>
-              <SiteText className="mt-2">
-                The standard shadcn CLI copies each component into your project.
-              </SiteText>
+              <div className="mt-2">
+                <SiteText>
+                  The standard shadcn CLI copies each component into your project.
+                </SiteText>
+              </div>
               <div className="mt-4">
                 <InstallCommand command="npx shadcn add https://kit.n3wth.com/r/button.json" />
               </div>
@@ -183,24 +185,28 @@ export default function Home() {
 
             <div>
               <SiteText variant="supporting">2. Add context pack</SiteText>
-              <SiteText className="mt-2">
-                Download the file for your AI tool. It teaches the tool how to
-                use the components.
-              </SiteText>
+              <div className="mt-2">
+                <SiteText>
+                  Download the file for your AI tool. It teaches the tool how to
+                  use the components.
+                </SiteText>
+              </div>
               <div className="mt-4">
                 <InstallCommand command="curl -o GEMINI.md https://kit.n3wth.com/ai/GEMINI.md" />
               </div>
             </div>
           </div>
 
-          <SiteText className="mt-6">
-            <Link
-              href="/docs/getting-started"
-              className="underline underline-offset-4 hover:text-ink"
-            >
-              Full setup guide →
-            </Link>
-          </SiteText>
+          <div className="mt-6">
+            <SiteText>
+              <Link
+                href="/docs/getting-started"
+                className="underline underline-offset-4 hover:text-ink"
+              >
+                Full setup guide →
+              </Link>
+            </SiteText>
+          </div>
         </SiteContainer>
       </SiteSection>
     </main>

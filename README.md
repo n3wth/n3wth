@@ -29,13 +29,13 @@ npm run check           # Library and app validation in dependency order
 npm run check:browser   # Portfolio, UI docs and Kit after building
 ```
 
-Applications live in `apps/portfolio`, `apps/ui-docs`, `apps/garden`, `apps/skills`, `apps/kit` and `apps/r3-web`. Shared packages live in `packages/ui` and `packages/site-config`. See [workspace architecture](docs/workspace/architecture.md), [deployment steps](docs/workspace/deployment.md) and [maintenance ownership](docs/workspace/maintenance.md). Public UI publishing remains in n3wth/ui and r3 core releases remain in n3wth/r3.
+Applications live in `apps/portfolio`, `apps/ui-docs`, `apps/garden`, `apps/skills`, `apps/kit` and `apps/r3-web`. Shared packages live in `packages/ui` and `packages/site-config`. See [workspace architecture](docs/workspace/architecture.md), [deployment steps](docs/workspace/deployment.md) and [maintenance ownership](docs/workspace/maintenance.md). Npm releases of `@n3wth/ui` publish from this repository with Changesets and the Release UI workflow; r3 core releases remain in n3wth/r3.
 
 ## Deployment
 
-All six sites use automatic Git deployments. Each app's `vercel.json` sets `git.deploymentEnabled` to `true`. Feature branches create Preview deployments; merging to `main` triggers Production deployments for affected sites. New sites inherit this setting from the generator.
+All six sites deploy automatically from Git. Feature branches and pull requests create Preview deployments; commits on `main` create Production deployments for affected projects while unchanged projects are skipped. Each app's `vercel.json` keeps `git.deploymentEnabled` set to `true`, and new sites inherit this from the generator.
 
-Wait for CI and verify the affected Preview deployments before merging the tested commit. After merge, verify the Production deployments and live routes. Shared-package changes may affect several sites. See the [deployment runbook](docs/workspace/deployment.md) for project mappings, validation, and rollback. Keep older branches aligned with this deployment policy before pushing.
+Wait for GitHub CI to pass and review affected Preview deployments before merging. After merging, verify each affected Production deployment is Ready and check routes, assets, redirects and APIs before reporting a release complete. See the [deployment runbook](docs/workspace/deployment.md) for project mappings, validation, and rollback. Older branches must pick up the current configuration before further pushes to follow this policy.
 
 ## Contact
 

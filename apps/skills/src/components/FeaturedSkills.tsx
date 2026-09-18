@@ -12,8 +12,8 @@ export function FeaturedSkills() {
 
   return (
     <SiteSection>
-      <div className="mb-6">
-        <SiteHeading variant="section" className="mb-2">
+      <div className="mb-6 flex flex-col gap-2">
+        <SiteHeading variant="section">
           Featured
         </SiteHeading>
         <SiteText>Commonly used skills</SiteText>

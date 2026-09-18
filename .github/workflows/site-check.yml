@@ -56,7 +56,7 @@ jobs:
         if: contains(steps.affected.outputs.workspaces, '@n3wth/skills')
         run: node --test apps/skills/scripts/install.test.mjs
       - name: Install browser
-        if: contains(steps.affected.outputs.workspaces, '@n3wth/ui') || contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/kit') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/ui') || contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/kit') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web') || contains(steps.affected.outputs.workspaces, '@n3wth/skills')
         run: npx playwright install --with-deps chromium
       - name: Check standalone UI package
         if: contains(steps.affected.outputs.workspaces, '@n3wth/ui')
@@ -72,6 +72,9 @@ jobs:
       - name: Check r3 browser
         if: contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
         run: npx playwright test --config playwright.r3.config.ts --output=test-results/r3
+      - name: Check Skills browser
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/skills')
+        run: npm run test:migration -w @n3wth/skills -- --output=../../test-results/skills
       - uses: actions/upload-artifact@v7
         if: always()
         with:

@@ -26,7 +26,7 @@ export async function markdownToHtml(content: string, { stripTitle = true }: { s
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, {
       behavior: 'wrap',
-      properties: { className: 'heading-link' },
+      properties: { className: ['heading-link'] },
     })
     .use(rehypeRichContent)
     .use(rehypeStringify)

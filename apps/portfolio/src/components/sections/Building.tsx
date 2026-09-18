@@ -29,7 +29,9 @@ export function Building() {
       <SiteHeading id="selected-projects" className="mb-8">Selected independent projects</SiteHeading>
       {selected.map((project) => <ProjectCard key={project.id} project={project} />)}
       <div className="border-t border-[var(--rail-strong)] pt-8">
-        <SiteHeading className="mb-6">Other explorations</SiteHeading>
+        <div className="mb-6">
+          <SiteHeading>Other explorations</SiteHeading>
+        </div>
         <div className="grid gap-8 md:grid-cols-2 md:gap-12">
           {others.map((project) => (
             <article key={project.id}>

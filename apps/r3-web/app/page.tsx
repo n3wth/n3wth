@@ -181,9 +181,9 @@ Postgres with Drizzle ORM.`}
             <div className="mt-6 grid gap-8 sm:grid-cols-2">
               <div>
                 <SiteText variant="supporting">MCP Desktop Clients</SiteText>
-                <SiteText className="mt-2">
-                  Add r3 to your MCP config file.
-                </SiteText>
+                <div className="mt-2">
+                  <SiteText>Add r3 to your MCP config file.</SiteText>
+                </div>
                 <div className="mt-4">
                   <CodeBlock language="json">{codeExamples.mcp}</CodeBlock>
                 </div>
@@ -191,21 +191,25 @@ Postgres with Drizzle ORM.`}
 
               <div>
                 <SiteText variant="supporting">MCP CLI Tools</SiteText>
-                <SiteText className="mt-2">Add with a single command.</SiteText>
+                <div className="mt-2">
+                  <SiteText>Add with a single command.</SiteText>
+                </div>
                 <div className="mt-4">
                   <CodeBlock language="bash">{codeExamples.cli}</CodeBlock>
                 </div>
               </div>
             </div>
 
-            <SiteText className="mt-6">
-              <Link
-                href="/docs/quickstart"
-                className="underline underline-offset-4 hover:text-ink"
-              >
-                Full setup guide
-              </Link>
-            </SiteText>
+            <div className="mt-6">
+              <SiteText>
+                <Link
+                  href="/docs/quickstart"
+                  className="underline underline-offset-4 hover:text-ink"
+                >
+                  Full setup guide
+                </Link>
+              </SiteText>
+            </div>
           </SiteContainer>
         </SiteSection>
 
