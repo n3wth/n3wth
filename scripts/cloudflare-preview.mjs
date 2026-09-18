@@ -160,12 +160,14 @@ function assertCommandSucceeded(result, action) {
   }
 }
 
+function redactSecrets(text) {
+  return text.replace(/(authorization\s*:\s*bearer\s+|bearer\s+|api[_ -]?token\s*[:=]\s*)\S+/gi, '$1[redacted]')
+}
+
 function commandOutput(result) {
   const output = [result?.stderr, result?.stdout].filter(Boolean).join('\n').trim()
   if (!output) return ''
-  return output
-    .replace(/(authorization\s*:\s*bearer\s+|bearer\s+|api[_ -]?token\s*[:=]\s*)\S+/gi, '$1[redacted]')
-    .slice(0, 4000)
+  return redactSecrets(output).slice(0, 4000)
 }
 
 function apiTokenFromEnv(env) {
@@ -173,12 +175,16 @@ function apiTokenFromEnv(env) {
   return env.CLOUDFLARE_API_TOKEN
 }
 
-export async function cloudflareApi(path, { env = process.env, fetchFn = fetch, method = 'GET' } = {}) {
+export async function cloudflareApi(path, { env = process.env, fetchFn = fetch, method = 'GET', requestBody } = {}) {
   let response
   try {
     response = await fetchFn(`${CLOUDFLARE_API}${path}`, {
       method,
-      headers: { Authorization: `Bearer ${apiTokenFromEnv(env)}` },
+      headers: {
+        Authorization: `Bearer ${apiTokenFromEnv(env)}`,
+        ...(requestBody !== undefined ? { 'Content-Type': 'application/json' } : {}),
+      },
+      ...(requestBody !== undefined ? { body: JSON.stringify(requestBody) } : {}),
     })
   } catch (error) {
     throw new Error(`Cloudflare API ${method} ${path} failed: ${error.message}`)
@@ -226,8 +232,9 @@ export async function assertNoDomainCollision({ accountId, identity, env = proce
   const domain = await findPreviewDomain({ accountId, identity, env, fetchFn })
   assertPreviewDomainOwnership(domain, identity)
   if (domain) return domain
-  const records = await cloudflareApi(`/zones/${zoneIdFromEnv(env)}/dns_records?name=${encodeURIComponent(identity.host)}&per_page=100`, { env, fetchFn })
-  if (records.length > 0) throw new Error(`Refusing to deploy ${identity.host}: an existing DNS record is not owned by this preview Worker.`)
+  const records = await findPreviewDnsRecords({ identity, env, fetchFn })
+  const foreign = records.filter(record => !(record.type === 'AAAA' && record.content === '100::'))
+  if (foreign.length > 0) throw new Error(`Refusing to deploy ${identity.host}: an existing DNS record is not owned by this preview Worker.`)
   return undefined
 }
 
@@ -242,6 +249,7 @@ export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = pro
   const generated = writePreviewConfig({ root, app, pr, sourcePath, accountId, previewBindings: bindings, assetsDirectory: stagedAssets })
   const result = runWrangler(['deploy', '--config', generated.paths.configPath], { cwd: root, env, run })
   assertCommandSucceeded(result, 'Wrangler deploy')
+  await ensurePreviewDnsRecord({ identity, env, fetchFn })
   log(`Deployed ${generated.identity.workerName} at https://${generated.identity.host}`)
   return {
     directory: paths.directory,
@@ -255,6 +263,70 @@ export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = pro
   }
 }
 
+// Workers custom domains need a proxied DNS record to resolve; wrangler does not
+// manage it in this setup, and the deploy token is deliberately limited to DNS:Edit
+// + Workers Scripts, so DNS and script deletion go through the scoped REST API
+// instead of wrangler (which also lists KV namespaces on delete).
+export async function findPreviewDnsRecords({ identity, env, fetchFn }) {
+  const records = await cloudflareApi(`/zones/${zoneIdFromEnv(env)}/dns_records?name=${encodeURIComponent(identity.host)}&per_page=100`, { env, fetchFn })
+  return records.filter(record => record.name === identity.host)
+}
+
+export function assertPreviewDnsRecord(record, identity) {
+  if (!(record.type === 'AAAA' && record.content === '100::')) {
+    throw new Error(`Refusing to touch DNS record ${record.id} for ${identity.host}: expected AAAA 100::, got ${record.type} ${record.content}.`)
+  }
+}
+
+export async function ensurePreviewDnsRecord({ identity, env, fetchFn }) {
+  const records = await findPreviewDnsRecords({ identity, env, fetchFn })
+  if (records.length > 0) {
+    for (const record of records) assertPreviewDnsRecord(record, identity)
+    return { created: false, records }
+  }
+  const record = await cloudflareApi(`/zones/${zoneIdFromEnv(env)}/dns_records`, {
+    env,
+    fetchFn,
+    method: 'POST',
+    requestBody: { type: 'AAAA', name: identity.host, content: '100::', proxied: true, comment: `preview ${identity.workerName}` },
+  })
+  return { created: true, records: [record] }
+}
+
+export async function deletePreviewDnsRecords({ identity, env, fetchFn }) {
+  const records = await findPreviewDnsRecords({ identity, env, fetchFn })
+  for (const record of records) {
+    assertPreviewDnsRecord(record, identity)
+    await cloudflareApi(`/zones/${zoneIdFromEnv(env)}/dns_records/${record.id}`, { env, fetchFn, method: 'DELETE' })
+  }
+  return records.length
+}
+
+export async function deleteWorkerScript({ accountId, identity, env, fetchFn }) {
+  let response
+  try {
+    response = await fetchFn(`${CLOUDFLARE_API}/accounts/${accountId}/workers/scripts/${identity.workerName}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${apiTokenFromEnv(env)}` },
+    })
+  } catch (error) {
+    throw new Error(`Cloudflare API DELETE worker ${identity.workerName} failed: ${error.message}`)
+  }
+  if (response.status === 404) return { deleted: false }
+  const raw = await response.text()
+  let body
+  try {
+    body = raw.trim() ? JSON.parse(raw) : undefined
+  } catch {
+    throw new Error(`Cloudflare API DELETE worker ${identity.workerName} returned invalid JSON (HTTP ${response.status}).`)
+  }
+  if (!response.ok || (body && body.success === false)) {
+    const message = body?.errors?.map(error => error.message).filter(Boolean).join('; ') || `HTTP ${response.status}`
+    throw new Error(`Cloudflare API DELETE worker ${identity.workerName} failed: ${redactSecrets(message)}`)
+  }
+  return { deleted: true }
+}
+
 export async function deletePreview({ root = ROOT, env = process.env, run = spawnSync, log = console.log, pr, app = 'ui-docs', fetchFn = fetch }) {
   const accountId = accountIdFromEnv(env)
   const identity = previewIdentity(app, pr)
@@ -263,17 +335,14 @@ export async function deletePreview({ root = ROOT, env = process.env, run = spaw
   if (domain) {
     await cloudflareApi(`/accounts/${accountId}/workers/domains/${domain.id}`, { env, fetchFn, method: 'DELETE' })
   }
-  const result = runWrangler(['delete', identity.workerName, '--force'], { cwd: root, env: { ...env, CLOUDFLARE_ACCOUNT_ID: accountId }, run })
-  if (result.error) throw new Error(`Wrangler delete failed: ${result.error.message}`)
-  if (result.status !== 0 && !isMissingWorkerResult(result)) {
-    const detail = commandOutput(result) || `exit ${result.status}`
-    throw new Error(`Wrangler delete failed: ${detail}`)
-  }
-  log(result.status === 0 ? `Deleted ${identity.workerName}.` : `${identity.workerName} was already absent.`)
+  const dnsDeleted = await deletePreviewDnsRecords({ identity, env, fetchFn })
+  const { deleted } = await deleteWorkerScript({ accountId, identity, env, fetchFn })
+  log(deleted ? `Deleted ${identity.workerName}.` : `${identity.workerName} was already absent.`)
   return {
     ...identity,
-    missing: result.status !== 0,
+    missing: !deleted,
     domainDetached: Boolean(domain),
+    dnsRecordsDeleted: dnsDeleted,
   }
 }
 

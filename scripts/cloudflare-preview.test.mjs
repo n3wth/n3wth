@@ -264,11 +264,14 @@ test('delete detaches only the exact Worker Domain before deleting the Worker', 
   const result = await deletePreview({
     root: '/repo',
     pr: 3,
-    env: { CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e', CLOUDFLARE_API_TOKEN: 'test-token' },
+    env: { CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e', CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577', CLOUDFLARE_API_TOKEN: 'test-token' },
     run: (...args) => { calls.push(args); return { status: 1, stderr: 'Worker n3wth-ui-docs-pr-3 not found' } },
     log: () => {},
     fetchFn: async (url, options) => {
       requests.push([url, options])
+      if (url.includes('/workers/scripts/') && options?.method === 'DELETE') {
+        return { ok: false, status: 404, text: async () => '' }
+      }
       return cloudflareResponse(url.includes('/domain-id') ? {} : [{ id: 'domain-id', hostname: 'ui-docs-pr-3.preview.n3wth.com', service: 'n3wth-ui-docs-pr-3', environment: 'production' }])
     },
   })
@@ -277,13 +280,20 @@ test('delete detaches only the exact Worker Domain before deleting the Worker', 
   assert.match(requests[0][0], /workers\/domains\?hostname=ui-docs-pr-3\.preview\.n3wth\.com/)
   assert.match(requests[1][0], /workers\/domains\/domain-id$/)
   assert.equal(requests[1][1].method, 'DELETE')
-  assert.match(calls[0][1].join(' '), /wrangler\.js delete n3wth-ui-docs-pr-3 --force/)
+  assert.equal(calls.length, 0, 'worker deletion uses the scoped API, not wrangler (wrangler delete requires KV list permission)')
+  const scriptDelete = requests.find(([url, options]) => url.includes('/workers/scripts/') && options?.method === 'DELETE')
+  assert.match(scriptDelete[0], /workers\/scripts\/n3wth-ui-docs-pr-3$/)
   await assert.rejects(() => deletePreview({
     root: '/repo', pr: 3,
-    env: { CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e', CLOUDFLARE_API_TOKEN: 'test-token' },
-    run: () => ({ status: 1, stderr: 'Authentication failed: invalid API token' }), log: () => {},
-    fetchFn: async () => cloudflareResponse([]),
-  }), /Wrangler delete failed/)
+    env: { CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e', CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577', CLOUDFLARE_API_TOKEN: 'test-token' },
+    log: () => {},
+    fetchFn: async url => {
+      if (url.includes('/workers/scripts/')) {
+        return cloudflareResponse(null, { status: 500, success: false, errors: [{ message: 'internal error, api_token=secret-value' }] })
+      }
+      return cloudflareResponse([])
+    },
+  }), error => error.message.includes('internal error') && !error.message.includes('secret-value'))
 })
 
 test('Cloudflare API accepts successful empty response bodies', async () => {
@@ -313,9 +323,14 @@ test('delete rejects mismatched ownership and does not detach or delete', async 
 test('command errors preserve relevant context and redact token-shaped values', async () => {
   await assert.rejects(() => deletePreview({
     root: '/repo', pr: 4,
-    env: { CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e', CLOUDFLARE_API_TOKEN: 'test-token' },
-    run: () => ({ status: 1, stderr: 'Error: custom domain could not be removed\nSee request log', stdout: 'api_token=secret-value' }), log: () => {},
-    fetchFn: async () => cloudflareResponse([]),
+    env: { CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e', CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577', CLOUDFLARE_API_TOKEN: 'test-token' },
+    log: () => {},
+    fetchFn: async url => {
+      if (url.includes('/workers/scripts/')) {
+        return cloudflareResponse(null, { status: 500, success: false, errors: [{ message: 'custom domain could not be removed, see api_token=secret-value' }] })
+      }
+      return cloudflareResponse([])
+    },
   }), error => error.message.includes('custom domain could not be removed') && !error.message.includes('secret-value'))
 })
 
@@ -439,25 +454,30 @@ test('push, synchronize, close, and reopen recycle one preview cleanly', async t
   const close = () => deletePreview({ root, pr: 8, env, run: cloudflare.run, log: () => {}, fetchFn: cloudflare.fetchFn })
   const workerName = 'n3wth-ui-docs-pr-8'
 
-  // opened: first deploy claims the hostname and attaches the custom domain.
+  // opened: first deploy claims the hostname, attaches the custom domain, and creates the proxied DNS record.
   const first = await deploy()
-  assert.equal(cloudflare.calls.dnsQueries, 1)
+  assert.equal(cloudflare.calls.dnsQueries, 2, 'first deploy runs the collision check and the DNS ensure lookup')
+  assert.deepEqual(cloudflare.calls.dnsCreates, ['ui-docs-pr-8.preview.n3wth.com'], 'deploy creates the AAAA 100:: record wrangler does not manage')
   assert.deepEqual(cloudflare.state.domains.map(domain => domain.service), [workerName])
   assert.equal(cloudflare.state.workers.has(workerName), true)
 
-  // synchronize: the PR's own Worker Domain and its Cloudflare-managed DNS record must not self-block the redeploy.
+  // synchronize: the PR's own Worker Domain short-circuits the collision check; the existing DNS record is reused.
   assert.equal(cloudflare.state.dns.length, 1)
   const second = await deploy()
   assert.equal(second.host, first.host)
   assert.equal(second.workerName, first.workerName)
-  assert.equal(cloudflare.calls.dnsQueries, 1, 'redeploy short-circuits before the DNS collision check')
+  assert.equal(cloudflare.calls.dnsQueries, 3, 'redeploy short-circuits the collision check and finds its own DNS record')
+  assert.equal(cloudflare.calls.dnsCreates.length, 1, 'redeploy does not duplicate the DNS record')
   assert.equal(cloudflare.state.domains.length, 1, 'redeploy leaves no duplicate Worker Domain')
 
-  // closed: the custom domain is detached via the API, then the Worker is deleted.
+  // closed: the custom domain is detached, the DNS record and the Worker are deleted via the scoped API.
   const deleted = await close()
   assert.equal(deleted.domainDetached, true)
   assert.equal(deleted.missing, false)
+  assert.equal(deleted.dnsRecordsDeleted, 1)
   assert.deepEqual(cloudflare.calls.domainDeletes, ['ui-docs-pr-8.preview.n3wth.com'])
+  assert.deepEqual(cloudflare.calls.dnsDeletes, ['ui-docs-pr-8.preview.n3wth.com'])
+  assert.deepEqual(cloudflare.calls.scriptDeletes, [workerName])
   assert.equal(cloudflare.state.domains.length, 0)
   assert.equal(cloudflare.state.dns.length, 0)
   assert.equal(cloudflare.state.workers.has(workerName), false)
@@ -465,8 +485,9 @@ test('push, synchronize, close, and reopen recycle one preview cleanly', async t
   // reopened: no stale domain ownership or DNS record blocks a clean recreate.
   const third = await deploy()
   assert.equal(third.host, first.host)
-  assert.equal(cloudflare.calls.dnsQueries, 2, 'reopen re-checks DNS on the empty slate')
+  assert.equal(cloudflare.calls.dnsCreates.length, 2, 'reopen recreates the DNS record')
   assert.deepEqual(cloudflare.state.domains.map(domain => domain.service), [workerName])
+  assert.equal(cloudflare.state.dns.length, 1)
   assert.equal(cloudflare.state.workers.has(workerName), true)
 })
 
@@ -475,18 +496,70 @@ test('close cleanup succeeds when the worker and domain are already absent', asy
   const result = await deletePreview({
     root: '/repo',
     pr: 6,
-    env: { CLOUDFLARE_ACCOUNT_ID: accountId, CLOUDFLARE_API_TOKEN: 'test-token' },
-    run: () => ({ status: 1, stderr: 'Worker n3wth-ui-docs-pr-6 not found. [code: 10007]' }),
+    env: { CLOUDFLARE_ACCOUNT_ID: accountId, CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577', CLOUDFLARE_API_TOKEN: 'test-token' },
+    run: () => { throw new Error('wrangler must not run during delete') },
     log: () => {},
     fetchFn: async (url, options) => {
       requests.push([url, options])
+      if (url.includes('/workers/scripts/') && options?.method === 'DELETE') {
+        return { ok: false, status: 404, text: async () => '' }
+      }
       return cloudflareResponse([])
     },
   })
   assert.equal(result.missing, true)
   assert.equal(result.domainDetached, false)
-  assert.equal(requests.length, 1, 'no detach request when no Worker Domain exists')
+  assert.equal(result.dnsRecordsDeleted, 0)
+  assert.equal(requests.filter(([url, options]) => /workers\/domains\/[^?]/.test(url) && options?.method === 'DELETE').length, 0, 'no detach request when no Worker Domain exists')
   assert.match(requests[0][0], /workers\/domains\?hostname=ui-docs-pr-6\.preview\.n3wth\.com/)
+})
+
+test('deploy adopts a stale preview-shaped DNS record left by a crashed cleanup', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-stale-dns-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const appRoot = join(root, 'apps', 'ui-docs')
+  mkdirSync(join(appRoot, 'dist'), { recursive: true })
+  writeFileSync(join(appRoot, 'dist', 'index.html'), '<html></html>')
+  writeFileSync(join(appRoot, 'wrangler.jsonc'), '{ "assets": { "directory": "./dist" } }')
+  const requests = []
+  const result = await deployPreview({
+    appRoot,
+    root,
+    pr: 12,
+    env: {
+      CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
+      CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
+      CLOUDFLARE_API_TOKEN: 'test-token',
+    },
+    run: () => ({ status: 0, stdout: 'Deployed' }),
+    log: () => {},
+    fetchFn: async (url, options) => {
+      requests.push([url, options])
+      if (url.includes('/dns_records')) {
+        return cloudflareResponse([{ id: 'dns-stale', type: 'AAAA', name: 'ui-docs-pr-12.preview.n3wth.com', content: '100::', proxied: true }])
+      }
+      return cloudflareResponse([])
+    },
+  })
+  assert.equal(result.host, 'ui-docs-pr-12.preview.n3wth.com')
+  assert.equal(requests.filter(([, options]) => options?.method === 'POST').length, 0, 'existing preview-shaped record is reused, not recreated')
+})
+
+test('delete refuses to remove a foreign DNS record and leaves the Worker untouched', async () => {
+  const calls = { scriptDeletes: 0 }
+  await assert.rejects(() => deletePreview({
+    root: '/repo', pr: 13,
+    env: { CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e', CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577', CLOUDFLARE_API_TOKEN: 'test-token' },
+    log: () => {},
+    fetchFn: async (url, options) => {
+      if (url.includes('/workers/scripts/') && options?.method === 'DELETE') calls.scriptDeletes += 1
+      if (url.includes('/dns_records')) {
+        return cloudflareResponse([{ id: 'dns-foreign', type: 'CNAME', name: 'ui-docs-pr-13.preview.n3wth.com', content: 'elsewhere.example.com', proxied: true }])
+      }
+      return cloudflareResponse([])
+    },
+  }), /expected AAAA 100::, got CNAME elsewhere\.example\.com/)
+  assert.equal(calls.scriptDeletes, 0)
 })
 
 test('the workflow queues lifecycle events per PR and gates reopen deploys on current state', () => {
@@ -501,7 +574,7 @@ test('the workflow queues lifecycle events per PR and gates reopen deploys on cu
 
 function fakeCloudflareAccount() {
   const state = { domains: [], dns: [], workers: new Set() }
-  const calls = { dnsQueries: 0, domainDeletes: [] }
+  const calls = { dnsQueries: 0, domainDeletes: [], dnsCreates: [], dnsDeletes: [], scriptDeletes: [] }
   const fetchFn = async (url, options = {}) => {
     const parsed = new URL(url)
     if (parsed.pathname.endsWith('/workers/domains')) {
@@ -513,14 +586,36 @@ function fakeCloudflareAccount() {
       const index = state.domains.findIndex(domain => domain.id === id)
       if (index === -1) return cloudflareResponse(null, { status: 404, success: false, errors: [{ message: 'Worker Domain not found' }] })
       const [removed] = state.domains.splice(index, 1)
-      state.dns = state.dns.filter(record => record.name !== removed.hostname)
       calls.domainDeletes.push(removed.hostname)
+      return cloudflareResponse({ id })
+    }
+    if (parsed.pathname.endsWith('/dns_records') && options.method === 'POST') {
+      const body = JSON.parse(options.body)
+      const record = { id: `dns-${state.dns.length}-${body.name}`, type: body.type, name: body.name, content: body.content, proxied: body.proxied }
+      state.dns.push(record)
+      calls.dnsCreates.push(record.name)
+      return cloudflareResponse(record)
+    }
+    if (parsed.pathname.includes('/dns_records/') && options.method === 'DELETE') {
+      const id = parsed.pathname.split('/').pop()
+      const index = state.dns.findIndex(record => record.id === id)
+      if (index === -1) return cloudflareResponse(null, { status: 404, success: false, errors: [{ message: 'DNS record not found' }] })
+      const [removed] = state.dns.splice(index, 1)
+      calls.dnsDeletes.push(removed.name)
       return cloudflareResponse({ id })
     }
     if (parsed.pathname.endsWith('/dns_records')) {
       calls.dnsQueries += 1
       const name = parsed.searchParams.get('name')
       return cloudflareResponse(state.dns.filter(record => !name || record.name === name))
+    }
+    if (parsed.pathname.includes('/workers/scripts/') && options.method === 'DELETE') {
+      const name = parsed.pathname.split('/').pop()
+      if (!state.workers.has(name)) return cloudflareResponse(null, { status: 404, success: false, errors: [{ message: 'Worker not found' }] })
+      state.workers.delete(name)
+      calls.scriptDeletes.push(name)
+      // DELETE script returns 200 with a body when the script has bindings/routes
+      return { ok: true, status: 200, json: async () => ({}), text: async () => '{}' }
     }
     throw new Error(`Unexpected Cloudflare API call: ${options.method || 'GET'} ${url}`)
   }
@@ -533,7 +628,6 @@ function fakeCloudflareAccount() {
       for (const route of config.routes || []) {
         if (!route.custom_domain || state.domains.some(domain => domain.hostname === route.pattern)) continue
         state.domains.push({ id: `domain-${config.name}`, hostname: route.pattern, service: config.name, environment: 'production' })
-        state.dns.push({ id: `dns-${config.name}`, name: route.pattern })
       }
       return { status: 0, stdout: `Deployed ${config.name}` }
     }
