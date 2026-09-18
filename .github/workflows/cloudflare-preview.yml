@@ -64,8 +64,10 @@ jobs:
         if: steps.affected.outputs.apps != ''
       - name: Build affected preview apps
         if: steps.affected.outputs.apps != '' && github.event.action != 'closed'
+        env:
+          APPS: ${{ steps.affected.outputs.apps }}
         run: |
-          for app in ${{ steps.affected.outputs.apps }}; do
+          for app in $APPS; do
             case "$app" in
               ui-docs)
                 npm run build:ui-docs
@@ -101,7 +103,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
-          for app in ${{ steps.affected.outputs.apps }}; do
+          for app in $APPS; do
             node scripts/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER"
             echo "Preview $app: https://$app-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
           done
@@ -114,6 +116,8 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
-          for app in ${{ steps.affected.outputs.apps }}; do
-            node scripts/cloudflare-preview.mjs delete --app "$app" --pr "$PR_NUMBER"
+          status=0
+          for app in $APPS; do
+            node scripts/cloudflare-preview.mjs delete --app "$app" --pr "$PR_NUMBER" || status=1
           done
+          exit $status

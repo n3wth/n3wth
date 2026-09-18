@@ -4,7 +4,7 @@ import { dirname, isAbsolute, join, resolve } from 'node:path'
 export const PREVIEW_APPS = new Set(['ui-docs', 'portfolio', 'garden', 'kit', 'skills', 'r3-web'])
 const STATIC_APPS = new Set(['ui-docs'])
 const PREVIEW_SUFFIX = 'preview.n3wth.com'
-const STATEFUL_BINDINGS = ['d1_databases', 'r2_buckets', 'kv_namespaces']
+const STATEFUL_BINDINGS = ['d1_databases', 'r2_buckets', 'kv_namespaces', 'durable_objects', 'hyperdrive', 'queues', 'vectorize', 'mtls_certificates']
 
 export function previewIdentity(app, pr) {
   if (!PREVIEW_APPS.has(app)) throw new Error(`Unsupported preview app: ${app}`)
@@ -116,9 +116,12 @@ function previewStatefulBindings(source, previewBindings) {
 
 function previewServices(services, workerName) {
   if (!services) return undefined
-  return services.map(service => service.binding === 'WORKER_SELF_REFERENCE'
-    ? { ...service, service: workerName }
-    : structuredClone(service))
+  return services.map(service => {
+    if (service.binding !== 'WORKER_SELF_REFERENCE') {
+      throw new Error('Preview configs may only use the WORKER_SELF_REFERENCE service binding; found ' + service.binding)
+    }
+    return { ...service, service: workerName }
+  })
 }
 
 export function createPreviewConfig({ source, sourcePath, root, app, pr, accountId, previewBindings, assetsDirectory }) {
