@@ -82,3 +82,4 @@ The current adapters have a few explicit boundaries:
 | Primitive behavior and native control API | Astryx |
 
 Do not add a second implementation of a shared control inside a site to work around an adapter issue. Fix the boundary, then test the affected interaction.
+
