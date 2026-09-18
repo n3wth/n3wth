@@ -12,7 +12,7 @@
   border-radius: 0;
   background: transparent;
   color: var(--color-text-secondary);
-  font: 500 13px/1.5 var(--font-family-body);
+  font: var(--font-weight-normal) var(--font-size-sm)/1.5 var(--font-family-body);
   text-align: left;
 }
 .n3wth-site-reading-outline button.n3wth-site-reading-outline-label { cursor: pointer; min-height: 44px; }
@@ -23,7 +23,7 @@
 .n3wth-site-reading-outline-content { padding: 4px 0; }
 .n3wth-site-reading-outline-content[hidden] { display: none; }
 .n3wth-site-reading-outline nav a {
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   line-height: 1.5;
   padding-block: 4px;
   min-height: 24px;

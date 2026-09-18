@@ -406,24 +406,21 @@ button:focus-visible,
   gap: 1rem;
   min-height: 3rem;
   cursor: pointer;
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-normal);
   list-style: none;
 }
 .note-toc summary::-webkit-details-marker { display: none; }
 .note-toc summary::after {
   content: '+';
   color: var(--color-text-secondary);
-  font-size: 1rem;
-  font-weight: var(--font-weight-regular);
+  font: inherit;
 }
 .note-toc[open] summary::after { content: '−'; }
 .note-toc-count {
   margin-left: auto;
-  color: var(--color-text-disabled);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-regular);
+  font: inherit;
 }
 .note-toc nav {
   padding: 0.25rem 0 1rem;
@@ -483,10 +480,6 @@ button:focus-visible,
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: 2rem;
-}
-.note-header-plant {
-  margin-right: 0.25rem;
-  opacity: 0.9;
 }
 .note-breadcrumbs {
   margin-bottom: 0.5rem;

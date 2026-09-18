@@ -18,8 +18,11 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - For a few section or documentation destinations, use `SiteSectionLinks`: plain wrapping links in page flow, without a selected-section marker. Persistent desktop sidebars may track the current section.
 - Use a clear title and short description in a hero. Omit actions that repeat navigation or merely jump to the content immediately below. Keep useful product actions such as installation or a resume download.
 - Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color.
+- Keep the footer identity and links on one row when their content fits; wrap naturally on narrow screens instead of stacking at a fixed breakpoint.
 - Keep heading order semantic: one primary page heading, section headings below it, then item headings. Visual size does not determine heading level.
 - Paragraph copy uses regular weight (400) across all six sites, including article prose and lead paragraphs. Preserve heading, emphasis and control weights.
+- Primary paragraph copy uses the existing softer gray ink in dark mode. Supporting/status text retains its semantic color; light-theme ink stays unchanged.
+- Reading outline labels, section counts and links use the same supporting type size and regular weight; active links may use medium weight.
 
 ## Interaction
 
