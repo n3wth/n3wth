@@ -44,6 +44,7 @@ Use current OpenNext with supported stable Next versions. Any `runtime = 'edge'`
 - Build/check without deployment credentials, then expose the scoped Cloudflare credential only to the deploy step. Use read-only GitHub contents permissions unless an explicitly needed status API requires more.
 - Serialize deployment and cleanup for each PR. On close, delete only deterministic preview resources owned by this workflow. Handle missing resources idempotently. Do not let an older queued build recreate a closed PR preview.
 - Cleanup detaches the verified exact Workers Custom Domain before deleting the Worker. Cloudflare manages its DNS and certificate lifecycle; the script does not delete a separately identified certificate. Verify DNS cleanup after the live pilot closes.
+- Live HTTPS passed for `ui-docs-pr-341.preview.n3wth.com`; close cleanup detached the verified domain and deleted the Worker. Successful empty Cloudflare API response bodies are handled explicitly.
 - Preview pages send `X-Robots-Tag: noindex, nofollow`; canonical production URLs stay unchanged. Runtime auth allowlists/cookie domains and callback redirects must use the actual preview origin safely.
 - Keep production data mutations unavailable until an isolated preview database/auth configuration is verified. A successful static pilot does not imply Skills is ready.
 
