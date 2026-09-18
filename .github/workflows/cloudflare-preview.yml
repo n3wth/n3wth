@@ -67,6 +67,12 @@ jobs:
         env:
           APPS: ${{ steps.affected.outputs.apps }}
         run: |
+          # Dynamic apps build via opennextjs-cloudflare directly, bypassing the
+          # dependency-aware build.mjs ordering; shared workspace packages must be
+          # built first or their dist (e.g. @n3wth/ui ./styles) is missing (PR 361).
+          if echo " $APPS " | grep -qE ' (garden|kit|skills|r3-web) '; then
+            node scripts/build.mjs --workspace @n3wth/ui --workspace @n3wth/site-config
+          fi
           for app in $APPS; do
             case "$app" in
               ui-docs)
