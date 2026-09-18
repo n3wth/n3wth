@@ -19,6 +19,7 @@ import {
   stagePreviewAssets,
 } from './cloudflare-preview.mjs'
 import { createPreviewConfig } from './cloudflare-preview-config.mjs'
+import { checkPreviewOnce, classifyFetchError, verifyPreviewReadiness } from './cloudflare-preview-verify.mjs'
 
 const accountId = 'ac23513945eb49f73a89faf1be12384e'
 
@@ -185,6 +186,7 @@ test('deploy permits an unclaimed exact hostname and checks DNS before Wrangler'
     appRoot,
     root,
     pr: 8,
+    verifyDeployment: null,
     env: {
       CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
       CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
@@ -350,6 +352,7 @@ test('OpenNext deploy generates a noindex wrapper, rebinds self service, and ski
     root,
     app: 'skills',
     pr: 11,
+    verifyDeployment: null,
     env: {
       CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
       CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
@@ -417,6 +420,7 @@ test('portfolio stages dist with public headers and redirects under the noindex 
     root,
     app: 'portfolio',
     pr: 5,
+    verifyDeployment: null,
     env: {
       CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
       CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
@@ -450,7 +454,7 @@ test('push, synchronize, close, and reopen recycle one preview cleanly', async t
     CLOUDFLARE_API_TOKEN: 'test-token',
   }
   const cloudflare = fakeCloudflareAccount()
-  const deploy = () => deployPreview({ appRoot, root, pr: 8, env, run: cloudflare.run, log: () => {}, fetchFn: cloudflare.fetchFn })
+  const deploy = () => deployPreview({ appRoot, root, pr: 8, verifyDeployment: null, env, run: cloudflare.run, log: () => {}, fetchFn: cloudflare.fetchFn })
   const close = () => deletePreview({ root, pr: 8, env, run: cloudflare.run, log: () => {}, fetchFn: cloudflare.fetchFn })
   const workerName = 'n3wth-ui-docs-pr-8'
 
@@ -526,6 +530,7 @@ test('deploy adopts a stale preview-shaped DNS record left by a crashed cleanup'
     appRoot,
     root,
     pr: 12,
+    verifyDeployment: null,
     env: {
       CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
       CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
@@ -571,6 +576,108 @@ test('the workflow queues lifecycle events per PR and gates reopen deploys on cu
   assert.match(workflow, /if:\s*steps\.affected\.outputs\.apps != '' && steps\.current\.outputs\.deploy == 'true'/, 'deploy is gated on the current-state check')
   assert.match(workflow, /if:\s*steps\.affected\.outputs\.apps != '' && github\.event\.action == 'closed'/, 'delete only runs on close')
 })
+
+test('readiness classifies DNS, TLS, and other network failures apart', () => {
+  assert.equal(classifyFetchError(Object.assign(new Error('fetch failed'), { cause: { code: 'ENOTFOUND' } })), 'dns')
+  assert.equal(classifyFetchError(Object.assign(new Error('fetch failed'), { cause: { code: 'EAI_AGAIN' } })), 'dns')
+  assert.equal(classifyFetchError(Object.assign(new Error('fetch failed'), { cause: { code: 'ERR_TLS_CERT_ALTNAME_INVALID' } })), 'tls')
+  assert.equal(classifyFetchError(Object.assign(new Error('fetch failed'), { cause: new Error('unable to verify the first certificate') })), 'tls')
+  assert.equal(classifyFetchError(Object.assign(new Error('fetch failed'), { cause: { code: 'ECONNREFUSED' } })), 'network')
+})
+
+test('a single readiness check separates status, header, DNS, and TLS outcomes', async () => {
+  const pass = await checkPreviewOnce({ host: 'ui-docs-pr-1.preview.n3wth.com', fetchFn: async () => pageResponse(200, { 'x-robots-tag': 'noindex, nofollow' }) })
+  assert.deepEqual(pass, { ok: true, status: 200 })
+  const wrongStatus = await checkPreviewOnce({ host: 'ui-docs-pr-1.preview.n3wth.com', fetchFn: async () => pageResponse(502) })
+  assert.equal(wrongStatus.failure, 'http')
+  const missingHeader = await checkPreviewOnce({ host: 'ui-docs-pr-1.preview.n3wth.com', fetchFn: async () => pageResponse(200) })
+  assert.equal(missingHeader.failure, 'header')
+  const dnsDown = await checkPreviewOnce({ host: 'ui-docs-pr-1.preview.n3wth.com', fetchFn: async () => { throw Object.assign(new Error('fetch failed'), { cause: { code: 'ENOTFOUND' } }) } })
+  assert.equal(dnsDown.failure, 'dns')
+  const tlsBad = await checkPreviewOnce({ host: 'ui-docs-pr-1.preview.n3wth.com', fetchFn: async () => { throw Object.assign(new Error('fetch failed'), { cause: { code: 'ERR_TLS_CERT_ALTNAME_INVALID' } }) } })
+  assert.equal(tlsBad.failure, 'tls')
+})
+
+test('readiness retries while the host provisions, then succeeds without disabling TLS', async () => {
+  let attempt = 0
+  const slept = []
+  const result = await verifyPreviewReadiness({
+    host: 'ui-docs-pr-1.preview.n3wth.com',
+    attempts: 5,
+    delayMs: 100,
+    sleep: async ms => { slept.push(ms) },
+    fetchFn: async url => {
+      assert.match(url, /^https:\/\/ui-docs-pr-1\.preview\.n3wth\.com\//, 'checks the exact host over HTTPS')
+      attempt += 1
+      if (attempt < 3) throw Object.assign(new Error('fetch failed'), { cause: { code: 'ENOTFOUND' } })
+      return pageResponse(200, { 'x-robots-tag': 'noindex, nofollow' })
+    },
+  })
+  assert.deepEqual(result, { ok: true, status: 200, attempts: 3 })
+  assert.deepEqual(slept, [100, 100])
+})
+
+test('readiness fails after bounded retries and reports the last failure class', async () => {
+  const error = await verifyPreviewReadiness({
+    host: 'ui-docs-pr-1.preview.n3wth.com',
+    attempts: 3,
+    delayMs: 0,
+    sleep: async () => {},
+    fetchFn: async () => pageResponse(200),
+  }).then(() => null, error => error)
+  assert.equal(error.failure, 'header')
+  assert.match(error.message, /after 3 attempts \(header:/)
+})
+
+test('deploy verifies the live preview before reporting success', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-verify-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const appRoot = join(root, 'apps', 'ui-docs')
+  mkdirSync(join(appRoot, 'dist'), { recursive: true })
+  writeFileSync(join(appRoot, 'dist', 'index.html'), '<html></html>')
+  writeFileSync(join(appRoot, 'wrangler.jsonc'), '{ "assets": { "directory": "./dist" } }')
+  const env = { CLOUDFLARE_ACCOUNT_ID: accountId, CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577', CLOUDFLARE_API_TOKEN: 'test-token' }
+  const pages = []
+  const result = await deployPreview({
+    appRoot, root, pr: 20, env,
+    run: () => ({ status: 0, stdout: 'deployed' }),
+    log: () => {},
+    fetchFn: async (url, options) => {
+      if (url.startsWith('https://ui-docs-pr-20.preview.n3wth.com')) {
+        pages.push(url)
+        return pageResponse(200, { 'x-robots-tag': 'noindex, nofollow' })
+      }
+      return cloudflareResponse([])
+    },
+  })
+  assert.equal(result.host, 'ui-docs-pr-20.preview.n3wth.com')
+  assert.deepEqual(pages, ['https://ui-docs-pr-20.preview.n3wth.com/'], 'default deploy checks the live host once')
+})
+
+test('deploy fails when the deployed preview does not serve the expected page', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-verify-fail-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const appRoot = join(root, 'apps', 'ui-docs')
+  mkdirSync(join(appRoot, 'dist'), { recursive: true })
+  writeFileSync(join(appRoot, 'dist', 'index.html'), '<html></html>')
+  writeFileSync(join(appRoot, 'wrangler.jsonc'), '{ "assets": { "directory": "./dist" } }')
+  const env = { CLOUDFLARE_ACCOUNT_ID: accountId, CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577', CLOUDFLARE_API_TOKEN: 'test-token' }
+  await assert.rejects(() => deployPreview({
+    appRoot, root, pr: 21, env,
+    run: () => ({ status: 0, stdout: 'deployed' }),
+    log: () => {},
+    verifyDeployment: options => verifyPreviewReadiness({ ...options, attempts: 2, delayMs: 0, sleep: async () => {} }),
+    fetchFn: async (url, options) => {
+      if (url.startsWith('https://ui-docs-pr-21.preview.n3wth.com')) return pageResponse(503)
+      return cloudflareResponse([])
+    },
+  }), /Readiness check failed for https:\/\/ui-docs-pr-21\.preview\.n3wth\.com/)
+})
+
+function pageResponse(status, headers = {}) {
+  const lower = Object.fromEntries(Object.entries(headers).map(([key, value]) => [key.toLowerCase(), value]))
+  return { status, headers: { get: name => (name.toLowerCase() in lower ? lower[name.toLowerCase()] : null) } }
+}
 
 function fakeCloudflareAccount() {
   const state = { domains: [], dns: [], workers: new Set() }
