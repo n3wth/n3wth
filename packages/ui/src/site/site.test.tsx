@@ -77,11 +77,11 @@ describe('shared site composition', () => {
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('closes the mobile menu when the viewport reaches the desktop breakpoint', () => {
+  it.each([['md', 768], ['lg', 1024]] as const)('closes the %s menu at its desktop breakpoint', (collapseAt, width) => {
     const listeners = new Set<() => void>()
     const desktop = {
       matches: false,
-      media: '(min-width: 768px)',
+      media: `(min-width: ${width}px)`,
       onchange: null,
       addListener: () => {},
       removeListener: () => {},
@@ -96,7 +96,7 @@ describe('shared site composition', () => {
       value: (query: string) => (query === desktop.media ? desktop : original(query)),
     })
     try {
-      render(<SiteNavigation brand={<a href="/">Site</a>} links={<a href="/docs">Docs</a>} />)
+      render(<SiteNavigation collapseAt={collapseAt} brand={<a href="/">Site</a>} links={<a href="/docs">Docs</a>} />)
       const toggle = screen.getByRole('button', { name: 'Open menu' })
       fireEvent.click(toggle)
       expect(toggle).toHaveAttribute('aria-expanded', 'true')
@@ -106,6 +106,14 @@ describe('shared site composition', () => {
     } finally {
       Object.defineProperty(window, 'matchMedia', { writable: true, configurable: true, value: original })
     }
+  })
+
+  it('focuses contextual menu content instead of hidden inline links', () => {
+    render(<SiteNavigation brand="Site/docs" links={<a href="/docs">Docs</a>} menuContent={<a href="/docs/intro">Introduction</a>} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Open menu' }))
+    expect(screen.getByRole('link', { name: 'Introduction' })).toHaveFocus()
+    fireEvent.keyDown(document, { key: 'Escape' })
+    expect(screen.getByRole('button', { name: 'Open menu' })).toHaveFocus()
   })
 
   it('keeps hero demonstrations outside the text and gives footer links a landmark', () => {

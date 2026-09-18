@@ -112,20 +112,23 @@ export interface SiteNavigationProps extends Omit<HTMLAttributes<HTMLElement>, '
   navigationLabel?: string
   navigationId?: string
   menuLabel?: string
+  menuContent?: ReactNode
+  collapseAt?: 'md' | 'lg'
 }
 
 /** Router links remain app-owned; layout and disclosure behavior live here. */
-export function SiteNavigation({ brand, links, actions, navigationLabel = 'Primary', navigationId, menuLabel = 'Open menu', className, ...props }: SiteNavigationProps) {
+export function SiteNavigation({ brand, links, actions, navigationLabel = 'Primary', navigationId, menuLabel = 'Open menu', menuContent, collapseAt = 'md', className, ...props }: SiteNavigationProps) {
   const [open, setOpen] = useState(false)
   const generatedId = useId()
   const menuId = navigationId ?? `site-navigation-${generatedId}`
   const button = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
+  const hasMenuContent = menuContent != null
 
   useEffect(() => {
     if (!open) return
-    header.current?.querySelector<HTMLAnchorElement>('.n3wth-site-navigation-links a')?.focus()
-    const desktop = window.matchMedia('(min-width: 768px)')
+    header.current?.querySelector<HTMLAnchorElement>(hasMenuContent ? '.n3wth-site-navigation-menu a' : '.n3wth-site-navigation-links a')?.focus()
+    const desktop = window.matchMedia(`(min-width: ${collapseAt === 'lg' ? 1024 : 768}px)`)
     const collapse = () => {
       if (desktop.matches) setOpen(false)
     }
@@ -145,15 +148,18 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
       document.removeEventListener('keydown', escape)
       desktop.removeEventListener('change', collapse)
     }
-  }, [open])
+  }, [open, collapseAt, hasMenuContent])
 
   return (
-    <header {...props} ref={header} className={cn('n3wth-site-navigation', className)}>
+    <header {...props} ref={header} className={cn('n3wth-site-navigation', `n3wth-site-navigation--${collapseAt}`, className)}>
       <div className="n3wth-site-navigation-island" data-nosnippet>
         <div className="n3wth-site-navigation-brand" onClick={() => setOpen(false)}>{brand}</div>
         <nav id={menuId} aria-label={navigationLabel} className="n3wth-site-navigation-links" data-open={open} onClick={(event) => {
           if ((event.target as Element).closest('a')) setOpen(false)
-        }}>{links}</nav>
+        }}>{hasMenuContent ? <>
+          <div className="n3wth-site-navigation-inline">{links}</div>
+          <div className="n3wth-site-navigation-menu">{menuContent}</div>
+        </> : links}</nav>
         <div className="n3wth-site-navigation-actions" onClick={() => setOpen(false)}>{actions}</div>
         <button ref={button} type="button" className="n3wth-site-navigation-toggle" aria-label={open ? 'Close menu' : menuLabel} aria-controls={menuId} aria-expanded={open} onClick={() => setOpen(value => !value)}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">

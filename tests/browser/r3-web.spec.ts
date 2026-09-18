@@ -31,16 +31,18 @@ test('new page clicks start at top and Back restores the prior position', async 
 
 test('compact docs menu supports keyboard access and closes after navigation', async ({ page }) => {
   await page.goto('/docs/introduction')
-  const summary = page.locator('summary', { hasText: 'Browse docs' })
-  const all = page.getByRole('navigation', { name: 'All documentation', exact: true })
+  const toggle = page.getByRole('button', { name: 'Open documentation menu', exact: true })
+  const all = page.getByRole('navigation', { name: 'Documentation', exact: true })
+  await expect(page.getByRole('link', { name: 'Documentation home', exact: true })).toHaveText('/docs')
   if ((page.viewportSize()?.width ?? 1440) >= 1024) {
-    await expect(summary).toBeHidden()
+    await expect(toggle).toBeHidden()
     return
   }
   await expect(all).toBeHidden()
-  await summary.focus()
-  await summary.press('Enter')
+  await toggle.focus()
+  await toggle.press('Enter')
   await expect(all).toBeVisible()
+  await expect(all.getByRole('link', { name: 'Introduction', exact: true })).toBeFocused()
   await expect(all.getByRole('link', { name: 'Introduction', exact: true })).toHaveAttribute('aria-current', 'page')
   await all.locator('a[href="/docs/integrations"]').click()
   await expect(page).toHaveURL(/\/docs\/integrations$/)
@@ -61,8 +63,8 @@ test('docs navigation discloses its state on every viewport', async ({ page }) =
       page.getByRole('link', { name: 'Introduction', exact: true }).first()
     ).toHaveAttribute('aria-current', 'page')
   } else {
-    await page.locator('summary', { hasText: 'Browse docs' }).click()
-    const all = page.getByRole('navigation', { name: 'All documentation', exact: true })
+    await page.getByRole('button', { name: 'Open documentation menu', exact: true }).click()
+    const all = page.getByRole('navigation', { name: 'Documentation', exact: true })
     await expect(all).toBeVisible()
     await all.getByRole('link', { name: 'Troubleshooting', exact: true }).click()
     await expect(page).toHaveURL(/\/docs\/troubleshooting$/)

@@ -2,7 +2,6 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { DocsSidebar } from "@/components/DocsSidebar";
 import { TableOfContents } from "@/components/TableOfContents";
-import { DocsMobileNavigation } from "@/components/DocsMobileNavigation";
 
 export default function DocsLayout({
   children,
@@ -14,9 +13,6 @@ export default function DocsLayout({
       <Navigation />
 
       <div className="mx-auto max-w-[1280px] w-full px-6 pt-24 pb-14 lg:px-10 flex-1">
-        <div className="lg:hidden mb-6">
-          <DocsMobileNavigation />
-        </div>
         <div className="flex gap-8">
           {/* Sidebar */}
           <aside className="hidden lg:block w-[220px] flex-shrink-0">
