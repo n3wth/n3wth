@@ -6,6 +6,7 @@ Use the existing system; do not introduce another visual scale or a new set of c
 
 - Canonical tokens: `packages/ui/src/theme/n3wthTheme.ts`. Generated CSS is build output, never a hand-edited source.
 - Satoshi for headings, Geist Sans for body and controls, Geist Mono for code. Use semantic type roles instead of arbitrary sizes.
+- Shared `site.css` sets paragraph weight to `--font-weight-normal` (400), including paragraphs carrying heavier utility classes. Do not override paragraph weight in apps; preserve font family, size, colors, spacing and the weights of headings, `strong`/`b` and controls.
 - Use existing semantic colors for canvas, surfaces, text and borders. Flat surfaces, subtle borders, no added glows, shadows or gradients. No sparkle icons.
 - Documentation examples use `CodeBlock size="sm"`. Preserve horizontal scrolling and copy controls. Add line numbers or language labels only when useful.
 - Code punctuation is readable content, not disabled text. Measure contrast against the actual code surface in both themes.

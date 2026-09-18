@@ -1,0 +1,122 @@
+{
+  "beir": {
+    "title": "BEIR retrieval benchmark",
+    "url": "https://arxiv.org/abs/2104.08663",
+    "kind": "research",
+    "quality": "Original heterogeneous retrieval benchmark; comparisons depend on tasks and compute.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "memory": {
+    "title": "LongMemEval",
+    "url": "https://arxiv.org/abs/2410.10813",
+    "kind": "research",
+    "quality": "Original memory benchmark; tests indexing/retrieval/reading and temporal updates, not this deployment.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "locomo": {
+    "title": "Long-term conversational memory evaluation",
+    "url": "https://aclanthology.org/2024.acl-long.747/",
+    "kind": "research",
+    "quality": "Peer-reviewed ACL paper; synthetic conversations with human review limit external validity.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "prov": {
+    "title": "PROV overview",
+    "url": "https://www.w3.org/TR/prov-overview/",
+    "kind": "standard",
+    "quality": "W3C working group note; provenance concepts, not causal evidence of improved accuracy.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "prov-dm": {
+    "title": "PROV data model",
+    "url": "https://www.w3.org/TR/prov-dm/",
+    "kind": "standard",
+    "quality": "W3C Recommendation; entities, activities, derivations, agents and temporal provenance.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "retries": {
+    "title": "Making retries safe with idempotent APIs",
+    "url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/",
+    "kind": "practitioner",
+    "quality": "Direct production engineering account; vendor context, not neutral comparative research.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "injection": {
+    "title": "Prompt injection risk",
+    "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+    "kind": "standard",
+    "quality": "Security practitioner guidance; mitigations do not guarantee prevention.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "srm": {
+    "title": "Diagnosing sample ratio mismatch",
+    "url": "https://www.microsoft.com/en-us/research/publication/diagnosing-sample-ratio-mismatch-in-online-controlled-experiments-a-taxonomy-and-rules-of-thumb-for-practitioners/",
+    "kind": "research",
+    "quality": "KDD research grounded in experiments across four companies; use published methods, not private employer anecdotes.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "experiments": {
+    "title": "Controlled experiments on the web",
+    "url": "https://ai.stanford.edu/~ronnyk/2009controlledExperimentsOnTheWebSurvey.pdf",
+    "kind": "research",
+    "quality": "Peer-reviewed survey/practical guide; sample size, power and randomization matter.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "discovery": {
+    "title": "Adopting continuous product discovery",
+    "url": "https://www.producttalk.org/adopting-continuous-product-discovery/",
+    "kind": "practitioner",
+    "quality": "Method author and case studies; useful heuristic, not randomized proof of organizational performance.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "aria": {
+    "title": "Accessible interaction practices",
+    "url": "https://www.w3.org/WAI/ARIA/apg/practices/",
+    "kind": "standard",
+    "quality": "Official authoring guidance; validate real rendered behavior, not just ARIA presence.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "c4": {
+    "title": "C4 architecture model",
+    "url": "https://c4model.com/",
+    "kind": "practitioner",
+    "quality": "Method author; explanatory framework, not empirical proof of diagram effectiveness.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "otel": {
+    "title": "Generative AI telemetry conventions",
+    "url": "https://github.com/open-telemetry/semantic-conventions-genai",
+    "kind": "implementation",
+    "quality": "Maintainer repository; moving specification, pin current revision at drafting.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "pgvector": {
+    "title": "Vector retrieval implementation",
+    "url": "https://github.com/pgvector/pgvector",
+    "kind": "implementation",
+    "quality": "Maintainer implementation/docs; pin version and run tests before performance claims.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "mcp": {
+    "title": "Tool protocol specification",
+    "url": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+    "kind": "implementation",
+    "quality": "Maintainer specification; protocol compliance does not establish application safety.",
+    "discoveredOn": "2026-09-17",
+    "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  }
+}

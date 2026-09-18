@@ -33,6 +33,7 @@ docs/
 !docs/
 docs/*
 !docs/workspace/
+!docs/editorial/
 .env*
 .vercel
 

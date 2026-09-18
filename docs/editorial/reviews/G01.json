@@ -1,0 +1,58 @@
+{
+  "id": "G01",
+  "contentPath": "apps/garden/content/Audit Retrieval Before Trusting an Answer.md",
+  "contentSha256": "c06228cdbf3d9f7dc437abce52ca84911697821e49b99154469db97dfc815f26",
+  "reviewedAt": "2026-09-18",
+  "reviewer": "Codex editorial pass after Spiral drafting; checked against original source abstracts and W3C overview",
+  "decision": "pass",
+  "scores": { "originality": 4, "usefulness": 5, "evidence": 4, "clarity": 5, "limitations": 5 },
+  "publicSafe": true,
+  "brandsChecked": true,
+  "internalLinksChecked": true,
+  "claimsComplete": true,
+  "reviewNotes": "Original contribution is the audit worksheet and failure-stage procedure, explicitly a synthesis. Removed Spiral's unsupported assertion that incomplete labels necessarily make recall optimistic. Removed unsupported social claim about where most debugging begins. No private GBrain records, employer examples, measured deployment results, or invented quotations appear in the article. Internal targets exist in the current repository. Editorial scores are judgments, not empirical measurements.",
+  "claims": [
+    {
+      "text": "describes memory systems in terms of indexing, retrieval, and reading",
+      "kind": "sourced",
+      "sourceId": "memory",
+      "sourcePassage": "a unified framework that breaks down the long-term memory design into three stages: indexing, retrieval, and reading",
+      "limitation": "Framework from a benchmark; does not validate this complete audit protocol or a private system.",
+      "verdict": "supported"
+    },
+    {
+      "text": "Its evaluation covers information extraction, reasoning across sessions, temporal reasoning, knowledge updates, and abstention.",
+      "kind": "sourced",
+      "sourceId": "memory",
+      "sourcePassage": "five core long-term memory abilities of chat assistants: information extraction, multi-session reasoning, temporal reasoning, knowledge updates, and abstention",
+      "limitation": "Describes benchmark dimensions, not a universal list of all failure modes.",
+      "verdict": "supported"
+    },
+    {
+      "text": "It reports a robust lexical baseline and strong average results for reranking and late interaction, with additional computational cost.",
+      "kind": "sourced",
+      "sourceId": "beir",
+      "sourcePassage": "BM25 is a robust baseline and re-ranking and late-interaction based models on average achieve the best zero-shot performances, however, at high computational costs",
+      "limitation": "Result applies to the evaluated methods/tasks; no claim of universal superiority or contemporary benchmark ranking.",
+      "verdict": "supported"
+    },
+    {
+      "text": "describes how information about the entities, activities, and people that produced data can inform an assessment of its reliability",
+      "kind": "sourced",
+      "sourceId": "prov",
+      "sourcePassage": "Provenance is information about entities, activities, and people involved in producing a piece of data or thing, which can be used to form assessments about its quality, reliability or trustworthiness.",
+      "limitation": "Provenance supports assessment; it does not prove truth. Overview is a Working Group Note.",
+      "verdict": "supported"
+    },
+    {
+      "text": "4 / 10 = 0.40",
+      "kind": "illustration",
+      "rationale": "Arithmetic independently checked. Denominator is the 10 labeled relevant records. The example and both worksheet rows are explicitly hypothetical."
+    },
+    {
+      "text": "Freeze a small corpus snapshot and write questions before looking at the search results.",
+      "kind": "recommendation",
+      "rationale": "Author's practical synthesis; limitations explicitly say the protocol has not been validated as a complete methodology."
+    }
+  ]
+}
