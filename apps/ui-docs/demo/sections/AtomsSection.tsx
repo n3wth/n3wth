@@ -252,7 +252,7 @@ export function AtomsSection() {
             {iconNames.map((name) => (
               <div
                 key={name}
-                className="flex flex-col items-center gap-1.5 p-2.5 rounded-lg bg-[var(--glass-bg)] border border-[var(--glass-border)] min-w-[64px] hover:border-[var(--glass-highlight)] transition-colors"
+                className="flex flex-col items-center gap-1.5 p-2.5 rounded-lg bg-[var(--glass-bg)] border border-[var(--glass-border)] min-w-32 hover:border-[var(--glass-highlight)] transition-colors"
                 title={name}
               >
                 <Icon
@@ -260,7 +260,7 @@ export function AtomsSection() {
                   size={iconSize}
                   style={iconColor ? { color: iconColor } : undefined}
                 />
-                <span className="text-[9px] text-[var(--color-grey-400)] leading-none">{name}</span>
+                <span className="text-xs text-[var(--color-grey-400)]">{name}</span>
               </div>
             ))}
           </div>

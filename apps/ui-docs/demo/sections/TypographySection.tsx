@@ -10,7 +10,7 @@ export function TypographySection() {
         <div><SiteHeading variant="page" level={3}>A useful idea</SiteHeading></div>
         <div><SiteHeading variant="section" level={3}>How it works</SiteHeading></div>
         <div><SiteHeading variant="item" level={3}>The details</SiteHeading></div>
-        <SiteText variant="supporting">Page, section and item roles. Choose the heading level for the document structure, independently of its visual size.</SiteText>
+        <SiteText variant="supporting" className="max-w-[52ch]">Page, section and item roles. Choose the heading level for the document structure, independently of its visual size.</SiteText>
       </div>
       <div className="docs-type-specimen">
         <SiteText variant="supporting">Reading and controls · Suisse Intl</SiteText>
