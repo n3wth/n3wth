@@ -50,5 +50,17 @@
     "vitest": "4.1.11",
     "wawoff2": "^2.0.1",
     "wrangler": "4.134.0"
+  },
+  "allowScripts": {
+    "core-js@3.50.0": true,
+    "esbuild@0.27.0": true,
+    "esbuild@0.28.1": true,
+    "esbuild@0.25.4": true,
+    "msw@2.15.0": true,
+    "unrs-resolver@1.12.2": true,
+    "workerd@1.20260917.1": true,
+    "@posthog/cli@0.5.30": true,
+    "@posthog/cli@0.14.1": true,
+    "@sentry/cli@2.58.6": true
   }
 }

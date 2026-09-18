@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import {
+  cloudflareApi,
   createGeneratedConfig,
   deployPreview,
   deletePreview,
@@ -270,6 +271,19 @@ test('delete detaches only the exact Worker Domain before deleting the Worker', 
   }), /Wrangler delete failed/)
 })
 
+test('Cloudflare API accepts successful empty response bodies', async () => {
+  await assert.doesNotReject(() => cloudflareApi('/accounts/account/workers/domains/domain-id', {
+    method: 'DELETE',
+    env: { CLOUDFLARE_API_TOKEN: 'test-token' },
+    fetchFn: async () => ({ ok: true, status: 200, json: async () => { throw new Error('empty body') }, text: async () => '' }),
+  }))
+  await assert.rejects(() => cloudflareApi('/accounts/account/workers/domains/domain-id', {
+    method: 'DELETE',
+    env: { CLOUDFLARE_API_TOKEN: 'test-token' },
+    fetchFn: async () => ({ ok: false, status: 500, json: async () => { throw new Error('empty body') }, text: async () => '' }),
+  }), /HTTP 500/)
+})
+
 test('delete rejects mismatched ownership and does not detach or delete', async () => {
   let ranWrangler = false
   await assert.rejects(() => deletePreview({
@@ -294,6 +308,7 @@ function cloudflareResponse(result, { status = 200, success = true, errors = [] 
   return {
     ok: status >= 200 && status < 300,
     status,
+    text: async () => JSON.stringify({ success, result, errors }),
     json: async () => ({ success, result, errors }),
   }
 }

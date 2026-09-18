@@ -263,8 +263,17 @@ export async function cloudflareApi(path, { env = process.env, fetchFn = fetch, 
     throw new Error(`Cloudflare API ${method} ${path} failed: ${error.message}`)
   }
   let body
+  const raw = await response.text()
+  if (!raw.trim()) {
+    if (!response.ok) {
+      const error = new Error(`Cloudflare API ${method} ${path} failed: HTTP ${response.status}`)
+      error.status = response.status
+      throw error
+    }
+    return undefined
+  }
   try {
-    body = await response.json()
+    body = JSON.parse(raw)
   } catch {
     throw new Error(`Cloudflare API ${method} ${path} returned invalid JSON (HTTP ${response.status}).`)
   }
