@@ -28,7 +28,7 @@ Already-published versions are skipped. Registry errors fail the workflow.
 
 For retries, manually run Release UI on main. Package checks still run.
 The publish job alone has OIDC permission, and uses GitHub-hosted runners.
-Never publish locally. Deployment of the sites remains manual and separate.
+Never publish locally. Site deployments are automatic via Vercel Git and separate from npm publishing.
 
 The initial 2.0.0 version and migration notes are prepared directly for this
 cutover. Future version increments are managed through Changesets.

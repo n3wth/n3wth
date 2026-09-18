@@ -152,11 +152,13 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
 
           <div className="p-6 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)]">
             <Tabs value={tabValue} onChange={setTabValue} variant={tabVariant}>
-              <TabsList>
-                <TabsTab value="tab1">Overview</TabsTab>
-                <TabsTab value="tab2">Features</TabsTab>
-                <TabsTab value="tab3">Settings</TabsTab>
-              </TabsList>
+              <div className="min-w-0 max-w-full overflow-x-auto">
+                <TabsList>
+                  <TabsTab value="tab1">Overview</TabsTab>
+                  <TabsTab value="tab2">Features</TabsTab>
+                  <TabsTab value="tab3">Settings</TabsTab>
+                </TabsList>
+              </div>
               <TabsPanel value="tab1">
                 <p className="text-sm text-[var(--color-grey-400)] py-4">
                   Overview content with animated indicator that follows the active tab.

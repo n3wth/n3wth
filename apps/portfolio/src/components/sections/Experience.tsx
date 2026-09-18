@@ -7,9 +7,9 @@ import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 export function Experience() {
   return (
     <SiteSection id="work" aria-label="Experience" className="site-content-gutter">
-      <header data-reveal className="mb-8">
+      <header data-reveal className="mb-8 flex flex-col gap-5">
         <SiteHeading>Experience</SiteHeading>
-        <SiteText className="mt-5 max-w-xl">
+        <SiteText className="max-w-xl">
           From Azure Cognitive Services in 2014 to Google model platforms today, by way of Meta and Covariant.
         </SiteText>
       </header>

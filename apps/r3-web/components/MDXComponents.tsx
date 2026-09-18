@@ -7,12 +7,14 @@ export const MDXComponents = {
     const codeElement = children?.props;
     if (codeElement?.children && typeof codeElement.children === "string") {
       return (
-        <CodeBlock
-          language={codeElement.className?.replace("language-", "")}
-          className={codeElement.className}
-        >
-          {codeElement.children}
-        </CodeBlock>
+        <div className="mb-6 min-w-0">
+          <CodeBlock
+            language={codeElement.className?.replace("language-", "")}
+            className={codeElement.className}
+          >
+            {codeElement.children}
+          </CodeBlock>
+        </div>
       );
     }
     return <pre {...props}>{children}</pre>;

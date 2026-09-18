@@ -146,8 +146,8 @@ export default function HomeClient() {
 
         {/* AI Recommendations Section */}
         <SiteSection>
-          <div className="mb-6">
-            <SiteHeading variant="section" className="mb-2">
+          <div className="mb-6 flex flex-col gap-2">
+            <SiteHeading variant="section">
               What are you working on?
             </SiteHeading>
             <SiteText>
