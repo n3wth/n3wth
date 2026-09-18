@@ -105,7 +105,14 @@ jobs:
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
           for app in $APPS; do
-            node scripts/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER"
+            BINDINGS_ARGS=()
+            case "$app" in
+              skills)
+                # Preview workers never inherit production stateful bindings; skills gets the isolated preview D1.
+                BINDINGS_ARGS=(--bindings-json '{"d1_databases":[{"binding":"DB","database_name":"n3wth-skills-preview","database_id":"d839bbda-6d85-47d0-ae18-946bf45d5321"}]}')
+                ;;
+            esac
+            node scripts/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER" "${BINDINGS_ARGS[@]}"
             echo "Preview $app: https://$app-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
           done
       - name: Delete closed preview
