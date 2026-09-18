@@ -80,6 +80,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
+          echo "token length: ${#CLOUDFLARE_API_TOKEN}"
           node scripts/cloudflare-preview.mjs deploy --app ui-docs --pr "$PR_NUMBER"
           echo "Preview: https://ui-docs-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
       - name: Delete closed preview
