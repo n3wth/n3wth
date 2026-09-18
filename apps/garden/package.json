@@ -1,22 +1,9 @@
 {
-  "name": "@n3wth/garden",
-  "version": "0.1.1",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "figures:theme": "node scripts/theme-figures.mjs",
-    "prebuild": "npm run figures:theme",
-    "build": "next build",
-    "start": "next start",
-    "history": "node scripts/build-history.mjs",
-    "typecheck": "tsc --noEmit",
-    "check": "node --test scripts/*.test.mjs && npm run typecheck && npm run build"
-  },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@n3wth/site-config": "*",
     "@n3wth/ui": "2.1.0",
-    "@next/third-parties": "^16.3.5",
+    "@next/third-parties": "16.3.5",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
     "@types/d3": "^7.4.3",
@@ -25,7 +12,7 @@
     "gray-matter": "^4.0.3",
     "gsap": "^3.15.0",
     "lucide-react": "^1.24.0",
-    "next": "16.2.9",
+    "next": "16.3.5",
     "next-axiom": "^1.10.0",
     "next-view-transitions": "^0.3.5",
     "posthog-js": "^1.422.5",
@@ -44,10 +31,8 @@
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0"
   },
-  "engines": {
-    "node": "24.x"
-  },
   "devDependencies": {
+    "@opennextjs/cloudflare": "1.20.6",
     "@posthog/nextjs-config": "^1.11.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24",
@@ -56,5 +41,21 @@
     "@types/three": "^0.185.4",
     "tailwindcss": "^4.3.3",
     "typescript": "^5"
-  }
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "name": "@n3wth/garden",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "check": "node --test scripts/*.test.mjs && npm run typecheck && npm run build",
+    "dev": "next dev",
+    "figures:theme": "node scripts/theme-figures.mjs",
+    "history": "node scripts/build-history.mjs",
+    "prebuild": "npm run figures:theme",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.1.1"
 }

@@ -56,7 +56,3 @@ Return up to 4 most relevant skills, ordered by relevance. Only include skills t
     return Response.json({ recommendations: [] }, { status: 500 })
   }
 }
-
-export const config = {
-  runtime: 'edge'
-}

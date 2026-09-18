@@ -1,27 +1,10 @@
 {
-  "name": "@n3wth/r3-web",
-  "version": "0.1.1",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
-    "analyze": "cross-env ANALYZE=true npm run build",
-    "perf:test": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
-    "typecheck": "tsc --noEmit",
-    "check": "npm run test:docs && npm run search:check && npm run typecheck && npm run build",
-    "test:docs": "node --experimental-strip-types --test lib/docs-content.test.ts lib/docs-search.test.ts",
-    "docs:sync": "node scripts/sync-docs-sources.mjs",
-    "search:types": "wrangler types --config worker/wrangler.jsonc worker/env.d.ts",
-    "search:check": "npm run search:types && node --experimental-strip-types scripts/build-search-index.ts && tsc --project worker/tsconfig.json && node --experimental-strip-types --test worker/search.test.ts",
-    "search:deploy": "wrangler deploy --config worker/wrangler.jsonc"
-  },
   "dependencies": {
     "@mdx-js/loader": "3.1.1",
     "@mdx-js/react": "3.1.1",
     "@n3wth/site-config": "*",
     "@n3wth/ui": "2.1.0",
-    "@next/mdx": "15.5.19",
+    "@next/mdx": "16.3.5",
     "@next/third-parties": "16.3.5",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
@@ -36,7 +19,7 @@
     "lucide-react": "^0.564.0",
     "motion-dom": "12.23.12",
     "motion-utils": "12.23.6",
-    "next": "15.5.19",
+    "next": "16.3.5",
     "next-axiom": "1.10.0",
     "next-mdx-remote": "6.0.0",
     "posthog-js": "^1.422.5",
@@ -55,6 +38,7 @@
     "unified": "11.0.5"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "1.20.6",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/mdast": "4.0.4",
     "@types/node": "^24",
@@ -65,5 +49,22 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "wrangler": "4.134.0"
-  }
+  },
+  "name": "@n3wth/r3-web",
+  "private": true,
+  "scripts": {
+    "analyze": "cross-env ANALYZE=true npm run build",
+    "build": "next build --turbopack",
+    "check": "npm run test:docs && npm run search:check && npm run typecheck && npm run build",
+    "dev": "next dev --turbopack",
+    "docs:sync": "node scripts/sync-docs-sources.mjs",
+    "perf:test": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
+    "search:check": "npm run search:types && node --experimental-strip-types scripts/build-search-index.ts && tsc --project worker/tsconfig.json && node --experimental-strip-types --test worker/search.test.ts",
+    "search:deploy": "wrangler deploy --config worker/wrangler.jsonc",
+    "search:types": "wrangler types --config worker/wrangler.jsonc worker/env.d.ts",
+    "start": "next start",
+    "test:docs": "node --experimental-strip-types --test lib/docs-content.test.ts lib/docs-search.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.1.1"
 }

@@ -11,7 +11,7 @@ export function hasDirectAstryxDependency(manifest) {
 
 function checkImports(directory, shared = new Set()) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    if (['node_modules', 'dist', 'dist-demo', '.next', '.git', 'content', 'public'].includes(entry.name)) continue
+    if (['node_modules', 'dist', 'dist-demo', '.next', '.open-next', '.wrangler', '.cloudflare', '.git', 'content', 'public'].includes(entry.name)) continue
     const path = resolve(directory, entry.name)
     if (entry.isDirectory()) checkImports(path, shared)
     else if (/\.(?:[cm]?[jt]sx?|css|scss|mdx)$/.test(entry.name)) {
