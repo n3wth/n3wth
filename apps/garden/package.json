@@ -53,9 +53,10 @@
     "dev": "next dev",
     "figures:theme": "node scripts/theme-figures.mjs",
     "history": "node scripts/build-history.mjs",
-    "prebuild": "npm run figures:theme",
+    "prebuild": "npm run figures:theme && npm run content:manifest",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "content:manifest": "node scripts/content-manifest.mjs"
   },
   "version": "0.1.1"
 }

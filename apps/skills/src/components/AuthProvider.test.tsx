@@ -1,33 +1,38 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AuthProvider, useAuth } from './AuthProvider'
 
-const mockSubscription = { unsubscribe: vi.fn() }
-let authStateCallback: (event: string, session: unknown) => void
-
-const mockSupabase = {
-  auth: {
-    getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
-    onAuthStateChange: vi.fn().mockImplementation((cb) => {
-      authStateCallback = cb
-      return { data: { subscription: mockSubscription } }
-    }),
-    signInWithOtp: vi.fn().mockResolvedValue({ error: null }),
-    signOut: vi.fn().mockResolvedValue({ error: null }),
-  },
-  from: vi.fn().mockReturnValue({
-    select: vi.fn().mockReturnValue({
-      eq: vi.fn().mockReturnValue({
-        single: vi.fn().mockResolvedValue({ data: null, error: null }),
-      }),
-    }),
-  }),
-}
-
-vi.mock('../lib/supabase', () => ({
-  createClient: () => mockSupabase,
+const {
+  sessionState,
+  mockSignInMagicLink,
+  mockSignOut,
+} = vi.hoisted(() => ({
+  sessionState: { value: { data: null as unknown, isPending: false, error: null as unknown } },
+  mockSignInMagicLink: vi.fn().mockResolvedValue({ data: {}, error: null }),
+  mockSignOut: vi.fn().mockResolvedValue({ data: {}, error: null }),
 }))
+
+vi.mock('../lib/auth-client', () => ({
+  authClient: {
+    useSession: () => sessionState.value,
+    signIn: { magicLink: mockSignInMagicLink },
+    signOut: mockSignOut,
+  },
+}))
+
+function makeUser(overrides: Record<string, unknown> = {}) {
+  return {
+    id: 'user-1',
+    email: 'test@example.com',
+    name: 'testuser',
+    emailVerified: true,
+    image: null,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-01'),
+    ...overrides,
+  }
+}
 
 function TestConsumer() {
   const { user, profile, loading, error, signIn, signOut } = useAuth()
@@ -46,20 +51,13 @@ function TestConsumer() {
 describe('AuthProvider', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockSupabase.auth.getSession.mockResolvedValue({ data: { session: null }, error: null })
-    mockSupabase.auth.signInWithOtp.mockResolvedValue({ error: null })
-    mockSupabase.auth.signOut.mockResolvedValue({ error: null })
-    mockSupabase.from.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: null, error: null }),
-        }),
-      }),
-    })
+    sessionState.value = { data: null, isPending: false, error: null }
+    mockSignInMagicLink.mockResolvedValue({ data: {}, error: null })
+    mockSignOut.mockResolvedValue({ data: {}, error: null })
   })
 
   it('starts in loading state', () => {
-    mockSupabase.auth.getSession.mockImplementation(() => new Promise(() => {}))
+    sessionState.value = { data: null, isPending: true, error: null }
     render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
@@ -67,237 +65,122 @@ describe('AuthProvider', () => {
     expect(screen.getByTestId('user')).toHaveTextContent('none')
   })
 
-  it('resolves to unauthenticated when no session', async () => {
+  it('resolves to unauthenticated when no session', () => {
     render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
+    expect(screen.getByTestId('loading')).toHaveTextContent('false')
     expect(screen.getByTestId('user')).toHaveTextContent('none')
     expect(screen.getByTestId('profile')).toHaveTextContent('none')
   })
 
-  it('loads user and profile when session exists', async () => {
-    const mockUser = { id: 'user-1', user_metadata: { user_name: 'testuser' } }
-    const mockProfile = { id: 'user-1', username: 'testuser' }
-
-    mockSupabase.auth.getSession.mockResolvedValue({
-      data: { session: { user: mockUser } },
-      error: null,
-    })
-    mockSupabase.from.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
-        }),
-      }),
-    })
-
+  it('exposes the session user when signed in', () => {
+    sessionState.value = { data: { user: makeUser(), session: {} }, isPending: false, error: null }
     render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
+    expect(screen.getByTestId('loading')).toHaveTextContent('false')
     expect(screen.getByTestId('user')).toHaveTextContent('authenticated')
-    expect(screen.getByTestId('profile')).toHaveTextContent('testuser')
   })
 
-  it('handles session error gracefully', async () => {
-    mockSupabase.auth.getSession.mockResolvedValue({
-      data: { session: null },
-      error: { message: 'Session expired' },
-    })
-
+  it('handles session error gracefully', () => {
+    sessionState.value = { data: null, isPending: false, error: { message: 'Session expired' } }
     render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
     expect(screen.getByTestId('error')).toHaveTextContent('Session expired')
   })
 
-  it('handles profile fetch error gracefully', async () => {
-    const mockUser = { id: 'user-1', user_metadata: {} }
-    mockSupabase.auth.getSession.mockResolvedValue({
-      data: { session: { user: mockUser } },
-      error: null,
-    })
-    mockSupabase.from.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: null, error: { message: 'Profile not found' } }),
-        }),
-      }),
-    })
-
+  it('calls signIn.magicLink on signIn', async () => {
     render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
-    expect(screen.getByTestId('error')).toHaveTextContent('Profile not found')
-  })
-
-  it('calls signInWithOtp on signIn', async () => {
-    render(
-      <AuthProvider><TestConsumer /></AuthProvider>
-    )
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
 
     await userEvent.click(screen.getByText('Sign In'))
 
-    expect(mockSupabase.auth.signInWithOtp).toHaveBeenCalledWith({
+    expect(mockSignInMagicLink).toHaveBeenCalledWith({
       email: 'test@example.com',
-      options: { emailRedirectTo: expect.stringContaining('/auth/callback') },
+      callbackURL: '/',
     })
   })
 
   it('handles signIn error', async () => {
-    mockSupabase.auth.signInWithOtp.mockResolvedValue({
-      error: { message: 'OTP failed' },
+    mockSignInMagicLink.mockResolvedValue({
+      data: null,
+      error: { message: 'Magic link failed' },
     })
 
     render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
 
     await userEvent.click(screen.getByText('Sign In'))
 
     await waitFor(() => {
-      expect(screen.getByTestId('error')).toHaveTextContent('OTP failed')
+      expect(screen.getByTestId('error')).toHaveTextContent('Magic link failed')
     })
   })
 
-  it('clears user and profile on signOut', async () => {
-    const mockUser = { id: 'user-1', user_metadata: {} }
-    const mockProfile = { id: 'user-1', username: 'testuser' }
-
-    mockSupabase.auth.getSession.mockResolvedValue({
-      data: { session: { user: mockUser } },
-      error: null,
-    })
-    mockSupabase.from.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
-        }),
-      }),
-    })
-
-    render(
+  it('clears user via the session hook on signOut', async () => {
+    sessionState.value = { data: { user: makeUser(), session: {} }, isPending: false, error: null }
+    const { rerender } = render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('user')).toHaveTextContent('authenticated')
-    })
+    expect(screen.getByTestId('user')).toHaveTextContent('authenticated')
 
     await userEvent.click(screen.getByText('Sign Out'))
 
-    await waitFor(() => {
-      expect(screen.getByTestId('user')).toHaveTextContent('none')
-      expect(screen.getByTestId('profile')).toHaveTextContent('none')
-    })
+    expect(mockSignOut).toHaveBeenCalled()
+    // better-auth clears the session store after a successful sign-out;
+    // the next useSession value flows into context.
+    sessionState.value = { data: null, isPending: false, error: null }
+    rerender(<AuthProvider><TestConsumer /></AuthProvider>)
+    expect(screen.getByTestId('user')).toHaveTextContent('none')
+    expect(screen.getByTestId('profile')).toHaveTextContent('none')
   })
 
-  it('handles signOut error', async () => {
-    const mockUser = { id: 'user-1', user_metadata: {} }
-    mockSupabase.auth.getSession.mockResolvedValue({
-      data: { session: { user: mockUser } },
-      error: null,
-    })
-    mockSupabase.auth.signOut.mockResolvedValue({
+  it('handles signOut error and keeps the user signed in', async () => {
+    sessionState.value = { data: { user: makeUser(), session: {} }, isPending: false, error: null }
+    mockSignOut.mockResolvedValue({
+      data: null,
       error: { message: 'Sign out failed' },
     })
 
     render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
 
     await userEvent.click(screen.getByText('Sign Out'))
 
     await waitFor(() => {
       expect(screen.getByTestId('error')).toHaveTextContent('Sign out failed')
     })
-    // User should remain authenticated when signOut fails
     expect(screen.getByTestId('user')).toHaveTextContent('authenticated')
   })
 
-  it('responds to auth state changes', async () => {
-    render(
+  it('reflects a new session from the useSession hook', () => {
+    const { rerender } = render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
+    expect(screen.getByTestId('user')).toHaveTextContent('none')
 
-    const mockUser = { id: 'user-2', user_metadata: {} }
-    mockSupabase.from.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({ data: { id: 'user-2', username: 'newuser' }, error: null }),
-        }),
-      }),
-    })
+    sessionState.value = { data: { user: makeUser({ id: 'user-2' }), session: {} }, isPending: false, error: null }
+    rerender(<AuthProvider><TestConsumer /></AuthProvider>)
 
-    await act(async () => {
-      authStateCallback('SIGNED_IN', { user: mockUser })
-    })
-
-    await waitFor(() => {
-      expect(screen.getByTestId('user')).toHaveTextContent('authenticated')
-      expect(screen.getByTestId('profile')).toHaveTextContent('newuser')
-    })
+    expect(screen.getByTestId('user')).toHaveTextContent('authenticated')
   })
 
-  it('clears state on SIGNED_OUT auth state change', async () => {
-    const mockUser = { id: 'user-1', user_metadata: {} }
-    mockSupabase.auth.getSession.mockResolvedValue({
-      data: { session: { user: mockUser } },
-      error: null,
-    })
-
-    render(
+  it('clears state when the session hook resolves to signed out', () => {
+    sessionState.value = { data: { user: makeUser(), session: {} }, isPending: false, error: null }
+    const { rerender } = render(
       <AuthProvider><TestConsumer /></AuthProvider>
     )
-    await waitFor(() => {
-      expect(screen.getByTestId('user')).toHaveTextContent('authenticated')
-    })
+    expect(screen.getByTestId('user')).toHaveTextContent('authenticated')
 
-    await act(async () => {
-      authStateCallback('SIGNED_OUT', null)
-    })
+    sessionState.value = { data: null, isPending: false, error: null }
+    rerender(<AuthProvider><TestConsumer /></AuthProvider>)
 
-    await waitFor(() => {
-      expect(screen.getByTestId('user')).toHaveTextContent('none')
-      expect(screen.getByTestId('profile')).toHaveTextContent('none')
-    })
-  })
-
-  it('unsubscribes on unmount', async () => {
-    const { unmount } = render(
-      <AuthProvider><TestConsumer /></AuthProvider>
-    )
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toHaveTextContent('false')
-    })
-
-    unmount()
-    expect(mockSubscription.unsubscribe).toHaveBeenCalled()
+    expect(screen.getByTestId('user')).toHaveTextContent('none')
+    expect(screen.getByTestId('profile')).toHaveTextContent('none')
   })
 })
