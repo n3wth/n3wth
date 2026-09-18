@@ -41,11 +41,12 @@
     "@changesets/cli": "3.0.2",
     "@playwright/test": "1.63.0",
     "@resvg/resvg-js": "2.6.2",
-    "@types/react": "19.2.9",
+    "@types/react": "19.2.17",
     "opentype.js": "^2.0.0",
     "react": "19.2.7",
     "satori": "0.33.4",
     "sharp": "0.35.4",
+    "vitest": "4.1.11",
     "wawoff2": "^2.0.1"
   }
 }

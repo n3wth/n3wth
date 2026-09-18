@@ -2,7 +2,7 @@ import path from "node:path";
 import type { NextConfig } from "next";
 import { withAxiom } from "next-axiom";
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   outputFileTracingRoot: path.resolve(__dirname, '../..'),
   turbopack: { root: path.resolve(__dirname, '../..') },
   // The OG-card fonts are read with fs at runtime; without explicit
@@ -21,6 +21,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-};
+} satisfies NextConfig;
 
 export default withAxiom(nextConfig);

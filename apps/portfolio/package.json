@@ -28,22 +28,22 @@
     "@react-three/postprocessing": "^3.0.4",
     "@types/three": "^0.185.1",
     "gsap": "^3.14.2",
-    "lucide-react": "^0.563.0",
-    "posthog-js": "^1.352.0",
+    "lucide-react": "^0.564.0",
+    "posthog-js": "^1.422.5",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-router-dom": "^7.18.1",
     "three": "^0.185.1"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.39.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
-    "@types/node": "^26.4.1",
-    "@types/react": "^19.2.5",
+    "@types/node": "^24",
+    "@types/react": "19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vercel/node": "^5.6.15",
     "@vitejs/plugin-react": "^5.1.1",
@@ -56,9 +56,9 @@
     "jsdom": "^29.0.2",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
-    "typescript": "~5.9.3",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.11"
   }
 }
