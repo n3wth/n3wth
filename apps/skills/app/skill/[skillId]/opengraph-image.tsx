@@ -3,7 +3,6 @@ import { ImageResponse } from 'next/og'
 import { socialCard, socialFonts } from '@n3wth/site-config/social'
 import { skills } from '@/src/data/skills'
 
-export const runtime = 'edge'
 export const alt = 'skill'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
