@@ -17,6 +17,11 @@ Business Acumen is the ability to understand and apply business knowledge to mak
 - Budgeting and forecasting
 - Cost management
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/business-acumen.svg" aria-label="Open full-size graphic: A snapshot is different from a flow"><img src="/figures/frameworks/business-acumen.svg" alt="A reporting-period timeline distinguishes a balance sheet’s position at a date from income, cash flow and changes in owners’ equity over the period. The four statements answer complementary questions." width="960" height="812" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual map of the four financial statements. The balance sheet is a snapshot; the other statements describe activity or changes over a period. No company data is shown. Original diagram based on <a href="https://www.sec.gov/about/reports-publications/beginners-guide-financial-statements">U.S. Securities and Exchange Commission, Beginners’ Guide to Financial Statements</a>.</figcaption>
+</figure>
+
 ### Strategic Thinking
 
 - Market analysis

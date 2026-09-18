@@ -55,6 +55,11 @@ tags:
 - Network building
 - Experience gathering
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/career-planning.svg" aria-label="Open full-size graphic: Make the skills gap testable"><img src="/figures/career/career-planning.svg" alt="An illustrative comparison matrix links current evidence, target capability, and the next test. It includes writing a decision memo, coordinating a cross-team handoff, and applying coursework to a real task. The final instruction is to schedule a review and record evidence of capability." width="960" height="790" loading="lazy" decoding="async" /></a>
+<figcaption>A skills gap becomes easier to act on when you specify what improved work would look like. This illustrative planning matrix links current evidence to a target capability and a test; its examples are not assessed scores. Original diagram based on <a href="https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf">U.S. Office of Personnel Management, Individual Development Planning</a>.</figcaption>
+</figure>
+
 ## Milestone Planning
 
 ### Short-Term (0-12 months)

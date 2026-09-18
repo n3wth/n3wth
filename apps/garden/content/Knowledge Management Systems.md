@@ -32,6 +32,11 @@ A knowledge management system is a framework for organizing, storing, and sharin
 - Quick reference systems
 - [[Audit Retrieval Before Trusting an Answer]] - Check source coverage, search results, and answer support separately
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/knowledge-management-systems.svg" aria-label="Open full-size graphic: Design for the moment of reuse"><img src="/figures/knowledge/knowledge-management-systems.svg" alt="Search, topic maps and direct links provide three entry routes to a note that retains a claim, source and context. Reuse in a project reveals missing context, which feeds back into revising the stored note." width="960" height="673" loading="lazy" decoding="async" /></a>
+<figcaption>Retrieval needs several routes and a note that still makes sense when found. This conceptual system combines navigational relationships with preserved context; reuse supplies a reason to improve the note. Original diagram based on <a href="https://notes.linkingyourthinking.com/Cards/MOCs+Overview">Nick Milo, Linking Your Thinking, MOCs Overview</a>; <a href="https://fortelabs.com/blog/progressive-summarization-a-practical-technique-for-designing-discoverable-notes">Tiago Forte, Forte Labs, Progressive Summarization: A Practical Technique for Designing Discoverable Notes</a> (2017).</figcaption>
+</figure>
+
 ## Personal Knowledge Management
 
 ### Core Principles

@@ -49,6 +49,9 @@ jobs:
         env:
           AFFECTED_WORKSPACES: ${{ steps.affected.outputs.workspaces }}
         run: npm run check:metadata
+      - name: Check article figure evidence and assets
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/garden')
+        run: node docs/editorial/visuals/check.mjs
       - name: Verify shared site design resolution
         if: contains(steps.affected.outputs.workspaces, '@n3wth/ui')
         run: npm run check:design

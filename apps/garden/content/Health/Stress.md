@@ -21,6 +21,11 @@ tags: [health, mental-health, wellness, stress-management, personal]
 - **Movement**: Daily walk + 3x weekly strength training
 - **Evening Routine**: Gentle stretching before bed
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/stress-response.svg" aria-label="Open full-size graphic: Stress"><img src="/figures/wellbeing/stress-response.svg" alt="A feedback map links noticing stress signals to trying relaxation, movement, sleep routines or social support, then journaling what helped. A separate branch directs persistent or disruptive symptoms toward professional support." width="960" height="785" loading="lazy" decoding="async" /></a>
+<figcaption>Stress signals can prompt a choice of coping strategy and a short review of what helped. This conceptual map is not a diagnosis; the source advises professional support when symptoms persist or coping is difficult. Original conceptual diagram based on <a href="https://www.nimh.nih.gov/health/publications/so-stressed-out-fact-sheet">National Institute of Mental Health, I'm So Stressed Out! Fact Sheet</a>.</figcaption>
+</figure>
+
 ## My Support System
 
 - **Professional**: Regular check-ins with a professional when needed

@@ -17,6 +17,11 @@ Progressive Summarization is a note-taking technique developed by [[Tiago Forte]
 - **Layer 3**: Write a quick summary in my own words
 - **Layer 4**: Create something new from the insights
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/progressive-summarization.svg" aria-label="Open full-size graphic: Keep a short route back to context"><img src="/figures/knowledge/progressive-summarization.svg" alt="An illustrative layered note places an own-word summary above selected passages and a retained source. Side annotations explain quick scanning, selective emphasis and checking the original context. A branch points to a new piece of writing when there is a use for the note." width="960" height="708" loading="lazy" decoding="async" /></a>
+<figcaption>Compression stays useful when the original context remains reachable. This illustrative specimen names the operations rather than assigning layer numbers; apply further summarization when the note warrants it. Original diagram based on <a href="https://fortelabs.com/blog/progressive-summarization-a-practical-technique-for-designing-discoverable-notes">Tiago Forte, Forte Labs, Progressive Summarization: A Practical Technique for Designing Discoverable Notes</a> (2017); <a href="https://fortelabs.com/blog/progressive-summarization-iii-guidelines-and-principles">Tiago Forte, Forte Labs, Progressive Summarization III: Guidelines and Principles</a> (2017).</figcaption>
+</figure>
+
 ## Benefits
 
 - Find important information without re-reading everything

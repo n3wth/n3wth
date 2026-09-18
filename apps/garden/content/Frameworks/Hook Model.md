@@ -16,6 +16,11 @@ The Hook Model is a framework for creating products that encourage user habits t
 - **Reward:** Variable rewards that fulfill user needs
 - **Investment:** User effort that increases likelihood of returning
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/hook-model.svg" aria-label="Open full-size graphic: The return visit starts in the current one"><img src="/figures/frameworks/hook-model.svg" alt="A cycle links trigger, action, variable reward and investment. The investment stage stores preferences or work that can improve the next visit, linking back to the trigger. The center asks what value grows with use." width="960" height="815" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual Hook cycle emphasizing the role of stored value. The model describes a design mechanism; it does not establish that a particular product causes habits or improves retention. Original diagram based on <a href="https://www.nirandfar.com/how-to-manufacture-desire/">Nir Eyal, The Hooked Model: How to Manufacture Desire in 4 Steps</a>.</figcaption>
+</figure>
+
 ## Usage
 
 Used for creating products that encourage user habits and increase engagement. Helps design features that naturally draw users back to the product.

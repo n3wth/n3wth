@@ -104,6 +104,11 @@ Terrace Construction Layers (bottom to top):
   - Japanese Forest Grass
 - Focus: Ground coverage and texture
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/sf-terraced-garden.jpg" aria-label="Open full-size graphic: SF Terraced Garden Transformation Guide"><img src="/figures/wellbeing/sf-terraced-garden.jpg" alt="Western sword fern growing in a wooded setting, with a central crown and long arching fronds divided into narrow leaflets." width="1600" height="1200" loading="lazy" decoding="async" /></a>
+<figcaption>Western sword fern (<i>Polystichum munitum</i>) shows the arching frond habit proposed for the lower terrace. Match the site to its preference for shade and moist, well-drained soil; see <a href="https://plants.ces.ncsu.edu/plants/polystichum-munitum/">NC State Extension, Polystichum munitum</a>. Photograph by <a href="https://commons.wikimedia.org/wiki/File:Western_sword_fern_(Polystichum_munitum)_-_Flickr_-_brewbooks.jpg">brewbooks, Western sword fern</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>; resized. This is a reference specimen in Washington, not the project garden.</figcaption>
+</figure>
+
 ### 4. Additional Features ($1,000)
 
 #### Safety & Accessibility:

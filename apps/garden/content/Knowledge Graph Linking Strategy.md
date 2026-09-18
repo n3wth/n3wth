@@ -101,6 +101,11 @@ A flat structure with dense connections provides better navigation than deep hie
 - **Usage**: Specify relationship nature (e.g., "causes", "contradicts", "exemplifies")
 - **Best Practice**: Develop consistent vocabulary for link types
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/knowledge-graph-linking-strategy.svg" aria-label="Open full-size graphic: Write the relationship, then add the link"><img src="/figures/knowledge/knowledge-graph-linking-strategy.svg" alt="Three labeled connections distinguish a narrower concept, a supporting condition and a cross-topic relationship: practice is a form of learning; feedback guides practice; note linking connects practice notes to revision notes. A check asks whether the connecting phrase makes a defensible sentence." width="960" height="668" loading="lazy" decoding="async" /></a>
+<figcaption>Link meaning matters before link count. These conceptual examples turn edges into readable propositions; they do not establish an optimal number of links per note. Original diagram based on <a href="https://cmap.ihmc.us/docs/theory-of-concept-maps">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>; <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02396/full">Ericsson and Harwell, Frontiers in Psychology, Deliberate Practice and Proposed Limits on the Effects of Practice on the Acquisition of Expert Performance</a> (2019).</figcaption>
+</figure>
+
 ## Optimal Link Density
 
 ### Target Metrics

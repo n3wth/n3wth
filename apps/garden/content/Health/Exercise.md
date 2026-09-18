@@ -25,6 +25,11 @@ A key component of overall health and wellness, focusing on consistent movement 
 - **Mobility/Stretching**: Daily (5-10 minutes minimum)
 - **Active Recovery**: 1-2x per week (walking, yoga)
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/exercise-weekly.svg" aria-label="Open full-size graphic: Exercise"><img src="/figures/wellbeing/exercise-weekly.svg" alt="Bars show CDC adult aerobic recommendations in minutes per week: 150 moderate or 75 vigorous. A separate panel adds muscle strengthening on at least two days. Aerobic amounts are alternatives or can be combined." width="960" height="765" loading="lazy" decoding="async" /></a>
+<figcaption>CDC's adult targets offer two aerobic routes plus muscle strengthening. Bars show guideline amounts in minutes per week, not measured health outcomes; an equivalent mix also counts. Individual starting points and abilities vary. Original chart based on <a href="https://www.cdc.gov/physical-activity-basics/adding-adults/what-counts.html">Centers for Disease Control and Prevention, What Counts as Physical Activity for Adults</a>.</figcaption>
+</figure>
+
 ## Types of Exercise
 
 ### Cardiovascular

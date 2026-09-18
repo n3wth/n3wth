@@ -1,0 +1,570 @@
+[
+  {
+    "file": "Career Goals Framework.md",
+    "asset": "/figures/career/career-goals-framework.svg",
+    "kind": "explanatory-diagram",
+    "caption": "Connect each aspiration to a capability, an assignment, and evidence you can review. This conceptual hierarchy uses an illustrative project example; it is not a forecast of promotion. Original diagram based on <a href=\"https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf\">U.S. Office of Personnel Management, Individual Development Planning</a>.",
+    "sources": [
+      {
+        "url": "https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf",
+        "title": "Individual Development Planning",
+        "publisher": "U.S. Office of Personnel Management",
+        "evidence": "Roles and responsibilities: assess competence against job requirements and periodically assess progress. Process: pre-planning, employee/supervisor meeting, plan, implement, evaluate outcomes. Key elements: short- and long-term career goals, development objectives, learning activities, and estimated/actual completion dates.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "The article explains goal breakdown and action planning; the hierarchy adds a concrete bridge from aspiration to observable evidence."
+  },
+  {
+    "file": "Career Transition Guide.md",
+    "asset": "/figures/career/career-transition-guide.svg",
+    "kind": "timeline",
+    "caption": "The planning phases are more useful when each has an evidence check. This conceptual sequence supplements the article’s timelines with questions to revisit as you learn; it does not establish typical transition durations. Original diagram based on <a href=\"https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf\">U.S. Office of Personnel Management, Individual Development Planning</a> and <a href=\"https://lifedesignlab.stanford.edu/dyl\">Stanford Life Design Lab, Designing Your Life</a>.",
+    "sources": [
+      {
+        "url": "https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf",
+        "title": "Individual Development Planning",
+        "publisher": "U.S. Office of Personnel Management",
+        "evidence": "Roles and responsibilities: assess competence against job requirements and periodically assess progress. Process: pre-planning, employee/supervisor meeting, plan, implement, evaluate outcomes. Key elements: short- and long-term career goals, development objectives, learning activities, and estimated/actual completion dates.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://lifedesignlab.stanford.edu/dyl",
+        "title": "Designing Your Life",
+        "publisher": "Stanford Life Design Lab",
+        "evidence": "The course describes learning by doing, feedback and iteration, prototyping career ideas in action and conversation, informational interviews, and an Odyssey Plan. Steps are prototypes to learn from, not failures.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds readiness checks after the four-phase transition plan without reinforcing its uncited timing assumptions."
+  },
+  {
+    "file": "Career Planning.md",
+    "asset": "/figures/career/career-planning.svg",
+    "kind": "matrix",
+    "caption": "A skills gap becomes easier to act on when you specify what improved work would look like. This illustrative planning matrix links current evidence to a target capability and a test; its examples are not assessed scores. Original diagram based on <a href=\"https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf\">U.S. Office of Personnel Management, Individual Development Planning</a>.",
+    "sources": [
+      {
+        "url": "https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf",
+        "title": "Individual Development Planning",
+        "publisher": "U.S. Office of Personnel Management",
+        "evidence": "Roles and responsibilities: assess competence against job requirements and periodically assess progress. Process: pre-planning, employee/supervisor meeting, plan, implement, evaluate outcomes. Key elements: short- and long-term career goals, development objectives, learning activities, and estimated/actual completion dates.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Makes the development-plan section usable by converting broad skill categories into evidence-based next actions."
+  },
+  {
+    "file": "Career Direction Framework.md",
+    "asset": "/figures/career/career-direction-framework.svg",
+    "kind": "explanatory-diagram",
+    "caption": "Use self-assessment to generate possibilities, then test them in the working world. This conceptual guide combines assessment lenses with career prototypes; treat the results as prompts for further exploration. Original diagram based on <a href=\"https://capd.mit.edu/channels/self-assessments/\">MIT Career Advising &amp; Professional Development, Self assessment</a> and <a href=\"https://lifedesignlab.stanford.edu/dyl\">Stanford Life Design Lab, Designing Your Life</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/channels/self-assessments/",
+        "title": "Self assessment",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Discover your career interests describes values, interests, personality, and skills as components of career self-assessment. It asks readers to prioritize results, reflect with trusted people, reassess over time, and explore career options. The figure focuses on interests, skills, and values and combines these with real-world prototypes.",
+        "accessed": "2026-09-18",
+        "accessNote": "Replaces CareerOneStop assessment URLs that were readable in research results but returned HTTP 403 in direct transport checks. This MIT URL returned HTTP 200."
+      },
+      {
+        "url": "https://lifedesignlab.stanford.edu/dyl",
+        "title": "Designing Your Life",
+        "publisher": "Stanford Life Design Lab",
+        "evidence": "The course describes learning by doing, feedback and iteration, prototyping career ideas in action and conversation, informational interviews, and an Odyssey Plan. Steps are prototypes to learn from, not failures.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds an explicit test between self-assessment and committing to a direction, supporting the note's emphasis on flexibility."
+  },
+  {
+    "file": "Career Roadmap.md",
+    "asset": "/figures/career/career-roadmap.svg",
+    "kind": "branching-roadmap",
+    "caption": "A roadmap can preserve long-term direction without pretending the route is fixed. This conceptual branching map uses experiments and review points; its branches are alternatives, not probabilities or promised progression. Original diagram based on <a href=\"https://lifedesignlab.stanford.edu/dyl\">Stanford Life Design Lab, Designing Your Life</a>.",
+    "sources": [
+      {
+        "url": "https://lifedesignlab.stanford.edu/dyl",
+        "title": "Designing Your Life",
+        "publisher": "Stanford Life Design Lab",
+        "evidence": "The course describes learning by doing, feedback and iteration, prototyping career ideas in action and conversation, informational interviews, and an Odyssey Plan. Steps are prototypes to learn from, not failures.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Balances the article's long time horizons with actionable review points and alternative career paths."
+  },
+  {
+    "file": "Career Transitions.md",
+    "asset": "/figures/career/career-transitions.svg",
+    "kind": "comparison-matrix",
+    "caption": "Separate a transferable skill from the context in which you learned it, then identify what the new setting still requires. These are illustrative task translations, not claims of automatic job readiness. Original diagram based on <a href=\"https://capd.mit.edu/resources/career-toolkit-crafting-an-effective-resume/\">MIT Career Advising &amp; Professional Development, Career toolkit: Crafting an effective resume</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/resources/career-toolkit-crafting-an-effective-resume/",
+        "title": "Career toolkit: Crafting an effective resume",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "PAR accomplishment statements name project, action, and result. Start with a strong action verb and describe the outcome; quantify when possible and truthful. Tailor relevant experiences to the target job description.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Shows how existing work can support a transition while keeping new domain gaps visible."
+  },
+  {
+    "file": "Career Frameworks.md",
+    "asset": "/figures/career/career-frameworks.svg",
+    "kind": "decision-guide",
+    "caption": "Frameworks are useful when they answer a specific question. This conceptual chooser connects assessment, planning, and learning; it does not treat career stages or the 70-20-10 guideline as fixed requirements. Original diagram based on <a href=\"https://capd.mit.edu/channels/self-assessments/\">MIT Career Advising &amp; Professional Development, Self assessment</a>, <a href=\"https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf\">U.S. Office of Personnel Management, Individual Development Planning</a>, <a href=\"https://www.ccl.org/articles/leading-effectively-articles/70-20-10-rule/\">Center for Creative Leadership, The 70-20-10 Rule for Leadership Development</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/channels/self-assessments/",
+        "title": "Self assessment",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Discover your career interests describes values, interests, personality, and skills as components of career self-assessment. It asks readers to prioritize results, reflect with trusted people, reassess over time, and explore career options. The figure focuses on interests, skills, and values and combines these with real-world prototypes.",
+        "accessed": "2026-09-18",
+        "accessNote": "Replaces CareerOneStop assessment URLs that were readable in research results but returned HTTP 403 in direct transport checks. This MIT URL returned HTTP 200."
+      },
+      {
+        "url": "https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf",
+        "title": "Individual Development Planning",
+        "publisher": "U.S. Office of Personnel Management",
+        "evidence": "Roles and responsibilities: assess competence against job requirements and periodically assess progress. Process: pre-planning, employee/supervisor meeting, plan, implement, evaluate outcomes. Key elements: short- and long-term career goals, development objectives, learning activities, and estimated/actual completion dates.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://www.ccl.org/articles/leading-effectively-articles/70-20-10-rule/",
+        "title": "The 70-20-10 Rule for Leadership Development",
+        "publisher": "Center for Creative Leadership",
+        "evidence": "Experience-driven development places challenging assignments at the center, supported by developmental relationships and formal learning. It explicitly says not all experiences are equal and to match the learning need to the experience. Graphic does not depict percentages as measured universal proportions.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Integrates the article's collection of frameworks into a practical selection tool without charting a heuristic as measured data."
+  },
+  {
+    "file": "Communication Skills.md",
+    "asset": "/figures/career/communication-skills.svg",
+    "kind": "conversation-sequence",
+    "caption": "Active listening becomes observable when the receiver repeats the request and the sender confirms or corrects it. This illustrative workplace exchange adapts a healthcare communication practice; it is a conceptual example, not a measured workplace result. Original diagram based on <a href=\"https://www.govinfo.gov/content/pkg/GOVPUB-HE20_6500-PURL-gpo24004/pdf/GOVPUB-HE20_6500-PURL-gpo24004.pdf\">Agency for Healthcare Research and Quality, archived by the U.S. Government Publishing Office, TeamSTEPPS Pocket Guide — Check-Back</a>.",
+    "sources": [
+      {
+        "url": "https://www.govinfo.gov/content/pkg/GOVPUB-HE20_6500-PURL-gpo24004/pdf/GOVPUB-HE20_6500-PURL-gpo24004.pdf",
+        "title": "TeamSTEPPS Pocket Guide — Check-Back",
+        "publisher": "Agency for Healthcare Research and Quality, archived by the U.S. Government Publishing Office",
+        "evidence": "Communication / Check-Back: closed-loop communication verifies the sender's intended meaning. Steps: sender initiates, receiver accepts and provides feedback, sender double-checks. The new workplace example is an editorial adaptation of the clinical guidance.",
+        "accessed": "2026-09-18",
+        "accessNote": "AHRQ's current web page was readable through Parallel but returned HTTP 403 in direct transport. The government-archived primary pocket guide was fetched and its SBAR/Check-Back text read; archive returned HTTP 200."
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Turns the article's general active-listening advice into a concrete, checkable communication behavior."
+  },
+  {
+    "file": "Delegation Skills.md",
+    "asset": "/figures/career/delegation-skills.svg",
+    "kind": "agreement-diagram",
+    "caption": "Delegation needs an agreement about authority and support as well as the task itself. This conceptual checklist expands the communication section into a reviewable handoff. Original diagram based on <a href=\"https://www.ccl.org/wp-content/uploads/2024/12/leadership-models-for-development-by-center-for-creative-leadership-ccl.pdf\">Center for Creative Leadership, Models for the Development of Leadership</a>.",
+    "sources": [
+      {
+        "url": "https://www.ccl.org/wp-content/uploads/2024/12/leadership-models-for-development-by-center-for-creative-leadership-ccl.pdf",
+        "title": "Models for the Development of Leadership",
+        "publisher": "Center for Creative Leadership",
+        "evidence": "Delegation Cycle section: provide authority, resources, direction, and support; know the people, specify purpose, assess/share/reward accomplishments; delegating does not relinquish responsibility. Assessment–Challenge–Support section defines feedback on strengths/needs, new experiences requiring new skills, and support that builds confidence; balance these elements.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Makes explicit the missing authority and support boundaries needed to act on the task, team assessment, and communication components."
+  },
+  {
+    "file": "Interview Preparation.md",
+    "asset": "/figures/career/interview-preparation.svg",
+    "kind": "feedback-diagram",
+    "caption": "Use the job description to choose evidence, then practice explaining it aloud. This conceptual practice loop uses an illustrative matching example; it makes no prediction about hiring outcomes. Original diagram based on <a href=\"https://capd.mit.edu/resources/career-toolkit-interviewing/\">MIT Career Advising &amp; Professional Development, Career toolkit: Interviewing</a> and <a href=\"https://capd.mit.edu/resources/interview-primer/\">MIT Career Advising &amp; Professional Development, Interview Primer</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/resources/career-toolkit-interviewing/",
+        "title": "Career toolkit: Interviewing",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Transcript: cross-reference the job posting with one's resume, identify relevant skills, create practice questions, and rehearse aloud. A single experience can answer different skill-focused questions; emphasize one's own action and tangible results.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://capd.mit.edu/resources/interview-primer/",
+        "title": "Interview Primer",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Interview Preparation: save the job description, use its requirements to build practice prompts, research the employer, use mock interviews or recordings with feedback, and prepare logistics. Be a STAR: situation, task, action, result.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Supports the Research and Practice strategies by showing how employer requirements drive story choice and rehearsal."
+  },
+  {
+    "file": "Interview Preparation Hub.md",
+    "asset": "/figures/career/interview-preparation-hub.svg",
+    "kind": "decision-map",
+    "caption": "Use the hub’s resources to resolve your least-ready area, then rehearse the complete conversation. This conceptual navigation map groups common preparation gaps; it is not a validated readiness score. Original diagram based on <a href=\"https://capd.mit.edu/resources/interview-primer/\">MIT Career Advising &amp; Professional Development, Interview Primer</a> and <a href=\"https://capd.mit.edu/resources/a-guide-to-interview-timelines-and-structure/\">MIT Career Advising &amp; Professional Development, Interview timelines and structure</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/resources/interview-primer/",
+        "title": "Interview Primer",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Interview Preparation: save the job description, use its requirements to build practice prompts, research the employer, use mock interviews or recordings with feedback, and prepare logistics. Be a STAR: situation, task, action, result.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://capd.mit.edu/resources/a-guide-to-interview-timelines-and-structure/",
+        "title": "Interview timelines and structure",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Later rounds may combine behavioral, technical, and case questions. Typical sequence includes introductions, discussion of background relative to employer needs, candidate questions, and next steps. Timelines vary by company and industry.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds a route through a link-heavy hub so readers can choose the next useful resource."
+  },
+  {
+    "file": "Interview Prep Checklist.md",
+    "asset": "/figures/career/interview-prep-checklist.svg",
+    "kind": "readiness-matrix",
+    "caption": "Hours alone do not show what you can explain in an interview. This illustrative checklist names reviewable outputs for research, stories, practice, and logistics; it does not validate the time allocations above. Original diagram based on <a href=\"https://capd.mit.edu/resources/interview-primer/\">MIT Career Advising &amp; Professional Development, Interview Primer</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/resources/interview-primer/",
+        "title": "Interview Primer",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Interview Preparation: save the job description, use its requirements to build practice prompts, research the employer, use mock interviews or recordings with feedback, and prepare logistics. Be a STAR: situation, task, action, result.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Complements the time-based task list with observable readiness checks immediately before mock-interview tasks."
+  },
+  {
+    "file": "Job Search Strategy.md",
+    "asset": "/figures/career/job-search-strategy.svg",
+    "kind": "system-diagram",
+    "caption": "Different channels can feed the same opportunity record and follow-up process. This conceptual system shows organization and feedback, not the share of jobs supplied by any channel. Original diagram based on <a href=\"https://capd.mit.edu/channels/resources-advice/\">MIT Career Advising &amp; Professional Development, Resources &amp; Advice</a> and <a href=\"https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf\">U.S. Office of Personnel Management, Individual Development Planning</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/channels/resources-advice/",
+        "title": "Resources & Advice",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Get experience section describes job search as self-reflection, strategic planning, and help from others; lists networking and informational interviews, career fairs, job listings, and an elevator pitch. Career development is dynamic.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf",
+        "title": "Individual Development Planning",
+        "publisher": "U.S. Office of Personnel Management",
+        "evidence": "Roles and responsibilities: assess competence against job requirements and periodically assess progress. Process: pre-planning, employee/supervisor meeting, plan, implement, evaluate outcomes. Key elements: short- and long-term career goals, development objectives, learning activities, and estimated/actual completion dates.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Connects multichannel discovery to the article's application management practices while avoiding its unsupported networking percentage."
+  },
+  {
+    "file": "Leadership Skills.md",
+    "asset": "/figures/career/leadership-skills.svg",
+    "kind": "diagnostic-diagram",
+    "caption": "Choose a leadership behavior in response to what the group needs. This conceptual diagnostic uses illustrative warning signs and responses for direction, alignment, and commitment; it is not a scoring instrument. Original diagram based on <a href=\"https://www.ccl.org/articles/leading-effectively-articles/make-leadership-happen-with-dac-framework/\">Center for Creative Leadership, Direction + Alignment + Commitment (DAC) = Leadership</a>.",
+    "sources": [
+      {
+        "url": "https://www.ccl.org/articles/leading-effectively-articles/make-leadership-happen-with-dac-framework/",
+        "title": "Direction + Alignment + Commitment (DAC) = Leadership",
+        "publisher": "Center for Creative Leadership",
+        "evidence": "Direction is shared agreement on goals; alignment is coordinated work; commitment is mutual responsibility for collective success. Weak direction shows competing goals, weak alignment can show isolated/duplicated work, and the source recommends gathering group input before deciding changes.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Turns an individual skill list into a way to choose appropriate behavior based on collective outcomes."
+  },
+  {
+    "file": "Leadership Development.md",
+    "asset": "/figures/career/leadership-development.svg",
+    "kind": "learning-design",
+    "caption": "A new title alone does not specify how leadership will develop. This illustrative assignment combines assessment, challenge, and support, followed by a review of changed behavior. Original diagram based on <a href=\"https://www.ccl.org/wp-content/uploads/2024/12/leadership-models-for-development-by-center-for-creative-leadership-ccl.pdf\">Center for Creative Leadership, Models for the Development of Leadership</a>.",
+    "sources": [
+      {
+        "url": "https://www.ccl.org/wp-content/uploads/2024/12/leadership-models-for-development-by-center-for-creative-leadership-ccl.pdf",
+        "title": "Models for the Development of Leadership",
+        "publisher": "Center for Creative Leadership",
+        "evidence": "Delegation Cycle section: provide authority, resources, direction, and support; know the people, specify purpose, assess/share/reward accomplishments; delegating does not relinquish responsibility. Assessment–Challenge–Support section defines feedback on strengths/needs, new experiences requiring new skills, and support that builds confidence; balance these elements.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds a concrete learning design after the article's development path and leadership styles, without imposing a universal promotion ladder."
+  },
+  {
+    "file": "Leadership-Communication-Synthesis.md",
+    "asset": "/figures/career/leadership-communication-synthesis.svg",
+    "kind": "annotated-specimen",
+    "caption": "A useful leadership message separates context from interpretation and ends with a clear request. This illustrative project message adapts a healthcare communication framework; it does not quantify leadership impact or validate the article’s numerical claims. Original diagram based on <a href=\"https://www.govinfo.gov/content/pkg/GOVPUB-HE20_6500-PURL-gpo24004/pdf/GOVPUB-HE20_6500-PURL-gpo24004.pdf\">Agency for Healthcare Research and Quality, archived by the U.S. Government Publishing Office, TeamSTEPPS Pocket Guide — SBAR</a>.",
+    "sources": [
+      {
+        "url": "https://www.govinfo.gov/content/pkg/GOVPUB-HE20_6500-PURL-gpo24004/pdf/GOVPUB-HE20_6500-PURL-gpo24004.pdf",
+        "title": "TeamSTEPPS Pocket Guide — SBAR",
+        "publisher": "Agency for Healthcare Research and Quality, archived by the U.S. Government Publishing Office",
+        "evidence": "Communication / SBAR: Situation describes what is going on; Background supplies clinical context; Assessment asks what the speaker thinks the problem is; Recommendation and Request asks what the speaker would do to correct it. The figure uses an explicitly illustrative workplace adaptation.",
+        "accessed": "2026-09-18",
+        "accessNote": "AHRQ's current web page was readable through Parallel but returned HTTP 403 in direct transport. The government-archived primary pocket guide was fetched and its SBAR/Check-Back text read; archive returned HTTP 200."
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds a concrete message specimen adjacent to the message-framing strategy, rather than graphing the article's unsupported impact equation."
+  },
+  {
+    "file": "Networking.md",
+    "asset": "/figures/career/networking.svg",
+    "kind": "network-diagram",
+    "caption": "A contact outside your usual circle may bring different information. This conceptual network illustrates the mechanism discussed in Stanford’s summary of a randomized job-mobility study; the drawing is not study data, and effects varied by tie strength and industry. Original diagram based on <a href=\"https://digitaleconomy.stanford.edu/publication/a-causal-test-of-the-strength-of-weak-ties/\">Stanford Digital Economy Lab, A Causal Test of the Strength of Weak Ties</a>.",
+    "sources": [
+      {
+        "url": "https://digitaleconomy.stanford.edu/publication/a-causal-test-of-the-strength-of-weak-ties/",
+        "title": "A Causal Test of the Strength of Weak Ties",
+        "publisher": "Stanford Digital Economy Lab",
+        "evidence": "Research summary: large-scale randomized experiments support a nonlinear relationship between tie strength and job transmission. Moderately weak ties measured by mutual connections, and weakest ties measured by interaction intensity, generated the most job mobility. Effects varied by industry. Graphic illustrates a bridge between circles and encodes no study data.",
+        "accessed": "2026-09-18",
+        "accessNote": "Stanford Report page returned HTTP 403 in direct transport despite being readable through Parallel. This primary research-lab summary was fetched and returned HTTP 200."
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds the information-bridging reason for varying connection types without inventing a tie-strength curve or universal networking yield."
+  },
+  {
+    "file": "Professional Development.md",
+    "asset": "/figures/career/professional-development.svg",
+    "kind": "responsibility-map",
+    "caption": "A development plan needs both personal initiative and access to useful work. This conceptual responsibility map shows how an employee and supervisor can agree activities and review their usefulness. Original diagram based on <a href=\"https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf\">U.S. Office of Personnel Management, Individual Development Planning</a>.",
+    "sources": [
+      {
+        "url": "https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf",
+        "title": "Individual Development Planning",
+        "publisher": "U.S. Office of Personnel Management",
+        "evidence": "Roles and responsibilities: assess competence against job requirements and periodically assess progress. Process: pre-planning, employee/supervisor meeting, plan, implement, evaluate outcomes. Key elements: short- and long-term career goals, development objectives, learning activities, and estimated/actual completion dates.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Makes the implementation section actionable by assigning complementary responsibilities and an outcome review."
+  },
+  {
+    "file": "Remote Work.md",
+    "asset": "/figures/career/remote-work.svg",
+    "kind": "annotated-specimen",
+    "caption": "Set screen and typing positions independently so one does not force an awkward posture for the other. This conceptual workstation specimen highlights selected setup checks; it is not to scale or a full ergonomic assessment. Original diagram based on <a href=\"https://www.hse.gov.uk/msd/dse/good-posture.htm\">Health and Safety Executive, Good posture when using display screen equipment</a>.",
+    "sources": [
+      {
+        "url": "https://www.hse.gov.uk/msd/dse/good-posture.htm",
+        "title": "Good posture when using display screen equipment",
+        "publisher": "Health and Safety Executive",
+        "evidence": "Standard workstation guidance: top of screen level with eyes about an arm's length away, relaxed shoulders, keyboard just below elbow height, lower-back support, screen and keyboard centered. Prolonged laptop use: separate keyboard/mouse so the screen can be raised.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds a concrete equipment arrangement after Remote Setup, using official ergonomic guidance and an original composition."
+  },
+  {
+    "file": "Remote Work Excellence Guide.md",
+    "asset": "/figures/career/remote-work-excellence-guide.svg",
+    "kind": "decision-tree",
+    "caption": "Choose the communication channel deliberately and keep the resulting work visible. This conceptual decision aid is an editorial adaptation of Cornell’s remote-team guidance, not a tested rule for every situation. Original diagram based on <a href=\"https://guides.library.cornell.edu/remoteworkguide/teamguidance\">Cornell University Library, Best Practices for Remote Work: Team Guidance</a>.",
+    "sources": [
+      {
+        "url": "https://guides.library.cornell.edu/remoteworkguide/teamguidance",
+        "title": "Best Practices for Remote Work: Team Guidance",
+        "publisher": "Cornell University Library",
+        "evidence": "Use different tools for different communications; always-on synchronous channels distract and too many emails overwhelm. Set ground rules/norms and agendas, specify action items, document work, hold people accountable, and preserve social check-ins.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds a channel-choice rule after asynchronous and synchronous communication advice and connects both to documentation."
+  },
+  {
+    "file": "Resume Building.md",
+    "asset": "/figures/career/resume-building.svg",
+    "kind": "annotated-specimen",
+    "caption": "An accomplishment statement makes your contribution and its result easy to find. This annotated example is invented for explanation; replace it with work and outcomes you can substantiate. Original diagram based on <a href=\"https://capd.mit.edu/resources/career-toolkit-crafting-an-effective-resume/\">MIT Career Advising &amp; Professional Development, Career toolkit: Crafting an effective resume</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/resources/career-toolkit-crafting-an-effective-resume/",
+        "title": "Career toolkit: Crafting an effective resume",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "PAR accomplishment statements name project, action, and result. Start with a strong action verb and describe the outcome; quantify when possible and truthful. Tailor relevant experiences to the target job description.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Shows how to implement the article's achievement, action-verb and impact guidance without manufacturing metrics."
+  },
+  {
+    "file": "Skills Development.md",
+    "asset": "/figures/career/skills-development.svg",
+    "kind": "learning-timeline",
+    "caption": "For the knowledge component of a skill, use recall and feedback across separate sessions. This conceptual schedule adapts research on academic concept learning; it does not establish the best interval or a measured effect on workplace performance. Original diagram based on <a href=\"https://ies.ed.gov/use-work/awards/supporting-efficient-and-durable-student-learning\">Institute of Education Sciences, Supporting Efficient and Durable Student Learning</a>.",
+    "sources": [
+      {
+        "url": "https://ies.ed.gov/use-work/awards/supporting-efficient-and-durable-student-learning",
+        "title": "Supporting Efficient and Durable Student Learning",
+        "publisher": "Institute of Education Sciences",
+        "evidence": "Retrieval-feedback-monitoring uses initial study, questions answered from memory, comparison with correct answers, self-assessment, and later practice spaced over time. Research involved undergraduate psychology and middle-school science learners; no professional-skill effect size or universal optimal interval is supplied.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds a research-grounded practice method between learning methods and progress tracking, while limiting the claim to knowledge retrieval."
+  },
+  {
+    "file": "Skills Matrix.md",
+    "asset": "/figures/career/skills-matrix.svg",
+    "kind": "evidence-matrix",
+    "caption": "A proficiency label is more useful when backed by work observed in a specific context. This illustrative evidence worksheet draws on SFIA’s assessment attributes; it does not reproduce its level scale or convert the five levels above. Original diagram based on <a href=\"https://sfia-online.org/en/sfia-8/responsibilities/level-4\">SFIA Foundation, SFIA 8: Level 4 — Enable</a>.",
+    "sources": [
+      {
+        "url": "https://sfia-online.org/en/sfia-8/responsibilities/level-4",
+        "title": "SFIA 8: Level 4 — Enable",
+        "publisher": "SFIA Foundation",
+        "evidence": "Assessment attributes include autonomy, influence, complexity, business skills, and knowledge. Level 4 works under general direction in a clear accountability framework, resolves varied complex issues, and shares expertise. Figure is an evidence worksheet, not a reproduction or conversion of SFIA levels.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Adds task-based evidence anchors after subjective proficiency labels and explicitly avoids conflating two different leveling systems."
+  },
+  {
+    "file": "Types of Interviews.md",
+    "asset": "/figures/career/types-of-interviews.svg",
+    "kind": "comparison-matrix",
+    "caption": "Different questions ask you to demonstrate different kinds of evidence. This conceptual comparison uses original practice prompts drawn from the article’s formats; employers may combine formats or evaluate them differently. Original diagram based on <a href=\"https://capd.mit.edu/resources/a-guide-to-interview-timelines-and-structure/\">MIT Career Advising &amp; Professional Development, Interview timelines and structure</a> and <a href=\"https://capd.mit.edu/resources/career-toolkit-interviewing/\">MIT Career Advising &amp; Professional Development, Career toolkit: Interviewing</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/resources/a-guide-to-interview-timelines-and-structure/",
+        "title": "Interview timelines and structure",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Later rounds may combine behavioral, technical, and case questions. Typical sequence includes introductions, discussion of background relative to employer needs, candidate questions, and next steps. Timelines vary by company and industry.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://capd.mit.edu/resources/career-toolkit-interviewing/",
+        "title": "Career toolkit: Interviewing",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Transcript: cross-reference the job posting with one's resume, identify relevant skills, create practice questions, and rehearse aloud. A single experience can answer different skill-focused questions; emphasize one's own action and tangible results.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Gives the format catalog a practical comparison of response demands without treating its interview durations as observed data."
+  },
+  {
+    "file": "Behavioral Interviews.md",
+    "asset": "/figures/career/behavioral-interviews.svg",
+    "kind": "responsibility-diagram",
+    "caption": "A structured answer helps the candidate; consistent questions and rating standards help the assessment. This conceptual diagram separates those responsibilities and does not claim that a polished story predicts performance on its own. Original diagram based on <a href=\"https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews\">U.S. Office of Personnel Management, Structured Interviews</a> and <a href=\"https://capd.mit.edu/resources/interview-primer/\">MIT Career Advising &amp; Professional Development, Interview Primer</a>.",
+    "sources": [
+      {
+        "url": "https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews",
+        "title": "Structured Interviews",
+        "publisher": "U.S. Office of Personnel Management",
+        "evidence": "Structured interviews systematically assess job-related competencies using past or hypothetical behavior. Candidates receive the same predetermined questions in the same order and responses are evaluated using the same rating scale and acceptable-answer standards.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://capd.mit.edu/resources/interview-primer/",
+        "title": "Interview Primer",
+        "publisher": "MIT Career Advising & Professional Development",
+        "evidence": "Interview Preparation: save the job description, use its requirements to build practice prompts, research the employer, use mock interviews or recordings with feedback, and prepare logistics. Be a STAR: situation, task, action, result.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory illustration for this article. Research and guidance credited in the caption; no source graphic reproduced."
+    },
+    "rationale": "Connects the article's candidate preparation and interviewer assessment sections, avoiding the common confusion between STAR formatting and a structured selection process."
+  }
+]

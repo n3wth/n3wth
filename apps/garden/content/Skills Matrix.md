@@ -26,6 +26,11 @@ tags:
 4. **Proficient** - Deep understanding
 5. **Expert** - Industry authority
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/skills-matrix.svg" aria-label="Open full-size graphic: Anchor proficiency in evidence"><img src="/figures/career/skills-matrix.svg" alt="A skills assessment worksheet uses autonomy, complexity, influence and knowledge as dimensions. It asks for completed tasks and help needed, unfamiliar constraints, decisions involving others, and explanations of trade-offs. Review questions make the evidence observable. It does not map the article's five levels to SFIA levels." width="960" height="830" loading="lazy" decoding="async" /></a>
+<figcaption>A proficiency label is more useful when backed by work observed in a specific context. This illustrative evidence worksheet draws on SFIA’s assessment attributes; it does not reproduce its level scale or convert the five levels above. Original diagram based on <a href="https://sfia-online.org/en/sfia-8/responsibilities/level-4">SFIA Foundation, SFIA 8: Level 4 — Enable</a>.</figcaption>
+</figure>
+
 ## Assessment Areas
 
 ### Technical Competencies

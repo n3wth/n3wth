@@ -129,6 +129,11 @@ Notes on how the books in my library connect and reinforce each other.
 - [[The Body Keeps the Score]] - Alternative healing perspectives
 - [[Atomic Habits]] - Identity change through choices
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/book-learning-synthesis.svg" aria-label="Open full-size graphic: Compare books around one question"><img src="/figures/knowledge/book-learning-synthesis.svg" alt="A synthesis worksheet asks what sustains learning practice. Three book-note columns—Atomic Habits, Mindset and Grit—prompt the reader to locate relevant passages. A comparison area then asks about agreement, tensions and scope before forming a sourced claim." width="960" height="745" loading="lazy" decoding="async" /></a>
+<figcaption>Compare a shared question across books, then check agreement, tension and scope. This conceptual reading worksheet uses this article’s book notes as starting points; it reports no study results. Original diagram based on <a href="https://teachingwriting.stanford.edu/synthesis-matrix">Stephanie Reist, Stanford University TeachingWriting, Synthesis Matrix</a>; <a href="https://notes.andymatuschak.org/z2hQEhqWkdRLL9JUwfawZZx">Andy Matuschak, Evergreen notes should be concept-oriented</a>.</figcaption>
+</figure>
+
 ## Synthesis Patterns
 
 ### The Learning Loop

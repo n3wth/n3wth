@@ -1,0 +1,502 @@
+[
+  {
+    "file": "Frameworks/5 Whys.md",
+    "asset": "/figures/frameworks/5-whys.svg",
+    "kind": "conceptual causal tree",
+    "caption": "Conceptual investigation tree: follow each plausible cause and check it against records. Five is a prompt to investigate, not a required stopping point. Original diagram based on <a href=\"https://www.calhr.ca.gov/wp-content/uploads/sites/361/2025/07/Root-Cause-Analysis.pdf\">California Lean Academy, Root Cause Analysis: The 5 Why’s</a>.",
+    "sources": [
+      {
+        "url": "https://www.calhr.ca.gov/wp-content/uploads/sites/361/2025/07/Root-Cause-Analysis.pdf",
+        "title": "Root Cause Analysis: The 5 Why’s",
+        "publisher": "California Lean Academy",
+        "evidence": "The guidance states that the number of whys is not important, there can be more than one cause, and a why tree can explore multiple pathways.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Adds branching and evidence checks to the article’s short linear description."
+  },
+  {
+    "file": "Frameworks/AARM.md",
+    "asset": "/figures/frameworks/aarm.svg",
+    "kind": "conceptual metric map",
+    "caption": "Conceptual metric map adapting four lifecycle categories to AARM. The example signals need product-specific definitions; they are not reported results or a conversion funnel. Original diagram based on <a href=\"https://www.oreilly.com/content/analytics-frameworks-for-the-startup-lifecycle\">Alistair Croll and Benjamin Yoskovitz, Analytics frameworks for the startup lifecycle</a>.",
+    "sources": [
+      {
+        "url": "https://www.oreilly.com/content/analytics-frameworks-for-the-startup-lifecycle",
+        "title": "Analytics frameworks for the startup lifecycle",
+        "publisher": "Alistair Croll and Benjamin Yoskovitz",
+        "evidence": "The Pirate Metrics section distinguishes acquisition, activation, retention, revenue and referral, supplies example metrics, and says these elements need not follow a strict order. The figure adapts four of these categories to this article’s AARM labels.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Makes lifecycle planning actionable without inventing conversion rates."
+  },
+  {
+    "file": "Frameworks/Atomic Habits.md",
+    "asset": "/figures/frameworks/atomic-habits.svg",
+    "kind": "conceptual annotated cycle",
+    "caption": "Conceptual habit loop with a hypothetical reading routine. Each intervention targets a different part of the behavior; the diagram does not predict how quickly a habit will form. Original diagram based on <a href=\"https://jamesclear.com/three-steps-habit-change\">James Clear, How To Start New Habits That Actually Stick</a>.",
+    "sources": [
+      {
+        "url": "https://jamesclear.com/three-steps-habit-change",
+        "title": "How To Start New Habits That Actually Stick",
+        "publisher": "James Clear",
+        "evidence": "The author describes cue, craving, response and reward and maps them to making behavior obvious, attractive, easy and satisfying. The reading example is original and hypothetical.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Applies the four laws to one concrete routine instead of repeating definitions."
+  },
+  {
+    "file": "Frameworks/CIRCLES.md",
+    "asset": "/figures/frameworks/circles.svg",
+    "kind": "conceptual scope diagram",
+    "caption": "Conceptual scope map: prioritization selects the need before solution generation expands the options. Widths are illustrative and do not represent measured quantities. Original diagram based on <a href=\"https://lewis-lin.com/posts/circles-method-what-each-step-actually-does/\">Lewis C. Lin, CIRCLES Method: What Each Step Actually Does</a>.",
+    "sources": [
+      {
+        "url": "https://lewis-lin.com/posts/circles-method-what-each-step-actually-does/",
+        "title": "CIRCLES Method: What Each Step Actually Does",
+        "publisher": "Lewis C. Lin",
+        "evidence": "Clarify goal/boundaries, identify customers, report needs, cut through prioritization, list solutions, evaluate options and summarize recommendation. The article’s Comprehend label is retained.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Shows the method’s change of focus rather than a seven-box checklist."
+  },
+  {
+    "file": "Frameworks/Eisenhower.md",
+    "asset": "/figures/frameworks/eisenhower.svg",
+    "kind": "conceptual decision matrix",
+    "caption": "Conceptual decision matrix with illustrative work examples. Classify importance by contribution to a goal and urgency by the need for immediate attention. Original diagram based on <a href=\"https://sps.columbia.edu/sites/default/files/2023-08/Eisenhower%20Matrix.pdf\">Columbia University, Office of Student Support, The Eisenhower Matrix</a>.",
+    "sources": [
+      {
+        "url": "https://sps.columbia.edu/sites/default/files/2023-08/Eisenhower%20Matrix.pdf",
+        "title": "The Eisenhower Matrix",
+        "publisher": "Columbia University, Office of Student Support",
+        "evidence": "The guide crosses urgency with importance and recommends do, schedule, delegate/avoid and remove. Example tasks in the figure are illustrative.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Clarifies the two axes and shows why preventive work needs scheduled time."
+  },
+  {
+    "file": "Frameworks/GAME.md",
+    "asset": "/figures/frameworks/game.svg",
+    "kind": "conceptual experiment design",
+    "caption": "Conceptual experiment plan, not a study result. This applies the note’s GAME labels to controlled-experiment principles; the cited research does not introduce the GAME acronym. Original diagram based on <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC7007661\">Kohavi and colleagues, BMC Medicine, Online randomized controlled experiments at scale: lessons and extensions to medicine</a>.",
+    "sources": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7007661",
+        "title": "Online randomized controlled experiments at scale: lessons and extensions to medicine",
+        "publisher": "Kohavi and colleagues, BMC Medicine",
+        "evidence": "The article discusses randomization, agreement on an overall evaluation criterion, supporting metrics, and iterative learning through controlled experiments. It supports the experiment design, not attribution of the GAME acronym.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Adds a test design that separates the change, comparison and success criteria."
+  },
+  {
+    "file": "Frameworks/GROW.md",
+    "asset": "/figures/frameworks/grow.svg",
+    "kind": "conceptual branching conversation",
+    "caption": "Conceptual conversation map: explore alternatives before committing, and revisit earlier stages when new information changes the situation. Original diagram based on <a href=\"https://www.performanceconsultants.com/resources/the-grow-model\">Performance Consultants, The GROW Model: A Complete Guide to Goals, Reality, Options and Will</a>.",
+    "sources": [
+      {
+        "url": "https://www.performanceconsultants.com/resources/the-grow-model",
+        "title": "The GROW Model: A Complete Guide to Goals, Reality, Options and Will",
+        "publisher": "Performance Consultants",
+        "evidence": "The founder’s organization defines the four stages and notes that conversations often move between them; Will includes actions, timeframes, progress measures and accountability.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Makes options and accountability visible while avoiding a rigid linear coaching script."
+  },
+  {
+    "file": "Frameworks/GTD.md",
+    "asset": "/figures/frameworks/gtd.svg",
+    "kind": "conceptual decision tree",
+    "caption": "Conceptual clarification tree. A project describes an outcome requiring several actions; the next-action reminder identifies the visible step you can take now. Original diagram based on <a href=\"https://gettingthingsdone.com/what-is-gtd/\">David Allen Company, What is GTD?</a>.",
+    "sources": [
+      {
+        "url": "https://gettingthingsdone.com/what-is-gtd/",
+        "title": "What is GTD?",
+        "publisher": "David Allen Company",
+        "evidence": "Clarify asks whether an item is actionable, identifies next action and project if multistep, or classifies it as trash, reference or on hold. Reflect reviews system contents.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Explains the central clarification decision alongside the article’s Clarify section."
+  },
+  {
+    "file": "Frameworks/HEART.md",
+    "asset": "/figures/frameworks/heart.svg",
+    "kind": "conceptual measurement worksheet",
+    "caption": "Conceptual measurement worksheet with proposed metrics for three HEART categories. These are examples to operationalize, not benchmark values or findings from the paper. Original diagram based on <a href=\"https://research.google.com/pubs/archive/36299.pdf\">Kerry Rodden, Hilary Hutchinson and Xin Fu, Measuring the User Experience on a Large Scale: User-Centered Metrics for Web Applications</a>.",
+    "sources": [
+      {
+        "url": "https://research.google.com/pubs/archive/36299.pdf",
+        "title": "Measuring the User Experience on a Large Scale: User-Centered Metrics for Web Applications",
+        "publisher": "Kerry Rodden, Hilary Hutchinson and Xin Fu",
+        "evidence": "The HEART categories include Happiness, Engagement, Adoption, Retention and Task Success. Goals–Signals–Metrics connects product goals to behavioral or attitudinal signals and operational metrics. Diagram metric examples are proposed, not reported study results.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Extends the acronym with the source authors’ practical goals-to-metrics process."
+  },
+  {
+    "file": "Frameworks/Hook Model.md",
+    "asset": "/figures/frameworks/hook-model.svg",
+    "kind": "conceptual feedback loop",
+    "caption": "Conceptual Hook cycle emphasizing the role of stored value. The model describes a design mechanism; it does not establish that a particular product causes habits or improves retention. Original diagram based on <a href=\"https://www.nirandfar.com/how-to-manufacture-desire/\">Nir Eyal, The Hooked Model: How to Manufacture Desire in 4 Steps</a>.",
+    "sources": [
+      {
+        "url": "https://www.nirandfar.com/how-to-manufacture-desire/",
+        "title": "The Hooked Model: How to Manufacture Desire in 4 Steps",
+        "publisher": "Nir Eyal",
+        "evidence": "The model cycles through trigger, action, variable reward and investment. Investment stores value and can improve a subsequent trigger, action or reward. This explanatory framework is not evidence of a measured retention lift.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Highlights how investment differs from the immediate reward and supports a subsequent visit."
+  },
+  {
+    "file": "Frameworks/ICE.md",
+    "asset": "/figures/frameworks/ice.svg",
+    "kind": "conceptual evidence matrix",
+    "caption": "Conceptual evidence worksheet for ICE’s three judgments. It illustrates what should inform scores and does not validate a particular aggregation formula or imply forecast accuracy. Original diagram based on <a href=\"https://breakoutgrowth.net/2022/03/29/growth-snack-podcast-short-prioritizing-high-impact-growth-experiments-with-ice/\">Sean Ellis and Ethan Garr, Prioritizing High Impact Growth Experiments with ICE</a>.",
+    "sources": [
+      {
+        "url": "https://breakoutgrowth.net/2022/03/29/growth-snack-podcast-short-prioritizing-high-impact-growth-experiments-with-ice/",
+        "title": "Prioritizing High Impact Growth Experiments with ICE",
+        "publisher": "Sean Ellis and Ethan Garr",
+        "evidence": "Ellis defines impact, confidence and ease as estimates for comparing experiments. The transcript ties impact to business models, confidence to research and previous tests, ease to the smallest practical test, and recommends using scores to shortlist ideas.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Adds an evidence discipline without endorsing the article’s unusual arithmetic formula."
+  },
+  {
+    "file": "Frameworks/JTBD.md",
+    "asset": "/figures/frameworks/jtbd.svg",
+    "kind": "conceptual job map",
+    "caption": "Conceptual job map for a hypothetical team leader. The circumstance and desired progress connect functional, emotional and social needs; validate such a synthesis with customer research. Original diagram based on <a href=\"https://www.christenseninstitute.org/theory/jobs-to-be-done\">Christensen Institute, Jobs to Be Done Theory</a>.",
+    "sources": [
+      {
+        "url": "https://www.christenseninstitute.org/theory/jobs-to-be-done",
+        "title": "Jobs to Be Done Theory",
+        "publisher": "Christensen Institute",
+        "evidence": "Jobs are progress people seek in particular circumstances; functional, emotional and social dimensions help explain choices beyond demographics or product attributes.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Makes the three dimensions coherent parts of one job instead of disconnected feature lists."
+  },
+  {
+    "file": "Frameworks/Kano.md",
+    "asset": "/figures/frameworks/kano.svg",
+    "kind": "conceptual comparison matrix",
+    "caption": "Conceptual comparison of Kano’s three core need types. These qualitative responses are not measured curves; use customer research to classify a feature. Original diagram based on <a href=\"https://www.nngroup.com/articles/prioritization-methods/\">Sarah Gibbons, Nielsen Norman Group, 5 Prioritization Methods in UX Roadmapping</a> (2021), section 5.",
+    "sources": [
+      {
+        "url": "https://www.nngroup.com/articles/prioritization-methods/",
+        "title": "5 Prioritization Methods in UX Roadmapping",
+        "publisher": "Sarah Gibbons, Nielsen Norman Group",
+        "evidence": "Section 5.C distinguishes Must-be items (expected; their absence dissatisfies), Performance items (more fulfillment can increase satisfaction), and Attractive/Excitement items (absence may go unnoticed; presence can delight). Sections 5.C–5.D call for classifications based on user data and research. The figure covers these three categories only. Full page read; direct transport returned HTTP 200 after the prior ASQ URL persistently returned 403.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Explains the asymmetric effect of absence versus presence without drawing unsupported satisfaction curves."
+  },
+  {
+    "file": "Frameworks/MECE.md",
+    "asset": "/figures/frameworks/mece.svg",
+    "kind": "conceptual set partition",
+    "caption": "Conceptual partition, not a measured distribution. A single classification rule and explicit scope make overlap and missing cases easier to detect. Original diagram based on <a href=\"https://web.archive.org/web/20180722213536/https:/alumni.mckinsey.com/public_content/500186253\">McKinsey Alumni Center, interview with Barbara Minto, Barbara Minto: MECE: I invented it, so I get to say how to pronounce it</a>.",
+    "sources": [
+      {
+        "url": "https://web.archive.org/web/20180722213536/https:/alumni.mckinsey.com/public_content/500186253",
+        "title": "Barbara Minto: MECE: I invented it, so I get to say how to pronounce it",
+        "publisher": "McKinsey Alumni Center, interview with Barbara Minto",
+        "evidence": "Minto explains that grouped ideas must be mutually exclusive of each other and collectively exhaustive of the whole. Read through an Internet Archive capture; no live original is implied.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Shows both requirements of MECE on a concrete bounded set and makes classification assumptions explicit."
+  },
+  {
+    "file": "Frameworks/PESTLE.md",
+    "asset": "/figures/frameworks/pestle.svg",
+    "kind": "conceptual systems map",
+    "caption": "Conceptual environmental scan. Use the six lenses to collect evidence about external conditions, then explain why each condition matters to a specific decision. Original diagram based on <a href=\"https://www.cipd.org/uk/knowledge/factsheets/pestle-analysis-factsheet\">CIPD, PESTLE analysis</a>.",
+    "sources": [
+      {
+        "url": "https://www.cipd.org/uk/knowledge/factsheets/pestle-analysis-factsheet",
+        "title": "PESTLE analysis",
+        "publisher": "CIPD",
+        "evidence": "PESTLE audits six external influences, gathers evidence, analyzes findings and marks importance relative to organizational risk. It should be combined with other analysis, rather than treated as a prediction.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Makes the framework an evidence-gathering map centered on a decision."
+  },
+  {
+    "file": "Frameworks/SCQA.md",
+    "asset": "/figures/frameworks/scqa.svg",
+    "kind": "annotated narrative specimen",
+    "caption": "Conceptual SCQA specimen: the complication creates a question that the recommendation directly answers. The operational scenario is hypothetical. Original diagram based on <a href=\"https://www.barbaraminto.com/\">Barbara Minto, The Minto Pyramid Principle and SCQ Framework</a>.",
+    "sources": [
+      {
+        "url": "https://www.barbaraminto.com/",
+        "title": "The Minto Pyramid Principle and SCQ Framework",
+        "publisher": "Barbara Minto",
+        "evidence": "Minto’s site explains that SCQ identifies the reader’s question and the pyramid organizes ideas under a single point. The recommendation memo is an original hypothetical application.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Shows how four communication roles form one coherent recommendation."
+  },
+  {
+    "file": "Frameworks/STAR.md",
+    "asset": "/figures/frameworks/star.svg",
+    "kind": "annotated interview specimen",
+    "caption": "Conceptual STAR specimen emphasizing personal actions. The example is hypothetical; replace its claims with evidence from your own experience and distinguish completed work from demonstrated impact. Original diagram based on <a href=\"https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews\">MIT Career Advising and Professional Development, Using the STAR method for your next behavioral interview</a>.",
+    "sources": [
+      {
+        "url": "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews",
+        "title": "Using the STAR method for your next behavioral interview",
+        "publisher": "MIT Career Advising and Professional Development",
+        "evidence": "STAR separates context, responsibility, personal actions and outcomes; the guide says most of the response should focus on actions and results may include learning. No timing percentages are depicted.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Demonstrates responsibility and personal actions without fabricating impressive numerical outcomes."
+  },
+  {
+    "file": "Frameworks/SWOT.md",
+    "asset": "/figures/frameworks/swot.svg",
+    "kind": "conceptual strategy matrix",
+    "caption": "Conceptual SWOT with hypothetical factors. Tie each factor to an objective, distinguish internal capability from external conditions, and turn the list into questions or actions. Original diagram based on <a href=\"https://www.cipd.org/uk/knowledge/factsheets/swot-analysis-factsheet\">CIPD, SWOT analysis</a>.",
+    "sources": [
+      {
+        "url": "https://www.cipd.org/uk/knowledge/factsheets/swot-analysis-factsheet",
+        "title": "SWOT analysis",
+        "publisher": "CIPD",
+        "evidence": "Strengths and weaknesses are internal; opportunities and threats are external. The analysis relates supportive and unfavorable factors to a stated objective and can draw on PESTLE.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Adds action and a defined objective to the familiar internal/external matrix."
+  },
+  {
+    "file": "Business Acumen.md",
+    "asset": "/figures/frameworks/business-acumen.svg",
+    "kind": "conceptual time-and-report map",
+    "caption": "Conceptual map of the four financial statements. The balance sheet is a snapshot; the other statements describe activity or changes over a period. No company data is shown. Original diagram based on <a href=\"https://www.sec.gov/about/reports-publications/beginners-guide-financial-statements\">U.S. Securities and Exchange Commission, Beginners’ Guide to Financial Statements</a>.",
+    "sources": [
+      {
+        "url": "https://www.sec.gov/about/reports-publications/beginners-guide-financial-statements",
+        "title": "Beginners’ Guide to Financial Statements",
+        "publisher": "U.S. Securities and Exchange Commission",
+        "evidence": "The guide distinguishes four statements: balance sheet at a fixed date, income and cash flows over a period, and changes in shareholders’ equity over time. Assets equal liabilities plus equity.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Gives financial literacy a concrete distinction between stock, performance and cash movement."
+  },
+  {
+    "file": "Product Management.md",
+    "asset": "/figures/frameworks/product-management.svg",
+    "kind": "conceptual responsibility network",
+    "caption": "Conceptual responsibility map for empowered product teams. Owning a risk means ensuring it is addressed while working with the other disciplines; these roles are not universal job boundaries. Original diagram based on <a href=\"https://www.svpg.com/four-big-risks/\">Marty Cagan, Silicon Valley Product Group, The Four Big Risks</a>.",
+    "sources": [
+      {
+        "url": "https://www.svpg.com/four-big-risks/",
+        "title": "The Four Big Risks",
+        "publisher": "Marty Cagan, Silicon Valley Product Group",
+        "evidence": "Defines value, usability, feasibility and business viability risks; assigns value/viability to product management, usability to design and feasibility to engineering, while calling for collaborative discovery.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Connects the article’s strategy, delivery and stakeholder responsibilities to distinct product risks."
+  },
+  {
+    "file": "Content Strategy.md",
+    "asset": "/figures/frameworks/content-strategy.svg",
+    "kind": "conceptual lifecycle loop",
+    "caption": "Conceptual content lifecycle adapted from public-service content guidance. Review both the continuing user need and the accuracy of what is published; historical records need a clear status. Original diagram based on <a href=\"https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/plan-manage-content/understand-content-design\">Government Digital Service, Understand content design</a>.",
+    "sources": [
+      {
+        "url": "https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/plan-manage-content/understand-content-design",
+        "title": "Understand content design",
+        "publisher": "Government Digital Service",
+        "evidence": "Good content starts with user needs, considers amount/format/placement, and is kept current. Content should be current and meeting a need or retained as a record of past work.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Adds maintenance decisions to an article focused on planning, publishing and measurement."
+  },
+  {
+    "file": "Change Management.md",
+    "asset": "/figures/frameworks/change-management.svg",
+    "kind": "conceptual diagnostic matrix",
+    "caption": "Conceptual diagnostic worksheet based on ADKAR. Sample statements and interventions are illustrative; understanding a change, wanting it, knowing how and being able to act are different needs. Original diagram based on <a href=\"https://www.prosci.com/methodology/adkar\">Prosci, The Prosci ADKAR Model</a>.",
+    "sources": [
+      {
+        "url": "https://www.prosci.com/methodology/adkar",
+        "title": "The Prosci ADKAR Model",
+        "publisher": "Prosci",
+        "evidence": "The five individual change outcomes are Awareness, Desire, Knowledge, Ability and Reinforcement; the source recommends identifying the earliest barrier and focusing support there.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Helps select communication, training or practice based on the adoption barrier."
+  },
+  {
+    "file": "System Design.md",
+    "asset": "/figures/frameworks/system-design.svg",
+    "kind": "conceptual state machine",
+    "caption": "Conceptual circuit-breaker state machine illustrating fault tolerance. Thresholds and retry timing depend on the system; the diagram supplies no measured performance claims or default settings. Original diagram based on <a href=\"https://martinfowler.com/bliki/CircuitBreaker.html\">Martin Fowler, Circuit Breaker</a>.",
+    "sources": [
+      {
+        "url": "https://martinfowler.com/bliki/CircuitBreaker.html",
+        "title": "Circuit Breaker",
+        "publisher": "Martin Fowler",
+        "evidence": "Closed permits calls; enough failures open the breaker to reject calls. After a reset timeout, half-open admits a trial call; success resets, failure restarts the timeout. The example is explicitly a simple explanation.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Gives the reliability section a concrete stateful design with failure and recovery behavior."
+  },
+  {
+    "file": "Choose UI Component Ownership.md",
+    "asset": "/figures/frameworks/choose-ui-component-ownership.svg",
+    "kind": "conceptual ownership decision tree",
+    "caption": "Conceptual decision aid synthesized for this article. Evidence of reuse, representative testing and versatility supports a shared component; it does not remove the application owner’s integration checks. Original diagram based on <a href=\"https://design-system.service.gov.uk/community/contribution-criteria\">GOV.UK Design System, Contribution criteria</a>.",
+    "sources": [
+      {
+        "url": "https://design-system.service.gov.uk/community/contribution-criteria",
+        "title": "Contribution criteria",
+        "publisher": "GOV.UK Design System",
+        "evidence": "Shared components should be useful to many teams, unique, usable with representative users including disabled users, consistent, and versatile across services/devices. The ownership decision is this article’s synthesis, not an official government flowchart.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Turns the ownership criteria into a reviewable decision with explicit maintenance responsibilities."
+  },
+  {
+    "file": "Audit Retrieval Before Trusting an Answer.md",
+    "asset": "/figures/frameworks/audit-retrieval-before-trusting-an-answer.svg",
+    "kind": "conceptual retrieval-set diagram",
+    "caption": "Conceptual set diagram, not a measured distribution. Precision considers the returned set; recall considers the relevant set. Both use the same found support, and neither measures whether an answer faithfully represents it. Original diagram based on <a href=\"https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-unranked-retrieval-sets-1.html\">Manning, Raghavan and Schütze, Introduction to Information Retrieval, Evaluation of unranked retrieval sets</a>.",
+    "sources": [
+      {
+        "url": "https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-unranked-retrieval-sets-1.html",
+        "title": "Evaluation of unranked retrieval sets",
+        "publisher": "Manning, Raghavan and Schütze, Introduction to Information Retrieval",
+        "evidence": "Precision is relevant retrieved documents divided by all retrieved documents; recall is relevant retrieved documents divided by all relevant documents. The two denominators answer different questions.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram; source concepts credited in the caption."
+    },
+    "rationale": "Explains the different denominators in the article’s worked example without adding invented data."
+  }
+]

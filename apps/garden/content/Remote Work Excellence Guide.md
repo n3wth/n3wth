@@ -89,6 +89,11 @@ I've worked remotely or hybrid since 2020. These are the practices that stuck.
 - Clear outcomes defined
 - Action items documented
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/remote-work-excellence-guide.svg" aria-label="Open full-size graphic: Choose a channel, preserve the outcome"><img src="/figures/career/remote-work-excellence-guide.svg" alt="A conceptual decision tree asks whether a live exchange is needed to move work forward. If not, write with enough context and agree response expectations. If yes, convene with an agenda and room for discussion. Both paths end with a usable record of the decision, owner and next action." width="960" height="830" loading="lazy" decoding="async" /></a>
+<figcaption>Choose the communication channel deliberately and keep the resulting work visible. This conceptual decision aid is an editorial adaptation of Cornell’s remote-team guidance, not a tested rule for every situation. Original diagram based on <a href="https://guides.library.cornell.edu/remoteworkguide/teamguidance">Cornell University Library, Best Practices for Remote Work: Team Guidance</a>.</figcaption>
+</figure>
+
 ### Time Management & Productivity
 
 #### Structure Your Day

@@ -15,6 +15,11 @@ An atomic note is one idea, written so you can reread it later without the rest 
 4. **Contextual**: Include enough context to be understood on their own.
 5. **Evergreen**: Designed to be relevant and re-visitable over time
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/atomic-notes.svg" aria-label="Open full-size graphic: One idea, enough context"><img src="/figures/knowledge/atomic-notes.svg" alt="An illustrative note contains a specific title, one complete claim, a boundary condition and a relationship link. Annotations distinguish a self-contained idea from an isolated fragment." width="960" height="650" loading="lazy" decoding="async" /></a>
+<figcaption>Atomicity is a scope decision, not a word-count target. This illustrative specimen keeps one idea intact while making it reusable. Original diagram based on <a href="https://notes.andymatuschak.org/zNUaiGAXp21eorsER1Jm9yU">Andy Matuschak, Evergreen notes should be atomic</a>.</figcaption>
+</figure>
+
 Key benefits of atomic notes:
 
 - Facilitate non-linear thinking

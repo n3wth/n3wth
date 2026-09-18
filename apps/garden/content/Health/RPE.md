@@ -15,6 +15,11 @@ Rate of Perceived Exertion (RPE) is a subjective scale used to measure the inten
 - 7-8: Vigorous - Heavy breathing, short phrases only
 - 9-10: Maximum Effort - Cannot speak, complete exhaustion
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/rpe.svg" aria-label="Open full-size graphic: RPE"><img src="/figures/wellbeing/rpe.svg" alt="A subjective 0-to-10 effort scale highlights 5–6 as moderate and 7–8 as vigorous. Moderate activity permits talking but not singing; vigorous activity allows only a few words before pausing for breath." width="960" height="680" loading="lazy" decoding="async" /></a>
+<figcaption>CDC's relative-effort guide uses 0–10, with moderate effort at 5–6 and vigorous effort at 7–8. The talk test adds a practical check. This conceptual scale is subjective and does not convert directly into heart rate or calorie expenditure. Original conceptual diagram based on <a href="https://www.cdc.gov/physical-activity-basics/adding-older-adults/what-counts.html">Centers for Disease Control and Prevention, What Counts as Physical Activity for Older Adults</a>.</figcaption>
+</figure>
+
 ## Applications
 
 - Helps track workout intensity without special equipment

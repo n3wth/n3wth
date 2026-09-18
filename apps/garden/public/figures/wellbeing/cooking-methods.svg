@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="660" viewBox="0 0 960 660" role="img" aria-labelledby="title desc">
+<title id="title">Classify by heat and moisture</title>
+<desc id="desc">Comparison matrix distinguishes dry heat using air, radiation or fat; moist heat using water, other liquid or steam, including water-bath sous vide; and combination cooking with dry and moist stages.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#6e6e73"/></marker></defs>
+<rect width="960" height="660" fill="#f5f5f7"/>
+<g font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+<text x="40" y="56" font-size="34" font-weight="600" fill="#1d1d1f" text-anchor="start">Classify by heat and moisture</text>
+<path d="M 40 82 L 920 82" fill="none" stroke="#6e6e73" stroke-width="3"/>
+<text x="55" y="131" font-size="24" font-weight="600" fill="#6e6e73" text-anchor="start">METHOD</text><text x="335" y="131" font-size="24" font-weight="600" fill="#6e6e73" text-anchor="start">WHAT CARRIES HEAT</text><text x="685" y="131" font-size="24" font-weight="600" fill="#6e6e73" text-anchor="start">EXAMPLES</text><path d="M 40 154 L 920 154" fill="none" stroke="#6e6e73" stroke-width="3"/><text x="64" y="232" font-size="30" font-weight="600" fill="#1d1d1f" text-anchor="start">Dry heat</text><text x="335" y="212" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Air, radiation or fat;</text>
+<text x="335" y="246" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">no added cooking liquid.</text><text x="685" y="212" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Roast · grill</text>
+<text x="685" y="246" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Bake · sauté</text><path d="M 40 300 L 920 300" fill="none" stroke="#6e6e73" stroke-width="3"/><text x="64" y="379" font-size="30" font-weight="600" fill="#1d1d1f" text-anchor="start">Moist heat</text><text x="335" y="359" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Water, other liquid</text>
+<text x="335" y="393" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">or steam.</text><text x="685" y="359" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Poach · boil</text>
+<text x="685" y="393" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Steam · sous vide</text><path d="M 40 447 L 920 447" fill="none" stroke="#6e6e73" stroke-width="3"/><text x="64" y="528" font-size="30" font-weight="600" fill="#1d1d1f" text-anchor="start">Combination</text><text x="335" y="506" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Dry-heat stage, then</text>
+<text x="335" y="540" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">moist-heat stage.</text><text x="685" y="506" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Sear, then braise</text>
+<text x="685" y="540" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Sear, then stew</text>
+<path d="M 40 603 L 920 603" fill="none" stroke="#6e6e73" stroke-width="3"/>
+<text x="40" y="637" font-size="22" font-weight="400" fill="#6e6e73" text-anchor="start">Conceptual diagram • not measured data</text>
+</g>
+</svg>

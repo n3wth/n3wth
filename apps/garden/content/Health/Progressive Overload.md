@@ -23,6 +23,11 @@ Progressive overload is a key principle in exercise and fitness training where t
 - Improving movement quality
 - Increasing workout frequency
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/progressive-overload.svg" aria-label="Open full-size graphic: Progressive Overload"><img src="/figures/wellbeing/progressive-overload.svg" alt="Four training controls show load, volume, frequency and movement intent. A review panel asks the reader to choose sustainable changes and monitor effort, technique and recovery; it does not prescribe increasing every control." width="960" height="760" loading="lazy" decoding="async" /></a>
+<figcaption>Progression need not mean increasing weight every session. This conceptual set of controls reflects ACSM's emphasis on goals, individualization and sustainable effort; it is not a rule to raise all variables together. Original conceptual diagram based on <a href="https://acsm.org/wp-content/uploads/2026/03/Pronouncement-ppt-deck_resistance-training-ps.pdf">American College of Sports Medicine, Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance: An Overview of Reviews — position stand slides</a>.</figcaption>
+</figure>
+
 ## Benefits
 
 - Continued strength gains

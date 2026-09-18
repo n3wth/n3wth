@@ -1,9 +1,9 @@
 {
   "id": "G01",
   "contentPath": "apps/garden/content/Audit Retrieval Before Trusting an Answer.md",
-  "contentSha256": "c06228cdbf3d9f7dc437abce52ca84911697821e49b99154469db97dfc815f26",
+  "contentSha256": "1c4215609f11a7dacb73166ac21989166812f2bdbd6e6bd688dbab8df97c13c0",
   "reviewedAt": "2026-09-18",
-  "reviewer": "Codex editorial pass after Spiral drafting; checked against original source abstracts and W3C overview",
+  "reviewer": "Codex editorial pass after Spiral drafting; checked against original source abstracts, W3C overview and the original information retrieval textbook page; figure reviewed separately",
   "decision": "pass",
   "scores": { "originality": 4, "usefulness": 5, "evidence": 4, "clarity": 5, "limitations": 5 },
   "publicSafe": true,
@@ -12,6 +12,14 @@
   "claimsComplete": true,
   "reviewNotes": "Original contribution is the audit worksheet and failure-stage procedure, explicitly a synthesis. Removed Spiral's unsupported assertion that incomplete labels necessarily make recall optimistic. Removed unsupported social claim about where most debugging begins. No private GBrain records, employer examples, measured deployment results, or invented quotations appear in the article. Internal targets exist in the current repository. Editorial scores are judgments, not empirical measurements.",
   "claims": [
+    {
+      "text": "Precision considers the returned set; recall considers the relevant set.",
+      "kind": "sourced",
+      "sourceId": "ir-evaluation",
+      "sourcePassage": "Precision (P) is the fraction of retrieved documents that are relevant. Recall (R) is the fraction of relevant documents that are retrieved.",
+      "limitation": "The original diagram is explicitly conceptual. Areas do not encode measured counts, and these retrieval metrics do not evaluate answer faithfulness.",
+      "verdict": "supported"
+    },
     {
       "text": "describes memory systems in terms of indexing, retrieval, and reading",
       "kind": "sourced",

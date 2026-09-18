@@ -30,6 +30,11 @@ Choose plants suited to your climate and conditions rather than fighting against
 - **Compost everything**: Kitchen scraps become garden gold
 - **Mulch generously**: Retains moisture and suppresses weeds
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/gardening-tips.jpg" aria-label="Open full-size graphic: Gardening Tips"><img src="/figures/wellbeing/gardening-tips.jpg" alt="Close view of wood-chip mulch covering soil at Wisley, with irregular chips and small twigs forming a protective surface layer." width="1600" height="1200" loading="lazy" decoding="async" /></a>
+<figcaption>Wood chips form a surface mulch rather than an ingredient to dig into every bed. <a href="https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/mulching-for-soil-and-garden-health">University of Minnesota Extension, Mulching for soil and garden health</a>, explains moisture retention and weed suppression and recommends leaving space around stems. Photograph by <a href="https://commons.wikimedia.org/wiki/File:Soil_improvement_and_protection_-_wood_chip_mulch_at_Wisley.JPG">Rowan Adams, Soil improvement and protection — wood chip mulch at Wisley</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>; resized.</figcaption>
+</figure>
+
 ### Water Wisdom
 
 - **Water deeply, less frequently**: Encourages deep root growth

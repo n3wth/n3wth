@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="810" viewBox="0 0 960 810" role="img" aria-labelledby="title desc">
+<title id="title">Choose the canning process first</title>
+<desc id="desc">Decision diagram starts with a tested recipe and branches to boiling-water or pressure canning according to the recipe's food and acidity. Low-acid foods require pressure canning; jar size, processing and elevation instructions remain essential.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#6e6e73"/></marker></defs>
+<rect width="960" height="810" fill="#f5f5f7"/>
+<g font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+<text x="40" y="56" font-size="34" font-weight="600" fill="#1d1d1f" text-anchor="start">Choose the canning process first</text>
+<path d="M 40 82 L 920 82" fill="none" stroke="#6e6e73" stroke-width="3"/>
+<text x="480" y="171" font-size="28" font-weight="600" fill="#1d1d1f" text-anchor="middle">Start with a tested recipe for this food</text><path d="M 480 200 L 480 244" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M480 250L695 325L480 400L265 325Z" fill="#ffffff" stroke="#6e6e73" stroke-width="2"/><text x="480" y="315" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="middle">Which processing method</text>
+<text x="480" y="350" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="middle">does the recipe specify?</text><path d="M 265 325 L 170 325" fill="none" stroke="#6e6e73" stroke-width="3"/><path d="M 170 325 L 170 451" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M 695 325 L 790 325" fill="none" stroke="#6e6e73" stroke-width="3"/><path d="M 790 325 L 790 451" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><text x="62" y="505" font-size="28" font-weight="600" fill="#054a6b" text-anchor="start">Boiling-water canner</text><text x="62" y="547" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">For suitable acid or correctly</text>
+<text x="62" y="582" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">acidified foods under a</text>
+<text x="62" y="617" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">tested recipe.</text><text x="527" y="505" font-size="28" font-weight="600" fill="#0a5c22" text-anchor="start">Pressure canner</text><text x="527" y="547" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">Required for low-acid foods.</text>
+<text x="527" y="582" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">Use the recipe's jar size,</text>
+<text x="527" y="617" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">process and elevation rules.</text><text x="40" y="690" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">Acidity matters, but a home pH reading alone is not a canning recipe.</text>
+<text x="40" y="724" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="start">A sealed lid does not prove that processing was safe.</text>
+<path d="M 40 753 L 920 753" fill="none" stroke="#6e6e73" stroke-width="3"/>
+<text x="40" y="787" font-size="22" font-weight="400" fill="#6e6e73" text-anchor="start">Conceptual diagram • not measured data</text>
+</g>
+</svg>

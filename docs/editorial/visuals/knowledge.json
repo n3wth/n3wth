@@ -1,0 +1,598 @@
+[
+  {
+    "file": "Active Learning.md",
+    "asset": "/figures/knowledge/active-learning.svg",
+    "kind": "activity-sequence",
+    "caption": "Thinking, explaining and feedback do different jobs: together they reveal what needs revision. Conceptual activity sequence; timings and outcomes are not measured. Original diagram based on <a href=\"https://mtei.engineering.cornell.edu/teaching-resources/active-learning/think-pair-share/\">Cornell University, McCormick Teaching Excellence Institute, Think-Pair-Share</a>.",
+    "sources": [
+      {
+        "url": "https://mtei.engineering.cornell.edu/teaching-resources/active-learning/think-pair-share/",
+        "title": "Think-Pair-Share",
+        "publisher": "Cornell University, McCormick Teaching Excellence Institute",
+        "evidence": "Getting Started and Why It's Effective: individual thinking practices recall; pair explanations reveal understanding; sharing lets the instructor address misconceptions.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Makes the article’s discussion and reflection techniques actionable with the mechanism behind each activity."
+  },
+  {
+    "file": "Atomic Notes.md",
+    "asset": "/figures/knowledge/atomic-notes.svg",
+    "kind": "annotated-specimen",
+    "caption": "Atomicity is a scope decision, not a word-count target. This illustrative specimen keeps one idea intact while making it reusable. Original diagram based on <a href=\"https://notes.andymatuschak.org/zNUaiGAXp21eorsER1Jm9yU\">Andy Matuschak, Evergreen notes should be atomic</a>.",
+    "sources": [
+      {
+        "url": "https://notes.andymatuschak.org/zNUaiGAXp21eorsER1Jm9yU",
+        "title": "Evergreen notes should be atomic",
+        "publisher": "Andy Matuschak",
+        "evidence": "Notes should be about one thing while capturing its entirety; overly broad notes muddy links, while over-fragmentation fragments the network.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Shows what self-contained, concise and interconnected mean inside a real-looking note rather than repeating the checklist."
+  },
+  {
+    "file": "Behavior Change.md",
+    "asset": "/figures/knowledge/behavior-change.svg",
+    "kind": "diagnostic-matrix",
+    "caption": "COM-B treats behavior as an interaction of capability, opportunity and motivation. This conceptual diagnostic uses an illustrative reading habit; the proposed tactics are examples to test. Original diagram based on <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC3096582\">Michie, van Stralen and West, Implementation Science, The behaviour change wheel: A new method for characterising and designing behaviour change interventions</a> (2011).",
+    "sources": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3096582",
+        "title": "The behaviour change wheel: A new method for characterising and designing behaviour change interventions",
+        "publisher": "Michie, van Stralen and West, Implementation Science",
+        "evidence": "The COM-B system defines capability, opportunity and motivation as interacting conditions of behavior. Capability includes knowledge and skills; opportunity includes physical and social conditions; motivation includes reflective and automatic processes.",
+        "year": 2011,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Connects motivation, habit formation and environmental design while helping readers select a tactic for an actual barrier."
+  },
+  {
+    "file": "Deliberate Practice.md",
+    "asset": "/figures/knowledge/deliberate-practice.svg",
+    "kind": "feedback-loop",
+    "caption": "Deliberate practice combines an individualized target, informative feedback and revised attempts. Conceptual loop based on the researchers’ definition; it does not imply that repetition alone guarantees expertise. Original diagram based on <a href=\"https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02396/full\">Ericsson and Harwell, Frontiers in Psychology, Deliberate Practice and Proposed Limits on the Effects of Practice on the Acquisition of Expert Performance</a> (2019).",
+    "sources": [
+      {
+        "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02396/full",
+        "title": "Deliberate Practice and Proposed Limits on the Effects of Practice on the Acquisition of Expert Performance",
+        "publisher": "Ericsson and Harwell, Frontiers in Psychology",
+        "evidence": "The Original Definition of Deliberate Practice: a qualified teacher identifies individualized goals and tasks; trainees represent the goal, receive informative feedback, reflect and make repeated revised attempts.",
+        "year": 2019,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Adds the missing distinction between doing a task repeatedly and using feedback to revise performance."
+  },
+  {
+    "file": "Digital Garden.md",
+    "asset": "/figures/knowledge/digital-garden.svg",
+    "kind": "comparative-topology",
+    "caption": "Publication order and contextual links offer different routes through writing. This conceptual comparison illustrates the garden’s topology; it is not a map extracted from this site. Original diagram based on <a href=\"https://maggieappleton.com/garden-history\">Maggie Appleton, A Brief History &amp; Ethos of the Digital Garden</a>.",
+    "sources": [
+      {
+        "url": "https://maggieappleton.com/garden-history",
+        "title": "A Brief History & Ethos of the Digital Garden",
+        "publisher": "Maggie Appleton",
+        "evidence": "Sections Topography over Timelines, Continuous Growth, and Imperfection & Learning in Public: contextual links organize a garden; published notes remain revisable; maturity labels and planted/tended dates make state visible.",
+        "accessNotes": "Author verified from the first-person article and site; search/fetch author metadata incorrectly named a researcher quoted in the article. No publication year asserted.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Clarifies why the article recommends connected, evolving knowledge spaces."
+  },
+  {
+    "file": "Digital Gardening.md",
+    "asset": "/figures/knowledge/digital-gardening.svg",
+    "kind": "revision-cycle",
+    "caption": "A maturity label tells readers what kind of work they are seeing. Conceptual lifecycle adapted to this garden’s vocabulary; revisions can return a note to an earlier state. Original diagram based on <a href=\"https://maggieappleton.com/garden-history\">Maggie Appleton, A Brief History &amp; Ethos of the Digital Garden</a>.",
+    "sources": [
+      {
+        "url": "https://maggieappleton.com/garden-history",
+        "title": "A Brief History & Ethos of the Digital Garden",
+        "publisher": "Maggie Appleton",
+        "evidence": "Sections Topography over Timelines, Continuous Growth, and Imperfection & Learning in Public: contextual links organize a garden; published notes remain revisable; maturity labels and planted/tended dates make state visible.",
+        "accessNotes": "Author verified from the first-person article and site; search/fetch author metadata incorrectly named a researcher quoted in the article. No publication year asserted.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Makes continuous refinement and visible imperfection concrete without suggesting a guaranteed linear progression."
+  },
+  {
+    "file": "Fleeting Notes.md",
+    "asset": "/figures/knowledge/fleeting-notes.svg",
+    "kind": "decision-tree",
+    "caption": "Capture and development are different activities. This conceptual triage makes room for both useful ideas and notes that should leave the queue. Original diagram based on <a href=\"https://notes.andymatuschak.org/zUP4GuzPF33dWkZPiu9N6V5\">Andy Matuschak, A writing inbox for transient and incomplete notes</a>.",
+    "sources": [
+      {
+        "url": "https://notes.andymatuschak.org/zUP4GuzPF33dWkZPiu9N6V5",
+        "title": "A writing inbox for transient and incomplete notes",
+        "publisher": "Andy Matuschak",
+        "evidence": "Separate frictionless transient capture from evergreen notes; use a practice that drains the inbox; archive or delete notes that remain uninteresting.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Adds a concrete decision at the article’s review-and-organize step."
+  },
+  {
+    "file": "Flow.md",
+    "asset": "/figures/knowledge/flow.svg",
+    "kind": "conditions-versus-experience",
+    "caption": "Flow research distinguishes conditions of engagement from the experience itself. This conceptual schematic uses clear goals, perceived challenge–skill balance and feedback, not a measured “flow zone.” Original diagram based on <a href=\"https://nuovoeutile.it/wp-content/uploads/2015/12/2002-Flow.pdf\">Jeanne Nakamura and Mihaly Csikszentmihalyi, Handbook of Positive Psychology, The Concept of Flow</a> (2002).",
+    "sources": [
+      {
+        "url": "https://nuovoeutile.it/wp-content/uploads/2015/12/2002-Flow.pdf",
+        "title": "The Concept of Flow",
+        "publisher": "Jeanne Nakamura and Mihaly Csikszentmihalyi, Handbook of Positive Psychology",
+        "evidence": "Flow Research, Experiencing Flow: perceived challenges stretch without overmatching or underutilizing skills; clear proximal goals and immediate feedback are conditions. Absorbed concentration, distorted temporal experience and intrinsic reward describe the experience.",
+        "year": 2002,
+        "accessed": "2026-09-18",
+        "accessNotes": "Read the primary chapter in a hosted PDF copy, which returned HTTP 200. The APA record and a University of California Press alternative returned HTTP 403 in direct transport checks, so neither blocked URL is used in the caption."
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Explains the key components without fabricating a challenge-skill response surface or presenting flow as automatic."
+  },
+  {
+    "file": "How to Use MOCs.md",
+    "asset": "/figures/knowledge/how-to-use-mocs.svg",
+    "kind": "navigation-map",
+    "caption": "An MOC curates a route through existing notes without moving them into an exclusive folder. This illustrative navigation map shows two hubs sharing one note. Original diagram based on <a href=\"https://notes.linkingyourthinking.com/Cards/MOCs+Overview\">Nick Milo, Linking Your Thinking, MOCs Overview</a>.",
+    "sources": [
+      {
+        "url": "https://notes.linkingyourthinking.com/Cards/MOCs+Overview",
+        "title": "MOCs Overview",
+        "publisher": "Nick Milo, Linking Your Thinking",
+        "evidence": "MOCs gather, develop and navigate ideas; they are fluid overlays rather than restrictive containers, so different MOCs can map the same notes in different ways.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Makes the navigation flow and nonexclusive MOC relationship visible."
+  },
+  {
+    "file": "Knowledge Graph Linking Strategy.md",
+    "asset": "/figures/knowledge/knowledge-graph-linking-strategy.svg",
+    "kind": "relationship-grammar",
+    "caption": "Link meaning matters before link count. These conceptual examples turn edges into readable propositions; they do not establish an optimal number of links per note. Original diagram based on <a href=\"https://cmap.ihmc.us/docs/theory-of-concept-maps\">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>; <a href=\"https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02396/full\">Ericsson and Harwell, Frontiers in Psychology, Deliberate Practice and Proposed Limits on the Effects of Practice on the Acquisition of Expert Performance</a> (2019).",
+    "sources": [
+      {
+        "url": "https://cmap.ihmc.us/docs/theory-of-concept-maps",
+        "title": "The Theory Underlying Concept Maps and How to Construct and Use Them",
+        "publisher": "Novak and Cañas, Institute for Human and Machine Cognition",
+        "evidence": "Introduction and Constructing Good Concept Maps: a focus question sets scope; concepts plus linking phrases form meaningful propositions; cross-links connect domains; select useful links precisely and revise maps. Curriculum Planning distinguishes macro maps and more specific micro maps.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02396/full",
+        "title": "Deliberate Practice and Proposed Limits on the Effects of Practice on the Acquisition of Expert Performance",
+        "publisher": "Ericsson and Harwell, Frontiers in Psychology",
+        "evidence": "The Original Definition of Deliberate Practice: a qualified teacher identifies individualized goals and tasks; trainees represent the goal, receive informative feedback, reflect and make repeated revised attempts.",
+        "year": 2019,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Grounds the typed-link section in concept-map research without reinforcing the article’s uncited numerical density targets."
+  },
+  {
+    "file": "Knowledge Graph Visual Maps.md",
+    "asset": "/figures/knowledge/knowledge-graph-visual-maps.svg",
+    "kind": "overview-detail-map",
+    "caption": "An overview helps choose a domain; a local concept map exposes a question and its relationships. Conceptual example based on macro/micro maps and feedback-guided practice, not measured garden connectivity. Original diagram based on <a href=\"https://cmap.ihmc.us/docs/theory-of-concept-maps\">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>; <a href=\"https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02396/full\">Ericsson and Harwell, Frontiers in Psychology, Deliberate Practice and Proposed Limits on the Effects of Practice on the Acquisition of Expert Performance</a> (2019).",
+    "sources": [
+      {
+        "url": "https://cmap.ihmc.us/docs/theory-of-concept-maps",
+        "title": "The Theory Underlying Concept Maps and How to Construct and Use Them",
+        "publisher": "Novak and Cañas, Institute for Human and Machine Cognition",
+        "evidence": "Introduction and Constructing Good Concept Maps: a focus question sets scope; concepts plus linking phrases form meaningful propositions; cross-links connect domains; select useful links precisely and revise maps. Curriculum Planning distinguishes macro maps and more specific micro maps.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02396/full",
+        "title": "Deliberate Practice and Proposed Limits on the Effects of Practice on the Acquisition of Expert Performance",
+        "publisher": "Ericsson and Harwell, Frontiers in Psychology",
+        "evidence": "The Original Definition of Deliberate Practice: a qualified teacher identifies individualized goals and tasks; trainees represent the goal, receive informative feedback, reflect and make repeated revised attempts.",
+        "year": 2019,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Adds a readable alternative to the large existing maps and explains when to zoom into a meaningful local structure."
+  },
+  {
+    "file": "Knowledge Management Systems.md",
+    "asset": "/figures/knowledge/knowledge-management-systems.svg",
+    "kind": "retrieval-system",
+    "caption": "Retrieval needs several routes and a note that still makes sense when found. This conceptual system combines navigational relationships with preserved context; reuse supplies a reason to improve the note. Original diagram based on <a href=\"https://notes.linkingyourthinking.com/Cards/MOCs+Overview\">Nick Milo, Linking Your Thinking, MOCs Overview</a>; <a href=\"https://fortelabs.com/blog/progressive-summarization-a-practical-technique-for-designing-discoverable-notes\">Tiago Forte, Forte Labs, Progressive Summarization: A Practical Technique for Designing Discoverable Notes</a> (2017).",
+    "sources": [
+      {
+        "url": "https://notes.linkingyourthinking.com/Cards/MOCs+Overview",
+        "title": "MOCs Overview",
+        "publisher": "Nick Milo, Linking Your Thinking",
+        "evidence": "MOCs gather, develop and navigate ideas; they are fluid overlays rather than restrictive containers, so different MOCs can map the same notes in different ways.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://fortelabs.com/blog/progressive-summarization-a-practical-technique-for-designing-discoverable-notes",
+        "title": "Progressive Summarization: A Practical Technique for Designing Discoverable Notes",
+        "publisher": "Tiago Forte, Forte Labs",
+        "evidence": "Compression vs. context and Opportunistic compression: condense in small spurts as notes are revisited; original source, captured passages, bolding, highlighting, own-word summary and remix preserve earlier context.",
+        "year": 2017,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Connects capture and organization to the article’s priority of findability and practical use."
+  },
+  {
+    "file": "Knowledge Organization.md",
+    "asset": "/figures/knowledge/knowledge-organization.svg",
+    "kind": "semantic-map",
+    "caption": "Names identify a concept; broader/narrower links and associative links describe different relationships. This conceptual example applies SKOS distinctions to garden topics. Original diagram based on <a href=\"https://www.w3.org/TR/skos-primer\">W3C, SKOS Simple Knowledge Organization System Primer</a> (2009).",
+    "sources": [
+      {
+        "url": "https://www.w3.org/TR/skos-primer",
+        "title": "SKOS Simple Knowledge Organization System Primer",
+        "publisher": "W3C",
+        "evidence": "Sections 2.2 and 2.3 distinguish preferred/alternative labels and broader/narrower versus associative related concepts; a concept may have multiple broader concepts.",
+        "year": 2009,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Turns the article’s general organization rules into a practical semantic distinction, without requiring a technical implementation."
+  },
+  {
+    "file": "Living documents.md",
+    "asset": "/figures/knowledge/living-documents.svg",
+    "kind": "revision-timeline",
+    "caption": "A living document should expose both its present state and what changed. This illustrative revision history combines visible maturity and dates with the practice of revising knowledge maps. Original diagram based on <a href=\"https://maggieappleton.com/garden-history\">Maggie Appleton, A Brief History &amp; Ethos of the Digital Garden</a>; <a href=\"https://cmap.ihmc.us/docs/theory-of-concept-maps\">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>.",
+    "sources": [
+      {
+        "url": "https://maggieappleton.com/garden-history",
+        "title": "A Brief History & Ethos of the Digital Garden",
+        "publisher": "Maggie Appleton",
+        "evidence": "Sections Topography over Timelines, Continuous Growth, and Imperfection & Learning in Public: contextual links organize a garden; published notes remain revisable; maturity labels and planted/tended dates make state visible.",
+        "accessNotes": "Author verified from the first-person article and site; search/fetch author metadata incorrectly named a researcher quoted in the article. No publication year asserted.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://cmap.ihmc.us/docs/theory-of-concept-maps",
+        "title": "The Theory Underlying Concept Maps and How to Construct and Use Them",
+        "publisher": "Novak and Cañas, Institute for Human and Machine Cognition",
+        "evidence": "Introduction and Constructing Good Concept Maps: a focus question sets scope; concepts plus linking phrases form meaningful propositions; cross-links connect domains; select useful links precisely and revise maps. Curriculum Planning distinguishes macro maps and more specific micro maps.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Shows how transparency about state can be implemented, including revisions that contract a claim rather than merely expand it."
+  },
+  {
+    "file": "MOC Best Practices.md",
+    "asset": "/figures/knowledge/moc-best-practices.svg",
+    "kind": "annotated-navigation-specimen",
+    "caption": "A useful MOC explains its scope and the purpose of its links. This illustrative specimen applies MOCs as evolving navigation and concept maps as responses to a focus question. Original diagram based on <a href=\"https://notes.linkingyourthinking.com/Cards/MOCs+Overview\">Nick Milo, Linking Your Thinking, MOCs Overview</a>; <a href=\"https://cmap.ihmc.us/docs/theory-of-concept-maps\">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>.",
+    "sources": [
+      {
+        "url": "https://notes.linkingyourthinking.com/Cards/MOCs+Overview",
+        "title": "MOCs Overview",
+        "publisher": "Nick Milo, Linking Your Thinking",
+        "evidence": "MOCs gather, develop and navigate ideas; they are fluid overlays rather than restrictive containers, so different MOCs can map the same notes in different ways.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://cmap.ihmc.us/docs/theory-of-concept-maps",
+        "title": "The Theory Underlying Concept Maps and How to Construct and Use Them",
+        "publisher": "Novak and Cañas, Institute for Human and Machine Cognition",
+        "evidence": "Introduction and Constructing Good Concept Maps: a focus question sets scope; concepts plus linking phrases form meaningful propositions; cross-links connect domains; select useful links precisely and revise maps. Curriculum Planning distinguishes macro maps and more specific micro maps.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Makes scope, groupings, link descriptions and review cues visible in one compact example."
+  },
+  {
+    "file": "Motivation Techniques.md",
+    "asset": "/figures/knowledge/motivation-techniques.svg",
+    "kind": "needs-support-map",
+    "caption": "Autonomy, competence and relatedness offer a way to choose supportive conditions for motivation. Conceptual adaptation of self-determination theory to personal learning; the needs are not scores or a ranking. Original diagram based on <a href=\"https://selfdeterminationtheory.org/wp-content/uploads/2014/04/2009_NiemiecRyan_TRE.pdf\">Niemiec and Ryan, Theory and Research in Education, Autonomy, competence, and relatedness in the classroom</a> (2009).",
+    "sources": [
+      {
+        "url": "https://selfdeterminationtheory.org/wp-content/uploads/2014/04/2009_NiemiecRyan_TRE.pdf",
+        "title": "Autonomy, competence, and relatedness in the classroom",
+        "publisher": "Niemiec and Ryan, Theory and Research in Education",
+        "evidence": "Autonomy means volitional, self-endorsed action; competence means feeling effective; supporting all three needs helps internalization. Conclusion recommends optimal challenge, informative feedback, warmth, caring and respect.",
+        "year": 2009,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Adds a selection lens for the article’s list of motivation tactics, drawing on the theory’s authors."
+  },
+  {
+    "file": "Note Linking.md",
+    "asset": "/figures/knowledge/note-linking.svg",
+    "kind": "directional-link-specimen",
+    "caption": "Contextual links express meaning; backlinks expose where a note was referenced. This illustrative note pair separates the relationship from the return route. Original diagram based on <a href=\"https://cmap.ihmc.us/docs/theory-of-concept-maps\">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>; <a href=\"https://obsidian.md/help/plugins/backlinks\">Obsidian Help, Backlinks</a>.",
+    "sources": [
+      {
+        "url": "https://cmap.ihmc.us/docs/theory-of-concept-maps",
+        "title": "The Theory Underlying Concept Maps and How to Construct and Use Them",
+        "publisher": "Novak and Cañas, Institute for Human and Machine Cognition",
+        "evidence": "Introduction and Constructing Good Concept Maps: a focus question sets scope; concepts plus linking phrases form meaningful propositions; cross-links connect domains; select useful links precisely and revise maps. Curriculum Planning distinguishes macro maps and more specific micro maps.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://obsidian.md/help/plugins/backlinks",
+        "title": "Backlinks",
+        "publisher": "Obsidian Help",
+        "evidence": "A backlink for a note is a link from another note to that note. The example and Linked mentions section distinguish the original internal link from the route back to the referring note.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Explains the article’s bidirectional and contextual linking concepts without assuming a relationship means the same thing in both directions."
+  },
+  {
+    "file": "Progressive Summarization.md",
+    "asset": "/figures/knowledge/progressive-summarization.svg",
+    "kind": "layered-note-specimen",
+    "caption": "Compression stays useful when the original context remains reachable. This illustrative specimen names the operations rather than assigning layer numbers; apply further summarization when the note warrants it. Original diagram based on <a href=\"https://fortelabs.com/blog/progressive-summarization-a-practical-technique-for-designing-discoverable-notes\">Tiago Forte, Forte Labs, Progressive Summarization: A Practical Technique for Designing Discoverable Notes</a> (2017); <a href=\"https://fortelabs.com/blog/progressive-summarization-iii-guidelines-and-principles\">Tiago Forte, Forte Labs, Progressive Summarization III: Guidelines and Principles</a> (2017).",
+    "sources": [
+      {
+        "url": "https://fortelabs.com/blog/progressive-summarization-a-practical-technique-for-designing-discoverable-notes",
+        "title": "Progressive Summarization: A Practical Technique for Designing Discoverable Notes",
+        "publisher": "Tiago Forte, Forte Labs",
+        "evidence": "Compression vs. context and Opportunistic compression: condense in small spurts as notes are revisited; original source, captured passages, bolding, highlighting, own-word summary and remix preserve earlier context.",
+        "year": 2017,
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://fortelabs.com/blog/progressive-summarization-iii-guidelines-and-principles",
+        "title": "Progressive Summarization III: Guidelines and Principles",
+        "publisher": "Tiago Forte, Forte Labs",
+        "evidence": "Don't apply all layers to all notes: there is no preferred summarization level. Keep notes glanceable and preserve earlier layers as a safety net.",
+        "year": 2017,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Clarifies the context-preservation mechanism while avoiding the article’s shifted layer numbering and unsourced compression percentages."
+  },
+  {
+    "file": "Spaced Repetition.md",
+    "asset": "/figures/knowledge/spaced-repetition.svg",
+    "kind": "qualitative-schedule",
+    "caption": "Spacing distributes encounters; retrieval requires an attempt before the answer is shown. This conceptual schedule uses equal illustrative encounter counts and encodes no measured intervals or retention values. Original diagram based on <a href=\"https://www.nature.com/articles/s44159-022-00089-1\">Carpenter, Pan and Butler, Nature Reviews Psychology, The science of effective learning with spacing and retrieval practice</a> (2022); <a href=\"https://docs.ankiweb.net/studying.html\">Anki Manual, Studying: Answer Buttons</a>.",
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s44159-022-00089-1",
+        "title": "The science of effective learning with spacing and retrieval practice",
+        "publisher": "Carpenter, Pan and Butler, Nature Reviews Psychology",
+        "evidence": "Public abstract reviews spacing and retrieval practice as effective learning strategies across domains and identifies metacognition as important to learners' strategy use.",
+        "year": 2022,
+        "accessNotes": "Read public abstract and article metadata; full review is subscription content. Diagram illustrates scheduling, not a fitted forgetting curve or numerical effect.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://docs.ankiweb.net/studying.html",
+        "title": "Studying: Answer Buttons",
+        "publisher": "Anki Manual",
+        "evidence": "After attempting recall and revealing the answer: Again = incorrect/not recalled; Hard = correct but slow or doubtful; Good = correct with effort; Easy = correct without effort. Buttons display the next review interval.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Provides a meaningful schedule comparison without an invented forgetting curve or presenting the article’s sample intervals as universally optimal."
+  },
+  {
+    "file": "Zettelkasten Method.md",
+    "asset": "/figures/knowledge/zettelkasten-method.svg",
+    "kind": "address-and-link-network",
+    "caption": "The archive’s numbering, keyword index and internal links supported different kinds of access. This original conceptual example uses invented identifiers to explain those mechanisms. Original diagram based on <a href=\"https://www.uni-bielefeld.de/fakultaeten/soziologie/forschung/luhmann-archiv/pdf/jschmidt_niklas-luhmanns-card-index_-sociologica_2018_12-1.pdf\">Johannes F. K. Schmidt, Bielefeld University / Sociologica, Niklas Luhmann’s Card Index: The Fabrication of Serendipity</a> (2018).",
+    "sources": [
+      {
+        "url": "https://www.uni-bielefeld.de/fakultaeten/soziologie/forschung/luhmann-archiv/pdf/jschmidt_niklas-luhmanns-card-index_-sociologica_2018_12-1.pdf",
+        "title": "Niklas Luhmann’s Card Index: The Fabrication of Serendipity",
+        "publisher": "Johannes F. K. Schmidt, Bielefeld University / Sociologica",
+        "evidence": "Sections 2–4 describe card integration, fixed addresses with inserted branches, internal links and a keyword index as interacting mechanisms; reading notes were rewritten for integration.",
+        "year": 2018,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Adds historically grounded mechanics to the article’s account of atomicity, linking and emergence."
+  },
+  {
+    "file": "Productivity Systems Hub.md",
+    "asset": "/figures/knowledge/productivity-systems-hub.svg",
+    "kind": "action-reference-routing",
+    "caption": "Task systems clarify commitments; knowledge systems preserve ideas for reuse. This conceptual routing example combines the GTD distinction between actions and reference with concept-oriented notes. Original diagram based on <a href=\"https://gettingthingsdone.com/wp-content/uploads/2019/05/GTD_ASANA_SAMPLE.pdf\">David Allen Company, GTD Setup Guide: Understanding the GTD Best Practices</a> (2019); <a href=\"https://notes.andymatuschak.org/z2hQEhqWkdRLL9JUwfawZZx\">Andy Matuschak, Evergreen notes should be concept-oriented</a>.",
+    "sources": [
+      {
+        "url": "https://gettingthingsdone.com/wp-content/uploads/2019/05/GTD_ASANA_SAMPLE.pdf",
+        "title": "GTD Setup Guide: Understanding the GTD Best Practices",
+        "publisher": "David Allen Company",
+        "evidence": "Five workflow steps are Capture, Clarify, Organize, Reflect, Engage. Reference systems hold non-actionable information, while projects track outcomes and next actions identify physical activities.",
+        "year": 2019,
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://notes.andymatuschak.org/z2hQEhqWkdRLL9JUwfawZZx",
+        "title": "Evergreen notes should be concept-oriented",
+        "publisher": "Andy Matuschak",
+        "evidence": "Organizing evergreen notes by concept, rather than book or author, lets ideas from different books accumulate and exposes unexpected connections.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Shows the practical interface between the hub’s task-management and knowledge-management sections."
+  },
+  {
+    "file": "Book Learning Synthesis.md",
+    "asset": "/figures/knowledge/book-learning-synthesis.svg",
+    "kind": "synthesis-workbench",
+    "caption": "Compare a shared question across books, then check agreement, tension and scope. This conceptual reading worksheet uses this article’s book notes as starting points; it reports no study results. Original diagram based on <a href=\"https://teachingwriting.stanford.edu/synthesis-matrix\">Stephanie Reist, Stanford University TeachingWriting, Synthesis Matrix</a>; <a href=\"https://notes.andymatuschak.org/z2hQEhqWkdRLL9JUwfawZZx\">Andy Matuschak, Evergreen notes should be concept-oriented</a>.",
+    "sources": [
+      {
+        "url": "https://teachingwriting.stanford.edu/synthesis-matrix",
+        "title": "Synthesis Matrix",
+        "publisher": "Stephanie Reist, Stanford University TeachingWriting",
+        "evidence": "Activity goals: relate sources by themes, contrast them, synthesize agreement/disagreement/divergence. Activity details include method as a point of divergence between sources.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://notes.andymatuschak.org/z2hQEhqWkdRLL9JUwfawZZx",
+        "title": "Evergreen notes should be concept-oriented",
+        "publisher": "Andy Matuschak",
+        "evidence": "Organizing evergreen notes by concept, rather than book or author, lets ideas from different books accumulate and exposes unexpected connections.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Adds a method for testing the synthesis patterns instead of treating thematic similarity as proof that every book makes the same claim."
+  },
+  {
+    "file": "Learning Plan.md",
+    "asset": "/figures/knowledge/learning-plan.svg",
+    "kind": "planning-and-evidence-grid",
+    "caption": "Planning, monitoring and evaluating link a learning goal to observable work. This conceptual planning sheet makes the article’s progress tracking usable before the final assessment. Original diagram based on <a href=\"https://learning.uiowa.edu/sites/learning.uiowa.edu/files/2026-03/Metacognition-Made-Easy.pdf\">University of Iowa, Academic Support and Retention, Metacognition Made Easy: Incorporating Planning, Monitoring, and Evaluating</a>.",
+    "sources": [
+      {
+        "url": "https://learning.uiowa.edu/sites/learning.uiowa.edu/files/2026-03/Metacognition-Made-Easy.pdf",
+        "title": "Metacognition Made Easy: Incorporating Planning, Monitoring, and Evaluating",
+        "publisher": "University of Iowa, Academic Support and Retention",
+        "evidence": "Planning sets goals and strategies; monitoring tracks understanding during learning; evaluating appraises results. Use low-stakes checks, analyze misunderstandings and revise strategies.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Aligns goal setting, learning methods and progress tracking with specific evidence instead of activity counts."
+  },
+  {
+    "file": "Learning Atlas.md",
+    "asset": "/figures/knowledge/learning-atlas.svg",
+    "kind": "wayfinding-matrix",
+    "caption": "An atlas can support direct lookup, orientation and exploration. This conceptual wayfinding guide combines complementary relationship types with clear concept labels. Original diagram based on <a href=\"https://notes.linkingyourthinking.com/Cards/MOCs+Overview\">Nick Milo, Linking Your Thinking, MOCs Overview</a>; <a href=\"https://www.w3.org/TR/skos-primer\">W3C, SKOS Simple Knowledge Organization System Primer</a> (2009).",
+    "sources": [
+      {
+        "url": "https://notes.linkingyourthinking.com/Cards/MOCs+Overview",
+        "title": "MOCs Overview",
+        "publisher": "Nick Milo, Linking Your Thinking",
+        "evidence": "MOCs gather, develop and navigate ideas; they are fluid overlays rather than restrictive containers, so different MOCs can map the same notes in different ways.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://www.w3.org/TR/skos-primer",
+        "title": "SKOS Simple Knowledge Organization System Primer",
+        "publisher": "W3C",
+        "evidence": "Sections 2.2 and 2.3 distinguish preferred/alternative labels and broader/narrower versus associative related concepts; a concept may have multiple broader concepts.",
+        "year": 2009,
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Makes organization, access and contextual linking tangible from the reader’s point of view."
+  },
+  {
+    "file": "Anki/Anki.md",
+    "asset": "/figures/knowledge/anki.svg",
+    "kind": "recall-rating-decision-tree",
+    "caption": "“Hard” still means the answer was correct. This conceptual rating guide follows the official manual; actual review intervals depend on the card and scheduler settings. Original diagram based on <a href=\"https://docs.ankiweb.net/studying.html\">Anki Manual, Studying: Answer Buttons</a>.",
+    "sources": [
+      {
+        "url": "https://docs.ankiweb.net/studying.html",
+        "title": "Studying: Answer Buttons",
+        "publisher": "Anki Manual",
+        "evidence": "After attempting recall and revealing the answer: Again = incorrect/not recalled; Hard = correct but slow or doubtful; Good = correct with effort; Easy = correct without effort. Buttons display the next review interval.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original explanatory diagram created for this garden; conceptual sources credited in the caption."
+    },
+    "rationale": "Corrects a common rating mistake and connects honest recall judgments to scheduling without inventing fixed intervals."
+  }
+]

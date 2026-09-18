@@ -27,6 +27,11 @@ tags:
 - Interactive tools
 - Multimedia resources
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/active-learning.svg" aria-label="Open full-size graphic: Make thinking visible"><img src="/figures/knowledge/active-learning.svg" alt="Three successive learning activities: think alone to retrieve an answer, explain it with a partner to expose gaps, then share and receive feedback. A return arrow asks learners to revise their original answer." width="960" height="640" loading="lazy" decoding="async" /></a>
+<figcaption>Thinking, explaining and feedback do different jobs: together they reveal what needs revision. Conceptual activity sequence; timings and outcomes are not measured. Original diagram based on <a href="https://mtei.engineering.cornell.edu/teaching-resources/active-learning/think-pair-share/">Cornell University, McCormick Teaching Excellence Institute, Think-Pair-Share</a>.</figcaption>
+</figure>
+
 ## Application
 
 1. **Classroom Settings**

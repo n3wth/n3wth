@@ -30,6 +30,11 @@ Some ranked lists:
 
 Also worth exploring: [Linking Your Thinking](https://www.linkingyourthinking.com/) by [Nick Milo](https://x.com/nickmilo?lang=en)
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/digital-garden.svg" aria-label="Open full-size graphic: Two ways to find an idea"><img src="/figures/knowledge/digital-garden.svg" alt="On the left, a timeline orders entries by date. On the right, a garden connects a question about learning to notes on recall, practice and feedback, allowing several paths through the same material." width="960" height="644" loading="lazy" decoding="async" /></a>
+<figcaption>Publication order and contextual links offer different routes through writing. This conceptual comparison illustrates the garden’s topology; it is not a map extracted from this site. Original diagram based on <a href="https://maggieappleton.com/garden-history">Maggie Appleton, A Brief History &amp; Ethos of the Digital Garden</a>.</figcaption>
+</figure>
+
 ## Core Components
 
 ### Content Curation

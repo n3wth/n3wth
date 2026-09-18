@@ -20,6 +20,11 @@ The Cue-Routine-Reward cycle, also known as the "habit loop", is a fundamental f
 3. Identify the reward you receive
 4. Document patterns over time
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/cue-routine-reward.svg" aria-label="Open full-size graphic: Cue-Routine-Reward"><img src="/figures/wellbeing/cue-routine-reward.svg" alt="A hypothetical afternoon work break branches into a vending-machine visit or a walk with a friend or planned snack. Both lead to reviewing what felt rewarding, with a loop back to observing the cue." width="960" height="745" loading="lazy" decoding="async" /></a>
+<figcaption>The loop is a useful observation tool: identify a cue, try another response and notice what actually feels rewarding. This hypothetical example adapts Duhigg's cue–routine–reward framework and reward-testing approach; keeping a cue or reward does not guarantee a replacement habit will stick. Original conceptual diagram based on <a href="https://charlesduhigg.com/wp-content/uploads/2025/01/Duhigg-Readers-Guide-to-Changing-Habits.pdf">Charles Duhigg, A Reader’s Guide to Using These Ideas, appendix to The Power of Habit (PDF)</a>.</figcaption>
+</figure>
+
 ## Changing Habits
 
 - Keep the same cue and reward

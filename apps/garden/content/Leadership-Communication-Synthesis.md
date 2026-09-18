@@ -112,6 +112,11 @@ The highest expression of leadership:
 - **A**ction: What needs to happen
 - **R**einforcement: Why it matters
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/leadership-communication-synthesis.svg" aria-label="Open full-size graphic: Make the message answerable"><img src="/figures/career/leadership-communication-synthesis.svg" alt="An illustrative project message is annotated with Situation, Background, Assessment and Request. A blocked launch handoff is the situation; a missing support runbook is the background; concern about gaps is explicitly the speaker's assessment; assigning an owner before launch is the request." width="960" height="800" loading="lazy" decoding="async" /></a>
+<figcaption>A useful leadership message separates context from interpretation and ends with a clear request. This illustrative project message adapts a healthcare communication framework; it does not quantify leadership impact or validate the article’s numerical claims. Original diagram based on <a href="https://www.govinfo.gov/content/pkg/GOVPUB-HE20_6500-PURL-gpo24004/pdf/GOVPUB-HE20_6500-PURL-gpo24004.pdf">Agency for Healthcare Research and Quality, archived by the U.S. Government Publishing Office, TeamSTEPPS Pocket Guide — SBAR</a>.</figcaption>
+</figure>
+
 ### Strategy 3: The Influence Amplification Model
 
 1. **Personal Mastery**: Perfect your communication fundamentals
