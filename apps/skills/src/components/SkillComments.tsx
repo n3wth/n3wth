@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useAuth } from './AuthProvider'
+import { SignInForm } from './SignInForm'
 
 interface Comment {
   id: string
@@ -17,7 +18,7 @@ interface SkillCommentsProps {
 }
 
 export function SkillComments({ skillId, className = '' }: SkillCommentsProps) {
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [newBody, setNewBody] = useState('')
@@ -74,37 +75,53 @@ export function SkillComments({ skillId, className = '' }: SkillCommentsProps) {
       <h2 className="section-title mb-4">Discussions</h2>
 
       {user ? (
-        <form onSubmit={handleSubmit} className="mb-6">
-          <textarea
-            value={newBody}
-            onChange={e => setNewBody(e.target.value)}
-            placeholder="Add a comment..."
-            rows={3}
-            className="w-full px-4 py-3 rounded-lg text-sm resize-none mb-3"
-            style={{
-              backgroundColor: 'var(--glass-bg)',
-              border: '1px solid var(--glass-border)',
-              color: 'var(--color-white)',
-            }}
-            maxLength={2000}
-          />
-          <button
-            type="submit"
-            disabled={!newBody.trim() || submitting}
-            className="px-4 py-2 rounded-lg text-sm font-medium transition-opacity disabled:opacity-50"
-            style={{
-              backgroundColor: 'var(--glass-highlight)',
-              border: '1px solid var(--glass-border)',
-              color: 'var(--color-white)',
-            }}
-          >
-            {submitting ? 'Posting...' : 'Post comment'}
-          </button>
-        </form>
+        <div className="mb-6">
+          <form onSubmit={handleSubmit}>
+            <textarea
+              value={newBody}
+              onChange={e => setNewBody(e.target.value)}
+              placeholder="Add a comment..."
+              rows={3}
+              className="w-full px-4 py-3 rounded-lg text-sm resize-none mb-3"
+              style={{
+                backgroundColor: 'var(--glass-bg)',
+                border: '1px solid var(--glass-border)',
+                color: 'var(--color-white)',
+              }}
+              maxLength={2000}
+            />
+            <button
+              type="submit"
+              disabled={!newBody.trim() || submitting}
+              className="px-4 py-2 rounded-lg text-sm font-medium transition-opacity disabled:opacity-50"
+              style={{
+                backgroundColor: 'var(--glass-highlight)',
+                border: '1px solid var(--glass-border)',
+                color: 'var(--color-white)',
+              }}
+            >
+              {submitting ? 'Posting...' : 'Post comment'}
+            </button>
+          </form>
+          <p className="text-xs mt-3" style={{ color: 'var(--color-grey-400)' }}>
+            Signed in as {user.name || user.email}.{' '}
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              className="underline underline-offset-2"
+              style={{ color: 'var(--color-grey-300)' }}
+            >
+              Sign out
+            </button>
+          </p>
+        </div>
       ) : (
-        <p className="text-sm mb-6" style={{ color: 'var(--color-grey-400)' }}>
-          Sign in with GitHub to join the discussion.
-        </p>
+        <div className="mb-6">
+          <p className="text-sm mb-3" style={{ color: 'var(--color-grey-400)' }}>
+            Sign in with a magic link to join the discussion.
+          </p>
+          <SignInForm />
+        </div>
       )}
 
       {loading ? (

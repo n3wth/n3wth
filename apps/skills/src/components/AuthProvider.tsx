@@ -1,8 +1,7 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react'
-import { createClient } from '../lib/supabase'
-import type { User } from '@supabase/supabase-js'
+import { createContext, useContext, useCallback, useState, type ReactNode } from 'react'
+import { authClient } from '../lib/auth-client'
 
 export interface Profile {
   id: string
@@ -19,6 +18,10 @@ export interface Profile {
   created_at: string
   updated_at: string
 }
+
+type SessionHookResult = ReturnType<typeof authClient.useSession>
+type SessionData = NonNullable<SessionHookResult['data']>
+export type User = SessionData['user']
 
 export interface AuthContextType {
   user: User | null
@@ -42,101 +45,50 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
+/**
+ * Better Auth-backed provider. Replaces the legacy Supabase provider with the
+ * same consumption surface; `useSession` (better-auth/react) keeps session
+ * state in sync across signOut/auth changes, so no manual subscription is
+ * needed. `profile` stays null: the D1 profiles table is read server-side
+ * (comments/votes handlers derive identity from the session), and no profile
+ * UI consumes it client-side.
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { data: session, isPending, error: sessionError } = authClient.useSession()
   const [error, setError] = useState<string | null>(null)
-  const [supabase] = useState(() => createClient())
 
-  const loadProfile = useCallback(async (userId: string) => {
-    if (!supabase) return
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single()
-      if (fetchError) {
-        console.error('Profile fetch failed:', fetchError.message)
-        setError(fetchError.message)
-      }
-      setProfile(data as Profile | null)
-    } catch (e) {
-      console.error('Profile fetch error:', e)
-      setError(e instanceof Error ? e.message : 'Failed to load profile')
-    } finally {
-      setLoading(false)
-    }
-  }, [supabase])
-
-  useEffect(() => {
-    if (!supabase) {
-      setLoading(false)
-      return
-    }
-
-    supabase.auth.getSession().then(({ data: { session }, error: sessionError }) => {
-      if (sessionError) {
-        console.error('Session error:', sessionError.message)
-        setError(sessionError.message)
-        setLoading(false)
-        return
-      }
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        loadProfile(session.user.id)
-      } else {
-        setLoading(false)
-      }
-    })
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setError(null)
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        await loadProfile(session.user.id)
-      } else {
-        setProfile(null)
-        setLoading(false)
-      }
-    })
-
-    return () => subscription.unsubscribe()
-  }, [supabase, loadProfile])
-
-  const signIn = async (email: string) => {
-    if (!supabase) return
+  const signIn = useCallback(async (email: string) => {
     setError(null)
-    const { error: signInError } = await supabase.auth.signInWithOtp({
+    const { error: signInError } = await authClient.signIn.magicLink({
       email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
+      callbackURL: '/',
     })
     if (signInError) {
       console.error('Sign in error:', signInError.message)
-      setError(signInError.message)
+      setError(signInError.message ?? 'Sign in failed')
     }
-  }
+  }, [])
 
-  const signOut = async () => {
-    if (!supabase) return
+  const signOut = useCallback(async () => {
     setError(null)
-    const { error: signOutError } = await supabase.auth.signOut()
+    const { error: signOutError } = await authClient.signOut()
     if (signOutError) {
       console.error('Sign out error:', signOutError.message)
-      setError(signOutError.message)
-      return
+      setError(signOutError.message ?? 'Sign out failed')
     }
-    setUser(null)
-    setProfile(null)
-  }
+  }, [])
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, error, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user: session?.user ?? null,
+        profile: null,
+        loading: isPending,
+        error: error ?? sessionError?.message ?? null,
+        signIn,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
