@@ -5,6 +5,7 @@ import { SiteNavigation } from "@n3wth/ui/site";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DocsNavigationLinks } from "./DocsNavigationLinks";
+import { DocsSearchTrigger } from './DocsSearch';
 
 const navigation = [{ name: "Docs", href: "/docs" }];
 
@@ -26,10 +27,13 @@ export function Navigation() {
       menuContent={isDocs ? <DocsNavigationLinks /> : undefined}
       brand={
         <span className="inline-flex items-center">
-          <Link href="/" aria-label="n3wth/r3 - home">
-            n3wth/r3
-          </Link>
-          {isDocs && <Link href="/docs" aria-label="Documentation home">/docs</Link>}
+          <a href="https://n3wth.com" aria-label="n3wth home">n3wth</a>
+          <span aria-hidden="true">/</span>
+          <Link href="/" aria-label="r3 home">r3</Link>
+          {isDocs && <>
+            <span aria-hidden="true">/</span>
+            <Link href="/docs" aria-label="Documentation home">docs</Link>
+          </>}
         </span>
       }
       links={isDocs ? null : navigation.map((item) => (
@@ -42,6 +46,8 @@ export function Navigation() {
         </Link>
       ))}
       actions={
+        <>
+        {isDocs && <DocsSearchTrigger compact />}
         <a
           href="https://github.com/n3wth/r3"
           target="_blank"
@@ -50,6 +56,7 @@ export function Navigation() {
         >
           <Icon name="github" size="md" />
         </a>
+        </>
       }
     />
   );

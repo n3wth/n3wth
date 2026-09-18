@@ -9,7 +9,12 @@
     "analyze": "cross-env ANALYZE=true npm run build",
     "perf:test": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run build"
+    "check": "npm run test:docs && npm run search:check && npm run typecheck && npm run build",
+    "test:docs": "node --experimental-strip-types --test lib/docs-content.test.ts lib/docs-search.test.ts",
+    "docs:sync": "node scripts/sync-docs-sources.mjs",
+    "search:types": "wrangler types --config worker/wrangler.jsonc worker/env.d.ts",
+    "search:check": "npm run search:types && node --experimental-strip-types scripts/build-search-index.ts && tsc --project worker/tsconfig.json && node --experimental-strip-types --test worker/search.test.ts",
+    "search:deploy": "wrangler deploy --config worker/wrangler.jsonc"
   },
   "dependencies": {
     "@mdx-js/loader": "3.1.1",
@@ -42,17 +47,23 @@
     "rehype-pretty-code": "0.14.1",
     "rehype-slug": "6.0.0",
     "remark-gfm": "4.0.1",
+    "remark-mdx": "3.1.1",
+    "remark-parse": "11.0.0",
+    "remark-stringify": "11.0.0",
     "tailwind-merge": "3.6.0",
-    "three": "^0.185.1"
+    "three": "^0.185.1",
+    "unified": "11.0.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^24",
+    "@types/mdast": "4.0.4",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "autoprefixer": "10.4.21",
     "postcss": "8.5.15",
     "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "wrangler": "4.134.0"
   }
 }

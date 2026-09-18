@@ -114,6 +114,8 @@ html[data-astryx-theme='n3wth'] {
 .n3wth-site-text, .n3wth-site-description, .n3wth-site-heading { overflow-wrap: break-word; }
 .n3wth-site-container :where(pre) { box-sizing: border-box; max-width: 100%; overflow-x: auto; }
 .n3wth-site-container :where(code, kbd, samp) { font-family: var(--font-family-code); }
+.n3wth-code-block > button { top: 12px; right: 12px; margin-inline: 0; }
+.n3wth-code-block:has(> button) code { padding-inline-end: 48px; }
 .n3wth-site-container :where(img, video, canvas, svg) { max-width: 100%; height: auto; }
 .n3wth-site-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; flex-shrink: 0; }
 /* Button links own their variant contrast and focus treatment. */

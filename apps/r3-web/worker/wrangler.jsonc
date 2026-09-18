@@ -1,0 +1,17 @@
+{
+  "$schema": "../../../node_modules/wrangler/config-schema.json",
+  "name": "r3-docs-search",
+  "account_id": "ac23513945eb49f73a89faf1be12384e",
+  "main": "search.ts",
+  "compatibility_date": "2026-09-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 },
+  "ai": { "binding": "AI" },
+  "ratelimits": [
+    { "name": "PER_IP", "namespace_id": "30918001", "simple": { "limit": 10, "period": 60 } },
+    { "name": "TOTAL", "namespace_id": "30918002", "simple": { "limit": 60, "period": 60 } }
+  ],
+  "vars": { "DOCS_INDEX_URL": "https://r3.n3wth.com/docs-index.json" },
+  "build": { "command": "node --experimental-strip-types scripts/build-search-index.ts" }
+}

@@ -1,130 +1,24 @@
-import { getPackageVersion } from "@/lib/version";
+import { getAllDocs } from '@/lib/mdx';
+import { getPackageVersion } from '@/lib/version';
+
+export const dynamic = 'force-static';
 
 export async function GET() {
-  const version = getPackageVersion();
-
-  const content = `# n3wth/r3
-
-> Persistent memory for AI assistants. An MCP server with local Redis, vector search, and knowledge graphs.
-
-## Quick Start
-
-\`\`\`bash
-npx @n3wth/r3
-\`\`\`
-
-No configuration required. r3 starts an embedded Redis server automatically.
-
-## What is r3?
-
-r3 is a Model Context Protocol (MCP) server that gives AI assistants persistent memory across sessions. It runs locally with:
-
-- Embedded Redis for memory storage and retrieval
-- 384-dimensional vector embeddings for semantic search
-- Automatic entity extraction and knowledge graph construction
-- No external API calls required
-
-## Integration
-
-### Antigravity CLI
-
-Add to \`~/.gemini/settings.json\`:
-
-\`\`\`json
-{
-  "mcpServers": {
-    "r3": {
-      "command": "npx",
-      "args": ["@n3wth/r3"]
-    }
-  }
-}
-\`\`\`
-
-### Antigravity CLI (command)
-
-\`\`\`bash
-agy mcp add r3 npx -y @n3wth/r3
-\`\`\`
-
-### Environment Variable
-
-\`\`\`bash
-export MCP_SERVERS='{"r3":{"command":"npx","args":["@n3wth/r3"]}}'
-\`\`\`
-
-### Programmatic Usage
-
-\`\`\`typescript
-import { R3 } from '@n3wth/r3';
-
-const r3 = new R3();
-
-await r3.add({
-  content: 'User prefers TypeScript',
-  userId: 'user_123'
-});
-
-const memories = await r3.search({
-  query: 'programming preferences',
-  userId: 'user_123'
-});
-\`\`\`
-
-## MCP Tools
-
-r3 provides these tools to MCP clients:
-
-- add_memory: Store new information
-- search_memory: Find relevant context using semantic search
-- get_all_memories: List all memories for a user
-- update_memory: Modify existing memory
-- delete_memory: Remove specific memory
-- delete_all_memories: Clear all memories
-- get_memory_history: View memory changes
-- cache_stats: Monitor performance
-- optimize_cache: Reorganize cache
-- health_check: Check system status
-
-## Documentation
-
-- Introduction: https://r3.n3wth.com/docs/introduction
-- Quickstart: https://r3.n3wth.com/docs/quickstart
-- Installation: https://r3.n3wth.com/docs/installation
-- AI Intelligence: https://r3.n3wth.com/docs/ai-intelligence
-- API Reference: https://r3.n3wth.com/docs/api-reference
-- Client API: https://r3.n3wth.com/docs/api/client
-- Python SDK: https://r3.n3wth.com/docs/sdks/python
-- TypeScript SDK: https://r3.n3wth.com/docs/sdks/typescript
-- Examples: https://r3.n3wth.com/docs/examples
-- Chatbot with Memory: https://r3.n3wth.com/docs/examples/chatbot-memory
-- Integrations: https://r3.n3wth.com/docs/integrations
-- Troubleshooting: https://r3.n3wth.com/docs/troubleshooting
-
-## Key Features
-
-- Local-first: All data stays on your machine
-- Zero config: Just run \`npx @n3wth/r3\`
-- Fast: Embedded Redis for storage and retrieval
-- Private: No external API calls required
-
-## Version
-
-Current version: ${version}
-
-## Links
-
-- Website: https://r3.n3wth.com
-- GitHub: https://github.com/n3wth/r3
-- npm: https://www.npmjs.com/package/@n3wth/r3
-- Contact: hey@n3wth.com
-`;
-
-  return new Response(content, {
-    status: 200,
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=3600",
-    },
-  });
+  const docs = await getAllDocs();
+  const content = [
+    '# r3', '',
+    `> r3 v${getPackageVersion()} is a Redis memory MCP server for AI assistants.`, '',
+    'Install and run with `npx @n3wth/r3`. Connect through an MCP client using stdio.', '',
+    '## Machine-readable documentation', '',
+    '- [All documentation as Markdown](https://r3.n3wth.com/llms-full.txt)',
+    '- [Published MCP tool schemas](https://r3.n3wth.com/mcp-tools.json)',
+    '- [Search index](https://r3.n3wth.com/docs-index.json)', '',
+    'The published tool schemas are authoritative for tool names and arguments. Some SDK guides contain older examples; check them against the released package.', '',
+    '## Pages', '',
+    ...docs.map((doc) => `- [${doc.title}](https://r3.n3wth.com/docs-markdown/${doc.slug})`), '',
+    '## Releases', '',
+    '- [Changelog](https://r3.n3wth.com/docs/changelog)',
+    '- [Upstream source and releases](https://github.com/n3wth/r3)', '',
+  ].join('\n');
+  return new Response(content, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 }

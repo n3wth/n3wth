@@ -2,6 +2,7 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { DocsSidebar } from "@/components/DocsSidebar";
 import { TableOfContents } from "@/components/TableOfContents";
+import { DocsSearchProvider } from '@/components/DocsSearch';
 
 export default function DocsLayout({
   children,
@@ -9,11 +10,11 @@ export default function DocsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-bg flex flex-col">
+    <DocsSearchProvider><div className="min-h-screen bg-bg flex flex-col">
       <Navigation />
 
       <div className="mx-auto max-w-[1280px] w-full px-6 pt-24 pb-14 lg:px-10 flex-1">
-        <div className="flex gap-8">
+        <div className="flex gap-10 xl:gap-12">
           {/* Sidebar */}
           <aside className="hidden lg:block w-[220px] flex-shrink-0">
             <div className="sticky top-20">
@@ -36,6 +37,6 @@ export default function DocsLayout({
       </div>
 
       <Footer />
-    </div>
+    </div></DocsSearchProvider>
   );
 }

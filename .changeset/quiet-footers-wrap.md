@@ -7,3 +7,5 @@ Keep footer identity and links on one row when they fit, with content-driven wra
 Add compact PageHeader spacing for documentation articles whose parents own the surrounding margins.
 
 Allow SiteNavigation to display contextual menu content on compact screens and align its collapse breakpoint with a desktop documentation sidebar.
+
+Expose native CodeBlock line wrapping and inset headerless copy controls with reserved space beside code.

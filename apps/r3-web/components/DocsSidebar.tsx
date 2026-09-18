@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { docsConfig } from "@/lib/docs-config";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { DocsSearchTrigger } from './DocsSearch';
 
 export function DocsSidebar() {
   const pathname = usePathname();
-  const [searchQuery, setSearchQuery] = useState("");
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const toggleSection = (title: string) => {
@@ -17,36 +17,17 @@ export function DocsSidebar() {
     );
   };
 
-  const filteredSections = docsConfig
-    .map((section) => ({
-      ...section,
-      items: section.items.filter((item) =>
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()),
-      ),
-    }))
-    .filter((section) => section.items.length > 0);
-
   return (
     <nav className="space-y-6">
       {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-dim" />
-        <input
-          type="search"
-          aria-label="Search documentation"
-          placeholder="Search docs..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-3 py-2 bg-bg-soft border border-rail rounded-lg text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-rail-strong focus:border-transparent"
-        />
-      </div>
+      <DocsSearchTrigger />
 
       {/* Navigation Sections */}
       <div className="space-y-3">
-        {filteredSections.map((section) => {
+        {docsConfig.map((section) => {
           const isExpanded =
             expandedSections.includes(section.title) ||
-            searchQuery ||
+            (pathname === '/docs' && section.title === 'Getting Started') ||
             section.items.some((item) => pathname === `/docs/${item.slug}`);
 
           return (
@@ -68,7 +49,7 @@ export function DocsSidebar() {
               {isExpanded && (
                 <div className="mt-1 space-y-0.5 ml-2">
                   {section.items.map((item) => {
-                    const isActive = pathname === `/docs/${item.slug}`;
+                    const isActive = pathname === `/docs/${item.slug}` || (pathname === '/docs' && item.slug === 'introduction');
 
                     return (
                       <Link
