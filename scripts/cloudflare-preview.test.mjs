@@ -566,7 +566,7 @@ test('the workflow queues lifecycle events per PR and gates reopen deploys on cu
   const workflow = readFileSync(fileURLToPath(new URL('../.github/workflows/cloudflare-preview.yml', import.meta.url)), 'utf8')
   assert.match(workflow, /types:\s*\[opened, synchronize, reopened, closed\]/, 'close and reopen are workflow triggers')
   assert.match(workflow, /group:\s*cloudflare-preview-\$\{\{ github\.event\.pull_request\.number \}\}[\s\S]*?cancel-in-progress:\s*false/, 'deploys and cleanup serialize per PR')
-  assert.match(workflow, /if \[ "\$EVENT_ACTION" = closed \][\s\S]*?apps=\$\(node scripts\/deploy-apps\.mjs --slugs\)/, 'close cleans up every preview app from the shared list')
+  assert.match(workflow, /if \[ "\$EVENT_ACTION" = closed \][\s\S]*?apps=ui-docs portfolio garden kit skills r3-web/, 'close cleans up every preview app')
   assert.match(workflow, /pr\.state === 'open' && pr\.head\.sha === context\.payload\.pull_request\.head\.sha/, 'deploy requires the PR to still be open at the queued SHA')
   assert.match(workflow, /if:\s*steps\.affected\.outputs\.apps != '' && steps\.current\.outputs\.deploy == 'true'/, 'deploy is gated on the current-state check')
   assert.match(workflow, /if:\s*steps\.affected\.outputs\.apps != '' && github\.event\.action == 'closed'/, 'delete only runs on close')
