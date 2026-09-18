@@ -15,6 +15,11 @@ A systematic framework for setting clear, actionable health and fitness goals th
 - **Relevant**: Align with broader [[Health Map|health priorities]] and lifestyle goals
 - **Time-bound**: Establish clear deadlines and milestones for accountability
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/smart-goals.svg" aria-label="Open full-size graphic: SMART Goals"><img src="/figures/wellbeing/smart-goals.svg" alt="A hypothetical walking goal is annotated against five SMART questions: specific action, measurable minutes and days, achievable ability and time, relevant health priority, and a two-week review date. Numbers are an example, not a prescription." width="960" height="770" loading="lazy" decoding="async" /></a>
+<figcaption>SMART makes a proposed action easier to review. The walking amounts are illustrative, not exercise recommendations. This applies CDC's planning framework to a hypothetical health goal; it does not imply that writing a goal guarantees an outcome. Original conceptual diagram based on <a href="https://www.cdc.gov/youth-advisory-councils/action-plans/smart-framework.html">Centers for Disease Control and Prevention, SMART Framework</a>.</figcaption>
+</figure>
+
 ## Implementation
 
 - Start with a clear vision of desired health outcomes

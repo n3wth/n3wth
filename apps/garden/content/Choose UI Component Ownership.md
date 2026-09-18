@@ -36,6 +36,11 @@ Local source is not free. Write down whether fixes stay local or should later mo
 
 Do not treat a required prop or a type check as proof that the finished interface is accessible. Check names, roles, focus order, keyboard activation, contrast, announcements, and small-screen behavior in the page where the component runs.
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/choose-ui-component-ownership.svg" aria-label="Open full-size graphic: Locate the fix and the responsibility"><img src="/figures/frameworks/choose-ui-component-ownership.svg" alt="A decision tree first checks for a fitting existing component, then asks whether a new need is shared and stable, and whether a shared owner can support it. Reuse requires page testing; local code needs an owner; shared code needs package and consumer checks." width="960" height="850" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual decision aid synthesized for this article. Evidence of reuse, representative testing and versatility supports a shared component; it does not remove the application owner’s integration checks. Original diagram based on <a href="https://design-system.service.gov.uk/community/contribution-criteria">GOV.UK Design System, Contribution criteria</a>.</figcaption>
+</figure>
+
 ## Name the maintenance constraint
 
 Every ownership choice has a boundary. Here, `@n3wth/ui` owns the underlying component dependency in `packages/ui/package.json`. Garden does not own that dependency directly. Updating it is a UI-package change. It needs a package build and checks in consumers such as Garden. This gives the upgrade a clear owner.

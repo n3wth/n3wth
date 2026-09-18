@@ -35,6 +35,11 @@ tags:
 - Relevant metrics
 - Impact demonstration
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/resume-building.svg" aria-label="Open full-size graphic: Show the work and what changed"><img src="/figures/career/resume-building.svg" alt="An illustrative resume bullet says, Rebuilt the onboarding guide so new starters could complete setup independently. Annotations identify the action, rebuilt; the project, the onboarding guide; and the result, independent setup. A reminder asks writers to use numbers only when they have supporting evidence." width="960" height="770" loading="lazy" decoding="async" /></a>
+<figcaption>An accomplishment statement makes your contribution and its result easy to find. This annotated example is invented for explanation; replace it with work and outcomes you can substantiate. Original diagram based on <a href="https://capd.mit.edu/resources/career-toolkit-crafting-an-effective-resume/">MIT Career Advising &amp; Professional Development, Career toolkit: Crafting an effective resume</a>.</figcaption>
+</figure>
+
 ### Skills Presentation
 
 - [[Technical Skills|Technical skills]]

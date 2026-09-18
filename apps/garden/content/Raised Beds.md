@@ -20,6 +20,11 @@ Raised bed gardening offers improved drainage, better soil control, and easier a
   - Better for accessibility needs
   - Higher material cost but worth it for comfort
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/raised-beds.jpg" aria-label="Open full-size graphic: Raised Beds"><img src="/figures/wellbeing/raised-beds.jpg" alt="Two people tend a timber vegetable bed from its surrounding paths; the raised edge separates the growing soil from the working area." width="640" height="480" loading="lazy" decoding="async" /></a>
+<figcaption>Access is a design choice: this raised vegetable bed at Heathrow Special Needs Farm was built to improve access from wheelchairs. The photograph illustrates bed edges and adjacent working space, not a certified accessible layout. Choose dimensions for the actual gardener, as discussed in <a href="https://extension.umn.edu/gardening-minnesota/raised-bed-gardens">University of Minnesota Extension, Raised bed gardens</a>. Photograph by <a href="https://commons.wikimedia.org/wiki/File:Raised_vegetable_beds_for_disabled_access_-_geograph.org.uk_-_1411061.jpg">David Hawgood, Raised vegetable beds for disabled access</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>; unaltered.</figcaption>
+</figure>
+
 ### Width Guidelines
 
 - **Maximum width**: 4 feet

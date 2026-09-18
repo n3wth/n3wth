@@ -1,4 +1,12 @@
 {
+  "ir-evaluation": {
+    "title": "Evaluation of unranked retrieval sets",
+    "url": "https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-unranked-retrieval-sets-1.html",
+    "kind": "research",
+    "quality": "Manning, Raghavan and Schütze's information retrieval textbook defines precision and recall. Supports the conceptual sets, not measured system performance or answer faithfulness.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Original textbook page read with Exa; definitions checked against the figure and caption"
+  },
   "beir": {
     "title": "BEIR retrieval benchmark",
     "url": "https://arxiv.org/abs/2104.08663",

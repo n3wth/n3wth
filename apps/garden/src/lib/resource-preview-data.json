@@ -1,0 +1,666 @@
+{
+  "Career Goals Framework.md": [
+    {
+      "source": 0,
+      "description": "Turn career goals into a development plan with learning activities, dates and a way to review progress."
+    }
+  ],
+  "Career Transition Guide.md": [
+    {
+      "source": 0,
+      "description": "Identify the skills a transition requires and choose development activities you can evaluate."
+    },
+    {
+      "source": 1,
+      "description": "Test a possible career through conversations and small experiments before making a larger commitment."
+    }
+  ],
+  "Career Planning.md": [
+    {
+      "source": 0,
+      "description": "Use the planning process to connect long-term goals with practical development activities."
+    }
+  ],
+  "Career Direction Framework.md": [
+    {
+      "source": 0,
+      "description": "Reflect on your interests, skills and values to narrow the directions worth exploring."
+    },
+    {
+      "source": 1,
+      "description": "Learn how career prototypes and informational interviews can turn uncertainty into useful feedback."
+    }
+  ],
+  "Career Roadmap.md": [
+    {
+      "source": 0,
+      "description": "Explore career possibilities through small prototypes, conversations and reflection."
+    }
+  ],
+  "Career Transitions.md": [
+    {
+      "source": 0,
+      "description": "Translate past experience into relevant evidence by describing the project, your action and its result."
+    }
+  ],
+  "Career Frameworks.md": [
+    {
+      "source": 0,
+      "description": "Start with a structured assessment of your interests, strengths and values."
+    },
+    {
+      "source": 1,
+      "description": "Convert that assessment into goals, learning activities and a reviewable development plan."
+    },
+    {
+      "source": 2,
+      "description": "Choose challenging assignments and supportive relationships that match the skill you want to develop."
+    }
+  ],
+  "Communication Skills.md": [
+    {
+      "source": 0,
+      "description": "Use a check-back to confirm that the listener understood the intended message."
+    }
+  ],
+  "Delegation Skills.md": [
+    {
+      "source": 0,
+      "description": "Clarify the authority, resources and support someone needs to take responsibility for delegated work."
+    }
+  ],
+  "Interview Preparation.md": [
+    {
+      "source": 0,
+      "description": "Match your experience to the role and rehearse answers that make your own actions clear."
+    },
+    {
+      "source": 1,
+      "description": "Prepare examples, research and logistics with a practical guide to interview preparation."
+    }
+  ],
+  "Interview Preparation Hub.md": [
+    {
+      "source": 0,
+      "description": "Build a preparation routine around the job description, practice answers and feedback."
+    },
+    {
+      "source": 1,
+      "description": "Understand common interview stages and the mix of behavioral, technical and case questions you may encounter."
+    }
+  ],
+  "Interview Prep Checklist.md": [
+    {
+      "source": 0,
+      "description": "Check your examples, employer research, practice and logistics before the interview."
+    }
+  ],
+  "Job Search Strategy.md": [
+    {
+      "source": 0,
+      "description": "Explore practical routes into a job search, including informational interviews, networking and job listings."
+    }
+  ],
+  "Leadership Skills.md": [
+    {
+      "source": 0,
+      "description": "Diagnose whether a group needs clearer direction, better coordination or stronger shared commitment."
+    }
+  ],
+  "Leadership Development.md": [
+    {
+      "source": 0,
+      "description": "Balance feedback, challenging experience and support when planning your next development step."
+    }
+  ],
+  "Leadership-Communication-Synthesis.md": [
+    {
+      "source": 0,
+      "description": "Structure a concise update around the situation, background, assessment and a specific request."
+    }
+  ],
+  "Networking.md": [
+    {
+      "source": 0,
+      "description": "Read the research on how connections between social circles relate to job mobility, including where the effects vary."
+    }
+  ],
+  "Professional Development.md": [
+    {
+      "source": 0,
+      "description": "Connect development goals to learning activities and review whether those activities produced the intended progress."
+    }
+  ],
+  "Remote Work.md": [
+    {
+      "source": 0,
+      "description": "Check screen height, keyboard position and support against practical workstation guidance."
+    }
+  ],
+  "Remote Work Excellence Guide.md": [
+    {
+      "source": 0,
+      "description": "Set communication norms, document decisions and keep remote work coordinated without constant interruptions."
+    }
+  ],
+  "Resume Building.md": [
+    {
+      "source": 0,
+      "description": "Write accomplishment statements that show your action and a relevant, supportable result."
+    }
+  ],
+  "Skills Development.md": [
+    {
+      "source": 0,
+      "description": "Use retrieval, feedback and later practice to check understanding and make learning more durable."
+    }
+  ],
+  "Skills Matrix.md": [
+    {
+      "source": 0,
+      "description": "Review how autonomy, complexity and demonstrated responsibility can inform a skills assessment."
+    }
+  ],
+  "Types of Interviews.md": [
+    {
+      "source": 0,
+      "description": "Understand how interview formats and stages vary, then prepare for the questions each may include."
+    }
+  ],
+  "Behavioral Interviews.md": [
+    {
+      "source": 0,
+      "description": "See how structured interviews assess job-related competencies using consistent questions and rating criteria."
+    },
+    {
+      "source": 1,
+      "description": "Prepare clear examples that distinguish the situation, your responsibility, your actions and the outcome."
+    }
+  ],
+  "Frameworks/5 Whys.md": [
+    {
+      "source": 0,
+      "description": "Trace several plausible causes and learn why the investigation matters more than asking exactly five questions."
+    }
+  ],
+  "Frameworks/AARM.md": [
+    {
+      "source": 0,
+      "description": "Compare lifecycle metrics and choose measures that fit the stage and behavior you want to understand."
+    }
+  ],
+  "Frameworks/Atomic Habits.md": [
+    {
+      "source": 0,
+      "description": "Connect each part of the habit cycle with a practical way to make a new behavior easier to repeat."
+    }
+  ],
+  "Frameworks/CIRCLES.md": [
+    {
+      "source": 0,
+      "description": "Work through the method from clarifying the problem to evaluating options and explaining a recommendation."
+    }
+  ],
+  "Frameworks/Eisenhower.md": [
+    {
+      "source": 0,
+      "description": "Use importance and urgency to decide what to do, schedule, delegate or remove."
+    }
+  ],
+  "Frameworks/GAME.md": [
+    {
+      "source": 0,
+      "description": "Learn how randomization, an agreed evaluation criterion and supporting metrics make experiments interpretable."
+    }
+  ],
+  "Frameworks/GROW.md": [
+    {
+      "source": 0,
+      "description": "Use goals, current reality, options and commitments to guide a coaching conversation."
+    }
+  ],
+  "Frameworks/GTD.md": [
+    {
+      "source": 0,
+      "description": "Clarify incoming items into next actions, projects, reference material or things to set aside."
+    }
+  ],
+  "Frameworks/HEART.md": [
+    {
+      "source": 0,
+      "description": "Translate a user experience goal into observable signals and clearly defined metrics."
+    }
+  ],
+  "Frameworks/Hook Model.md": [
+    {
+      "source": 0,
+      "description": "Examine how triggers, actions, rewards and investment connect across repeated product use."
+    }
+  ],
+  "Frameworks/ICE.md": [
+    {
+      "source": 0,
+      "description": "Estimate impact, confidence and ease to shortlist experiments while keeping the assumptions visible."
+    }
+  ],
+  "Frameworks/JTBD.md": [
+    {
+      "source": 0,
+      "description": "Look beyond product features to the progress someone seeks in a particular situation."
+    }
+  ],
+  "Frameworks/Kano.md": [
+    {
+      "source": 0,
+      "description": "Compare expected, performance and excitement features, and ground prioritization in user research."
+    }
+  ],
+  "Frameworks/MECE.md": [
+    {
+      "source": 0,
+      "description": "Read Barbara Minto’s explanation of groups that avoid overlap while covering the whole question."
+    }
+  ],
+  "Frameworks/PESTLE.md": [
+    {
+      "source": 0,
+      "description": "Gather and assess evidence about external forces that could change an organization’s choices."
+    }
+  ],
+  "Frameworks/SCQA.md": [
+    {
+      "source": 0,
+      "description": "Identify the reader’s question and organize the answer around one clear recommendation."
+    }
+  ],
+  "Frameworks/STAR.md": [
+    {
+      "source": 0,
+      "description": "Build an interview answer around your actions and outcome, including what you learned."
+    }
+  ],
+  "Frameworks/SWOT.md": [
+    {
+      "source": 0,
+      "description": "Separate internal strengths and weaknesses from external opportunities and threats around a specific objective."
+    }
+  ],
+  "Business Acumen.md": [
+    {
+      "source": 0,
+      "description": "Learn what each financial statement reveals and how the balance sheet equation connects its parts."
+    }
+  ],
+  "Product Management.md": [
+    {
+      "source": 0,
+      "description": "Check product ideas for value, usability, feasibility and business viability before committing to delivery."
+    }
+  ],
+  "Content Strategy.md": [
+    {
+      "source": 0,
+      "description": "Start with a reader’s need, choose an appropriate format and keep the content useful over time."
+    }
+  ],
+  "Change Management.md": [
+    {
+      "source": 0,
+      "description": "Identify which part of an individual’s change process needs support before choosing an intervention."
+    }
+  ],
+  "System Design.md": [
+    {
+      "source": 0,
+      "description": "Follow a circuit breaker’s closed, open and trial states to understand how it contains repeated failures."
+    }
+  ],
+  "Choose UI Component Ownership.md": [
+    {
+      "source": 0,
+      "description": "Assess when a component is useful, usable and versatile enough to become shared infrastructure."
+    }
+  ],
+  "Audit Retrieval Before Trusting an Answer.md": [
+    {
+      "source": 0,
+      "description": "Distinguish precision from recall so you can assess both the relevance and coverage of retrieved material."
+    }
+  ],
+  "Active Learning.md": [
+    {
+      "source": 0,
+      "description": "See how thinking alone, explaining to a partner and sharing an answer reveal different gaps in understanding."
+    }
+  ],
+  "Atomic Notes.md": [
+    {
+      "source": 0,
+      "description": "Choose a note’s scope so it holds one complete idea without becoming an isolated fragment."
+    }
+  ],
+  "Behavior Change.md": [
+    {
+      "source": 0,
+      "description": "Diagnose whether capability, opportunity or motivation is limiting a behavior before selecting a tactic."
+    }
+  ],
+  "Deliberate Practice.md": [
+    {
+      "source": 0,
+      "description": "Read the researchers’ definition of practice built around individual goals, informative feedback and revised attempts."
+    }
+  ],
+  "Digital Garden.md": [
+    {
+      "source": 0,
+      "description": "Explore how contextual links, visible uncertainty and continuing revision shape a digital garden."
+    }
+  ],
+  "Digital Gardening.md": [
+    {
+      "source": 0,
+      "description": "Use maturity labels and revision dates to show readers how an idea is developing."
+    }
+  ],
+  "Fleeting Notes.md": [
+    {
+      "source": 0,
+      "description": "Create a capture inbox with a review practice that develops useful ideas and lets unhelpful scraps go."
+    }
+  ],
+  "Flow.md": [
+    {
+      "source": 0,
+      "description": "Distinguish the conditions that support flow from the experience of absorbed attention itself."
+    }
+  ],
+  "How to Use MOCs.md": [
+    {
+      "source": 0,
+      "description": "Learn how maps of content gather and connect notes while allowing several routes to the same idea."
+    }
+  ],
+  "Knowledge Graph Linking Strategy.md": [
+    {
+      "source": 0,
+      "description": "Use precise linking phrases to express what connects two ideas and which cross-links are useful."
+    }
+  ],
+  "Knowledge Graph Visual Maps.md": [
+    {
+      "source": 0,
+      "description": "Choose between an overview and a focused concept map, then revise the relationships to answer a clear question."
+    }
+  ],
+  "Knowledge Management Systems.md": [
+    {
+      "source": 0,
+      "description": "Use maps of content as flexible entry points into a growing collection of notes."
+    },
+    {
+      "source": 1,
+      "description": "Keep notes easy to scan while preserving the source and context needed to understand them later."
+    }
+  ],
+  "Knowledge Organization.md": [
+    {
+      "source": 0,
+      "description": "Separate a concept’s names from broader, narrower and associated concepts."
+    }
+  ],
+  "Living documents.md": [
+    {
+      "source": 0,
+      "description": "Make a note’s maturity, uncertainty and revision history visible to its readers."
+    }
+  ],
+  "MOC Best Practices.md": [
+    {
+      "source": 0,
+      "description": "Treat a map of content as an evolving guide that gathers, develops and connects ideas."
+    },
+    {
+      "source": 1,
+      "description": "Use a focus question to set the map’s scope and make each linking phrase express a meaningful relationship."
+    }
+  ],
+  "Motivation Techniques.md": [
+    {
+      "source": 0,
+      "description": "Support autonomy, competence and connection when choosing how to sustain learning and engagement."
+    }
+  ],
+  "Note Linking.md": [
+    {
+      "source": 0,
+      "description": "Write links that express a specific relationship between ideas."
+    },
+    {
+      "source": 1,
+      "description": "Understand how backlinks expose the notes that reference the one you are reading."
+    }
+  ],
+  "Progressive Summarization.md": [
+    {
+      "source": 0,
+      "description": "Make notes easier to rediscover by condensing them while keeping earlier context available."
+    },
+    {
+      "source": 1,
+      "description": "Decide when another layer of summarization is useful and when a note should be left alone."
+    }
+  ],
+  "Spaced Repetition.md": [
+    {
+      "source": 0,
+      "description": "Read an overview of the evidence for spacing and retrieval practice and why learners may underuse them."
+    },
+    {
+      "source": 1,
+      "description": "Apply the answer ratings consistently so reviews reflect what you actually recalled."
+    }
+  ],
+  "Zettelkasten Method.md": [
+    {
+      "source": 0,
+      "description": "Examine how stable addresses, an index and cross-references worked together in Luhmann’s card system."
+    }
+  ],
+  "Productivity Systems Hub.md": [
+    {
+      "source": 0,
+      "description": "Separate commitments from reference material and keep next actions visible through regular review."
+    },
+    {
+      "source": 1,
+      "description": "Organize reusable knowledge around concepts that can connect across books and projects."
+    }
+  ],
+  "Book Learning Synthesis.md": [
+    {
+      "source": 0,
+      "description": "Compare sources around shared themes, including agreement, disagreement and differences in method."
+    },
+    {
+      "source": 1,
+      "description": "Let ideas accumulate around a concept instead of remaining scattered across separate book notes."
+    }
+  ],
+  "Learning Plan.md": [
+    {
+      "source": 0,
+      "description": "Connect planning, checks during practice and evaluation to a learning goal you can demonstrate."
+    }
+  ],
+  "Learning Atlas.md": [
+    {
+      "source": 0,
+      "description": "Build flexible navigation maps that help you return to a topic and follow related ideas."
+    }
+  ],
+  "Anki/Anki.md": [
+    {
+      "source": 0,
+      "description": "Distinguish incorrect recall from slow but correct recall when choosing a review rating."
+    }
+  ],
+  "SF Terraced Garden Transformation Guide.md": [
+    {
+      "source": 1,
+      "description": "Check western sword fern’s shade and moisture needs before choosing a place for it."
+    }
+  ],
+  "Gardening Tips.md": [
+    {
+      "source": 1,
+      "description": "Choose mulch for the planting area and learn how it affects moisture, weeds and soil health."
+    }
+  ],
+  "Raised Beds.md": [
+    {
+      "source": 1,
+      "description": "Plan bed dimensions and access while accounting for soil preparation and faster drying."
+    }
+  ],
+  "Garden Planning.md": [
+    {
+      "source": 1,
+      "description": "Lay out raised beds around reach, access and the growing conditions plants will need."
+    }
+  ],
+  "Plants/Monsterra.md": [
+    {
+      "source": 1,
+      "description": "Identify a viable propagation cutting and understand why a node is needed for new growth."
+    }
+  ],
+  "Tomatoes self pollinate.md": [
+    {
+      "source": 0,
+      "description": "Understand how flower structure, movement and growing conditions affect tomato pollination."
+    }
+  ],
+  "Gardening Tasks.md": [
+    {
+      "source": 0,
+      "description": "Plan transplanting, supports and watering around the needs of home-grown tomatoes."
+    }
+  ],
+  "Plants/Indoor Soil Mix.md": [
+    {
+      "source": 0,
+      "description": "Balance water retention and aeration when choosing ingredients for a potting mix."
+    }
+  ],
+  "Food Preservation.md": [
+    {
+      "source": 0,
+      "description": "Choose a safe canning method using food acidity, tested recipes and elevation adjustments."
+    }
+  ],
+  "Cooking Methods.md": [
+    {
+      "source": 0,
+      "description": "Distinguish dry heat, moist heat and methods that combine both."
+    },
+    {
+      "source": 1,
+      "description": "Review how water-bath cooking transfers heat and why time and temperature matter for safety."
+    }
+  ],
+  "Health/Sleep.md": [
+    {
+      "source": 0,
+      "description": "Understand the roles of non-REM and REM sleep and how their balance changes through the night."
+    }
+  ],
+  "Health/Nutrition.md": [
+    {
+      "source": 0,
+      "description": "Use the DASH eating pattern to compare everyday food choices and build a varied diet."
+    }
+  ],
+  "Health/Exercise.md": [
+    {
+      "source": 0,
+      "description": "See what counts as aerobic and strengthening activity and how the weekly recommendations fit together."
+    }
+  ],
+  "Health/Stress.md": [
+    {
+      "source": 0,
+      "description": "Explore practical coping strategies and recognize when ongoing stress calls for more support."
+    }
+  ],
+  "Health/Mobility.md": [
+    {
+      "source": 0,
+      "description": "Compare aerobic, strength, balance and flexibility work when planning a varied exercise routine."
+    }
+  ],
+  "Health/Progressive Overload.md": [
+    {
+      "source": 0,
+      "description": "Review resistance-training guidance on adjusting effort and volume to goals, safety and consistency."
+    }
+  ],
+  "Health/FITT.md": [
+    {
+      "source": 0,
+      "description": "Use frequency, intensity, time and type to describe and adjust a resistance-training plan."
+    }
+  ],
+  "Health/RPE.md": [
+    {
+      "source": 0,
+      "description": "Compare perceived exertion with the talk test when judging moderate and vigorous activity."
+    }
+  ],
+  "Health/Circadian Rhythm.md": [
+    {
+      "source": 0,
+      "description": "Understand how time awake and the light-dark cycle work together to influence sleep."
+    }
+  ],
+  "Health/Bedtime Routine.md": [
+    {
+      "source": 0,
+      "description": "Choose practical changes to timing, evening light and the bedroom that support regular sleep."
+    }
+  ],
+  "Health/Cue-Routine-Reward.md": [
+    {
+      "source": 0,
+      "description": "Use Duhigg’s reader’s guide to test alternative routines, identify the reward and plan a response to the cue."
+    }
+  ],
+  "Health/Environmental Design.md": [
+    {
+      "source": 0,
+      "description": "Compare source control, ventilation and filtration when improving indoor air quality."
+    }
+  ],
+  "Health/Habit Tracking.md": [
+    {
+      "source": 0,
+      "description": "Use a record of actions and feelings to spot obstacles and restart after setbacks."
+    }
+  ],
+  "Health/SMART Goals.md": [
+    {
+      "source": 0,
+      "description": "Make a goal specific and reviewable while keeping its timeline realistic for available resources."
+    }
+  ],
+  "Health/Aging Well.md": [
+    {
+      "source": 0,
+      "description": "Consider movement, nutrition, mental activity, social connection and health care together."
+    },
+    {
+      "source": 1,
+      "description": "Support healthy aging with a consistent sleep schedule and a suitable sleep environment."
+    }
+  ]
+}

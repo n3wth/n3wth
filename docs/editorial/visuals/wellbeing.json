@@ -1,0 +1,679 @@
+[
+  {
+    "file": "SF Terraced Garden Transformation Guide.md",
+    "asset": "/figures/wellbeing/sf-terraced-garden.jpg",
+    "kind": "licensed-photograph",
+    "caption": "Western sword fern (<i>Polystichum munitum</i>) shows the arching frond habit proposed for the lower terrace. Match the site to its preference for shade and moist, well-drained soil; see <a href=\"https://plants.ces.ncsu.edu/plants/polystichum-munitum/\">NC State Extension, Polystichum munitum</a>. Photograph by <a href=\"https://commons.wikimedia.org/wiki/File:Western_sword_fern_(Polystichum_munitum)_-_Flickr_-_brewbooks.jpg\">brewbooks, Western sword fern</a>, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC BY-SA 2.0</a>; resized. This is a reference specimen in Washington, not the project garden.",
+    "sources": [
+      {
+        "url": "https://commons.wikimedia.org/wiki/File:Western_sword_fern_(Polystichum_munitum)_-_Flickr_-_brewbooks.jpg",
+        "title": "Western sword fern (Polystichum munitum) - Flickr - brewbooks.jpg",
+        "publisher": "Wikimedia Commons",
+        "evidence": "Original file-page Summary and Licensing sections verify creator brewbooks and CC-BY-SA-2.0. Resized proportionally from 4128 × 3096; no crop.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://plants.ces.ncsu.edu/plants/polystichum-munitum/",
+        "title": "Polystichum munitum",
+        "publisher": "NC State Extension",
+        "evidence": "Description: prefers partial to full shade and moist, well-drained soil; fronds can burn in full sun.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "CC-BY-SA-2.0",
+      "attribution": "brewbooks",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "changes": "Resized proportionally from 4128 × 3096; no crop."
+    },
+    "rationale": "Makes the lower-terrace sword fern choice identifiable and ties placement to species-specific site needs.",
+    "width": 1600,
+    "height": 1200,
+    "alt": "Western sword fern growing in a wooded setting, with a central crown and long arching fronds divided into narrow leaflets."
+  },
+  {
+    "file": "Gardening Tips.md",
+    "asset": "/figures/wellbeing/gardening-tips.jpg",
+    "kind": "licensed-photograph",
+    "caption": "Wood chips form a surface mulch rather than an ingredient to dig into every bed. <a href=\"https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/mulching-for-soil-and-garden-health\">University of Minnesota Extension, Mulching for soil and garden health</a>, explains moisture retention and weed suppression and recommends leaving space around stems. Photograph by <a href=\"https://commons.wikimedia.org/wiki/File:Soil_improvement_and_protection_-_wood_chip_mulch_at_Wisley.JPG\">Rowan Adams, Soil improvement and protection — wood chip mulch at Wisley</a>, <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">CC BY-SA 4.0</a>; resized.",
+    "sources": [
+      {
+        "url": "https://commons.wikimedia.org/wiki/File:Soil_improvement_and_protection_-_wood_chip_mulch_at_Wisley.JPG",
+        "title": "Soil improvement and protection - wood chip mulch at Wisley.JPG",
+        "publisher": "Wikimedia Commons",
+        "evidence": "Original file-page Summary and Licensing sections verify creator Rowan Adams and CC-BY-SA-4.0. Resized proportionally from 2848 × 2136; no crop.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/mulching-for-soil-and-garden-health",
+        "title": "Mulching for soil and garden health",
+        "publisher": "University of Minnesota Extension",
+        "evidence": "Benefits and mulch selection: mulch reduces soil-surface evaporation and suppresses weeds; wood chips suit perennial beds; keep material clear of stems.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "CC-BY-SA-4.0",
+      "attribution": "Rowan Adams",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "Resized proportionally from 2848 × 2136; no crop."
+    },
+    "rationale": "Shows what the soil-health section means by surface mulch and adds practical placement guidance.",
+    "width": 1600,
+    "height": 1200,
+    "alt": "Close view of wood-chip mulch covering soil at Wisley, with irregular chips and small twigs forming a protective surface layer."
+  },
+  {
+    "file": "Raised Beds.md",
+    "asset": "/figures/wellbeing/raised-beds.jpg",
+    "kind": "licensed-photograph",
+    "caption": "Access is a design choice: this raised vegetable bed at Heathrow Special Needs Farm was built to improve access from wheelchairs. The photograph illustrates bed edges and adjacent working space, not a certified accessible layout. Choose dimensions for the actual gardener, as discussed in <a href=\"https://extension.umn.edu/gardening-minnesota/raised-bed-gardens\">University of Minnesota Extension, Raised bed gardens</a>. Photograph by <a href=\"https://commons.wikimedia.org/wiki/File:Raised_vegetable_beds_for_disabled_access_-_geograph.org.uk_-_1411061.jpg\">David Hawgood, Raised vegetable beds for disabled access</a>, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC BY-SA 2.0</a>; unaltered.",
+    "sources": [
+      {
+        "url": "https://commons.wikimedia.org/wiki/File:Raised_vegetable_beds_for_disabled_access_-_geograph.org.uk_-_1411061.jpg",
+        "title": "Raised vegetable beds for disabled access - geograph.org.uk - 1411061.jpg",
+        "publisher": "Wikimedia Commons",
+        "evidence": "Original file-page Summary and Licensing sections verify creator David Hawgood and CC-BY-SA-2.0. Original 640 × 480 file, unaltered.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://extension.umn.edu/gardening-minnesota/raised-bed-gardens",
+        "title": "Raised bed gardens",
+        "publisher": "University of Minnesota Extension",
+        "evidence": "Accessibility and dimensions sections: bring the working surface to a comfortable height, preserve access; multiple smaller beds can help rotation. Raised beds dry faster than in-ground gardens.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "CC-BY-SA-2.0",
+      "attribution": "David Hawgood",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "changes": "Original 640 × 480 file, unaltered."
+    },
+    "rationale": "Grounds the accessibility discussion in a real bed while avoiding universal height or accessibility claims.",
+    "width": 640,
+    "height": 480,
+    "alt": "Two people tend a timber vegetable bed from its surrounding paths; the raised edge separates the growing soil from the working area."
+  },
+  {
+    "file": "Garden Planning.md",
+    "asset": "/figures/wellbeing/garden-planning.jpg",
+    "kind": "licensed-photograph",
+    "caption": "A planted bed makes access and mature plant spread visible: tomatoes rise behind lower leafy crops and flowers, with a path outside the timber edge. This is a layout reference, not evidence of companion-planting benefits. <a href=\"https://extension.umn.edu/gardening-minnesota/raised-bed-gardens\">University of Minnesota Extension, Raised bed gardens</a>, discusses access and bed sizing. Photograph by <a href=\"https://commons.wikimedia.org/wiki/File:Raised_bed.jpg\">Srl, Raised bed</a>, <a href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0</a>; resized.",
+    "sources": [
+      {
+        "url": "https://commons.wikimedia.org/wiki/File:Raised_bed.jpg",
+        "title": "Raised bed.jpg",
+        "publisher": "Wikimedia Commons",
+        "evidence": "Original file-page Summary and Licensing sections verify creator Srl and CC-BY-SA-3.0. Resized proportionally from 2560 × 1795; no crop.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://extension.umn.edu/gardening-minnesota/raised-bed-gardens",
+        "title": "Raised bed gardens",
+        "publisher": "University of Minnesota Extension",
+        "evidence": "Accessibility and dimensions sections: bring the working surface to a comfortable height, preserve access; multiple smaller beds can help rotation. Raised beds dry faster than in-ground gardens.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "CC-BY-SA-3.0",
+      "attribution": "Srl",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "changes": "Resized proportionally from 2560 × 1795; no crop."
+    },
+    "rationale": "Connects the layout bullets to mature plant height and service access using a real planted bed.",
+    "width": 1600,
+    "height": 1122,
+    "alt": "A timber raised bed containing taller tomatoes at the rear, leafy vegetables and flowers toward the front, and a clear path along the edge."
+  },
+  {
+    "file": "Plants/Monsterra.md",
+    "asset": "/figures/wellbeing/monstera.jpg",
+    "kind": "licensed-photograph",
+    "caption": "Mature <i>Monstera deliciosa</i> leaves can have both internal holes and deep edge cuts, visible here; these are useful identification features described by <a href=\"https://extension.umn.edu/gardening-minnesota/propagating-monstera-deliciosa\">University of Minnesota Extension, Monstera deliciosa</a>. Photograph by <a href=\"https://commons.wikimedia.org/wiki/File:Monstera_deliciosa_pm.jpg\">Peter A. Mansfeld, Monstera deliciosa</a>, <a href=\"https://creativecommons.org/licenses/by/3.0/\">CC BY 3.0</a>; unaltered.",
+    "sources": [
+      {
+        "url": "https://commons.wikimedia.org/wiki/File:Monstera_deliciosa_pm.jpg",
+        "title": "Monstera deliciosa pm.jpg",
+        "publisher": "Wikimedia Commons",
+        "evidence": "Original file-page Summary and Licensing sections verify creator Peter A. Mansfeld and CC-BY-3.0. Original 1200 × 800 file, unaltered.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://extension.umn.edu/gardening-minnesota/propagating-monstera-deliciosa",
+        "title": "Monstera deliciosa",
+        "publisher": "University of Minnesota Extension",
+        "evidence": "Plant characteristics: mature leaves have internal holes as well as deep cuts; propagation requires a node with an axillary bud.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "CC-BY-3.0",
+      "attribution": "Peter A. Mansfeld",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "changes": "Original 1200 × 800 file, unaltered."
+    },
+    "rationale": "Provides a botanical reference for the growth notes without treating leaf shape as a diagnostic of plant health.",
+    "width": 1200,
+    "height": 800,
+    "alt": "Monstera deliciosa foliage showing mature glossy leaves with internal oval holes and deep splits extending inward from their margins."
+  },
+  {
+    "file": "Tomatoes self pollinate.md",
+    "asset": "/figures/wellbeing/tomato-pollination.svg",
+    "kind": "annotated-botanical-schematic",
+    "caption": "A second plant is unnecessary, but pollen still has to move within the flower. This simplified cutaway separates pollination from the later fertilization step; it does not show cultivar-specific anatomy. Original conceptual diagram based on <a href=\"https://www.extension.umd.edu/sites/extension.umd.edu/files/2021-03/Tomato%20pollination%20and.pdf\">Gerald Brust, University of Maryland Extension, Tomato pollination and how to increase it in high tunnels</a>.",
+    "sources": [
+      {
+        "url": "https://www.extension.umd.edu/sites/extension.umd.edu/files/2021-03/Tomato%20pollination%20and.pdf",
+        "title": "Tomato pollination and how to increase it in high tunnels",
+        "publisher": "Gerald Brust, University of Maryland Extension",
+        "evidence": "Flower anatomy slides: anthers surround the female part; a breeze or vibration dislodges pollen onto the stigma; pollen tubes deliver sperm to ovules.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Illustrates the article's central distinction between self-fertility and successful pollen transfer.",
+    "width": 960,
+    "height": 650,
+    "alt": "Simplified section of a tomato flower: anthers surround the stigma above the ovary. Vibration moves pollen to the stigma; fertilization then occurs through pollen-tube growth."
+  },
+  {
+    "file": "Gardening Tasks.md",
+    "asset": "/figures/wellbeing/gardening-tasks.svg",
+    "kind": "dependency-diagram",
+    "caption": "Treat planter setup as a dependency map: prepare seedlings and infrastructure before planting, then inspect the bed and adjust care. The sequence is illustrative, not a calendar or a fixed watering prescription. Original conceptual diagram based on <a href=\"https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-minnesota/growing-tomatoes\">University of Minnesota Extension, Growing tomatoes in home gardens</a>.",
+    "sources": [
+      {
+        "url": "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-minnesota/growing-tomatoes",
+        "title": "Growing tomatoes in home gardens",
+        "publisher": "University of Minnesota Extension",
+        "evidence": "Planting section: gradually expose seedlings to outdoor conditions; install supports at planting. Watering: check soil wetting with a trowel and maintain consistent moisture.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Turns the setup checklist into an actionable order while avoiding a universal transplant date or irrigation schedule.",
+    "width": 960,
+    "height": 765,
+    "alt": "Two preparations run in parallel: acclimating seedlings and preparing supports and irrigation. They converge at transplanting, followed by observation and watering adjustments."
+  },
+  {
+    "file": "Plants/Indoor Soil Mix.md",
+    "asset": "/figures/wellbeing/indoor-soil-mix.svg",
+    "kind": "annotated-section",
+    "caption": "A recipe is a starting point: the finished medium must balance moisture, aeration, nutrients and support. This conceptual root-zone diagram is not evidence for the specific 3:1:1 recipe above. Original conceptual diagram based on <a href=\"https://extension.psu.edu/potting-media-and-plant-propagation\">Penn State Extension, Potting Media and Plant Propagation</a>.",
+    "sources": [
+      {
+        "url": "https://extension.psu.edu/potting-media-and-plant-propagation",
+        "title": "Potting Media and Plant Propagation",
+        "publisher": "Penn State Extension",
+        "evidence": "Introduction: media must balance water-holding capacity, nutrients and aeration; peat, perlite or vermiculite and compost are common components. Recipe performance depends on mix and management.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Explains why drainage alone is insufficient and avoids falsely validating a universal potting ratio.",
+    "width": 960,
+    "height": 680,
+    "alt": "A conceptual pot section shows roots among particles and pore spaces, with callouts for air, retained water, nutrient supply and root support. Particle sizes and water distribution are illustrative."
+  },
+  {
+    "file": "Food Preservation.md",
+    "asset": "/figures/wellbeing/food-preservation.svg",
+    "kind": "decision-tree",
+    "caption": "Canning safety depends on the tested processing method, not just an airtight seal. This conceptual decision guide is a route to the full recipe, not a substitute for processing times, pressure settings or elevation adjustments. Original conceptual diagram based on <a href=\"https://nchfp.uga.edu/how/can/general-information/ensuring-safe-canned-foods\">National Center for Home Food Preservation, University of Georgia, Ensuring Safe Canned Foods</a>.",
+    "sources": [
+      {
+        "url": "https://nchfp.uga.edu/how/can/general-information/ensuring-safe-canned-foods",
+        "title": "Ensuring Safe Canned Foods",
+        "publisher": "National Center for Home Food Preservation, University of Georgia",
+        "evidence": "Food acidity and processing methods: low-acid foods have pH above 4.6 and require pressure canning; acid or correctly acidified foods can use boiling-water processing. Use research-based recipes and elevation adjustments.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Adds the critical method-selection distinction adjacent to the sparse canning section without inventing processing instructions.",
+    "width": 960,
+    "height": 810,
+    "alt": "Decision diagram starts with a tested recipe and branches to boiling-water or pressure canning according to the recipe's food and acidity. Low-acid foods require pressure canning; jar size, processing and elevation instructions remain essential."
+  },
+  {
+    "file": "Cooking Methods.md",
+    "asset": "/figures/wellbeing/cooking-methods.svg",
+    "kind": "comparison-matrix",
+    "caption": "The defining difference is the cooking medium and sequence. Water-bath sous vide belongs with moist-heat techniques here; it does not inherently combine dry and moist stages. Original conceptual diagram based on <a href=\"https://www.isbe.net/CTEDocuments/FCS-700057.pdf\">Illinois State Board of Education, Combination Cooking Methods</a>, and <a href=\"https://www.ndsu.edu/agriculture/sites/default/files/2026-03/2026%20CHAVES-02%20-%20NDSU%20Sous%20Vide%2003-18-2026.pdf\">Byron Chaves, To sous vide or not to sous vide (NDSU Extension webinar, March 18, 2026)</a>.",
+    "sources": [
+      {
+        "url": "https://www.isbe.net/CTEDocuments/FCS-700057.pdf",
+        "title": "Combination Cooking Methods",
+        "publisher": "Illinois State Board of Education",
+        "evidence": "Definitions: moist heat adds water, broth or wine; dry heat adds no cooking liquid; braising and stewing commonly combine searing and simmering.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://www.ndsu.edu/agriculture/sites/default/files/2026-03/2026%20CHAVES-02%20-%20NDSU%20Sous%20Vide%2003-18-2026.pdf",
+        "title": "To sous vide or not to sous vide: Safety of long-term, low temperature cooking for vegetables",
+        "publisher": "Byron Chaves, Rutgers University; North Dakota State University Extension webinar",
+        "evidence": "Sous Vide — French for Under Vacuum and Step 1: food is sealed in heat-stable pouches and cooked in a circulating water bath; water transfers heat through the bag. Supports placing water-bath sous vide with moist-heat techniques, not inherently combined dry-and-moist cooking.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Makes the technique taxonomy usable when choosing a process and aligns the existing sous-vide example with its water-bath heat-transfer method.",
+    "width": 960,
+    "height": 660,
+    "alt": "Comparison matrix distinguishes dry heat using air, radiation or fat; moist heat using water, other liquid or steam, including water-bath sous vide; and combination cooking with dry and moist stages.",
+    "researchNotes": "Moved sous vide from Combination to Moist Heat in the existing technique list; added the water-bath example to the diagram. Read the university webinar slides through Exa and verified direct HTTP 200 application/pdf access."
+  },
+  {
+    "file": "Health/Sleep.md",
+    "asset": "/figures/wellbeing/sleep-stages.svg",
+    "kind": "taxonomy-diagram",
+    "caption": "N3 is the stage called deep sleep; N2 is a separate non-REM stage. More deep sleep usually occurs early in the night and more REM later. This conceptual stage map does not estimate personal stage durations. Original conceptual diagram based on <a href=\"https://www.nhlbi.nih.gov/health/sleep/stages-of-sleep\">National Heart, Lung, and Blood Institute, How Sleep Works: Sleep Phases and Stages</a>.",
+    "sources": [
+      {
+        "url": "https://www.nhlbi.nih.gov/health/sleep/stages-of-sleep",
+        "title": "How Sleep Works: Sleep Phases and Stages",
+        "publisher": "National Heart, Lung, and Blood Institute",
+        "evidence": "Non-REM sleep has three stages; N1 is transition, N2 is asleep, N3 is deep sleep. More N3 usually occurs early in the night and more REM later.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Clarifies stage terminology adjacent to the existing list without depicting a fabricated sleep recording.",
+    "width": 960,
+    "height": 670,
+    "alt": "Taxonomy of N1 transition, N2 sleep, N3 deep or slow-wave sleep and REM. A separate note explains that more N3 usually occurs earlier and more REM later; box sizes do not represent time.",
+    "researchNotes": "Corrected the existing N2 label from Deep Sleep to Stage 2 Sleep to agree with NHLBI's classification of N3 as deep sleep. Other prose unchanged."
+  },
+  {
+    "file": "Health/Nutrition.md",
+    "asset": "/figures/wellbeing/nutrition.svg",
+    "kind": "meal-planning-matrix",
+    "caption": "Use food variety to guide meal planning. These equal-sized panels are categories, not serving proportions or a validation of the personal protein targets above. Original conceptual diagram based on <a href=\"https://nhlbi.nih.gov/health/dash-eating-plan\">National Heart, Lung, and Blood Institute, DASH Eating Plan</a>.",
+    "sources": [
+      {
+        "url": "https://nhlbi.nih.gov/health/dash-eating-plan",
+        "title": "DASH Eating Plan",
+        "publisher": "National Heart, Lung, and Blood Institute",
+        "evidence": "What to eat: vegetables, fruits, whole grains, low-fat dairy, fish, poultry, beans, nuts and vegetable oils; limit saturated fat, sweets and sugary beverages.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Supports the whole-food philosophy through a public-health eating pattern, without adding medical or sports-nutrition targets.",
+    "width": 960,
+    "height": 670,
+    "alt": "Four food-planning groups list vegetables, fruit and whole grains; beans, fish, poultry, nuts and seeds; low-fat dairy; vegetable oils and fewer sugary drinks. Equal panels do not indicate portion sizes."
+  },
+  {
+    "file": "Health/Exercise.md",
+    "asset": "/figures/wellbeing/exercise-weekly.svg",
+    "kind": "recommendation-chart",
+    "caption": "CDC's adult targets offer two aerobic routes plus muscle strengthening. Bars show guideline amounts in minutes per week, not measured health outcomes; an equivalent mix also counts. Individual starting points and abilities vary. Original chart based on <a href=\"https://www.cdc.gov/physical-activity-basics/adding-adults/what-counts.html\">Centers for Disease Control and Prevention, What Counts as Physical Activity for Adults</a>.",
+    "sources": [
+      {
+        "url": "https://www.cdc.gov/physical-activity-basics/adding-adults/what-counts.html",
+        "title": "What Counts as Physical Activity for Adults",
+        "publisher": "Centers for Disease Control and Prevention",
+        "evidence": "Adults should aim for 150 minutes moderate or 75 minutes vigorous aerobic activity weekly, or an equivalent combination, plus muscle strengthening on at least two days.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Provides a sourced reference beside the personal weekly schedule while keeping recommendations distinct from that personal plan.",
+    "width": 960,
+    "height": 765,
+    "alt": "Bars show CDC adult aerobic recommendations in minutes per week: 150 moderate or 75 vigorous. A separate panel adds muscle strengthening on at least two days. Aerobic amounts are alternatives or can be combined.",
+    "data": {
+      "unit": "minutes per week",
+      "series": [
+        {
+          "name": "Moderate aerobic activity",
+          "value": 150
+        },
+        {
+          "name": "Vigorous aerobic activity",
+          "value": 75
+        }
+      ],
+      "additionalRecommendation": {
+        "activity": "Muscle strengthening",
+        "minimumDaysPerWeek": 2
+      },
+      "limitations": "Guideline targets, not participant data or measured benefits; no statistical uncertainty interval applies. Aerobic choices are alternatives or equivalent mixtures. Individual ability and health affect implementation."
+    }
+  },
+  {
+    "file": "Health/Stress.md",
+    "asset": "/figures/wellbeing/stress-response.svg",
+    "kind": "feedback-map",
+    "caption": "Stress signals can prompt a choice of coping strategy and a short review of what helped. This conceptual map is not a diagnosis; the source advises professional support when symptoms persist or coping is difficult. Original conceptual diagram based on <a href=\"https://www.nimh.nih.gov/health/publications/so-stressed-out-fact-sheet\">National Institute of Mental Health, I'm So Stressed Out! Fact Sheet</a>.",
+    "sources": [
+      {
+        "url": "https://www.nimh.nih.gov/health/publications/so-stressed-out-fact-sheet",
+        "title": "I'm So Stressed Out! Fact Sheet",
+        "publisher": "National Institute of Mental Health",
+        "evidence": "Coping section: journaling, relaxation, movement, sleep routine and social support can help. Recognize when you need more help: persistent or hard-to-manage symptoms warrant professional support.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Connects the author's stress signals, tools and journal without assigning clinical thresholds or claiming one breathing method treats anxiety.",
+    "width": 960,
+    "height": 785,
+    "alt": "A feedback map links noticing stress signals to trying relaxation, movement, sleep routines or social support, then journaling what helped. A separate branch directs persistent or disruptive symptoms toward professional support."
+  },
+  {
+    "file": "Health/Mobility.md",
+    "asset": "/figures/wellbeing/mobility.svg",
+    "kind": "relationship-map",
+    "caption": "Mobility work sits within a broader movement practice. MedlinePlus identifies aerobic activity, strength, balance and flexibility as complementary exercise types; this conceptual map does not imply that stretching alone prevents injury or treats pain. Original conceptual diagram based on <a href=\"https://medlineplus.gov/exerciseandphysicalfitness.html\">MedlinePlus, U.S. National Library of Medicine, Exercise and Physical Fitness</a>.",
+    "sources": [
+      {
+        "url": "https://medlineplus.gov/exerciseandphysicalfitness.html",
+        "title": "Exercise and Physical Fitness",
+        "publisher": "MedlinePlus, U.S. National Library of Medicine",
+        "evidence": "Different types of exercise: aerobic activity raises breathing and heart rate; resistance exercise builds strength; balance improves stability and coordination; flexibility helps joint movement. Most people benefit from a combination.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Places mobility in a broader functional context without amplifying the existing injury-prevention or pain claims.",
+    "width": 960,
+    "height": 655,
+    "alt": "Four branches connect flexibility, strength, balance and endurance to everyday movement. Flexibility stretches muscles, strength works against resistance, balance practices stability and endurance sustains activity.",
+    "researchNotes": "An initial NIA source was readable through Exa but returned HTTP 405 Human Verification on a direct transport check. Replaced with this directly accessible government source; replacement evidence was read through Exa."
+  },
+  {
+    "file": "Health/Progressive Overload.md",
+    "asset": "/figures/wellbeing/progressive-overload.svg",
+    "kind": "training-control-matrix",
+    "caption": "Progression need not mean increasing weight every session. This conceptual set of controls reflects ACSM's emphasis on goals, individualization and sustainable effort; it is not a rule to raise all variables together. Original conceptual diagram based on <a href=\"https://acsm.org/wp-content/uploads/2026/03/Pronouncement-ppt-deck_resistance-training-ps.pdf\">American College of Sports Medicine, Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance: An Overview of Reviews — position stand slides</a>.",
+    "sources": [
+      {
+        "url": "https://acsm.org/wp-content/uploads/2026/03/Pronouncement-ppt-deck_resistance-training-ps.pdf",
+        "title": "Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance: An Overview of Reviews — position stand slides",
+        "publisher": "American College of Sports Medicine",
+        "evidence": "Prescription uses frequency, intensity, time and type among its variables. Discussion: individualize programs by goals, enjoyment and safety; tailor load and volume, prioritize consistency, and progress effort over time.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Shows multiple progression routes without an invented upward gains curve, set schedule or guaranteed injury reduction.",
+    "width": 960,
+    "height": 760,
+    "alt": "Four training controls show load, volume, frequency and movement intent. A review panel asks the reader to choose sustainable changes and monitor effort, technique and recovery; it does not prescribe increasing every control."
+  },
+  {
+    "file": "Health/FITT.md",
+    "asset": "/figures/wellbeing/fitt.svg",
+    "kind": "framework-key",
+    "caption": "Use FITT to describe a workout before deciding what to adjust. This conceptual planning key defines the variables; the example schedule in the article remains an example rather than a universal prescription. Original conceptual diagram based on <a href=\"https://acsm.org/wp-content/uploads/2026/03/Pronouncement-ppt-deck_resistance-training-ps.pdf\">American College of Sports Medicine, Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance: An Overview of Reviews — position stand slides</a>.",
+    "sources": [
+      {
+        "url": "https://acsm.org/wp-content/uploads/2026/03/Pronouncement-ppt-deck_resistance-training-ps.pdf",
+        "title": "Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance: An Overview of Reviews — position stand slides",
+        "publisher": "American College of Sports Medicine",
+        "evidence": "Prescription uses frequency, intensity, time and type among its variables. Discussion: individualize programs by goals, enjoyment and safety; tailor load and volume, prioritize consistency, and progress effort over time.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Separates four frequently confused workout variables and avoids endorsing a single heart-rate formula.",
+    "width": 960,
+    "height": 730,
+    "alt": "Four aligned rows map Frequency to how often and sessions per week, Intensity to effort or resistance, Time to session duration, and Type to the chosen activity. The rows describe separate planning dimensions."
+  },
+  {
+    "file": "Health/RPE.md",
+    "asset": "/figures/wellbeing/rpe.svg",
+    "kind": "annotated-rating-scale",
+    "caption": "CDC's relative-effort guide uses 0–10, with moderate effort at 5–6 and vigorous effort at 7–8. The talk test adds a practical check. This conceptual scale is subjective and does not convert directly into heart rate or calorie expenditure. Original conceptual diagram based on <a href=\"https://www.cdc.gov/physical-activity-basics/adding-older-adults/what-counts.html\">Centers for Disease Control and Prevention, What Counts as Physical Activity for Older Adults</a>.",
+    "sources": [
+      {
+        "url": "https://www.cdc.gov/physical-activity-basics/adding-older-adults/what-counts.html",
+        "title": "What Counts as Physical Activity for Older Adults",
+        "publisher": "Centers for Disease Control and Prevention",
+        "evidence": "Measuring intensity: on a subjective 0–10 scale, moderate is 5 or 6 and vigorous is 7 or 8; moderate allows talking but not singing, vigorous only a few words before a breath.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Grounds the central portion of the article's effort scale in a public-health definition while avoiding unsupported exact physiological mappings.",
+    "width": 960,
+    "height": 680,
+    "alt": "A subjective 0-to-10 effort scale highlights 5–6 as moderate and 7–8 as vigorous. Moderate activity permits talking but not singing; vigorous activity allows only a few words before pausing for breath.",
+    "data": {
+      "unit": "subjective perceived effort, 0–10",
+      "series": [
+        {
+          "name": "Moderate",
+          "range": [
+            5,
+            6
+          ]
+        },
+        {
+          "name": "Vigorous",
+          "range": [
+            7,
+            8
+          ]
+        }
+      ],
+      "limitations": "Ordinal self-rating categories from CDC, not measured physiological values. This is not the Borg 6–20 scale, and endpoints are reference anchors rather than prescribed exercise targets."
+    }
+  },
+  {
+    "file": "Health/Circadian Rhythm.md",
+    "asset": "/figures/wellbeing/circadian-rhythm.svg",
+    "kind": "converging-systems-diagram",
+    "caption": "Circadian timing and accumulated sleep need interact. This conceptual diagram separates the clock from sleep pressure; it does not predict a person's hormone levels, bedtime or response to a particular light dose. Original conceptual diagram based on <a href=\"https://www.nhlbi.nih.gov/health/sleep/sleep-wake-cycle\">National Heart, Lung, and Blood Institute, How Sleep Works: Your Sleep/Wake Cycle</a>.",
+    "sources": [
+      {
+        "url": "https://www.nhlbi.nih.gov/health/sleep/sleep-wake-cycle",
+        "title": "How Sleep Works: Your Sleep/Wake Cycle",
+        "publisher": "National Heart, Lung, and Blood Institute",
+        "evidence": "Your body's need for sleep and Light-dark cycle: homeostatic sleep need increases with time awake; environmental light helps synchronize circadian clocks; bright evening light can delay melatonin release.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Explains why sleep timing is more than a daily schedule without drawing unsupported melatonin or alertness curves.",
+    "width": 960,
+    "height": 745,
+    "alt": "A looping circadian clock synchronized by light and darkness converges with a separate homeostatic sleep-need panel that builds while awake and lessens during sleep. Both contribute to sleep and wakefulness."
+  },
+  {
+    "file": "Health/Bedtime Routine.md",
+    "asset": "/figures/wellbeing/bedtime-routine.svg",
+    "kind": "cyclical-timeline",
+    "caption": "A bedtime routine sits inside the whole day. This conceptual sequence combines NHLBI's sleep-habit recommendations without prescribing exact clock times or promising to treat insomnia. Original conceptual diagram based on <a href=\"https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits\">National Heart, Lung, and Blood Institute, Healthy Sleep Habits</a>.",
+    "sources": [
+      {
+        "url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+        "title": "Healthy Sleep Habits",
+        "publisher": "National Heart, Lung, and Blood Institute",
+        "evidence": "Recommendations: keep consistent bed and wake times, use the hour before bed for quiet activity, avoid bright artificial light, and keep the bedroom quiet, cool and dark.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Makes the article's disconnected practices into a sequence while emphasizing consistency over rigid timing.",
+    "width": 960,
+    "height": 660,
+    "alt": "Illustrative timeline links daytime outdoor activity to an evening wind-down and a quiet, cool, dark sleep environment. A return loop emphasizes consistent bed and wake times, with no prescribed clock times."
+  },
+  {
+    "file": "Health/Cue-Routine-Reward.md",
+    "asset": "/figures/wellbeing/cue-routine-reward.svg",
+    "kind": "branching-habit-loop",
+    "caption": "The loop is a useful observation tool: identify a cue, try another response and notice what actually feels rewarding. This hypothetical example adapts Duhigg's cue–routine–reward framework and reward-testing approach; keeping a cue or reward does not guarantee a replacement habit will stick. Original conceptual diagram based on <a href=\"https://charlesduhigg.com/wp-content/uploads/2025/01/Duhigg-Readers-Guide-to-Changing-Habits.pdf\">Charles Duhigg, A Reader’s Guide to Using These Ideas, appendix to The Power of Habit (PDF)</a>.",
+    "sources": [
+      {
+        "url": "https://charlesduhigg.com/wp-content/uploads/2025/01/Duhigg-Readers-Guide-to-Changing-Habits.pdf",
+        "title": "A Reader’s Guide to Using These Ideas — appendix to The Power of Habit",
+        "publisher": "Charles Duhigg, official author website",
+        "evidence": "Step One defines the cue, routine and reward loop. Step Two tests alternative afternoon routines, including walking, eating an apple and talking to a friend, then records feelings and whether the urge remains to identify the actual reward. Step Four plans a replacement response to the cue and describes setbacks and repeated experiments. This supports the hypothetical routine branches and review loop, without promising success.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Shows a replaceable routine and a feedback step without presenting the popular habit loop as a complete scientific mechanism.",
+    "width": 960,
+    "height": 745,
+    "alt": "A hypothetical afternoon work break branches into a vending-machine visit or a walk with a friend or planned snack. Both lead to reviewing what felt rewarding, with a loop back to observing the cue.",
+    "researchNotes": "Parent's Node source checker reported HTTP 403 for both the NIH HTML article and its March 2018 PDF. Replaced that source with the framework author's original appendix on an independent host. On 2026-09-18, Node fetch with User-Agent n3wth-editorial-source-check/1.0 returned HTTP 200, application/pdf, 205142 bytes and a %PDF- signature at the cited URL without redirect. Then read the original appendix through Exa. Its cue–routine–reward framework, alternative-routine experiments and reward review support the existing original diagram; no asset change was required."
+  },
+  {
+    "file": "Health/Environmental Design.md",
+    "asset": "/figures/wellbeing/environmental-design.svg",
+    "kind": "annotated-room-plan",
+    "caption": "For the air-quality part of environmental design, EPA prioritizes source control, supported by ventilation and filtration. This conceptual room plan illustrates those strategies; it does not claim that indoor plants provide equivalent air cleaning. Original conceptual diagram based on <a href=\"https://www.epa.gov/indoor-air-quality-iaq/improving-indoor-air-quality\">U.S. Environmental Protection Agency, Improving Indoor Air Quality</a>.",
+    "sources": [
+      {
+        "url": "https://www.epa.gov/indoor-air-quality-iaq/improving-indoor-air-quality",
+        "title": "Improving Indoor Air Quality",
+        "publisher": "U.S. Environmental Protection Agency",
+        "evidence": "Three basic strategies: source control, ventilation and air cleaning/filtration; eliminating or reducing pollution sources is usually the most effective approach.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Adds an evidence-grounded environmental intervention hierarchy next to the article's air-quality bullets.",
+    "width": 960,
+    "height": 730,
+    "alt": "Conceptual room plan shows three indoor-air actions: remove or reduce pollution sources, ventilate appropriately, and supplement with air filtration. A crossed source symbol is distinct from a filter and an incoming-air opening."
+  },
+  {
+    "file": "Health/Habit Tracking.md",
+    "asset": "/figures/wellbeing/habit-tracking.svg",
+    "kind": "annotated-log-specimen",
+    "caption": "A useful log records the behavior and how it felt, then turns obstacles into a revised plan. These entries are invented examples, not personal observations or study data; NIDDK emphasizes learning from setbacks and returning to the routine. Original conceptual diagram based on <a href=\"https://www.niddk.nih.gov/health-information/diet-nutrition/changing-habits-better-health\">National Institute of Diabetes and Digestive and Kidney Diseases, Changing Your Habits for Better Health</a>.",
+    "sources": [
+      {
+        "url": "https://www.niddk.nih.gov/health-information/diet-nutrition/changing-habits-better-health",
+        "title": "Changing Your Habits for Better Health",
+        "publisher": "National Institute of Diabetes and Digestive and Kidney Diseases",
+        "evidence": "Track your progress: record what you did and how you felt; use records to identify strengths and setbacks. A setback does not mean failure; plan ahead and return to the routine.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Makes self-monitoring actionable without fabricating a success rate or implying a perfect streak is necessary.",
+    "width": 960,
+    "height": 790,
+    "alt": "An explicitly fictional habit log contains a completed lunch walk with a settled feeling and a rain-related missed walk with frustration. A review points to an indoor option and resuming the routine."
+  },
+  {
+    "file": "Health/SMART Goals.md",
+    "asset": "/figures/wellbeing/smart-goals.svg",
+    "kind": "annotated-goal-specimen",
+    "caption": "SMART makes a proposed action easier to review. The walking amounts are illustrative, not exercise recommendations. This applies CDC's planning framework to a hypothetical health goal; it does not imply that writing a goal guarantees an outcome. Original conceptual diagram based on <a href=\"https://www.cdc.gov/youth-advisory-councils/action-plans/smart-framework.html\">Centers for Disease Control and Prevention, SMART Framework</a>.",
+    "sources": [
+      {
+        "url": "https://www.cdc.gov/youth-advisory-councils/action-plans/smart-framework.html",
+        "title": "SMART Framework",
+        "publisher": "Centers for Disease Control and Prevention",
+        "evidence": "Framework defines Specific, Measurable, Achievable, Relevant and Time-bound; goals and timelines must fit available resources. Framework context is youth advisory action plans, adapted here to a hypothetical walking goal.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Shows how the five terms change the wording of an actual process goal rather than repeating definitions only.",
+    "width": 960,
+    "height": 770,
+    "alt": "A hypothetical walking goal is annotated against five SMART questions: specific action, measurable minutes and days, achievable ability and time, relevant health priority, and a two-week review date. Numbers are an example, not a prescription."
+  },
+  {
+    "file": "Health/Aging Well.md",
+    "asset": "/figures/wellbeing/aging-well.svg",
+    "kind": "wellbeing-network",
+    "caption": "Aging well spans physical health, relationships, care and meaningful activity. This conceptual network organizes MedlinePlus guidance alongside NHLBI's sleep-habit recommendations; it does not assign equal effects to the domains or promise that a routine will prevent decline. Original conceptual diagram based on <a href=\"https://medlineplus.gov/healthyaging.html\">MedlinePlus, U.S. National Library of Medicine, Healthy Aging</a>; <a href=\"https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits\">National Heart, Lung, and Blood Institute, Healthy Sleep Habits</a>.",
+    "sources": [
+      {
+        "url": "https://medlineplus.gov/healthyaging.html",
+        "title": "Healthy Aging",
+        "publisher": "MedlinePlus, U.S. National Library of Medicine",
+        "evidence": "Summary recommends healthy eating, regular activity, keeping the mind active, enjoyable social and leisure activities, and an active role in regular checkups and health care. These support healthy aging without guaranteeing prevention of decline.",
+        "accessed": "2026-09-18"
+      },
+      {
+        "url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+        "title": "Healthy Sleep Habits",
+        "publisher": "National Heart, Lung, and Blood Institute",
+        "evidence": "Recommendations: keep consistent bed and wake times, use the hour before bed for quiet activity, avoid bright artificial light, and keep the bedroom quiet, cool and dark.",
+        "accessed": "2026-09-18"
+      }
+    ],
+    "rights": {
+      "type": "original",
+      "attribution": "Original illustration for this article; not copied from source figures."
+    },
+    "rationale": "Connects the article's separate health domains to its central quality-of-life argument.",
+    "width": 960,
+    "height": 790,
+    "alt": "Four connected domains surround quality of life and independence: physical health through movement, food and sleep; social connection; regular care; and meaningful engagement and learning. The network shows complementary domains, not measured causal effects.",
+    "researchNotes": "An initial NIA source was readable through Exa but returned HTTP 405 Human Verification on a direct transport check. Replaced with this directly accessible government source; replacement evidence was read through Exa."
+  }
+]

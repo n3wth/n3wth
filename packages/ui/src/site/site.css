@@ -28,7 +28,15 @@ html[data-astryx-theme='n3wth'] {
 /* Paragraph copy stays regular even when it carries a heavier type utility.
    Keep this outside layers so utilities cannot override the shared rule.
    Descendant emphasis and controls retain their own weights. */
-[data-astryx-theme='n3wth'] p { font-weight: var(--font-weight-normal, 400); }
+[data-astryx-theme='n3wth'] p {
+  /* Soften primary paragraph ink without changing supporting/status colors.
+     The existing gray token matches primary ink in the light theme. */
+  --color-text-primary: var(--color-text-gray);
+  font-weight: var(--font-weight-normal, 400);
+}
+
+/* Reading lists use the same ink as adjacent primary paragraphs. */
+.n3wth-site-prose :is(ul, ol) { color: var(--color-text-gray); }
 
 /* Five semantic type roles. Apps own their content, not another type scale. */
 .n3wth-site-container {
@@ -293,7 +301,7 @@ html[data-astryx-theme='n3wth'] {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
-.n3wth-site-footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; }
+.n3wth-site-footer-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; }
 .n3wth-site-footer > .n3wth-site-container { color: inherit; }
 .n3wth-site-footer-brand { font: inherit; color: var(--color-text-secondary); }
 .n3wth-site-footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; }

@@ -20,11 +20,19 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Use a clear title and short description in a hero. Omit actions that repeat navigation or merely jump to the content immediately below. Keep useful product actions such as installation or a resume download.
 - Documentation articles use `PageHeader spacing="compact"` with parent-owned margins. Keep the title, description and useful start links together; avoid hero-sized gaps and cards for simple navigation.
 - Documentation brand paths link each segment to its own home. Keep page-copy and Markdown actions compact below the title. Use one search dialog for content results and explicitly requested, cited AI answers; keep results available when AI fails.
-- Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color. Keep identity and links on one row whenever they fit, wrapping only when the content needs it.
+- Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color.
+- Keep the footer identity and links on one row when their content fits; wrap naturally on narrow screens instead of stacking at a fixed breakpoint.
 - Keep heading order semantic: one primary page heading, section headings below it, then item headings. Visual size does not determine heading level.
 - Paragraph copy uses regular weight (400) across all six sites, including article prose and lead paragraphs. Preserve heading, emphasis and control weights.
+- Primary paragraph copy uses the existing softer gray ink in dark mode. Supporting/status text retains its semantic color; light-theme ink stays unchanged.
+- Reading outline labels, section counts and links use the same supporting type size and regular weight; active links may use medium weight.
+- Connected-note links use the same supporting size. Avoid decorative side-accent borders on callouts or article graphics.
 
 ## Interaction
+
+Article graphics explain the adjacent argument. Keep each figure with a descriptive caption, visible source links and useful alt text. Distinguish original conceptual diagrams from measured charts and reproduced images. Use a single supporting text style for captions, reserve the image dimensions, and let readers open detailed graphics at full size. Record reuse rights for third-party assets; a citation alone is not permission.
+
+Use selective Further reading previews after an article: publisher, linked title and a short explanation of its value. Keep them flat and within the reading column, using existing type and spacing. Do not turn every citation into a card or load remote thumbnails without verified reuse rights.
 
 - Pages appear immediately. No default entry fades, sliding page transitions, staggered text or reveal observers hiding content.
 - Establish canvas, theme and navigation colors before first paint. Server output and client theme state must agree; test both saved preferences and system preference where supported.

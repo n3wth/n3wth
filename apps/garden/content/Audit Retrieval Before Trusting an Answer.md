@@ -34,6 +34,11 @@ Suppose the inventory contains 100 expected records. For one question, a reviewe
 
 The denominator for recall is the relevant set for this question, not all 100 records. If the labels are incomplete or mistaken, the score cannot establish actual completeness. Neither retrieval measure tells you whether the final answer accurately represents the four relevant records.
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/audit-retrieval-before-trusting-an-answer.svg" aria-label="Open full-size graphic: One found set, two different denominators"><img src="/figures/frameworks/audit-retrieval-before-trusting-an-answer.svg" alt="Three adjacent regions show returned irrelevant records, relevant returned records and relevant missing records. The returned set includes the first two; the relevant set includes the last two. Precision asks about relevance among returned records; recall asks about retrieval among relevant records." width="960" height="870" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual set diagram, not a measured distribution. Precision considers the returned set; recall considers the relevant set. Both use the same found support, and neither measures whether an answer faithfully represents it. Original diagram based on <a href="https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-unranked-retrieval-sets-1.html">Manning, Raghavan and Schütze, Introduction to Information Retrieval, Evaluation of unranked retrieval sets</a>.</figcaption>
+</figure>
+
 ## Establish a baseline before changing the system
 
 The [BEIR benchmark](https://arxiv.org/abs/2104.08663) evaluates retrieval across varied tasks and domains. It reports a robust lexical baseline and strong average results for reranking and late interaction, with additional computational cost. That finding supports comparing methods on representative questions. It does not establish a best configuration for your collection.

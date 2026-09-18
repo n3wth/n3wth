@@ -38,6 +38,11 @@ The Zettelkasten Method is a personal knowledge management system developed by G
 - Self-contained ideas
 - Integrated into knowledge network
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/zettelkasten-method.svg" aria-label="Open full-size graphic: Addresses and links do different jobs"><img src="/figures/knowledge/zettelkasten-method.svg" alt="An illustrative keyword index points to card 12/1. A branch card 12/1a extends it between 12/1 and 12/2. A cross-reference reaches card 7/3 in another sequence. Stable addresses allow both ordered neighbors and links to distant ideas." width="960" height="708" loading="lazy" decoding="async" /></a>
+<figcaption>The archive’s numbering, keyword index and internal links supported different kinds of access. This original conceptual example uses invented identifiers to explain those mechanisms. Original diagram based on <a href="https://www.uni-bielefeld.de/fakultaeten/soziologie/forschung/luhmann-archiv/pdf/jschmidt_niklas-luhmanns-card-index_-sociologica_2018_12-1.pdf">Johannes F. K. Schmidt, Bielefeld University / Sociologica, Niklas Luhmann’s Card Index: The Fabrication of Serendipity</a> (2018).</figcaption>
+</figure>
+
 ## Benefits
 
 - Improves retention and understanding

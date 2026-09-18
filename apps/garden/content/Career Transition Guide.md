@@ -165,6 +165,11 @@ How to change roles, companies, or career tracks in tech. Timelines, checklists,
 - Technical preparation
 - Negotiation strategy
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/career-transition-guide.svg" aria-label="Open full-size graphic: Use evidence to pace a transition"><img src="/figures/career/career-transition-guide.svg" alt="Four planning phases—assess, investigate, develop, and execute—are paired with readiness questions about strengths and constraints, role conversations and trials, relevant work, and fit. The sequence is conceptual and can be revisited; it supplies no fixed transition duration." width="960" height="800" loading="lazy" decoding="async" /></a>
+<figcaption>The planning phases are more useful when each has an evidence check. This conceptual sequence supplements the article’s timelines with questions to revisit as you learn; it does not establish typical transition durations. Original diagram based on <a href="https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf">U.S. Office of Personnel Management, Individual Development Planning</a> and <a href="https://lifedesignlab.stanford.edu/dyl">Stanford Life Design Lab, Designing Your Life</a>.</figcaption>
+</figure>
+
 ## Specific Transition Playbooks
 
 ### Engineer to Product Manager

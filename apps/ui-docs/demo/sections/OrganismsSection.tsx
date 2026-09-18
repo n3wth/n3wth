@@ -23,7 +23,7 @@ export function OrganismsSection() {
       <VisualBand fullBleed={false} height={220}>
         <AssembleField seed={4} cols={30} rows={12} width={900} height={400} clusters={clusters} />
       </VisualBand>
-      <CodeSnippet code={`import { AssembleField, VisualBand } from '@n3wth/ui/visuals'
+      <CodeSnippet className="mt-4" code={`import { AssembleField, VisualBand } from '@n3wth/ui/visuals'
 import '@n3wth/ui/site.css'
 
 <VisualBand height="clamp(190px, 34svh, 340px)">

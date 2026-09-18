@@ -27,6 +27,11 @@ Your complete resource for preparing, practicing, and excelling in professional 
 - **[[Interview Prep Checklist]]** - Comprehensive preparation guide
 - **[[Interview Preparation]]** - Overall interview readiness strategies
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/interview-preparation-hub.svg" aria-label="Open full-size graphic: Choose the next preparation task"><img src="/figures/career/interview-preparation-hub.svg" alt="A preparation map routes four readiness gaps to an action: unclear role knowledge to employer research, missing examples to a story bank, unclear answers to aloud practice with feedback, and uncertain interview format to confirmation and matching practice. It recommends revisiting the weakest area after a mock interview." width="960" height="820" loading="lazy" decoding="async" /></a>
+<figcaption>Use the hub’s resources to resolve your least-ready area, then rehearse the complete conversation. This conceptual navigation map groups common preparation gaps; it is not a validated readiness score. Original diagram based on <a href="https://capd.mit.edu/resources/interview-primer/">MIT Career Advising &amp; Professional Development, Interview Primer</a> and <a href="https://capd.mit.edu/resources/a-guide-to-interview-timelines-and-structure/">MIT Career Advising &amp; Professional Development, Interview timelines and structure</a>.</figcaption>
+</figure>
+
 ## Communication Excellence
 
 ### Verbal & Non-Verbal Skills

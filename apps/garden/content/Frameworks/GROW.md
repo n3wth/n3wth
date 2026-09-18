@@ -35,6 +35,11 @@ The GROW Framework is a coaching model used for goal setting and problem solving
 - Commit to steps
 - Plan next moves
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/grow.svg" aria-label="Open full-size graphic: A coaching conversation can loop back"><img src="/figures/frameworks/grow.svg" alt="Goal and Reality lead to a branching Options discussion, then converge on Will: an action, a date and a review. A dashed return path shows that new insight may require revisiting earlier questions." width="960" height="850" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual conversation map: explore alternatives before committing, and revisit earlier stages when new information changes the situation. Original diagram based on <a href="https://www.performanceconsultants.com/resources/the-grow-model">Performance Consultants, The GROW Model: A Complete Guide to Goals, Reality, Options and Will</a>.</figcaption>
+</figure>
+
 ## Application
 
 1. **Coaching**

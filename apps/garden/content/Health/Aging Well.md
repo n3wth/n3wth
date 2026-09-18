@@ -41,6 +41,11 @@ Evidence-based strategies for maintaining health, vitality, and quality of life 
 - Bone density monitoring
 - Vision and hearing assessments
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/aging-well.svg" aria-label="Open full-size graphic: Aging Well"><img src="/figures/wellbeing/aging-well.svg" alt="Four connected domains surround quality of life and independence: physical health through movement, food and sleep; social connection; regular care; and meaningful engagement and learning. The network shows complementary domains, not measured causal effects." width="960" height="790" loading="lazy" decoding="async" /></a>
+<figcaption>Aging well spans physical health, relationships, care and meaningful activity. This conceptual network organizes MedlinePlus guidance alongside NHLBI's sleep-habit recommendations; it does not assign equal effects to the domains or promise that a routine will prevent decline. Original conceptual diagram based on <a href="https://medlineplus.gov/healthyaging.html">MedlinePlus, U.S. National Library of Medicine, Healthy Aging</a>; <a href="https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits">National Heart, Lung, and Blood Institute, Healthy Sleep Habits</a>.</figcaption>
+</figure>
+
 ## Emotional Well-being
 
 - Stress management techniques adapted for life stage

@@ -242,7 +242,6 @@ html[data-astryx-theme='n3wth'] body {
 
 /* Blockquotes */
 .prose blockquote {
-  border-left: 3px solid var(--color-accent);
   padding-left: 1rem;
   margin-left: 0;
   color: var(--color-grey-300);
@@ -307,7 +306,7 @@ html[data-astryx-theme='n3wth'] body {
 }
 
 /* Architecture guide uses the shared type scale and flat section rhythm. */
-.system-home-header { max-width: 760px; }
+.system-home-header { max-width: 760px; margin-inline: auto; }
 .system-garden { margin-top: -32px; margin-bottom: 48px; }
 .system-garden-canvas { width: 100%; height: clamp(280px, 38vw, 440px); touch-action: pan-y; }
 .system-garden-canvas canvas { display: block; width: 100%; height: 100%; }

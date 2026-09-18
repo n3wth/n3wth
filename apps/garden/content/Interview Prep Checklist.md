@@ -56,6 +56,11 @@ tags:
   - Analytical problem decomposition
   - Structured solution approaches
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/interview-prep-checklist.svg" aria-label="Open full-size graphic: Check the output of preparation"><img src="/figures/career/interview-prep-checklist.svg" alt="An evidence checklist pairs role research with identified capabilities and open questions, behavioral preparation with a specific action-and-outcome story, mock practice with feedback and a revised answer, and logistics with confirmed arrangements and tested equipment. It does not prescribe a number of preparation hours." width="960" height="780" loading="lazy" decoding="async" /></a>
+<figcaption>Hours alone do not show what you can explain in an interview. This illustrative checklist names reviewable outputs for research, stories, practice, and logistics; it does not validate the time allocations above. Original diagram based on <a href="https://capd.mit.edu/resources/interview-primer/">MIT Career Advising &amp; Professional Development, Interview Primer</a>.</figcaption>
+</figure>
+
 #### Mock Interviews (2-4 hours)
 
 - [ ] Conduct practice interviews through:

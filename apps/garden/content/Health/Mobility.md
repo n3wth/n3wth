@@ -14,6 +14,11 @@ Mobility - the ability to move freely and easily - is fundamental to overall [[H
 - Foam rolling helps release muscle tension and improves tissue quality
 - Joint mobilization exercises target specific movement patterns
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/mobility.svg" aria-label="Open full-size graphic: Mobility"><img src="/figures/wellbeing/mobility.svg" alt="Four branches connect flexibility, strength, balance and endurance to everyday movement. Flexibility stretches muscles, strength works against resistance, balance practices stability and endurance sustains activity." width="960" height="655" loading="lazy" decoding="async" /></a>
+<figcaption>Mobility work sits within a broader movement practice. MedlinePlus identifies aerobic activity, strength, balance and flexibility as complementary exercise types; this conceptual map does not imply that stretching alone prevents injury or treats pain. Original conceptual diagram based on <a href="https://medlineplus.gov/exerciseandphysicalfitness.html">MedlinePlus, U.S. National Library of Medicine, Exercise and Physical Fitness</a>.</figcaption>
+</figure>
+
 ## Benefits
 
 - Prevents injuries by improving movement quality

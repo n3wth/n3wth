@@ -16,6 +16,11 @@ Motivation techniques are strategies and methods used to inspire and encourage i
 9. **Inspiration Sources**: Seek motivation from books, podcasts, or role models in your field.
 10. **Habit Stacking**: Link new habits to existing routines for easier integration, as described in [[Atomic Habits]].
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/motivation-techniques.svg" aria-label="Open full-size graphic: Match the support to the need"><img src="/figures/knowledge/motivation-techniques.svg" alt="Three supports surround sustained engagement: autonomy means choosing a personally meaningful reason, competence means a workable challenge and useful feedback, and relatedness means caring connection. These are interacting needs rather than ranked tactics." width="960" height="690" loading="lazy" decoding="async" /></a>
+<figcaption>Autonomy, competence and relatedness offer a way to choose supportive conditions for motivation. Conceptual adaptation of self-determination theory to personal learning; the needs are not scores or a ranking. Original diagram based on <a href="https://selfdeterminationtheory.org/wp-content/uploads/2014/04/2009_NiemiecRyan_TRE.pdf">Niemiec and Ryan, Theory and Research in Education, Autonomy, competence, and relatedness in the classroom</a> (2009).</figcaption>
+</figure>
+
 > [!tip] Remember
 > Motivation often follows action. Sometimes, the best way to get motivated is to start small and build momentum.
 

@@ -45,7 +45,7 @@ export function TokensSection() {
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
 }`} />
-        <div className="mt-4"><SiteText variant="supporting">Existing aliases such as --color-bg and --glass-border remain available for compatibility. Use semantic names in new code.</SiteText></div>
+        <div className="mt-4"><SiteText variant="supporting" className="max-w-[52ch]">Existing aliases such as --color-bg and --glass-border remain available for compatibility. Use semantic names in new code.</SiteText></div>
       </DemoBlock>
     </DemoSection>
   )

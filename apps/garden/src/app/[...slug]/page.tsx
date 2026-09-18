@@ -9,6 +9,8 @@ import { getLocalGraph, getGraphData } from '@/lib/graph'
 import { PlantGlyph } from '@/components/PlantGlyph'
 import { getAllPreviews } from '@/lib/previews'
 import { Prose } from '@/components/Prose'
+import { ResourcePreviews } from '@/components/ResourcePreviews'
+import { getResourcePreviews } from '@/lib/resource-previews'
 import { Backlinks } from '@/components/Backlinks'
 import { TagList } from '@/components/TagList'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
@@ -175,34 +177,29 @@ export default async function NotePage({ params }: PageProps) {
       {/* Faint stage-tinted glow behind the header; z-index -1 keeps it under
           all content, pointer-events off. */}
       <div className="stage-ambient" data-stage={note.stage} aria-hidden />
-      <div className="mx-auto max-w-6xl px-6 md:px-12 py-12 md:py-14">
+      <div className="mx-auto max-w-6xl px-6 md:px-12 pt-6 md:pt-8 pb-12 md:pb-14">
         <div className="flex gap-16">
           <article className="min-w-0 flex-1">
             <div className="note-header">
               <Breadcrumbs slug={slugStr} />
-              {/* Shares 'note-title' with the clicked notes-index row (and with
-                  the previous note's h1 on wikilink hops), so the title morphs
-                  across the navigation instead of cutting. */}
-              <div className="flex items-center justify-between gap-8 mb-2">
-                <h1
-                  className="font-display text-[2rem] md:text-[2.5rem] leading-[1.12] font-semibold text-[var(--color-text-primary)]"
-                >
-                  {note.title}
-                </h1>
-                {/* the note's own plant, drawing itself in over the header's spare corner */}
-                <span className="note-header-plant hidden sm:block shrink-0">
+              <h1
+                className="max-w-[42rem] mb-4 font-display text-[2rem] md:text-[2.5rem] leading-[1.12] font-semibold text-[var(--color-text-primary)]"
+              >
+                {note.title}
+              </h1>
+            </div>
+            <div className="note-meta flex flex-wrap items-center gap-3 mb-6">
+              <span className="inline-flex items-center gap-2">
+                <span className="shrink-0" aria-hidden>
                   <PlantGlyph
                     slug={slugStr}
                     stage={note.stage}
                     linkCount={graphNode?.linkCount ?? 0}
-                    size={112}
-                    draw
+                    size={24}
                   />
                 </span>
-              </div>
-            </div>
-            <div className="note-meta flex flex-wrap items-center gap-3 mb-6">
-              <GrowthStage stage={note.stage} explain />
+                <GrowthStage stage={note.stage} explain />
+              </span>
               <span className="text-[var(--color-text-disabled)]">·</span>
               <NoteMetadata readingTime={note.readingTime} date={note.date} />
               {plantedLabel && (
@@ -227,6 +224,7 @@ export default async function NotePage({ params }: PageProps) {
             <div className="note-content">
               <Prose html={html} />
             </div>
+            <ResourcePreviews resources={getResourcePreviews(note.filePath)} />
             <div className="note-postscript">
             {note.tags.length > 0 && (
               <section className="note-topics" aria-label="Topics">

@@ -21,6 +21,11 @@ Best practices for creating and maintaining effective Maps of Content (MOCs) to 
 - Use clear headings and subheadings
 - Include relevant metadata (tags, icons, descriptions)
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/moc-best-practices.svg" aria-label="Open full-size graphic: Give each link a reason to be here"><img src="/figures/knowledge/moc-best-practices.svg" alt="An illustrative Learning MOC states a focus question, groups links under starting and improving headings, explains what each link helps with and includes a review cue. Side annotations identify scope, grouping, link purpose and maintenance." width="960" height="661" loading="lazy" decoding="async" /></a>
+<figcaption>A useful MOC explains its scope and the purpose of its links. This illustrative specimen applies MOCs as evolving navigation and concept maps as responses to a focus question. Original diagram based on <a href="https://notes.linkingyourthinking.com/Cards/MOCs+Overview">Nick Milo, Linking Your Thinking, MOCs Overview</a>; <a href="https://cmap.ihmc.us/docs/theory-of-concept-maps">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>.</figcaption>
+</figure>
+
 ## Link Management
 
 - Write descriptive link text that provides context

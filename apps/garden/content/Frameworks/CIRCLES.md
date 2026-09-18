@@ -53,6 +53,11 @@ The CIRCLES Method is a structured framework for approaching product design chal
 - Support with data
 - Outline next steps
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/circles.svg" aria-label="Open full-size graphic: Choose the need before the solution"><img src="/figures/frameworks/circles.svg" alt="Seven rows show CIRCLES narrowing from context and users to a prioritized need, expanding to alternative solutions, and narrowing to a recommendation. Widths indicate conceptual breadth, not counts." width="960" height="895" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual scope map: prioritization selects the need before solution generation expands the options. Widths are illustrative and do not represent measured quantities. Original diagram based on <a href="https://lewis-lin.com/posts/circles-method-what-each-step-actually-does/">Lewis C. Lin, CIRCLES Method: What Each Step Actually Does</a>.</figcaption>
+</figure>
+
 ## Usage
 
 Used for systematic product design and problem-solving. Provides a comprehensive approach to understanding user needs and developing solutions.

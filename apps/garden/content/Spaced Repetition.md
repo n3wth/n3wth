@@ -29,6 +29,11 @@ Spaced Repetition is a learning technique that involves reviewing material at in
 6. Review after 1 month
 7. Review after 3 months
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/spaced-repetition.svg" aria-label="Open full-size graphic: Separate the encounters with the material"><img src="/figures/knowledge/spaced-repetition.svg" alt="Two illustrative schedules contain four practice encounters each. Massed encounters cluster in one sitting; spaced encounters occur over separate sessions. A lower strip shows attempting recall, checking the answer and adjusting the next review without assigning universal dates or retention percentages." width="960" height="705" loading="lazy" decoding="async" /></a>
+<figcaption>Spacing distributes encounters; retrieval requires an attempt before the answer is shown. This conceptual schedule uses equal illustrative encounter counts and encodes no measured intervals or retention values. Original diagram based on <a href="https://www.nature.com/articles/s44159-022-00089-1">Carpenter, Pan and Butler, Nature Reviews Psychology, The science of effective learning with spacing and retrieval practice</a> (2022); <a href="https://docs.ankiweb.net/studying.html">Anki Manual, Studying: Answer Buttons</a>.</figcaption>
+</figure>
+
 ## Implementation Methods
 
 ### Digital Tools

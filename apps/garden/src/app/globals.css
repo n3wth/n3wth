@@ -406,24 +406,21 @@ button:focus-visible,
   gap: 1rem;
   min-height: 3rem;
   cursor: pointer;
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-normal);
   list-style: none;
 }
 .note-toc summary::-webkit-details-marker { display: none; }
 .note-toc summary::after {
   content: '+';
   color: var(--color-text-secondary);
-  font-size: 1rem;
-  font-weight: var(--font-weight-regular);
+  font: inherit;
 }
 .note-toc[open] summary::after { content: '−'; }
 .note-toc-count {
   margin-left: auto;
-  color: var(--color-text-disabled);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-regular);
+  font: inherit;
 }
 .note-toc nav {
   padding: 0.25rem 0 1rem;
@@ -483,10 +480,6 @@ button:focus-visible,
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: 2rem;
-}
-.note-header-plant {
-  margin-right: 0.25rem;
-  opacity: 0.9;
 }
 .note-breadcrumbs {
   margin-bottom: 0.5rem;
@@ -756,6 +749,31 @@ button:focus-visible,
   margin: 1.5em 0;
 }
 
+/* Editorial figures keep the graphic and its evidence together. */
+.prose .research-figure {
+  margin: 2rem 0;
+}
+.prose .research-figure-image {
+  display: block;
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  cursor: zoom-in;
+}
+.prose .research-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+}
+.prose .research-figure figcaption {
+  margin-top: 0.75rem;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.6;
+}
+
 /* Wide tables scroll inside their wrapper instead of stretching the page —
    the wrapper comes from rehype-rich-content. */
 .prose .table-scroll {
@@ -858,7 +876,6 @@ button:focus-visible,
 /* Callouts - Astryx tinted backgrounds */
 .callout {
   border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-border-emphasized);
   background: var(--color-background-muted);
   border-radius: var(--radius-container, 8px);
   padding: 1.125rem 1.25rem;
@@ -882,7 +899,6 @@ button:focus-visible,
 /* Tip / Success - green tint */
 .callout-tip,
 .callout-success {
-  border-left-color: var(--color-border-green);
   background: color-mix(in srgb, var(--color-background-green) 55%, var(--color-background-surface));
 }
 .callout-tip .callout-title,
@@ -891,7 +907,6 @@ button:focus-visible,
 /* Warning / Question - yellow tint */
 .callout-warning,
 .callout-question {
-  border-left-color: var(--color-border-yellow);
   background: var(--color-background-yellow);
 }
 .callout-warning .callout-title,
@@ -901,7 +916,6 @@ button:focus-visible,
 .callout-danger,
 .callout-failure,
 .callout-bug {
-  border-left-color: var(--color-border-red);
   background: var(--color-background-red);
 }
 .callout-danger .callout-title,
@@ -913,7 +927,6 @@ button:focus-visible,
 .callout-note,
 .callout-abstract,
 .callout-todo {
-  border-left-color: var(--color-border-cyan);
   background: var(--color-background-cyan);
 }
 .callout-info .callout-title,
@@ -923,14 +936,12 @@ button:focus-visible,
 
 /* Quote - subtle */
 .callout-quote {
-  border-left-color: var(--color-text-secondary);
   background: var(--color-background-muted);
 }
 .callout-quote .callout-title { color: var(--color-text-secondary); }
 
 /* Example */
 .callout-example {
-  border-left-color: var(--color-text-secondary);
   background: var(--color-background-muted);
 }
 .callout-example .callout-title { color: var(--color-text-secondary); }
@@ -981,7 +992,7 @@ button:focus-visible,
 }
 .connected-plant-title {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   line-height: 1.4;
   text-align: center;
   text-wrap: balance;
@@ -1192,4 +1203,75 @@ button:focus-visible,
   --stage-tint: color-mix(in srgb, var(--color-text-disabled) 9%, transparent);
 }
 
+}
+
+/* Curated external reading: publisher and purpose stay visible beside each link. */
+@layer components {
+  .resource-previews {
+    max-width: 42rem;
+    margin-top: 3rem;
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--color-text-primary);
+  }
+  .resource-previews h2 {
+    margin: 0 0 1rem;
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+  }
+  .resource-previews ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .resource-preview-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    gap: 1.5rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--color-border);
+    overflow-wrap: anywhere;
+  }
+  .resource-previews :is(h3, p) {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: normal;
+  }
+  .resource-previews h3 {
+    font-weight: var(--font-weight-medium);
+  }
+  .resource-previews p {
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text-secondary);
+  }
+  .resource-preview-copy {
+    min-width: 0;
+  }
+  .resource-preview-copy p {
+    margin-top: 0.375rem;
+  }
+  .resource-previews a {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-emphasized);
+    text-underline-offset: 0.2em;
+  }
+  .resource-previews a:hover {
+    text-decoration-color: currentColor;
+  }
+  .resource-previews a:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  @media (max-width: 639px) {
+    .resource-preview-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.375rem;
+    }
+  }
 }
