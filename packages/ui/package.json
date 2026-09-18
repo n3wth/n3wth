@@ -59,7 +59,7 @@
     "check": "npm run lint && npm run build && node scripts/check-build.mjs && npm test"
   },
   "dependencies": {
-    "@astryxdesign/core": "0.6.1",
+    "@astryxdesign/core": "0.1.6",
     "clsx": "^2.1.1",
     "iconoir-react": "^7.12.1",
     "tailwind-merge": "^3.7.0"

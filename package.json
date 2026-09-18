@@ -45,6 +45,7 @@
     "jsdom": "27.4.0",
     "opentype.js": "^2.0.0",
     "react": "19.3.0",
+    "react-dom": "19.3.0",
     "satori": "0.33.4",
     "sharp": "0.35.4",
     "vitest": "4.1.11",
