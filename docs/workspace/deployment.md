@@ -1,6 +1,52 @@
 # Workspace deployment
 
-## Automatic Git deployment policy
+## Cloudflare builds and configuration
+
+Cloudflare Workers serves the six public sites. Use Node 24 and npm 11.19.1,
+then run `npm ci` at the repository root.
+
+```bash
+# Build all six Workers and their assets. Shared packages build once.
+npm run build:cloudflare
+
+# Select one site, or repeat --workspace to select several.
+npm run build:cloudflare -- --workspace @n3wth/garden
+
+# Inspect dependency order without building.
+npm run build:cloudflare -- --workspace @n3wth/garden --list
+
+# Check packaging after building; this does not deploy.
+npm exec -- wrangler deploy --config apps/garden/wrangler.jsonc --dry-run
+```
+
+The command uses the same workspace graph as `npm run build`. Portfolio and
+UI docs use their existing static builds. Garden, Kit, Skills and r3 use their
+pinned OpenNext adapter. Do not run a separate shared-package prebuild.
+
+Each `apps/<app>/wrangler.jsonc` is the production configuration: Worker name,
+custom domain, assets and resource bindings. There are no separate production
+config files. Inspect the target before using Wrangler; a deploy with this config
+changes production. Build and package in the same checkout and operating system.
+OpenNext output and generated preview configs can contain absolute paths; do not
+copy them to another machine for deployment.
+
+The Cloudflare preview workflow uses this build command, then
+`scripts/cloudflare-preview.mjs` generates an isolated config under `.cloudflare/`.
+It replaces the Worker name, domain, self-service binding and Skills auth origin,
+requires explicit preview stateful bindings, and adds preview-only noindex behavior.
+Secrets stay outside source config and are provisioned separately for each Worker.
+Never deploy generated preview config to production or point a preview at the
+production database.
+
+A build or dry run does not prove live readiness. Check TLS, page content, assets
+and the app's required API behavior on the target domain. Production automation,
+readiness gates, D1 setup and rollback tracking remain separate work.
+
+## Vercel fallback: automatic Git deployment policy
+
+Keep these projects and their Git deployment settings during the Cloudflare
+transition. A successful Vercel deployment does not prove that a Cloudflare public
+domain serves the same commit.
 
 All six applications set `git.deploymentEnabled: true` in their own `vercel.json`, and the site generator uses the same default. Pushes to non-production branches and pull-request updates create Preview deployments. Commits on each project's configured production branch (`main`) create Production deployments.
 

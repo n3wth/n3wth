@@ -1,9 +1,10 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
-  "name": "n3wth-ui-docs-preview",
+  "name": "n3wth-ui-docs",
   "compatibility_date": "2026-09-18",
   "workers_dev": false,
   "preview_urls": false,
+  "routes": [{ "pattern": "ui.n3wth.com", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     "html_handling": "drop-trailing-slash",

@@ -1,11 +1,12 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "n3wth-r3-web-preview",
+  "name": "n3wth-r3-web",
   "compatibility_date": "2026-09-18",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "workers_dev": false,
   "preview_urls": false,
+  "routes": [{ "pattern": "r3.n3wth.com", "custom_domain": true }],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
@@ -13,7 +14,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "n3wth-r3-web-preview"
+      "service": "n3wth-r3-web"
     }
   ]
 }
