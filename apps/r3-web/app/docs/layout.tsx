@@ -13,8 +13,8 @@ export default function DocsLayout({
     <div className="min-h-screen bg-bg flex flex-col">
       <Navigation />
 
-      <div className="mx-auto max-w-[1440px] w-full px-6 pt-28 pb-14 lg:px-10 flex-1">
-        <div className="lg:hidden mb-8">
+      <div className="mx-auto max-w-[1280px] w-full px-6 pt-24 pb-14 lg:px-10 flex-1">
+        <div className="lg:hidden mb-6">
           <DocsMobileNavigation />
         </div>
         <div className="flex gap-8">

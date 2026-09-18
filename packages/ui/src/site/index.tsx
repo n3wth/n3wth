@@ -87,11 +87,12 @@ export interface PageHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'titl
   actions?: ReactNode
   aside?: ReactNode
   align?: 'start' | 'center'
+  spacing?: 'default' | 'compact'
 }
 
-export function PageHeader({ title, level = 1, description, actions, aside, align = 'start', className, ...props }: PageHeaderProps) {
+export function PageHeader({ title, level = 1, description, actions, aside, align = 'start', spacing = 'default', className, ...props }: PageHeaderProps) {
   return (
-    <header className={cn('n3wth-site-page-header', aside != null && 'n3wth-site-page-header--split', align === 'center' && 'n3wth-site-page-header--center', className)} {...props}>
+    <header className={cn('n3wth-site-page-header', aside != null && 'n3wth-site-page-header--split', align === 'center' && 'n3wth-site-page-header--center', spacing === 'compact' && 'n3wth-site-page-header--compact', className)} {...props}>
       <div className="n3wth-site-page-header-copy">
         <SiteHeading variant={level === 1 ? 'page' : 'section'} level={level}>{title}</SiteHeading>
         {description != null && <SiteText className="n3wth-site-description">{description}</SiteText>}

@@ -11,7 +11,7 @@ import {
 
 export function ArchitectureDiagram() {
   return (
-    <div className="py-12">
+    <div className="py-4">
       <div className="space-y-8">
         {/* Horizontal flow: Gemini → MCP → r3 */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 flex-wrap">

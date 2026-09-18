@@ -83,15 +83,17 @@ export async function generateMetadata({
 const components = {
   ...MDXComponents,
   h1: ({ children }: any) => (
-    <PageHeader title={children} />
+    <div className="mb-4">
+      <PageHeader title={children} spacing="compact" />
+    </div>
   ),
   h2: ({ children }: any) => (
-    <div className="mt-12 mb-4">
+    <div className="mt-8 mb-4">
       <SiteHeading variant="section" level={2}>{children}</SiteHeading>
     </div>
   ),
   h3: ({ children }: any) => (
-    <div className="mt-8 mb-3">
+    <div className="mt-6 mb-3">
       <SiteHeading variant="item" level={3}>{children}</SiteHeading>
     </div>
   ),
