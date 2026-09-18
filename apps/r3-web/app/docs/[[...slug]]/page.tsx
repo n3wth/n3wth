@@ -86,10 +86,14 @@ const components = {
     <PageHeader title={children} />
   ),
   h2: ({ children }: any) => (
-    <SiteHeading variant="section" level={2} className="mt-12 mb-4">{children}</SiteHeading>
+    <div className="mt-12 mb-4">
+      <SiteHeading variant="section" level={2}>{children}</SiteHeading>
+    </div>
   ),
   h3: ({ children }: any) => (
-    <SiteHeading variant="item" level={3} className="mt-8 mb-3">{children}</SiteHeading>
+    <div className="mt-8 mb-3">
+      <SiteHeading variant="item" level={3}>{children}</SiteHeading>
+    </div>
   ),
   p: ({ children }: any) => (
     <p className="text-ink-dim mb-4 leading-relaxed">{children}</p>
@@ -98,6 +102,11 @@ const components = {
     <ul className="text-ink-dim mb-4 space-y-2 list-disc list-inside">
       {children}
     </ul>
+  ),
+  ol: ({ children }: any) => (
+    <ol className="text-ink-dim mb-4 space-y-2 list-decimal list-inside">
+      {children}
+    </ol>
   ),
   li: ({ children }: any) => <li className="text-ink-dim">{children}</li>,
   a: ({ href, children }: any) => {

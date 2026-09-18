@@ -4,10 +4,33 @@ import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { checkInvariants } from './check-invariants.mjs'
+import { checkInvariants, checkNativeOptionals } from './check-invariants.mjs'
 
 const repo = fileURLToPath(new URL('../', import.meta.url))
 const sites = ['garden', 'kit', 'portfolio', 'r3-web', 'skills', 'ui-docs']
+
+test('Mac-only native lockfiles cannot pass checks for Linux deployments', () => {
+  const packages = {
+    'node_modules/@tailwindcss/oxide': { optionalDependencies: {
+      '@tailwindcss/oxide-darwin-arm64': '4.3.3',
+      '@tailwindcss/oxide-linux-x64-gnu': '4.3.3',
+    } },
+    'node_modules/@tailwindcss/oxide-darwin-arm64': { version: '4.3.3' },
+  }
+  assert.match(checkNativeOptionals(packages).join('\n'), /oxide-linux-x64-gnu@4\.3\.3/)
+  packages['node_modules/@tailwindcss/oxide-linux-x64-gnu'] = { version: '4.3.3' }
+  assert.deepEqual(checkNativeOptionals(packages), [])
+})
+
+test('native versions resolve from their package location, including nested copies', () => {
+  const packages = {
+    'apps/site/node_modules/next': { optionalDependencies: { '@next/swc-linux-x64-gnu': '16.2.9' } },
+    'node_modules/@next/swc-linux-x64-gnu': { version: '15.5.19' },
+  }
+  assert.equal(checkNativeOptionals(packages).length, 1)
+  packages['apps/site/node_modules/@next/swc-linux-x64-gnu'] = { version: '16.2.9' }
+  assert.deepEqual(checkNativeOptionals(packages), [])
+})
 
 function writeWorkspace(root, path, manifest, vercel) {
   mkdirSync(join(root, path), { recursive: true })
