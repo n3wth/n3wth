@@ -115,7 +115,7 @@ test('repository root build lists every site after UI and omits site-config', ()
   assert.ok(!order.includes('@n3wth/site-config'))
 })
 
-test('root scripts and Vercel app builds go through the orchestrator with git deploys enabled', () => {
+test('root scripts and manual Vercel builds use the orchestrator with Git deploys disabled', () => {
   const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)))
   assert.equal(pkg.scripts.build, 'node scripts/build.mjs')
   for (const script of ['build:garden', 'build:kit', 'build:portfolio', 'build:r3', 'build:skills', 'build:ui', 'build:ui-docs']) {
@@ -123,7 +123,7 @@ test('root scripts and Vercel app builds go through the orchestrator with git de
   }
   for (const app of ['garden', 'kit', 'portfolio', 'r3-web', 'skills', 'ui-docs']) {
     const vercel = JSON.parse(readFileSync(new URL(`../apps/${app}/vercel.json`, import.meta.url)))
-    assert.equal(vercel.git.deploymentEnabled, true)
+    assert.equal(vercel.git.deploymentEnabled, false)
     const script = app === 'r3-web' ? 'build:r3' : `build:${app}`
     assert.match(vercel.buildCommand, new RegExp(script.replace(':', '\\:')))
   }

@@ -53,7 +53,7 @@ function validGraph(root, extra = () => {}) {
   writeWorkspace(root, 'apps/site', {
     name: '@n3wth/site',
     dependencies: { '@n3wth/ui': '0.9.2', '@n3wth/site-config': '*' },
-  }, { git: { deploymentEnabled: true } })
+  }, { git: { deploymentEnabled: false } })
   extra(root)
 }
 
@@ -62,7 +62,7 @@ function rejects(root, pattern) {
   finally { rmSync(root, { recursive: true, force: true }) }
 }
 
-test('current repository keeps unique names, internal deps, six automatic site deployments and a complete root build', () => {
+test('current repository keeps unique names, internal deps, disabled Vercel Git deployments and a complete root build', () => {
   const workspaces = checkInvariants(repo)
   const apps = workspaces.filter(workspace => workspace.path.startsWith('apps/')).map(workspace => workspace.path.replace('apps/', ''))
   for (const site of sites) assert.ok(apps.includes(site), `missing site workspace ${site}`)
@@ -97,11 +97,11 @@ test('ignores nested package names outside the workspace glob', () => {
 test('duplicate workspace names fail with both manifests', () => {
   rejects(fixture(root => {
     validGraph(root)
-    writeWorkspace(root, 'apps/copy', { name: '@n3wth/site' }, { git: { deploymentEnabled: true } })
+    writeWorkspace(root, 'apps/copy', { name: '@n3wth/site' }, { git: { deploymentEnabled: false } })
   }), /apps\/copy\/package.json: duplicate workspace name @n3wth\/site also declared in apps\/site\/package.json/)
 })
 
-test('disabled or mapped git deployments fail on the vercel.json file', () => {
+test('branch-mapped git deployments fail on the vercel.json file', () => {
   rejects(fixture(root => {
     validGraph(root, root => {
       writeWorkspace(root, 'apps/site', {
@@ -109,14 +109,14 @@ test('disabled or mapped git deployments fail on the vercel.json file', () => {
         dependencies: { '@n3wth/ui': '0.9.2', '@n3wth/site-config': '*' },
       }, { git: { deploymentEnabled: { main: false } } })
     })
-  }), /apps\/site\/vercel.json: git.deploymentEnabled must be true/)
+  }), /apps\/site\/vercel.json: git.deploymentEnabled must be false/)
 })
 
 test('missing site vercel.json fails on that path', () => {
   rejects(fixture(root => {
     writeWorkspace(root, 'packages/ui', { name: '@n3wth/ui', version: '0.9.2' })
     writeWorkspace(root, 'apps/site', { name: '@n3wth/site', dependencies: { '@n3wth/ui': '0.9.2' } })
-  }), /apps\/site\/vercel.json: git.deploymentEnabled must be true/)
+  }), /apps\/site\/vercel.json: git.deploymentEnabled must be false/)
 })
 
 test('range specifiers are not valid explicit internal dependencies', () => {
@@ -125,7 +125,7 @@ test('range specifiers are not valid explicit internal dependencies', () => {
       writeWorkspace(root, 'apps/site', {
         name: '@n3wth/site',
         dependencies: { '@n3wth/ui': '^0.9.2', '@n3wth/site-config': '*' },
-      }, { git: { deploymentEnabled: true } })
+      }, { git: { deploymentEnabled: false } })
     })
   }), /apps\/site\/package.json: @n3wth\/ui must be "\*", "workspace:\*", or 0.9.2 to use the workspace package/)
 })
@@ -144,7 +144,7 @@ test('applications cannot depend on other applications', () => {
     writeWorkspace(root, 'apps/other', {
       name: '@n3wth/other',
       dependencies: { '@n3wth/site': '*' },
-    }, { git: { deploymentEnabled: true } })
+    }, { git: { deploymentEnabled: false } })
   }), /apps\/other\/package.json: applications must not depend on application @n3wth\/site/)
 })
 
@@ -154,7 +154,7 @@ test('reuses the design-boundary Astryx dependency check with a file path', () =
       writeWorkspace(root, 'apps/site', {
         name: '@n3wth/site',
         dependencies: { '@n3wth/ui': '0.9.2', '@astryxdesign/core': '0.1.6' },
-      }, { git: { deploymentEnabled: true } })
+      }, { git: { deploymentEnabled: false } })
     })
   }), /apps\/site\/package.json: Astryx dependencies belong in @n3wth\/ui/)
 })
@@ -162,12 +162,12 @@ test('reuses the design-boundary Astryx dependency check with a file path', () =
 test('reports every violation instead of stopping at the first', () => {
   const root = fixture(root => {
     writeWorkspace(root, 'packages/ui', { name: '@n3wth/ui', version: '0.9.2', dependencies: { '@n3wth/one': '*' } })
-    writeWorkspace(root, 'apps/one', { name: '@n3wth/one' }, { git: { deploymentEnabled: false } })
-    writeWorkspace(root, 'apps/two', { name: '@n3wth/one' }, { git: { deploymentEnabled: true } })
+    writeWorkspace(root, 'apps/one', { name: '@n3wth/one' }, { git: { deploymentEnabled: true } })
+    writeWorkspace(root, 'apps/two', { name: '@n3wth/one' }, { git: { deploymentEnabled: false } })
   })
   try {
     assert.throws(() => checkInvariants(root), /apps\/one\/package.json: duplicate workspace name @n3wth\/one also declared in apps\/two\/package.json/)
     assert.throws(() => checkInvariants(root), /packages\/ui\/package.json: packages must not depend on application @n3wth\/one/)
-    assert.throws(() => checkInvariants(root), /apps\/one\/vercel.json: git.deploymentEnabled must be true/)
+    assert.throws(() => checkInvariants(root), /apps\/one\/vercel.json: git.deploymentEnabled must be false/)
   } finally { rmSync(root, { recursive: true, force: true }) }
 })

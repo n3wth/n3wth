@@ -90,7 +90,7 @@ export function checkInvariants(root) {
     const vercelPath = `${workspace.path}/vercel.json`
     const absolute = resolve(root, vercelPath)
     if (!existsSync(absolute)) {
-      errors.push(`${vercelPath}: git.deploymentEnabled must be true`)
+      errors.push(`${vercelPath}: git.deploymentEnabled must be false`)
       continue
     }
     let vercel
@@ -100,8 +100,8 @@ export function checkInvariants(root) {
       errors.push(`${vercelPath}: ${error.message}`)
       continue
     }
-    if (vercel.git?.deploymentEnabled !== true) {
-      errors.push(`${vercelPath}: git.deploymentEnabled must be true`)
+    if (vercel.git?.deploymentEnabled !== false) {
+      errors.push(`${vercelPath}: git.deploymentEnabled must be false`)
     }
   }
   const manifest = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))

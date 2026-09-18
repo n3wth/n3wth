@@ -42,28 +42,30 @@ A build or dry run does not prove live readiness. Check TLS, page content, asset
 and the app's required API behavior on the target domain. Production automation,
 readiness gates, D1 setup and rollback tracking remain separate work.
 
-## Vercel fallback: automatic Git deployment policy
+## Vercel: manual fallback only
 
-Keep these projects and their Git deployment settings during the Cloudflare
-transition. A successful Vercel deployment does not prove that a Cloudflare public
-domain serves the same commit.
+Cloudflare serves all six public sites. The Vercel projects garden, kit, n3wth,
+r3, skills and ui are disconnected from the GitHub repository. Each app and the
+site generator set `git.deploymentEnabled: false`. Keep both safeguards:
+disconnecting the project also stops checks from older branches that still
+enable Vercel deployments.
 
-All six applications set `git.deploymentEnabled: true` in their own `vercel.json`, and the site generator uses the same default. Pushes to non-production branches and pull-request updates create Preview deployments. Commits on each project's configured production branch (`main`) create Production deployments.
+Keep GitHub CI and Cloudflare preview workflows enabled. Wait for passing checks
+before merging. Existing Vercel check results on old commits remain historical
+records; new commits must not receive Vercel deployment checks.
 
-Reviewers must wait for passing GitHub CI checks before merging. The current branch ruleset does not enforce CI or pull requests, and Vercel deployments can start independently of GitHub CI.
+Vercel projects, domains and deployment history are retained. A rollback to
+Vercel requires an explicit decision, the exact previous deployment, and a
+separate domain change. Do not reconnect Git or enable automatic deployments
+during normal Cloudflare work.
 
-1. Before merging, confirm CI passes and review the affected projects' Preview deployments. Include consumers of changed shared packages when deciding what should deploy.
-2. Merge the reviewed commit to `main`. Vercel creates Production deployments for affected projects and skips projects outside the change graph.
-3. Verify each affected deployment is Ready, then check routes, assets, redirects, and APIs. Record the project, commit SHA, deployment URL/ID, environment, and checks before reporting the release complete.
-4. If an expected deployment is skipped, inspect the changed-workspace graph first. Use the dashboard's Ignored Build Step bypass only for an intentional manual deployment or redeployment.
+To verify the remote state, inspect each project's Git connection: it must be
+absent. To intentionally restore Git deployments, reconnect the exact project
+to n3wth/n3wth with production branch main and review the config and policy change
+in a pull request first.
 
-Vercel reads configuration from the commit being deployed. Bring older branches up to date before pushing them so `git.deploymentEnabled: true` is present and the current ignore logic is used.
-
-Native **Skip deployments when there are no changes to the root directory or its dependencies** is enabled on all six projects. Each project uses its app root with access to files outside that root for shared workspaces. The ignore script is an additional filter for builds that reach the build stage: it compares against the previous deployed tree, or a first-preview merge-base, and builds conservatively when history is unavailable.
-
-For rollback, restore the previous successful Production deployment for only the affected project. For an explicitly requested manual redeployment, choose the exact tested commit SHA and confirm the target environment before submitting. Do not rebuild an arbitrary newer commit as a rollback.
-
-References: [Vercel Git deployments](https://vercel.com/docs/git), [Git deployment configuration](https://vercel.com/docs/project-configuration/git-configuration), [deploying a Git reference](https://vercel.com/docs/git#creating-a-deployment-from-a-git-reference), and [monorepo setup](https://vercel.com/docs/monorepos).
+The remaining Vercel configuration below is migration history and manual fallback
+guidance, not an active deployment workflow.
 
 ## Project layout and migration history
 
