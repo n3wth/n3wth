@@ -5,4 +5,5 @@ export const site = {
   url: siteUrls.garden,
   parentUrl: siteUrls.home,
   githubUrl: 'https://github.com/n3wth/n3wth/tree/main/apps/garden',
+  description: 'Interconnected notes on careers, learning, health, and building things.',
 } as const
