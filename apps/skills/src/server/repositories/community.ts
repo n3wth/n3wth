@@ -93,6 +93,15 @@ export async function removeAnonymousVote(db: D1Database, fingerprint: string, s
   return countVotes(db, skillId)
 }
 
+/** Owner row for authorization checks (former RLS "delete own comment"). */
+export async function getCommentOwner(db: D1Database, commentId: string): Promise<{ user_id: string } | null> {
+  return db.prepare('SELECT user_id FROM comments WHERE id = ?').bind(commentId).first<{ user_id: string }>()
+}
+
+export async function deleteComment(db: D1Database, commentId: string): Promise<void> {
+  await db.prepare('DELETE FROM comments WHERE id = ?').bind(commentId).run()
+}
+
 export async function hasAuthenticatedVote(db: D1Database, userId: string, skillId: string): Promise<boolean> {
   return Boolean(await db.prepare('SELECT 1 AS present FROM upvotes WHERE user_id = ? AND skill_id = ?').bind(userId, skillId).first())
 }
