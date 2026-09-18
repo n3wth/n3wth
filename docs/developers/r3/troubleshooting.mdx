@@ -1,0 +1,92 @@
+---
+title: "Troubleshoot r3"
+description: "Diagnose installation, MCP startup, storage, and retrieval failures without mistaking acknowledgements for verified persistence."
+---
+
+Start with the smallest failing step: package installation, MCP connection, storage initialization, write, read, then restart. The website build does not exercise the core server or Redis. Keep diagnostic data disposable until the [quickstart check](/r3/quickstart#check-one-write-and-read) succeeds.
+
+## Installation fails on macOS
+
+The core launch audit records a Redis dependency build failure with `GNU Make version is too old`. A missing prebuilt Redis binary can trigger a source build, and the audited build required GNU Make 4 or later.
+
+Check your environment:
+
+```bash
+node --version
+npm --version
+make --version
+```
+
+If the error specifically concerns old GNU Make and you use Homebrew:
+
+```bash
+brew install make
+export PATH="$(brew --prefix make)/libexec/gnubin:$PATH"
+make --version
+npx -y @n3wth/r3 --help
+```
+
+Ensure the MCP client inherits the corrected executable path too. An external Redis URL does not remove the package's embedded Redis dependency or guarantee that installation skips its native build.
+
+## The client cannot connect
+
+1. Confirm the configured package is `@n3wth/r3`, not the unscoped `r3` package or the older `@n3wth/recall` name.
+2. Check that the client's launch environment can find `node` and `npx`. A GUI client may have a different `PATH` from your terminal.
+3. Use the `serve` command. `ui` and `manage` launch interactive interfaces, not the configured MCP transport.
+4. Validate your client configuration as JSON and reconnect after changes.
+5. Inspect the client's server stderr logs. Add `"DEBUG": "true"` to the server's environment for a diagnostic run.
+
+Keep stdout reserved for MCP messages. Disabling quiet mode can allow local-backend logging to stdout and interfere with the transport. Do not pipe startup banners into the protocol stream.
+
+## Connection succeeds but tools stall
+
+The server connects its transport before completing enhanced initialization and starting Redis in the background. Tool discovery alone does not establish storage readiness.
+
+Use `INTELLIGENCE_MODE=basic` to distinguish model initialization failures from Redis failures. Inspect stderr for embedded Redis startup errors or the explicit fallback to demo mode. Demo mode cannot satisfy a persistence check.
+
+If you explicitly configured `REDIS_URL` in local mode and see `Local memory not initialized`, remove that setting for the embedded quickstart. The [configuration reference](/r3/configuration#external-redis-caveat) explains the incomplete external-Redis local path.
+
+For an intentionally configured external cache, test connectivity without printing credentials:
+
+```bash
+redis-cli -h 127.0.0.1 -p 6379 ping
+```
+
+`PONG` establishes that Redis responds at that address. It does not prove that the MCP local backend initialized or that records persist.
+
+## A write times out or duplicate detection behaves unexpectedly
+
+The inspected `simulateLocalAPI` dispatch checks a general POST to `/memories/` before the more specific POST to `/memories/search/`. Duplicate detection uses the search endpoint, so it reaches the add branch instead of search. This is a source-confirmed routing defect, not proof that it explains every timeout.
+
+For one disposable diagnostic, use `async: false` and `skip_duplicate_check: true`, as in the quickstart. Do not repeatedly retry a timed-out write against important data: the write may have completed even when its acknowledgement did not arrive. This diagnostic bypass does not fix duplicate detection.
+
+`Saved` can be returned before asynchronous processing finishes. `sync_status` reports in-process queue counts, not a durable transaction receipt. Verify the content through retrieval and a separate restart check.
+
+## Reads are empty, unrelated, or stale
+
+| Symptom | What to check |
+| --- | --- |
+| Empty after restart | Same working directory and index path; no demo fallback; actual Redis persistence. |
+| Results cross user boundaries | Search ignores the advertised `user_id` and has unscoped cache/vector paths. Use a separately isolated deployment for separate trust boundaries. |
+| Unrelated basic-mode results | Local fallback retrieval uses a GET listing route whose adapter does not apply the query. Do not treat every result as a semantic match. |
+| Old text after an update | Local updates change Redis but do not refresh the vector entry. Read by known ID to compare the stored record. |
+| List returns only a count | This is the current handler output, not a missing client JSON parser. |
+| No ID after saving | The add acknowledgement omits it; search and list also do not expose IDs in their current output. |
+
+Setting `prefer_cache: false` changes retrieval preference; it does not enable cloud mode or repair these local routing and output limitations. Metadata filters shown in older examples are not registered search parameters.
+
+## Enhanced tools fail
+
+Enhanced mode attempts a model download and initializes entity extraction. If initialization fails, the server continues with the enhanced objects cleared. The tools remain discoverable but can be unavailable when called.
+
+Check model-download and initialization errors in stderr, network access, and write permissions. Compare with a basic-mode run before changing Redis configuration. Do not delete the vector directory as a first troubleshooting step; it contains stored index data.
+
+## Report a reproducible core issue
+
+Include the installed package version, Node/npm versions, OS and architecture, server command, working directory, mode, tool name, sanitized arguments, and stderr around the failure. State separately whether connection, write, read, and restart checks passed. Remove credentials and private memory content.
+
+Report runtime issues to [n3wth/r3](https://github.com/n3wth/r3/issues). Website rendering and routing belong to [n3wth/n3wth](https://github.com/n3wth/n3wth/issues).
+
+## Sources and scope
+
+These diagnostics follow the core [request handlers](https://github.com/n3wth/r3/blob/main/src/index.ts), [local storage](https://github.com/n3wth/r3/blob/main/src/lib/local-memory.ts), and [launch audit](https://github.com/n3wth/r3/blob/main/LAUNCH_AUDIT.md). The workspace [core triage record](https://github.com/n3wth/n3wth/blob/main/docs/workspace/r3-core-triage.md) documents earlier timeout evidence and distinguishes confirmed defects from possible causes. Its historical CI findings are not a claim about the current release's test status.

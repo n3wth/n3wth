@@ -1,0 +1,84 @@
+---
+title: "Optional AI context and scaffold CLI"
+description: "Use Kit's static context files and understand the scaffold CLI's implemented behavior and limitations."
+---
+
+AI context is optional. You can [install components directly](/kit/quickstart) without an assistant, MCP configuration, or Kit scaffold CLI.
+
+## Add context to an existing project
+
+Download a context file for review, then merge useful guidance into your existing project instructions. Preserve project-specific rules and correct any examples that disagree with your installed component source.
+
+```bash
+curl --fail --show-error --location \
+  https://kit.n3wth.com/ai/GEMINI.md \
+  --output kit-context-review.md
+```
+
+Use a new review filename if that file already exists. The download does not configure an assistant or install components. Whether an assistant loads `GEMINI.md` or `AGENTS.md` depends on that assistant's configuration.
+
+| Published path | Contents | How to use it |
+| --- | --- | --- |
+| `/ai/GEMINI.md` | Catalog, usage patterns, and styling guidance | Merge relevant context into your assistant's project instructions |
+| `/ai/AGENTS.md` | Component API examples, tokens, and hooks | Review against source before adopting examples |
+| `/ai/components.json` | Descriptions, props, defaults, usage strings, and accessibility notes | Supply as structured reference context |
+| `/ai/README.md` | Installation and context guidance | Starting point for the static assets |
+| `/ai/mcp.json` | Example MCP launch configuration | Inspect compatibility before using it |
+
+All paths above are relative to `https://kit.n3wth.com`. These files are static context, not executable component implementations or a live source of validated API signatures. For example, their icon guidance does not resolve the [missing icon source](/kit/catalog).
+
+## MCP configuration limitations
+
+The checked-in example launches `npx` with arguments `-y`, `shadcn@latest`, and `registry:mcp`, and sets `REGISTRY_URL` to `https://kit.n3wth.com/r/registry.json`.
+
+Kit's context assets do not implement an MCP server. The example depends on the external shadcn CLI recognizing that command and environment variable. Compatibility and server startup are not established by the presence of `mcp.json`; check the CLI version and your assistant's MCP setup before enabling it. Use direct registry URLs if the launch command is unsupported.
+
+## Scaffold CLI reference
+
+The source under `apps/kit/cli` declares package name `@n3wth/kit`, version `0.1.0`, and binary `n3wth-kit`, targeting `dist/index.js`. This source does not establish npm publication availability. If you have a built local copy with its dependencies installed, its entry point can be invoked from the directory where you want the new project:
+
+```bash
+node /absolute/path/to/n3wth/apps/kit/cli/dist/index.js init --name my-app
+```
+
+Replace the absolute path with your checkout path. The command scaffolds a project and invokes external tools; run it in a directory where creating `my-app` is intended.
+
+| Option | Implemented behavior |
+| --- | --- |
+| `init` | Prompts for framework and theme, then creates a project |
+| `-n, --name <name>` | Supplies the project name instead of prompting for it |
+| `--no-install` | Skips the CLI's explicit Vite `npm install` step; does not disable all dependency installation |
+
+There are no framework or theme flags in the command definition; those selections remain interactive.
+
+### Framework differences
+
+| Step | Next.js | Vite |
+| --- | --- | --- |
+| Scaffold | `create-next-app@latest` with TypeScript, Tailwind, ESLint, App Router, `src`, npm, and `@/*` alias options | `create-vite@latest` with the `react-ts` template |
+| Explicit dependency installation | Left to the scaffolder and later shadcn commands | Runs `npm install` unless `--no-install` |
+| Initialize shadcn | Runs `shadcn@latest init --defaults` | Not performed |
+| Registry configuration | Updates `components.json` if present | Skips when `components.json` is absent |
+| Base components | Attempts `cn`, `button`, `card`, and `input` | Not performed |
+| Theme | Tries to add `className="dark"` to an exact HTML tag in `src/app/layout.tsx` | No change when that Next.js layout path is absent |
+| Context | Writes embedded `GEMINI.md` and `AGENTS.md` | Writes the same embedded files |
+
+## Review the generated project
+
+The CLI writes a `registries.n3wth` object with a URL and style, then tries `n3wth/<component>` with overwrite enabled. On failure it tries the bare component name from the default registry, also with overwrite enabled. If both fail, it logs a warning and continues. A final completion message therefore does not prove that Kit components were installed.
+
+Inspect each generated component. If it came from the fallback registry, use the full Kit URL from the [catalog](/kit/catalog) and review any replacement. For Vite, configure Tailwind, aliases, and shadcn before adding Kit items manually; the CLI's Vite branch does not do that setup.
+
+The embedded context strings are separate from `public/ai`; the CLI does not download the published context packs. It writes its two instruction files directly rather than merging with existing contents. Review them before using them as assistant instructions.
+
+Finally, verify theme behavior in the browser. The dark-theme replacement only matches `<html lang="en">` exactly. The `use-theme` hook defaults to a `data-theme` attribute, so adding the hook requires selectors consistent with that attribute. Run the generated application's checks before relying on the scaffold.
+
+## Sources
+
+- [Published context guidance](https://github.com/n3wth/n3wth/blob/main/apps/kit/public/ai/README.md)
+- [Agent reference](https://github.com/n3wth/n3wth/blob/main/apps/kit/public/ai/AGENTS.md)
+- [Structured AI catalog](https://github.com/n3wth/n3wth/blob/main/apps/kit/public/ai/components.json)
+- [MCP configuration](https://github.com/n3wth/n3wth/blob/main/apps/kit/public/ai/mcp.json)
+- [CLI command definition](https://github.com/n3wth/n3wth/blob/main/apps/kit/cli/src/index.ts)
+- [Scaffold implementation](https://github.com/n3wth/n3wth/blob/main/apps/kit/cli/src/commands/init.ts)
+- [CLI package metadata](https://github.com/n3wth/n3wth/blob/main/apps/kit/cli/package.json)

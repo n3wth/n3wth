@@ -1,0 +1,93 @@
+---
+title: "r3 architecture and quickstart"
+description: "Connect the r3 memory server to an MCP client and verify storage, retrieval, and restart behavior."
+---
+
+r3 is a local-first memory server for MCP clients. It stores facts and conversation context through tools over standard input and output. Start here if you are connecting a desktop assistant or building an MCP integration.
+
+## Core and website
+
+The executable package is `@n3wth/r3`, maintained in [n3wth/r3](https://github.com/n3wth/r3). This workspace contains only the website at `apps/r3-web`. Starting or deploying that website does not start a memory server, provision storage, or expose an r3 HTTP API.
+
+The separation is documented in the [website instructions](https://github.com/n3wth/n3wth/blob/main/apps/r3-web/AGENTS.md) and [migration record](https://github.com/n3wth/n3wth/blob/main/docs/workspace/r3-migration.md).
+
+## How requests reach storage
+
+```text
+MCP client
+  -> r3 process (stdio)
+     -> local mode: LocalMemory + embedded Redis + Vectra files
+     -> hybrid mode: Mem0 API + Redis cache
+     -> demo mode: in-process memory
+```
+
+The server defaults to local mode without an API key. Enhanced intelligence is enabled by default and attempts to load `Xenova/all-MiniLM-L6-v2` on the CPU. Basic mode skips that enhanced initialization; the local backend still uses a Vectra index with a simpler word-hash embedding implementation.
+
+The vector index defaults to `./data/vectra-index`, resolved from the process working directory. Local Redis records have a 30-day TTL. The embedded Redis constructor does not explicitly configure a durable data directory or persistence policy. A file-backed vector index alone does not establish that every memory operation survives a process restart. Verify restart behavior before relying on r3 as the only copy of information.
+
+See [configuration](/r3/configuration) for storage and mode details.
+
+## Prerequisites
+
+- Node.js and npm available to the MCP client's process. The core package declares Node.js 18 or later.
+- An MCP client that can launch a local stdio server.
+- A writable, stable working directory for the vector index.
+- Network access for the initial npm installation, Redis binary download or build, and enhanced embedding model download.
+
+Some macOS installations need a newer GNU Make to build the embedded Redis dependency. See [troubleshooting](/r3/troubleshooting#installation-fails-on-macos).
+
+## Connect a client
+
+Merge this server entry into your client's MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "r3": {
+      "command": "npx",
+      "args": ["-y", "@n3wth/r3", "serve"],
+      "env": {
+        "MEM0_USER_ID": "r3-quickstart",
+        "INTELLIGENCE_MODE": "basic"
+      }
+    }
+  }
+}
+```
+
+Basic mode keeps the first storage check independent of enhanced model initialization. Remove `INTELLIGENCE_MODE` to try enhanced mode after the basic check.
+
+The core README provides integrations for Claude Desktop and Cursor. On macOS, Claude Desktop reads `~/Library/Application Support/Claude/claude_desktop_config.json`; Cursor supports project configuration at `.cursor/mcp.json`. The website also documents the same stdio server entry for Antigravity CLI in `.gemini/settings.json`. These integrations launch the same process; they do not use a hosted r3 endpoint.
+
+Restart or reconnect the client after editing configuration. Inspect its discovered tools: `add_memory`, `search_memory`, and `cache_stats` should appear. A successful MCP connection confirms transport readiness; Redis initialization continues separately.
+
+## Check one write and read
+
+Use a disposable namespace and ask the client to call `add_memory` with these arguments:
+
+```json
+{
+  "content": "The documentation example project uses TypeScript.",
+  "user_id": "r3-quickstart",
+  "priority": "high",
+  "async": false,
+  "skip_duplicate_check": true
+}
+```
+
+This diagnostic explicitly skips duplicate detection because the inspected local adapter has a search-routing defect. It can create duplicate records if repeated. `async: false` waits for the write path rather than returning a background acknowledgement.
+
+Call `search_memory` with:
+
+```json
+{
+  "query": "documentation example TypeScript",
+  "limit": 1
+}
+```
+
+Check that the returned text contains the stored fact. Then restart the server from the same working directory and repeat the read. Treat an empty result, error, or unrelated result as a failed check, even if the write returned `Saved`. The [MCP reference](/r3/mcp-tools) explains the response formats and namespace limits.
+
+## Source of truth
+
+These instructions were checked against core source on September 17, 2026, whose manifest reports version `1.3.2`; the installed npm artifact may differ. Authoritative files are the [package manifest](https://github.com/n3wth/r3/blob/main/package.json), [CLI entry point](https://github.com/n3wth/r3/blob/main/src/cli-main.tsx), [MCP server](https://github.com/n3wth/r3/blob/main/src/index.ts), [local backend](https://github.com/n3wth/r3/blob/main/src/lib/local-memory.ts), and [client integration examples](https://github.com/n3wth/r3/blob/main/README.md). The website's [Antigravity integration](https://github.com/n3wth/n3wth/blob/main/apps/r3-web/content/docs/integrations.mdx) is a separate client configuration example.
