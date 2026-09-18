@@ -51,10 +51,9 @@ for (const route of ['/', '/skill/pdf', '/about', '/bundles']) {
   })
 }
 
-test('callback without a code returns the existing auth error redirect', async ({ request }) => {
+test('removed Supabase callback route is not exposed', async ({ request }) => {
   const response = await request.get('/auth/callback', { maxRedirects: 0 })
-  expect(response.status()).toBe(307)
-  expect(response.headers().location).toMatch(/\/\?error=auth$/)
+  expect(response.status()).toBe(404)
 })
 
 test('public installer remains available', async ({ request }) => {
