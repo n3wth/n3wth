@@ -40,7 +40,7 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "shiki": "^4.4.3",
-    "three": "^0.186.0",
+    "three": "^0.185.1",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0"
   },
@@ -53,7 +53,7 @@
     "@types/node": "^24",
     "@types/react": "19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@types/three": "^0.186.0",
+    "@types/three": "^0.185.4",
     "tailwindcss": "^4.3.3",
     "typescript": "^5"
   }
