@@ -12,7 +12,20 @@ type Answer = { answer: string; sources: Pick<SearchSection, 'id' | 'title' | 'h
 
 export function DocsSearchTrigger({ compact = false }: { compact?: boolean }) {
   const open = useContext(SearchContext);
-  return <Button label="Search docs" variant={compact ? 'ghost' : 'secondary'} size="sm" icon={<Search size={16} />} isIconOnly={compact} onClick={(event) => open(event.currentTarget)} endContent={compact ? undefined : <span className="text-ink-faint">⌘K</span>} />;
+  if (compact) return <Button label="Search docs" variant="ghost" size="sm" icon={<Search size={16} />} isIconOnly onClick={(event) => open(event.currentTarget)} />;
+  return (
+    <div className="text-sm font-normal text-ink-dim hover:text-ink transition-colors">
+      <Button
+        label="Search docs"
+        variant="ghost"
+        size="sm"
+        icon={<Search size={16} />}
+        onClick={(event) => open(event.currentTarget)}
+        endContent={<span className="text-ink-faint">⌘K</span>}
+        style={{ width: '100%', height: 'auto', justifyContent: 'flex-start', fontSize: 'inherit', fontWeight: 'inherit', color: 'inherit', backgroundImage: 'none' }}
+      />
+    </div>
+  );
 }
 
 export function DocsSearchProvider({ children }: { children: React.ReactNode }) {
