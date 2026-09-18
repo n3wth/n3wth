@@ -33,9 +33,9 @@ Applications live in `apps/portfolio`, `apps/ui-docs`, `apps/garden`, `apps/skil
 
 ## Deployment
 
-All six sites deploy manually. Each app's `vercel.json` sets `git.deploymentEnabled` to `false`, including for `main`: pushing or merging runs GitHub CI but does not publish a site. New sites inherit this setting from the generator.
+All six sites use automatic Git deployments. Each app's `vercel.json` sets `git.deploymentEnabled` to `true`. Feature branches create Preview deployments; merging to `main` triggers Production deployments for affected sites. New sites inherit this setting from the generator.
 
-After CI passes, select the affected Vercel project, open **Deployments → Create Deployment**, and choose the exact commit SHA and intended environment. Verify a preview before a production release. Release only the affected sites; shared-package changes may require several. See the [deployment runbook](docs/workspace/deployment.md) for project mappings, validation, and rollback. Older branches must incorporate this configuration before further pushes to avoid their previous automatic deployment policy.
+Wait for CI and verify the affected Preview deployments before merging the tested commit. After merge, verify the Production deployments and live routes. Shared-package changes may affect several sites. See the [deployment runbook](docs/workspace/deployment.md) for project mappings, validation, and rollback. Keep older branches aligned with this deployment policy before pushing.
 
 ## Contact
 

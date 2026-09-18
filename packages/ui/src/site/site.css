@@ -25,6 +25,11 @@ html[data-astryx-theme='n3wth'] {
 [data-astryx-theme='n3wth'][data-theme='dark'] { color-scheme: dark; }
 [data-astryx-theme='n3wth'][data-theme='light'] { color-scheme: light; }
 
+/* Paragraph copy stays regular even when it carries a heavier type utility.
+   Keep this outside layers so utilities cannot override the shared rule.
+   Descendant emphasis and controls retain their own weights. */
+[data-astryx-theme='n3wth'] p { font-weight: var(--font-weight-normal, 400); }
+
 /* Five semantic type roles. Apps own their content, not another type scale. */
 .n3wth-site-container {
   box-sizing: border-box;

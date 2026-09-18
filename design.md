@@ -19,6 +19,7 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Use a clear title and short description in a hero. Omit actions that repeat navigation or merely jump to the content immediately below. Keep useful product actions such as installation or a resume download.
 - Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color.
 - Keep heading order semantic: one primary page heading, section headings below it, then item headings. Visual size does not determine heading level.
+- Paragraph copy uses regular weight (400) across all six sites, including article prose and lead paragraphs. Preserve heading, emphasis and control weights.
 
 ## Interaction
 
