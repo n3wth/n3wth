@@ -101,6 +101,7 @@ jobs:
           CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          APPS: ${{ steps.affected.outputs.apps }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
           for app in $APPS; do
@@ -114,6 +115,7 @@ jobs:
           CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          APPS: ${{ steps.affected.outputs.apps }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
           status=0
