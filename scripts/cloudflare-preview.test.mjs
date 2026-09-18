@@ -422,6 +422,131 @@ test('portfolio stages dist with public headers and redirects under the noindex 
   assert.equal(result.config.assets.directory, result.assetsDirectory)
 })
 
+test('push, synchronize, close, and reopen recycle one preview cleanly', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-lifecycle-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const appRoot = join(root, 'apps', 'ui-docs')
+  mkdirSync(join(appRoot, 'dist'), { recursive: true })
+  writeFileSync(join(appRoot, 'dist', 'index.html'), '<html></html>')
+  writeFileSync(join(appRoot, 'wrangler.jsonc'), '{ "assets": { "directory": "./dist" } }')
+  const env = {
+    CLOUDFLARE_ACCOUNT_ID: accountId,
+    CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
+    CLOUDFLARE_API_TOKEN: 'test-token',
+  }
+  const cloudflare = fakeCloudflareAccount()
+  const deploy = () => deployPreview({ appRoot, root, pr: 8, env, run: cloudflare.run, log: () => {}, fetchFn: cloudflare.fetchFn })
+  const close = () => deletePreview({ root, pr: 8, env, run: cloudflare.run, log: () => {}, fetchFn: cloudflare.fetchFn })
+  const workerName = 'n3wth-ui-docs-pr-8'
+
+  // opened: first deploy claims the hostname and attaches the custom domain.
+  const first = await deploy()
+  assert.equal(cloudflare.calls.dnsQueries, 1)
+  assert.deepEqual(cloudflare.state.domains.map(domain => domain.service), [workerName])
+  assert.equal(cloudflare.state.workers.has(workerName), true)
+
+  // synchronize: the PR's own Worker Domain and its Cloudflare-managed DNS record must not self-block the redeploy.
+  assert.equal(cloudflare.state.dns.length, 1)
+  const second = await deploy()
+  assert.equal(second.host, first.host)
+  assert.equal(second.workerName, first.workerName)
+  assert.equal(cloudflare.calls.dnsQueries, 1, 'redeploy short-circuits before the DNS collision check')
+  assert.equal(cloudflare.state.domains.length, 1, 'redeploy leaves no duplicate Worker Domain')
+
+  // closed: the custom domain is detached via the API, then the Worker is deleted.
+  const deleted = await close()
+  assert.equal(deleted.domainDetached, true)
+  assert.equal(deleted.missing, false)
+  assert.deepEqual(cloudflare.calls.domainDeletes, ['ui-docs-pr-8.preview.n3wth.com'])
+  assert.equal(cloudflare.state.domains.length, 0)
+  assert.equal(cloudflare.state.dns.length, 0)
+  assert.equal(cloudflare.state.workers.has(workerName), false)
+
+  // reopened: no stale domain ownership or DNS record blocks a clean recreate.
+  const third = await deploy()
+  assert.equal(third.host, first.host)
+  assert.equal(cloudflare.calls.dnsQueries, 2, 'reopen re-checks DNS on the empty slate')
+  assert.deepEqual(cloudflare.state.domains.map(domain => domain.service), [workerName])
+  assert.equal(cloudflare.state.workers.has(workerName), true)
+})
+
+test('close cleanup succeeds when the worker and domain are already absent', async () => {
+  const requests = []
+  const result = await deletePreview({
+    root: '/repo',
+    pr: 6,
+    env: { CLOUDFLARE_ACCOUNT_ID: accountId, CLOUDFLARE_API_TOKEN: 'test-token' },
+    run: () => ({ status: 1, stderr: 'Worker n3wth-ui-docs-pr-6 not found. [code: 10007]' }),
+    log: () => {},
+    fetchFn: async (url, options) => {
+      requests.push([url, options])
+      return cloudflareResponse([])
+    },
+  })
+  assert.equal(result.missing, true)
+  assert.equal(result.domainDetached, false)
+  assert.equal(requests.length, 1, 'no detach request when no Worker Domain exists')
+  assert.match(requests[0][0], /workers\/domains\?hostname=ui-docs-pr-6\.preview\.n3wth\.com/)
+})
+
+test('the workflow queues lifecycle events per PR and gates reopen deploys on current state', () => {
+  const workflow = readFileSync(fileURLToPath(new URL('../.github/workflows/cloudflare-preview.yml', import.meta.url)), 'utf8')
+  assert.match(workflow, /types:\s*\[opened, synchronize, reopened, closed\]/, 'close and reopen are workflow triggers')
+  assert.match(workflow, /group:\s*cloudflare-preview-\$\{\{ github\.event\.pull_request\.number \}\}[\s\S]*?cancel-in-progress:\s*false/, 'deploys and cleanup serialize per PR')
+  assert.match(workflow, /if \[ "\$EVENT_ACTION" = closed \][\s\S]*?apps=ui-docs portfolio garden kit skills r3-web/, 'close cleans up every preview app')
+  assert.match(workflow, /pr\.state === 'open' && pr\.head\.sha === context\.payload\.pull_request\.head\.sha/, 'deploy requires the PR to still be open at the queued SHA')
+  assert.match(workflow, /if:\s*steps\.affected\.outputs\.apps != '' && steps\.current\.outputs\.deploy == 'true'/, 'deploy is gated on the current-state check')
+  assert.match(workflow, /if:\s*steps\.affected\.outputs\.apps != '' && github\.event\.action == 'closed'/, 'delete only runs on close')
+})
+
+function fakeCloudflareAccount() {
+  const state = { domains: [], dns: [], workers: new Set() }
+  const calls = { dnsQueries: 0, domainDeletes: [] }
+  const fetchFn = async (url, options = {}) => {
+    const parsed = new URL(url)
+    if (parsed.pathname.endsWith('/workers/domains')) {
+      const hostname = parsed.searchParams.get('hostname')
+      return cloudflareResponse(state.domains.filter(domain => !hostname || domain.hostname === hostname))
+    }
+    if (parsed.pathname.includes('/workers/domains/') && options.method === 'DELETE') {
+      const id = parsed.pathname.split('/').pop()
+      const index = state.domains.findIndex(domain => domain.id === id)
+      if (index === -1) return cloudflareResponse(null, { status: 404, success: false, errors: [{ message: 'Worker Domain not found' }] })
+      const [removed] = state.domains.splice(index, 1)
+      state.dns = state.dns.filter(record => record.name !== removed.hostname)
+      calls.domainDeletes.push(removed.hostname)
+      return cloudflareResponse({ id })
+    }
+    if (parsed.pathname.endsWith('/dns_records')) {
+      calls.dnsQueries += 1
+      const name = parsed.searchParams.get('name')
+      return cloudflareResponse(state.dns.filter(record => !name || record.name === name))
+    }
+    throw new Error(`Unexpected Cloudflare API call: ${options.method || 'GET'} ${url}`)
+  }
+  const run = (...args) => {
+    const argv = args[1].slice(1)
+    if (argv[0] === 'deploy') {
+      const configPath = argv[argv.indexOf('--config') + 1]
+      const config = JSON.parse(readFileSync(configPath, 'utf8'))
+      state.workers.add(config.name)
+      for (const route of config.routes || []) {
+        if (!route.custom_domain || state.domains.some(domain => domain.hostname === route.pattern)) continue
+        state.domains.push({ id: `domain-${config.name}`, hostname: route.pattern, service: config.name, environment: 'production' })
+        state.dns.push({ id: `dns-${config.name}`, name: route.pattern })
+      }
+      return { status: 0, stdout: `Deployed ${config.name}` }
+    }
+    if (argv[0] === 'delete') {
+      if (!state.workers.has(argv[1])) return { status: 1, stderr: `Worker ${argv[1]} not found. [code: 10007]` }
+      state.workers.delete(argv[1])
+      return { status: 0, stdout: `Deleted ${argv[1]}` }
+    }
+    throw new Error(`Unexpected Wrangler command: ${argv.join(' ')}`)
+  }
+  return { state, calls, fetchFn, run }
+}
+
 function cloudflareResponse(result, { status = 200, success = true, errors = [] } = {}) {
   return {
     ok: status >= 200 && status < 300,
