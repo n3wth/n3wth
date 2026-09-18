@@ -65,6 +65,7 @@ export async function getAllDocs(): Promise<DocMeta[]> {
 }
 
 export async function getDocBySlug(slug: string) {
+  if (!/^[a-z0-9-]+(?:\/[a-z0-9-]+)*$/.test(slug)) return null;
   const fullPath = path.join(docsDirectory, `${slug}.mdx`);
 
   if (!fs.existsSync(fullPath)) {

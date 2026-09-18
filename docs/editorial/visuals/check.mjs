@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
+import { themeFigure } from '../../../apps/garden/scripts/theme-figures.mjs'
 
 const directory = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(directory, '../../..')
@@ -64,6 +65,7 @@ for (const record of records) {
     require(Math.abs(ratio - metadata.width / metadata.height) < 0.01, `${label}: image aspect ratio is incorrect`)
     if (record.asset.endsWith('.svg')) {
       const svg = buffer.toString('utf8')
+      require(svg === themeFigure(svg), `${label}: figure palette is stale; run npm run figures:theme -w @n3wth/garden`)
       require(!/<(?:script|foreignObject|image)\b|\bon\w+\s*=|(?:href|url)\s*[=(]\s*["']?https?:/i.test(svg), `${label}: unsafe or externally dependent SVG`)
       require(/<title[\s>]/.test(svg) && /<desc[\s>]/.test(svg), `${label}: SVG title/description missing`)
       require(!/font-weight\s*[:=]\s*["']?(?:[7-9]00|bold)/i.test(svg), `${label}: figure exceeds the site's semibold weight limit`)

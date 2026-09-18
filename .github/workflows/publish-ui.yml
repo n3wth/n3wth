@@ -25,7 +25,7 @@ jobs:
       pull-requests: write
       actions: write
     outputs:
-      hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
+      hasChangesets: ${{ steps.changesets.outputs.has-changesets }}
       sha: ${{ steps.source.outputs.sha }}
     steps:
       - uses: actions/checkout@v7
@@ -40,22 +40,21 @@ jobs:
           cache: npm
       - run: npm install --global npm@11.19.1
       - run: npm ci --workspace @n3wth/ui --include-workspace-root
-      - uses: changesets/action@v1
+      - uses: changesets/action@v2
         id: changesets
         with:
-          version: npm run release:version
-          branch: main
-          title: 'Release @n3wth/ui'
-          commit: 'chore: version UI release'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version-script: npm run release:version
+          pr-base-branch: main
+          pr-title: 'Release @n3wth/ui'
+          commit-message: 'chore: version UI release'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       # PRs created with GITHUB_TOKEN do not trigger pull_request workflows.
       # Explicit workflow_dispatch does, and checks the generated release SHA.
       - name: Validate generated release PR
-        if: steps.changesets.outputs.pullRequestNumber != ''
+        if: steps.changesets.outputs.pr-number != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.changesets.outputs.pullRequestNumber }}
+          PR_NUMBER: ${{ steps.changesets.outputs.pr-number }}
         run: gh workflow run site-check.yml --ref "$(gh pr view "$PR_NUMBER" --json headRefName --jq .headRefName)"
 
   publish:

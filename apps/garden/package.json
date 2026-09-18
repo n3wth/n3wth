@@ -1,34 +1,23 @@
 {
-  "name": "@n3wth/garden",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "history": "node scripts/build-history.mjs",
-    "typecheck": "tsc --noEmit",
-    "check": "node --test scripts/*.test.mjs && npm run typecheck && npm run build"
-  },
   "dependencies": {
-    "@n3wth/ui": "2.0.0",
-    "@n3wth/site-config": "*",
     "@gsap/react": "^2.1.2",
+    "@n3wth/site-config": "*",
+    "@n3wth/ui": "2.1.0",
     "@next/third-parties": "16.3.5",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
     "@types/d3": "^7.4.3",
     "d3": "^7.9.0",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
-    "gsap": "^3.14.2",
+    "gsap": "^3.15.0",
     "lucide-react": "^1.24.0",
     "next": "16.3.5",
     "next-axiom": "^1.10.0",
     "next-view-transitions": "^0.3.5",
     "posthog-js": "^1.422.5",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "reading-time": "^1.5.0",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-raw": "^7.0.0",
@@ -37,23 +26,36 @@
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
-    "shiki": "^4.3.1",
-    "three": "^0.185.1",
+    "shiki": "^4.4.3",
+    "three": "^0.186.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "1.20.6",
+    "@posthog/nextjs-config": "^1.11.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5"
   },
   "engines": {
     "node": "24.x"
   },
-  "devDependencies": {
-    "@opennextjs/cloudflare": "1.20.6",
-    "@posthog/nextjs-config": "^1.10.0",
-    "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "^24",
-    "@types/react": "19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@types/three": "^0.185.1",
-    "tailwindcss": "^4.3.3",
-    "typescript": "^5"
-  }
+  "name": "@n3wth/garden",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "check": "node --test scripts/*.test.mjs && npm run typecheck && npm run build",
+    "dev": "next dev",
+    "figures:theme": "node scripts/theme-figures.mjs",
+    "history": "node scripts/build-history.mjs",
+    "prebuild": "npm run figures:theme",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.1.1"
 }

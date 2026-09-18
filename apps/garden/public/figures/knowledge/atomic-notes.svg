@@ -1,4 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="650" viewBox="0 0 960 650" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [fill="#ffffff"] { fill: #ffffff; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [stroke="#e8e8ed"] { stroke: #e8e8ed; }
+  [fill="#0071a4"] { fill: #054a6b; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [fill="#ffffff"] { fill: #0d0e10; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [stroke="#e8e8ed"] { stroke: #131316; }
+  [fill="#0071a4"] { fill: #a9e5ff; }
+}
+</style>
 <title id="title">One idea, enough context</title>
 <desc id="desc">An illustrative note contains a specific title, one complete claim, a boundary condition and a relationship link. Annotations distinguish a self-contained idea from an isolated fragment.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6e6e73"/></marker></defs>

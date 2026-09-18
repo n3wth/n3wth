@@ -11,7 +11,7 @@ import {
 
 export function ArchitectureDiagram() {
   return (
-    <div className="py-12">
+    <div className="py-4">
       <div className="space-y-8">
         {/* Horizontal flow: Gemini → MCP → r3 */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 flex-wrap">
@@ -61,21 +61,6 @@ export function ArchitectureDiagram() {
           </div>
         </div>
 
-        {/* Performance metrics */}
-        <div className="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto">
-          <div className="text-center p-3 rounded-lg bg-bg-soft border border-rail">
-            <div className="text-xl font-light text-ink">&lt;5ms</div>
-            <div className="text-xs text-ink-label mt-1">Cache Hit</div>
-          </div>
-          <div className="text-center p-3 rounded-lg bg-bg-soft border border-rail">
-            <div className="text-xl font-light text-ink">~200ms</div>
-            <div className="text-xs text-ink-label mt-1">Cache Miss</div>
-          </div>
-          <div className="text-center p-3 rounded-lg bg-bg-soft border border-rail">
-            <div className="text-xl font-light text-ink">~10ms</div>
-            <div className="text-xs text-ink-label mt-1">First Store</div>
-          </div>
-        </div>
       </div>
     </div>
   );

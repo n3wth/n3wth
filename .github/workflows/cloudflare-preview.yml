@@ -89,7 +89,7 @@ jobs:
       - name: Verify current PR state
         if: steps.affected.outputs.apps != '' && github.event.action != 'closed'
         id: current
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: context.issue.number })

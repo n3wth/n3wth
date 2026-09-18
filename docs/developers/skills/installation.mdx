@@ -1,0 +1,95 @@
+---
+title: Install skills
+description: Install selected skills with the repository installer, verify the files, and handle existing installations.
+---
+
+Use the shell installer to copy committed skill instructions into `~/.gemini/skills`. It preserves folder structure and skips existing destinations. No npm package is needed.
+
+## Prerequisites
+
+- Bash, Git, and curl available in your terminal.
+- Network access to `skills.n3wth.com` and GitHub.
+- Write access to your home directory, or a staging directory you choose.
+- An assistant configured to read the installed instructions. Installation does not install the assistant itself.
+
+The general target is `gemini`, displayed in the catalog as Antigravity CLI. Other target names are rejected, except `all`, which currently selects that same single target.
+
+## Install a selected skill
+
+Download and inspect the script before running it:
+
+```bash
+curl -fsSL https://skills.n3wth.com/install.sh -o /tmp/n3wth-skills-install.sh
+less /tmp/n3wth-skills-install.sh
+bash /tmp/n3wth-skills-install.sh gemini gsap-animations
+test -s "$HOME/.gemini/skills/gsap-animations/SKILL.md"
+sed -n '1,45p' "$HOME/.gemini/skills/gsap-animations/SKILL.md"
+```
+
+The script clones `n3wth/n3wth` at its default branch into a temporary directory, reads `apps/skills/skills`, and removes the clone when finished. It does not pin a commit or install a catalog version.
+
+Supply multiple IDs to install a subset:
+
+```bash
+bash /tmp/n3wth-skills-install.sh gemini pdf skill-creator
+```
+
+These two skills use flat files, so verify `~/.gemini/skills/pdf.md` and `~/.gemini/skills/skill-creator.md`. IDs may contain lowercase letters, digits, and hyphens. The script validates the entire selection before changing the assistant directory. It accepts an ID when either `<id>.md` or `<id>/SKILL.md` exists in the cloned source.
+
+To copy every top-level entry in the skill source directory, omit IDs:
+
+```bash
+bash /tmp/n3wth-skills-install.sh gemini
+```
+
+This installs repository contents, including files not necessarily exposed by a catalog download link.
+
+## Stage an installation
+
+`SKILLS_INSTALL_HOME` overrides the home directory used by this shell script. Use it to inspect files before placing them in the assistant's directory:
+
+```bash
+skill_stage=$(mktemp -d)
+SKILLS_INSTALL_HOME="$skill_stage" bash /tmp/n3wth-skills-install.sh gemini pdf
+sed -n '1,60p' "$skill_stage/.gemini/skills/pdf.md"
+```
+
+The override does not configure the assistant, the website's curl commands, or the separate CLI. A staged skill will not automatically appear in your normal assistant session.
+
+## Claude Code: skill-creator only
+
+The catalog provides this additional recipe specifically for `skill-creator`:
+
+```bash
+mkdir -p "$HOME/.claude/skills/skill-creator"
+curl -fsSL \
+  https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills/skill-creator.md \
+  -o "$HOME/.claude/skills/skill-creator/SKILL.md"
+test -s "$HOME/.claude/skills/skill-creator/SKILL.md"
+```
+
+This direct download overwrites that destination file. Inspect it, then start a new Claude Code session as the catalog recipe instructs. Do not extrapolate this exception into catalog-wide Claude Code compatibility; the general installer still accepts only `gemini` and `all`.
+
+## Existing files, updates, and removal
+
+The shell installer skips a destination when it already exists, including symbolic links. Rerunning it is therefore not an update operation. To compare an update, install into a staging directory, diff the staged copy against your installed file or folder, and deliberately replace it after preserving local changes.
+
+The shell installer does not create an uninstall registry. Remove only the exact file or folder you installed. The separate CLI cannot discover these installations through `list --installed`; its tracking file is independent.
+
+## Troubleshooting
+
+| Symptom | Check or action |
+| --- | --- |
+| `Supported target: gemini` | Put `gemini` before skill IDs; `claude` is not a target |
+| `Invalid skill ID` | Use a bare lowercase ID, not a path or URL |
+| `Skill is not available` | Confirm the flat file or folder exists in the repository's default branch |
+| `already exists, skipping` | Compare with a staged copy; the installer intentionally preserves the destination |
+| Clone failure | Check Git installation, GitHub connectivity, and access to `n3wth/n3wth` |
+| File exists but assistant ignores it | Inspect its content and path; confirm discovery in the assistant before treating installation as successful activation |
+| Direct download has no sibling resources | Use the shell installer for a folder skill; a single curl download copies only the referenced Markdown file |
+
+## Sources
+
+- [Shell installer](https://github.com/n3wth/n3wth/blob/main/apps/skills/public/install.sh)
+- [Installer regression checks](https://github.com/n3wth/n3wth/blob/main/apps/skills/scripts/install.test.mjs)
+- [Skill Creator's additional install recipe](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/data/skills.ts)

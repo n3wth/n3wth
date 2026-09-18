@@ -1,446 +1,194 @@
 ---
 order: 4
 title: API Reference
+description: Published r3 MCP tools and their input schemas.
 ---
 
 # API Reference
 
-MCP tools available in r3.
+r3 v1.3.2 exposes 14 tools through the Model Context Protocol (MCP) over stdio.
+
+[MCP tool schemas (JSON)](/mcp-tools.json) · [Published source](https://github.com/n3wth/r3/blob/v1.3.2/src/index.ts)
+
+## Schema and transport
+
+The machine-readable schema contains every tool name, description, annotation, and input schema from the published release. Connect an MCP client and call `tools/list` to read the definitions from your running server.
+
+This release does not expose an HTTP REST API, so it has no OpenAPI document. The JSON schemas above describe MCP tool arguments. They are not an OpenAI API endpoint.
+
+Use `tools/call` with a tool name and arguments. Your MCP client handles the JSON-RPC transport:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "search_memory",
+    "arguments": {
+      "query": "programming preferences",
+      "limit": 5
+    }
+  }
+}
+```
+
+`user_id` selects a memory namespace. Its default comes from the server’s `MEM0_USER_ID` environment variable. The downloadable schema records the release default.
 
 ## Tools overview
 
-r3 provides these tools to Antigravity CLI through the MCP protocol:
-
-| Tool                  | Description             | Response time     |
-| --------------------- | ----------------------- | ----------------- |
-| `add_memory`          | Store new information   | Under 10ms        |
-| `search_memory`       | Find relevant memories  | Under 5ms (cache) |
-| `get_all_memories`    | List all memories       | Under 50ms        |
-| `update_memory`       | Modify existing memory  | Under 10ms        |
-| `delete_memory`       | Remove a memory         | Under 10ms        |
-| `delete_all_memories` | Clear all memories      | Under 100ms       |
-| `get_memory_history`  | View memory changes     | Under 20ms        |
-| `cache_stats`         | Get performance metrics | Under 1ms         |
-| `optimize_cache`      | Reorganize cache        | Under 500ms       |
-| `health_check`        | Check system status     | Under 5ms         |
+| Tool | Purpose |
+| --- | --- |
+| [`add_memory`](#add_memory) | Store a new memory with automatic deduplication and indexing. |
+| [`get_memory`](#get_memory) | Retrieve a single memory by its unique ID. |
+| [`update_memory`](#update_memory) | Modify an existing memory's content or metadata. |
+| [`search_memory`](#search_memory) | Find memories matching a natural language query using hybrid semantic + keyword search. |
+| [`get_all_memories`](#get_all_memories) | List all memories for a user with pagination. |
+| [`delete_memory`](#delete_memory) | Permanently remove a memory by ID. |
+| [`deduplicate_memories`](#deduplicate_memories) | Detect and optionally remove duplicate memories using content similarity. |
+| [`optimize_cache`](#optimize_cache) | Reorganize cache for optimal hit rates. |
+| [`cache_stats`](#cache_stats) | View cache performance metrics and health status. |
+| [`sync_status`](#sync_status) | Check background job queue and sync status. |
+| [`extract_entities`](#extract_entities) | Extract named entities and relationships from text using NLP. |
+| [`get_knowledge_graph`](#get_knowledge_graph) | Build a knowledge graph from stored memories. |
+| [`find_connections`](#find_connections) | Discover relationship paths between entities in the knowledge graph. |
+| [`import_memories`](#import_memories) | Bulk import memories from external sources. |
 
 ## add_memory
 
-Store new information in the memory system.
+Store a new memory with automatic deduplication and indexing. Use for persisting facts, preferences, or conversation context. Checks for duplicates by default (85% similarity threshold). Returns immediately; background processing handles indexing. Prefer over update_memory for new content. Returns: confirmation text. Side effects: creates memory record, updates search index, may skip if duplicate detected.
 
-### Parameters
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `messages` | array | No | Conversation messages to store. Use instead of content for multi-turn context. Each message needs role and content fields. |
+| `content` | string | No | Plain text content to store. Use instead of messages for simple facts. Either content or messages required, not both. |
+| `user_id` | string | No | User namespace for memory isolation. Default: "oliver". Use consistent IDs to retrieve related memories. |
+| `metadata` | object | No | Key-value pairs for categorization (e.g., &#123;category: 'preferences', source: 'onboarding'&#125;). Searchable via search_memory. |
+| `priority` | string | No | Cache priority. high: immediate L1 cache (24h TTL). medium: standard processing. low: L2 cache (7d TTL). Default: medium. Values: `high`, `medium`, `low`. |
+| `async` | boolean | No | Enable background processing. true: returns immediately, indexes async. false: blocks until complete. Default: true. |
+| `skip_duplicate_check` | boolean | No | Bypass duplicate detection. Use only when intentionally storing similar content. Default: false. |
 
-| Parameter  | Type    | Required | Description                                             |
-| ---------- | ------- | -------- | ------------------------------------------------------- |
-| `content`  | string  | No\*     | Text content to remember                                |
-| `messages` | array   | No\*     | Conversation messages to remember                       |
-| `user_id`  | string  | No       | User identifier (default: from env)                     |
-| `priority` | string  | No       | `critical`, `high`, `medium`, `low` (default: `medium`) |
-| `metadata` | object  | No       | Additional context                                      |
-| `async`    | boolean | No       | Process in background (default: `true`)                 |
+## get_memory
 
-\*Either `content` or `messages` is required.
+Retrieve a single memory by its unique ID. Use when you have a specific memory_id from prior search/list results. Returns null if not found. Prefer search_memory for content-based lookup. Read-only operation. Returns: Memory object &#123;id, content, user_id, metadata&#125; or null.
 
-### Example
-
-```json
-{
-  "tool": "add_memory",
-  "parameters": {
-    "content": "User prefers dark mode and 14px font size",
-    "priority": "high",
-    "metadata": {
-      "category": "preferences",
-      "updated": "2024-01-15"
-    }
-  }
-}
-```
-
-### Response
-
-```json
-{
-  "memory_id": "mem_abc123xyz",
-  "message": "Memory added successfully",
-  "cached": true
-}
-```
-
-## search_memory
-
-Find memories using semantic search.
-
-### Parameters
-
-| Parameter         | Type    | Required | Description                              |
-| ----------------- | ------- | -------- | ---------------------------------------- |
-| `query`           | string  | Yes      | Search query                             |
-| `user_id`         | string  | No       | Filter by user                           |
-| `limit`           | number  | No       | Max results (default: 10)                |
-| `prefer_cache`    | boolean | No       | Skip cloud if in cache (default: `true`) |
-| `metadata_filter` | object  | No       | Filter by metadata                       |
-
-### Example
-
-```json
-{
-  "tool": "search_memory",
-  "parameters": {
-    "query": "user preferences for UI",
-    "limit": 5,
-    "metadata_filter": {
-      "category": "preferences"
-    }
-  }
-}
-```
-
-### Response
-
-```json
-{
-  "results": [
-    {
-      "memory": "User prefers dark mode and 14px font size",
-      "metadata": {
-        "category": "preferences",
-        "updated": "2024-01-15"
-      },
-      "score": 0.92,
-      "id": "mem_abc123xyz",
-      "created_at": "2024-01-15T10:30:00Z",
-      "user_id": "default"
-    }
-  ],
-  "source": "cache"
-}
-```
-
-## get_all_memories
-
-Retrieve all memories for a user.
-
-### Parameters
-
-| Parameter | Type   | Required | Description                         |
-| --------- | ------ | -------- | ----------------------------------- |
-| `user_id` | string | No       | User identifier (default: from env) |
-
-### Example
-
-```json
-{
-  "tool": "get_all_memories",
-  "parameters": {
-    "user_id": "sarah_chen"
-  }
-}
-```
-
-### Response
-
-```json
-{
-  "memories": [
-    {
-      "id": "mem_abc123xyz",
-      "memory": "User prefers dark mode",
-      "hash": "a1b2c3d4",
-      "metadata": null,
-      "created_at": "2024-01-15T10:30:00Z",
-      "updated_at": "2024-01-15T10:30:00Z",
-      "user_id": "sarah_chen"
-    }
-  ],
-  "source": "cache",
-  "count": 1
-}
-```
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `memory_id` | string | Yes | Unique identifier of the memory to retrieve. Obtained from add_memory response, search_memory results, or get_all_memories. |
+| `user_id` | string | No | User namespace. Must match the user_id used when memory was created. Default: "oliver". |
 
 ## update_memory
 
-Modify an existing memory.
+Modify an existing memory's content or metadata. Use for corrections or adding context to existing memories. Fails if memory_id not found. Prefer add_memory for new content. Invalidates search cache. Returns: updated Memory object. Side effects: modifies memory record, invalidates cached search results.
 
-### Parameters
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `memory_id` | string | Yes | Unique identifier of the memory to update. Must exist or operation fails with error. |
+| `content` | string | No | New content to replace existing. Omit to keep current content unchanged. |
+| `metadata` | object | No | Metadata fields to merge. Existing fields not specified are preserved. Pass null value to remove a field. |
+| `user_id` | string | No | User namespace. Must match original. Default: "oliver". |
 
-| Parameter   | Type   | Required | Description         |
-| ----------- | ------ | -------- | ------------------- |
-| `memory_id` | string | Yes      | Memory ID to update |
-| `content`   | string | Yes      | New content         |
-| `metadata`  | object | No       | New metadata        |
+## search_memory
 
-### Example
+Find memories matching a natural language query using hybrid semantic + keyword search. Primary retrieval tool for content-based lookup. Uses vector similarity (enhanced mode) or keyword matching (basic mode). Cache-first by default for speed. Returns ranked results with relevance scores. Read-only. Returns: array of Memory objects or 'No memories found' text.
 
-```json
-{
-  "tool": "update_memory",
-  "parameters": {
-    "memory_id": "mem_abc123xyz",
-    "content": "User strongly prefers dark mode",
-    "metadata": {
-      "emphasized": true
-    }
-  }
-}
-```
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `query` | string | Yes | Natural language search query. Supports keywords, phrases, or questions. More specific queries yield better relevance ranking. |
+| `user_id` | string | No | User namespace to search within. Default: "oliver". |
+| `limit` | number | No | Maximum results to return. Range: 1-100. Higher values increase latency. Default: 10. |
+| `prefer_cache` | boolean | No | true: check cache first, fall back to storage. false: query storage directly, then cache results. Default: true. |
 
-### Response
+## get_all_memories
 
-```json
-{
-  "success": true,
-  "message": "Memory updated successfully"
-}
-```
+List all memories for a user with pagination. Use for browsing or bulk operations. For content search, use search_memory instead. Cache-first by default. Large result sets are automatically truncated. Read-only. Returns: &#123;total, limit, offset, returned, hasMore, source, memories[]&#125;.
+
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `user_id` | string | No | User namespace to list. Default: "oliver". |
+| `limit` | number | No | Maximum memories per page. Range: 1-500. Default: 100. Use with offset for pagination. |
+| `offset` | number | No | Number of memories to skip. Use for pagination: page N = offset (N-1)*limit. Default: 0. |
+| `include_cache_stats` | boolean | No | Append cache statistics to response. Useful for monitoring. Default: true. |
+| `prefer_cache` | boolean | No | true: return cached memories (faster). false: fetch from storage (fresher). Default: true. |
 
 ## delete_memory
 
-Remove a specific memory.
+Permanently remove a memory by ID. Irreversible operation. Removes from storage, cache, and search index. Use deduplicate_memories with dry_run first to preview bulk deletions. Returns: confirmation text. Side effects: deletes memory record, removes from all indexes, invalidates cache.
 
-### Parameters
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `memory_id` | string | Yes | Unique identifier of memory to delete. Obtain from search_memory or get_all_memories. Operation succeeds even if ID not found. |
 
-| Parameter   | Type   | Required | Description         |
-| ----------- | ------ | -------- | ------------------- |
-| `memory_id` | string | Yes      | Memory ID to delete |
+## deduplicate_memories
 
-### Example
+Detect and optionally remove duplicate memories using content similarity. Run with dry_run=true first to preview. Compares all memories pairwise using Jaccard similarity. Groups duplicates with a primary (oldest) and candidates for removal. Returns: summary with duplicate groups. Side effects (when dry_run=false): deletes duplicate memories, invalidates cache.
 
-```json
-{
-  "tool": "delete_memory",
-  "parameters": {
-    "memory_id": "mem_abc123xyz"
-  }
-}
-```
-
-### Response
-
-```json
-{
-  "success": true,
-  "message": "Memory deleted successfully"
-}
-```
-
-## delete_all_memories
-
-Clear all memories for a user.
-
-### Parameters
-
-| Parameter | Type   | Required | Description                         |
-| --------- | ------ | -------- | ----------------------------------- |
-| `user_id` | string | No       | User identifier (default: from env) |
-
-### Example
-
-```json
-{
-  "tool": "delete_all_memories",
-  "parameters": {
-    "user_id": "sarah_chen"
-  }
-}
-```
-
-### Response
-
-```json
-{
-  "deleted": 42,
-  "message": "Deleted 42 memories"
-}
-```
-
-## get_memory_history
-
-View the change history of a memory.
-
-### Parameters
-
-| Parameter   | Type   | Required | Description |
-| ----------- | ------ | -------- | ----------- |
-| `memory_id` | string | Yes      | Memory ID   |
-
-### Example
-
-```json
-{
-  "tool": "get_memory_history",
-  "parameters": {
-    "memory_id": "mem_abc123xyz"
-  }
-}
-```
-
-### Response
-
-```json
-{
-  "history": [
-    {
-      "version": 1,
-      "content": "User prefers dark mode",
-      "timestamp": "2024-01-15T10:30:00Z",
-      "action": "created"
-    },
-    {
-      "version": 2,
-      "content": "User strongly prefers dark mode",
-      "timestamp": "2024-01-15T11:00:00Z",
-      "action": "updated"
-    }
-  ],
-  "message": "Retrieved 2 history entries"
-}
-```
-
-## cache_stats
-
-Get cache performance metrics.
-
-### Parameters
-
-None
-
-### Example
-
-```json
-{
-  "tool": "cache_stats",
-  "parameters": {}
-}
-```
-
-### Response
-
-```json
-{
-  "hits": 1234,
-  "misses": 56,
-  "hit_rate": "95.7%",
-  "size": 789,
-  "max_size": 10000,
-  "memory_usage": "4.2MB",
-  "evictions": 12,
-  "avg_response_time": "3.2ms",
-  "connection_pool": {
-    "active": 2,
-    "idle": 8,
-    "waiting": 0
-  }
-}
-```
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `user_id` | string | No | User namespace to deduplicate. Default: "oliver". |
+| `similarity_threshold` | number | No | Minimum similarity (0-1) to consider as duplicate. 0.85 = 85% similar. Higher = stricter. Range: 0.5-1.0. Default: 0.85. |
+| `dry_run` | boolean | No | true: preview duplicates without deletion (safe). false: actually delete duplicates (destructive). Default: true. |
 
 ## optimize_cache
 
-Reorganize cache based on access patterns.
+Reorganize cache for optimal hit rates. Promotes frequently accessed memories to L1 (24h TTL), demotes cold data to L2 (7d TTL). Use periodically for large memory stores. May temporarily increase latency during optimization. Returns: summary of cached memories. Side effects: modifies cache TTLs, may evict old entries.
 
-### Parameters
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `force_refresh` | boolean | No | true: clear cache and reload all from storage. false: optimize existing cache. Default: false. |
+| `max_memories` | number | No | Maximum memories to keep in cache. Range: 100-10000. Older/colder items evicted first. Default: 1000. |
 
-| Parameter       | Type    | Required | Description                                  |
-| --------------- | ------- | -------- | -------------------------------------------- |
-| `force_refresh` | boolean | No       | Force refresh all entries (default: `false`) |
-| `max_memories`  | number  | No       | Max memories to optimize (default: 1000)     |
+## cache_stats
 
-### Example
+View cache performance metrics and health status. Use for monitoring and debugging. Shows memory count, access patterns, and hit rates. Read-only. Returns: summary text with cached memory count. No side effects.
 
-```json
-{
-  "tool": "optimize_cache",
-  "parameters": {
-    "force_refresh": true,
-    "max_memories": 500
-  }
-}
-```
+No arguments required.
 
-### Response
+## sync_status
 
-```json
-{
-  "promoted": 45,
-  "demoted": 23,
-  "expired": 12,
-  "duration": "234ms",
-  "memory_freed": "1.2MB"
-}
-```
+Check background job queue and sync status. Shows pending async operations from add_memory calls. Use to verify all writes completed. Read-only. Returns: count of pending operations or 'All operations complete'. No side effects.
 
-## health_check
+No arguments required.
 
-Check system component status.
+## extract_entities
 
-### Parameters
+Extract named entities and relationships from text using NLP. Identifies people, organizations, technologies, and projects. Also extracts relationships (WORKS_FOR, USES, etc.) and keywords. Requires enhanced intelligence mode. Read-only, stateless. Returns: &#123;people[], organizations[], technologies[], projects[], relationships[], keywords[]&#125;.
 
-None
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `text` | string | Yes | Input text to analyze. Longer text yields more entities. Supports natural language, code comments, or structured text. |
 
-### Example
+## get_knowledge_graph
 
-```json
-{
-  "tool": "health_check",
-  "parameters": {}
-}
-```
+Build a knowledge graph from stored memories. Returns entities as nodes and relationships as edges. Use for visualizing connections between concepts. Requires enhanced intelligence mode with prior entity extraction. Read-only. Returns: &#123;nodes[], edges[]&#125; where nodes have &#123;id, type, name, memories[]&#125; and edges have &#123;from, to, type, confidence&#125;.
 
-### Response
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `entity_type` | string | No | Filter nodes by type: 'people', 'organizations', 'technologies', or 'projects'. Omit for all types. |
+| `entity_name` | string | No | Filter nodes containing this name (case-insensitive substring match). Omit for all entities. |
+| `relationship_type` | string | No | Filter edges by relationship: 'WORKS_FOR', 'USES', 'BUILT_WITH', 'KNOWS', etc. Omit for all relationships. |
+| `limit` | number | No | Maximum nodes to return. Range: 1-100. Default: 20. Edges limited proportionally. |
 
-```json
-{
-  "redis": true,
-  "mem0": true,
-  "cache": {
-    "l1_size": 456,
-    "l2_size": 1234,
-    "hit_rate": "94.3%"
-  },
-  "uptime": "3d 14h 22m",
-  "memory": {
-    "used": "45.6MB",
-    "rss": "128MB"
-  }
-}
-```
+## find_connections
 
-## Error responses
+Discover relationship paths between entities in the knowledge graph. Uses BFS traversal to find how entities connect. Useful for answering 'how is X related to Y?' questions. Requires enhanced mode. Read-only. Returns: &#123;from, to, max_depth, paths_found, paths[]&#125; where each path is array of &#123;from, to, type&#125; edges.
 
-All tools can return errors:
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `from_entity` | string | Yes | Starting entity name for path search. Must match an entity in the knowledge graph exactly. |
+| `to_entity` | string | No | Target entity name. If omitted, returns all reachable entities up to max_depth. |
+| `max_depth` | number | No | Maximum relationship hops to traverse. Range: 1-5. Higher values exponentially increase results. Default: 2. |
 
-```json
-{
-  "error": "Redis connection failed",
-  "code": "REDIS_CONNECTION_ERROR",
-  "details": {
-    "host": "localhost",
-    "port": 6379
-  }
-}
-```
+## import_memories
 
-Common error codes:
+Bulk import memories from external sources. Supports Mem0 API export or local JSON files. Processes in batches with duplicate detection. Use for migration or backup restoration. Returns: summary with imported/skipped/failed counts. Side effects: creates multiple memory records, updates search index.
 
-| Code                     | Description                   |
-| ------------------------ | ----------------------------- |
-| `REDIS_CONNECTION_ERROR` | Can't connect to Redis        |
-| `MEM0_API_ERROR`         | Mem0 API request failed       |
-| `INVALID_PARAMETERS`     | Missing or invalid parameters |
-| `MEMORY_NOT_FOUND`       | Memory ID doesn't exist       |
-| `RATE_LIMIT_EXCEEDED`    | Too many requests             |
-
-## Rate limits
-
-- **Add operations**: 100/minute
-- **Search operations**: 500/minute
-- **Delete operations**: 50/minute
-- **Cache operations**: No limit
-
-## Performance tips
-
-- **Use priority levels** - Mark important memories as `high` or `critical`
-- **Enable async mode** - For non-critical additions
-- **Batch operations** - Use messages array for conversations
-- **Cache first** - Set `prefer_cache: true` for searches
-- **Optimize regularly** - Run `optimize_cache` weekly
+| Argument | Type | Required | Description |
+| --- | --- | --- | --- |
+| `source` | string | Yes | Import source. 'mem0_api': fetch from Mem0 cloud (requires api_key). 'json_file': read local file (requires file_path). Values: `mem0_api`, `json_file`. |
+| `api_key` | string | No | Mem0 API token for authentication. Required when source='mem0_api'. Get from https://mem0.ai dashboard. |
+| `user_id` | string | No | User namespace for imported memories. Default: "oliver". |
+| `file_path` | string | No | Absolute path to JSON file. Required when source='json_file'. Must be array of memory objects or &#123;memories: [...]&#125;. |
+| `batch_size` | number | No | Memories per batch. Lower values are safer but slower. Range: 10-200. Default: 50. |
+| `priority` | string | No | Cache priority for all imported memories. Default: high (L1 cache). Values: `high`, `medium`, `low`. |
+| `skip_duplicates` | boolean | No | Check each memory for duplicates before import. Slower but prevents bloat. Default: true. |

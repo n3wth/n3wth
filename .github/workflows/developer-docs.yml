@@ -1,0 +1,33 @@
+name: Developer docs
+
+on:
+  pull_request:
+    paths:
+      - 'docs/developers/**'
+      - 'context7.json'
+      - '.github/workflows/developer-docs.yml'
+      - 'package-lock.json'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/developers/**'
+      - 'context7.json'
+      - '.github/workflows/developer-docs.yml'
+      - 'package-lock.json'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --global npm@11.19.1
+      - run: npm ci
+      - run: node docs/developers/check.mjs

@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { MDXComponents } from "@/components/MDXComponents";
 import { JsonLd } from "@/components/JsonLd";
 import type { Metadata } from "next";
+import { DocPageActions } from '@/components/DocPageActions';
 
 export async function generateStaticParams() {
   const docs = await getAllDocs();
@@ -47,6 +48,7 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: url,
+      types: { 'text/markdown': `https://r3.n3wth.com/docs-markdown/${slugPath}` },
     },
     openGraph: {
       images: [
@@ -83,7 +85,9 @@ export async function generateMetadata({
 const components = {
   ...MDXComponents,
   h1: ({ children }: any) => (
-    <PageHeader title={children} />
+    <div className="mb-6">
+      <PageHeader title={children} spacing="compact" />
+    </div>
   ),
   h2: ({ children }: any) => (
     <div className="mt-12 mb-4">
@@ -99,12 +103,12 @@ const components = {
     <p className="text-ink-dim mb-4 leading-relaxed">{children}</p>
   ),
   ul: ({ children }: any) => (
-    <ul className="text-ink-dim mb-4 space-y-2 list-disc list-inside">
+    <ul className="text-ink-dim mb-4 space-y-2 list-disc list-outside pl-6">
       {children}
     </ul>
   ),
   ol: ({ children }: any) => (
-    <ol className="text-ink-dim mb-4 space-y-2 list-decimal list-inside">
+    <ol className="text-ink-dim mb-4 space-y-2 list-decimal list-outside pl-6">
       {children}
     </ol>
   ),
@@ -213,7 +217,12 @@ export default async function DocPage({
       <article className="prose prose-invert max-w-none">
         <MDXRemote
           source={doc.content}
-          components={components}
+          components={{ ...components, h1: ({ children }: { children?: React.ReactNode }) => (
+            <div className="mb-8">
+              <PageHeader title={children} spacing="compact" />
+              <DocPageActions key={slugPath} slug={slugPath} />
+            </div>
+          ) }}
           options={{
             mdxOptions: {
               remarkPlugins: [remarkGfm],

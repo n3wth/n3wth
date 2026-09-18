@@ -47,3 +47,15 @@ The initial preview and original production both returned the vote handler's `sk
 The daily card now uses a stable initial state before computing the visitor's day after hydration. This fixes an existing hydration mismatch when the static build date/timezone differs from the visitor's. A server-render/hydration regression test covers different dates.
 
 UI 0.6.1 references Mona Sans fonts that were missing in Skills. Both variable font assets are copied unchanged from the existing UI docs workspace. Embedded font metadata identifies the Mona Sans Project Authors and SIL Open Font License 1.1; the upstream `github/mona-sans` OFL is included beside the fonts. No font styling or design tokens are changed.
+
+## D1 migration rehearsal (N-714)
+
+`scripts/neon-to-d1.mjs` turns a read-only PostgreSQL CSV dump (`<table>.csv`, `HEADER`) plus its `schema.sql` into D1-importable SQLite SQL. UUIDs remain verbatim `TEXT`; timestamps are normalized to UTC ISO-8601 `TEXT` (timezone-less PostgreSQL timestamps are interpreted as UTC); `jsonb` is canonical JSON `TEXT`; PostgreSQL arrays are JSON `TEXT`; integer/bigint values are `INTEGER`; booleans are `0`/`1`; and textual values are `TEXT`. Primary keys and `UNIQUE` constraints are emitted.
+
+Run a local, read-only rehearsal against a snapshot outside the repository:
+
+```sh
+node scripts/neon-to-d1-rehearse.mjs --input /path/to/n714-snapshot
+```
+
+Use `--map source:target` (repeatable) to select or rename target tables. The rehearsal imports into a temporary local SQLite database, then verifies each mapped table's source and target row counts plus per-row identity (`id` and a stable hash of all converted columns). It exits nonzero for a count or identity mismatch. To retain the SQL for D1 import, run `node scripts/neon-to-d1.mjs --input /path/to/n714-snapshot --output /tmp/skills-d1.sql`; rerun the verifier after import with `--verify /path/to/imported.sqlite` and the same mappings.
