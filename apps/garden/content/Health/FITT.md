@@ -19,6 +19,11 @@ The FITT Principle is a fundamental framework for exercise program design, essen
 
 - **Type**: The specific exercises or activities chosen, which should align with your goals and preferences. Incorporate variety to maintain motivation and target different aspects of fitness.
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/fitt.svg" aria-label="Open full-size graphic: FITT"><img src="/figures/wellbeing/fitt.svg" alt="Four aligned rows map Frequency to how often and sessions per week, Intensity to effort or resistance, Time to session duration, and Type to the chosen activity. The rows describe separate planning dimensions." width="960" height="730" loading="lazy" decoding="async" /></a>
+<figcaption>Use FITT to describe a workout before deciding what to adjust. This conceptual planning key defines the variables; the example schedule in the article remains an example rather than a universal prescription. Original conceptual diagram based on <a href="https://acsm.org/wp-content/uploads/2026/03/Pronouncement-ppt-deck_resistance-training-ps.pdf">American College of Sports Medicine, Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance: An Overview of Reviews — position stand slides</a>.</figcaption>
+</figure>
+
 ## Application
 
 Apply the FITT principle to systematically design and adjust workout programs. Regular assessment and modification of these variables ensures continued progress while minimizing plateaus and maintaining [[Health Map|overall health]].

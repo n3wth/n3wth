@@ -61,6 +61,11 @@ Strategic nutrition approach focused on sustained energy, optimal health, and su
 - **Healthy Fats**: Nuts, seeds, avocados, olive oil
 - **Fresh Fruits**: Seasonal, local when possible
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/nutrition.svg" aria-label="Open full-size graphic: Nutrition"><img src="/figures/wellbeing/nutrition.svg" alt="Four food-planning groups list vegetables, fruit and whole grains; beans, fish, poultry, nuts and seeds; low-fat dairy; vegetable oils and fewer sugary drinks. Equal panels do not indicate portion sizes." width="960" height="670" loading="lazy" decoding="async" /></a>
+<figcaption>Use food variety to guide meal planning. These equal-sized panels are categories, not serving proportions or a validation of the personal protein targets above. Original conceptual diagram based on <a href="https://nhlbi.nih.gov/health/dash-eating-plan">National Heart, Lung, and Blood Institute, DASH Eating Plan</a>.</figcaption>
+</figure>
+
 ### Minimize
 
 - **Processed Foods**: Packaged items with long ingredient lists

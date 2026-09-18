@@ -16,6 +16,11 @@ IQ and EQ are both important for leadership.
 - **Adaptability** - Adjust to new challenges and environments
 - **Conflict Resolution** - Manage and resolve disputes effectively
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/leadership-skills.svg" aria-label="Open full-size graphic: Diagnose the work of leadership"><img src="/figures/career/leadership-skills.svg" alt="Three diagnostic rows connect team outcomes to example observations and responses. Direction addresses disagreement on priorities; alignment addresses overlap and failed handoffs; commitment addresses local wins taking priority over the collective goal. The reader is asked to gather the group's evidence rather than rely only on a leader's impression." width="960" height="790" loading="lazy" decoding="async" /></a>
+<figcaption>Choose a leadership behavior in response to what the group needs. This conceptual diagnostic uses illustrative warning signs and responses for direction, alignment, and commitment; it is not a scoring instrument. Original diagram based on <a href="https://www.ccl.org/articles/leading-effectively-articles/make-leadership-happen-with-dac-framework/">Center for Creative Leadership, Direction + Alignment + Commitment (DAC) = Leadership</a>.</figcaption>
+</figure>
+
 ## Developing Leadership Skills
 
 - **Self-Assessment** - Regularly evaluate your strengths and areas for improvement

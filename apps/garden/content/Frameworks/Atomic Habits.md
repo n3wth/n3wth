@@ -16,6 +16,11 @@ Atomic Habits is a framework for building better habits, developed by James Clea
 - **Response:** Make it easy by reducing friction and applying the Two-Minute Rule
 - **Reward:** Make it satisfying with immediate positive reinforcement
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/atomic-habits.svg" aria-label="Open full-size graphic: Design the next repetition"><img src="/figures/frameworks/atomic-habits.svg" alt="A four-part loop illustrates leaving a book visible, anticipating an enjoyable break, reading one page, then enjoying and recording the session. The example pairs each stage with one of Clear’s behavior-change levers." width="960" height="770" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual habit loop with a hypothetical reading routine. Each intervention targets a different part of the behavior; the diagram does not predict how quickly a habit will form. Original diagram based on <a href="https://jamesclear.com/three-steps-habit-change">James Clear, How To Start New Habits That Actually Stick</a>.</figcaption>
+</figure>
+
 ## Usage
 
 Used for personal habit development, helping individuals create lasting [[Behavior Change|behavior change]] through small, consistent actions.

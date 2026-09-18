@@ -29,9 +29,14 @@ Essential for physical and mental recovery, quality sleep is a cornerstone of ov
 ### Sleep Stages
 
 - **Light Sleep (N1)**: Transition period, easily awakened
-- **Deep Sleep (N2)**: Body temperature drops, heart rate slows
+- **Stage 2 Sleep (N2)**: Body temperature drops, heart rate slows
 - **Deep Sleep (N3)**: Physical recovery, immune function, memory consolidation
 - **REM Sleep**: Mental recovery, emotional processing, creativity
+
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/sleep-stages.svg" aria-label="Open full-size graphic: Sleep"><img src="/figures/wellbeing/sleep-stages.svg" alt="Taxonomy of N1 transition, N2 sleep, N3 deep or slow-wave sleep and REM. A separate note explains that more N3 usually occurs earlier and more REM later; box sizes do not represent time." width="960" height="670" loading="lazy" decoding="async" /></a>
+<figcaption>N3 is the stage called deep sleep; N2 is a separate non-REM stage. More deep sleep usually occurs early in the night and more REM later. This conceptual stage map does not estimate personal stage durations. Original conceptual diagram based on <a href="https://www.nhlbi.nih.gov/health/sleep/stages-of-sleep">National Heart, Lung, and Blood Institute, How Sleep Works: Sleep Phases and Stages</a>.</figcaption>
+</figure>
 
 ### Optimal Timing
 

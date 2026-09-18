@@ -51,6 +51,11 @@ See detailed [[Interview Prep Checklist]]
 - Time your answers (STAR format)
 - Get feedback from peers/mentors
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/interview-preparation.svg" aria-label="Open full-size graphic: Prepare evidence for the role"><img src="/figures/career/interview-preparation.svg" alt="Employer needs from a job description are matched to the candidate's own experience, actions and outcomes. Both feed a practice answer, spoken aloud and revised using feedback. A dashed return path supports revisiting the evidence. A collaboration requirement and real handoff story illustrate the matching step." width="960" height="800" loading="lazy" decoding="async" /></a>
+<figcaption>Use the job description to choose evidence, then practice explaining it aloud. This conceptual practice loop uses an illustrative matching example; it makes no prediction about hiring outcomes. Original diagram based on <a href="https://capd.mit.edu/resources/career-toolkit-interviewing/">MIT Career Advising &amp; Professional Development, Career toolkit: Interviewing</a> and <a href="https://capd.mit.edu/resources/interview-primer/">MIT Career Advising &amp; Professional Development, Interview Primer</a>.</figcaption>
+</figure>
+
 ### Communication
 
 - Use the [[STAR Method]] for behavioral questions

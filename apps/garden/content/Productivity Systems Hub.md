@@ -92,6 +92,11 @@ Index of the productivity systems I've tried, what stuck, and how they connect.
 - **[[Digital Garden]]** - Public learning repository
 - **[[MOCs/MOCs|Maps of Content]]** - Topic organization
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/productivity-systems-hub.svg" aria-label="Open full-size graphic: Give actions and knowledge distinct homes"><img src="/figures/knowledge/productivity-systems-hub.svg" alt="A captured item is clarified. An actionable item gets a next physical step and, when needed, a project outcome. Useful reference material enters connected notes. Regular review checks current commitments and resurfaces reference when work needs it." width="960" height="707" loading="lazy" decoding="async" /></a>
+<figcaption>Task systems clarify commitments; knowledge systems preserve ideas for reuse. This conceptual routing example combines the GTD distinction between actions and reference with concept-oriented notes. Original diagram based on <a href="https://gettingthingsdone.com/wp-content/uploads/2019/05/GTD_ASANA_SAMPLE.pdf">David Allen Company, GTD Setup Guide: Understanding the GTD Best Practices</a> (2019); <a href="https://notes.andymatuschak.org/z2hQEhqWkdRLL9JUwfawZZx">Andy Matuschak, Evergreen notes should be concept-oriented</a>.</figcaption>
+</figure>
+
 ## Workflow Optimization
 
 ### Process Improvement

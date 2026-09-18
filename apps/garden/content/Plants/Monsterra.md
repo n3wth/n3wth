@@ -29,6 +29,11 @@ The iconic Swiss cheese plant, known for its dramatic fenestrated leaves. A cent
 - Aerial roots can be trained to climb a moss pole
 - Propagates easily from stem cuttings with nodes
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/monstera.jpg" aria-label="Open full-size graphic: Monsterra"><img src="/figures/wellbeing/monstera.jpg" alt="Monstera deliciosa foliage showing mature glossy leaves with internal oval holes and deep splits extending inward from their margins." width="1200" height="800" loading="lazy" decoding="async" /></a>
+<figcaption>Mature <i>Monstera deliciosa</i> leaves can have both internal holes and deep edge cuts, visible here; these are useful identification features described by <a href="https://extension.umn.edu/gardening-minnesota/propagating-monstera-deliciosa">University of Minnesota Extension, Monstera deliciosa</a>. Photograph by <a href="https://commons.wikimedia.org/wiki/File:Monstera_deliciosa_pm.jpg">Peter A. Mansfeld, Monstera deliciosa</a>, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>; unaltered.</figcaption>
+</figure>
+
 ## Related
 
 - [[MOCs/Gardening|Gardening]]

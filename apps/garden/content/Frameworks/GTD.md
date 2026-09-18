@@ -31,6 +31,11 @@ Getting Things Done (GTD) is a systematic approach to organizing tasks, projects
 - Decide if it's actionable
 - Determine next actions
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/gtd.svg" aria-label="Open full-size graphic: An inbox item is not yet a next action"><img src="/figures/frameworks/gtd.svg" alt="A captured item is checked for actionability. Non-actionable items are discarded, kept as reference, or held for later. Actionable items receive a visible next action and, when multistep, a project. Both paths feed organized reminders and review." width="960" height="835" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual clarification tree. A project describes an outcome requiring several actions; the next-action reminder identifies the visible step you can take now. Original diagram based on <a href="https://gettingthingsdone.com/what-is-gtd/">David Allen Company, What is GTD?</a>.</figcaption>
+</figure>
+
 ### 3. Organize
 
 - Projects list

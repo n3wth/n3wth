@@ -72,6 +72,11 @@ Make it concrete:
   - Quarterly goal reassessment
   - Annual career trajectory evaluation
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/career-goals-framework.svg" aria-label="Open full-size graphic: Turn a career goal into observable work"><img src="/figures/career/career-goals-framework.svg" alt="A four-level hierarchy connects career direction, a development goal, a practice assignment, and review evidence. An example moves from leading cross-team delivery to improving handoffs, coordinating a bounded project, and reviewing its plan and peer feedback. A return arrow shows that review can revise the goal." width="960" height="760" loading="lazy" decoding="async" /></a>
+<figcaption>Connect each aspiration to a capability, an assignment, and evidence you can review. This conceptual hierarchy uses an illustrative project example; it is not a forecast of promotion. Original diagram based on <a href="https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf">U.S. Office of Personnel Management, Individual Development Planning</a>.</figcaption>
+</figure>
+
 ## Implementation Tips
 
 From my experience, these practices make a huge difference:

@@ -35,6 +35,11 @@ tags: [MOC, guide, knowledge-management, navigation]
 - Include metadata via tags and icons
 - Apply [[Knowledge Organization]] principles
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/how-to-use-mocs.svg" aria-label="Open full-size graphic: A hub is an entry point, not a container"><img src="/figures/knowledge/how-to-use-mocs.svg" alt="A home note links to Learning and Writing maps of content. Both maps point to the same feedback note, while each also links to a note relevant to its own purpose. Notes can be reached through more than one map." width="960" height="691" loading="lazy" decoding="async" /></a>
+<figcaption>An MOC curates a route through existing notes without moving them into an exclusive folder. This illustrative navigation map shows two hubs sharing one note. Original diagram based on <a href="https://notes.linkingyourthinking.com/Cards/MOCs+Overview">Nick Milo, Linking Your Thinking, MOCs Overview</a>.</figcaption>
+</figure>
+
 ## Navigation Flow
 
 1. Begin at [[MOCs/index|main hub]]

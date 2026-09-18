@@ -28,6 +28,11 @@ How I organize notes, tags, and links in my [[Knowledge Management Systems|knowl
 - Establish clear relationships
 - Enable multiple access points
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/knowledge-organization.svg" aria-label="Open full-size graphic: Separate names, hierarchy and association"><img src="/figures/knowledge/knowledge-organization.svg" alt="The preferred label Note taking has an alternative label Taking notes. It is narrower than Knowledge management and broader than Atomic notes. Note linking is an associated concept rather than an alias or necessarily a child." width="960" height="671" loading="lazy" decoding="async" /></a>
+<figcaption>Names identify a concept; broader/narrower links and associative links describe different relationships. This conceptual example applies SKOS distinctions to garden topics. Original diagram based on <a href="https://www.w3.org/TR/skos-primer">W3C, SKOS Simple Knowledge Organization System Primer</a> (2009).</figcaption>
+</figure>
+
 ## Implementation Strategies
 
 ### Starting Points

@@ -29,6 +29,11 @@ Fleeting Notes are quick, temporary notes used to capture ideas and thoughts for
 - Connect related ideas
 - Decide on next steps
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/fleeting-notes.svg" aria-label="Open full-size graphic: Give captured thoughts a next destination"><img src="/figures/knowledge/fleeting-notes.svg" alt="A captured thought enters a writing inbox. On review, an idea worth developing becomes a self-contained linked note. An unclear idea stays with a specific question; an unhelpful one can be archived or discarded." width="960" height="707" loading="lazy" decoding="async" /></a>
+<figcaption>Capture and development are different activities. This conceptual triage makes room for both useful ideas and notes that should leave the queue. Original diagram based on <a href="https://notes.andymatuschak.org/zUP4GuzPF33dWkZPiu9N6V5">Andy Matuschak, A writing inbox for transient and incomplete notes</a>.</figcaption>
+</figure>
+
 ## Application
 
 1. **Idea Generation**

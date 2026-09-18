@@ -40,6 +40,11 @@ tags:
 - Knowledge sharing
 - Collaboration opportunities
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/networking.svg" aria-label="Open full-size graphic: Connect circles, not just contacts"><img src="/figures/career/networking.svg" alt="A conceptual network shows the reader in a familiar circle and an occasional contact bridging to another community. Solid lines connect people within each circle and a dashed line marks the bridge. Node placement and line lengths encode no data, and the note cautions that weaker ties are not always better." width="960" height="750" loading="lazy" decoding="async" /></a>
+<figcaption>A contact outside your usual circle may bring different information. This conceptual network illustrates the mechanism discussed in Stanford’s summary of a randomized job-mobility study; the drawing is not study data, and effects varied by tie strength and industry. Original diagram based on <a href="https://digitaleconomy.stanford.edu/publication/a-causal-test-of-the-strength-of-weak-ties/">Stanford Digital Economy Lab, A Causal Test of the Strength of Weak Ties</a>.</figcaption>
+</figure>
+
 ## Networking Platforms
 
 ### Professional Networks

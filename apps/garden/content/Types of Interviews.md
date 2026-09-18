@@ -84,6 +84,11 @@ tags:
   - Data modeling
   - Performance optimization
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/types-of-interviews.svg" aria-label="Open full-size graphic: Match the response to the question"><img src="/figures/career/types-of-interviews.svg" alt="A comparison matrix gives illustrative prompts for behavioral, technical, product design, case and system design interviews. It pairs them with the evidence to reveal: actions and outcomes, reasoning and correctness, user needs and priorities, assumptions and analysis, or requirements and trade-offs. Actual rounds may combine formats." width="960" height="930" loading="lazy" decoding="async" /></a>
+<figcaption>Different questions ask you to demonstrate different kinds of evidence. This conceptual comparison uses original practice prompts drawn from the article’s formats; employers may combine formats or evaluate them differently. Original diagram based on <a href="https://capd.mit.edu/resources/a-guide-to-interview-timelines-and-structure/">MIT Career Advising &amp; Professional Development, Interview timelines and structure</a> and <a href="https://capd.mit.edu/resources/career-toolkit-interviewing/">MIT Career Advising &amp; Professional Development, Career toolkit: Interviewing</a>.</figcaption>
+</figure>
+
 ## Resources
 
 - [[Interview Prep Checklist]]

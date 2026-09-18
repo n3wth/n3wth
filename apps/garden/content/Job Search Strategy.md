@@ -50,6 +50,11 @@ Leverage your [[Professional Network]] through:
 - Former colleagues
 - Mentors and advisors
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/job-search-strategy.svg" aria-label="Open full-size graphic: Connect search channels to a next action"><img src="/figures/career/job-search-strategy.svg" alt="Three discovery channels—published roles, professional conversations and industry events—converge on a check of role fit. Qualified opportunities go into one record containing source, role evidence, status, next action and review date. A return arrow uses learning to adjust the search, without implying conversion rates." width="960" height="810" loading="lazy" decoding="async" /></a>
+<figcaption>Different channels can feed the same opportunity record and follow-up process. This conceptual system shows organization and feedback, not the share of jobs supplied by any channel. Original diagram based on <a href="https://capd.mit.edu/channels/resources-advice/">MIT Career Advising &amp; Professional Development, Resources &amp; Advice</a> and <a href="https://www.opm.gov/policy-data-oversight/human-capital-framework/reference-materials/leadership-knowledge-management/developmentplanning.pdf">U.S. Office of Personnel Management, Individual Development Planning</a>.</figcaption>
+</figure>
+
 ## Application Strategy
 
 ### Application Management

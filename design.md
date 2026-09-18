@@ -27,6 +27,10 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 
 ## Interaction
 
+Article graphics explain the adjacent argument. Keep each figure with a descriptive caption, visible source links and useful alt text. Distinguish original conceptual diagrams from measured charts and reproduced images. Use a single supporting text style for captions, reserve the image dimensions, and let readers open detailed graphics at full size. Record reuse rights for third-party assets; a citation alone is not permission.
+
+Use selective Further reading previews after an article: publisher, linked title and a short explanation of its value. Keep them flat and within the reading column, using existing type and spacing. Do not turn every citation into a card or load remote thumbnails without verified reuse rights.
+
 - Pages appear immediately. No default entry fades, sliding page transitions, staggered text or reveal observers hiding content.
 - Establish canvas, theme and navigation colors before first paint. Server output and client theme state must agree; test both saved preferences and system preference where supported.
 - Clicking to a different page starts at the top. Explicit anchor links go to their targets. Preserve browser Back scroll restoration.

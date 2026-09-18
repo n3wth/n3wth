@@ -31,6 +31,11 @@ Wind and insect visits help by shaking the flower. Buzz-pollinating bees (bumble
 
 Best window: mid-morning, once the flower is fully open and humidity is not so high that pollen clumps.
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/tomato-pollination.svg" aria-label="Open full-size graphic: Tomatoes self pollinate"><img src="/figures/wellbeing/tomato-pollination.svg" alt="Simplified section of a tomato flower: anthers surround the stigma above the ovary. Vibration moves pollen to the stigma; fertilization then occurs through pollen-tube growth." width="960" height="650" loading="lazy" decoding="async" /></a>
+<figcaption>A second plant is unnecessary, but pollen still has to move within the flower. This simplified cutaway separates pollination from the later fertilization step; it does not show cultivar-specific anatomy. Original conceptual diagram based on <a href="https://www.extension.umd.edu/sites/extension.umd.edu/files/2021-03/Tomato%20pollination%20and.pdf">Gerald Brust, University of Maryland Extension, Tomato pollination and how to increase it in high tunnels</a>.</figcaption>
+</figure>
+
 ## Why fruit still fails on self-pollinating plants
 
 Self-pollinating does not mean every blossom becomes a tomato.

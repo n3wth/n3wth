@@ -70,6 +70,11 @@ graph TB
     style PSH fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/knowledge-graph-visual-maps.svg" aria-label="Open full-size graphic: Use an overview to choose a local question"><img src="/figures/knowledge/knowledge-graph-visual-maps.svg" alt="An illustrative overview links the Learning, Knowledge and Work domains. A magnified local map focuses on learning: a target guides practice, practice produces feedback, and feedback revises the target. It is not an audit of the actual garden graph." width="960" height="665" loading="lazy" decoding="async" /></a>
+<figcaption>An overview helps choose a domain; a local concept map exposes a question and its relationships. Conceptual example based on macro/micro maps and feedback-guided practice, not measured garden connectivity. Original diagram based on <a href="https://cmap.ihmc.us/docs/theory-of-concept-maps">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>; <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02396/full">Ericsson and Harwell, Frontiers in Psychology, Deliberate Practice and Proposed Limits on the Effects of Practice on the Acquisition of Expert Performance</a> (2019).</figcaption>
+</figure>
+
 ## Career Development Network
 
 ```mermaid

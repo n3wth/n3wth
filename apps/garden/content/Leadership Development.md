@@ -69,6 +69,11 @@ Focus areas:
 - Individual consideration
 - Idealized influence
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/leadership-development.svg" aria-label="Open full-size graphic: Design an assignment that teaches"><img src="/figures/career/leadership-development.svg" alt="A leadership development assignment is supported by three conditions: assessment through feedback on a specific gap, a challenge that requires new coordination skills, and support through mentoring and peer check-ins. A review asks what changed in behavior and what to try next." width="960" height="800" loading="lazy" decoding="async" /></a>
+<figcaption>A new title alone does not specify how leadership will develop. This illustrative assignment combines assessment, challenge, and support, followed by a review of changed behavior. Original diagram based on <a href="https://www.ccl.org/wp-content/uploads/2024/12/leadership-models-for-development-by-center-for-creative-leadership-ccl.pdf">Center for Creative Leadership, Models for the Development of Leadership</a>.</figcaption>
+</figure>
+
 ## Practical Application
 
 ### Daily Practices

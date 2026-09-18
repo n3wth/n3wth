@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="745" viewBox="0 0 960 745" role="img" aria-labelledby="title desc">
+<title id="title">Change the response to a familiar cue</title>
+<desc id="desc">A hypothetical afternoon work break branches into a vending-machine visit or a walk with a friend or planned snack. Both lead to reviewing what felt rewarding, with a loop back to observing the cue.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#6e6e73"/></marker></defs>
+<rect width="960" height="745" fill="#f5f5f7"/>
+<g font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+<text x="40" y="56" font-size="34" font-weight="600" fill="#1d1d1f" text-anchor="start">Change the response to a familiar cue</text>
+<path d="M 40 82 L 920 82" fill="none" stroke="#6e6e73" stroke-width="3"/>
+<text x="62" y="299" font-size="28" font-weight="600" fill="#054a6b" text-anchor="start">Cue</text><text x="62" y="341" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">Afternoon</text>
+<text x="62" y="376" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">work break.</text><text x="385" y="177" font-size="28" font-weight="600" fill="#6e6e73" text-anchor="start">Routine A</text><text x="385" y="219" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">Visit the</text>
+<text x="385" y="254" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">vending machine.</text><text x="385" y="456" font-size="28" font-weight="600" fill="#0a5c22" text-anchor="start">Routine B</text><text x="385" y="498" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">Walk with a friend</text>
+<text x="385" y="533" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">or take a snack.</text><text x="728" y="300" font-size="28" font-weight="600" fill="#054a6b" text-anchor="start">Review</text><text x="728" y="341" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">What felt</text>
+<text x="728" y="376" font-size="25" font-weight="400" fill="#1d1d1f" text-anchor="start">rewarding?</text><path d="M 292 298 L 355 218" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M 292 363 L 355 477" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M 638 208 L 698 293" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M 638 486 L 698 368" fill="none" stroke="#6e6e73" stroke-width="3" marker-end="url(#arrow)"/><path d="M812 402V626H169V410" fill="none" stroke="#6e6e73" stroke-width="3"/><rect x="270" y="595" width="410" height="70" rx="0" fill="#f5f5f7" stroke="#f5f5f7" stroke-width="2"/><text x="475" y="637" font-size="24" font-weight="400" fill="#1d1d1f" text-anchor="middle">Notice the pattern; revise the plan.</text>
+<path d="M 40 688 L 920 688" fill="none" stroke="#6e6e73" stroke-width="3"/>
+<text x="40" y="722" font-size="22" font-weight="400" fill="#6e6e73" text-anchor="start">Conceptual diagram • not measured data</text>
+</g>
+</svg>

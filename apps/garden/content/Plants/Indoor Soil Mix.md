@@ -28,6 +28,11 @@ Increase perlite to 2 parts, add coarse sand. These need excellent drainage.
 - **Refresh annually**: Soil compacts and loses nutrients over time
 - **Match to plant needs**: Aroids want chunky, succulents want gritty
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/indoor-soil-mix.svg" aria-label="Open full-size graphic: Indoor Soil Mix"><img src="/figures/wellbeing/indoor-soil-mix.svg" alt="A conceptual pot section shows roots among particles and pore spaces, with callouts for air, retained water, nutrient supply and root support. Particle sizes and water distribution are illustrative." width="960" height="680" loading="lazy" decoding="async" /></a>
+<figcaption>A recipe is a starting point: the finished medium must balance moisture, aeration, nutrients and support. This conceptual root-zone diagram is not evidence for the specific 3:1:1 recipe above. Original conceptual diagram based on <a href="https://extension.psu.edu/potting-media-and-plant-propagation">Penn State Extension, Potting Media and Plant Propagation</a>.</figcaption>
+</figure>
+
 ## Signs Your Mix Needs Work
 
 - Water pools on surface → needs more perlite

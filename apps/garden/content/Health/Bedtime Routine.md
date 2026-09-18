@@ -29,6 +29,11 @@ A Bedtime Routine involves a series of activities performed before sleep to prom
 - Wake-up consistency
 - Limited screen time
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/wellbeing/bedtime-routine.svg" aria-label="Open full-size graphic: Bedtime Routine"><img src="/figures/wellbeing/bedtime-routine.svg" alt="Illustrative timeline links daytime outdoor activity to an evening wind-down and a quiet, cool, dark sleep environment. A return loop emphasizes consistent bed and wake times, with no prescribed clock times." width="960" height="660" loading="lazy" decoding="async" /></a>
+<figcaption>A bedtime routine sits inside the whole day. This conceptual sequence combines NHLBI's sleep-habit recommendations without prescribing exact clock times or promising to treat insomnia. Original conceptual diagram based on <a href="https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits">National Heart, Lung, and Blood Institute, Healthy Sleep Habits</a>.</figcaption>
+</figure>
+
 ## Application
 
 1. **Sleep Improvement**

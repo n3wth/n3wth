@@ -9,6 +9,8 @@ import { getLocalGraph, getGraphData } from '@/lib/graph'
 import { PlantGlyph } from '@/components/PlantGlyph'
 import { getAllPreviews } from '@/lib/previews'
 import { Prose } from '@/components/Prose'
+import { ResourcePreviews } from '@/components/ResourcePreviews'
+import { getResourcePreviews } from '@/lib/resource-previews'
 import { Backlinks } from '@/components/Backlinks'
 import { TagList } from '@/components/TagList'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
@@ -222,6 +224,7 @@ export default async function NotePage({ params }: PageProps) {
             <div className="note-content">
               <Prose html={html} />
             </div>
+            <ResourcePreviews resources={getResourcePreviews(note.filePath)} />
             <div className="note-postscript">
             {note.tags.length > 0 && (
               <section className="note-topics" aria-label="Topics">

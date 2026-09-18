@@ -29,6 +29,11 @@ Communication Skills are essential for effective interaction and collaboration i
 - Email etiquette
 - Report writing
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/career/communication-skills.svg" aria-label="Open full-size graphic: Close the loop on a request"><img src="/figures/career/communication-skills.svg" alt="A two-person conversation diagram shows a sender requesting a revised brief by Thursday, the receiver repeating the request and deadline, and the sender confirming and clarifying that the updated budget belongs in it. Arrows show the message, repeat-back and confirmation." width="960" height="760" loading="lazy" decoding="async" /></a>
+<figcaption>Active listening becomes observable when the receiver repeats the request and the sender confirms or corrects it. This illustrative workplace exchange adapts a healthcare communication practice; it is a conceptual example, not a measured workplace result. Original diagram based on <a href="https://www.govinfo.gov/content/pkg/GOVPUB-HE20_6500-PURL-gpo24004/pdf/GOVPUB-HE20_6500-PURL-gpo24004.pdf">Agency for Healthcare Research and Quality, archived by the U.S. Government Publishing Office, TeamSTEPPS Pocket Guide — Check-Back</a>.</figcaption>
+</figure>
+
 ## Application
 
 1. **Professional Settings**

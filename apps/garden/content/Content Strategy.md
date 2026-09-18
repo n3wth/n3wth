@@ -41,6 +41,11 @@ Content Strategy involves planning, creating, and managing content to achieve bu
    - Social media
    - Video production
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/frameworks/content-strategy.svg" aria-label="Open full-size graphic: Publication starts a maintenance obligation"><img src="/figures/frameworks/content-strategy.svg" alt="A content lifecycle links user need, format and placement, publication and maintenance, and review. Review asks whether the need and information are still current, then chooses to keep, revise, or retain the content as a historical record." width="960" height="815" loading="lazy" decoding="async" /></a>
+<figcaption>Conceptual content lifecycle adapted from public-service content guidance. Review both the continuing user need and the accuracy of what is published; historical records need a clear status. Original diagram based on <a href="https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/plan-manage-content/understand-content-design">Government Digital Service, Understand content design</a>.</figcaption>
+</figure>
+
 ## Best Practices
 
 - Align with goals

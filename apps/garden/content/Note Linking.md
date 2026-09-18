@@ -26,5 +26,10 @@ Best practices for note linking:
 3. Regularly review and update links to maintain relevance
 4. Consider using tools that support visualization of note networks
 
+<figure class="research-figure">
+<a class="research-figure-image" href="/figures/knowledge/note-linking.svg" aria-label="Open full-size graphic: A backlink is a route back"><img src="/figures/knowledge/note-linking.svg" alt="An illustrative Practice note has a contextual link saying it uses guidance from a Feedback note. The Feedback note exposes a backlink to the Practice note. The reverse navigation does not change the meaning of the original relationship." width="960" height="651" loading="lazy" decoding="async" /></a>
+<figcaption>Contextual links express meaning; backlinks expose where a note was referenced. This illustrative note pair separates the relationship from the return route. Original diagram based on <a href="https://cmap.ihmc.us/docs/theory-of-concept-maps">Novak and Cañas, Institute for Human and Machine Cognition, The Theory Underlying Concept Maps and How to Construct and Use Them</a>; <a href="https://obsidian.md/help/plugins/backlinks">Obsidian Help, Backlinks</a>.</figcaption>
+</figure>
+
 > [!tip] Remember
 > The goal of note linking is not just to connect information, but to create a dynamic system that enhances understanding and generates new insights.
