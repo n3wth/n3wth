@@ -1,4 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="707" viewBox="0 0 960 707" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [fill="#ffffff"] { fill: #ffffff; }
+  [stroke="#ffffff"] { stroke: #ffffff; }
+  [fill="#e8e8ed"] { fill: #e8e8ed; }
+  [stroke="#e8e8ed"] { stroke: #e8e8ed; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [fill="#ffffff"] { fill: #0d0e10; }
+  [stroke="#ffffff"] { stroke: #0d0e10; }
+  [fill="#e8e8ed"] { fill: #131316; }
+  [stroke="#e8e8ed"] { stroke: #131316; }
+}
+</style>
 <title id="title">Give actions and knowledge distinct homes</title>
 <desc id="desc">A captured item is clarified. An actionable item gets a next physical step and, when needed, a project outcome. Useful reference material enters connected notes. Regular review checks current commitments and resurfaces reference when work needs it.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6e6e73"/></marker></defs>

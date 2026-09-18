@@ -1,4 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="770" viewBox="0 0 960 770" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [stroke="#e8e8ed"] { stroke: #e8e8ed; }
+  [fill="#054a6b"] { fill: #054a6b; }
+  [fill="#0a5c22"] { fill: #0a5c22; }
+  [fill="#6b5803"] { fill: #6b5803; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [stroke="#e8e8ed"] { stroke: #131316; }
+  [fill="#054a6b"] { fill: #a9e5ff; }
+  [fill="#0a5c22"] { fill: #8ef2ab; }
+  [fill="#6b5803"] { fill: #ffe566; }
+}
+</style>
 <title id="title">Show the work and what changed</title>
 <desc id="desc">An illustrative resume bullet says, Rebuilt the onboarding guide so new starters could complete setup independently. Annotations identify the action, rebuilt; the project, the onboarding guide; and the result, independent setup. A reminder asks writers to use numbers only when they have supporting evidence.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6e73"/></marker></defs>

@@ -1,4 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="930" viewBox="0 0 960 930" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [fill="#054a6b"] { fill: #054a6b; }
+  [stroke="#e8e8ed"] { stroke: #e8e8ed; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [fill="#054a6b"] { fill: #a9e5ff; }
+  [stroke="#e8e8ed"] { stroke: #131316; }
+}
+</style>
 <title id="title">Match the response to the question</title>
 <desc id="desc">A comparison matrix gives illustrative prompts for behavioral, technical, product design, case and system design interviews. It pairs them with the evidence to reveal: actions and outcomes, reasoning and correctness, user needs and priorities, assumptions and analysis, or requirements and trade-offs. Actual rounds may combine formats.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6e73"/></marker></defs>

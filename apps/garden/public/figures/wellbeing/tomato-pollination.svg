@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="650" viewBox="0 0 960 650" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [fill="#e8e8ed"] { fill: #e8e8ed; }
+  [fill="#b8860b"] { fill: #6b5803; }
+  [stroke="#6b5803"] { stroke: #6b5803; }
+  [fill="#ffffff"] { fill: #ffffff; }
+  [stroke="#248a3d"] { stroke: #0a5c22; }
+  [fill="#248a3d"] { fill: #0a5c22; }
+  [fill="#6b5803"] { fill: #6b5803; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [fill="#e8e8ed"] { fill: #131316; }
+  [fill="#b8860b"] { fill: #ffe566; }
+  [stroke="#6b5803"] { stroke: #ffe566; }
+  [fill="#ffffff"] { fill: #0d0e10; }
+  [stroke="#248a3d"] { stroke: #8ef2ab; }
+  [fill="#248a3d"] { fill: #8ef2ab; }
+  [fill="#6b5803"] { fill: #ffe566; }
+}
+</style>
 <title id="title">Self-fertile still needs pollen transfer</title>
 <desc id="desc">Simplified section of a tomato flower: anthers surround the stigma above the ovary. Vibration moves pollen to the stigma; fertilization then occurs through pollen-tube growth.</desc>
 <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#6e6e73"/></marker></defs>

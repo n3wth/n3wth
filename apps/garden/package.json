@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "figures:theme": "node scripts/theme-figures.mjs",
+    "prebuild": "npm run figures:theme",
     "build": "next build",
     "start": "next start",
     "history": "node scripts/build-history.mjs",

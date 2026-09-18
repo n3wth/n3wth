@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="655" viewBox="0 0 960 655" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [fill="#ffffff"] { fill: #ffffff; }
+  [fill="#0a5c22"] { fill: #0a5c22; }
+  [fill="#054a6b"] { fill: #054a6b; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [fill="#ffffff"] { fill: #0d0e10; }
+  [fill="#0a5c22"] { fill: #8ef2ab; }
+  [fill="#054a6b"] { fill: #a9e5ff; }
+}
+</style>
 <title id="title">Movement has complementary demands</title>
 <desc id="desc">Four branches connect flexibility, strength, balance and endurance to everyday movement. Flexibility stretches muscles, strength works against resistance, balance practices stability and endurance sustains activity.</desc>
 <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L8 4L0 8Z" fill="#6e6e73"/></marker></defs>

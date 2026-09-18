@@ -1,4 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="731" viewBox="0 0 960 731" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [fill="#e8e8ed"] { fill: #e8e8ed; }
+  [stroke="#e8e8ed"] { stroke: #e8e8ed; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [fill="#ffffff"] { fill: #ffffff; }
+  [stroke="#ffffff"] { stroke: #ffffff; }
+  [stroke="#0071a4"] { stroke: #054a6b; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [fill="#e8e8ed"] { fill: #131316; }
+  [stroke="#e8e8ed"] { stroke: #131316; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [fill="#ffffff"] { fill: #0d0e10; }
+  [stroke="#ffffff"] { stroke: #0d0e10; }
+  [stroke="#0071a4"] { stroke: #a9e5ff; }
+}
+</style>
 <title id="title">Rate the answer you recalled</title>
 <desc id="desc">After attempting recall and revealing the answer, an incorrect or missing answer leads to Again. A correct answer branches by effort: Hard for slow or doubtful recall, Good for some effort, Easy for no effort. The displayed next interval follows the rating.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6e6e73"/></marker></defs>

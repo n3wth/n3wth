@@ -1,4 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="745" viewBox="0 0 960 745" role="img" aria-labelledby="title desc">
+<style data-site-theme="n3wth">
+  [fill="#6e6e73"] { fill: #6e6e73; }
+  [fill="#f5f5f7"] { fill: #f5f5f7; }
+  [fill="#1d1d1f"] { fill: #1d1d1f; }
+  [stroke="#1d1d1f"] { stroke: #1d1d1f; }
+  [fill="#ffffff"] { fill: #ffffff; }
+  [stroke="#6e6e73"] { stroke: #6e6e73; }
+  [stroke="#e8e8ed"] { stroke: #e8e8ed; }
+@media (prefers-color-scheme: dark) {
+  [fill="#6e6e73"] { fill: #9aa0a8; }
+  [fill="#f5f5f7"] { fill: #08090b; }
+  [fill="#1d1d1f"] { fill: #f2f3f5; }
+  [stroke="#1d1d1f"] { stroke: #f2f3f5; }
+  [fill="#ffffff"] { fill: #0d0e10; }
+  [stroke="#6e6e73"] { stroke: #9aa0a8; }
+  [stroke="#e8e8ed"] { stroke: #131316; }
+}
+</style>
 <title id="title">Compare books around one question</title>
 <desc id="desc">A synthesis worksheet asks what sustains learning practice. Three book-note columns—Atomic Habits, Mindset and Grit—prompt the reader to locate relevant passages. A comparison area then asks about agreement, tensions and scope before forming a sourced claim.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6e6e73"/></marker></defs>
