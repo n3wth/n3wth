@@ -10,6 +10,14 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "n3wth-skills",
+      "database_id": "2f4ee3ca-a435-4b70-b621-4d2ad9192176",
+      "migrations_dir": "migrations"
+    }
+  ],
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
