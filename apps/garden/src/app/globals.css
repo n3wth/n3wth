@@ -851,7 +851,6 @@ button:focus-visible,
 /* Callouts - Astryx tinted backgrounds */
 .callout {
   border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-border-emphasized);
   background: var(--color-background-muted);
   border-radius: var(--radius-container, 8px);
   padding: 1.125rem 1.25rem;
@@ -875,7 +874,6 @@ button:focus-visible,
 /* Tip / Success - green tint */
 .callout-tip,
 .callout-success {
-  border-left-color: var(--color-border-green);
   background: color-mix(in srgb, var(--color-background-green) 55%, var(--color-background-surface));
 }
 .callout-tip .callout-title,
@@ -884,7 +882,6 @@ button:focus-visible,
 /* Warning / Question - yellow tint */
 .callout-warning,
 .callout-question {
-  border-left-color: var(--color-border-yellow);
   background: var(--color-background-yellow);
 }
 .callout-warning .callout-title,
@@ -894,7 +891,6 @@ button:focus-visible,
 .callout-danger,
 .callout-failure,
 .callout-bug {
-  border-left-color: var(--color-border-red);
   background: var(--color-background-red);
 }
 .callout-danger .callout-title,
@@ -906,7 +902,6 @@ button:focus-visible,
 .callout-note,
 .callout-abstract,
 .callout-todo {
-  border-left-color: var(--color-border-cyan);
   background: var(--color-background-cyan);
 }
 .callout-info .callout-title,
@@ -916,14 +911,12 @@ button:focus-visible,
 
 /* Quote - subtle */
 .callout-quote {
-  border-left-color: var(--color-text-secondary);
   background: var(--color-background-muted);
 }
 .callout-quote .callout-title { color: var(--color-text-secondary); }
 
 /* Example */
 .callout-example {
-  border-left-color: var(--color-text-secondary);
   background: var(--color-background-muted);
 }
 .callout-example .callout-title { color: var(--color-text-secondary); }
@@ -974,7 +967,7 @@ button:focus-visible,
 }
 .connected-plant-title {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   line-height: 1.4;
   text-align: center;
   text-wrap: balance;

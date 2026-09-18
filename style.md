@@ -8,6 +8,7 @@ Use the existing system; do not introduce another visual scale or a new set of c
 - Suisse Intl for headings, body and controls, Geist Mono for code. Use semantic type roles instead of arbitrary sizes.
 - Shared `site.css` sets paragraph weight to `--font-weight-normal` (400), including paragraphs carrying heavier utility classes, and maps paragraph primary ink to the existing `--color-text-gray`. This softens dark-mode copy while preserving light-mode ink and explicit supporting/status colors. Do not override paragraph weight in apps; preserve font family, size, spacing and the weights of headings, `strong`/`b` and controls.
 - Reading outlines use `--font-size-sm` for labels, counts and links. Do not introduce a smaller count size or disabled ink for readable metadata.
+- Use `n3wth-site-prose` on reading bodies so lists share the softer paragraph ink.
 - Use existing semantic colors for canvas, surfaces, text and borders. Flat surfaces, subtle borders, no added glows, shadows or gradients. No sparkle icons.
 - Documentation examples use `CodeBlock size="sm"`. Preserve horizontal scrolling and copy controls. Add line numbers or language labels only when useful.
 - Code punctuation is readable content, not disabled text. Measure contrast against the actual code surface in both themes.

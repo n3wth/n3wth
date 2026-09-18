@@ -32,6 +32,7 @@
 }
 .n3wth-site-reading-outline nav a span { white-space: normal; }
 .n3wth-site-reading-outline nav a[aria-current] { font-weight: 500; }
+.n3wth-site-reading-outline .astryx-outline-indicator { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .n3wth-site-reading-outline nav * { transition: none; }
 }

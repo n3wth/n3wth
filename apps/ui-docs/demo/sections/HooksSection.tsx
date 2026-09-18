@@ -78,9 +78,9 @@ function ResponsiveLayout() {
       {/* useReducedMotion */}
       <DemoBlock title="useReducedMotion">
         <div className="p-6 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)]">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <span className="text-sm text-[var(--color-grey-400)]">prefers-reduced-motion:</span>
-            <Badge variant={prefersReducedMotion ? 'coral' : 'sage'}>
+            <Badge variant="default">
               {prefersReducedMotion ? 'Reduced' : 'No Preference'}
             </Badge>
           </div>

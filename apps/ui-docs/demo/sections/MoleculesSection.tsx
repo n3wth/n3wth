@@ -43,6 +43,8 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
 
   const [cardVariant, setCardVariant] = useState<'default' | 'glass' | 'interactive'>('default')
   const [cardPadding, setCardPadding] = useState<'none' | 'sm' | 'md' | 'lg'>('md')
+  const cardTitle = `${cardVariant.charAt(0).toUpperCase() + cardVariant.slice(1)} Card`
+  const cardDescription = cardVariant === 'glass' ? 'With backdrop blur' : cardVariant === 'interactive' ? 'Hover to see effects' : 'Basic border card'
 
   const [navVariant, setNavVariant] = useState<'default' | 'underline' | 'pill'>('underline')
   const [navActive, setNavActive] = useState(true)
@@ -53,29 +55,41 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
       <DemoBlock title="Card">
         <div className="space-y-6">
           {/* Controls */}
-          <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-xs text-[var(--color-grey-400)] mr-2">Variant:</span>
-            {(['default', 'glass', 'interactive'] as const).map((v) => (
-              <button
-                key={v}
-                onClick={() => setCardVariant(v)}
-                aria-pressed={cardVariant === v}
-                className={controlBtnClass(cardVariant === v)}
-              >
-                {v}
-              </button>
-            ))}
-            <span className="text-xs text-[var(--color-grey-400)] ml-4 mr-2">Padding:</span>
-            {(['none', 'sm', 'md', 'lg'] as const).map((p) => (
-              <button
-                key={p}
-                onClick={() => setCardPadding(p)}
-                aria-pressed={cardPadding === p}
-                className={controlBtnClass(cardPadding === p)}
-              >
-                {p}
-              </button>
-            ))}
+          <div className="flex flex-wrap gap-x-6 gap-y-4">
+            <div role="group" aria-label="Card variant" className="flex min-w-0 flex-col gap-2">
+              <span className="text-xs text-[var(--color-grey-400)]">Variant:</span>
+              <div className="flex flex-wrap gap-2">
+                {(['default', 'glass', 'interactive'] as const).map((v) => (
+                  <Button
+                    key={v}
+                    type="button"
+                    size="sm"
+                    variant={cardVariant === v ? 'primary' : 'secondary'}
+                    onClick={() => setCardVariant(v)}
+                    aria-pressed={cardVariant === v}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div role="group" aria-label="Card padding" className="flex min-w-0 flex-col gap-2">
+              <span className="text-xs text-[var(--color-grey-400)]">Padding:</span>
+              <div className="flex flex-wrap gap-2">
+                {(['none', 'sm', 'md', 'lg'] as const).map((p) => (
+                  <Button
+                    key={p}
+                    type="button"
+                    size="sm"
+                    variant={cardPadding === p ? 'primary' : 'secondary'}
+                    onClick={() => setCardPadding(p)}
+                    aria-pressed={cardPadding === p}
+                  >
+                    {p}
+                  </Button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Preview */}
@@ -83,10 +97,8 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
             <div className="w-full max-w-sm">
               <Card variant={cardVariant} padding={cardPadding}>
                 <CardHeader>
-                  <CardTitle>{cardVariant.charAt(0).toUpperCase() + cardVariant.slice(1)} Card</CardTitle>
-                  <CardDescription>
-                    {cardVariant === 'glass' ? 'With backdrop blur' : cardVariant === 'interactive' ? 'Hover to see effects' : 'Basic border card'}
-                  </CardDescription>
+                  <CardTitle>{cardTitle}</CardTitle>
+                  <CardDescription>{cardDescription}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-[var(--color-grey-400)]">
@@ -100,14 +112,22 @@ export function MoleculesSection({ theme, onThemeToggle }: MoleculesSectionProps
             </div>
           </div>
 
-          <CodeSnippet code={`<Card variant="${cardVariant}"${cardPadding !== 'md' ? ` padding="${cardPadding}"` : ''}>
+          <CodeSnippet language="tsx" code={`<Card variant="${cardVariant}"${cardPadding !== 'md' ? ` padding="${cardPadding}"` : ''}>
   <CardHeader>
-    <CardTitle>Card Title</CardTitle>
-    <CardDescription>Description text</CardDescription>
+    <CardTitle>${cardTitle}</CardTitle>
+    <CardDescription>
+      ${cardDescription}
+    </CardDescription>
   </CardHeader>
-  <CardContent>Content here</CardContent>
+  <CardContent>
+    <p>
+      Cards contain content and actions about a single subject.
+    </p>
+  </CardContent>
   <CardFooter>
-    <Button size="sm" variant="secondary">Action</Button>
+    <Button size="sm" variant="secondary">
+      Action
+    </Button>
   </CardFooter>
 </Card>`} />
         </div>

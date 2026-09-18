@@ -23,6 +23,7 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Paragraph copy uses regular weight (400) across all six sites, including article prose and lead paragraphs. Preserve heading, emphasis and control weights.
 - Primary paragraph copy uses the existing softer gray ink in dark mode. Supporting/status text retains its semantic color; light-theme ink stays unchanged.
 - Reading outline labels, section counts and links use the same supporting type size and regular weight; active links may use medium weight.
+- Connected-note links use the same supporting size. Avoid decorative side-accent borders on callouts or article graphics.
 
 ## Interaction
 

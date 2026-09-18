@@ -35,6 +35,9 @@ html[data-astryx-theme='n3wth'] {
   font-weight: var(--font-weight-normal, 400);
 }
 
+/* Reading lists use the same ink as adjacent primary paragraphs. */
+.n3wth-site-prose :is(ul, ol) { color: var(--color-text-gray); }
+
 /* Five semantic type roles. Apps own their content, not another type scale. */
 .n3wth-site-container {
   box-sizing: border-box;
