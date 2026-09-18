@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { readFileSync } from 'node:fs'
 
 test('light OS preference keeps the initial and hydrated canvas dark', async ({ browser, page }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, colorScheme: 'light' })
@@ -124,7 +125,9 @@ test('long code wraps with room for copy controls and preserves copied content',
     expect(block.whiteSpace).toBe('pre-wrap')
     expect(block.inset).toBeGreaterThanOrEqual(12)
   }
-  const original = await blocks.first().locator('code').textContent()
+  const source = readFileSync(new URL('../../apps/r3-web/content/docs/ai-intelligence.mdx', import.meta.url), 'utf8')
+  const original = source.match(/```[^\n]*\n([\s\S]*?)\n```/)?.[1].trim()
+  expect(original).toBeTruthy()
   await blocks.first().getByRole('button', { name: 'Copy code' }).click()
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(original)
 })
