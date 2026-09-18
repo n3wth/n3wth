@@ -16,8 +16,8 @@
     "@mdx-js/react": "3.1.1",
     "@n3wth/site-config": "*",
     "@n3wth/ui": "2.0.0",
-    "@next/mdx": "15.5.19",
-    "@next/third-parties": "16.3.4",
+    "@next/mdx": "16.3.5",
+    "@next/third-parties": "16.3.5",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@tailwindcss/typography": "^0.5.19",
@@ -31,7 +31,7 @@
     "lucide-react": "^0.564.0",
     "motion-dom": "12.23.12",
     "motion-utils": "12.23.6",
-    "next": "15.5.19",
+    "next": "16.3.5",
     "next-axiom": "1.10.0",
     "next-mdx-remote": "6.0.0",
     "posthog-js": "^1.422.5",
@@ -46,6 +46,7 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "1.20.6",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^24",
     "@types/react": "19.2.17",
