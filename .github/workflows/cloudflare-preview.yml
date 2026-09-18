@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           if [ "$EVENT_ACTION" = closed ]; then
-            echo 'ui=true' >> "$GITHUB_OUTPUT"
+            echo 'apps=ui-docs portfolio garden kit skills r3-web' >> "$GITHUB_OUTPUT"
           else
             node --input-type=module <<'JS'
           import { appendFileSync } from 'node:fs'
@@ -46,25 +46,46 @@ jobs:
           const workspaces = JSON.parse(execFileSync(process.execPath, ['scripts/affected.mjs', '--base', base, '--list', '--deployment'], { encoding: 'utf8' }))
           const files = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`, '--'], { encoding: 'utf8' }).split('\n')
           const infrastructure = files.some(file => file === '.github/workflows/cloudflare-preview.yml' || file.startsWith('scripts/cloudflare-preview'))
-          appendFileSync(process.env.GITHUB_OUTPUT, `ui=${infrastructure || workspaces.includes('@n3wth/ui-docs')}\n`)
+          const previewApps = {
+            '@n3wth/ui-docs': 'ui-docs',
+            '@n3wth/portfolio': 'portfolio',
+            '@n3wth/garden': 'garden',
+            '@n3wth/kit': 'kit',
+            '@n3wth/skills': 'skills',
+            '@n3wth/r3-web': 'r3-web',
+          }
+          const apps = infrastructure ? Object.values(previewApps) : workspaces.map(workspace => previewApps[workspace]).filter(Boolean)
+          appendFileSync(process.env.GITHUB_OUTPUT, `apps=${apps.join(' ')}\n`)
           JS
           fi
       - run: npm install --global npm@11.19.1
-        if: steps.affected.outputs.ui == 'true'
+        if: steps.affected.outputs.apps != ''
       - run: npm ci
-        if: steps.affected.outputs.ui == 'true'
-      - name: Build and check UI docs
-        if: steps.affected.outputs.ui == 'true' && github.event.action != 'closed'
+        if: steps.affected.outputs.apps != ''
+      - name: Build affected preview apps
+        if: steps.affected.outputs.apps != '' && github.event.action != 'closed'
         run: |
-          npm run build:ui-docs
-          npm run typecheck -w @n3wth/ui-docs
-          npm test -w @n3wth/ui-docs
-          (cd apps/ui-docs && node --test scripts/prerender.test.mjs)
+          for app in ${{ steps.affected.outputs.apps }}; do
+            case "$app" in
+              ui-docs)
+                npm run build:ui-docs
+                npm run typecheck -w @n3wth/ui-docs
+                npm test -w @n3wth/ui-docs
+                (cd apps/ui-docs && node --test scripts/prerender.test.mjs)
+                ;;
+              portfolio)
+                npm run build:portfolio
+                ;;
+              *)
+                npm exec --workspace "@n3wth/$app" -- opennextjs-cloudflare build
+                ;;
+            esac
+          done
       - name: Check preview lifecycle
-        if: steps.affected.outputs.ui == 'true'
-        run: node --test scripts/cloudflare-preview.test.mjs
+        if: steps.affected.outputs.apps != ''
+        run: node --test scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs
       - name: Verify current PR state
-        if: steps.affected.outputs.ui == 'true' && github.event.action != 'closed'
+        if: steps.affected.outputs.apps != '' && github.event.action != 'closed'
         id: current
         uses: actions/github-script@v9
         with:
@@ -72,7 +93,7 @@ jobs:
             const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: context.issue.number })
             core.setOutput('deploy', pr.state === 'open' && pr.head.sha === context.payload.pull_request.head.sha && pr.head.repo.full_name === `${context.repo.owner}/${context.repo.repo}`)
       - name: Deploy preview
-        if: steps.affected.outputs.ui == 'true' && steps.current.outputs.deploy == 'true'
+        if: steps.affected.outputs.apps != '' && steps.current.outputs.deploy == 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ac23513945eb49f73a89faf1be12384e
           CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
@@ -80,10 +101,12 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
-          node scripts/cloudflare-preview.mjs deploy --app ui-docs --pr "$PR_NUMBER"
-          echo "Preview: https://ui-docs-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
+          for app in ${{ steps.affected.outputs.apps }}; do
+            node scripts/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER"
+            echo "Preview $app: https://$app-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
+          done
       - name: Delete closed preview
-        if: steps.affected.outputs.ui == 'true' && github.event.action == 'closed'
+        if: steps.affected.outputs.apps != '' && github.event.action == 'closed'
         env:
           CLOUDFLARE_ACCOUNT_ID: ac23513945eb49f73a89faf1be12384e
           CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
@@ -91,4 +114,6 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
-          node scripts/cloudflare-preview.mjs delete --app ui-docs --pr "$PR_NUMBER"
+          for app in ${{ steps.affected.outputs.apps }}; do
+            node scripts/cloudflare-preview.mjs delete --app "$app" --pr "$PR_NUMBER"
+          done

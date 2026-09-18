@@ -2,119 +2,62 @@ import { spawnSync } from 'node:child_process'
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import {
+  PREVIEW_APPS,
+  parseJsonc,
+  previewIdentity,
+  previewPaths,
+  writePreviewConfig,
+} from './cloudflare-preview-config.mjs'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const APP_ROOT = join(ROOT, 'apps', 'ui-docs')
-const APP_ALLOWLIST = new Set(['ui-docs'])
-const PREVIEW_SUFFIX = 'preview.n3wth.com'
 const WRANGLER_ENTRYPOINT = resolve(ROOT, 'node_modules', 'wrangler', 'bin', 'wrangler.js')
 const CLOUDFLARE_API = 'https://api.cloudflare.com/client/v4'
+const STATIC_STAGE_APPS = new Set(['ui-docs', 'portfolio'])
 
-export function parseJsonc(source) {
-  let output = ''
-  let quote = false
-  let escaped = false
-  let lineComment = false
-  let blockComment = false
-  for (let index = 0; index < source.length; index += 1) {
-    const character = source[index]
-    const next = source[index + 1]
-    if (lineComment) {
-      if (character === '\n') {
-        lineComment = false
-        output += character
-      } else {
-        output += ' '
-      }
-      continue
-    }
-    if (blockComment) {
-      if (character === '*' && next === '/') {
-        blockComment = false
-        output += '  '
-        index += 1
-      } else {
-        output += character === '\n' ? '\n' : ' '
-      }
-      continue
-    }
-    if (quote) {
-      output += character
-      if (escaped) escaped = false
-      else if (character === '\\') escaped = true
-      else if (character === '"') quote = false
-      continue
-    }
-    if (character === '"') {
-      quote = true
-      output += character
-    } else if (character === '/' && next === '/') {
-      lineComment = true
-      output += '  '
-      index += 1
-    } else if (character === '/' && next === '*') {
-      blockComment = true
-      output += '  '
-      index += 1
-    } else {
-      output += character
-    }
-  }
-  let json = ''
-  quote = false
-  escaped = false
-  for (let index = 0; index < output.length; index += 1) {
-    const character = output[index]
-    if (quote) {
-      json += character
-      if (escaped) escaped = false
-      else if (character === '\\') escaped = true
-      else if (character === '"') quote = false
-      continue
-    }
-    if (character === '"') {
-      quote = true
-      json += character
-      continue
-    }
-    if (character === ',') {
-      let next = index + 1
-      while (/\s/.test(output[next] || '')) next += 1
-      if (output[next] === '}' || output[next] === ']') continue
-    }
-    json += character
-  }
-  return JSON.parse(json)
-}
+export { parseJsonc, previewIdentity }
 
 export function parseCliArgs(args) {
   const [action, ...options] = args
   if (!['config', 'deploy', 'delete'].includes(action)) {
     throw new Error('Action must be config, deploy, or delete.')
   }
-  const values = { action, app: undefined, pr: undefined }
+  const values = { action, app: undefined, pr: undefined, bindings: undefined }
   for (let index = 0; index < options.length; index += 1) {
     const option = options[index]
-    if (option !== '--app' && option !== '--pr') throw new Error(`Unknown option: ${option}`)
-    if (values[option.slice(2)] !== undefined) throw new Error(`Duplicate option: ${option}`)
+    if (option !== '--app' && option !== '--pr' && option !== '--bindings-json') {
+      throw new Error(`Unknown option: ${option}`)
+    }
+    const key = option === '--bindings-json' ? 'bindings' : option.slice(2)
+    if (values[key] !== undefined) throw new Error(`Duplicate option: ${option}`)
     const value = options[++index]
     if (!value || value.startsWith('--')) throw new Error(`Missing value for ${option}.`)
-    values[option.slice(2)] = value
+    values[key] = value
   }
-  if (!APP_ALLOWLIST.has(values.app)) throw new Error('App must be ui-docs.')
+  if (!PREVIEW_APPS.has(values.app)) {
+    throw new Error(`App must be one of: ${[...PREVIEW_APPS].join(', ')}.`)
+  }
   if (!/^[1-9]\d*$/.test(values.pr || '')) throw new Error('PR must be a positive integer.')
   const pr = Number(values.pr)
   if (!Number.isSafeInteger(pr) || pr < 1) throw new Error('PR must be a positive safe integer.')
-  return { action, app: values.app, pr }
+  let bindings
+  if (values.bindings !== undefined) {
+    try {
+      bindings = JSON.parse(values.bindings)
+    } catch {
+      throw new Error('--bindings-json must be a JSON object of per-preview bindings.')
+    }
+    if (!bindings || Array.isArray(bindings) || typeof bindings !== 'object') {
+      throw new Error('--bindings-json must be a JSON object of per-preview bindings.')
+    }
+  }
+  return { action, app: values.app, pr, ...(bindings ? { bindings } : {}) }
 }
 
-export function previewIdentity(app, pr) {
-  if (!APP_ALLOWLIST.has(app)) throw new Error('App must be ui-docs.')
-  if (!Number.isSafeInteger(pr) || pr < 1) throw new Error('PR must be a positive safe integer.')
-  return {
-    workerName: `n3wth-${app}-pr-${pr}`,
-    host: `${app}-pr-${pr}.${PREVIEW_SUFFIX}`,
-  }
+export function appRootPath(root = ROOT, app) {
+  if (!PREVIEW_APPS.has(app)) throw new Error(`Unsupported preview app: ${app}`)
+  return join(root, 'apps', app)
 }
 
 export function accountIdFromEnv(env = process.env) {
@@ -150,23 +93,6 @@ function absoluteConfigPath(value, configPath) {
   return isAbsolute(value) ? value : resolve(dirname(configPath), value)
 }
 
-export function createGeneratedConfig({ source, sourcePath, accountId, identity, assetsDirectory }) {
-  const config = structuredClone(source)
-  config.name = identity.workerName
-  config.account_id = accountId
-  config.workers_dev = false
-  config.preview_urls = false
-  config.routes = [{ pattern: identity.host, custom_domain: true }]
-  delete config.route
-  if (config.main) config.main = absoluteConfigPath(config.main, sourcePath)
-  if (config.assets) {
-    config.assets = { ...config.assets, directory: assetsDirectory }
-  } else {
-    config.assets = { directory: assetsDirectory, not_found_handling: '404-page' }
-  }
-  return config
-}
-
 export function injectPreviewHeaders(assetDirectory) {
   const headersPath = join(assetDirectory, '_headers')
   const existing = existsSync(headersPath) ? readFileSync(headersPath, 'utf8') : ''
@@ -195,25 +121,20 @@ export function stagePreviewAssets({ sourceDirectory, stageDirectory }) {
   return stageDirectory
 }
 
-export function generatedPaths({ app = 'ui-docs', pr, root = ROOT }) {
-  const identity = previewIdentity(app, pr)
-  const directory = join(root, '.cloudflare', `${app}-pr-${pr}`)
-  return {
-    directory,
-    assetsDirectory: join(directory, 'assets'),
-    configPath: join(directory, 'wrangler.json'),
-    ...identity,
+function stagePreviewAppAssets({ app, appRoot, source, sourcePath, stageDirectory }) {
+  if (!STATIC_STAGE_APPS.has(app)) return undefined
+  const sourceAssets = absoluteConfigPath(source.assets?.directory || 'dist', sourcePath)
+  rmSync(stageDirectory, { recursive: true, force: true })
+  mkdirSync(stageDirectory, { recursive: true })
+  cpSync(sourceAssets, stageDirectory, { recursive: true })
+  if (app === 'portfolio') {
+    for (const name of ['_headers', '_redirects']) {
+      const from = join(appRoot, 'public', name)
+      if (existsSync(from)) cpSync(from, join(stageDirectory, name))
+    }
   }
-}
-
-export function writeGeneratedConfig({ appRoot = APP_ROOT, root = ROOT, accountId, app = 'ui-docs', pr, assetsDirectory }) {
-  const { path: sourcePath, config: source } = readAppConfig(appRoot)
-  const paths = generatedPaths({ app, pr, root })
-  const targetAssets = assetsDirectory || paths.assetsDirectory
-  mkdirSync(paths.directory, { recursive: true })
-  const generated = createGeneratedConfig({ source, sourcePath, accountId, identity: previewIdentity(app, pr), assetsDirectory: targetAssets })
-  writeFileSync(paths.configPath, `${JSON.stringify(generated, null, 2)}\n`)
-  return { ...paths, sourcePath, config: generated }
+  injectPreviewHeaders(stageDirectory)
+  return stageDirectory
 }
 
 export function runWrangler(args, { cwd = ROOT, env = process.env, run = spawnSync } = {}) {
@@ -310,18 +231,28 @@ export async function assertNoDomainCollision({ accountId, identity, env = proce
   return undefined
 }
 
-export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = process.env, run = spawnSync, log = console.log, pr, app = 'ui-docs', fetchFn = fetch }) {
+export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = process.env, run = spawnSync, log = console.log, pr, app = 'ui-docs', fetchFn = fetch, bindings }) {
   const accountId = accountIdFromEnv(env)
-  const paths = generatedPaths({ app, pr, root })
-  await assertNoDomainCollision({ accountId, identity: previewIdentity(app, pr), env, fetchFn })
+  const identity = previewIdentity(app, pr)
+  const paths = previewPaths({ root, app, pr })
+  const stageDirectory = join(paths.directory, 'assets')
+  await assertNoDomainCollision({ accountId, identity, env, fetchFn })
   const { path: sourcePath, config: source } = readAppConfig(appRoot)
-  const sourceAssets = source.assets?.directory || join(dirname(sourcePath), 'dist')
-  stagePreviewAssets({ sourceDirectory: absoluteConfigPath(sourceAssets, sourcePath), stageDirectory: paths.assetsDirectory })
-  const generated = writeGeneratedConfig({ appRoot, root, accountId, app, pr, assetsDirectory: paths.assetsDirectory })
-  const result = runWrangler(['deploy', '--config', generated.configPath], { cwd: root, env, run })
+  const stagedAssets = stagePreviewAppAssets({ app, appRoot, source, sourcePath, stageDirectory })
+  const generated = writePreviewConfig({ root, app, pr, sourcePath, accountId, previewBindings: bindings, assetsDirectory: stagedAssets })
+  const result = runWrangler(['deploy', '--config', generated.paths.configPath], { cwd: root, env, run })
   assertCommandSucceeded(result, 'Wrangler deploy')
-  log(`Deployed ${generated.workerName} at https://${generated.host}`)
-  return { ...generated, command: [process.execPath, WRANGLER_ENTRYPOINT, 'deploy', '--config', generated.configPath] }
+  log(`Deployed ${generated.identity.workerName} at https://${generated.identity.host}`)
+  return {
+    directory: paths.directory,
+    assetsDirectory: stagedAssets,
+    configPath: generated.paths.configPath,
+    workerName: generated.identity.workerName,
+    host: generated.identity.host,
+    sourcePath,
+    config: generated.config,
+    command: [process.execPath, WRANGLER_ENTRYPOINT, 'deploy', '--config', generated.paths.configPath],
+  }
 }
 
 export async function deletePreview({ root = ROOT, env = process.env, run = spawnSync, log = console.log, pr, app = 'ui-docs', fetchFn = fetch }) {
@@ -350,10 +281,17 @@ export async function main(args = process.argv.slice(2), env = process.env) {
   const input = parseCliArgs(args)
   accountIdFromEnv(env)
   if (input.action === 'config') {
-    const generated = writeGeneratedConfig({ accountId: env.CLOUDFLARE_ACCOUNT_ID, ...input })
-    console.log(JSON.stringify({ configPath: generated.configPath, workerName: generated.workerName, host: generated.host }, null, 2))
+    const generated = writePreviewConfig({
+      root: ROOT,
+      app: input.app,
+      pr: input.pr,
+      sourcePath: findWranglerConfig(appRootPath(ROOT, input.app)),
+      accountId: env.CLOUDFLARE_ACCOUNT_ID,
+      previewBindings: input.bindings,
+    })
+    console.log(JSON.stringify({ configPath: generated.paths.configPath, workerName: generated.identity.workerName, host: generated.identity.host }, null, 2))
   } else if (input.action === 'deploy') {
-    await deployPreview({ ...input, env })
+    await deployPreview({ appRoot: appRootPath(ROOT, input.app), ...input, env })
   } else {
     await deletePreview({ ...input, env })
   }
