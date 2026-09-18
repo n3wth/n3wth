@@ -1,5 +1,17 @@
 # @n3wth/ui
 
+## 2.1.0
+
+### Minor Changes
+
+- d473db5: Keep footer identity and links on one row when they fit, with content-driven wrapping on narrow screens.
+  
+  Add compact PageHeader spacing for documentation articles whose parents own the surrounding margins.
+  
+  Allow SiteNavigation to display contextual menu content on compact screens and align its collapse breakpoint with a desktop documentation sidebar.
+  
+  Expose native CodeBlock line wrapping and inset headerless copy controls with reserved space beside code.
+
 ## 2.0.0
 
 The monorepo becomes the release source for the shared Newth design system.

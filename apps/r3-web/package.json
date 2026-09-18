@@ -1,6 +1,6 @@
 {
   "name": "@n3wth/r3-web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -20,7 +20,7 @@
     "@mdx-js/loader": "3.1.1",
     "@mdx-js/react": "3.1.1",
     "@n3wth/site-config": "*",
-    "@n3wth/ui": "2.0.0",
+    "@n3wth/ui": "2.1.0",
     "@next/mdx": "15.5.19",
     "@next/third-parties": "16.3.4",
     "@react-three/drei": "^10.7.7",
