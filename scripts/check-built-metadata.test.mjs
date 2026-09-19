@@ -167,17 +167,5 @@ test('checkPublicDocument rejects missing canonical or mismatched social URL', (
 
 test('current repository still lists every site application', () => {
   const names = listApplications(repo).map(app => app.directory).toSorted()
-  assert.deepEqual(names, ['garden', 'kit', 'portfolio', 'r3-web', 'skills', 'ui-docs'])
-})
-
-test('kit check includes lint', () => {
-  const manifest = JSON.parse(readFileSync(new URL('../apps/kit/package.json', import.meta.url)))
-  assert.match(manifest.scripts.check, /\blint\b/)
-})
-
-test('kit eslint warns existing Next compiler findings so check can include lint', () => {
-  const source = readFileSync(new URL('../apps/kit/eslint.config.mjs', import.meta.url), 'utf8')
-  for (const rule of ['react-hooks/set-state-in-effect', 'react-hooks/refs', 'react-hooks/immutability', 'react/display-name']) {
-    assert.match(source, new RegExp(`${rule.replaceAll('/', '\\/')}': 'warn'`))
-  }
+  assert.deepEqual(names, ['garden', 'portfolio', 'r3-web', 'skills', 'ui-docs'])
 })

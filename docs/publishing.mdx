@@ -7,6 +7,11 @@ This documentation project lives at `docs` in `n3wth/n3wth`.
 `docs.json` controls the hosted site. The repository-root `context7.json`
 controls which files Context7 indexes. They serve different purposes.
 
+<Note>
+  Preview changes locally before connecting or publishing the site. A Docs7
+  deployment is separate from the repository's application deployments.
+</Note>
+
 ## Preview locally
 
 From the repository root:
@@ -66,7 +71,9 @@ store or environment variable; do not put them in either JSON configuration.
 2. Open the overview and one page from each product, including a direct page
    load rather than only client-side navigation.
 3. Test the product navigation, page links, and search.
-4. Confirm Markdown and `llms.txt` output are available from the hosted site.
+4. Confirm `/robots.txt`, `/sitemap.xml`, `/llms.txt`, `/llms-full.txt`, and
+   `/.well-known/agent-skills/index.json` are available. Request a page with
+   `Accept: text/markdown` to verify its Markdown representation.
 5. Check that the Context7 library refresh has completed and returns the new
    product documentation. A refresh request being accepted is not completion.
 
@@ -86,6 +93,38 @@ curl --fail-with-body https://context7.com/api/v1/refresh \
 Supply `CONTEXT7_API_KEY` through your environment. Avoid printing it in shell
 traces or CI logs. If the library has not been added, submit the repository from
 the Context7 dashboard first.
+
+## SEO and agent readiness
+
+`docs.json` is the source of shared search metadata. This project limits
+indexing to navigable pages, publishes `https://docs.n3wth.com` as the
+canonical origin, and identifies n3wth as the organization. Add page-specific
+`description`, `keywords`, `image`, `canonical`, or `noindex: true` values in
+frontmatter when needed. Keep the generated `robots.txt` and `sitemap.xml`
+unless the site requires a full replacement.
+
+Docs7 exposes `/llms.txt`, `/llms-full.txt`, `/<page>.md`, `/search?q=...`, and
+`/.well-known/agent-skills/index.json` for agents. Use exact API names and
+stable headings. Put agent-only context inside `Visibility for="agents"`.
+
+## Docs7 CLI
+
+The CLI requires Node.js 20.19 or newer:
+
+```bash
+npm install -g @upstash/docs7
+# or: npx @upstash/docs7 deploy
+```
+
+Use `docs7 dev [dir]` for a local preview, `docs7 login`, `docs7 whoami`, and
+`docs7 logout` for account management, and `docs7 deploy [dir]` to publish.
+For this repository, run `docs7 dev docs` or `docs7 deploy docs`.
+
+For CI, set `CONTEXT7_API_KEY`; it takes precedence over the saved login.
+Deploys save the site ID in `.docs7/project.json`. Keep that file with the
+documentation source. Use `--preview` for a preview deployment and
+`.docs7ignore` for files that must not be uploaded. The upload does not use
+`.gitignore`, so review documentation folders for private files first.
 
 ## Maintain accuracy
 

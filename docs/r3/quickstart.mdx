@@ -5,6 +5,12 @@ description: "Connect r3 to an MCP client. Check storage, retrieval, and restart
 
 r3 is a local-first memory server for MCP clients. It stores facts and conversation context through tools over standard input and output. Start here if you are connecting a desktop assistant or building an MCP integration.
 
+<Danger>
+  Do not treat r3 as a backup until you have tested restart and recovery in the
+  same working directory. Local records and the vector index have separate
+  retention behavior.
+</Danger>
+
 ## Core and website
 
 The executable package is `@n3wth/r3`, maintained in [n3wth/r3](https://github.com/n3wth/r3). This workspace contains only the website at `apps/r3-web`. Starting or deploying that website does not start a memory server, provision storage, or expose an r3 HTTP API.
@@ -24,6 +30,11 @@ MCP client
 The server defaults to local mode without an API key. Enhanced intelligence is enabled by default and attempts to load `Xenova/all-MiniLM-L6-v2` on the CPU. Basic mode skips that enhanced initialization; the local backend still uses a Vectra index with a simpler word-hash embedding implementation.
 
 The vector index defaults to `./data/vectra-index`, resolved from the process working directory. Local Redis records have a 30-day TTL. The embedded Redis constructor does not explicitly configure a durable data directory or persistence policy. A file-backed vector index alone does not establish that every memory operation survives a process restart. Verify restart behavior before relying on r3 as the only copy of information.
+
+<Check>
+  The first useful smoke test is deliberately small: add one disposable fact,
+  search for it, restart the process, and search again.
+</Check>
 
 See [configuration](/r3/configuration) for storage and mode details.
 

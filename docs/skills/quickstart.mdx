@@ -5,6 +5,11 @@ description: Choose and install a skill. Check its catalog status and assistant 
 
 Skills are Markdown instructions for a coding assistant. They describe when to apply a workflow, what steps to follow, and what output to produce. Installing a skill copies those instructions; it does not install the tools or libraries mentioned in them.
 
+<Note>
+  A skill is guidance, not a dependency manager. Read its prerequisites before
+  running the workflow it describes.
+</Note>
+
 Start with [installation](/skills/installation) to use an existing skill, or [authoring](/skills/authoring) to contribute one. The [CLI reference](/skills/cli) documents the separate command-line implementation and its limitations.
 
 ## Install your first skill
@@ -34,6 +39,11 @@ Browse the [catalog](https://skills.n3wth.com). Search matches names, descriptio
 | `business` | Strategy, analysis, and communication |
 
 Before installing, read the instruction file and check its tool prerequisites. For example, a PDF skill supplies guidance; it does not provision a Python environment or PDF dependencies.
+
+<Warning>
+  Inspect an install script before piping it into a shell. The commands above
+  download the script first so you can review exactly what will run.
+</Warning>
 
 ## Catalog entries and downloadable files
 
