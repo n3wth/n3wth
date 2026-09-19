@@ -29,32 +29,51 @@
     ]
   },
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Guides",
-        "pages": ["index"],
-        "productGroups": [
-          {
-            "group": "Build interfaces",
-            "products": [
-              { "product": "UI", "description": "Shared React design system", "pages": ["ui/quickstart", "ui/site-compositions", "ui/primitives-and-themes", "ui/api-and-recipes", "ui/troubleshooting"] }
-            ]
-          },
-          {
-            "group": "Build with agents",
-            "products": [
-              { "product": "Skills", "description": "Reusable agent instructions", "pages": ["skills/quickstart", "skills/installation", "skills/authoring", "skills/cli"] },
-              { "product": "r3", "description": "Persistent agent memory", "pages": ["r3/quickstart", "r3/mcp", "r3/configuration", "r3/troubleshooting"] }
-            ]
-          }
+        "group": " ",
+        "pages": [
+          "index"
         ]
       },
       {
-        "tab": "Contribute",
-        "groups": [
-          { "group": "Maintainers", "pages": ["workspace", "publishing"] }
+        "group": "UI",
+        "pages": [
+          "ui/quickstart",
+          "ui/primitives-and-themes",
+          "ui/site-compositions",
+          "ui/api-and-recipes",
+          "ui/troubleshooting"
+        ]
+      },
+      {
+        "group": "Skills",
+        "pages": [
+          "skills/quickstart",
+          "skills/installation",
+          "skills/authoring",
+          "skills/cli"
+        ]
+      },
+      {
+        "group": "r3",
+        "pages": [
+          "r3/quickstart",
+          "r3/configuration",
+          "r3/mcp",
+          "r3/troubleshooting"
+        ]
+      },
+      {
+        "group": "Contribute",
+        "pages": [
+          "workspace",
+          "publishing"
         ]
       }
     ]
+  },
+  "icons": {
+    "library": "tabler"
   }
 }
