@@ -151,7 +151,6 @@ jobs:
               ui-docs) host='ui.n3wth.com' ;;
               portfolio) host='n3wth.com' ;;
               garden) host='garden.n3wth.com' ;;
-              kit) host='kit.n3wth.com' ;;
               skills) host='skills.n3wth.com' ;;
               r3-web) host='r3.n3wth.com' ;;
               *) echo "Unknown production app: $app"; exit 1 ;;

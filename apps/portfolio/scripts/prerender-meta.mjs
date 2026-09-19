@@ -46,7 +46,6 @@ const routes = [
           <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — points-vs-cash flight optimizer.</li>
           <li><a href="https://lunchmoney.sh" rel="noopener">lunchmoney.sh</a> — unofficial Lunch Money plugin for Claude, Codex, and Cursor.</li>
           <li><a href="/projects/r3">r3</a>: memory for AI apps using vector search and knowledge graphs.</li>
-          <li><a href="/projects/kit">kit</a>: a design system with context for coding agents.</li>
           <li><a href="https://skills.n3wth.com" rel="noopener">Agent Skills</a>: reusable instructions for coding agents.</li>
           <li><a href="https://github.com/n3wth/markup" rel="noopener">markup</a>: an independent prototype exploring personal AI agents in shared documents and chat.</li>
           <li><a href="https://garden.n3wth.com" rel="noopener">garden</a> — a digital garden of working notes.</li>
@@ -66,13 +65,6 @@ const routes = [
     description: 'A shared React component library with theme tokens, typography, native controls, and site compositions.',
     ogImage: '/og/library.png',
     body: '<h1>@n3wth/ui</h1><p>A React component library with theme tokens, typography, native controls, and page compositions shared across the n3wth sites.</p><p>Install it with <code>npm install @n3wth/ui</code>. <a href="https://github.com/n3wth/ui" rel="noopener">Read the source</a>.</p>',
-  },
-  {
-    path: 'projects/kit',
-    title: 'kit — Oliver Newth',
-    description: 'A shadcn-compatible registry paired with context packs that explain design rules to coding agents.',
-    ogImage: '/og/library.png',
-    body: '<h1>kit</h1><p>A shadcn-compatible registry that copies component source into the consuming project, paired with context packs for coding agents.</p><p>Install a component with <code>npx shadcn add https://kit.n3wth.com/r/button.json</code>. <a href="https://github.com/n3wth/n3wth/tree/main/apps/kit" rel="noopener">Read the source</a>.</p>',
   },
   {
     path: 'art',

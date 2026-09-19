@@ -129,7 +129,6 @@ describe('shared site composition', () => {
     expect(screen.getByRole('link', { name: 'Library' })).toHaveAttribute('href', 'https://n3wth.com/library')
     expect(screen.getByRole('link', { name: 'Skills' })).toHaveAttribute('href', 'https://skills.n3wth.com')
     expect(screen.getByRole('link', { name: 'r3' })).toHaveAttribute('href', 'https://r3.n3wth.com')
-    expect(screen.getByRole('link', { name: 'Kit' })).toHaveAttribute('href', 'https://kit.n3wth.com')
     expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute('href', 'https://docs.n3wth.com')
     expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', 'https://n3wth.com/contact')
     expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/n3wth/kit')

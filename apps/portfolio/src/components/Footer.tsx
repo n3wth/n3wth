@@ -6,7 +6,6 @@ export function Footer() {
   return <SiteFooter data-nosnippet signup={<SiteSignup onSubmit={trackSignup} />} links={<>
     <a href="https://skills.n3wth.com" onClick={() => trackOutbound('https://skills.n3wth.com', 'footer')}>Skills</a>
     <a href="/projects/r3">r3</a>
-    <a href="/projects/kit">Kit</a>
     <a href="https://docs.n3wth.com" onClick={() => trackOutbound('https://docs.n3wth.com', 'footer')}>Docs</a>
     <a href="/library">Library</a>
     <a href="/contact">Contact</a>

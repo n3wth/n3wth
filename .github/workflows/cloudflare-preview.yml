@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           if [ "$EVENT_ACTION" = closed ]; then
-            echo 'apps=ui-docs portfolio garden kit skills r3-web' >> "$GITHUB_OUTPUT"
+            echo 'apps=ui-docs portfolio garden skills r3-web' >> "$GITHUB_OUTPUT"
           else
             node --input-type=module <<'JS'
           import { appendFileSync } from 'node:fs'
@@ -50,7 +50,6 @@ jobs:
             '@n3wth/ui-docs': 'ui-docs',
             '@n3wth/portfolio': 'portfolio',
             '@n3wth/garden': 'garden',
-            '@n3wth/kit': 'kit',
             '@n3wth/skills': 'skills',
             '@n3wth/r3-web': 'r3-web',
           }

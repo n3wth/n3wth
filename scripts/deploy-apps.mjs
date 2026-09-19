@@ -9,7 +9,6 @@ export const DEPLOY_APPS = [
   { workspace: '@n3wth/ui-docs', app: 'ui-docs' },
   { workspace: '@n3wth/portfolio', app: 'portfolio' },
   { workspace: '@n3wth/garden', app: 'garden' },
-  { workspace: '@n3wth/kit', app: 'kit' },
   { workspace: '@n3wth/skills', app: 'skills' },
   { workspace: '@n3wth/r3-web', app: 'r3-web' },
 ]

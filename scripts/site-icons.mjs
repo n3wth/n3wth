@@ -5,7 +5,7 @@ import sharp from 'sharp'
 import { siteIconSvg } from '../packages/site-config/icons.js'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
-const apps = { portfolio: 'portfolio', garden: 'garden', kit: 'kit', r3: 'r3-web', skills: 'skills', ui: 'ui-docs' }
+const apps = { portfolio: 'portfolio', garden: 'garden', r3: 'r3-web', skills: 'skills', ui: 'ui-docs' }
 
 for (const [site, app] of Object.entries(apps)) {
   const directory = join(root, 'apps', app, 'public')
@@ -33,5 +33,5 @@ for (const [site, app] of Object.entries(apps)) {
   header.writeUInt32LE(22, 18)
   const ico = Buffer.concat([header, png])
   await writeFile(join(directory, 'favicon.ico'), ico)
-  if (['kit', 'r3-web'].includes(app)) await writeFile(join(root, 'apps', app, 'app/favicon.ico'), ico)
+  if (app === 'r3-web') await writeFile(join(root, 'apps', app, 'app/favicon.ico'), ico)
 }

@@ -9,7 +9,7 @@ import { siteUrls } from '../packages/site-config/index.js'
 const accountId = 'ac23513945eb49f73a89faf1be12384e'
 
 test('each production config has its canonical domain and preview replaces its identity', () => {
-  const sites = { portfolio: 'home', 'ui-docs': 'ui', garden: 'garden', kit: 'kit', skills: 'skills', 'r3-web': 'r3' }
+  const sites = { portfolio: 'home', 'ui-docs': 'ui', garden: 'garden', skills: 'skills', 'r3-web': 'r3' }
   for (const [app, site] of Object.entries(sites)) {
     const source = parseJsonc(readFileSync(new URL(`../apps/${app}/wrangler.jsonc`, import.meta.url), 'utf8'))
     assert.equal(source.name, `n3wth-${app}`)

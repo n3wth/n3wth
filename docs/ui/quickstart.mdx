@@ -5,6 +5,11 @@ description: "Install @n3wth/ui 2.x. Build a React page with shared components a
 
 Use `@n3wth/ui/site` for page structure and `@n3wth/ui/primitives` for controls. These instructions target version 2.0.0, available on npm, and the matching source in the n3wth monorepo.
 
+<Info>
+  The examples assume a browser application. The package provides components
+  and styles; it does not create a router, fetch data, or supply an app shell.
+</Info>
+
 ## Prerequisites
 
 - Node.js 24, as declared by the package.
@@ -71,6 +76,12 @@ Start the app with its existing development command, such as `npm run dev` in a 
 `N3wthProvider` supplies the theme context. `site.css` supplies the generated theme and component CSS. Both are needed. This example does not require Tailwind utility generation.
 
 ### Font packaging caveat
+
+<Warning>
+  The public package does not include the workspace's licensed Suisse Intl font
+  files. Keep a system fallback available and follow the font troubleshooting
+  guide if your bundler reports an unresolved font URL.
+</Warning>
 
 The theme currently names Suisse Intl for body and headings, but its commercial font files are deliberately excluded from the npm package. The CSS still references those files. A browser may use system fallbacks; a bundler may instead reject the unresolved package URLs. If installation succeeds but CSS compilation fails, follow [font troubleshooting](/ui/troubleshooting#font-resolution-fails). This is a source-level packaging limitation, not evidence that the React props are wrong.
 

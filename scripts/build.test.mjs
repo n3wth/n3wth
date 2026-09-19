@@ -13,12 +13,11 @@ test('Cloudflare builds reject unsupported Node and npm versions before building
   assert.throws(() => checkCloudflareToolchain('22.22.3', '11.19.1'), /require Node 24/)
   assert.throws(() => checkCloudflareToolchain('24.21.0', '10.9.8'), /require Node 24/)
 })
-const apps = ['@n3wth/garden', '@n3wth/kit', '@n3wth/portfolio', '@n3wth/r3-web', '@n3wth/skills', '@n3wth/ui-docs']
+const apps = ['@n3wth/garden', '@n3wth/portfolio', '@n3wth/r3-web', '@n3wth/skills', '@n3wth/ui-docs']
 const graph = [
   { name: '@n3wth/site-config', path: 'packages/site-config' },
   { name: '@n3wth/ui', path: 'packages/ui', scripts: { build: 'vite build' }, dependencies: { '@n3wth/site-config': '*' } },
   { name: '@n3wth/garden', path: 'apps/garden', scripts: { build: 'next build' }, dependencies: { '@n3wth/ui': '0.9.2' } },
-  { name: '@n3wth/kit', path: 'apps/kit', scripts: { build: 'next build' }, dependencies: { '@n3wth/ui': '0.9.2' } },
   { name: '@n3wth/portfolio', path: 'apps/portfolio', scripts: { build: 'vite build' }, dependencies: { '@n3wth/ui': '0.9.2' } },
   { name: '@n3wth/r3-web', path: 'apps/r3-web', scripts: { build: 'next build' }, dependencies: { '@n3wth/ui': '0.9.2' } },
   { name: '@n3wth/skills', path: 'apps/skills', scripts: { build: 'next build' }, dependencies: { '@n3wth/ui': '0.9.2' } },
@@ -40,11 +39,11 @@ test('Cloudflare uses the same dependency graph and builds each package only onc
     calls.push({ command, args })
     return { status: 0 }
   }, repo, { cloudflare: true })
-  const openNext = ['garden', 'kit', 'skills', 'r3-web'].map(app => `@n3wth/${app}`)
+  const openNext = ['garden', 'skills'].map(app => `@n3wth/${app}`)
   // Each OpenNext app builds, then populates its static-assets cache; everything else builds once.
-  assert.equal(calls.length, order.length + order.filter(name => openNext.includes(name)).length)
+  assert.equal(calls.length, 8)
   assert.deepEqual(calls[0].args, ['run', 'build', '--workspace', '@n3wth/ui'])
-  for (const app of ['garden', 'kit', 'skills', 'r3-web']) {
+  for (const app of ['garden', 'skills']) {
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'build'])
     assert.deepEqual(workspacePopulateCacheArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'populateCache', 'local'])
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`), ['run', 'build', '--workspace', `@n3wth/${app}`])
@@ -86,13 +85,8 @@ test('UI-targeted build stays on the package while a UI source change still sele
 })
 
 test('registry-pinned apps do not rebuild workspace UI they do not link', () => {
-  const locked = {
-    packages: {
-      ...lock.packages,
-      'apps/kit/node_modules/@n3wth/ui': { version: '0.9.1' },
-    },
-  }
-  assert.deepEqual(buildOrder(graph, ['@n3wth/kit'], locked), ['@n3wth/kit'])
+  const locked = { packages: { ...lock.packages, 'apps/garden/node_modules/@n3wth/ui': { version: '0.9.1' } } }
+  assert.deepEqual(buildOrder(graph, ['@n3wth/garden'], locked), ['@n3wth/garden'])
 })
 
 test('unknown workspace targets fail before any build runs', () => {
@@ -100,10 +94,10 @@ test('unknown workspace targets fail before any build runs', () => {
 })
 
 test('parseBuildArgs accepts repeated workspace flags and list mode', () => {
-  assert.deepEqual(parseBuildArgs(['--list', '--workspace', '@n3wth/garden', '-w', '@n3wth/kit']), {
+  assert.deepEqual(parseBuildArgs(['--list', '--workspace', '@n3wth/garden', '-w', '@n3wth/skills']), {
     list: true,
     cacheUi: false,
-    workspaces: ['@n3wth/garden', '@n3wth/kit'],
+    workspaces: ['@n3wth/garden', '@n3wth/skills'],
   })
   assert.throws(() => parseBuildArgs(['--turbo']), /Unknown build argument/)
   assert.equal(parseBuildArgs(['--cache-ui']).cacheUi, true)
@@ -123,7 +117,7 @@ test('repository root build lists every site after UI and omits site-config', ()
 test('root build scripts use the orchestrator', () => {
   const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)))
   assert.equal(pkg.scripts.build, 'node scripts/build.mjs')
-  for (const script of ['build:garden', 'build:kit', 'build:portfolio', 'build:r3', 'build:skills', 'build:ui', 'build:ui-docs']) {
+  for (const script of ['build:garden', 'build:portfolio', 'build:r3', 'build:skills', 'build:ui', 'build:ui-docs']) {
     assert.match(pkg.scripts[script], /scripts\/build\.mjs/, script)
   }
 })

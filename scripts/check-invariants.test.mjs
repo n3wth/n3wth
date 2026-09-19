@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { checkInvariants, checkNativeOptionals } from './check-invariants.mjs'
 
 const repo = fileURLToPath(new URL('../', import.meta.url))
-const sites = ['garden', 'kit', 'portfolio', 'r3-web', 'skills', 'ui-docs']
+const sites = ['garden', 'portfolio', 'r3-web', 'skills', 'ui-docs']
 
 test('Mac-only native lockfiles cannot pass checks for Linux deployments', () => {
   const packages = {
@@ -65,7 +65,7 @@ test('current repository keeps unique names, internal deps and a complete root b
   const workspaces = checkInvariants(repo)
   const apps = workspaces.filter(workspace => workspace.path.startsWith('apps/')).map(workspace => workspace.path.replace('apps/', ''))
   for (const site of sites) assert.ok(apps.includes(site), `missing site workspace ${site}`)
-  assert.equal(workspaces.filter(workspace => workspace.path.startsWith('apps/') && workspace.scripts?.build).length, 6)
+  assert.equal(workspaces.filter(workspace => workspace.path.startsWith('apps/') && workspace.scripts?.build).length, 5)
 })
 
 test('hardcoded root builds fail instead of omitting apps', () => {

@@ -22,7 +22,6 @@
     "build": "node scripts/build.mjs",
     "build:cloudflare": "node scripts/build.mjs --cloudflare",
     "build:garden": "node scripts/build.mjs --workspace @n3wth/garden",
-    "build:kit": "node scripts/build.mjs --workspace @n3wth/kit",
     "build:portfolio": "node scripts/build.mjs --workspace @n3wth/portfolio",
     "build:r3": "node scripts/build.mjs --workspace @n3wth/r3-web",
     "build:skills": "node scripts/build.mjs --workspace @n3wth/skills",
