@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { PageHeader, SiteContainer, SiteSection, SiteHeading, SiteText, SiteFooter } from '@n3wth/ui/site'
+import { Signup } from './Signup'
 import { siteUrls } from '@n3wth/site-config'
 import { SiteNav } from './SiteNav'
 import { docPageMeta } from './docPages'
@@ -50,6 +51,6 @@ export function SystemHome() {
         <div className="system-source-note"><SiteText variant="supporting" className="max-w-[52ch]">These examples use the workspace package. Check the published exports before using them outside this repository.</SiteText></div>
       </SiteSection>
     </SiteContainer>
-    <SiteFooter sourceHref="https://github.com/n3wth/n3wth/tree/main/packages/ui" legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
+    <SiteFooter sourceHref="https://github.com/n3wth/n3wth/tree/main/packages/ui" signup={<Signup />} legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
   </>
 }

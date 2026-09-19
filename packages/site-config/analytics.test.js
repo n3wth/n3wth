@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { initializeSiteAnalytics } from './analytics.js'
+import { captureEmailSignup, initializeSiteAnalytics } from './analytics.js'
 
 test('initializes once per client and preserves app policy', () => {
   const calls = []
@@ -20,4 +20,14 @@ test('failed initialization can retry', () => {
   assert.throws(() => initializeSiteAnalytics(client, { api_host: 'https://example.com' }))
   initializeSiteAnalytics(client, { api_host: 'https://example.com' })
   assert.equal(attempts, 2)
+})
+
+test('captureEmailSignup identifies the person before recording the event', () => {
+  const calls = []
+  const client = {
+    setPersonProperties: properties => calls.push(['set', properties]),
+    capture: event => calls.push(['capture', event]),
+  }
+  captureEmailSignup(client, 'reader@example.com')
+  assert.deepEqual(calls, [['set', { email: 'reader@example.com' }], ['capture', 'email_captured']])
 })

@@ -4,6 +4,7 @@ import { useGoogleAnalytics } from './useGoogleAnalytics'
 import { SiteNav } from './SiteNav'
 import { N3wthProvider, PageHeader, SiteContainer, useRouteScrollReset } from '@n3wth/ui/site'
 import { SiteFooter } from '@n3wth/ui/site'
+import { Signup } from './Signup'
 import { siteUrls } from '@n3wth/site-config'
 import { useTheme } from '@n3wth/ui'
 import { DocsSidebar } from './DocsSidebar'
@@ -106,7 +107,7 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
       </div>
 
       {/* Footer */}
-      <SiteFooter sourceHref="https://github.com/n3wth/ui" legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
+      <SiteFooter sourceHref="https://github.com/n3wth/ui" signup={<Signup />} legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
     </div>
   )
 }

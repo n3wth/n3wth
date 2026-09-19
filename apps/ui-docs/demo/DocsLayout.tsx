@@ -2,6 +2,7 @@ import docModules from 'virtual:doc-content'
 import { Link, useParams } from 'react-router'
 import { SiteNav } from './SiteNav'
 import { SiteFooter } from '@n3wth/ui/site'
+import { Signup } from './Signup'
 import { siteUrls } from '@n3wth/site-config'
 import { DocsSidebar } from './DocsSidebar'
 import { SEO, JsonLdWebPage, JsonLdBreadcrumb } from './SEO'
@@ -84,7 +85,7 @@ export function DocsLayout() {
         </div>
       </div>
 
-      <SiteFooter sourceHref="https://github.com/n3wth/ui" legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
+      <SiteFooter sourceHref="https://github.com/n3wth/ui" signup={<Signup />} legalLinks={<a href={`${siteUrls.home}/privacy`}>Privacy</a>} />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { N3wthProvider, PageHeader, SiteContainer, SiteDocSection, SiteDocList, SiteFooter, SiteHeading, SiteNavigation, SiteSection, SiteText, n3wthTheme } from './index'
+import { N3wthProvider, PageHeader, SiteContainer, SiteDocSection, SiteDocList, SiteFooter, SiteHeading, SiteNavigation, SiteSection, SiteSignup, SiteText, n3wthTheme } from './index'
 import { generateThemeCSS } from '@astryxdesign/core/theme'
 
 describe('shared site composition', () => {
@@ -132,5 +132,26 @@ describe('shared site composition', () => {
     expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/n3wth/kit')
     expect(screen.getByRole('navigation', { name: 'Footer' })).toContainElement(screen.getByRole('link', { name: 'Privacy' }))
     expect(screen.getAllByRole('link')).toHaveLength(6)
+  })
+
+  it('renders the footer signup slot above the identity row and hands the address to the app', async () => {
+    const received: string[] = []
+    const { container } = render(<SiteFooter signup={<SiteSignup onSubmit={email => { received.push(email) }} />} />)
+    const signup = container.querySelector('.n3wth-site-footer-signup')
+    expect(signup?.nextElementSibling).toHaveClass('n3wth-site-footer-row')
+    const input = screen.getByRole('textbox', { name: /Occasional notes/ })
+    fireEvent.change(input, { target: { value: '  reader@example.com ' } })
+    await act(async () => { fireEvent.submit(screen.getByRole('button', { name: 'Subscribe' }).closest('form')!) })
+    expect(received).toEqual(['reader@example.com'])
+    expect(screen.getByRole('status')).toHaveTextContent('Thanks. You are on the list.')
+    expect(screen.getByRole('button', { name: 'Subscribe' })).toBeDisabled()
+  })
+
+  it('shows the error state when the app rejects and lets the reader retry', async () => {
+    render(<SiteSignup onSubmit={async () => { throw new Error('offline') }} />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'reader@example.com' } })
+    await act(async () => { fireEvent.submit(screen.getByRole('button').closest('form')!) })
+    expect(screen.getByRole('status')).toHaveTextContent('That did not go through. Try again.')
+    expect(screen.getByRole('button', { name: 'Subscribe' })).toBeEnabled()
   })
 })

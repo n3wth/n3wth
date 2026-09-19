@@ -1,6 +1,8 @@
 import { getAllDocs } from "@/lib/mdx";
 import { siteUrls } from "@n3wth/site-config";
 
+export const dynamic = "force-static";
+
 export async function GET() {
   const baseUrl = siteUrls.r3;
 

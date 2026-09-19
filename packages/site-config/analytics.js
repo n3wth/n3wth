@@ -11,3 +11,9 @@ export function initializeSiteAnalytics(client, options) {
   })
   initialized.add(client)
 }
+
+/** Records a footer signup. The identified person profile is the list until a mailing provider exists. */
+export function captureEmailSignup(client, email) {
+  client.setPersonProperties({ email })
+  client.capture('email_captured')
+}
