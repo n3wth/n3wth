@@ -171,14 +171,64 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
   )
 }
 
+export interface SiteSignupProps extends Omit<ComponentProps<'form'>, 'onSubmit'> {
+  /** Receives the trimmed address. Reject to show the error state. The sink is app-owned. */
+  onSubmit: (email: string) => void | Promise<void>
+  label?: ReactNode
+  buttonLabel?: ReactNode
+  successMessage?: ReactNode
+  errorMessage?: ReactNode
+}
+
+type SignupStatus = 'idle' | 'sending' | 'done' | 'error'
+
+/** One-line email capture for footers. Native controls, app-owned delivery. */
+export function SiteSignup({ onSubmit, label = 'Occasional notes on agent infrastructure. No spam.', buttonLabel = 'Subscribe', successMessage = 'Thanks. You are on the list.', errorMessage = 'That did not go through. Try again.', className, ...props }: SiteSignupProps) {
+  const id = useId()
+  const [status, setStatus] = useState<SignupStatus>('idle')
+  const busy = status === 'sending' || status === 'done'
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const form = event.currentTarget
+    const email = new FormData(form).get('email')
+    if (typeof email !== 'string' || !form.reportValidity()) return
+    setStatus('sending')
+    try {
+      await onSubmit(email.trim())
+      form.reset()
+      setStatus('done')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  return (
+    <form {...props} className={cn('n3wth-site-signup', className)} onSubmit={handleSubmit} noValidate={false}>
+      <label htmlFor={id} className="n3wth-site-signup-label">{label}</label>
+      <div className="n3wth-site-signup-row">
+        <input id={id} name="email" type="email" required autoComplete="email" inputMode="email" placeholder="you@example.com" disabled={busy} />
+        <button type="submit" disabled={busy}>{buttonLabel}</button>
+      </div>
+      {/* Established before it changes so assistive technology announces the update.
+          Not role="status": shared chrome must not duplicate a page's own status element. */}
+      <p aria-live="polite" className="n3wth-site-signup-status">
+        {status === 'done' ? successMessage : status === 'error' ? errorMessage : null}
+      </p>
+    </form>
+  )
+}
+
 export interface SiteFooterProps extends HTMLAttributes<HTMLElement> {
   brand?: ReactNode
   links?: ReactNode
   sourceHref?: string
   legalLinks?: ReactNode
+  /** Usually a SiteSignup. Rendered above the identity row. */
+  signup?: ReactNode
 }
 
-export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a>, links, sourceHref = 'https://github.com/n3wth/n3wth', legalLinks, children, className, ...props }: SiteFooterProps) {
+export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a>, links, sourceHref = 'https://github.com/n3wth/n3wth', legalLinks, signup, children, className, ...props }: SiteFooterProps) {
   const footerLinks = links ?? <>
     <a href="https://n3wth.com/library">Library</a>
     <a href="https://docs.n3wth.com">Docs</a>
@@ -188,6 +238,7 @@ export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a
   </>
   return <footer {...props} className={cn('n3wth-site-footer', className)}>
     <SiteContainer data-nosnippet>
+      {signup != null && <div className="n3wth-site-footer-signup">{signup}</div>}
       <div className="n3wth-site-footer-row">
         {brand != null && <div className="n3wth-site-footer-brand">{brand}</div>}
         <nav aria-label="Footer" className="n3wth-site-footer-links">{footerLinks}</nav>
