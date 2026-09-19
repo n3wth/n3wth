@@ -124,16 +124,16 @@ describe('shared site composition', () => {
   })
 
   it('provides minimal footer destinations while retaining app legal links', () => {
-    render(<SiteFooter sourceHref="https://github.com/n3wth/kit" legalLinks={<a href="/privacy">Privacy</a>} />)
+    render(<SiteFooter sourceHref="https://github.com/n3wth/n3wth" legalLinks={<a href="/privacy">Privacy</a>} />)
     expect(screen.getByRole('link', { name: 'Oliver Newth' })).toHaveAttribute('href', 'https://n3wth.com')
     expect(screen.getByRole('link', { name: 'Library' })).toHaveAttribute('href', 'https://n3wth.com/library')
     expect(screen.getByRole('link', { name: 'Skills' })).toHaveAttribute('href', 'https://skills.n3wth.com')
     expect(screen.getByRole('link', { name: 'r3' })).toHaveAttribute('href', 'https://r3.n3wth.com')
     expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute('href', 'https://docs.n3wth.com')
     expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', 'https://n3wth.com/contact')
-    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/n3wth/kit')
+    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/n3wth/n3wth')
     expect(screen.getByRole('navigation', { name: 'Footer' })).toContainElement(screen.getByRole('link', { name: 'Privacy' }))
-    expect(screen.getAllByRole('link')).toHaveLength(9)
+    expect(screen.getAllByRole('link')).toHaveLength(8)
   })
 
   it('renders the footer signup slot above the identity row and hands the address to the app', async () => {
