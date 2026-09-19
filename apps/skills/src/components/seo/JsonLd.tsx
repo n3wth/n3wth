@@ -105,6 +105,7 @@ interface SoftwareApplicationJsonLdProps {
   category: string
   operatingSystem?: string
   applicationCategory?: string
+  keywords?: string[]
 }
 
 export function SoftwareApplicationJsonLd({
@@ -114,8 +115,9 @@ export function SoftwareApplicationJsonLd({
   version,
   dateModified,
   category,
+  keywords,
 }: SoftwareApplicationJsonLdProps) {
-  const data = {
+  const data: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name,
@@ -135,6 +137,72 @@ export function SoftwareApplicationJsonLd({
       name: 'n3wth',
       url: 'https://n3wth.com',
     },
+  }
+
+  if (keywords?.length) {
+    data.keywords = keywords.join(', ')
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
+}
+
+interface TechArticleJsonLdProps {
+  title: string
+  description: string
+  url: string
+  dateModified?: string
+  datePublished?: string
+  keywords?: string[]
+  proficiencyLevel?: string
+}
+
+export function TechArticleJsonLd({
+  title,
+  description,
+  url,
+  dateModified,
+  datePublished,
+  keywords,
+  proficiencyLevel = 'Beginner',
+}: TechArticleJsonLdProps) {
+  const data: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: title,
+    description,
+    url,
+    mainEntityOfPage: url,
+    proficiencyLevel,
+    author: {
+      '@type': 'Person',
+      name: 'Oliver Newth',
+      url: 'https://n3wth.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'n3wth',
+      url: 'https://n3wth.com',
+    },
+    isPartOf: {
+      '@type': 'WebSite',
+      name: siteConfig.name,
+      url: 'https://skills.n3wth.com',
+    },
+  }
+
+  if (dateModified) {
+    data.dateModified = dateModified
+  }
+  if (datePublished) {
+    data.datePublished = datePublished
+  }
+  if (keywords?.length) {
+    data.keywords = keywords.join(', ')
   }
 
   return (
