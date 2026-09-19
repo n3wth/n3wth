@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getAllNotes, getPublishedNoteCount } from '@/lib/content'
+import { getPublishedNotes, getPublishedNoteCount } from '@/lib/content'
 import { getGraphData } from '@/lib/graph'
 import { NotesIndexClient, type NoteListItem } from '@/components/NotesIndexClient'
 import { PageHeader } from '@/components/PageHeader'
@@ -30,8 +30,7 @@ export const metadata: Metadata = {
 export default function NotesPage() {
   const graph = new Map(getGraphData().nodes.map((n) => [n.id, n]))
 
-  const notes: NoteListItem[] = getAllNotes()
-    .filter((n) => n.slug !== '' && n.slug !== 'notes')
+  const notes: NoteListItem[] = getPublishedNotes()
     .map((n) => {
       const g = graph.get(n.slug)
       return {

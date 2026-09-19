@@ -1,8 +1,63 @@
 import { test, expect } from '@playwright/test'
+import { getPublishedNotes } from '../../apps/garden/src/lib/content'
+import { GET as randomNote } from '../../apps/garden/src/app/random/route'
 
 function gardenAnswer(...chunks: string[]) {
   return chunks.map(content => `data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\n`).join('') + 'data: [DONE]\n\n'
 }
+
+test('search excludes the shadow Notes entry but keeps Browse all notes usable', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Search notes', exact: true }).click()
+  const dialog = page.getByRole('dialog', { name: 'Search the garden' })
+  await dialog.getByRole('combobox').fill('Notes')
+  await expect(dialog.getByRole('option', { name: /Atomic Notes/ })).toBeVisible()
+  await expect(dialog.getByRole('option', { name: /^Notes(?:\s|$)/ })).toHaveCount(0)
+  await dialog.getByRole('option', { name: 'Browse all notes', exact: true }).click()
+  await expect(page).toHaveURL(/\/notes$/)
+  await expect(page.locator('main h1')).toContainText('Every plant in the garden')
+
+  await page.goto('/health')
+  await expect(page.getByRole('heading', { level: 1, name: 'Health Index', exact: true })).toBeVisible()
+  const backlinks = page.getByRole('list', { name: /^(Connected notes|Notes mentioning this note)$/ })
+  await expect(backlinks.locator('a[href="/notes"]')).toHaveCount(0)
+})
+
+test('random redirects select only published notes across the full selection range', async ({ request }) => {
+  const notes = getPublishedNotes()
+  expect(notes.length).toBeGreaterThan(0)
+  expect(notes.some(note => note.slug === '' || note.slug === 'notes')).toBe(false)
+  const originalRandom = Math.random
+  try {
+    for (const [index, note] of notes.entries()) {
+      Math.random = () => (index + 0.5) / notes.length
+      await expect(randomNote()).rejects.toMatchObject({
+        digest: `NEXT_REDIRECT;replace;/${note.slug};307;`,
+      })
+    }
+  } finally {
+    Math.random = originalRandom
+  }
+  const response = await request.get('/random', { maxRedirects: 0 })
+  expect(response.status()).toBe(307)
+  const destination = new URL(response.headers().location, response.url())
+  expect(destination.origin).toBe(new URL(response.url()).origin)
+  expect(notes.map(note => `/${note.slug}`)).toContain(decodeURIComponent(destination.pathname))
+})
+
+test('stripped dataview links create neither article links nor backlinks', async ({ page }) => {
+  await page.goto('/kazuo-ishiguro')
+  await expect(page.getByRole('heading', { level: 1, name: 'Kazuo Ishiguro', exact: true })).toBeVisible()
+  const article = page.locator('main article .note-content')
+  await expect(article.getByRole('heading', { name: 'Books', exact: true })).toBeVisible()
+  await expect(article.locator('a[href="/references/books/books"]')).toHaveCount(0)
+
+  await page.goto('/references/books/books')
+  await expect(page.getByRole('heading', { level: 1, name: 'Books', exact: true })).toBeVisible()
+  const backlinks = page.getByRole('list', { name: /^(Connected notes|Notes mentioning this note)$/ })
+  await expect(backlinks).toBeVisible()
+  await expect(backlinks.locator('a[href="/kazuo-ishiguro"]')).toHaveCount(0)
+})
 
 test('typing a garden query keeps results local until explicitly asked', async ({ page }) => {
   const requests: string[] = []

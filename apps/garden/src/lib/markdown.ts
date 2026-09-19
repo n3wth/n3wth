@@ -1,25 +1,14 @@
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkGfm from 'remark-gfm'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeStringify from 'rehype-stringify'
 import { remarkWikilinks } from '@/plugins/remark-wikilinks'
-import { remarkCallouts } from '@/plugins/remark-callouts'
-import { remarkStripDataview } from '@/plugins/remark-strip-dataview'
-import { remarkStripTitle } from '@/plugins/remark-strip-title'
 import { rehypeRichContent } from '@/plugins/rehype-rich-content'
+import { createNoteProcessor } from './note-links.mjs'
 
 export async function markdownToHtml(content: string, { stripTitle = true }: { stripTitle?: boolean } = {}): Promise<string> {
-  let pipeline = unified()
-    .use(remarkParse)
-    .use(remarkGfm)
-    .use(remarkStripDataview)
-  if (stripTitle) pipeline = pipeline.use(remarkStripTitle)
-  const result = await pipeline
-    .use(remarkCallouts)
+  const result = await createNoteProcessor({ stripTitle })
     .use(remarkWikilinks)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)

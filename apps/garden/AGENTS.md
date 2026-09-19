@@ -21,7 +21,9 @@ npm run dev    # Dev server (port 3000)
 npm run build  # Production build
 ```
 
-`npm run typecheck` checks TypeScript. `npm run check` runs typecheck and the production build. No test runner or linter configured.
+`npm run typecheck` checks TypeScript. `npm run check` runs the Node tests in `scripts/*.test.mjs`, typecheck, and the production build.
+
+From the repository root, run Garden browser checks with `npm exec -- playwright test --config playwright.garden.config.ts` after building Garden.
 
 ## Compliance (non-negotiable)
 
@@ -33,9 +35,10 @@ Keep site copy free of model and assistant brands. Max font weight: semibold (60
 
 ### Content Pipeline
 
-1. `src/lib/content.ts` — scans `content/`, parses frontmatter, builds slug/title maps, resolves `[[wikilinks]]`. Ignored dirs: `Attachments`, `space`, `space 1`, `Tags`.
-2. `src/lib/markdown.ts` — unified pipeline: remarkParse → remarkGfm → custom plugins → remarkRehype → HTML.
-3. `src/lib/backlinks.ts` — builds reverse-link map for backlinks.
+1. `src/lib/content.ts` reads the generated content manifest, parses frontmatter, builds slug/title maps, and resolves `[[wikilinks]]`. Use `getPublishedNotes()` for reader-facing note collections.
+2. `src/lib/note-links.mjs` owns Markdown preprocessing and wikilink matching. Rendering, graph links, and backlinks use the same rules. Code, removed titles, dataview blocks, and embeds do not create note connections.
+3. `src/lib/markdown.ts` adds wikilink rendering and HTML conversion to the shared Markdown processor.
+4. `src/lib/backlinks.ts` builds the reverse-link map. Context offsets refer to parsed paragraph text, so formatting and decoded entities do not shift the quoted mention.
 
 ### Remark Plugins (`src/plugins/`)
 
