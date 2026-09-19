@@ -1,23 +1,10 @@
-import { getAllDocs } from "@/lib/mdx";
+import { getSitemapPages } from "@/lib/sitemap";
 import { siteUrls } from "@n3wth/site-config";
 
 export const dynamic = "force-static";
 
 export async function GET() {
-  const baseUrl = siteUrls.r3;
-
-  const staticPages = [
-    { url: baseUrl, changefreq: "monthly", priority: "1.0" },
-  ];
-
-  const docs = await getAllDocs();
-  const docsPages = docs.map((doc) => ({
-    url: `${baseUrl}/docs/${doc.slug}`,
-    changefreq: "weekly",
-    priority: "0.8",
-  }));
-
-  const allPages = [...staticPages, ...docsPages];
+  const allPages = getSitemapPages(siteUrls.r3);
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { flushAnalytics } from './lib/analytics'
+import { initializeGoogleAnalytics, shouldExcludeTraffic } from '@n3wth/site-config/analytics'
 import Home from './pages/Home'
 
 // Route-level splitting: Home stays eager (it's the index route); every
@@ -30,6 +31,8 @@ if (import.meta.env.DEV) {
   import('cssstudio').then(({ startStudio }) => startStudio())
 }
 
+initializeGoogleAnalytics()
+
 // Defer PostHog init to after first paint - not needed for FCP/LCP.
 // Configuration tuned to avoid blocking critical path:
 // - No session recording on marketing pages (load-heavy, not needed for analytics)
@@ -42,6 +45,7 @@ deferCallback(() => {
       api_host: 'https://elephant.n3wth.com',
       ui_host: 'https://us.i.posthog.com',
       defaults: '2026-01-30',
+      before_send: event => shouldExcludeTraffic() ? null : event,
       person_profiles: 'identified_only',
       capture_pageview: 'history_change',
       capture_pageleave: true,

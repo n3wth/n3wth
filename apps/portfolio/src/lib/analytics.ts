@@ -2,7 +2,7 @@
    posthog-js is loaded lazily after first paint, so events fired before
    it lands queue here and flush once init completes. Never throws. */
 
-import { captureEmailSignup } from '@n3wth/site-config/analytics'
+import { captureEmailSignup, captureSiteEvent } from '@n3wth/site-config/analytics'
 import type { PostHog } from 'posthog-js'
 
 type Props = Record<string, string | number | boolean | undefined>
@@ -23,11 +23,15 @@ function run(job: (posthog: PostHog) => void) {
 }
 
 export function track(event: string, props?: Props) {
-  run(posthog => posthog.capture(event, props))
+  run(posthog => captureSiteEvent(posthog, event, props))
 }
 
 export function trackSignup(email: string) {
   run(posthog => captureEmailSignup(posthog, email))
+}
+
+export function trackOutbound(url: string, source?: string) {
+  track('outbound_link_clicked', { url, ...(source && { source }) })
 }
 
 /** Called once by main.tsx after posthog.init. */

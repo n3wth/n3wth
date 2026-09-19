@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { googleAnalyticsScript } from '@n3wth/site-config/analytics'
 import { AxiomWebVitals } from 'next-axiom'
 import { getPublishedNotes } from '@/lib/content'
 import { site } from '@/lib/site'
@@ -82,7 +82,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark" data-astryx-theme="n3wth">
       <AxiomWebVitals />
-      <GoogleAnalytics gaId="G-4QRMSG5HXK" />
+      <script dangerouslySetInnerHTML={{ __html: googleAnalyticsScript }} />
       <body className="min-h-screen flex flex-col">
         <script
           type="application/ld+json"

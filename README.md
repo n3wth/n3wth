@@ -41,7 +41,7 @@ npm run dev:ui          # Build/watch the UI library and run its docs
 npm run build           # All six apps and shared packages, once, in dependency order
 npm run build:portfolio # App plus shared UI; also garden, kit, skills, r3, ui-docs
 npm run check           # Library and app validation in dependency order
-npm run check:browser   # Portfolio, UI docs and Kit after building
+npm run check:browser   # All affected public sites after building
 ```
 
 Applications live in `apps/portfolio`, `apps/ui-docs`, `apps/garden`, `apps/skills`, `apps/kit` and `apps/r3-web`. Shared packages live in `packages/ui` and `packages/site-config`. See [workspace architecture](docs/workspace/architecture.md), [deployment steps](docs/workspace/deployment.md) and [maintenance ownership](docs/workspace/maintenance.md). Npm releases of `@n3wth/ui` publish from this repository through the Release UI workflow on a `ui-v*` tag; r3 core releases remain in n3wth/r3.

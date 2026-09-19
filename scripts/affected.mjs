@@ -62,8 +62,7 @@ export function affectedWorkspaces(workspaces, files, all = false, lockfile, dep
     // remains conservative; application files (including public docs) still build.
     if (deployment && /^(\.github\/|tests\/|playwright[^/]*\.config\.|scripts\/.*\.test\.mjs$)/.test(file)) continue
     const browserTarget = file.match(/^tests\/browser\/(portfolio|ui-docs|kit|r3-web)\.spec\.ts$/)?.[1]
-      || (/^(tests\/garden\/|playwright\.garden\.config\.ts$)/.test(file) ? 'garden' : undefined)
-      || (file === 'playwright.r3.config.ts' ? 'r3-web' : undefined)
+      || (/^tests\/garden\//.test(file) ? 'garden' : undefined)
     if (browserTarget && byName.has(`@n3wth/${browserTarget}`)) {
       selected.add(`@n3wth/${browserTarget}`)
       continue

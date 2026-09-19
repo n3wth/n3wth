@@ -5,8 +5,9 @@ import { HelmetProvider } from 'react-helmet-async'
 import posthog from 'posthog-js'
 import { App } from './App'
 import './demo.css'
+import { initializeSiteAnalytics } from '@n3wth/site-config/analytics'
 
-posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
+initializeSiteAnalytics(posthog, {
   api_host: 'https://elephant.n3wth.com',
   ui_host: 'https://us.posthog.com',
   person_profiles: 'identified_only',
