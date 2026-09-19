@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router'
-import { useGoogleAnalytics } from './useGoogleAnalytics'
+import { initializeGoogleAnalytics } from '@n3wth/site-config/analytics'
 import { SiteNav } from './SiteNav'
 import { N3wthProvider, PageHeader, SiteContainer, useRouteScrollReset } from '@n3wth/ui/site'
 import { SiteFooter } from '@n3wth/ui/site'
@@ -114,7 +114,9 @@ function Showcase({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme
 
 export function App() {
   useRouteScrollReset(useLocation().pathname)
-  useGoogleAnalytics()
+  useEffect(() => {
+    initializeGoogleAnalytics()
+  }, [])
   const { theme, toggleTheme } = useTheme()
 
   return (

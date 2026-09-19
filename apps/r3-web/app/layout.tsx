@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { siteUrls } from "@n3wth/site-config";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { googleAnalyticsScript } from "@n3wth/site-config/analytics";
 import { AxiomWebVitals } from "next-axiom";
 import { PostHogProvider } from "../components/PostHogProvider";
 import { JsonLd } from "../components/JsonLd";
@@ -123,7 +123,7 @@ export default function RootLayout({
           {children}
           </SiteProvider>
         </PostHogProvider>
-        <GoogleAnalytics gaId="G-4QRMSG5HXK" />
+        <script dangerouslySetInnerHTML={{ __html: googleAnalyticsScript }} />
       </body>
     </html>
   );

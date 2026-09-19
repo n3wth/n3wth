@@ -56,7 +56,7 @@ export const docsConfig: DocSection[] = [
   },
 ];
 
-import { getPackageVersion } from "./version";
+import { getPackageVersion } from "./version.ts";
 
 const currentVersion = getPackageVersion();
 

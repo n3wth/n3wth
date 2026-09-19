@@ -23,7 +23,7 @@ npm run build  # Production build
 
 `npm run typecheck` checks TypeScript. `npm run check` runs the Node tests in `scripts/*.test.mjs`, typecheck, and the production build.
 
-From the repository root, run Garden browser checks with `npm exec -- playwright test --config playwright.garden.config.ts` after building Garden.
+From the repository root, run the browser suite with `AFFECTED_WORKSPACES='["@n3wth/garden"]' npm run check:browser` after building Garden.
 
 ## Compliance (non-negotiable)
 

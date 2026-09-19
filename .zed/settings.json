@@ -1,4 +1,97 @@
 {
+  "ui_font_size": 15,
+  "buffer_font_size": 15,
+  "buffer_line_height": "comfortable",
+  "relative_line_numbers": "enabled",
+  "soft_wrap": "editor_width",
+  "show_wrap_guides": true,
+  "wrap_guides": [80, 100],
+  "indent_guides": {
+    "enabled": true
+  },
+  "project_panel": {
+    "dock": "left",
+    "default_width": 280,
+    "entry_spacing": "comfortable",
+    "file_icons": true,
+    "folder_indicator": "icon",
+    "git_status": true,
+    "indent_size": 20,
+    "auto_reveal_entries": true,
+    "sticky_scroll": true,
+    "show_diagnostics": "all",
+    "indent_guides": {
+      "show": "always"
+    }
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+    "show_diagnostics": "all"
+  },
+  "toolbar": {
+    "breadcrumbs": true,
+    "quick_actions": true,
+    "selections_menu": true,
+    "code_actions": true
+  },
+  "gutter": {
+    "line_numbers": true,
+    "runnables": true,
+    "breakpoints": true,
+    "folds": true
+  },
+  "colorize_brackets": true,
+  "diagnostics": {
+    "button": true,
+    "include_warnings": true,
+    "inline": {
+      "enabled": true,
+      "max_severity": "warning"
+    }
+  },
+  "use_smartcase_search": true,
+  "which_key": {
+    "enabled": true,
+    "delay_ms": 800
+  },
+  "status_bar": {
+    "show_active_file": true,
+    "active_language_button": true,
+    "cursor_position_button": true,
+    "line_endings_button": true
+  },
+  "title_bar": {
+    "show_branch_status_icon": true,
+    "show_branch_name": true,
+    "show_worktree_name": true,
+    "show_project_items": true
+  },
+  "git": {
+    "git_gutter": "tracked_files"
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": false,
+    "show_background": false
+  },
+  "languages": {
+    "TypeScript": {
+      "document_symbols": "on"
+    },
+    "TSX": {
+      "document_symbols": "on"
+    }
+  },
+  "terminal": {
+    "font_size": 15,
+    "line_height": "comfortable",
+    "working_directory": "current_project_directory"
+  },
+  "cursor_shape": "bar",
+  "cursor_blink": true,
   "context_servers": {
     "css-studio": {
       "source": "custom",
