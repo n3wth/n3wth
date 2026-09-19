@@ -28,9 +28,7 @@ test('every application route ships its own metadata and visible content without
 
 test('unknown docs are not silently rendered as Getting Started', () => {
   assert.match(readFileSync('dist/404.html', 'utf8'), /Page not found/)
-  const config = JSON.parse(readFileSync('vercel.json', 'utf8'))
-  assert.equal(config.rewrites, undefined)
-  assert.equal(config.redirects.find(item => item.source === '/docs').destination, '/docs/getting-started')
+  assert.match(readFileSync('public/_redirects', 'utf8'), /^\/docs \/docs\/getting-started \d+$/m)
   assert.match(readFileSync('dist/404.html', 'utf8'), /noindex,nofollow/)
 })
 

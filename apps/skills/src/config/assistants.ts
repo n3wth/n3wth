@@ -1,7 +1,8 @@
 import { getSkillInstallCommand } from './commands'
+import type { AssistantId } from './types'
 
 // AI Assistant configuration for multi-platform support
-export type AssistantId = 'gemini'
+export type { AssistantId }
 
 export interface AIAssistant {
   id: AssistantId
