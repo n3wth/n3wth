@@ -49,7 +49,7 @@ import '@n3wth/ui/site.css'
 
 ## Roles
 
-- Satoshi for page, section and item headings. Geist Sans for body text, actions and supporting labels. Geist Mono only for code.
+- Suisse Intl for headings, body text, actions and supporting labels. Geist Mono only for code.
 - Page titles are responsive. Section and item titles use shared sizes rather than separate scales per page. Body text and supporting labels have distinct semantic roles.
 - Content width and horizontal padding come from `SiteContainer` or the matching `n3wth-site-container` class. Sections use `SiteSection` when its spacing applies.
 - Use `PageHeader.actions` for page-level links such as the resume. Do not create a separate padded section for one link.
@@ -75,3 +75,5 @@ The generator creates a small Vite/React application using the shared provider, 
 ## Validation
 
 Run `npm run check` with Node 24 and npm 11.19.1. It builds shared packages before consumers, checks the generator and runs the existing app suites. Check rendered mobile/desktop pages and keyboard navigation; typechecking alone cannot detect a missing font or theme scope. Verify production Next routes after any Astryx upgrade. Avoid upgrading the pre-1.0 component API solely to align versions: the current patch is pinned and tested as a unit.
+
+The UI docs checks compile the exact TypeScript examples in Getting Started, the primitives and themes developer guide, and the package README. Keep these recipes valid through public package exports. Reuse the packaged starter for standalone adoption checks; do not create another example framework.

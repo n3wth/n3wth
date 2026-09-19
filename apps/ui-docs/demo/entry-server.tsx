@@ -2,9 +2,6 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 import { HelmetProvider } from 'react-helmet-async'
 import { App } from './App'
-import { docPages } from './DocsLayout'
-
-export const routes = ['/', '/components', ...docPages.map(page => `/docs/${page.slug}`)]
 
 export function render(path: string) {
   const markup = renderToString(<HelmetProvider><StaticRouter location={path}><App /></StaticRouter></HelmetProvider>)

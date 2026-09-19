@@ -29,15 +29,15 @@ The package declares Node 24 and React/React DOM 18 or 19. If a monorepo app res
 
 ## Font resolution fails
 
-The source theme selects Suisse Intl, and `site.css` references `@n3wth/ui/fonts/SuisseIntl-*.woff2`. The npm `files` allowlist deliberately excludes those commercial font binaries. This differs from a source workspace where the files exist.
+The source theme selects Suisse Intl. The npm `files` allowlist deliberately excludes those commercial font binaries. Licensed workspace sites retain the files and their font rules.
 
-The font README describes system-font fallback as intended for external consumers. That fallback can occur only if CSS reaches the browser: bundlers that resolve font URLs during compilation may fail first. A successful workspace build therefore does not prove that a clean registry consumer can resolve those URLs.
+The release package check uses `scripts/pack-ui.mjs` to remove excluded Suisse font rules from the staged CSS. Shipped font URLs use package-relative paths. External consumers use the theme's system-font fallback. The release workflow publishes the exact tarball that passes the consumer checks.
 
-If the error names a Suisse font:
+If an older artifact still names a Suisse font:
 
 1. Confirm whether the missing path is one of the excluded `SuisseIntl-*` assets.
 2. Record the UI version, bundler, and exact unresolved URL for a package issue.
-3. Have the package maintainer correct the distributed CSS or validate an application-specific asset configuration before treating the external installation as supported.
+3. Check that the artifact came from the release package check, not a direct pack of workspace output. Validate the corrected tarball before publishing it.
 
 Do not copy the repository's commercial font binaries into a public package as a workaround. Importing both `styles` and `site.css` does not fix absent assets; both include the shared foundation.
 

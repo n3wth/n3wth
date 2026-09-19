@@ -4,9 +4,12 @@ import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
 // @ts-expect-error Build helper is an ESM script.
 import { buildStyles } from './scripts/build-styles.mjs'
+// @ts-expect-error Build helper is an ESM script.
+import { packageEmission } from './scripts/package-emission.mjs'
 
 export default defineConfig({
   plugins: [
+    packageEmission(),
     { name: 'package-styles', closeBundle: buildStyles },
     react(),
     dts({
@@ -60,8 +63,6 @@ export default defineConfig({
         entryFileNames: '[name].js',
         // Ensure proper ESM output
         format: 'es',
-        // Add banner for proper module resolution
-        banner: (chunk) => `${['site/index', 'primitives/index', 'visuals/index', 'atoms/CodeBlock/CodeBlock'].includes(chunk.name) ? "'use client';\n" : ''}/* @n3wth/ui - Built on Astryx */`,
       },
       // Ensure external modules aren't bundled
       treeshake: {
