@@ -2,6 +2,7 @@
 
 import { useId } from 'react'
 import { useLightPaths } from './useLightPaths'
+import { buildLightPath, smoothEnvelope } from './lightPath'
 
 /**
  * The page's subject as a drawing instead of a photograph: one path of
@@ -15,40 +16,16 @@ import { useLightPaths } from './useLightPaths'
  * Filaments are visible immediately; reduced motion freezes the waveform.
  */
 
-const N = 72
-const X0 = -20
-const X1 = 1640
-const FLOW = 1.0 // waver phase speed — ripples travel +x
-
-function smooth(t: number) {
-  const c = Math.min(1, Math.max(0, t))
-  return c * c * (3 - 2 * c)
-}
-
-function buildPath(dir: -1 | 1, time: number): string {
-  const pts: string[] = []
-  for (let i = 0; i <= N; i++) {
-    const t = i / N
-    const x = X0 + (X1 - X0) * t
-    /* the line every exposure shares: two slow, incommensurate wavers,
-       phases receding so the pattern flows toward +x */
-    const shared =
-      Math.sin(t * 5.1 + 1.4 - time * FLOW) * 3.2 +
-      Math.sin(t * 11.7 + 4.0 - time * FLOW * 1.7) * 1.3
-    /* peel: nothing until ~40% across, then an eased, slightly
-       asymmetric divergence */
-    const env = Math.pow(smooth((t - 0.4) / 0.6), 1.55)
-    const spread = dir === -1 ? 148 : 176
-    /* each branch finds its own small waver as it leaves the trunk */
-    const own =
-      (Math.sin(t * 7.3 + (dir === -1 ? 0.6 : 3.9) - time * FLOW * 1.3) * 2.6 +
-        Math.sin(t * 15.9 + (dir === -1 ? 2.1 : 5.2) - time * FLOW * 2.1) * 1.1) *
-      env
-    const y = 212 + shared + dir * env * spread + own
-    pts.push(`${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`)
-  }
-  return pts.join(' ')
-}
+const buildPath = buildLightPath({
+  baseline: 212,
+  /* phases receding so the pattern flows toward +x */
+  sharedPhase: [1.4, 4.0],
+  /* peel: nothing until ~40% across, then an eased, slightly
+     asymmetric divergence */
+  envelope: (t) => Math.pow(smoothEnvelope((t - 0.4) / 0.6), 1.55),
+  spread: (dir) => (dir === -1 ? 148 : 176),
+  ownPhase: (dir) => (dir === -1 ? [0.6, 2.1] : [3.9, 5.2]),
+})
 
 const LAYERS = [{ width: 2, cls: 'n3wth-visual-light-core' }] as const
 

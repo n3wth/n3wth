@@ -2,6 +2,7 @@
 
 import { useId } from 'react'
 import { useLightPaths } from './useLightPaths'
+import { buildLightPath, smoothEnvelope } from './lightPath'
 
 /**
  * The bookend to /thinking's fork: two paths of light converge and
@@ -12,36 +13,14 @@ import { useLightPaths } from './useLightPaths'
  * one clean line each, visible immediately.
  */
 
-const N = 72
-const X0 = -20
-const X1 = 1640
-const FLOW = 1.0
-
-function smooth(t: number) {
-  const c = Math.min(1, Math.max(0, t))
-  return c * c * (3 - 2 * c)
-}
-
-function buildPath(dir: -1 | 1, time: number): string {
-  const pts: string[] = []
-  for (let i = 0; i <= N; i++) {
-    const t = i / N
-    const x = X0 + (X1 - X0) * t
-    const shared =
-      Math.sin(t * 5.1 + 2.2 - time * FLOW) * 3.2 +
-      Math.sin(t * 11.7 + 0.8 - time * FLOW * 1.7) * 1.3
-    /* separation is largest at the left edge and closes by ~58% across */
-    const env = Math.pow(smooth((0.58 - t) / 0.58), 1.45)
-    const spread = dir === -1 ? 132 : 158
-    const own =
-      (Math.sin(t * 7.3 + (dir === -1 ? 1.1 : 4.4) - time * FLOW * 1.3) * 2.6 +
-        Math.sin(t * 15.9 + (dir === -1 ? 3.0 : 0.4) - time * FLOW * 2.1) * 1.1) *
-      env
-    const y = 210 + shared + dir * env * spread + own
-    pts.push(`${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`)
-  }
-  return pts.join(' ')
-}
+const buildPath = buildLightPath({
+  baseline: 210,
+  sharedPhase: [2.2, 0.8],
+  /* separation is largest at the left edge and closes by ~58% across */
+  envelope: (t) => Math.pow(smoothEnvelope((0.58 - t) / 0.58), 1.45),
+  spread: (dir) => (dir === -1 ? 132 : 158),
+  ownPhase: (dir) => (dir === -1 ? [1.1, 3.0] : [4.4, 0.4]),
+})
 
 const LAYERS = [{ width: 2, cls: 'n3wth-visual-light-core' }] as const
 
