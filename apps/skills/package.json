@@ -3,7 +3,7 @@
     "@ai-sdk/google": "3.0.24",
     "@gsap/react": "2.1.2",
     "@n3wth/site-config": "*",
-    "@n3wth/ui": "2.1.0",
+    "@n3wth/ui": "2.1.1",
     "@neondatabase/serverless": "1.1.0",
     "@next/third-parties": "16.3.5",
     "@sentry/react": "10.74.0",
@@ -84,5 +84,5 @@
     "verify:supabase": "node scripts/verify-supabase.mjs"
   },
   "type": "module",
-  "version": "0.0.1"
+  "version": "0.0.2"
 }

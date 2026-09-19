@@ -1,6 +1,6 @@
 {
   "name": "@n3wth/ui",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Shared Newth theme and site components built on Astryx",
   "type": "module",
   "engines": {
