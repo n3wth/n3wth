@@ -210,10 +210,11 @@ export function SiteSignup({ onSubmit, label = 'Occasional notes on agent infras
         <input id={id} name="email" type="email" required autoComplete="email" inputMode="email" placeholder="you@example.com" disabled={busy} />
         <button type="submit" disabled={busy}>{buttonLabel}</button>
       </div>
-      <div className="n3wth-site-signup-status">
-        {status === 'done' && <p role="status">{successMessage}</p>}
-        {status === 'error' && <p role="status">{errorMessage}</p>}
-      </div>
+      {/* Established before it changes so assistive technology announces the update.
+          Not role="status": shared chrome must not duplicate a page's own status element. */}
+      <p aria-live="polite" className="n3wth-site-signup-status">
+        {status === 'done' ? successMessage : status === 'error' ? errorMessage : null}
+      </p>
     </form>
   )
 }

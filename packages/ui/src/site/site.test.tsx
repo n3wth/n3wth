@@ -143,7 +143,8 @@ describe('shared site composition', () => {
     fireEvent.change(input, { target: { value: '  reader@example.com ' } })
     await act(async () => { fireEvent.submit(screen.getByRole('button', { name: 'Subscribe' }).closest('form')!) })
     expect(received).toEqual(['reader@example.com'])
-    expect(screen.getByRole('status')).toHaveTextContent('Thanks. You are on the list.')
+    expect(screen.getByText('Thanks. You are on the list.')).toHaveAttribute('aria-live', 'polite')
+    expect(screen.queryByRole('status')).toBeNull()
     expect(screen.getByRole('button', { name: 'Subscribe' })).toBeDisabled()
   })
 
@@ -151,7 +152,7 @@ describe('shared site composition', () => {
     render(<SiteSignup onSubmit={async () => { throw new Error('offline') }} />)
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'reader@example.com' } })
     await act(async () => { fireEvent.submit(screen.getByRole('button').closest('form')!) })
-    expect(screen.getByRole('status')).toHaveTextContent('That did not go through. Try again.')
+    expect(screen.getByText('That did not go through. Try again.')).toHaveAttribute('aria-live', 'polite')
     expect(screen.getByRole('button', { name: 'Subscribe' })).toBeEnabled()
   })
 })
