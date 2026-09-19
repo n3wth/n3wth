@@ -11,11 +11,19 @@ import { JsonLd } from "@/components/JsonLd";
 import type { Metadata } from "next";
 import { DocPageActions } from '@/components/DocPageActions';
 
+// Every docs route must prerender: the Worker cannot compile MDX at request
+// time ("Code generation from strings disallowed"), so unknown slugs 404
+// instead of regenerating, and the optional catch-all root is listed too.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const docs = await getAllDocs();
-  return docs.map((doc) => ({
-    slug: doc.slug.split("/"),
-  }));
+  return [
+    { slug: [] },
+    ...docs.map((doc) => ({
+      slug: doc.slug.split("/"),
+    })),
+  ];
 }
 
 export async function generateMetadata({
