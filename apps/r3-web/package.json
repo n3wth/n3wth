@@ -43,10 +43,12 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=true npm run build",
     "build": "next build --turbopack",
-    "check": "npm run test:docs && npm run search:check && npm run typecheck && npm run build",
+    "check": "node --test scripts/docs-manifest.test.mjs && npm run test:docs && npm run search:check && npm run typecheck && npm run build",
     "dev": "next dev --turbopack",
+    "docs:manifest": "node scripts/docs-manifest.mjs",
     "docs:sync": "node scripts/sync-docs-sources.mjs",
     "perf:test": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
+    "prebuild": "npm run docs:manifest",
     "search:check": "npm run search:types && node --experimental-strip-types scripts/build-search-index.ts && tsc --project worker/tsconfig.json && node --experimental-strip-types --test worker/search.test.ts",
     "search:deploy": "wrangler deploy --config worker/wrangler.jsonc",
     "search:types": "wrangler types --config worker/wrangler.jsonc worker/env.d.ts",
