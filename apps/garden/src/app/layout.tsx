@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { AxiomWebVitals } from 'next-axiom'
-import { getAllNotes } from '@/lib/content'
+import { getPublishedNotes } from '@/lib/content'
 import { site } from '@/lib/site'
 import { Navigation } from '@/components/Navigation'
 import { SiteFooter } from '@/components/SiteFooter'
@@ -70,8 +70,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const paletteNotes = getAllNotes()
-    .filter((n) => n.slug !== '')
+  const paletteNotes = getPublishedNotes()
     .map((n) => ({
       slug: n.slug,
       title: n.title,

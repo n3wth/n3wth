@@ -1,5 +1,5 @@
 import { getPublishedNotes, resolveWikilink, type GrowthStage } from './content'
-import { extractWikilinks } from './backlinks'
+import { extractWikilinks } from './note-links.mjs'
 import contentHistory from '@/data/content-history.json'
 
 const history = contentHistory as Record<string, { c: number; m: number }>

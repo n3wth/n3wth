@@ -1,8 +1,6 @@
-import { visit } from 'unist-util-visit'
-import type { Root, Text, Link, PhrasingContent } from 'mdast'
+import type { Root, Text, Link, PhrasingContent, Parents } from 'mdast'
 import { resolveWikilink, getNoteBySlug } from '@/lib/content'
-
-const wikilinkRegex = /\[\[([^\[\]\|#]+)(?:#([^\[\]\|]*))?\|?([^\[\]]*?)?\]\]/g
+import { matchWikilinks, visitWikilinkText } from '../lib/note-links.mjs'
 
 // Reference-style images whose definition doesn't exist ship as literal
 // "![alt]" text; drop them. The (?!\() guard protects real inline images.
@@ -12,21 +10,17 @@ const stripDanglingImages = (text: string) => text.replace(danglingImageRegex, '
 
 export function remarkWikilinks() {
   return (tree: Root) => {
-    visit(tree, 'text', (node: Text, index, parent) => {
-      if (!parent || index === undefined) return
-
+    visitWikilinkText(tree, (node: Text, index: number, parent: Parents) => {
       const value = node.value
-      const regex = new RegExp(wikilinkRegex.source, wikilinkRegex.flags)
       const children: PhrasingContent[] = []
       let lastIndex = 0
-      let match: RegExpExecArray | null
 
-      while ((match = regex.exec(value)) !== null) {
-        const [full, target, _heading, alias] = match
+      for (const match of matchWikilinks(value)) {
+        const { target, alias } = match
         // ![[Target]] is an Obsidian embed, not a link; attachments are
         // excluded from the build (same call as remark-strip-dataview), so
         // drop the embed entirely — bang included.
-        const isEmbed = match.index > 0 && value[match.index - 1] === '!'
+        const isEmbed = match.embed
         let before = value.slice(lastIndex, isEmbed ? match.index - 1 : match.index)
         before = stripDanglingImages(before)
 
@@ -35,7 +29,7 @@ export function remarkWikilinks() {
         }
 
         if (isEmbed) {
-          lastIndex = match.index + full.length
+          lastIndex = match.index + match.length
           continue
         }
 
@@ -60,7 +54,7 @@ export function remarkWikilinks() {
           } as unknown as PhrasingContent)
         }
 
-        lastIndex = match.index + full.length
+        lastIndex = match.index + match.length
       }
 
       if (lastIndex === 0) {
@@ -76,6 +70,7 @@ export function remarkWikilinks() {
       }
 
       parent.children.splice(index, 1, ...children)
+      return index + children.length
     })
   }
 }

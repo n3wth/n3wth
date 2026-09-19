@@ -1,6 +1,5 @@
-import { getAllNotes, resolveWikilink } from './content'
-
-const wikilinkRegex = /\[\[([^\[\]\|#]+)(?:#[^\[\]\|]*)?\|?([^\[\]]*?)?\]\]/g
+import { getPublishedNotes, resolveWikilink } from './content'
+import { getWikilinkMentions, plainWikilinkText } from './note-links.mjs'
 
 export interface BacklinkContext {
   before: string
@@ -19,24 +18,10 @@ export interface Backlink {
 
 let cachedBacklinks: Map<string, Backlink[]> | null = null
 
-export function extractWikilinks(content: string): string[] {
-  const links: string[] = []
-  let match: RegExpExecArray | null
-
-  const regex = new RegExp(wikilinkRegex.source, wikilinkRegex.flags)
-  while ((match = regex.exec(content)) !== null) {
-    const target = match[1].trim()
-    if (target) links.push(target)
-  }
-
-  return [...new Set(links)]
-}
-
 /* Inline markdown -> plain text, for quoting a line of a note in the
    "Mentioned in" list. */
 function stripInline(text: string): string {
-  return text
-    .replace(/\[\[([^\]|#]+)(?:#[^\]|]*)?\|?([^\]]*?)\]\]/g, (_, t, a) => (a || t).trim())
+  return plainWikilinkText(text)
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/[*_~`]/g, '')
 }
@@ -86,21 +71,16 @@ function contextAround(content: string, matchIndex: number, matchLength: number,
 export function buildBacklinks(): Map<string, Backlink[]> {
   if (cachedBacklinks) return cachedBacklinks
 
-  const notes = getAllNotes()
+  const notes = getPublishedNotes()
   const backlinks = new Map<string, Backlink[]>()
 
   for (const note of notes) {
-    const regex = new RegExp(wikilinkRegex.source, wikilinkRegex.flags)
-    let match: RegExpExecArray | null
-
-    while ((match = regex.exec(note.content)) !== null) {
-      const target = match[1].trim()
-      if (!target) continue
-      const resolvedSlug = resolveWikilink(target)
+    for (const link of getWikilinkMentions(note.content)) {
+      const resolvedSlug = resolveWikilink(link.target)
       if (!resolvedSlug || resolvedSlug === note.slug) continue
 
-      const mention = (match[2] || '').trim() || target
-      const context = contextAround(note.content, match.index, match[0].length, mention)
+      const mention = link.alias || link.target
+      const context = contextAround(link.context, link.index, link.length, mention)
 
       if (!backlinks.has(resolvedSlug)) backlinks.set(resolvedSlug, [])
       const existing = backlinks.get(resolvedSlug)!

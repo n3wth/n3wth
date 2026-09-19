@@ -3,8 +3,6 @@
 import {
   useMemo,
   useRef,
-  useState,
-  useCallback,
   useEffect,
 } from 'react'
 import { useRouter } from 'next/navigation'
@@ -12,6 +10,7 @@ import {
   CommandPalette,
   CommandPaletteFooter,
   useCommandPaletteContext,
+  Button,
 } from '@n3wth/ui/primitives'
 import {
   createStaticSource,
@@ -20,6 +19,7 @@ import {
 import { getVisited } from '@/lib/visited'
 import type { GrowthStage } from '@/lib/content'
 import { stageColor } from '@/lib/plant'
+import { useGardenAnswer } from '@/hooks/useGardenAnswer'
 
 export interface PaletteNote {
   slug: string
@@ -51,78 +51,20 @@ const STAGE_LABEL: Record<GrowthStage, string> = {
   evergreen: 'evergreen',
 }
 
-const AI_DEBOUNCE_MS = 300
-
 interface SearchPaletteProps {
   notes: PaletteNote[]
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
 }
 
-async function streamAIResponse(
-  query: string,
-  signal: AbortSignal,
-  onChunk: (text: string) => void
-): Promise<void> {
-  const response = await fetch('/api/ai-search', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
-    signal,
-  })
-
-  if (!response.ok) {
-    throw new Error(`Search request failed: ${response.status}`)
-  }
-
-  const reader = response.body?.getReader()
-  if (!reader) {
-    throw new Error('No response body')
-  }
-
-  const decoder = new TextDecoder()
-  let buffer = ''
-
-  while (true) {
-    const { done, value } = await reader.read()
-    if (done) break
-
-    buffer += decoder.decode(value, { stream: true })
-    const lines = buffer.split('\n')
-    buffer = lines.pop() || ''
-
-    for (const line of lines) {
-      if (line.startsWith('data: ')) {
-        const data = line.slice(6)
-        if (data === '[DONE]') return
-
-        try {
-          const parsed = JSON.parse(data)
-          const content = parsed.choices?.[0]?.delta?.content
-          if (content) {
-            onChunk(content)
-          }
-        } catch {
-          // Ignore parse errors for incomplete chunks
-        }
-      }
-    }
-  }
-}
-
-interface AIState {
-  loading: boolean
-  result: string
-  error: string
-  query: string
-}
-
-function AIResultFooter({
-  aiState,
+function AnswerFooter({
+  answer,
+  onAsk,
   onQueryChange,
 }: {
-  aiState: AIState
-  onQueryChange: (query: string) => void
+  answer: ReturnType<typeof useGardenAnswer>['answer']
+  onAsk: (query: string) => void
+  onQueryChange: () => void
 }) {
   const ctx = useCommandPaletteContext()
   const lastQueryRef = useRef('')
@@ -130,7 +72,7 @@ function AIResultFooter({
   useEffect(() => {
     if (ctx?.search !== lastQueryRef.current) {
       lastQueryRef.current = ctx?.search ?? ''
-      onQueryChange(ctx?.search ?? '')
+      onQueryChange()
     }
   }, [ctx?.search, onQueryChange])
 
@@ -143,25 +85,30 @@ function AIResultFooter({
   return (
     <div className="border-t border-[var(--color-border)]">
       <div className="px-4 py-3">
-        <div className="text-[11px] font-medium text-secondary uppercase tracking-wide mb-2">
-          Ask the garden
+        <div className="mb-2">
+          <Button
+            label="Ask the garden"
+            variant="secondary"
+            isDisabled={answer.loading}
+            onClick={() => onAsk(ctx?.search ?? '')}
+          />
         </div>
-        {aiState.error ? (
+        {answer.error ? (
           <div role="alert" className="text-primary text-[13px]">
-            {aiState.error}
+            {answer.error}
           </div>
-        ) : aiState.loading && !aiState.result ? (
+        ) : answer.loading && !answer.result ? (
           <div role="status" className="text-secondary animate-pulse text-[13px]">
             Searching the garden...
           </div>
-        ) : aiState.result ? (
+        ) : answer.result ? (
           <div className="text-primary text-[13px] leading-relaxed whitespace-pre-wrap max-h-[200px] overflow-y-auto">
-            {aiState.result}
-            {aiState.loading && <span className="animate-pulse">...</span>}
+            {answer.result}
+            {answer.loading && <span className="animate-pulse">...</span>}
           </div>
         ) : (
           <div role="status" className="text-tertiary text-[13px]">
-            Searching...
+            Search notes here, or send your question to get an answer.
           </div>
         )}
       </div>
@@ -175,15 +122,7 @@ export function SearchPalette({
   onOpenChange,
 }: SearchPaletteProps) {
   const router = useRouter()
-  const [aiState, setAiState] = useState<AIState>({
-    loading: false,
-    result: '',
-    error: '',
-    query: '',
-  })
-
-  const abortRef = useRef<AbortController | null>(null)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { answer, ask, reset } = useGardenAnswer(isOpen)
 
   const visited = useMemo<Record<string, number>>(
     () => (isOpen ? getVisited() : {}),
@@ -222,63 +161,6 @@ export function SearchPalette({
     ]
   }, [notes, visited])
 
-  const cancelAISearch = useCallback(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current)
-      debounceRef.current = null
-    }
-    if (abortRef.current) {
-      abortRef.current.abort()
-      abortRef.current = null
-    }
-  }, [])
-
-  const runAISearch = useCallback(async (query: string) => {
-    const controller = new AbortController()
-    abortRef.current = controller
-
-    let accumulated = ''
-
-    try {
-      await streamAIResponse(query, controller.signal, (chunk) => {
-        accumulated += chunk
-        setAiState((prev) => ({
-          ...prev,
-          result: accumulated,
-        }))
-      })
-      setAiState((prev) => ({ ...prev, loading: false }))
-    } catch (err) {
-      if (err instanceof Error && err.name !== 'AbortError') {
-        console.error('Garden search error:', err)
-        setAiState((prev) => ({
-          ...prev,
-          loading: false,
-          result: '',
-          error: 'The garden could not answer right now. Try again in a moment.',
-        }))
-      }
-    }
-  }, [])
-
-  const handleQueryChange = useCallback(
-    (query: string) => {
-      cancelAISearch()
-
-      if (!query.trim()) {
-        setAiState({ loading: false, result: '', error: '', query: '' })
-        return
-      }
-
-      setAiState({ loading: true, result: '', error: '', query })
-
-      debounceRef.current = setTimeout(() => {
-        runAISearch(query)
-      }, AI_DEBOUNCE_MS)
-    },
-    [cancelAISearch, runAISearch]
-  )
-
   const source = useMemo(() => {
     return createStaticSource(noteItems, {
       keywords: (item) => [
@@ -290,13 +172,6 @@ export function SearchPalette({
     })
   }, [noteItems])
 
-  useEffect(() => {
-    if (!isOpen) {
-      cancelAISearch()
-      setAiState({ loading: false, result: '', error: '', query: '' })
-    }
-  }, [isOpen, cancelAISearch])
-
   return (
     <CommandPalette
       isOpen={isOpen}
@@ -305,7 +180,7 @@ export function SearchPalette({
       label="Search the garden"
       emptySearchText="Nothing by that name is planted yet"
       footer={
-        <AIResultFooter aiState={aiState} onQueryChange={handleQueryChange} />
+        <AnswerFooter answer={answer} onAsk={ask} onQueryChange={reset} />
       }
       renderItem={(item) => {
         const aux = item.auxiliaryData
