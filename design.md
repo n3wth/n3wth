@@ -48,4 +48,4 @@ UI documentation groups live semantic swatches by purpose (surfaces, text and bo
 
 Check the rendered result at narrow mobile, intermediate and desktop widths, in every supported theme. Look for overwritten spacing, doubled headers, code overflow, misleading active states and footer inconsistencies. Test a cold load and navigation from a scrolled page. Shared changes require checking relevant consumers, not only the UI showcase.
 
-See [style.md](style.md) for implementation rules and [the architecture guide](docs/workspace/design-system.md) for package entry points and setup.
+See [STYLE.md](STYLE.md) for implementation rules and [the architecture guide](docs/workspace/design-system.md) for package entry points and setup.

@@ -4,7 +4,6 @@ const allWorkspaces = [
   '@n3wth/portfolio',
   '@n3wth/ui-docs',
   '@n3wth/garden',
-  '@n3wth/kit',
   '@n3wth/r3-web',
 ]
 const affected: string[] = process.env.AFFECTED_WORKSPACES
@@ -14,7 +13,6 @@ const apps = [
   { name: 'portfolio', workspace: '@n3wth/portfolio', port: 4281, testMatch: 'browser/portfolio.spec.ts', command: 'vite' },
   { name: 'ui-docs', workspace: '@n3wth/ui-docs', port: 4282, testMatch: 'browser/ui-docs.spec.ts', command: 'vite' },
   { name: 'garden', workspace: '@n3wth/garden', port: 4284, testMatch: 'garden/routes.spec.ts', command: 'next' },
-  { name: 'kit', workspace: '@n3wth/kit', port: 4285, testMatch: 'browser/kit.spec.ts', command: 'next' },
   { name: 'r3-web', workspace: '@n3wth/r3-web', port: 4286, testMatch: 'browser/r3-web.spec.ts', command: 'next' },
 ].filter(app => affected.includes(app.workspace))
 

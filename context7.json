@@ -5,7 +5,7 @@
   "branch": "main",
   "folders": ["docs/r3", "docs/ui", "docs/skills"],
   "excludeFolders": ["node_modules", "dist"],
-  "excludeFiles": ["AGENTS.md", "CLAUDE.md", "README.md", "design.md", "style.md", "CHANGELOG.md", "LICENSE.md", "CODE_OF_CONDUCT.md"],
+  "excludeFiles": ["AGENTS.md", "CLAUDE.md", "README.md", "DESIGN.md", "STYLE.md", "CHANGELOG.md", "LICENSE.md", "CODE_OF_CONDUCT.md"],
   "rules": [
     "Use @n3wth/ui/site for shared site compositions, @n3wth/ui/primitives for native controls, and one documented foundation stylesheet. Applications do not import Astryx directly.",
     "Use Node 24 and npm 11.19.1 for monorepo development, install at the root, and build shared packages before consumers with root build commands.",

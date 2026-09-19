@@ -1,13 +1,13 @@
 # Personal sites workspace
 
-Before UI changes, read [design.md](design.md) and [style.md](style.md). They define the shared design and implementation rules across all apps. Update these documents when an accepted pattern changes; do not maintain competing app-specific versions.
+Before UI changes, read [DESIGN.md](DESIGN.md) and [STYLE.md](STYLE.md). They define the shared design and implementation rules across all apps. Update these documents when an accepted pattern changes; do not maintain competing app-specific versions.
 
 Use Node 24 and npm 11.19.1, then run npm ci at the repository root. npm 10 has a peer-resolution failure on this workspace. The root package-lock.json is the only application/library lockfile. Use feature branches.
 
 - apps/portfolio: n3wth.com. Read its AGENTS.md before editing.
 - apps/ui-docs: ui.n3wth.com documentation app.
 - apps/skills: skills.n3wth.com. Read its AGENTS.md before editing. It consumes the workspace UI package alongside the other sites.
-- apps/kit, apps/garden, apps/r3-web: other shared-system consumers. Read their AGENTS.md before editing.
+- apps/garden, apps/r3-web: other shared-system consumers. Read their AGENTS.md before editing.
 - packages/ui: public @n3wth/ui library. Read its AGENTS.md before editing.
 - packages/site-config: canonical public origins, with no framework dependency or secrets.
 

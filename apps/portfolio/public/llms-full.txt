@@ -100,11 +100,6 @@ Memory for AI apps using vector search and knowledge graphs.
 - Tech: TypeScript, Redis, Vector Embeddings, MCP
 - GitHub: https://github.com/n3wth/r3
 
-### kit (https://kit.n3wth.com/)
-49 components with AI context packs. Ships your design system straight to your editor and coding agents.
-- Tech: React, Tailwind v4, Radix, shadcn
-- GitHub: https://github.com/n3wth/kit
-
 ### skills (https://skills.n3wth.com/)
 A registry of markdown skills for coding agents. Install with one command, run locally, work offline.
 - Tech: Next.js, React, Supabase

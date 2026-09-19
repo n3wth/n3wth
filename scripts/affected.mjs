@@ -61,7 +61,7 @@ export function affectedWorkspaces(workspaces, files, all = false, lockfile, dep
     // Root validation assets do not change deployed output. Unknown configuration
     // remains conservative; application files (including public docs) still build.
     if (deployment && /^(\.github\/|tests\/|playwright[^/]*\.config\.|scripts\/.*\.test\.mjs$)/.test(file)) continue
-    const browserTarget = file.match(/^tests\/browser\/(portfolio|ui-docs|kit|r3-web)\.spec\.ts$/)?.[1]
+    const browserTarget = file.match(/^tests\/browser\/(portfolio|ui-docs|r3-web)\.spec\.ts$/)?.[1]
       || (/^tests\/garden\//.test(file) ? 'garden' : undefined)
     if (browserTarget && byName.has(`@n3wth/${browserTarget}`)) {
       selected.add(`@n3wth/${browserTarget}`)

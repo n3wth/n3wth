@@ -22,7 +22,7 @@ test('site generator uses shared components, escapes titles, rejects traversal a
     assert.ok(html.includes('data-astryx-theme="n3wth" data-theme="dark"'))
     assert.ok(html.includes('name="robots" content="noindex"'))
     assert.ok(html.includes('<title>Idea &quot;one&quot;\nnext</title>'))
-    assert.ok(readFileSync(join(path, 'AGENTS.md'), 'utf8').includes('../../design.md'))
+    assert.ok(readFileSync(join(path, 'AGENTS.md'), 'utf8').includes('../../DESIGN.md'))
     assert.equal(JSON.parse(readFileSync(join(path, 'package.json'))).dependencies['@n3wth/ui'], '0.9.2')
     assert.throws(() => createSite(root, 'new-idea'))
     assert.equal(readFileSync(join(path, 'src/main.tsx'), 'utf8'), source)

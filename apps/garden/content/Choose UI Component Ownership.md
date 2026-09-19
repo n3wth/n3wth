@@ -51,6 +51,6 @@ Every ownership choice has a boundary. Here, `@n3wth/ui` owns the underlying com
 - Application owner: checks composition, content, layout, and route behavior where the component is used.
 - Both owners: verify keyboard and screen-reader paths, visible focus, labels, contrast, and responsive behavior before release.
 
-For this workspace, keep reusable behavior in `@n3wth/ui`. Keep Garden-specific headings, links, and placement in Garden. The [existing Kit component examples](https://kit.n3wth.com/components) show the public surface. The [current comparison](https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material) records the concrete reading-outline case.
+For this workspace, keep reusable behavior in `@n3wth/ui`. Keep Garden-specific headings, links, and placement in Garden. The [UI project page](https://n3wth.com/projects/ui) shows the public component surface. The [current comparison](https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material) records the concrete reading-outline case.
 
 The short rule is simple. Share behavior when fixes should be shared. Keep source local when the context is local. Use an existing framework when its ownership and checks fit the application.
