@@ -1,0 +1,51 @@
+{
+  "id": "G24",
+  "contentPath": "apps/garden/content/Keep your notes in the repo.md",
+  "contentSha256": "d91d1cf8121082536dc0d691ff68ee39d86efd5cfa7bdd602318c7aa621d4ef8",
+  "reviewedAt": "2026-09-18",
+  "reviewer": "Author's editorial pass, 2026-09-18: research subagents fetched and quoted each source; every quoted passage was re-fetched independently and matched verbatim before scoring. First-person incident notes; external sources ground the mechanisms named, not the incidents themselves.",
+  "decision": "pass",
+  "scores": {
+    "originality": 4,
+    "usefulness": 4,
+    "evidence": 4,
+    "clarity": 5,
+    "limitations": 4
+  },
+  "publicSafe": true,
+  "brandsChecked": true,
+  "internalLinksChecked": true,
+  "claimsComplete": true,
+  "reviewNotes": "Original contribution is the source-versus-derived-index framing and the explicit conditions under which a database is the right call. Removed the unsupported line that search engines prefer static output. Tool references are to their own documentation. Limits section bounds the claim to a small single-author corpus.",
+  "claims": [
+    {
+      "text": "Tools like [Quartz](https://quartz.jzhao.xyz/features/obsidian-compatibility) exist precisely to publish a vault as a static site",
+      "kind": "sourced",
+      "sourceId": "quartz-obsidian",
+      "sourcePassage": "Quartz was originally designed as a tool to publish Obsidian vaults as websites.",
+      "limitation": "One tool's self-description; not a survey of static site generators.",
+      "verdict": "supported"
+    },
+    {
+      "text": "A static build [writes one HTML file per route](https://nextjs.org/docs/app/guides/static-exports)",
+      "kind": "sourced",
+      "sourceId": "nextjs-static-exports",
+      "sourcePassage": "When running next build, Next.js generates an HTML file per route.",
+      "limitation": "Framework-specific; other generators differ in output shape.",
+      "verdict": "supported"
+    },
+    {
+      "text": "[Obsidian's own hosted publishing](https://obsidian.md/publish), which charges per site per month",
+      "kind": "sourced",
+      "sourceId": "obsidian-publish",
+      "sourcePassage": "Per site, per month, billed annually",
+      "limitation": "Vendor pricing page; amounts change and are deliberately not quoted in the note.",
+      "verdict": "supported"
+    },
+    {
+      "text": "Source of truth in plain files under version control. Derived indexes wherever they earn their place. Never the other way round.",
+      "kind": "recommendation",
+      "rationale": "Author's architectural rule; the Limits section bounds it to small single-author corpora."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "G22",
+  "contentPath": "apps/garden/content/Static routes on serverless workers.md",
+  "contentSha256": "766011d5c6c4a490003d25cb744b7ac538fd884ef95cb008b910463420c6c3f5",
+  "reviewedAt": "2026-09-18",
+  "reviewer": "Author's editorial pass, 2026-09-18: research subagents fetched and quoted each source; every quoted passage was re-fetched independently and matched verbatim before scoring. First-person incident notes; external sources ground the mechanisms named, not the incidents themselves.",
+  "decision": "pass",
+  "scores": {
+    "originality": 4,
+    "usefulness": 4,
+    "evidence": 4,
+    "clarity": 5,
+    "limitations": 4
+  },
+  "publicSafe": true,
+  "brandsChecked": true,
+  "internalLinksChecked": true,
+  "claimsComplete": true,
+  "reviewNotes": "Original contribution is the post-migration checklist and the diagnosis pattern. The incident is the author's; the Limits section states the stack trace was not captured and the diagnosis rests on the code path and the fix. Framework and platform mechanisms are cited to their own documentation. No infrastructure addresses or private data.",
+  "claims": [
+    {
+      "text": "the [filesystem is an in-memory virtual one](https://developers.cloudflare.com/workers/runtime-apis/nodejs/fs/)",
+      "kind": "sourced",
+      "sourceId": "cloudflare-workers-fs",
+      "sourcePassage": "The Workers Virtual File System (VFS) is a memory-based file system",
+      "limitation": "Documents the fs module; the absence of the framework's source tree in that VFS is the author's inference from the failing code path.",
+      "verdict": "supported"
+    },
+    {
+      "text": "[route segment option `dynamic = 'force-static'`](https://nextjs.org/docs/app/guides/caching-without-cache-components) forces prerendering",
+      "kind": "sourced",
+      "sourceId": "nextjs-route-dynamic",
+      "sourcePassage": "Force prerendering and cache the data of a layout or page by forcing cookies, headers() and useSearchParams() to return empty values.",
+      "limitation": "This is the previous-model caching guide; projects with Cache Components enabled no longer have this option.",
+      "verdict": "supported"
+    },
+    {
+      "text": "[sitemap is an XML file that lists a site's URLs](https://www.sitemaps.org/)",
+      "kind": "sourced",
+      "sourceId": "sitemaps-org",
+      "sourcePassage": "In its simplest form, a Sitemap is an XML file that lists URLs for a site along with additional metadata about each URL",
+      "limitation": "Definition only; the protocol page says nothing about how search engines report a failing sitemap.",
+      "verdict": "supported"
+    },
+    {
+      "text": "After any hosting move, fetch every generated file from production with a plain HTTP client",
+      "kind": "recommendation",
+      "rationale": "Author's checklist derived from the incident; not validated across other platforms."
+    },
+    {
+      "text": "The sitemap was the one that had been written before the move to workers and never revisited.",
+      "kind": "illustration",
+      "rationale": "Author's account of the repository history; verifiable in the project's git log but not an external claim."
+    }
+  ]
+}

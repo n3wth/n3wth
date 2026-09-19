@@ -1,0 +1,56 @@
+{
+  "id": "G21",
+  "contentPath": "apps/garden/content/Growth gates before growth work.md",
+  "contentSha256": "3211f879bf900f9d2fd1892da2b60ce1c894456b85abeffb01f0b50a65428186",
+  "reviewedAt": "2026-09-18",
+  "reviewer": "Author's editorial pass, 2026-09-18: research subagents fetched and quoted each source; every quoted passage was re-fetched independently and matched verbatim before scoring. First-person incident notes; external sources ground the mechanisms named, not the incidents themselves.",
+  "decision": "pass",
+  "scores": {
+    "originality": 4,
+    "usefulness": 4,
+    "evidence": 4,
+    "clarity": 5,
+    "limitations": 4
+  },
+  "publicSafe": true,
+  "brandsChecked": true,
+  "internalLinksChecked": true,
+  "claimsComplete": true,
+  "reviewNotes": "Original contribution is the gate sequence and the pass condition for each gate. Traffic observations are the author's own and are stated as such, with no numbers. Removed nothing; added a Limits section stating thresholds are judgment calls. No private records, employer information, or infrastructure details.",
+  "claims": [
+    {
+      "text": "has a built-in filter for [internal and test users](https://posthog.com/tutorials/filter-internal-users)",
+      "kind": "sourced",
+      "sourceId": "posthog-internal-users",
+      "sourcePassage": "To make it easier to get accurate insights, PostHog includes tools to filter internal users out – and here's how to use them.",
+      "limitation": "Vendor tutorial page rather than a settings reference; supports that the filter exists, not its effect on any metric.",
+      "verdict": "supported"
+    },
+    {
+      "text": "A sitemap is how you [tell search engines which pages matter](https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview)",
+      "kind": "sourced",
+      "sourceId": "google-sitemaps",
+      "sourcePassage": "A sitemap tells search engines which pages and files you think are important in your site, and also provides valuable information about these files.",
+      "limitation": "Describes Google's crawler; the note's phrase 'search engines' generalises beyond the cited vendor.",
+      "verdict": "supported"
+    },
+    {
+      "text": "[sandbox payments](https://docs.stripe.com/test-mode) simulate the flow without moving real money",
+      "kind": "sourced",
+      "sourceId": "stripe-sandboxes",
+      "sourcePassage": "Sandboxes simulate creating real objects without affecting actual transactions or moving real money.",
+      "limitation": "Stripe's primary term is sandboxes; test mode is one kind. The note uses 'sandbox payments' to match.",
+      "verdict": "supported"
+    },
+    {
+      "text": "Do not build a billing screen until three of them say yes to a specific price.",
+      "kind": "recommendation",
+      "rationale": "Author's rule of thumb; the Limits section states the thresholds are judgment calls, not measured optima."
+    },
+    {
+      "text": "If you cannot name the loop, you are not on an exponential curve, you are on a linear one with good intentions.",
+      "kind": "recommendation",
+      "rationale": "Author's synthesis; framed as a heuristic, not a measured claim."
+    }
+  ]
+}

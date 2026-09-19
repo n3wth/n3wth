@@ -1,0 +1,51 @@
+{
+  "id": "G23",
+  "contentPath": "apps/garden/content/One live region per page.md",
+  "contentSha256": "ec55acd0aa904bd67bf10d8c6724afcbda8ab4b4bd5eaabd1267fc1e788b9fb0",
+  "reviewedAt": "2026-09-18",
+  "reviewer": "Author's editorial pass, 2026-09-18: research subagents fetched and quoted each source; every quoted passage was re-fetched independently and matched verbatim before scoring. First-person incident notes; external sources ground the mechanisms named, not the incidents themselves.",
+  "decision": "pass",
+  "scores": {
+    "originality": 4,
+    "usefulness": 4,
+    "evidence": 4,
+    "clarity": 5,
+    "limitations": 4
+  },
+  "publicSafe": true,
+  "brandsChecked": true,
+  "internalLinksChecked": true,
+  "claimsComplete": true,
+  "reviewNotes": "Original contribution is the rule for shared chrome and the corrected fix. The first fix (render on demand) was revised after reading the cited live-region guidance; the note now records that revision honestly. Limits section states verification was against tests and specification text, not a screen reader session.",
+  "claims": [
+    {
+      "text": "The [status role](https://www.w3.org/TR/wai-aria-1.2/#status) is a live region with an implicit polite politeness",
+      "kind": "sourced",
+      "sourceId": "wai-aria-status",
+      "sourcePassage": "Elements with the role status have an implicit aria-live value of polite and an implicit aria-atomic value of true.",
+      "limitation": "Normative definition of the role; the specification does not address how many live regions a page should contain.",
+      "verdict": "supported"
+    },
+    {
+      "text": "[Playwright locators are strict](https://playwright.dev/docs/locators#strictness): an operation that resolves to more than one element throws",
+      "kind": "sourced",
+      "sourceId": "playwright-strictness",
+      "sourcePassage": "Locators are strict. This means that all operations on locators that imply some target DOM element will throw an exception if more than one element matches.",
+      "limitation": "Applies to element-targeting operations; some operations such as count are exempt.",
+      "verdict": "supported"
+    },
+    {
+      "text": "establish the region before updating its content, because assistive technology announces changes, not arrivals",
+      "kind": "sourced",
+      "sourceId": "mdn-live-regions",
+      "sourcePassage": "Assistive technologies will generally only announce dynamic changes in the content of a live region. Establish the live region before updating its content.",
+      "limitation": "Practitioner guidance; behaviour varies across browser and assistive technology pairings and was not tested here.",
+      "verdict": "supported"
+    },
+    {
+      "text": "Before adding one, ask what it does to a page that already has its own.",
+      "kind": "recommendation",
+      "rationale": "Author's rule for shared components; a heuristic, not a measured finding."
+    }
+  ]
+}
