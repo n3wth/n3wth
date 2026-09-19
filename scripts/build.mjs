@@ -63,11 +63,20 @@ function readLockfile(root) {
   }
 }
 
+const openNextWorkspaces = ['garden', 'kit', 'skills', 'r3-web'].map(app => `@n3wth/${app}`)
+
 export function workspaceBuildArgs(workspace, cloudflare = false) {
-  const openNext = ['garden', 'kit', 'skills', 'r3-web'].map(app => `@n3wth/${app}`)
-  return cloudflare && openNext.includes(workspace)
+  return cloudflare && openNextWorkspaces.includes(workspace)
     ? ['exec', '--workspace', workspace, '--', 'opennextjs-cloudflare', 'build']
     : ['run', 'build', '--workspace', workspace]
+}
+
+/** Copies prerendered output into static assets for apps whose open-next.config
+    selects the static-assets incremental cache; a no-op for the others. */
+export function workspacePopulateCacheArgs(workspace, cloudflare = false) {
+  return cloudflare && openNextWorkspaces.includes(workspace)
+    ? ['exec', '--workspace', workspace, '--', 'opennextjs-cloudflare', 'populateCache', 'local']
+    : undefined
 }
 
 export function checkCloudflareToolchain(nodeVersion = process.versions.node, npmVersion) {
@@ -84,9 +93,12 @@ export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = fa
       continue
     }
     if (key) console.log('@n3wth/ui: cache miss; building')
-    const result = spawn('npm', workspaceBuildArgs(workspace, cloudflare), { cwd, stdio: 'inherit' })
-    if (result.error) throw result.error
-    if (result.status !== 0) process.exit(result.status ?? 1)
+    const steps = [workspaceBuildArgs(workspace, cloudflare), workspacePopulateCacheArgs(workspace, cloudflare)].filter(Boolean)
+    for (const args of steps) {
+      const result = spawn('npm', args, { cwd, stdio: 'inherit' })
+      if (result.error) throw result.error
+      if (result.status !== 0) process.exit(result.status ?? 1)
+    }
     if (key) saveUiBuild(cwd, key)
   }
 }
