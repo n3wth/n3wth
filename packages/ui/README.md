@@ -53,6 +53,6 @@ npm run check:design
 
 See [the design system guide](../../docs/workspace/design-system.md) and [UI website](https://ui.n3wth.com).
 
-Starting with 2.0.0, npm releases come from this monorepo through Changesets and trusted publishing. See [migration notes](CHANGELOG.md). The [v0 skill and standalone starter](v0/n3wth-ui/SKILL.md) ship with the package and support v0 Design Systems 2.0 imports; shipping these files does not automatically save a skill in v0.
+Starting with 2.0.0, npm releases come from this monorepo through `ui-v*` tags and trusted publishing. See [migration notes](CHANGELOG.md). The [v0 skill and standalone starter](v0/n3wth-ui/SKILL.md) ship with the package and support v0 Design Systems 2.0 imports; shipping these files does not automatically save a skill in v0.
 
 MIT © Oliver Newth

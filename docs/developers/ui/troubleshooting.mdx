@@ -53,10 +53,10 @@ Starting with 2.0.0, `packages/ui` in `n3wth/n3wth` is the publishing authority.
 
 For maintainers, the normal process is:
 
-1. Run `npm run changeset` at the repository root, select UI, and describe the consumer-facing change.
-2. Merge the validated change. A successful, current push run of **Site CI** on `main` triggers **Release UI**.
-3. Review the generated release PR. The version script updates package versions, changelog, the packaged starter's UI dependency, and the root lockfile.
-4. Merge the release PR after validation. With no pending Changesets and `UI_NPM_PUBLISH_ENABLED=true`, the publish job checks UI, validates a packed consumer, and publishes that exact tarball with provenance.
+1. Open one PR that bumps `version` in `packages/ui/package.json`, sets the same version in the starter's `@n3wth/ui` dependency, adds a `CHANGELOG.md` entry, and runs `npm install --package-lock-only --ignore-scripts`.
+2. Merge the PR after a successful **Site CI** run on `main`.
+3. Push a tag `ui-v<version>` on the merge commit, matching the version in `packages/ui/package.json`. This triggers **Release UI**.
+4. With `UI_NPM_PUBLISH_ENABLED=true`, the publish job checks UI, validates a packed consumer, and publishes that exact tarball with provenance.
 5. Verify the registry version and a clean consumer install before declaring the release available.
 
 The workflow can also be dispatched manually on `main`. Publishing requires npm trusted-publisher configuration for owner `n3wth`, repository `n3wth`, and workflow `publish-ui.yml`. The publish script skips an already-published version and fails on unexpected registry lookup errors.
@@ -65,7 +65,6 @@ The workflow can also be dispatched manually on `main`. Publishing requires npm 
 | --- | --- |
 | `npm run check --workspace @n3wth/ui` | Lint, build, inspect build output, and run unit tests; writes build output |
 | `npm run check:package` | Pack UI, install and build a temporary consumer, exercise browsers, save tarball and screenshots under `.release` |
-| `npm run release:version` | Apply Changesets and update starter and lockfile; used by the release workflow |
 
 Package publication and site deployment are separate operations. Current site configuration enables automatic Vercel Git deployments; older notes that call the UI docs deployment manual are stale. Publishing a package is not confirmation that a site deployment succeeded.
 
@@ -73,7 +72,7 @@ Package publication and site deployment are separate operations. Current site co
 
 - [Manifest and font allowlist](https://github.com/n3wth/n3wth/blob/main/packages/ui/package.json) and [font distribution notes](https://github.com/n3wth/n3wth/blob/main/packages/ui/public/fonts/README.md)
 - [Release UI workflow](https://github.com/n3wth/n3wth/blob/main/.github/workflows/publish-ui.yml)
-- [Version script](https://github.com/n3wth/n3wth/blob/main/scripts/version-ui.mjs) and [publish script](https://github.com/n3wth/n3wth/blob/main/scripts/publish-ui.mjs)
+- [Publish script](https://github.com/n3wth/n3wth/blob/main/scripts/publish-ui.mjs)
 - [Packed consumer validation](https://github.com/n3wth/n3wth/blob/main/scripts/check-ui-package.mjs)
 - [UI docs Vercel configuration](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/vercel.json)
 - [Theme initialization](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/public/theme-init.js)

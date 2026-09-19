@@ -2,7 +2,7 @@
 
 ## Workspace pilot override
 
-This package was imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf274. Starting with 2.0.0, this monorepo is the publishing authority. Use Changesets and .github/workflows/publish-ui.yml; never publish locally. See ../../docs/workspace/npm-release.md. UI docs lives in apps/ui-docs; use root workspace commands and the root lockfile. Validate with npm run check --workspace @n3wth/ui and npm run check:package. See SOURCE.md for historical provenance.
+This package was imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf274. Starting with 2.0.0, this monorepo is the publishing authority. Push a `ui-v<version>` tag on main to run .github/workflows/publish-ui.yml; never publish locally. See ../../docs/workspace/npm-release.md. UI docs lives in apps/ui-docs; use root workspace commands and the root lockfile. Validate with npm run check --workspace @n3wth/ui and npm run check:package. See SOURCE.md for historical provenance.
 
 ## Overview
 
@@ -151,9 +151,11 @@ Use matching container constraints: `max-w-6xl mx-auto px-6 md:px-12`
 
 Publishing is automated via GitHub Actions. Do NOT use `npm publish` locally.
 
-Add a Changeset at the repository root. Merge the generated release PR after
-validation. Release UI publishes through npm trusted publishing after Site CI.
-The former repository's release-created workflow is superseded.
+In one PR, bump `version` in `package.json`, set the same version in the
+starter's `@n3wth/ui` dependency, and add a CHANGELOG.md entry. Merge after
+Site CI passes. Push a `ui-v<version>` tag on the merge commit. Release UI
+checks the package, validates the packed consumer, and publishes that exact
+tarball through npm trusted publishing.
 
 ### Demo Site (Vercel)
 
@@ -165,9 +167,9 @@ The docs site at https://ui.n3wth.com deploys manually from the monorepo.
 
 ### Downstream Consumers
 
-After publishing a new version, update consumers:
-- `newthai` (portfolio site) - `npm install @n3wth/ui@latest`
-- `r3` (website) - `npm install @n3wth/ui@latest` in `website/`
+Apps in this monorepo declare `"@n3wth/ui": "*"` and always consume the
+workspace copy, so no consumer update is needed after publishing. Only the
+starter template at `packages/ui/v0/n3wth-ui` pins the exact release version.
 
 ## Open Graph Card
 

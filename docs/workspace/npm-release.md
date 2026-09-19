@@ -19,24 +19,28 @@ after the first verified monorepo release. Do not publish from both repositories
 
 ## Subsequent releases
 
-Run `npm run changeset`, selecting UI and describing the consumer-facing change.
-After Site CI passes on main, Release UI creates or updates a release PR.
-Repository Actions settings must allow GitHub Actions to create pull requests.
-Merge the reviewed release PR; its successful Site CI triggers publishing.
-`npm run release:version` updates versions, changelog, starter and root lockfile.
-Already-published versions are skipped. Registry errors fail the workflow.
+1. Open one PR that bumps `version` in `packages/ui/package.json`, sets the
+   same version in the starter's `@n3wth/ui` dependency, adds an entry to
+   `packages/ui/CHANGELOG.md`, and runs `npm install --package-lock-only --ignore-scripts`.
+2. Merge the PR after Site CI passes.
+3. Push a tag `ui-v<version>` on the merge commit, matching the version in
+   `packages/ui/package.json`. Release UI checks the package, validates the
+   packed consumer, and publishes that exact tarball with provenance.
+4. Verify the registry version and a clean consumer install.
 
 `npm run check:package` stages npm's allowlisted files with `scripts/pack-ui.mjs`.
 The staged CSS omits excluded commercial font rules and uses package-relative
 URLs for shipped fonts. Workspace CSS and licensed site assets stay unchanged.
 The publish step uses this exact tested tarball, not a direct pack of workspace output.
 
-For retries, manually run Release UI on main. Package checks still run.
-The publish job alone has OIDC permission, and uses GitHub-hosted runners.
-Never publish locally. Site deployments are automatic via Vercel Git and separate from npm publishing.
+For retries, manually run Release UI on main with `workflow_dispatch`. An
+already-published version is skipped, so this is a safe retry or smoke test.
+Package checks still run. The publish job alone has OIDC permission, and uses
+GitHub-hosted runners. Never publish locally. Site deployments are separate
+from npm publishing.
 
 The initial 2.0.0 version and migration notes are prepared directly for this
-cutover. Future version increments are managed through Changesets.
+cutover. Future version increments follow this same tag-triggered flow.
 
 The source adapter for v0 is `packages/ui/v0/n3wth-ui`. It ships with npm but
 must still be imported into v0 to become a saved personal/team skill.

@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@n3wth/site-config": "*",
-    "@n3wth/ui": "2.1.1",
+    "@n3wth/ui": "*",
     "posthog-js": "^1.422.5",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
