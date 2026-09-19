@@ -6,7 +6,7 @@
     "light": "#f2f3f5",
     "dark": "#08090b"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "filterSidebar": true,
   "navbar": {
     "links": [

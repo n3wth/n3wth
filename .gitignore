@@ -40,6 +40,7 @@ docs/*
 !docs/*.mdx
 !docs/*.json
 !docs/*.svg
+!docs/*.png
 !docs/r3/
 !docs/r3/**
 !docs/ui/

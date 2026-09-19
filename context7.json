@@ -3,8 +3,8 @@
   "projectTitle": "n3wth developer tools",
   "description": "Developer guides for @n3wth/ui, Kit's component registry, agent Skills, and r3 memory: installation, working examples, configuration, and troubleshooting.",
   "branch": "main",
-  "folders": ["docs/r3", "docs/ui", "docs/kit", "docs/skills"],
-  "excludeFolders": ["node_modules", "dist"],
+  "folders": ["docs"],
+  "excludeFolders": ["node_modules", "dist", "editorial", "plans", "workspace"],
   "excludeFiles": ["AGENTS.md", "CLAUDE.md", "README.md", "design.md", "style.md", "CHANGELOG.md", "LICENSE.md", "CODE_OF_CONDUCT.md"],
   "rules": [
     "Choose UI for an installed React design-system dependency and Kit for component source copied into the consuming project; their installation and update contracts differ.",
