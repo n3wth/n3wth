@@ -43,7 +43,11 @@
       "P07",
       "G12",
       "G17",
-      "P10"
+      "P10",
+      "G21",
+      "G22",
+      "G23",
+      "G24"
     ]
   },
   "items": [
@@ -1091,6 +1095,151 @@
       ],
       "originalAsset": "Extend the existing ambient essay with concrete interruption contracts.",
       "url": "https://n3wth.com/thinking/ambient-interruption-contracts"
+    },
+    {
+      "id": "G21",
+      "site": "garden",
+      "title": "Growth gates before growth work",
+      "slug": "growth-gates-before-growth-work",
+      "status": "pr_open",
+      "priority": "P2",
+      "keyword": "side project growth",
+      "searchMetrics": {
+        "volume": null,
+        "difficulty": null,
+        "intentCode": ""
+      },
+      "angle": "Sequence growth on small sites by evidence gates: measurement, indexing, demand, first dollar, then bets.",
+      "outline": [
+        "Why the sites could not be measured",
+        "The five gates",
+        "Gates versus dates",
+        "What an exponential loop requires",
+        "Limits"
+      ],
+      "sources": [
+        "google-sitemaps",
+        "posthog-internal-users",
+        "stripe-sandboxes"
+      ],
+      "internalLinks": [
+        "Productive Laziness in Engineering",
+        "Audit Retrieval Before Trusting an Answer"
+      ],
+      "grounding": [
+        "projects/n3wth"
+      ],
+      "originalAsset": "A five-gate checklist with pass conditions for each gate.",
+      "url": "https://garden.n3wth.com/growth-gates-before-growth-work"
+    },
+    {
+      "id": "G22",
+      "site": "garden",
+      "title": "Static routes on serverless workers",
+      "slug": "static-routes-on-serverless-workers",
+      "status": "pr_open",
+      "priority": "P2",
+      "keyword": "force-static sitemap workers",
+      "searchMetrics": {
+        "volume": null,
+        "difficulty": null,
+        "intentCode": ""
+      },
+      "angle": "A request-time filesystem read that passes the build and fails in production on edge workers, and the prerender fix.",
+      "outline": [
+        "The symptom: a 500 sitemap and zero indexed pages",
+        "The cause",
+        "The fix: force-static",
+        "The lesson: fetch production",
+        "Limits"
+      ],
+      "sources": [
+        "nextjs-route-dynamic",
+        "cloudflare-workers-fs",
+        "sitemaps-org"
+      ],
+      "internalLinks": [
+        "Growth gates before growth work",
+        "Productive Laziness in Engineering"
+      ],
+      "grounding": [
+        "projects/n3wth"
+      ],
+      "originalAsset": "A post-migration checklist of generated files to fetch from production.",
+      "url": "https://garden.n3wth.com/static-routes-on-serverless-workers"
+    },
+    {
+      "id": "G23",
+      "site": "garden",
+      "title": "One live region per page",
+      "slug": "one-live-region-per-page",
+      "status": "pr_open",
+      "priority": "P2",
+      "keyword": "aria live region shared footer",
+      "searchMetrics": {
+        "volume": null,
+        "difficulty": null,
+        "intentCode": ""
+      },
+      "angle": "A status element in shared chrome duplicated live regions on every page; keep the region, drop the role.",
+      "outline": [
+        "The footer form and its status paragraph",
+        "The strict locator failure",
+        "Why on-demand rendering is the wrong fix",
+        "The persistent polite region",
+        "Rule for shared chrome",
+        "Limits"
+      ],
+      "sources": [
+        "wai-aria-status",
+        "mdn-live-regions",
+        "playwright-strictness"
+      ],
+      "internalLinks": [
+        "Growth gates before growth work",
+        "Productive Laziness in Engineering"
+      ],
+      "grounding": [
+        "projects/n3wth"
+      ],
+      "originalAsset": "A before/after code snippet for the footer status region.",
+      "url": "https://garden.n3wth.com/one-live-region-per-page"
+    },
+    {
+      "id": "G24",
+      "site": "garden",
+      "title": "Keep your notes in the repo",
+      "slug": "keep-your-notes-in-the-repo",
+      "status": "pr_open",
+      "priority": "P2",
+      "keyword": "digital garden markdown repository database",
+      "searchMetrics": {
+        "volume": null,
+        "difficulty": null,
+        "intentCode": ""
+      },
+      "angle": "Why a personal digital garden should keep markdown in version control and treat any database as a derived index.",
+      "outline": [
+        "What the repo gives you",
+        "What a database would cost",
+        "When a database is right",
+        "The pattern",
+        "Limits"
+      ],
+      "sources": [
+        "quartz-obsidian",
+        "nextjs-static-exports",
+        "obsidian-publish"
+      ],
+      "internalLinks": [
+        "Atomic Notes",
+        "Audit Retrieval Before Trusting an Answer"
+      ],
+      "grounding": [
+        "projects/n3wth"
+      ],
+      "originalAsset": "A decision table: repo as source versus database, by number of authors and change frequency.",
+      "url": "https://garden.n3wth.com/keep-your-notes-in-the-repo"
     }
   ]
 }

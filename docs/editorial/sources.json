@@ -126,5 +126,101 @@
     "quality": "Maintainer specification; protocol compliance does not establish application safety.",
     "discoveredOn": "2026-09-17",
     "readVia": "Exa or Parallel source extraction; full claim review required at drafting"
+  },
+  "google-sitemaps": {
+    "title": "Learn about sitemaps",
+    "url": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview",
+    "kind": "implementation",
+    "quality": "Google Search Central's documentation of what a sitemap communicates to its crawler. Vendor documentation of its own behaviour; not evidence about other search engines.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "posthog-internal-users": {
+    "title": "How to filter out internal users",
+    "url": "https://posthog.com/tutorials/filter-internal-users",
+    "kind": "practitioner",
+    "quality": "Official product tutorial describing the internal and test user filter. Vendor-authored; supports that the feature exists, not any claim about analytics accuracy.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "stripe-sandboxes": {
+    "title": "Testing use cases",
+    "url": "https://docs.stripe.com/test-mode",
+    "kind": "implementation",
+    "quality": "Stripe's documentation of sandboxes and test mode. Supports that simulated payments move no real money; the page's primary term is sandboxes, with test mode as one kind.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "nextjs-route-dynamic": {
+    "title": "Caching and Revalidating (Previous Model)",
+    "url": "https://nextjs.org/docs/app/guides/caching-without-cache-components",
+    "kind": "implementation",
+    "quality": "Next.js documentation of the route segment option dynamic, including force-static. This is the guide for projects without Cache Components; with Cache Components enabled the option is removed.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "cloudflare-workers-fs": {
+    "title": "fs (Node.js compatibility)",
+    "url": "https://developers.cloudflare.com/workers/runtime-apis/nodejs/fs/",
+    "kind": "implementation",
+    "quality": "Cloudflare's documentation of the Workers virtual file system. Supports that the request-time filesystem is in-memory and per-request; it does not describe any particular framework's build output.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "sitemaps-org": {
+    "title": "sitemaps.org",
+    "url": "https://www.sitemaps.org/",
+    "kind": "standard",
+    "quality": "Home page of the Sitemaps protocol maintained jointly by the major search engines. Supports the definition of a sitemap; not evidence about ranking effects.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "wai-aria-status": {
+    "title": "Accessible Rich Internet Applications (WAI-ARIA) 1.2, status role",
+    "url": "https://www.w3.org/TR/wai-aria-1.2/#status",
+    "kind": "standard",
+    "quality": "W3C Recommendation defining the status role and its implicit aria-live value. Normative for the role; says nothing about how many live regions a page should have.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "mdn-live-regions": {
+    "title": "ARIA live regions",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions",
+    "kind": "practitioner",
+    "quality": "MDN guide to live regions. Practitioner documentation, widely maintained; supports the guidance to establish a region before updating it. Not a specification and not a screen reader test result.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "playwright-strictness": {
+    "title": "Locators, Strictness",
+    "url": "https://playwright.dev/docs/locators#strictness",
+    "kind": "implementation",
+    "quality": "Playwright's documentation of locator strictness. Supports the throw-on-multiple-matches behaviour for element-targeting operations; some operations such as count are excluded.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "quartz-obsidian": {
+    "title": "Quartz, Obsidian Compatibility",
+    "url": "https://quartz.jzhao.xyz/features/obsidian-compatibility",
+    "kind": "implementation",
+    "quality": "Quartz's own documentation of its Obsidian vault publishing origin. Maintained open-source static site generator; supports that the vault-to-static-site pattern exists, not a comparison of tools.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "obsidian-publish": {
+    "title": "Obsidian Publish",
+    "url": "https://obsidian.md/publish",
+    "kind": "practitioner",
+    "quality": "Vendor product page for Obsidian's hosted publishing service. Supports that a paid per-site hosted model exists; prices change and are not quoted.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
+  },
+  "nextjs-static-exports": {
+    "title": "How to create a static export of your Next.js application",
+    "url": "https://nextjs.org/docs/app/guides/static-exports",
+    "kind": "implementation",
+    "quality": "Next.js documentation of static export output. Supports one HTML file per route and hosting on any static file server; framework-specific.",
+    "discoveredOn": "2026-09-18",
+    "readVia": "Page fetched and read by a research subagent; quoted passage independently re-fetched and matched verbatim before review"
   }
 }
