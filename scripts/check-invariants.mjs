@@ -86,23 +86,6 @@ export function checkInvariants(root) {
         }
       }
     }
-    if (!isApp(workspace)) continue
-    const vercelPath = `${workspace.path}/vercel.json`
-    const absolute = resolve(root, vercelPath)
-    if (!existsSync(absolute)) {
-      errors.push(`${vercelPath}: git.deploymentEnabled must be false`)
-      continue
-    }
-    let vercel
-    try {
-      vercel = JSON.parse(readFileSync(absolute, 'utf8'))
-    } catch (error) {
-      errors.push(`${vercelPath}: ${error.message}`)
-      continue
-    }
-    if (vercel.git?.deploymentEnabled !== false) {
-      errors.push(`${vercelPath}: git.deploymentEnabled must be false`)
-    }
   }
   const manifest = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
   if (manifest.scripts?.build && manifest.scripts.build !== 'node scripts/build.mjs') {

@@ -29,7 +29,6 @@ export function createSite(root, slug, title = slug) {
   const htmlTitle = title.replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character])
   const files = {
     'package.json': JSON.stringify(manifest, null, 2) + '\n',
-    'vercel.json': JSON.stringify({ git: { deploymentEnabled: false }, installCommand: `node ../../scripts/vercel-install.mjs @n3wth/${slug}`, buildCommand: `cd ../.. && npm run build -- --workspace @n3wth/${slug} --cache-ui`, outputDirectory: 'dist' }, null, 2) + '\n',
     'index.html': `<!doctype html>\n<html lang="en" data-astryx-theme="n3wth" data-theme="dark"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="color-scheme" content="dark"/><meta name="robots" content="noindex"/><title>${htmlTitle}</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>\n`,
     'vite.config.ts': "import { defineConfig } from 'vite'\nimport react from '@vitejs/plugin-react'\nexport default defineConfig({ plugins: [react()] })\n",
     'tsconfig.json': JSON.stringify({ compilerOptions: { target: 'ES2022', lib: ['ES2022', 'DOM', 'DOM.Iterable'], module: 'ESNext', moduleResolution: 'Bundler', jsx: 'react-jsx', strict: true, skipLibCheck: true, noEmit: true }, include: ['src'] }, null, 2) + '\n',
@@ -60,7 +59,7 @@ createRoot(document.getElementById('root')!).render(
 `,
     'src/styles.css': 'body { margin: 0; }\n',
     'AGENTS.md': '# Site conventions\n\nRead ../../AGENTS.md, ../../design.md and ../../style.md before UI work. Use @n3wth/ui/site and one complete shared stylesheet. Keep the workspace UI version aligned and use the root lockfile with Node 24. Build shared UI before this app. Preserve semantic headings, keyboard focus, reduced motion and usable touch targets. Verify first-paint theme, route scroll behavior and relevant shared patterns in a browser. Starter content is noindex: configure canonical/social metadata, sitemap and real content before making it indexable.\n',
-    'README.md': `# ${title}\n\nGenerated from the shared Astryx site foundation.\n\nFrom the repository root:\n\n\`\`\`sh\nnpm install\nnpm run build -- --workspace @n3wth/${slug}\nnpm run dev --workspace @n3wth/${slug}\nnpm run check --workspace @n3wth/${slug}\n\`\`\`\n\nReplace starter copy before publishing. Use the Cloudflare deployment runbook in docs/workspace/deployment.md to add the site to the supported build and preview targets. Vercel Git deployments are disabled by default. Creating this directory does not create a deployment or domain.\n`,
+    'README.md': `# ${title}\n\nGenerated from the shared Astryx site foundation.\n\nFrom the repository root:\n\n\`\`\`sh\nnpm install\nnpm run build -- --workspace @n3wth/${slug}\nnpm run dev --workspace @n3wth/${slug}\nnpm run check --workspace @n3wth/${slug}\n\`\`\`\n\nReplace starter copy before publishing. Use the Cloudflare deployment runbook in docs/workspace/deployment.md to add the site to the supported build and preview targets. Creating this directory does not create a deployment or domain.\n`,
   }
   for (const [name, content] of Object.entries(files)) {
     const path = resolve(destination, name)

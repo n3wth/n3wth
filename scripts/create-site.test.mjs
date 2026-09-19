@@ -24,11 +24,6 @@ test('site generator uses shared components, escapes titles, rejects traversal a
     assert.ok(html.includes('<title>Idea &quot;one&quot;\nnext</title>'))
     assert.ok(readFileSync(join(path, 'AGENTS.md'), 'utf8').includes('../../design.md'))
     assert.equal(JSON.parse(readFileSync(join(path, 'package.json'))).dependencies['@n3wth/ui'], '0.9.2')
-    const deployment = JSON.parse(readFileSync(join(path, 'vercel.json')))
-    assert.equal(deployment.git.deploymentEnabled, false)
-    assert.match(deployment.buildCommand, /npm run build -- --workspace @n3wth\/new-idea --cache-ui/)
-    assert.equal(deployment.installCommand, 'node ../../scripts/vercel-install.mjs @n3wth/new-idea')
-    assert.equal(deployment.outputDirectory, 'dist')
     assert.throws(() => createSite(root, 'new-idea'))
     assert.equal(readFileSync(join(path, 'src/main.tsx'), 'utf8'), source)
   } finally { rmSync(root, { recursive: true, force: true }) }
