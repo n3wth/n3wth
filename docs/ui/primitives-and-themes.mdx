@@ -3,7 +3,10 @@ title: "Primitives and themes"
 description: "Choose the native control API and load its CSS. Keep all theme state aligned."
 ---
 
-`@n3wth/ui/primitives` re-exports the core Astryx API and explicitly exports `ToastViewport` and its props. The UI package pins the Astryx dependency; applications in this workspace must consume it through UI rather than importing Astryx directly.
+`@n3wth/ui/primitives` re-exports the core Astryx API, and explicitly exports
+`ToastViewport` and its props. The UI package pins the Astryx dependency.
+Applications in this workspace must consume it through UI rather than
+importing Astryx directly.
 
 ## Use the correct Button API
 
@@ -17,9 +20,15 @@ export function RefreshButton() {
 }
 ```
 
-The root compatibility button instead requires `children` and retains older props such as `variant="glass"`, `leftIcon`, and responsive `size` objects. These are different APIs even though both exports are named `Button`. Do not move imports between entry points without checking their types.
+The root compatibility button instead requires `children` and retains older
+props such as `variant="glass"`, `leftIcon`, and responsive `size` objects.
+These are different APIs even though both exports are named `Button`. Do not
+move imports between entry points without checking their types.
 
-The native `label` and `onClick` example matches the packaged starter. For additional controls and props, use the declarations supplied by your installed version; the primitives surface follows the package's pinned Astryx version, currently `0.1.6` in the 2.0.0 source.
+The native `label` and `onClick` example matches the packaged starter. For
+additional controls and props, use the declarations supplied by your
+installed version. The primitives surface follows the package's pinned
+Astryx version, currently `0.1.6` in the 2.0.0 source.
 
 ## Choose a CSS setup
 
@@ -29,7 +38,8 @@ The native `label` and `onClick` example matches the packaged starter. For addit
 | App uses Tailwind v4 utilities | Import Tailwind, the token bridge, and site CSS in the global stylesheet |
 | App retains root compatibility adapters | Use `@n3wth/ui/styles` and scan the built package for Tailwind classes |
 
-For a consumer whose global stylesheet is `src/app.css` and dependencies are in the project root:
+For a consumer whose global stylesheet is `src/app.css` and dependencies are
+in the project root:
 
 ```css
 @import 'tailwindcss';
@@ -37,9 +47,12 @@ For a consumer whose global stylesheet is `src/app.css` and dependencies are in 
 @import '@n3wth/ui/site.css';
 ```
 
-This assumes Tailwind v4 is already configured in the application. The token bridge contains Tailwind directives and belongs in that pipeline, not an unprocessed browser stylesheet.
+This assumes Tailwind v4 is already configured in the application. The token
+bridge contains Tailwind directives and belongs in that pipeline, not an
+unprocessed browser stylesheet.
 
-When retaining compatibility components, replace the final import and add an explicit source:
+When you retain compatibility components, replace the final import and add
+an explicit source:
 
 ```css
 @import 'tailwindcss';
@@ -48,11 +61,17 @@ When retaining compatibility components, replace the final import and add an exp
 @source '../node_modules/@n3wth/ui/dist/**/*.js';
 ```
 
-Resolve `@source` relative to the CSS file. Workspace consumers scan their built `packages/ui/dist` directory instead. The current UI docs app uses this compatibility setup because its examples still render root adapters. `styles` already includes the site foundation, so it is not necessary to import both stylesheets.
+Resolve `@source` relative to the CSS file. Workspace consumers scan their
+built `packages/ui/dist` directory instead. The current UI docs app uses
+this compatibility setup because its examples still render root adapters.
+`styles` already includes the site foundation, so you do not need to import
+both stylesheets.
 
 ## Set the theme mode
 
-`N3wthProvider` accepts `children` and optional `mode`. The default is `dark`; pass `light` or `system` to select another mode. The provider alone does not provide the local-storage preference behavior of `useTheme`.
+`N3wthProvider` accepts `children` and optional `mode`. The default is
+`dark`. Pass `light` or `system` to select another mode. The provider alone
+does not provide the local-storage preference behavior of `useTheme`.
 
 For an interactive app, keep the provider and toggle on the same state:
 
@@ -87,17 +106,33 @@ Import the CSS in the app's global entry as described above.
 | `storageKey` | `n3wth-theme` | Local-storage preference key |
 | `attribute` | `data-theme` | Attribute written on the document root |
 
-The hook returns `theme`, `setTheme`, `toggleTheme`, `isDark`, and `isLight`. It accepts stored `dark` or `light` values, then checks the system's light preference, then uses the default. Storage access failures are caught.
+The hook returns `theme`, `setTheme`, `toggleTheme`, `isDark`, and `isLight`.
+It accepts a stored `dark` or `light` value, then checks the system's light
+preference, then uses the default. It catches storage access failures.
 
-Calls that use the same storage key share theme updates. Automatic system changes do not save a preference. The hook follows system changes until the user selects a theme with `setTheme` or `toggleTheme`. Use provider `mode="system"` when you do not need a saved user preference.
+Calls that use the same storage key share theme updates. Automatic system
+changes do not save a preference. The hook follows system changes until the
+user selects a theme with `setTheme` or `toggleTheme`. Use provider
+`mode="system"` when you do not need a saved user preference.
 
-For server-rendered apps, the hook's server default can differ from the saved browser preference. The UI docs app uses a blocking theme initialization script to set document attributes before paint. Such a script helps initial colors; it does not by itself make theme-dependent server markup identical to the client.
+For server-rendered apps, the hook's server default can differ from the
+saved browser preference. The UI docs app uses a blocking theme
+initialization script to set document attributes before paint. Such a script
+helps initial colors. It does not, by itself, make theme-dependent server
+markup identical to the client.
 
 ## Typography and tokens
 
-The canonical theme source currently selects Suisse Intl for headings and body, and Geist Mono for code. The Tailwind bridge maps `font-display`, `font-sans`, and `font-mono` to the corresponding theme font-family variables. Older instructions naming Satoshi headings do not describe this theme revision.
+The canonical theme source currently selects Suisse Intl for headings and
+body, and Geist Mono for code. The Tailwind bridge maps `font-display`,
+`font-sans`, and `font-mono` to the corresponding theme font-family
+variables. Older instructions naming Satoshi headings do not describe this
+theme revision.
 
-Suisse Intl files are not distributed on npm. The release package omits their font rules and uses the theme's system-font fallback. See [font troubleshooting](/ui/troubleshooting#font-resolution-fails) for older artifacts and workspace differences.
+Suisse Intl files are not distributed on npm. The release package omits
+their font rules and uses the theme's system-font fallback. See
+[font troubleshooting](/ui/troubleshooting#font-resolution-fails) for older
+artifacts and workspace differences.
 
 ## Sources
 

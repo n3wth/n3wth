@@ -3,11 +3,16 @@ title: "MCP tools"
 description: "Call the memory tools. Use their arguments, text responses, and implementation limits."
 ---
 
-Connect using the [quickstart](/r3/quickstart), then discover tools through your MCP client. r3 uses stdio MCP, not a REST endpoint. The reference below follows the registrations and handlers in the core server; older website API examples describe additional tools and response shapes that are not implemented there.
+Connect using the [quickstart](/r3/quickstart), then discover tools through
+your MCP client. r3 uses stdio MCP, not a REST endpoint. The reference below
+follows the registrations and handlers in the core server. Older website API
+examples describe additional tools and response shapes that are not
+implemented there.
 
 ## Call format and responses
 
-After the MCP client completes initialization, a tool call uses `tools/call`. For example, this protocol request reads cache status:
+After the MCP client completes initialization, a tool call uses `tools/call`.
+For example, this protocol request reads cache status:
 
 ```json
 {
@@ -21,9 +26,14 @@ After the MCP client completes initialization, a tool call uses `tools/call`. Fo
 }
 ```
 
-Always supply `arguments`, including `{}` for tools with no parameters. The handler returns `isError: true` when arguments are absent. Use an MCP client to manage initialization and framing rather than sending this request to an HTTP URL.
+Always supply `arguments`, including `{}` for tools with no parameters. The
+handler returns `isError: true` when arguments are absent. Use an MCP client
+to manage initialization and framing. Do not send this request to an HTTP URL.
 
-Results use MCP `content` blocks. Most handlers return plain text; some put serialized JSON in a text block. Check `isError` and inspect the text before deciding to parse it. `get_memory` can return a JSON error object without setting `isError`.
+Results use MCP `content` blocks. Most handlers return plain text; some put
+serialized JSON in a text block. Check `isError` and inspect the text before
+you parse it. `get_memory` can return a JSON error object without setting
+`isError`.
 
 ## Memory operations
 
@@ -33,11 +43,15 @@ Results use MCP `content` blocks. Most handlers return plain text; some put seri
 | `search_memory` | Required `query`; optional `limit` (default 10), `prefer_cache` (default true), advertised `user_id` | Memory text, separated by `---` for multiple matches, or `No memories found`. No IDs or scores in the returned text. |
 | `get_memory` | Required `memory_id`; optional `user_id` | Serialized JSON with content and metadata, or a JSON `Memory not found` error. |
 | `update_memory` | Required `memory_id`; optional `content`, `metadata`, `user_id` | Local update returns serialized JSON. Supply content explicitly; see limits below. |
-| `get_all_memories` | Optional `user_id`, `limit` (default 100), `offset` (default 0), `prefer_cache`, `include_cache_stats` | Returns only a count acknowledgement or `No memories found`, despite building a paginated object internally. |
+| `get_all_memories` | Optional `user_id`, `limit` (default 100), `offset` (default 0), `prefer_cache`, `include_cache_stats` | Returns only a count acknowledgement or `No memories found`, even though it builds a paginated object internally. |
 | `delete_memory` | Required `memory_id` | Returns `Deleted`; uses the server's configured user ID. |
 | `deduplicate_memories` | Optional `user_id`, `similarity_threshold` (default 0.85), `dry_run` (default true) | Detects similar content; setting `dry_run: false` permits deletion. |
 
-For `add_memory`, use one of `content` or `messages`. Each message has a `role` of `user`, `assistant`, or `system`, plus string `content`. The local adapter removes assistant messages before storage. Supported priorities are `high`, `medium`, and `low`; `critical` is not in the schema. These priorities influence caching, not a permanent retention guarantee.
+For `add_memory`, use one of `content` or `messages`. Each message has a
+`role` of `user`, `assistant`, or `system`, plus string `content`. The local
+adapter removes assistant messages before storage. Supported priorities are
+`high`, `medium`, and `low`. `critical` is not in the schema. These priorities
+influence caching. They do not guarantee permanent retention.
 
 ### Preview duplicates
 
@@ -51,7 +65,8 @@ Call `deduplicate_memories` with:
 }
 ```
 
-Review the result before considering a destructive run. Keep an independent copy of important information; `get_all_memories` is not currently an export API.
+Review the result before you run a destructive pass. Keep an independent copy
+of important information. `get_all_memories` is not currently an export API.
 
 ## Maintenance and intelligence
 
@@ -65,11 +80,15 @@ Review the result before considering a destructive run. Keep an independent copy
 | `find_connections` | Required `from_entity`; optional `to_entity`, `max_depth` | Traverses entity relationships; default depth is 2. |
 | `import_memories` | Required `source`; source-specific arguments below | Imports local JSON or fetches from the Mem0 API. |
 
-All 14 tools are registered even in basic mode. Discovery of an intelligence tool does not mean its model or extractor is ready. `health_check`, `delete_all_memories`, and `get_memory_history` are not registered in the inspected server.
+All 14 tools are registered even in basic mode. Discovery of an intelligence
+tool does not mean its model or extractor is ready. `health_check`,
+`delete_all_memories`, and `get_memory_history` are not registered in the
+inspected server.
 
 ## Import a JSON file
 
-Create a JSON file accessible to the server process, for example `/tmp/r3-import.json`:
+Create a JSON file accessible to the server process, for example
+`/tmp/r3-import.json`:
 
 ```json
 [
@@ -94,17 +113,35 @@ Then call `import_memories` with:
 }
 ```
 
-The importer accepts an array or an object containing `results` or `memories`. Each item needs nonempty `memory` or `content`; empty items are skipped. It returns an imported/skipped/failed summary. Verify retrieval after importing: a summary does not establish durable storage or preservation of source IDs across every backend.
+The importer accepts an array, or an object containing `results` or
+`memories`. Each item needs a nonempty `memory` or `content` field; it skips
+empty items. It returns an imported/skipped/failed summary. Verify retrieval
+after you import: a summary does not prove durable storage, and it does not
+prove that every backend preserves source IDs.
 
-For `source: "mem0_api"`, supply `api_key` instead of `file_path`. This makes an outbound request to `https://api.mem0.ai`, including in otherwise local mode. The implementation requests up to 1,000 memories in one fetch and does not paginate that source. Local-mode duplicate detection has the routing issue described in [troubleshooting](/r3/troubleshooting); do not assume every import path is verified by this example.
+For `source: "mem0_api"`, supply `api_key` instead of `file_path`. This makes
+an outbound request to `https://api.mem0.ai`, even in otherwise local mode.
+The implementation requests up to 1,000 memories in one fetch and does not
+paginate that source. Local-mode duplicate detection has the routing issue
+described in [troubleshooting](/r3/troubleshooting). Do not assume every
+import path is verified by this example.
 
 ## Integration limits
 
-- `search_memory` advertises `user_id` but does not forward it to `smartSearch`. Cache keys and enhanced searches are not consistently scoped by user. Do not use this server as a multi-tenant isolation boundary.
-- Normal add, search, and list responses do not expose IDs. ID-based calls require an ID obtained independently; do not invent one from an acknowledgement.
-- The local update handler passes `content` even when omitted, so metadata-only updates can overwrite it with an undefined value. The local backend also does not rebuild the vector entry during update.
-- `update_memory` does not issue a Mem0 update request in the inspected handler. Its fallback `Updated` message is not evidence of a successful cloud mutation.
-- Tool descriptions contain intended ranges and response formats that are not always enforced or returned. Validate arguments in your client and verify the resulting data.
+- `search_memory` advertises `user_id` but does not forward it to
+  `smartSearch`. Cache keys and enhanced searches are not consistently
+  scoped by user. Do not use this server as a multi-tenant isolation boundary.
+- Normal add, search, and list responses do not expose IDs. ID-based calls
+  need an ID obtained independently. Do not invent one from an acknowledgement.
+- The local update handler passes `content` even when you omit it, so
+  metadata-only updates can overwrite it with an undefined value. The local
+  backend also does not rebuild the vector entry during update.
+- `update_memory` does not issue a Mem0 update request in the inspected
+  handler. Its fallback `Updated` message is not evidence of a successful
+  cloud mutation.
+- Tool descriptions contain intended ranges and response formats that the
+  server does not always enforce or return. Validate arguments in your client
+  and verify the resulting data.
 
 ## Sources
 

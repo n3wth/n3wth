@@ -3,17 +3,29 @@ title: Authoring
 description: Write focused instructions. Add catalog metadata and check the file format.
 ---
 
-A contribution has two parts: an instruction file and a catalog record. The website does not generate its catalog by scanning Markdown files. Adding only a file makes it available to the shell installer, but does not add a web catalog entry.
+A contribution has two parts: an instruction file and a catalog record. The
+website does not generate its catalog by scanning Markdown files. Adding only
+a file makes it available to the shell installer. It does not add a web
+catalog entry.
 
 ## Prerequisites
 
-Work in a checkout of `n3wth/n3wth` and read the root and `apps/skills/AGENTS.md` instructions. Use Node 24 and npm 11.19.1 for workspace development. Run commands below from the repository root unless stated otherwise.
+Work in a checkout of `n3wth/n3wth` and read the root and
+`apps/skills/AGENTS.md` instructions. Use Node 24 and npm 11.19.1 for
+workspace development. Run the commands below from the repository root
+unless stated otherwise.
 
-Choose one task, a unique lowercase hyphenated ID, and a matching and unrelated prompt to test. Check the current catalog for overlapping skills before adding another workflow.
+Choose one task, a unique lowercase hyphenated ID, and a matching and
+unrelated prompt to test. Check the current catalog for overlapping skills
+before you add another workflow.
 
 ## Write the instructions
 
-Use `apps/skills/skills/<id>.md` for a self-contained file or `apps/skills/skills/<id>/SKILL.md` for a folder. Prefer a folder when the instructions need sibling references, templates, or scripts. The shell installer copies the folder; direct downloads and CLI installs copy only the Markdown content.
+Use `apps/skills/skills/<id>.md` for a self-contained file, or
+`apps/skills/skills/<id>/SKILL.md` for a folder. Prefer a folder when the
+instructions need sibling references, templates, or scripts. The shell
+installer copies the folder. Direct downloads and CLI installs copy only the
+Markdown content.
 
 For example, create `apps/skills/skills/release-notes.md`:
 
@@ -55,13 +67,20 @@ Output: Added — Reports can now be exported as CSV.
 Draft text only. Do not publish a release or change Git state.
 ```
 
-`name` and `description` express identity and when to use the skill. Existing catalog files also use version, author, category, tags, and compatibility metadata. These files are not uniformly governed by the stricter Python package validator described below.
+`name` and `description` express identity and when to use the skill.
+Existing catalog files also use version, author, category, tags, and
+compatibility metadata. These files are not governed by the stricter Python
+package validator described below.
 
-Keep tool prerequisites and expected output in the body. Include failure handling for missing inputs. Test whether a relevant request follows the instructions and whether an unrelated request stays outside the skill's scope.
+Keep tool prerequisites and expected output in the body. Include failure
+handling for missing inputs. Test whether a relevant request follows the
+instructions, and whether an unrelated request stays outside the skill's scope.
 
 ## Add the web catalog record
 
-Insert an object into the exported `skills` array in `apps/skills/src/data/skills.ts`. This example uses the existing `GITHUB_RAW_BASE` constant:
+Insert an object into the exported `skills` array in
+`apps/skills/src/data/skills.ts`. This example uses the existing
+`GITHUB_RAW_BASE` constant:
 
 ```typescript
 {
@@ -79,7 +98,10 @@ Insert an object into the exported `skills` array in `apps/skills/src/data/skill
 },
 ```
 
-Use your actual update date. For a folder, set `skillFile` to `${GITHUB_RAW_BASE}/release-notes/SKILL.md`. The raw URL points at `main`, so a new file on a feature branch will not be downloadable from that URL until merged.
+Use your actual update date. For a folder, set `skillFile` to
+`${GITHUB_RAW_BASE}/release-notes/SKILL.md`. The raw URL points at `main`, so
+a new file on a feature branch will not be downloadable from that URL until
+you merge it.
 
 | Field | Requirement and use |
 | --- | --- |
@@ -95,26 +117,40 @@ Use your actual update date. For a folder, set `skillFile` to `${GITHUB_RAW_BASE
 | `contributor` | Optional object with `name`, and optional `github` and `url` |
 | `relatedSkillIds`, `faq`, `extraInstallCommands` | Optional detail-page content; see the exported interface for structure |
 
-If the contribution also needs to appear in the CLI, maintain its separate catalog in `apps/skills/cli/src/utils/skills.ts`. A web catalog edit alone does not update the CLI. Do not claim a download URL exists until the instruction file is committed at that path.
+If the contribution also needs to appear in the CLI, maintain its separate
+catalog in `apps/skills/cli/src/utils/skills.ts`. A web catalog edit alone
+does not update the CLI. Do not claim a download URL exists until you have
+committed the instruction file at that path.
 
 ## Validate a catalog contribution
 
-The existing catalog tests check structure, unique IDs, category counts, configured compatibility, and whether advertised local download paths exist. In a development checkout with dependencies installed, run:
+The existing catalog tests check structure, unique IDs, category counts,
+configured compatibility, and whether advertised local download paths exist.
+In a development checkout with dependencies installed, run:
 
 ```bash
 npm run test:unit --workspace @n3wth/skills -- \
   src/data/skills.test.ts src/data/skills-files.test.ts
 ```
 
-For the full app check, the repository documents `npm run check --workspace @n3wth/skills`. It includes typecheck, lint, unit tests, and a production build; run it only in a checkout where generating build outputs is appropriate.
+For the full app check, the repository documents
+`npm run check --workspace @n3wth/skills`. It includes typecheck, lint, unit
+tests, and a production build. Run it only in a checkout where generating
+build outputs is appropriate.
 
-Tests that confirm a local file exists do not verify the deployed URL, assistant discovery, or behavior of the instructions. Review those separately after publication.
+Tests that confirm a local file exists do not verify the deployed URL,
+assistant discovery, or the behavior of the instructions. Review those
+separately after publication.
 
 ## The Python validator uses a different schema
 
-`apps/skills/scripts/validate-skill.py` accepts a **directory containing `SKILL.md`**, despite its usage text showing a flat `pdf.md` example. It requires Python 3 and the `yaml` module supplied by PyYAML.
+`apps/skills/scripts/validate-skill.py` accepts a **directory containing
+`SKILL.md`**, even though its usage text shows a flat `pdf.md` example. It
+requires Python 3 and the `yaml` module supplied by PyYAML.
 
-Its required frontmatter keys are `name`, `slug`, `description`, `author`, `version`, `categories`, `platforms`, and `status`. To intentionally use this package format, start with:
+Its required frontmatter keys are `name`, `slug`, `description`, `author`,
+`version`, `categories`, `platforms`, and `status`. To intentionally use this
+package format, start with:
 
 ```yaml
 ---
@@ -135,9 +171,13 @@ Then validate the directory:
 python3 apps/skills/scripts/validate-skill.py apps/skills/skills/release-notes
 ```
 
-Accepted statuses are `experimental`, `beta`, `stable`, and `deprecated`. Missing `scripts`, `templates`, or `references` directories produce warnings. Unknown platform values also produce warnings; `gemini-cli` is the recognized value here, distinct from the catalog's `gemini` ID.
+Accepted statuses are `experimental`, `beta`, `stable`, and `deprecated`.
+Missing `scripts`, `templates`, or `references` directories produce
+warnings. Unknown platform values also produce warnings. `gemini-cli` is the
+recognized value here, distinct from the catalog's `gemini` ID.
 
-Do not treat a failure against this schema as proof that a flat catalog skill is invalid. Choose the validation appropriate to the layout you are authoring.
+A failure against this schema does not prove that a flat catalog skill is
+invalid. Choose the validation that matches the layout you are authoring.
 
 ## Troubleshooting
 

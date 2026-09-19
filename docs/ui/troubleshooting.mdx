@@ -3,7 +3,8 @@ title: "Troubleshooting"
 description: "Fix import, CSS, font, and theme problems. Use the @n3wth/ui 2.x release process."
 ---
 
-Start with the installed version and the import path. Native primitives and root compatibility adapters have different APIs and styling requirements.
+Start with the installed version and the import path. Native primitives and
+root compatibility adapters have different APIs and styling requirements.
 
 ## Inspect the installation
 
@@ -15,7 +16,10 @@ npm ls @n3wth/ui react react-dom
 node --input-type=module -e "console.log(import.meta.resolve('@n3wth/ui/site'))"
 ```
 
-The package declares Node 24 and React/React DOM 18 or 19. If a monorepo app resolves a nested registry package instead of the workspace package, check its dependency range against the workspace version and use the repository's root install procedure.
+The package declares Node 24 and React/React DOM 18 or 19. If a monorepo app
+resolves a nested registry package instead of the workspace package, check
+its dependency range against the workspace version and use the repository's
+root install procedure.
 
 | Symptom | Check | Resolution |
 | --- | --- | --- |
@@ -29,44 +33,73 @@ The package declares Node 24 and React/React DOM 18 or 19. If a monorepo app res
 
 ## Font resolution fails
 
-The source theme selects Suisse Intl. The npm `files` allowlist deliberately excludes those commercial font binaries. Licensed workspace sites retain the files and their font rules.
+The source theme selects Suisse Intl. The npm `files` allowlist deliberately
+excludes those commercial font binaries. Licensed workspace sites keep the
+files and their font rules.
 
-The release package check uses `scripts/pack-ui.mjs` to remove excluded Suisse font rules from the staged CSS. Shipped font URLs use package-relative paths. External consumers use the theme's system-font fallback. The release workflow publishes the exact tarball that passes the consumer checks.
+The release package check uses `scripts/pack-ui.mjs` to remove excluded
+Suisse font rules from the staged CSS. Shipped font URLs use
+package-relative paths. External consumers use the theme's system-font
+fallback. The release workflow publishes the exact tarball that passes the
+consumer checks.
 
 If an older artifact still names a Suisse font:
 
 1. Confirm whether the missing path is one of the excluded `SuisseIntl-*` assets.
 2. Record the UI version, bundler, and exact unresolved URL for a package issue.
-3. Check that the artifact came from the release package check, not a direct pack of workspace output. Validate the corrected tarball before publishing it.
+3. Check that the artifact came from the release package check, not a direct
+   pack of workspace output. Validate the corrected tarball before you publish it.
 
-Do not copy the repository's commercial font binaries into a public package as a workaround. Importing both `styles` and `site.css` does not fix absent assets; both include the shared foundation.
+Do not copy the repository's commercial font binaries into a public package
+as a workaround. Importing both `styles` and `site.css` does not fix absent
+assets; both include the shared foundation.
 
 ## Theme flashes or hydration differs
 
-`useTheme` uses `defaultTheme` during server rendering, but reads local storage and system preferences in the browser. Avoid assuming those initial values match. Keep any before-paint initialization aligned with the hook's storage key and `data-theme` attribute. The current UI docs app also sets `data-astryx-theme="n3wth"` before React starts.
+`useTheme` uses `defaultTheme` during server rendering, but reads local
+storage and system preferences in the browser. Do not assume those initial
+values match. Keep any before-paint initialization aligned with the hook's
+storage key and `data-theme` attribute. The current UI docs app also sets
+`data-astryx-theme="n3wth"` before React starts.
 
-A before-paint script addresses initial document colors. Theme-dependent text or icons rendered by the server still need a consistent rendering strategy in the application. Test a saved light preference, no saved preference, and disabled storage.
+A before-paint script addresses initial document colors. Theme-dependent
+text or icons rendered by the server still need a consistent rendering
+strategy in the application. Test a saved light preference, no saved
+preference, and disabled storage.
 
 ## How 2.x is released
 
-Starting with 2.0.0, `packages/ui` in `n3wth/n3wth` is the publishing authority. The former `n3wth/ui` release workflow is historical. Do not publish locally.
+Starting with 2.0.0, `packages/ui` in `n3wth/n3wth` is the publishing
+authority. The former `n3wth/ui` release workflow is historical. Do not
+publish locally.
 
 For maintainers, the normal process is:
 
-1. Open one PR that bumps `version` in `packages/ui/package.json`, sets the same version in the starter's `@n3wth/ui` dependency, adds a `CHANGELOG.md` entry, and runs `npm install --package-lock-only --ignore-scripts`.
+1. Open one PR that bumps `version` in `packages/ui/package.json`, sets the
+   same version in the starter's `@n3wth/ui` dependency, adds a
+   `CHANGELOG.md` entry, and runs `npm install --package-lock-only --ignore-scripts`.
 2. Merge the PR after a successful **Site CI** run on `main`.
-3. Push a tag `ui-v<version>` on the merge commit, matching the version in `packages/ui/package.json`. This triggers **Release UI**.
-4. With `UI_NPM_PUBLISH_ENABLED=true`, the publish job checks UI, validates a packed consumer, and publishes that exact tarball with provenance.
-5. Verify the registry version and a clean consumer install before declaring the release available.
+3. Push a tag `ui-v<version>` on the merge commit, matching the version in
+   `packages/ui/package.json`. This triggers **Release UI**.
+4. With `UI_NPM_PUBLISH_ENABLED=true`, the publish job checks UI, validates
+   a packed consumer, and publishes that exact tarball with provenance.
+5. Verify the registry version and a clean consumer install before you
+   declare the release available.
 
-The workflow can also be dispatched manually on `main`. Publishing requires npm trusted-publisher configuration for owner `n3wth`, repository `n3wth`, and workflow `publish-ui.yml`. The publish script skips an already-published version and fails on unexpected registry lookup errors.
+The workflow can also be dispatched manually on `main`. Publishing requires
+npm trusted-publisher configuration for owner `n3wth`, repository `n3wth`,
+and workflow `publish-ui.yml`. The publish script skips an already-published
+version and fails on unexpected registry lookup errors.
 
 | Maintainer command | Purpose and side effects |
 | --- | --- |
 | `npm run check --workspace @n3wth/ui` | Lint, build, inspect build output, and run unit tests; writes build output |
 | `npm run check:package` | Pack UI, install and build a temporary consumer, exercise browsers, save tarball and screenshots under `.release` |
 
-Package publication and site deployment are separate operations. Current site configuration enables automatic Vercel Git deployments; older notes that call the UI docs deployment manual are stale. Publishing a package is not confirmation that a site deployment succeeded.
+Package publication and site deployment are separate operations. Current
+site configuration enables automatic Vercel Git deployments; older notes
+that call the UI docs deployment manual are stale. Publishing a package does
+not confirm that a site deployment succeeded.
 
 ## Sources
 

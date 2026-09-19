@@ -3,8 +3,8 @@ title: Workspace
 description: Set up the monorepo. Find the correct source and check your change.
 ---
 
-Use this guide to contribute to the products. Installing a product in another
-application does not require cloning this workspace.
+Use this guide to contribute to the products. You do not need to clone this
+workspace to install a product in another application.
 
 ## Prerequisites
 
@@ -20,8 +20,8 @@ npm install --global npm@11.19.1
 npm ci
 ```
 
-Run installation at the repository root. The root lockfile owns application and
-shared-library dependencies. Do not fix a workspace resolution problem by
+Run installation at the repository root. The root lockfile owns application
+and shared-library dependencies. Do not fix a workspace resolution problem by
 creating an app-local lockfile or installing another copy of UI.
 
 ## Find the right source
@@ -33,9 +33,9 @@ creating an app-local lockfile or installing another copy of UI.
 | `packages/site-config` | Private shared origins and metadata helpers | `npm run check -w @n3wth/site-config` |
 | `docs` | This Docs7 documentation hub | `npx @upstash/docs7 dev docs` |
 
-The portfolio and Garden are also applications in this repository. Their public
-content is not an installable developer product. r3's core server, Redis tests,
-and package release workflow remain in [n3wth/r3](https://github.com/n3wth/r3).
+The portfolio and Garden are also applications in this repository. Their
+public content is not an installable developer product. r3's core server,
+Redis tests, and package release workflow stay in [n3wth/r3](https://github.com/n3wth/r3).
 
 ## Build from the root
 
@@ -45,36 +45,38 @@ Root build commands build shared dependencies before their consumers:
 npm run build:skills
 ```
 
-Use `npm run build` for all applications, and `npm run check` for the complete
-workspace validation. `npm run check:metadata` expects build output; running it
-before building will report missing files.
+Use `npm run build` for all applications. Use `npm run check` for the complete
+workspace validation. `npm run check:metadata` expects build output. Run a
+build first, or it will report missing files.
 
-Applications import UI; UI owns its Astryx dependency and theme. Applications
+Applications import UI. UI owns its Astryx dependency and theme. Applications
 must not import Astryx directly. Shared packages must not import applications.
-Read the root and relevant package `AGENTS.md` before editing.
+Read the root and relevant package `AGENTS.md` before you edit.
 
 ## Verify a change
 
 1. Run the relevant package or app check while iterating.
 2. Build the affected app through its root build command.
 3. Run the complete checks required for shared changes. For route, layout, or
-   packaging changes, run the relevant browser tests too.
+   packaging changes, also run the relevant browser tests.
 4. Push a feature branch and wait for GitHub **Site CI** before merging.
 
-UI changes can affect the portfolio and remaining sites. Check both supported themes, mobile and
-desktop layouts, first paint, code overflow, anchor links, and browser Back.
-Pure edits to this hub use the [documentation checks](/publishing#validate-a-change).
+UI changes can affect the portfolio and remaining sites. Check both supported
+themes, mobile and desktop layouts, first paint, code overflow, anchor links,
+and browser Back. Pure edits to this hub use the
+[documentation checks](/publishing#validate-a-change).
 
 ## Releases and deployments
 
 `@n3wth/ui` releases from 2.0.0 publish from this monorepo through
 `publish-ui.yml` on a `ui-v*` tag. Bump the version and add a changelog entry
-for consumer-facing library changes; do not run `npm publish` locally.
+for consumer-facing library changes. Do not run `npm publish` locally.
 Documentation-only changes do not need a package release.
 
-The six existing Vercel sites use automatic Git deployments. Docs7 is a separate
-hosting connection to this same repository. Merging documentation is not evidence
-that a Docs7 site has been connected or deployed; verify the hosted result.
+The six existing Vercel sites use automatic Git deployments. Docs7 is a
+separate hosting connection to this same repository. Merging documentation
+does not prove that a Docs7 site is connected or deployed. Verify the hosted
+result.
 
 ## Troubleshooting
 
