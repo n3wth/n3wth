@@ -1,5 +1,13 @@
 # @n3wth/ui
 
+## 2.1.1
+
+### Patch Changes
+
+- 9561acc: Synchronize theme hook callers and keep automatic system changes separate from saved user preferences. Preserve client behavior in emitted package modules and verify public exports through standalone consumers.
+  
+  Remove excluded commercial font rules from release CSS so external consumers use the documented system-font fallback without unresolved asset imports.
+
 ## 2.1.0
 
 ### Minor Changes

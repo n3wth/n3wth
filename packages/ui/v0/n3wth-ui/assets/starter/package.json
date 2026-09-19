@@ -13,7 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@n3wth/ui": "2.1.0",
+    "@n3wth/ui": "2.1.1",
     "react": "19.2.7",
     "react-dom": "19.2.7"
   },

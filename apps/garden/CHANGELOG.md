@@ -1,5 +1,12 @@
 # @n3wth/garden
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [9561acc]
+  - @n3wth/ui@2.1.1
+
 ## 0.1.1
 
 ### Patch Changes
