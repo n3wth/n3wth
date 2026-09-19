@@ -3,6 +3,7 @@ import { siteConfig } from '../data/content'
 
 export function Footer() {
   return <SiteFooter data-nosnippet links={<>
+    <a href="https://docs.n3wth.com">Docs</a>
     <a href="/contact">Contact</a>
     <a href="/privacy">Privacy</a>
     <a href="/terms">Terms</a>
