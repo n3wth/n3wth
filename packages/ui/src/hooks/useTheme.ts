@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useMemo, useSyncExternalStore } from 'react'
 
 export type Theme = 'dark' | 'light'
 
@@ -20,6 +20,73 @@ export interface UseThemeReturn {
   isLight: boolean
 }
 
+const stores = new Map<string, ReturnType<typeof createThemeStore>>()
+
+function createThemeStore(storageKey: string, defaultTheme: Theme) {
+  const stored = typeof window === 'undefined' ? null : readStoredTheme(storageKey)
+  let explicit = stored === 'dark' || stored === 'light'
+  let theme: Theme = stored === 'dark' || stored === 'light' ? stored : defaultTheme
+  const listeners = new Map<() => void, string>()
+  const mediaQuery = typeof window === 'undefined'
+    ? undefined
+    : window.matchMedia('(prefers-color-scheme: light)')
+
+  if (!explicit && mediaQuery?.matches) theme = 'light'
+
+  const update = (newTheme: Theme) => {
+    theme = newTheme
+    for (const attribute of new Set(listeners.values())) {
+      document.documentElement.setAttribute(attribute, theme)
+    }
+    for (const listener of listeners.keys()) listener()
+  }
+
+  const handleChange = (event: MediaQueryListEvent) => {
+    if (!explicit) update(event.matches ? 'light' : 'dark')
+  }
+
+  const setTheme = (newTheme: Theme) => {
+    explicit = true
+    try { localStorage.setItem(storageKey, newTheme) } catch { /* Storage may be disabled. */ }
+    update(newTheme)
+  }
+
+  const store = {
+    getSnapshot: () => theme,
+    setTheme,
+    toggleTheme: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+    subscribe: (listener: () => void, attribute: string) => {
+      if (listeners.size === 0) {
+        stores.set(storageKey, store)
+        mediaQuery?.addEventListener('change', handleChange)
+      }
+      listeners.set(listener, attribute)
+      document.documentElement.setAttribute(attribute, theme)
+
+      return () => {
+        listeners.delete(listener)
+        if (listeners.size === 0) {
+          mediaQuery?.removeEventListener('change', handleChange)
+          stores.delete(storageKey)
+        }
+      }
+    },
+  }
+  return store
+}
+
+function getThemeStore(storageKey: string, defaultTheme: Theme) {
+  if (typeof window === 'undefined') return createThemeStore(storageKey, defaultTheme)
+  const initialStore = stores.get(storageKey) ?? createThemeStore(storageKey, defaultTheme)
+  const currentStore = () => stores.get(storageKey) ?? initialStore
+  return {
+    getSnapshot: () => currentStore().getSnapshot(),
+    setTheme: (theme: Theme) => currentStore().setTheme(theme),
+    toggleTheme: () => currentStore().toggleTheme(),
+    subscribe: (listener: () => void, attribute: string) => currentStore().subscribe(listener, attribute),
+  }
+}
+
 export function useTheme(options: UseThemeOptions = {}): UseThemeReturn {
   const {
     defaultTheme = 'dark',
@@ -27,59 +94,24 @@ export function useTheme(options: UseThemeOptions = {}): UseThemeReturn {
     attribute = 'data-theme',
   } = options
 
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === 'undefined') return defaultTheme
-
-    const stored = readStoredTheme(storageKey)
-    if (stored === 'dark' || stored === 'light') return stored
-
-    if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return 'light'
-    }
-
-    return defaultTheme
-  })
-
-  const setTheme = useCallback(
-    (newTheme: Theme) => {
-      setThemeState(newTheme)
-
-      if (typeof window !== 'undefined') {
-        try { localStorage.setItem(storageKey, newTheme) } catch { /* Storage may be disabled. */ }
-        document.documentElement.setAttribute(attribute, newTheme)
-      }
-    },
-    [storageKey, attribute]
+  const store = useMemo(
+    () => getThemeStore(storageKey, defaultTheme),
+    [storageKey, defaultTheme]
   )
-
-  const toggleTheme = useCallback(() => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
-  }, [theme, setTheme])
-
-  // Initialize theme on mount
-  useEffect(() => {
-    document.documentElement.setAttribute(attribute, theme)
-  }, [attribute, theme])
-
-  // Listen for system theme changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)')
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      const stored = readStoredTheme(storageKey)
-      if (!stored) {
-        setTheme(e.matches ? 'light' : 'dark')
-      }
-    }
-
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [storageKey, setTheme])
+  const subscribe = useCallback(
+    (listener: () => void) => store.subscribe(listener, attribute),
+    [store, attribute]
+  )
+  const theme = useSyncExternalStore(
+    subscribe,
+    store.getSnapshot,
+    () => defaultTheme
+  )
 
   return {
     theme,
-    setTheme,
-    toggleTheme,
+    setTheme: store.setTheme,
+    toggleTheme: store.toggleTheme,
     isDark: theme === 'dark',
     isLight: theme === 'light',
   }

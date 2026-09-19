@@ -36,7 +36,9 @@ export function App() {
 }
 ```
 
-Satoshi headings, Geist Sans body, Geist Mono code. Keep surfaces flat, navigation immediate and footers minimal. Use shared components rather than copied layouts or local theme definitions.
+Workspace sites use Suisse Intl for headings and body, and Geist Mono for code. The npm package excludes commercial Suisse assets and their font rules. External consumers use the theme's system-font fallback; Geist Mono ships with the package.
+
+Keep surfaces flat, navigation immediate and footers minimal. Use shared components rather than copied layouts or local theme definitions.
 
 ## Development
 

@@ -1,4 +1,4 @@
-import { type ComponentType } from 'react'
+import docModules from 'virtual:doc-content'
 import { Link, useParams } from 'react-router'
 import { SiteNav } from './SiteNav'
 import { SiteFooter } from '@n3wth/ui/site'
@@ -7,24 +7,9 @@ import { DocsSidebar } from './DocsSidebar'
 import { SEO, JsonLdWebPage, JsonLdBreadcrumb } from './SEO'
 import { NotFound } from './NotFound'
 
-import { docPageMeta, type DocPageMeta } from './docPages'
+import { resolveDocPages } from './docPages'
 
-const docModules = import.meta.glob<{ default: ComponentType }>([
-  '../docs/getting-started.md',
-  '../docs/theming.md',
-  '../docs/components.md',
-  '../docs/hooks.md',
-  '../docs/css-utilities.md',
-], { eager: true })
-
-export interface DocPage extends DocPageMeta {
-  Component: ComponentType
-}
-
-export const docPages: DocPage[] = docPageMeta.map((meta) => ({
-  ...meta,
-  Component: docModules[`../docs/${meta.slug}.md`].default,
-}))
+const docPages = resolveDocPages(docModules)
 
 export function DocsLayout() {
   const { slug } = useParams()
@@ -32,7 +17,7 @@ export function DocsLayout() {
   const currentPage = docPages.find((p) => p.slug === slug)
 
   if (!currentPage) return <NotFound />
-  const Content = currentPage.Component
+  const Content = currentPage.content
 
   const pageUrl = `https://ui.n3wth.com/docs/${currentPage.slug}`
 

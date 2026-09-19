@@ -1,7 +1,8 @@
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs'
 import assert from 'node:assert/strict'
 import { resolve, dirname } from 'node:path'
-import { render, routes } from '../.prerender/entry-server.js'
+import { render } from '../.prerender/entry-server.js'
+import { renderDocumentationIndex, routes } from '../demo/docPages.ts'
 
 const dist = resolve('dist')
 assert.match(render('/docs/not-a-page').body, /Page not found/)
@@ -20,5 +21,7 @@ for (const path of [...routes, '/404']) {
   writeFileSync(file, html)
 }
 writeFileSync(resolve(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map(path => `<url><loc>https://ui.n3wth.com${path}</loc></url>`).join('')}</urlset>\n`)
+const indexTemplate = readFileSync(resolve('public/llms.txt'), 'utf8')
+writeFileSync(resolve(dist, 'llms.txt'), renderDocumentationIndex(indexTemplate))
 console.log(`Prerendered ${routes.length} routes and 404 from the application.`)
 rmSync(resolve('.prerender'), { recursive: true, force: true })

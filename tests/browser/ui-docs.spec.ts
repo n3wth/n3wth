@@ -1,6 +1,28 @@
 import { test, expect } from '@playwright/test'
 import { expectSiteFoundation } from './site-foundation'
 
+test('theme callers stay aligned through system changes and saved choices', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' })
+  await page.goto('/components')
+  const currentTheme = page.getByText('Current theme:', { exact: true }).locator('..')
+  await expect(currentTheme).toContainText('dark')
+
+  for (const mode of ['light', 'dark'] as const) {
+    await page.emulateMedia({ colorScheme: mode })
+    await expect(page.locator('html')).toHaveAttribute('data-theme', mode)
+    await expect(currentTheme).toContainText(mode)
+    expect(await page.evaluate(() => localStorage.getItem('n3wth-theme'))).toBeNull()
+  }
+
+  await page.getByRole('button', { name: 'Switch to light mode', exact: true }).first().click()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  await expect(currentTheme).toContainText('light')
+  expect(await page.evaluate(() => localStorage.getItem('n3wth-theme'))).toBe('light')
+  await page.reload()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  await expect(currentTheme).toContainText('light')
+})
+
 test('showcase spacing, icon layout and example controls survive both themes', async ({ page }) => {
   await page.goto('/components')
   for (const theme of ['light', 'dark']) {

@@ -12,9 +12,13 @@ directory, so these binaries are never redistributed on npm. **Do not replace th
 globs with `public/fonts`** — that would publish licensed binaries to a public
 registry.
 
-External consumers of `@n3wth/ui` therefore receive the `@font-face` rules without
-the files. The rules fail to load and the `system-ui, -apple-system, sans-serif`
-fallback in the theme applies, which is the intended behaviour.
+The release package check uses `scripts/pack-ui.mjs` to stage npm's allowlisted
+files. It removes the excluded Suisse `@font-face` rules from the staged CSS and
+resolves shipped fonts through package-relative URLs. It does not change the
+workspace CSS or its licensed font assets.
+
+External consumers use the `system-ui, -apple-system, sans-serif` fallback in
+the theme. Their bundlers do not need to resolve excluded commercial assets.
 
 The remaining fonts are freely licensed and do ship in the package:
 Geist and Geist Mono (OFL), Mona Sans (OFL, see `MonaSans-OFL.txt`), Satoshi (Fontshare).

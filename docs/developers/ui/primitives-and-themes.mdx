@@ -89,7 +89,7 @@ Import the CSS in the app's global entry as described above.
 
 The hook returns `theme`, `setTheme`, `toggleTheme`, `isDark`, and `isLight`. It accepts stored `dark` or `light` values, then checks the system's light preference, then uses the default. Storage access failures are caught.
 
-There is a subtle persistence boundary: a system preference change with no stored value calls `setTheme`, which writes a preference. Later system changes are then ignored while that stored value exists. Use provider `mode="system"` when you want system mode without this hook's persistence behavior.
+Calls that use the same storage key share theme updates. Automatic system changes do not save a preference. The hook follows system changes until the user selects a theme with `setTheme` or `toggleTheme`. Use provider `mode="system"` when you do not need a saved user preference.
 
 For server-rendered apps, the hook's server default can differ from the saved browser preference. The UI docs app uses a blocking theme initialization script to set document attributes before paint. Such a script helps initial colors; it does not by itself make theme-dependent server markup identical to the client.
 
@@ -97,7 +97,7 @@ For server-rendered apps, the hook's server default can differ from the saved br
 
 The canonical theme source currently selects Suisse Intl for headings and body, and Geist Mono for code. The Tailwind bridge maps `font-display`, `font-sans`, and `font-mono` to the corresponding theme font-family variables. Older instructions naming Satoshi headings do not describe this theme revision.
 
-Suisse Intl files are not distributed on npm. See [font troubleshooting](/ui/troubleshooting#font-resolution-fails) before relying on the same typography as the workspace sites.
+Suisse Intl files are not distributed on npm. The release package omits their font rules and uses the theme's system-font fallback. See [font troubleshooting](/ui/troubleshooting#font-resolution-fails) for older artifacts and workspace differences.
 
 ## Sources
 

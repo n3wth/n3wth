@@ -50,10 +50,12 @@ Use the native Astryx API through the package facade:
 ```tsx
 import { Button } from '@n3wth/ui/primitives'
 
-<Button onClick={() => console.log('Selected')}>Continue</Button>
+<Button label="Continue" onClick={() => console.log('Selected')} />
 ```
 
 Native primitive props and compatibility props are separate APIs. Do not assume a prop accepted by the root UI Button is accepted by the primitive Button.
+
+The [packaged starter](https://github.com/n3wth/n3wth/blob/main/packages/ui/v0/n3wth-ui/assets/starter/src/main.tsx) uses the same native control. Its package check verifies the control in a standalone consumer. The docs check compiles the TypeScript examples on this page through the public package exports.
 
 ## Validate the consumer
 

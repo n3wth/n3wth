@@ -56,7 +56,7 @@
     "lint": "eslint src",
     "size": "size-limit",
     "prepublishOnly": "npm run build",
-    "check": "npm run lint && npm run build && node scripts/check-build.mjs && npm test"
+    "check": "node --test scripts/package-emission.test.mjs ../../scripts/pack-ui.test.mjs && npm run lint && npm run build && node scripts/check-build.mjs && npm test"
   },
   "dependencies": {
     "@astryxdesign/core": "0.1.6",

@@ -26,6 +26,11 @@ Merge the reviewed release PR; its successful Site CI triggers publishing.
 `npm run release:version` updates versions, changelog, starter and root lockfile.
 Already-published versions are skipped. Registry errors fail the workflow.
 
+`npm run check:package` stages npm's allowlisted files with `scripts/pack-ui.mjs`.
+The staged CSS omits excluded commercial font rules and uses package-relative
+URLs for shipped fonts. Workspace CSS and licensed site assets stay unchanged.
+The publish step uses this exact tested tarball, not a direct pack of workspace output.
+
 For retries, manually run Release UI on main. Package checks still run.
 The publish job alone has OIDC permission, and uses GitHub-hosted runners.
 Never publish locally. Site deployments are automatic via Vercel Git and separate from npm publishing.

@@ -2,27 +2,78 @@ export interface DocPageMeta {
   slug: string
   title: string
   description: string
+  indexTitle: string
+  indexOrder: number
 }
 
-const DOC_ORDER = ['getting-started', 'theming', 'components', 'hooks', 'css-utilities']
+export const docPageMeta: readonly DocPageMeta[] = [
+  {
+    slug: 'getting-started',
+    title: 'Getting Started',
+    description: 'Create a site in the workspace using the shared UI page system and Astryx primitives.',
+    indexTitle: 'Workspace setup',
+    indexOrder: 0,
+  },
+  {
+    slug: 'theming',
+    title: 'Theming',
+    description: 'Shared brand tokens, typography, fonts and provider ownership.',
+    indexTitle: 'Theme and typography',
+    indexOrder: 2,
+  },
+  {
+    slug: 'components',
+    title: 'Components',
+    description: 'Choose between site compositions, native Astryx primitives and existing UI adapters.',
+    indexTitle: 'Component boundaries',
+    indexOrder: 1,
+  },
+  {
+    slug: 'hooks',
+    title: 'Hooks',
+    description: 'Theme state, focus behavior and intentional product feedback.',
+    indexTitle: 'Behavior and hooks',
+    indexOrder: 3,
+  },
+  {
+    slug: 'css-utilities',
+    title: 'CSS Utilities',
+    description: 'Site styles, the Tailwind theme facade and compatibility CSS.',
+    indexTitle: 'CSS integration',
+    indexOrder: 4,
+  },
+]
 
-const DOC_DESCRIPTIONS: Record<string, string> = {
-  'getting-started': 'Create a site in the workspace using the shared UI page system and Astryx primitives.',
-  'theming': 'Shared brand tokens, typography, fonts and provider ownership.',
-  'components': 'Choose between site compositions, native Astryx primitives and existing UI adapters.',
-  'hooks': 'Theme state, focus behavior and intentional product feedback.',
-  'css-utilities': 'Site styles, the Tailwind theme facade and compatibility CSS.',
+export function docSource(slug: string) {
+  return `../docs/${slug}.md`
 }
 
-function slugToTitle(slug: string): string {
-  return slug
-    .replace(/-/g, ' ')
-    .replace(/css /i, 'CSS ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
+export function resolveDocPages<Content>(modules: Record<string, { default?: Content }>) {
+  return docPageMeta.map(page => {
+    const source = docSource(page.slug)
+    const content = modules[source]?.default
+    if (content == null) {
+      throw new Error(`Missing documentation content for "${page.slug}": expected a default export from "${source}".`)
+    }
+    return { ...page, content }
+  })
 }
 
-export const docPageMeta: DocPageMeta[] = DOC_ORDER.map((slug) => ({
-  slug,
-  title: slugToTitle(slug),
-  description: DOC_DESCRIPTIONS[slug] || `Documentation for ${slugToTitle(slug)} in @n3wth/ui design system.`,
-}))
+export const routes = ['/', '/components', ...docPageMeta.map(page => `/docs/${page.slug}`)]
+
+export const documentationIndex = [
+  { title: 'System overview', path: '/' },
+  { title: 'Component examples and compatibility APIs', path: '/components' },
+  ...[...docPageMeta].sort((first, second) => first.indexOrder - second.indexOrder).map(page => ({
+    title: page.indexTitle,
+    path: `/docs/${page.slug}`,
+  })),
+]
+
+export function renderDocumentationIndex(template: string) {
+  if (template.split('{{DOCUMENTATION_INDEX}}').length !== 2) {
+    throw new Error('llms.txt must contain exactly one documentation index placeholder')
+  }
+  return template.replace('{{DOCUMENTATION_INDEX}}', () =>
+    documentationIndex.map(page => `- ${page.title}: https://ui.n3wth.com${page.path}`).join('\n'))
+}

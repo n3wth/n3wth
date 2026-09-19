@@ -48,13 +48,7 @@ The starter creates source files, not a deployment or domain. Replace its copy b
 
 ## Documentation
 
-- System overview: https://ui.n3wth.com/
-- Component examples and compatibility APIs: https://ui.n3wth.com/components
-- Workspace setup: https://ui.n3wth.com/docs/getting-started
-- Component boundaries: https://ui.n3wth.com/docs/components
-- Theme and typography: https://ui.n3wth.com/docs/theming
-- Behavior and hooks: https://ui.n3wth.com/docs/hooks
-- CSS integration: https://ui.n3wth.com/docs/css-utilities
+{{DOCUMENTATION_INDEX}}
 
 ## Source ownership
 
