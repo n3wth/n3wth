@@ -47,32 +47,20 @@ gate keeps certificate validation on and retries while the Worker custom domain
 and its proxied DNS record finish provisioning. Production automation, D1 setup
 and rollback tracking remain separate work.
 
-## Vercel: manual fallback only
+## Vercel: retired
 
-Cloudflare serves all six public sites. The Vercel projects garden, kit, n3wth,
-r3, skills and ui are disconnected from the GitHub repository. Each app and the
-site generator set `git.deploymentEnabled: false`. Keep both safeguards:
-disconnecting the project also stops checks from older branches that still
-enable Vercel deployments.
-
-Keep GitHub CI and Cloudflare preview workflows enabled. Wait for passing checks
-before merging. Existing Vercel check results on old commits remain historical
-records; new commits must not receive Vercel deployment checks.
-
-Vercel projects, domains and deployment history are retained. A rollback to
-Vercel requires an explicit decision, the exact previous deployment, and a
-separate domain change. Do not reconnect Git or enable automatic deployments
-during normal Cloudflare work.
-
-To verify the remote state, inspect each project's Git connection: it must be
-absent. To intentionally restore Git deployments, reconnect the exact project
-to n3wth/n3wth with production branch main and review the config and policy change
-in a pull request first.
-
-The remaining Vercel configuration below is migration history and manual fallback
-guidance, not an active deployment workflow.
+Cloudflare serves all six public sites. Vercel is no longer a deployment
+target: there is no `vercel.json` in any app, no install/ignore-command
+scripts, and no CI step that depends on them. The Vercel projects garden,
+kit, n3wth, r3, skills and ui still exist with their domains and deployment
+history for reference, but are disconnected from the GitHub repository and
+have no path back without redoing this integration from scratch.
 
 ## Project layout and migration history
+
+Historical record of the original Vercel monorepo pilot. Vercel is retired
+(see above) — `scripts/vercel-install.mjs`, `scripts/vercel-ignore.mjs` and
+every app's `vercel.json` described below no longer exist in this repository.
 
 The pilot shipped in PR #149 at 98e871cc6b20e78b772eed32d39ded5357f33772 on September 6 2026. Both projects retain their domains and now build from n3wth/n3wth.
 

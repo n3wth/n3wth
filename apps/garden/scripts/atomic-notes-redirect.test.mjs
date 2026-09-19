@@ -7,14 +7,6 @@ import test from 'node:test'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 
 test('atomic-notess permanently redirects to atomic-notes', () => {
-  const vercel = JSON.parse(readFileSync(join(root, 'vercel.json'), 'utf8'))
-  const redirect = vercel.redirects.find((item) => item.source === '/atomic-notess')
-  assert.deepEqual(redirect, {
-    source: '/atomic-notess',
-    destination: '/atomic-notes',
-    permanent: true,
-  })
-
   const nextConfig = readFileSync(join(root, 'next.config.ts'), 'utf8')
   assert.match(nextConfig, /source:\s*"\/atomic-notess"/)
   assert.match(nextConfig, /destination:\s*"\/atomic-notes"/)
