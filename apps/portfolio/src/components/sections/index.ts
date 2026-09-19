@@ -1,5 +1,0 @@
-export { Experience } from './Experience'
-export { Building } from './Building'
-export { Thinking } from './Thinking'
-export { Creative } from './Creative'
-export { Contact } from './Contact'

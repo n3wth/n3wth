@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "1.20.6",
-    "@posthog/nextjs-config": "^1.11.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24",
     "@types/react": "19.3.0",
