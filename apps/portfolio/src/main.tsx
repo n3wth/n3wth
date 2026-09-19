@@ -21,6 +21,7 @@ const Login = lazy(() => import('./pages/Login'))
 const Logout = lazy(() => import('./pages/Logout'))
 const Support = lazy(() => import('./pages/Support'))
 const Elsa = lazy(() => import('./pages/Elsa'))
+const ProjectPage = lazy(() => import('./pages/ProjectPage'))
 const Privacy = lazy(() => import('./pages/Privacy'))
 const Terms = lazy(() => import('./pages/Terms'))
 const Consent = lazy(() => import('./pages/Consent'))
@@ -88,6 +89,7 @@ const router = createBrowserRouter([
       { path: 'privacy', element: <Privacy /> },
       { path: 'terms', element: <Terms /> },
       { path: 'consent', element: <Consent /> },
+      { path: 'projects/:slug', element: <ProjectPage /> },
       { path: '*', element: <NotFound /> },
     ],
   },

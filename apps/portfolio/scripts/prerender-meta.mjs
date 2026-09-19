@@ -45,13 +45,34 @@ const routes = [
         <ul>
           <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — points-vs-cash flight optimizer.</li>
           <li><a href="https://lunchmoney.sh" rel="noopener">lunchmoney.sh</a> — unofficial Lunch Money plugin for Claude, Codex, and Cursor.</li>
-          <li><a href="https://r3.n3wth.com" rel="noopener">r3</a>: memory for AI apps using vector search and knowledge graphs.</li>
-          <li><a href="https://kit.n3wth.com" rel="noopener">kit</a>: a design system with context for coding agents.</li>
+          <li><a href="/projects/r3">r3</a>: memory for AI apps using vector search and knowledge graphs.</li>
+          <li><a href="/projects/kit">kit</a>: a design system with context for coding agents.</li>
           <li><a href="https://skills.n3wth.com" rel="noopener">Agent Skills</a>: reusable instructions for coding agents.</li>
           <li><a href="https://github.com/n3wth/markup" rel="noopener">markup</a>: an independent prototype exploring personal AI agents in shared documents and chat.</li>
           <li><a href="https://garden.n3wth.com" rel="noopener">garden</a> — a digital garden of working notes.</li>
         </ul>
       </section>`,
+  },
+  {
+    path: 'projects/r3',
+    title: 'r3 — Oliver Newth',
+    description: 'A local memory service for AI assistants with semantic search, vector embeddings, and a knowledge graph.',
+    ogImage: '/og/work.png',
+    body: '<h1>r3</h1><p>A local memory service for AI assistants. r3 combines semantic search, vector embeddings, and a knowledge graph behind an MCP interface.</p><p>Install it with <code>npx @n3wth/r3</code>. <a href="https://github.com/n3wth/r3" rel="noopener">Read the source</a>.</p>',
+  },
+  {
+    path: 'projects/ui',
+    title: '@n3wth/ui — Oliver Newth',
+    description: 'A shared React component library with theme tokens, typography, native controls, and site compositions.',
+    ogImage: '/og/library.png',
+    body: '<h1>@n3wth/ui</h1><p>A React component library with theme tokens, typography, native controls, and page compositions shared across the n3wth sites.</p><p>Install it with <code>npm install @n3wth/ui</code>. <a href="https://github.com/n3wth/ui" rel="noopener">Read the source</a>.</p>',
+  },
+  {
+    path: 'projects/kit',
+    title: 'kit — Oliver Newth',
+    description: 'A shadcn-compatible registry paired with context packs that explain design rules to coding agents.',
+    ogImage: '/og/library.png',
+    body: '<h1>kit</h1><p>A shadcn-compatible registry that copies component source into the consuming project, paired with context packs for coding agents.</p><p>Install a component with <code>npx shadcn add https://kit.n3wth.com/r/button.json</code>. <a href="https://github.com/n3wth/n3wth/tree/main/apps/kit" rel="noopener">Read the source</a>.</p>',
   },
   {
     path: 'art',
@@ -83,7 +104,7 @@ const routes = [
       </section>
       <section>
         <h2>@n3wth/ui</h2>
-        <p>An atomic React design system published to npm as @n3wth/ui: 36 components across 20 atoms, 12 molecules and 4 organisms, plus 11 hooks. Install it with <code>npm install @n3wth/ui</code>. Full documentation at <a href="https://ui.n3wth.com" rel="noopener">ui.n3wth.com</a>.</p>
+        <p>An atomic React design system published to npm as @n3wth/ui: 36 components across 20 atoms, 12 molecules and 4 organisms, plus 11 hooks. Install it with <code>npm install @n3wth/ui</code>. <a href="/projects/ui">Read about the project</a>.</p>
       </section>
       <section>
         <h2>The garden</h2>

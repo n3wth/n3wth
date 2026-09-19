@@ -262,7 +262,7 @@ export const ecosystem: EcosystemProperty[] = [
   {
     id: 'ui',
     name: '@n3wth/ui',
-    href: 'https://ui.n3wth.com',
+    href: '/projects/ui',
     purpose: 'React components and theme tokens.',
   },
   {
