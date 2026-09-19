@@ -9,6 +9,7 @@ import {
   previewPaths,
   writePreviewConfig,
 } from './cloudflare-preview-config.mjs'
+import { verifyPreviewReadiness } from './cloudflare-preview-verify.mjs'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const APP_ROOT = join(ROOT, 'apps', 'ui-docs')
@@ -238,7 +239,7 @@ export async function assertNoDomainCollision({ accountId, identity, env = proce
   return undefined
 }
 
-export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = process.env, run = spawnSync, log = console.log, pr, app = 'ui-docs', fetchFn = fetch, bindings }) {
+export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = process.env, run = spawnSync, log = console.log, pr, app = 'ui-docs', fetchFn = fetch, bindings, verifyDeployment = verifyPreviewReadiness }) {
   const accountId = accountIdFromEnv(env)
   const identity = previewIdentity(app, pr)
   const paths = previewPaths({ root, app, pr })
@@ -250,6 +251,9 @@ export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = pro
   const result = runWrangler(['deploy', '--config', generated.paths.configPath], { cwd: root, env, run })
   assertCommandSucceeded(result, 'Wrangler deploy')
   await ensurePreviewDnsRecord({ identity, env, fetchFn })
+  // A Wrangler upload only proves the script uploaded; confirm the host actually
+  // resolves, serves TLS, and returns the noindex preview page before reporting success.
+  if (verifyDeployment) await verifyDeployment({ host: generated.identity.host, fetchFn, log })
   log(`Deployed ${generated.identity.workerName} at https://${generated.identity.host}`)
   return {
     directory: paths.directory,
