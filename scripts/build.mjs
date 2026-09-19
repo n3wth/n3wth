@@ -63,7 +63,7 @@ function readLockfile(root) {
   }
 }
 
-const openNextWorkspaces = ['garden', 'kit', 'skills', 'r3-web'].map(app => `@n3wth/${app}`)
+const openNextWorkspaces = ['garden', 'skills'].map(app => `@n3wth/${app}`)
 
 export function workspaceBuildArgs(workspace, cloudflare = false) {
   return cloudflare && openNextWorkspaces.includes(workspace)

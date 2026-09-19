@@ -2,7 +2,7 @@ import { iconColors, siteIcons, siteIconSvg } from './icons.js'
 export { socialFonts } from './social-fonts.js'
 
 export const socialSize = { width: 1200, height: 630 }
-const domains = { portfolio: 'n3wth.com', garden: 'garden.n3wth.com', skills: 'skills.n3wth.com', kit: 'kit.n3wth.com', r3: 'r3.n3wth.com', ui: 'ui.n3wth.com' }
+const domains = { portfolio: 'n3wth.com', garden: 'garden.n3wth.com', skills: 'skills.n3wth.com', r3: 'r3.n3wth.com', ui: 'ui.n3wth.com' }
 
 // Inject createElement so this package stays independent of React versions.
 export function socialCard(h, { site, title, subtitle = '', fontFamily = 'Geist' }) {

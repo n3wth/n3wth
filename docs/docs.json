@@ -7,6 +7,20 @@
     "dark": "#08090b"
   },
   "favicon": "/favicon.svg",
+  "seo": {
+    "indexing": "navigable",
+    "trailingSlash": false,
+    "metatags": {
+      "canonical": "https://docs.n3wth.com",
+      "robots": "index, follow",
+      "og:site_name": "n3wth developer docs"
+    },
+    "organization": {
+      "name": "n3wth",
+      "url": "https://n3wth.com",
+      "sameAs": ["https://github.com/n3wth"]
+    }
+  },
   "filterSidebar": true,
   "navbar": {
     "links": [
@@ -23,8 +37,7 @@
           {
             "group": "Build interfaces",
             "products": [
-              { "product": "UI", "description": "Shared React design system", "pages": ["ui/quickstart", "ui/site-compositions", "ui/primitives-and-themes", "ui/api-and-recipes", "ui/troubleshooting"] },
-              { "product": "Kit", "description": "Components you own", "pages": ["kit/quickstart", "kit/catalog", "kit/registry-authoring", "kit/use-with-ai", "kit/use-with-cli"] }
+              { "product": "UI", "description": "Shared React design system", "pages": ["ui/quickstart", "ui/site-compositions", "ui/primitives-and-themes", "ui/api-and-recipes", "ui/troubleshooting"] }
             ]
           },
           {

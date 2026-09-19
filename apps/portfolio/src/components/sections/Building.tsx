@@ -22,7 +22,7 @@ export function ProjectCard({ project }: { project: Project }) {
 }
 
 export function Building() {
-  const selected = ['r3', 'kit', 'skills'].map((id) => projects.find((project) => project.id === id)!)
+  const selected = ['r3', 'skills'].map((id) => projects.find((project) => project.id === id)!)
   const others = projects.filter((project) => !selected.includes(project))
   return (
     <SiteSection id="building" aria-labelledby="selected-projects" className="site-content-gutter scroll-mt-24">

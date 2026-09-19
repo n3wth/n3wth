@@ -31,19 +31,6 @@ const details = {
     ],
     source: 'https://github.com/n3wth/ui',
   },
-  kit: {
-    title: 'kit',
-    eyebrow: 'Creating software',
-    question: 'A design system that coding agents can use',
-    description: 'A shadcn-compatible registry that copies component source into the consuming project, paired with context packs that explain the design rules to coding agents.',
-    install: 'npx shadcn add https://kit.n3wth.com/r/button.json',
-    sections: [
-      ['Source you own', 'Kit installs React and TypeScript source into your application. You can inspect, change, and maintain the files alongside the rest of your code.'],
-      ['Context travels with components', 'The registry and its AI context describe how components fit together, so generated code can follow the project’s actual design rules.'],
-      ['Registry and CLI', 'The public registry, context packs, and scaffold CLI remain available from the kit source while the project story lives here.'],
-    ],
-    source: 'https://github.com/n3wth/n3wth/tree/main/apps/kit',
-  },
 } as const
 
 type ProjectSlug = keyof typeof details
