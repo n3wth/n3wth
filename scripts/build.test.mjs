@@ -4,7 +4,7 @@ import { spawnSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { affectedWorkspaces, readWorkspaces } from './affected.mjs'
-import { buildOrder, checkCloudflareToolchain, parseBuildArgs, runWorkspaceBuilds, workspaceBuildArgs } from './build.mjs'
+import { buildOrder, checkCloudflareToolchain, parseBuildArgs, runWorkspaceBuilds, workspaceBuildArgs, workspacePopulateCacheArgs } from './build.mjs'
 
 const repo = fileURLToPath(new URL('../', import.meta.url))
 
@@ -40,14 +40,19 @@ test('Cloudflare uses the same dependency graph and builds each package only onc
     calls.push({ command, args })
     return { status: 0 }
   }, repo, { cloudflare: true })
-  assert.equal(calls.length, order.length)
+  const openNext = ['garden', 'kit', 'skills', 'r3-web'].map(app => `@n3wth/${app}`)
+  // Each OpenNext app builds, then populates its static-assets cache; everything else builds once.
+  assert.equal(calls.length, order.length + order.filter(name => openNext.includes(name)).length)
   assert.deepEqual(calls[0].args, ['run', 'build', '--workspace', '@n3wth/ui'])
   for (const app of ['garden', 'kit', 'skills', 'r3-web']) {
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'build'])
+    assert.deepEqual(workspacePopulateCacheArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'populateCache', 'local'])
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`), ['run', 'build', '--workspace', `@n3wth/${app}`])
+    assert.equal(workspacePopulateCacheArgs(`@n3wth/${app}`), undefined)
   }
   for (const app of ['portfolio', 'ui-docs']) {
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`, true), ['run', 'build', '--workspace', `@n3wth/${app}`])
+    assert.equal(workspacePopulateCacheArgs(`@n3wth/${app}`, true), undefined)
   }
 })
 

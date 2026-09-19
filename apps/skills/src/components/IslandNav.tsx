@@ -9,6 +9,7 @@ import { siteConfig } from '../config/site'
 const navItems = [
   { label: 'Bundles', href: '/curated-bundles' },
   { label: 'Workflows', href: '/workflows' },
+  { label: 'Requests', href: '/requests' },
   { label: 'Contribute', href: '/contribute' },
   { label: 'About', href: '/about' },
 ]

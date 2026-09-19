@@ -127,11 +127,14 @@ describe('shared site composition', () => {
     render(<SiteFooter sourceHref="https://github.com/n3wth/kit" legalLinks={<a href="/privacy">Privacy</a>} />)
     expect(screen.getByRole('link', { name: 'Oliver Newth' })).toHaveAttribute('href', 'https://n3wth.com')
     expect(screen.getByRole('link', { name: 'Library' })).toHaveAttribute('href', 'https://n3wth.com/library')
+    expect(screen.getByRole('link', { name: 'Skills' })).toHaveAttribute('href', 'https://skills.n3wth.com')
+    expect(screen.getByRole('link', { name: 'r3' })).toHaveAttribute('href', 'https://r3.n3wth.com')
+    expect(screen.getByRole('link', { name: 'Kit' })).toHaveAttribute('href', 'https://kit.n3wth.com')
     expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute('href', 'https://docs.n3wth.com')
     expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', 'https://n3wth.com/contact')
     expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/n3wth/kit')
     expect(screen.getByRole('navigation', { name: 'Footer' })).toContainElement(screen.getByRole('link', { name: 'Privacy' }))
-    expect(screen.getAllByRole('link')).toHaveLength(6)
+    expect(screen.getAllByRole('link')).toHaveLength(9)
   })
 
   it('renders the footer signup slot above the identity row and hands the address to the app', async () => {

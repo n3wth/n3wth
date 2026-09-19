@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { skills } from '@/src/data/skills'
 import { noindexSkillIds } from '@/src/config/indexability'
 import { SkillDetailClient } from './SkillDetailClient'
-import { SoftwareApplicationJsonLd, WebPageJsonLd, FaqJsonLd } from '@/src/components/seo/JsonLd'
+import { SoftwareApplicationJsonLd, WebPageJsonLd, FaqJsonLd, TechArticleJsonLd } from '@/src/components/seo/JsonLd'
 
 type Props = {
   params: Promise<{ skillId: string }>
@@ -84,6 +84,14 @@ export default async function SkillDetailPage({ params }: Props) {
         version={skill.version}
         dateModified={skill.lastUpdated}
         category={skill.category}
+        keywords={skill.tags}
+      />
+      <TechArticleJsonLd
+        title={title}
+        description={description}
+        url={`https://skills.n3wth.com/skill/${skill.id}`}
+        dateModified={skill.lastUpdated}
+        keywords={skill.tags}
       />
       <WebPageJsonLd
         title={title}
