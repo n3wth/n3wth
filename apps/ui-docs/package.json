@@ -22,14 +22,14 @@
     "react-dom": "^19.3.0",
     "react-helmet-async": "^3.0.0",
     "react-router": "^7.13.0",
-    "three": "^0.185.1"
+    "three": "^0.186.0"
   },
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
-    "@types/three": "^0.185.4",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^5.1.4",
     "jsdom": "27.4.0",
     "rehype-highlight": "^7.0.2",
