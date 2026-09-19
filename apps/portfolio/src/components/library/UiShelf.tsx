@@ -87,13 +87,10 @@ export function UiShelf() {
         </p>
         <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm md:mt-0">
           <a
-            href="https://ui.n3wth.com"
-            target="_blank"
-            rel="noreferrer"
+            href="/projects/ui"
             className="link-underline"
           >
-            Docs
-          <span className="sr-only"> (opens in new tab)</span>
+            Project page
           </a>
           <a
             href="https://github.com/n3wth/ui"

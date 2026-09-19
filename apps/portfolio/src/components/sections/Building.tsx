@@ -13,7 +13,7 @@ export function ProjectCard({ project }: { project: Project }) {
         <p className="max-w-xl text-base font-semibold leading-relaxed">{project.question}</p>
         <p className="mt-5 max-w-xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>{project.description}</p>
         <div className="mt-6 flex flex-wrap gap-x-7 gap-y-3 text-base">
-          <a href={project.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2">Explore {project.name}<ArrowUpRight size={15} aria-hidden /></a>
+          <a href={`/projects/${project.id}`} className="inline-flex min-h-11 items-center gap-2">Explore {project.name}<ArrowUpRight size={15} aria-hidden /></a>
           {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center" style={{ color: 'var(--ink-dim)' }}>Read the source</a>}
         </div>
       </div>

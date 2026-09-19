@@ -193,7 +193,7 @@ export const projects: Project[] = [
     question: 'Useful context beyond a single conversation',
     description: 'A memory service for AI apps with semantic search and a knowledge graph. An MCP interface makes that context available across tools.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
-    url: siteUrls.r3,
+    url: '/projects/r3',
     github: 'https://github.com/n3wth/r3',
   },
   {
@@ -203,7 +203,7 @@ export const projects: Project[] = [
     question: 'A design system that coding agents can use',
     description: 'A component registry that pairs reusable UI with context for coding agents. The design rules travel with the components.',
     tech: ['React', 'Tailwind v4', 'Radix', 'shadcn'],
-    url: siteUrls.kit,
+    url: '/projects/kit',
     github: 'https://github.com/n3wth/n3wth/tree/main/apps/kit',
   },
   {
