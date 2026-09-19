@@ -17,7 +17,6 @@
     "icons": "node scripts/site-icons.mjs",
     "social": "node scripts/social-card.mjs",
     "dev": "npm run dev -w @n3wth/portfolio",
-    "dev:portfolio": "npm run dev -w @n3wth/portfolio",
     "dev:ui": "node scripts/dev-ui.mjs",
     "dev:skills": "npm run dev -w @n3wth/skills",
     "build": "node scripts/build.mjs",
