@@ -19,14 +19,14 @@ I build agent infrastructure — memory, tooling, and interfaces that make AI sy
 Full docs for UI, Kit, Skills, and r3 — installation guides, examples, reference
 material, and troubleshooting — are at **[docs.n3wth.com](https://docs.n3wth.com)**.
 
-The docs source lives in this repository at `docs/developers` (a Docs7 project).
+The docs source lives in this repository at `docs` (a Docs7 project).
 To run it locally after the root `npm ci`:
 
 ```bash
-npx @upstash/docs7 dev docs/developers
+npx @upstash/docs7 dev docs
 ```
 
-Validate with `node docs/developers/check.mjs`. See [publishing and setup](docs/developers/publishing.mdx)
+Validate with `node docs/check.mjs`. See [publishing and setup](docs/publishing.mdx)
 for the GitHub connection, production branch, and Context7 indexing configuration.
 
 ## Workspace

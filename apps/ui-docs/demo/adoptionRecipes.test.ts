@@ -9,7 +9,7 @@ const { options } = ts.parseJsonConfigFileContent(config.config, ts.sys, dirname
 
 it.each([
   ['Getting Started', 'docs/getting-started.md'],
-  ['Primitives and themes', '../../docs/developers/ui/primitives-and-themes.mdx'],
+  ['Primitives and themes', '../../docs/ui/primitives-and-themes.mdx'],
   ['Package README', '../../packages/ui/README.md'],
 ])('%s examples compile through public package exports', (_, documentPath) => {
   const markdown = readFileSync(resolve(documentPath), 'utf8')

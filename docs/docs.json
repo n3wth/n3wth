@@ -1,15 +1,46 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
+  "name": "n3wth docs",
   "theme": "mint",
-  "name": "My docs",
   "colors": {
-    "primary": "#08090b"
+    "primary": "#08090b",
+    "light": "#f2f3f5",
+    "dark": "#08090b"
+  },
+  "favicon": "/favicon.svg",
+  "filterSidebar": true,
+  "navbar": {
+    "links": [
+      { "label": "n3wth.com", "href": "https://n3wth.com" },
+      { "type": "github", "href": "https://github.com/n3wth/n3wth" }
+    ]
   },
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Guide",
-        "pages": ["index"]
+        "tab": "Guides",
+        "pages": ["index"],
+        "productGroups": [
+          {
+            "group": "Build interfaces",
+            "products": [
+              { "product": "UI", "description": "Shared React design system", "pages": ["ui/quickstart", "ui/site-compositions", "ui/primitives-and-themes", "ui/api-and-recipes", "ui/troubleshooting"] },
+              { "product": "Kit", "description": "Components you own", "pages": ["kit/quickstart", "kit/catalog", "kit/registry-authoring", "kit/ai-and-cli"] }
+            ]
+          },
+          {
+            "group": "Build with agents",
+            "products": [
+              { "product": "Skills", "description": "Reusable agent instructions", "pages": ["skills/quickstart", "skills/installation", "skills/authoring", "skills/cli"] },
+              { "product": "r3", "description": "Persistent agent memory", "pages": ["r3/quickstart", "r3/mcp-tools", "r3/configuration", "r3/troubleshooting"] }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Contribute",
+        "groups": [
+          { "group": "Maintainers", "pages": ["workspace", "publishing"] }
+        ]
       }
     ]
   }

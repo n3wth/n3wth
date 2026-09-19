@@ -16,6 +16,11 @@ dist-ssr
 *.local
 .worktrees
 
+# Local agent integrations
+# Canonical project skills live in .agents/skills/. These adapters are generated per machine.
+.claude/
+.codex/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -32,9 +37,17 @@ dist-ssr
 docs/
 !docs/
 docs/*
-!docs/workspace/
-!docs/editorial/
-!docs/developers/
+!docs/*.mdx
+!docs/*.json
+!docs/*.svg
+!docs/r3/
+!docs/r3/**
+!docs/ui/
+!docs/ui/**
+!docs/kit/
+!docs/kit/**
+!docs/skills/
+!docs/skills/**
 .env*
 .vercel
 
