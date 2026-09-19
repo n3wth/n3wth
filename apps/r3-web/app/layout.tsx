@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { siteUrls } from "@n3wth/site-config";
-import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { AxiomWebVitals } from "next-axiom";
 import { PostHogProvider } from "../components/PostHogProvider";
@@ -122,7 +121,6 @@ export default function RootLayout({
         <PostHogProvider>
           <SiteProvider>
           {children}
-          <Analytics />
           </SiteProvider>
         </PostHogProvider>
         <GoogleAnalytics gaId="G-4QRMSG5HXK" />

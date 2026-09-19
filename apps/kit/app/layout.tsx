@@ -2,8 +2,6 @@ import { Footer } from './_components/footer'
 import { siteUrls } from '@n3wth/site-config'
 import type { Metadata } from 'next'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Nav } from './_components/nav'
 import { SkipLink } from './_components/skip-link'
 import { PostHogProvider } from './_components/posthog-provider'
@@ -144,8 +142,6 @@ export default function RootLayout({
           <Nav />
           <div className="outline-none">{children}</div>
           <Footer />
-          <Analytics />
-          <SpeedInsights />
           </SiteProvider>
         </PostHogProvider>
         <GoogleAnalytics gaId="G-4QRMSG5HXK" />
