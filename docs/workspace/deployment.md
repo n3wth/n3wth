@@ -38,9 +38,14 @@ Secrets stay outside source config and are provisioned separately for each Worke
 Never deploy generated preview config to production or point a preview at the
 production database.
 
-A build or dry run does not prove live readiness. Check TLS, page content, assets
-and the app's required API behavior on the target domain. Production automation,
-readiness gates, D1 setup and rollback tracking remain separate work.
+A build or dry run does not prove live readiness. Each preview deploy now runs an
+automated readiness gate. After the upload and the DNS record, the preview script
+requests the target host over HTTPS through `scripts/cloudflare-preview-verify.mjs`.
+The deploy fails unless the host resolves, the certificate validates, the page
+returns HTTP 200, and the preview `X-Robots-Tag: noindex` header is present. The
+gate keeps certificate validation on and retries while the Worker custom domain
+and its proxied DNS record finish provisioning. Production automation, D1 setup
+and rollback tracking remain separate work.
 
 ## Vercel: manual fallback only
 

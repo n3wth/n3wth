@@ -1,7 +1,8 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
+import { DEPLOY_APP_SLUGS } from './deploy-apps.mjs'
 
-export const PREVIEW_APPS = new Set(['ui-docs', 'portfolio', 'garden', 'kit', 'skills', 'r3-web'])
+export const PREVIEW_APPS = new Set(DEPLOY_APP_SLUGS)
 const STATIC_APPS = new Set(['ui-docs'])
 const PREVIEW_SUFFIX = 'preview.n3wth.com'
 const STATEFUL_BINDINGS = ['d1_databases', 'r2_buckets', 'kv_namespaces', 'durable_objects', 'hyperdrive', 'queues', 'vectorize', 'mtls_certificates']
