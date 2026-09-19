@@ -11,7 +11,7 @@ after the first verified monorepo release. Do not publish from both repositories
 2. In npm's @n3wth/ui Trusted Publisher settings, change GitHub owner to `n3wth`,
    repository to `n3wth`, workflow filename to `publish-ui.yml`, and leave
    environment blank. Allow `npm publish`. No npm token is required.
-3. Set repository Actions variable `UI_NPM_PUBLISH_ENABLED=true`. Run Release UI
+3. Set repository Actions variable `UI_NPM_PUBLISH_ENABLED=true`. Run Publish
    on main. The workflow checks the library, installs the exact tarball into
    a standalone app, builds it, checks browsers, then publishes that tarball.
 4. Verify npm version, provenance, exports and a clean registry consumer install.
@@ -23,24 +23,24 @@ after the first verified monorepo release. Do not publish from both repositories
    same version in the starter's `@n3wth/ui` dependency, adds an entry to
    `packages/ui/CHANGELOG.md`, and runs `npm install --package-lock-only --ignore-scripts`.
 2. Merge the PR after Site CI passes.
-3. Push a tag `ui-v<version>` on the merge commit, matching the version in
-   `packages/ui/package.json`. Release UI checks the package, validates the
+3. Push a tag `v<version>` on the merge commit, matching the version in
+   `packages/ui/package.json`. Publish checks the package, validates the
    packed consumer, and publishes that exact tarball with provenance.
 4. Verify the registry version and a clean consumer install.
 
 `npm run check:package` stages npm's allowlisted files with `scripts/pack-ui.mjs`.
-The staged CSS omits excluded commercial font rules and uses package-relative
-URLs for shipped fonts. Workspace CSS and licensed site assets stay unchanged.
+The staged CSS omits excluded commercial font rules and uses URLs relative to
+the package for shipped fonts. Workspace CSS and licensed site assets stay unchanged.
 The publish step uses this exact tested tarball, not a direct pack of workspace output.
 
-For retries, manually run Release UI on main with `workflow_dispatch`. An
-already-published version is skipped, so this is a safe retry or smoke test.
+For retries, manually run Publish on main with `workflow_dispatch`. A
+version that is already on npm is skipped, so this is a safe retry or smoke test.
 Package checks still run. The publish job alone has OIDC permission, and uses
-GitHub-hosted runners. Never publish locally. Site deployments are separate
+runners that GitHub hosts. Never publish locally. Site deployments are separate
 from npm publishing.
 
 The initial 2.0.0 version and migration notes are prepared directly for this
-cutover. Future version increments follow this same tag-triggered flow.
+cutover. Future version increments follow this same flow that a tag starts.
 
 The source adapter for v0 is `packages/ui/v0/n3wth-ui`. It ships with npm but
 must still be imported into v0 to become a saved personal/team skill.

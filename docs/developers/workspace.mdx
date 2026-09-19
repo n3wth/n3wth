@@ -20,9 +20,9 @@ npm install --global npm@11.19.1
 npm ci
 ```
 
-Run installation at the repository root. The root lockfile owns application and
-shared-library dependencies. Do not fix a workspace resolution problem by
-creating an app-local lockfile or installing another copy of UI.
+Run installation at the repository root. The root lockfile owns dependencies for
+applications and the shared library. Do not fix a workspace resolution problem by
+creating a lockfile local to one app or installing another copy of UI.
 
 ## Find the right source
 
@@ -74,9 +74,9 @@ Pure edits to this hub use the [documentation checks](/publishing#validate-a-cha
 ## Releases and deployments
 
 `@n3wth/ui` releases from 2.0.0 publish from this monorepo through
-`publish-ui.yml` on a `ui-v*` tag. Bump the version and add a changelog entry
-for consumer-facing library changes; do not run `npm publish` locally.
-Documentation-only changes do not need a package release.
+`publish-ui.yml` on a `v*` tag. Bump the version and add a changelog entry
+for library changes that consumers see; do not run `npm publish` locally.
+Changes to documentation only do not need a package release.
 
 The six existing Vercel sites use automatic Git deployments. Docs7 is a separate
 hosting connection to this same repository. Merging documentation is not evidence

@@ -10,9 +10,9 @@ Sites → `@n3wth/ui` → Astryx. Only the UI package depends on Astryx; applica
 
 Import one complete stylesheet: `@n3wth/ui/site.css` for new sites, or `@n3wth/ui/styles` when legacy component styles are needed. The latter already includes the site foundation and fonts; do not import both.
 
-Metadata and analytics belong in `@n3wth/site-config`, outside UI. Its framework-neutral `metadata` helpers generate canonical/social metadata and page JSON-LD while leaving copy and page types in the app. Its `analytics` initializer shares defaults and prevents duplicate initialization; apps supply their own installed client and host options. Specialized deferred-loading policies remain app-owned.
+Metadata and analytics belong in `@n3wth/site-config`, outside UI. Its `metadata` helpers, which are neutral to the framework, generate canonical/social metadata and page JSON-LD while leaving copy and page types in the app. Its `analytics` initializer shares defaults and prevents duplicate initialization; apps supply their own installed client and host options. Specialized policies that defer loading remain owned by the app.
 
-The package root retains compatibility adapters for existing component APIs. New code should prefer the native primitives and site entries. Brand illustrations, OG rendering and application-specific scenes are not generic control replacements and remain purpose-built. The compatibility Nav, Hero, Footer and Section delegate to the same site compositions; old decorative hero settings no longer introduce gradients or entry animations.
+The package root retains compatibility adapters for existing component APIs. New code should prefer the native primitives and site entries. Brand illustrations, OG rendering and scenes for one application are not generic control replacements and remain built for a specific purpose. The compatibility Nav, Hero, Footer and Section delegate to the same site compositions; old decorative hero settings no longer introduce gradients or entry animations.
 
 ```tsx
 import { Button } from '@n3wth/ui/primitives'
@@ -20,13 +20,13 @@ import { Button } from '@n3wth/ui/primitives'
 <Button label="Save" onClick={save} />
 ```
 
-The six workspace sites use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain app-owned. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.
+The six workspace sites use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain owned by the app. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.
 
-Navigation and footers also come from `SiteNavigation` and `SiteFooter`. Apps pass router-aware home links, primary links and relevant actions as ReactNode slots. The shared navigation owns its 48px height, subtle 1px theme border, spacing, mobile disclosure and Escape focus restoration. Do not add local island styles, separators, blur or alternate mobile breakpoints. Do not use sparkle icons.
+Navigation and footers also come from `SiteNavigation` and `SiteFooter`. Apps pass home links that are aware of the router, primary links and relevant actions as ReactNode slots. The shared navigation owns its 48px height, subtle 1px theme border, spacing, mobile disclosure and Escape focus restoration. Do not add local island styles, separators, blur or alternate mobile breakpoints. Do not use sparkle icons.
 
-Keep footers minimal: use `SiteFooter` defaults for the Oliver Newth home link, Contact and GitHub; pass `sourceHref` for the app source and `legalLinks` only where needed. Avoid repeated site directories, product descriptions or separate copyright rows. Navigation should feel instant: do not add route-entry fades, slides, staggered content reveals or delayed page content. Keep functional feedback and specialized interactive demos.
+Keep footers minimal: use `SiteFooter` defaults for the Oliver Newth home link, Contact and GitHub; pass `sourceHref` for the app source and `legalLinks` only where needed. Avoid repeated site directories, product descriptions or separate copyright rows. Navigation should feel instant: do not add fades at route entry, slides, staggered content reveals or delayed page content. Keep functional feedback and specialized interactive demos.
 
-Use `n3wth-site-main` for the standard 96px fixed-navigation offset. `PageHeader` owns hero typography and vertical spacing; its optional `aside` accepts demonstrations in a shared responsive split layout. Use `SiteSection` and semantic heading/text roles for page sections. Immersive scenes and long-form reading layouts can retain their content-specific structure.
+Use `n3wth-site-main` for the standard 96px offset for fixed navigation. `PageHeader` owns hero typography and vertical spacing; its optional `aside` accepts demonstrations in a shared responsive split layout. Use `SiteSection` and semantic heading/text roles for page sections. Immersive scenes and layouts for reading long articles can retain structure specific to their content.
 
 ## Use
 
@@ -45,21 +45,21 @@ import '@n3wth/ui/site.css'
 </N3wthProvider>
 ```
 
-`site.css` includes Astryx component CSS, the generated canonical theme, fonts and scoped site layout/type rules. It does not load the legacy UI reset. Vite and Next consume the same exported entry. Next must retain the client boundary; router-specific link adapters stay in each application. Bind the provider to the existing theme state for sites supporting light mode rather than maintaining two theme states.
+`site.css` includes Astryx component CSS, the generated canonical theme, fonts and scoped site layout/type rules. It does not load the legacy UI reset. Vite and Next consume the same exported entry. Next must retain the client boundary; link adapters specific to the router stay in each application. Bind the provider to the existing theme state for sites supporting light mode rather than maintaining two theme states.
 
 ## Roles
 
 - Suisse Intl for headings, body text, actions and supporting labels. Geist Mono only for code.
 - Page titles are responsive. Section and item titles use shared sizes rather than separate scales per page. Body text and supporting labels have distinct semantic roles.
 - Content width and horizontal padding come from `SiteContainer` or the matching `n3wth-site-container` class. Sections use `SiteSection` when its spacing applies.
-- Use `PageHeader.actions` for page-level links such as the resume. Do not create a separate padded section for one link.
+- Use `PageHeader.actions` for links at the page level, such as the resume. Do not create a separate padded section for one link.
 - Garden reading typography and the portfolio scene may retain specialized layouts. Product names, content and interactions remain distinct; colors, type roles and common controls share the system.
 
-The canonical theme is `packages/ui/src/theme/n3wthTheme.ts`. Its CSS is generated during the UI build. Apps declare `"@n3wth/ui": "*"` so npm always links the workspace copy and never installs a nested registry copy. Starting with 2.0.0, this monorepo owns public npm releases through `ui-v*` tags and trusted publishing; see [npm-release.md](npm-release.md).
+The canonical theme is `packages/ui/src/theme/n3wthTheme.ts`. Its CSS is generated during the UI build. Apps declare `"@n3wth/ui": "*"` so npm always links the workspace copy and never installs a nested registry copy. Starting with 2.0.0, this monorepo owns public npm releases through `v*` tags and trusted publishing; see [npm-release.md](npm-release.md).
 
 ## Decorative artwork
 
-Decorative artwork uses `@n3wth/ui/visuals`: VisualBand owns full-width layout, while AssembleField, ForkLight and ConvergeLight own their drawing and motion. Styles are included in `site.css`. Keep seeds, cluster positions and heights in the app. Artwork is visible without an observer or a parent reveal class, and reduced motion keeps a still composition. VisualBand is aria-hidden; keep text and controls outside it. Use `fullBleed={false}` for contained previews.
+Decorative artwork uses `@n3wth/ui/visuals`: VisualBand owns layout at full width, while AssembleField, ForkLight and ConvergeLight own their drawing and motion. Styles are included in `site.css`. Keep seeds, cluster positions and heights in the app. Artwork is visible without an observer or a parent reveal class, and reduced motion keeps a still composition. VisualBand is aria-hidden; keep text and controls outside it. Use `fullBleed={false}` for contained previews.
 
 ## New sites
 

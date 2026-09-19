@@ -12,7 +12,7 @@ Astryx owns generic controls and interaction behavior. UI owns the pinned depend
 | --- | --- |
 | `@n3wth/ui/site` | Provider, navigation, page headers, containers, sections and footer |
 | `@n3wth/ui/primitives` | Native Astryx component APIs |
-| `@n3wth/ui/visuals` | Visible-by-default decorative bands and artwork |
+| `@n3wth/ui/visuals` | Decorative bands and artwork that are visible by default |
 | `@n3wth/ui/site.css` | Astryx styles, Newth theme, fonts and site layout |
 | `@n3wth/ui/tailwind-theme.css` | Tailwind token bridge |
 | `@n3wth/ui` | Existing component API compatibility and brand utilities |
@@ -36,7 +36,7 @@ export function App() {
 }
 ```
 
-Workspace sites use Suisse Intl for headings and body, and Geist Mono for code. The npm package excludes commercial Suisse assets and their font rules. External consumers use the theme's system-font fallback; Geist Mono ships with the package.
+Workspace sites use Suisse Intl for headings and body, and Geist Mono for code. The npm package excludes commercial Suisse assets and their font rules. External consumers use the theme's fallback to the system font; Geist Mono ships with the package.
 
 Keep surfaces flat, navigation immediate and footers minimal. Use shared components rather than copied layouts or local theme definitions.
 
@@ -53,6 +53,6 @@ npm run check:design
 
 See [the design system guide](../../docs/workspace/design-system.md) and [UI website](https://ui.n3wth.com).
 
-Starting with 2.0.0, npm releases come from this monorepo through `ui-v*` tags and trusted publishing. See [migration notes](CHANGELOG.md). The [v0 skill and standalone starter](v0/n3wth-ui/SKILL.md) ship with the package and support v0 Design Systems 2.0 imports; shipping these files does not automatically save a skill in v0.
+Starting with 2.0.0, npm releases come from this monorepo through `v*` tags and trusted publishing. See [migration notes](CHANGELOG.md). The [v0 skill and standalone starter](v0/n3wth-ui/SKILL.md) ship with the package and support v0 Design Systems 2.0 imports; shipping these files does not automatically save a skill in v0.
 
 MIT © Oliver Newth

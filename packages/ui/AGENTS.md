@@ -1,8 +1,8 @@
 # @n3wth/ui - Agent Instructions
 
-## Workspace pilot override
+## Workspace
 
-This package was imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf274. Starting with 2.0.0, this monorepo is the publishing authority. Push a `ui-v<version>` tag on main to run .github/workflows/publish-ui.yml; never publish locally. See ../../docs/workspace/npm-release.md. UI docs lives in apps/ui-docs; use root workspace commands and the root lockfile. Validate with npm run check --workspace @n3wth/ui and npm run check:package. See SOURCE.md for historical provenance.
+This package was imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf274. Starting with 2.0.0, this monorepo is the publishing authority. Push a `v<version>` tag on main to run .github/workflows/publish-ui.yml; never publish locally. See ../../docs/workspace/npm-release.md. UI docs lives in apps/ui-docs; use root workspace commands and the root lockfile. Validate with npm run check --workspace @n3wth/ui and npm run check:package. See SOURCE.md for historical provenance.
 
 ## Overview
 
@@ -12,7 +12,7 @@ Sites → `@n3wth/ui` → Astryx. The UI package owns the pinned Astryx dependen
 
 Prefer these entries for new work. Root component exports are compatibility adapters and brand utilities. The historical Nav/Hero/Footer/Section examples below describe their retained props, not the current recommended site API. All four delegate to the shared site compositions. See `../../docs/workspace/design-system.md` for the current design and workflow; its flat surfaces, Suisse Intl headings and body, minimal footers and immediate navigation supersede historical visual guidance below.
 
-Flat, minimal design system for n3wth projects. Built on Tailwind CSS 4 with iOS-inspired aesthetics.
+Flat, minimal design system for n3wth projects. Built on Tailwind CSS 4 with aesthetics inspired by iOS.
 
 ## Installation
 
@@ -28,7 +28,7 @@ import '@n3wth/ui/styles'
 
 ### Nav
 
-Fixed navigation bar with hide-on-scroll behavior. Used across n3wth, skills, and ui sites.
+Fixed navigation bar with behavior that hides it on scroll. Used across n3wth, skills, and ui sites.
 
 ```tsx
 import { Nav } from '@n3wth/ui'
@@ -54,7 +54,7 @@ import { Nav } from '@n3wth/ui'
 - `logoHref` - Link for logo click (default: "/")
 - `items` - Array of `{ label, href, isActive?, external? }`
 - `fixed` - Fixed position at top
-- `hideOnScroll` - Smooth scroll-based visibility
+- `hideOnScroll` - Smooth visibility based on scroll
 - `theme` - "dark" | "light"
 - `onThemeToggle` - Theme toggle callback
 - `showThemeToggle` - Show/hide theme toggle (default: true)
@@ -147,13 +147,13 @@ Use matching container constraints: `max-w-6xl mx-auto px-6 md:px-12`
 
 ## Deployment
 
-### npm Publishing (GitHub Actions)
+### Publishing
 
 Publishing is automated via GitHub Actions. Do NOT use `npm publish` locally.
 
 In one PR, bump `version` in `package.json`, set the same version in the
 starter's `@n3wth/ui` dependency, and add a CHANGELOG.md entry. Merge after
-Site CI passes. Push a `ui-v<version>` tag on the merge commit. Release UI
+Site CI passes. Push a `v<version>` tag on the merge commit. Publish
 checks the package, validates the packed consumer, and publishes that exact
 tarball through npm trusted publishing.
 
@@ -165,7 +165,7 @@ The docs site at https://ui.n3wth.com deploys manually from the monorepo.
 - **Build:** Root npm run build:ui-docs
 - **Deployments:** Manual; package release does not deploy sites
 
-### Downstream Consumers
+### Consumers
 
 Apps in this monorepo declare `"@n3wth/ui": "*"` and always consume the
 workspace copy, so no consumer update is needed after publishing. Only the
