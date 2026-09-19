@@ -32,7 +32,16 @@
     "tabs": [
       {
         "tab": "Docs",
-        "pages": ["index"],
+        "pages": [
+          "index",
+          {
+            "group": "Maintainers",
+            "pages": [
+              "workspace",
+              "publishing"
+            ]
+          }
+        ],
         "productGroups": [
           {
             "group": "Build interfaces",
@@ -47,12 +56,6 @@
               { "product": "r3", "description": "Persistent agent memory", "pages": ["r3/quickstart", "r3/mcp", "r3/configuration", "r3/troubleshooting"] }
             ]
           }
-        ]
-      },
-      {
-        "tab": "Contribute",
-        "groups": [
-          { "group": "Maintainers", "pages": ["workspace", "publishing"] }
         ]
       }
     ]
