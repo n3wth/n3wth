@@ -1,0 +1,113 @@
+---
+title: "API and recipes"
+description: "Find public UI entry points. Add route scrolling, reading outlines, and Open Graph images."
+---
+
+Use public package paths rather than importing files from `dist`. The [quickstart](/ui/quickstart) covers installation; [site compositions](/ui/site-compositions) documents the page components.
+
+## Public entry points
+
+| Entry | Exported surface |
+| --- | --- |
+| `@n3wth/ui/site` | Site components, `N3wthProvider`, `n3wthTheme`, `ReadingOutline`, `useRouteScrollReset` |
+| `@n3wth/ui/primitives` | Core Astryx exports, plus `ToastViewport` and `ToastViewportProps` |
+| `@n3wth/ui` | Root adapters, hooks such as `useTheme`, tokens, `cn`, provider, theme, and `OGCard` |
+| `@n3wth/ui/og` | `OGCard` and `OGCardProps` |
+| `@n3wth/ui/visuals` | `VisualBand`, `AssembleField`, `ForkLight`, `ConvergeLight`; props types for the first two |
+| `@n3wth/ui/site.css` | Shared generated foundation and visual styles |
+| `@n3wth/ui/tailwind-theme.css` | Tailwind token bridge |
+| `@n3wth/ui/styles` | Compatibility styles with the shared foundation |
+| `@n3wth/ui/theme` | Retained theme CSS export |
+| `@n3wth/ui/tailwind` | Retained CommonJS Tailwind preset |
+| `@n3wth/ui/fonts/*` | Font paths; only the manifest's selected families ship in npm |
+
+JavaScript entries provide ESM imports and type declarations. The CSS `theme` export is not the JavaScript `n3wthTheme` object; import that object from `site` or the root entry.
+
+## Reset scroll on new-page link navigation
+
+For a React Router application, mount this component inside your router:
+
+```tsx
+import { useLocation } from 'react-router'
+import { useRouteScrollReset } from '@n3wth/ui/site'
+
+export function RouteScrollReset() {
+  const { pathname } = useLocation()
+  useRouteScrollReset(pathname)
+  return null
+}
+```
+
+This follows the current docs app. The hook records unmodified same-origin anchor clicks to a different pathname with no hash, then scrolls to the top when that destination becomes active.
+
+It deliberately leaves hash scrolling and browser Back/Forward to the browser or router. It is not a general scroll restoration manager: programmatic navigation without an anchor click and query-only changes do not trigger its reset. Avoid mounting competing scroll-reset implementations.
+
+## Add a reading outline
+
+`ReadingOutline` delegates its item model and scroll-spy behavior to the native `Outline`. Its `items` type is `OutlineItem[]` from the pinned dependency. Each item supplies an `id`, `label`, and heading `level`.
+
+Render an outline alongside matching section IDs, inside the provider from the quickstart:
+
+```tsx
+import {
+  ReadingOutline,
+  SiteDocSection,
+  SiteText,
+  type ReadingOutlineProps,
+} from '@n3wth/ui/site'
+
+const items: ReadingOutlineProps['items'] = [
+  { id: 'requirements', label: 'Requirements', level: 2 },
+  { id: 'usage', label: 'Usage', level: 2 },
+]
+
+export function Article() {
+  return (
+    <>
+      <ReadingOutline items={items} label="Article sections" collapsible />
+      <SiteDocSection id="requirements" title="Requirements">
+        <SiteText>Import the stylesheet and mount the provider.</SiteText>
+      </SiteDocSection>
+      <SiteDocSection id="usage" title="Usage">
+        <SiteText>Compose your page with shared components.</SiteText>
+      </SiteDocSection>
+    </>
+  )
+}
+```
+
+| Prop | Default | Behavior |
+| --- | --- | --- |
+| `items` | Required | Native outline items targeting the article's sections |
+| `label` | `On this page` | Outline label and disclosure button text |
+| `collapsible` | `false` | Enables a disclosure, initially closed |
+| `className` | Unset | Additional wrapper class |
+
+The outline uses compact density. Supply matching article targets and verify their navigation in the consuming app.
+
+## Generate a Next.js Open Graph image
+
+In a Next.js App Router project, create `app/opengraph-image.tsx`:
+
+```tsx
+import { ImageResponse } from 'next/og'
+import { OGCard } from '@n3wth/ui/og'
+
+export const runtime = 'edge'
+export const size = { width: 1200, height: 630 }
+export const contentType = 'image/png'
+
+export default function Image() {
+  return new ImageResponse(<OGCard title="API reference" />, size)
+}
+```
+
+`OGCard` accepts one required prop, `title: string`. It renders the package's mark and title on a dark background using inline styles. It does not accept a description, logo URL, color theme, or image dimensions. The image response supplies dimensions; keep titles short enough for the fixed title styling and inspect the resulting image.
+
+## Sources
+
+- [Complete package export map](https://github.com/n3wth/n3wth/blob/main/packages/ui/package.json)
+- [Root exports](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/index.ts) and [visual exports](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/visuals/index.ts)
+- [Route scroll hook](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/hooks/useRouteScrollReset.ts) and [current app integration](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/demo/App.tsx)
+- [ReadingOutline implementation](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/site/ReadingOutline.tsx)
+- [OGCard implementation](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/og/OGCard.tsx)

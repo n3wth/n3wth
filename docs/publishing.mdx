@@ -1,0 +1,100 @@
+---
+title: Publishing
+description: Preview and publish the Docs7 project. Check the site and its Context7 index.
+---
+
+This documentation project lives at `docs` in `n3wth/n3wth`.
+`docs.json` controls the hosted site. The repository-root `context7.json`
+controls which files Context7 indexes. They serve different purposes.
+
+## Preview locally
+
+From the repository root:
+
+```bash
+npx @upstash/docs7 dev docs --port 3333
+```
+
+Open `http://localhost:3333`. The first run downloads the Docs7 renderer;
+subsequent runs reuse its cache. Changes reload locally.
+
+## Validate a change
+
+After the root `npm ci`, run:
+
+```bash
+node docs/check.mjs
+```
+
+The checker verifies navigation targets, page metadata, MDX compilation, and
+local page links. Preview representative pages to check navigation, code blocks,
+tables, mobile overflow, and both themes. A successful syntax check does not prove
+an example's API is correct: verify the example against the implementation too.
+
+Keep product docs in their product directory and add every page to `docs.json`.
+Use paths such as `/ui/quickstart` for links inside the hosted site. Link to the
+GitHub source when describing code that lives outside the docs root.
+
+## Connect Docs7
+
+In the [Context7 dashboard](https://context7.com/dashboard), select the intended
+teamspace and open **Docs7 → Add New Site**.
+
+| Setting | Value |
+| --- | --- |
+| Repository | `n3wth/n3wth` |
+| Production branch | `main` |
+| Documentation folder | `docs` |
+| Configuration | `docs/docs.json` |
+
+Authorize repository access if prompted, then choose **Publish Site**. Verify
+the generated site URL before adding a custom domain. Keep the existing UI, Kit,
+Skills, and r3 site domains attached to their current applications unless you
+are intentionally migrating them.
+
+If the form says the Free plan's repository slot is already in use, you need a
+plan with another slot before you can add this repository. Do not replace an
+existing site's source to get around that limit.
+
+The public Context7 API supports library indexing and refresh. Its API key does
+not replace the initial Docs7 dashboard/GitHub connection. Keep keys in a secret
+store or environment variable; do not put them in either JSON configuration.
+
+## Verify the published site
+
+1. Confirm the production deployment corresponds to the merged commit.
+2. Open the overview and one page from each product, including a direct page
+   load rather than only client-side navigation.
+3. Test the product navigation, page links, and search.
+4. Confirm Markdown and `llms.txt` output are available from the hosted site.
+5. Check that the Context7 library refresh has completed and returns the new
+   product documentation. A refresh request being accepted is not completion.
+
+Docs7 refreshes its linked Context7 library when production builds finish.
+For repository indexing, use `/n3wth/n3wth`; select repository-managed
+configuration in its library settings if dashboard settings currently override it.
+
+To request a repository refresh through the API:
+
+```bash
+curl --fail-with-body https://context7.com/api/v1/refresh \
+  --header "Authorization: Bearer $CONTEXT7_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{"libraryName":"/n3wth/n3wth","branch":"main"}'
+```
+
+Supply `CONTEXT7_API_KEY` through your environment. Avoid printing it in shell
+traces or CI logs. If the library has not been added, submit the repository from
+the Context7 dashboard first.
+
+## Maintain accuracy
+
+- Update examples when exports, command flags, or installation sources change.
+- Keep internal plans and operational records outside the indexed docs folder.
+- Link separate runtime repositories instead of copying their release workflows.
+- Revert a broken documentation commit and verify the replacement deployment.
+  Do not change application hosting settings to roll back a docs-only change.
+
+References: [Docs7 quickstart](https://context7.com/docs/docs7/quickstart),
+[site configuration](https://context7.com/docs/docs7/configuration), and
+[Context7 library configuration](https://context7.com/docs/library-owners).
