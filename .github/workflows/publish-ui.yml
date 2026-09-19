@@ -1,10 +1,8 @@
 name: Release UI
 
 on:
-  workflow_run:
-    workflows: [Site CI]
-    types: [completed]
-    branches: [main]
+  push:
+    tags: ['ui-v*']
   workflow_dispatch:
 
 permissions:
@@ -15,66 +13,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  release:
-    # workflow_run uses the current default-branch SHA for npm provenance.
-    # Ignore stale CI completions so the checked source and provenance agree.
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' || github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_sha == github.sha
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      actions: write
-    outputs:
-      hasChangesets: ${{ steps.changesets.outputs.has-changesets }}
-      sha: ${{ steps.source.outputs.sha }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
-          fetch-depth: 0
-      - id: source
-        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm install --global npm@11.19.1
-      - run: npm ci --workspace @n3wth/ui --include-workspace-root
-      - uses: changesets/action@v2
-        id: changesets
-        with:
-          version-script: npm run release:version
-          pr-base-branch: main
-          pr-title: 'Release @n3wth/ui'
-          commit-message: 'chore: version UI release'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      # PRs created with GITHUB_TOKEN do not trigger pull_request workflows.
-      # Explicit workflow_dispatch does, and checks the generated release SHA.
-      - name: Validate generated release PR
-        if: steps.changesets.outputs.pr-number != ''
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.changesets.outputs.pr-number }}
-        run: gh workflow run site-check.yml --ref "$(gh pr view "$PR_NUMBER" --json headRefName --jq .headRefName)"
-
   publish:
-    needs: release
-    if: needs.release.outputs.hasChangesets == 'false' && vars.UI_NPM_PUBLISH_ENABLED == 'true'
+    if: vars.UI_NPM_PUBLISH_ENABLED == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v7
-        with:
-          ref: ${{ needs.release.outputs.sha }}
       - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
       - run: npm install --global npm@11.19.1
       - run: npm ci --workspace @n3wth/ui --include-workspace-root
+      - name: Verify tag matches package version
+        if: startsWith(github.ref, 'refs/tags/ui-v')
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version=$(node -p "require('./packages/ui/package.json').version")
+          if [ "$TAG" != "ui-v$version" ]; then
+            echo "Tag $TAG does not match packages/ui version $version" >&2
+            exit 1
+          fi
       - run: npm run check --workspace @n3wth/ui
       - run: npx playwright install --with-deps chromium
       - run: npm run check:package
+      # publish-ui.mjs skips versions already on the registry, so a manual
+      # dispatch on main is a safe smoke test.
       - run: node scripts/publish-ui.mjs

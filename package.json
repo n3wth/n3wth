@@ -33,12 +33,9 @@
     "check:affected": "node scripts/affected.mjs",
     "check:browser": "playwright test",
     "preview": "npm run preview -w @n3wth/portfolio",
-    "changeset": "changeset",
-    "release:version": "node scripts/version-ui.mjs",
     "check:package": "node scripts/check-ui-package.mjs"
   },
   "devDependencies": {
-    "@changesets/cli": "3.0.3",
     "@playwright/test": "1.63.0",
     "@resvg/resvg-js": "2.6.2",
     "@types/react": "19.3.0",

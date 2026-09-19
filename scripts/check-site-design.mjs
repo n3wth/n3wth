@@ -47,7 +47,8 @@ export function checkSiteDesign(root = fileURLToPath(new URL('../', import.meta.
     if (!app.dependencies?.['@n3wth/ui']) {
       throw new Error(`${app.name} is missing the shared UI dependency`)
     }
-    if (app.dependencies['@n3wth/ui'] !== version) throw new Error(`${app.name} must use workspace UI ${version}`)
+    const declared = app.dependencies['@n3wth/ui']
+    if (declared !== '*' && declared !== version) throw new Error(`${app.name} must use workspace UI "*" or ${version}`)
     for (const component of ['N3wthProvider', 'SiteNavigation', 'PageHeader', 'SiteSection', 'SiteFooter', 'site.css']) {
       if (!shared.has(component)) throw new Error(`${app.name} must consume shared ${component}`)
     }

@@ -11,9 +11,9 @@ Use Node 24 and npm 11.19.1, then run npm ci at the repository root. npm 10 has 
 - packages/ui: public @n3wth/ui library. Read its AGENTS.md before editing.
 - packages/site-config: canonical public origins, with no framework dependency or secrets.
 
-Applications may import shared packages. Packages must not import applications. Preserve UI package exports; releases from 2.0.0 use Changesets and the monorepo publish-ui.yml workflow. See docs/workspace/npm-release.md.
+Applications may import shared packages. Packages must not import applications. Preserve UI package exports; releases from 2.0.0 publish from the monorepo through publish-ui.yml on a `ui-v*` tag. See docs/workspace/npm-release.md.
 
-All site foundations come from `@n3wth/ui/site` and `@n3wth/ui/site.css`. Keep UI versions aligned so npm resolves the workspace, not a nested registry copy. Use `npm run site:new -- idea-name "Idea name"` for new sites; read `docs/workspace/design-system.md`. Keep themes and typography in the shared package rather than copying them into applications.
+All site foundations come from `@n3wth/ui/site` and `@n3wth/ui/site.css`. Apps declare `"@n3wth/ui": "*"` so npm resolves the workspace, not a nested registry copy. Use `npm run site:new -- idea-name "Idea name"` for new sites; read `docs/workspace/design-system.md`. Keep themes and typography in the shared package rather than copying them into applications.
 
 Sites must import native controls through `@n3wth/ui/primitives` and Tailwind tokens through `@n3wth/ui/tailwind-theme.css`. Only packages/ui may depend on or import Astryx. Keep dependency upgrades and runtime integration in UI; do not add application JSX-runtime shims. `check:design` enforces the import/dependency boundary.
 

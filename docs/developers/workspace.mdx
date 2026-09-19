@@ -73,9 +73,10 @@ Pure edits to this hub use the [documentation checks](/publishing#validate-a-cha
 
 ## Releases and deployments
 
-`@n3wth/ui` releases from 2.0.0 are managed here through Changesets and
-`publish-ui.yml`. Add a Changeset for consumer-facing library changes; do not
-run `npm publish` locally. Documentation-only changes do not need a package release.
+`@n3wth/ui` releases from 2.0.0 publish from this monorepo through
+`publish-ui.yml` on a `ui-v*` tag. Bump the version and add a changelog entry
+for consumer-facing library changes; do not run `npm publish` locally.
+Documentation-only changes do not need a package release.
 
 The six existing Vercel sites use automatic Git deployments. Docs7 is a separate
 hosting connection to this same repository. Merging documentation is not evidence
