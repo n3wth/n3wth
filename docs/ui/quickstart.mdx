@@ -3,7 +3,9 @@ title: "Quickstart"
 description: "Install @n3wth/ui 2.x. Build a React page with shared components and native controls."
 ---
 
-Use `@n3wth/ui/site` for page structure and `@n3wth/ui/primitives` for controls. These instructions target version 2.0.0, available on npm, and the matching source in the n3wth monorepo.
+Use `@n3wth/ui/site` for page structure and `@n3wth/ui/primitives` for
+controls. These instructions target version 2.0.0, available on npm, and the
+matching source in the n3wth monorepo.
 
 <Info>
   The examples assume a browser application. The package provides components
@@ -16,7 +18,10 @@ Use `@n3wth/ui/site` for page structure and `@n3wth/ui/primitives` for controls.
 - An existing React application with React and React DOM 18 or 19.
 - A bundler that resolves ESM, package CSS imports, and font URLs. The package includes a Vite starter.
 
-The example below assumes a React TypeScript app with `src/main.tsx` and an HTML element with `id="root"`. For Next.js, put the interactive component in a client module and import the CSS through your application's global stylesheet entry.
+The example below assumes a React TypeScript app with `src/main.tsx` and an
+HTML element with `id="root"`. For Next.js, put the interactive component in
+a client module and import the CSS through your application's global
+stylesheet entry.
 
 ## Install
 
@@ -26,7 +31,10 @@ From your application directory:
 npm install @n3wth/ui@^2.0.0
 ```
 
-React and React DOM are peer dependencies. GSAP is an optional peer; the site and button example below does not use animation hooks that require it. In this monorepo, use the root lockfile and keep workspace UI dependency versions aligned rather than installing a second registry copy.
+React and React DOM are peer dependencies. GSAP is an optional peer; the
+site and button example below does not use animation hooks that need it. In
+this monorepo, use the root lockfile and keep workspace UI dependency
+versions aligned rather than installing a second registry copy.
 
 ## Render a page
 
@@ -71,9 +79,13 @@ if (!root) throw new Error('Missing #root element')
 createRoot(root).render(<App />)
 ```
 
-Start the app with its existing development command, such as `npm run dev` in a Vite app. The page should display a heading and counter; selecting **Increment** increases the count.
+Start the app with its existing development command, such as `npm run dev`
+in a Vite app. The page should display a heading and counter. Selecting
+**Increment** increases the count.
 
-`N3wthProvider` supplies the theme context. `site.css` supplies the generated theme and component CSS. Both are needed. This example does not require Tailwind utility generation.
+`N3wthProvider` supplies the theme context. `site.css` supplies the
+generated theme and component CSS. You need both. This example does not
+require Tailwind utility generation.
 
 ### Font packaging caveat
 
@@ -83,7 +95,13 @@ Start the app with its existing development command, such as `npm run dev` in a 
   guide if your bundler reports an unresolved font URL.
 </Warning>
 
-The theme currently names Suisse Intl for body and headings, but its commercial font files are deliberately excluded from the npm package. The CSS still references those files. A browser may use system fallbacks; a bundler may instead reject the unresolved package URLs. If installation succeeds but CSS compilation fails, follow [font troubleshooting](/ui/troubleshooting#font-resolution-fails). This is a source-level packaging limitation, not evidence that the React props are wrong.
+The theme currently names Suisse Intl for body and headings, but the release
+process deliberately excludes its commercial font files from the npm
+package. The CSS still references those files. A browser may use system
+fallbacks; a bundler may instead reject the unresolved package URLs. If
+installation succeeds but CSS compilation fails, follow
+[font troubleshooting](/ui/troubleshooting#font-resolution-fails). This is a
+source-level packaging limitation, not evidence that the React props are wrong.
 
 ## Choose the entry point
 
@@ -95,7 +113,9 @@ The theme currently names Suisse Intl for body and headings, but its commercial 
 | `@n3wth/ui` | Compatibility adapters, hooks, tokens, and brand utilities |
 | `@n3wth/ui/styles` | Compatibility CSS plus the shared site foundation |
 
-Continue with [site compositions](/ui/site-compositions) and [primitives and themes](/ui/primitives-and-themes). Use [API recipes](/ui/api-and-recipes) for router and Open Graph integrations.
+Continue with [site compositions](/ui/site-compositions) and
+[primitives and themes](/ui/primitives-and-themes). Use
+[API recipes](/ui/api-and-recipes) for router and Open Graph integrations.
 
 ## Sources
 

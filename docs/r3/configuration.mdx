@@ -3,24 +3,30 @@ title: "Configuration"
 description: "Configure the MCP process. Choose a mode and find the stored data."
 ---
 
-Set configuration on the process that your MCP client launches. Website environment variables do not configure that process. Start with the [quickstart](/r3/quickstart) and use a dedicated working directory for each isolated installation.
+Set configuration on the process that your MCP client launches. Website
+environment variables do not configure that process. Start with the
+[quickstart](/r3/quickstart). Use a dedicated working directory for each
+isolated installation.
 
 ## Environment variables
 
-These values come from `src/index.ts`, not the interactive UI's configuration or older website examples.
+These values come from `src/index.ts`, not the interactive UI's configuration
+or older website examples.
 
 | Variable | Default | Effect |
 | --- | --- | --- |
 | `MEM0_USER_ID` | `oliver` | Default namespace used by the MCP handlers. Set it explicitly. It is not an authentication control. |
-| `INTELLIGENCE_MODE` | `enhanced` | Exact value `basic` disables enhanced initialization; other values select enhanced mode. |
+| `INTELLIGENCE_MODE` | `enhanced` | The exact value `basic` disables enhanced initialization. Any other value selects enhanced mode. |
 | `MEM0_API_KEY` | Unset | Credential used for Mem0 requests in explicitly selected hybrid mode. A key alone does not select hybrid mode. |
 | `MEM0_BASE_URL` | `https://api.mem0.ai` | Base URL for the server's general Mem0 request helper. The Mem0 import tool uses its own fixed URL. |
-| `REDIS_URL` | General cache URL defaults to `redis://localhost:6379` | Selects the external cache connection path when explicitly set; see the local-mode limitation below. |
-| `DEMO_MODE` | Unset | Exact value `true` selects the nonpersistent demo backend. |
-| `DEBUG` | Unset | Exact value `true` enables debug logging. |
-| `QUIET_MODE` | Automatically quiet for non-TTY input or production | Exact value `false` disables quiet mode. Keep normal quiet behavior for MCP. |
+| `REDIS_URL` | General cache URL defaults to `redis://localhost:6379` | Selects the external cache connection path when explicitly set. See the local-mode limitation below. |
+| `DEMO_MODE` | Unset | The exact value `true` selects the nonpersistent demo backend. |
+| `DEBUG` | Unset | The exact value `true` enables debug logging. |
+| `QUIET_MODE` | Automatically quiet for non-TTY input or production | The exact value `false` disables quiet mode. Keep normal quiet behavior for MCP. |
 
-The core manifest's MCP metadata marks Redis and Mem0 credentials as required, but the executable selects local mode without either. Follow the runtime logic when configuring local use.
+The core manifest's MCP metadata marks Redis and Mem0 credentials as required.
+The executable still selects local mode without either. Follow the runtime
+logic, not the manifest, when you configure local use.
 
 ## Select a mode
 
@@ -30,9 +36,16 @@ The core manifest's MCP metadata marks Redis and Mem0 credentials as required, b
 | Hybrid | `MEM0_API_KEY` plus `--hybrid` | Routes general memory API requests to Mem0; Redis acts as a cache. |
 | Demo | `--demo` or `DEMO_MODE=true` | Uses in-process records with no persistence. |
 
-Demo selection takes precedence. Do not interpret the presence of an API key, a startup banner, or an empty job queue as confirmation of cloud synchronization. Hybrid mode is a Mem0-backed request path; the source does not establish a complete cross-device synchronization contract.
+Demo selection takes precedence over the other modes. An API key, a startup
+banner, or an empty job queue does not confirm cloud synchronization. Hybrid
+mode is a Mem0-backed request path. The source does not establish a complete
+cross-device synchronization contract.
 
-The package command `serve` starts the MCP server and is the default command. `ui` and experimental `manage` launch separate interactive interfaces. Their `R3CALL_*` settings and `--user-id` flag are not replacements for `MEM0_USER_ID` in the MCP server. The server entry exports `startServer`; these pages do not assume an exported `Recall` SDK class.
+The package command `serve` starts the MCP server and is the default command.
+`ui` and experimental `manage` launch separate interactive interfaces. Their
+`R3CALL_*` settings and `--user-id` flag do not replace `MEM0_USER_ID` in the
+MCP server. The server entry exports `startServer`. These pages do not assume
+an exported `Recall` SDK class.
 
 ## Keep a stable working directory
 
@@ -44,27 +57,42 @@ cd "$HOME/.local/share/r3"
 MEM0_USER_ID=personal INTELLIGENCE_MODE=basic npx -y @n3wth/r3 serve
 ```
 
-This starts a stdio server awaiting an MCP client; it does not start a web UI. For regular use, configure the same working directory through your client's process-launch settings. Changing it changes which relative vector index r3 opens. The inspected server does not expose an environment variable for changing that index path.
+This starts a stdio server that waits for an MCP client. It does not start a
+web UI. For regular use, configure the same working directory through your
+client's process-launch settings. Changing it changes which relative vector
+index r3 opens. The inspected server has no environment variable that changes
+that index path.
 
 ## Storage and retention
 
 | Layer | Implementation | Retention caveat |
 | --- | --- | --- |
-| Local records | Redis keys `memory:<user>:<id>` | Adds use a 30-day default TTL; updates reset it to 30 days. The MCP add schema does not expose a TTL argument. |
+| Local records | Redis keys `memory:<user>:<id>` | Adds use a 30-day default TTL; updates reset it to 30 days. The MCP add schema has no TTL argument. |
 | Local vector index | `./data/vectra-index` | File-backed, relative to the working directory; not a complete backup of Redis state. |
 | MCP cache | Redis `memory:<id>` keys | L1 TTL is 24 hours; L2 TTL is 7 days. |
 | Search cache | Redis `search:*` keys | Five-minute TTL; key construction does not include a user namespace. |
 | Demo records | JavaScript maps | Lost with the process. |
 
-Basic and enhanced Vectra implementations default to the same directory but generate embeddings differently. Do not assume switching modes gives equivalent search results. Avoid running multiple writers against the same index without first validating the behavior.
+Basic and enhanced Vectra implementations default to the same directory but
+generate embeddings differently. Switching modes does not give equivalent
+search results. Avoid running multiple writers against the same index without
+first validating the behavior.
 
-The embedded backend is created with `new RedisMemoryServer()` and no explicit persistence options. Keep an independent copy of important data and test write/read/restart behavior in the actual launch environment. There is no documented MCP backup/restore guarantee.
+The embedded backend is created with `new RedisMemoryServer()` and no explicit
+persistence options. Keep an independent copy of important data. Test the
+write, read, and restart behavior in the actual launch environment. There is
+no documented MCP backup or restore guarantee.
 
 ## External Redis caveat
 
-`REDIS_URL` is supported by the cache connection code, but it is not a verified drop-in replacement for local storage. Explicitly setting it bypasses the branch that creates `LocalMemory`, while local-mode API calls still require `LocalMemory`. This can produce `Local memory not initialized`.
+The cache connection code supports `REDIS_URL`, but it is not a verified
+drop-in replacement for local storage. Setting it explicitly bypasses the
+branch that creates `LocalMemory`, while local-mode API calls still require
+`LocalMemory`. This can produce `Local memory not initialized`.
 
-For the local quickstart, leave `REDIS_URL` unset. If you need an externally managed database, validate the relevant core path before deploying it; changing the website's settings will not fix this behavior.
+For the local quickstart, leave `REDIS_URL` unset. If you need an externally
+managed database, validate the relevant core path before you deploy it.
+Changing the website's settings will not fix this behavior.
 
 ## Sources
 

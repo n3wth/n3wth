@@ -3,21 +3,39 @@ title: CLI
 description: Use newth-skills commands. Understand local tracking, fallback content, and distribution limits.
 ---
 
-`apps/skills/cli` contains the source for `newth-skills`, a separate command-line manager. For installation of committed instruction files, use the [shell installer](/skills/installation).
+`apps/skills/cli` contains the source for `newth-skills`, a separate
+command-line manager. For installation of committed instruction files, use
+the [shell installer](/skills/installation).
 
 ## Distribution status
 
-The CLI manifest declares package name `newth-skills`, version `1.0.0`, and executable `dist/index.js`. These declarations do not establish that an npm release is available. During this documentation review on 2026-09-17, the public registry returned HTTP 404 for both the package metadata and its `latest` endpoint. Do not rely on `npx newth-skills` or an npm global install as a verified distribution route.
+The CLI manifest declares package name `newth-skills`, version `1.0.0`, and
+executable `dist/index.js`. These declarations do not prove that an npm
+release is available. During this documentation review on 2026-09-17, the
+public registry returned HTTP 404 for both the package metadata and its
+`latest` endpoint. Do not rely on `npx newth-skills` or an npm global install
+as a verified distribution route.
 
-The checked-in CLI download base is `https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills`. The shell installer also targets the current `n3wth/n3wth` repository. If an older installation points at the former standalone `n3wth/skills` repository, it does not match this source. Inspect its bundled URLs before trusting downloads; a failed fetch can be hidden by generated fallback content.
+The checked-in CLI download base is
+`https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills`. The
+shell installer also targets the current `n3wth/n3wth` repository. If an
+older installation points at the former standalone `n3wth/skills`
+repository, it does not match this source. Inspect its bundled URLs before
+you trust downloads; a failed fetch can hide behind generated fallback content.
 
-The CLI is nested below `apps/skills` and is not a separate member of the root's `apps/*` workspace list. It has its own manifest and lockfile. Its manifest declares Node `>=18.0.0`, but that declaration alone does not verify compatibility of its dependencies or a successful build. The repository's current development requirement is Node 24 and npm 11.19.1.
+The CLI is nested below `apps/skills` and is not a separate member of the
+root's `apps/*` workspace list. It has its own manifest and lockfile. Its
+manifest declares Node `>=18.0.0`, but that declaration alone does not verify
+that its dependencies are compatible or that it builds successfully. The
+repository's current development requirement is Node 24 and npm 11.19.1.
 
 Sources: [CLI manifest](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/package.json), [download implementation](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/src/utils/skills.ts), and [public registry metadata endpoint](https://registry.npmjs.org/newth-skills).
 
 ## Commands implemented in source
 
-The syntax below describes the checked-in implementation. It assumes you already have a working executable built from the source; it is not an npm installation promise.
+The syntax below describes the checked-in implementation. It assumes you
+already have a working executable built from the source. It is not an npm
+installation promise.
 
 | Command | Options | Behavior |
 | --- | --- | --- |
@@ -39,7 +57,9 @@ newth-skills search animation
 newth-skills info gsap-animations
 ```
 
-Category filtering uses exact IDs. The help text lists fewer categories than the type supports; available results come from the CLI's bundled catalog. Search includes categories, unlike the website's name/description/tag search.
+Category filtering uses exact IDs. The help text lists fewer categories than
+the type supports. Available results come from the CLI's bundled catalog.
+Search includes categories, unlike the website's name/description/tag search.
 
 ## Files and tracking
 
@@ -48,19 +68,37 @@ Category filtering uses exact IDs. The help text lists fewer categories than the
 | `~/.newth-skills/config.json` | `installedSkills` records containing `id`, `version`, `installedAt`, and `platform`; also a `lastUpdated` field initialized to `null` |
 | `~/.gemini/skills/<id>.md` | Instruction or fallback content written by the CLI |
 
-Config reads create the config directory and default file if missing. Even a listing can therefore write local state. Malformed config JSON is treated as an empty configuration.
+Config reads create the config directory and default file if missing. Even a
+listing command can therefore write local state. The CLI treats malformed
+config JSON as an empty configuration.
 
-Tracking is not a scan of `~/.gemini/skills`. Files installed through the shell script, copied manually, or downloaded by curl are not automatically registered. Conversely, a tracking entry does not prove the file still exists.
+Tracking is not a scan of `~/.gemini/skills`. Files installed through the
+shell script, copied manually, or downloaded by curl are not automatically
+registered. A tracking entry also does not prove the file still exists.
 
-`--force` bypasses the existing tracking-record check. It does not protect untracked files: an install can overwrite an existing `<id>.md` even without `--force`. The CLI always writes a flat file, including when its URL ends in `/SKILL.md`.
+`--force` bypasses the existing tracking-record check. It does not protect
+untracked files: an install can overwrite an existing `<id>.md` even without
+`--force`. The CLI always writes a flat file, including when its URL ends in
+`/SKILL.md`.
 
 ## What success messages do not prove
 
-When `skillFile` is absent or the fetch fails, install and update generate Markdown from catalog descriptions, features, and use cases. This fallback is not the authored instruction file and has no YAML frontmatter. A successful network fetch is not required for an install success message.
+When `skillFile` is absent or the fetch fails, install and update generate
+Markdown from catalog descriptions, features, and use cases. This fallback is
+not the authored instruction file, and it has no YAML frontmatter. A
+successful network fetch is not required for an install success message.
 
-The install helper catches file-write errors internally, but the caller still records the installation and prints success. Uninstall similarly catches file-removal errors before removing the tracking record. Verify the actual file after either operation rather than relying solely on output or exit status.
+The install helper catches file-write errors internally, but the caller
+still records the installation and prints success. Uninstall similarly
+catches file-removal errors before it removes the tracking record. Verify
+the actual file after either operation rather than relying on output or exit
+status alone.
 
-`update` compares version strings against the bundled catalog. It does not fetch a current catalog, compare semantic-version ordering, or update the CLI itself. A different version string triggers rewriting even if it represents an older version. Unchanged version strings mean changed remote content is not fetched.
+`update` compares version strings against the bundled catalog. It does not
+fetch a current catalog, compare semantic-version ordering, or update the
+CLI itself. A different version string triggers a rewrite even if it
+represents an older version. Unchanged version strings mean the CLI does not
+fetch changed remote content.
 
 ## Troubleshooting
 

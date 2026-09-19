@@ -3,7 +3,10 @@ title: "Compositions"
 description: "Build page frames, navigation, headings, sections, and footers with @n3wth/ui/site."
 ---
 
-Site components own the shared layout and typography. Your application supplies content, route links, and active state. Complete the [quickstart](/ui/quickstart) first; the examples here assume an ancestor `N3wthProvider` and an imported `site.css`.
+Site components own the shared layout and typography. Your application
+supplies content, route links, and active state. Complete the
+[quickstart](/ui/quickstart) first. The examples here assume an ancestor
+`N3wthProvider` and an imported `site.css`.
 
 ## Build a page frame
 
@@ -46,7 +49,10 @@ export function ReferencePage() {
 }
 ```
 
-`n3wth-site-main` adds the top spacing used with site navigation. `SiteSection` adds vertical spacing; it does not add the container's horizontal constraints. Put sections inside a container, or put a container inside a full-width section when the section needs its own background.
+`n3wth-site-main` adds the top spacing used with site navigation.
+`SiteSection` adds vertical spacing. It does not add the container's
+horizontal constraints. Put sections inside a container, or put a container
+inside a full-width section when the section needs its own background.
 
 ## Structure and typography reference
 
@@ -61,15 +67,25 @@ export function ReferencePage() {
 | `SiteDocSection` | Optional `title`; `level`: 2 (default) or 3; HTML attributes | Group long-form content |
 | `SiteDocList` | Required `items`: React nodes; list attributes except `children` | Render a document list |
 
-Heading variants default to levels 1, 2, and 3 respectively. Set `level` explicitly when visual size and document hierarchy differ. `SiteDocSection` renders a `div`, not a semantic `section`.
+Heading variants default to levels 1, 2, and 3 respectively. Set `level`
+explicitly when the visual size and document hierarchy differ.
+`SiteDocSection` renders a `div`, not a semantic `section`.
 
 ## Navigation behavior
 
-`SiteNavigation` requires `brand` and `links`, both React nodes. Optional props are `actions`, `navigationLabel` (default `Primary`), `navigationId`, and `menuLabel` (default `Open menu`). It accepts HTML attributes but does not take a `children` slot.
+`SiteNavigation` requires `brand` and `links`, both React nodes. Optional
+props are `actions`, `navigationLabel` (default `Primary`), `navigationId`,
+and `menuLabel` (default `Open menu`). It accepts HTML attributes but does
+not take a `children` slot.
 
-Pass anchors or your router's link components. The current UI docs app passes React Router `NavLink` elements. The composition does not resolve routes or calculate which link is active.
+Pass anchors or your router's link components. The current UI docs app
+passes React Router `NavLink` elements. The composition does not resolve
+routes or calculate which link is active.
 
-The mobile disclosure focuses the first link when opened. It closes on link selection, outside pointer interaction, Escape, or a transition to the desktop media query. Escape restores focus to the menu button. Keep navigation links as actual anchors so the click and focus behavior can find them.
+The mobile disclosure focuses the first link when opened. It closes on link
+selection, outside pointer interaction, Escape, or a transition to the
+desktop media query. Escape restores focus to the menu button. Keep
+navigation links as actual anchors so the click and focus behavior can find them.
 
 ## Document content
 
@@ -92,7 +108,11 @@ export function Requirements() {
 
 ## Customize the footer deliberately
 
-`SiteFooter` defaults to an Oliver Newth brand link and Library, Contact, and GitHub links. For another product, pass your own `brand` and `links` as in the frame example. The optional `signup` slot renders above the identity row; pair it with `SiteSignup`, which takes an `onSubmit(email)` handler so the app decides where addresses go.
+`SiteFooter` defaults to an Oliver Newth brand link and Library, Contact, and
+GitHub links. For another product, pass your own `brand` and `links` as in
+the frame example. The optional `signup` slot renders above the identity
+row. Pair it with `SiteSignup`, which takes an `onSubmit(email)` handler so
+the app decides where addresses go.
 
 | Prop | Behavior |
 | --- | --- |
@@ -102,7 +122,8 @@ export function Requirements() {
 | `legalLinks` | Appended only when using the default link group |
 | `children` | Additional footer metadata below the link row |
 
-Supplying `links` means `legalLinks` and `sourceHref` no longer construct that group. Include those links yourself when replacing it.
+If you supply `links`, `legalLinks` and `sourceHref` no longer construct
+that group. Include those links yourself when you replace it.
 
 ## Sources
 

@@ -3,7 +3,8 @@ title: "API and recipes"
 description: "Find public UI entry points. Add route scrolling, reading outlines, and Open Graph images."
 ---
 
-Use public package paths rather than importing files from `dist`. The [quickstart](/ui/quickstart) covers installation; [site compositions](/ui/site-compositions) documents the page components.
+Use public package paths rather than importing files from `dist`. The
+[quickstart](/ui/quickstart) covers installation. [Site compositions](/ui/site-compositions) documents the page components.
 
 ## Public entry points
 
@@ -21,7 +22,9 @@ Use public package paths rather than importing files from `dist`. The [quickstar
 | `@n3wth/ui/tailwind` | Retained CommonJS Tailwind preset |
 | `@n3wth/ui/fonts/*` | Font paths; only the manifest's selected families ship in npm |
 
-JavaScript entries provide ESM imports and type declarations. The CSS `theme` export is not the JavaScript `n3wthTheme` object; import that object from `site` or the root entry.
+JavaScript entries provide ESM imports and type declarations. The CSS
+`theme` export is not the JavaScript `n3wthTheme` object. Import that object
+from `site` or the root entry.
 
 ## Reset scroll on new-page link navigation
 
@@ -38,15 +41,23 @@ export function RouteScrollReset() {
 }
 ```
 
-This follows the current docs app. The hook records unmodified same-origin anchor clicks to a different pathname with no hash, then scrolls to the top when that destination becomes active.
+This follows the current docs app. The hook records unmodified same-origin
+anchor clicks to a different pathname with no hash, then scrolls to the top
+when that destination becomes active.
 
-It deliberately leaves hash scrolling and browser Back/Forward to the browser or router. It is not a general scroll restoration manager: programmatic navigation without an anchor click and query-only changes do not trigger its reset. Avoid mounting competing scroll-reset implementations.
+It deliberately leaves hash scrolling and browser Back/Forward to the
+browser or router. It is not a general scroll restoration manager:
+programmatic navigation without an anchor click, and query-only changes, do
+not trigger its reset. Avoid mounting competing scroll-reset implementations.
 
 ## Add a reading outline
 
-`ReadingOutline` delegates its item model and scroll-spy behavior to the native `Outline`. Its `items` type is `OutlineItem[]` from the pinned dependency. Each item supplies an `id`, `label`, and heading `level`.
+`ReadingOutline` delegates its item model and scroll-spy behavior to the
+native `Outline`. Its `items` type is `OutlineItem[]` from the pinned
+dependency. Each item supplies an `id`, `label`, and heading `level`.
 
-Render an outline alongside matching section IDs, inside the provider from the quickstart:
+Render an outline alongside matching section IDs, inside the provider from
+the quickstart:
 
 ```tsx
 import {
@@ -83,7 +94,8 @@ export function Article() {
 | `collapsible` | `false` | Enables a disclosure, initially closed |
 | `className` | Unset | Additional wrapper class |
 
-The outline uses compact density. Supply matching article targets and verify their navigation in the consuming app.
+The outline uses compact density. Supply matching article targets and
+verify their navigation in the consuming app.
 
 ## Generate a Next.js Open Graph image
 
@@ -102,7 +114,11 @@ export default function Image() {
 }
 ```
 
-`OGCard` accepts one required prop, `title: string`. It renders the package's mark and title on a dark background using inline styles. It does not accept a description, logo URL, color theme, or image dimensions. The image response supplies dimensions; keep titles short enough for the fixed title styling and inspect the resulting image.
+`OGCard` accepts one required prop, `title: string`. It renders the
+package's mark and title on a dark background using inline styles. It does
+not accept a description, logo URL, color theme, or image dimensions. The
+image response supplies dimensions. Keep titles short enough for the fixed
+title styling, and inspect the resulting image.
 
 ## Sources
 
