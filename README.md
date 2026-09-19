@@ -11,22 +11,23 @@ I build agent infrastructure — memory, tooling, and interfaces that make AI sy
 - [ui](https://github.com/n3wth/ui) — atomic design system for n3wth sites. Flat, minimal
 - [canvas](https://github.com/n3wth/canvas) — live canvases with realtime sync
 - [gbrain](https://github.com/n3wth/gbrain) — personal knowledge base an agent can read and write
-- [skills](apps/skills) — reusable agent skills
+- [skills](https://skills.n3wth.com) — reusable agent skills, installable via `curl -fsSL https://skills.n3wth.com/install.sh | bash`
 - [lunchmoney](https://lunchmoney.sh) — unofficial Lunch Money plugin for Claude, Codex, and Cursor
 
 ## Developer documentation
 
-The [developer documentation](docs/developers/index.mdx) covers UI, Kit, Skills,
-and r3 with installation guides, examples, reference material, and troubleshooting.
-It is a Docs7 project rooted at `docs/developers`:
+Full docs for UI, Kit, Skills, and r3 — installation guides, examples, reference
+material, and troubleshooting — are at **[docs.n3wth.com](https://docs.n3wth.com)**.
+
+The docs source lives in this repository at `docs/developers` (a Docs7 project).
+To run it locally after the root `npm ci`:
 
 ```bash
 npx @upstash/docs7 dev docs/developers
 ```
 
-After the root `npm ci`, validate it with `node docs/developers/check.mjs`.
-See [publishing and setup](docs/developers/publishing.mdx) for the GitHub connection,
-production branch, and Context7 indexing configuration.
+Validate with `node docs/developers/check.mjs`. See [publishing and setup](docs/developers/publishing.mdx)
+for the GitHub connection, production branch, and Context7 indexing configuration.
 
 ## Workspace
 
@@ -47,9 +48,20 @@ Applications live in `apps/portfolio`, `apps/ui-docs`, `apps/garden`, `apps/skil
 
 ## Deployment
 
-All six sites deploy automatically from Git. Feature branches and pull requests create Preview deployments; commits on `main` create Production deployments for affected projects while unchanged projects are skipped. Each app's `vercel.json` keeps `git.deploymentEnabled` set to `true`, and new sites inherit this from the generator.
+All six sites run on Cloudflare Workers. `npm run build:cloudflare` builds all of
+them (or one, with `-- --workspace @n3wth/<app>`); each `apps/<app>/wrangler.jsonc`
+is the production Worker config — name, custom domain, assets, and bindings.
+Pull requests get an isolated Cloudflare preview build; commits on `main` deploy
+to production for affected projects.
 
-Wait for GitHub CI to pass and review affected Preview deployments before merging. After merging, verify each affected Production deployment is Ready and check routes, assets, redirects and APIs before reporting a release complete. See the [deployment runbook](docs/workspace/deployment.md) for project mappings, validation, and rollback. Older branches must pick up the current configuration before further pushes to follow this policy.
+Vercel is a disconnected manual fallback: the Vercel projects retain their
+domains and deployment history but no longer receive Git deployments. See the
+[deployment runbook](docs/workspace/deployment.md) for the full Cloudflare build
+process, the Vercel fallback procedure, and project mappings.
+
+Wait for GitHub CI and the Cloudflare preview checks to pass before merging.
+After merging, verify each affected production Worker is live and check routes,
+assets, redirects and APIs before reporting a release complete.
 
 ## Contact
 
