@@ -1,4 +1,4 @@
-import type { AssistantId } from './assistants'
+import type { AssistantId } from './types'
 
 // Install command configuration for each assistant
 export interface InstallCommand {
