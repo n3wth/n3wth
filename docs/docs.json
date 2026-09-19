@@ -24,14 +24,14 @@
             "group": "Build interfaces",
             "products": [
               { "product": "UI", "description": "Shared React design system", "pages": ["ui/quickstart", "ui/site-compositions", "ui/primitives-and-themes", "ui/api-and-recipes", "ui/troubleshooting"] },
-              { "product": "Kit", "description": "Components you own", "pages": ["kit/quickstart", "kit/catalog", "kit/registry-authoring", "kit/ai-and-cli"] }
+              { "product": "Kit", "description": "Components you own", "pages": ["kit/quickstart", "kit/catalog", "kit/registry-authoring", "kit/use-with-ai", "kit/use-with-cli"] }
             ]
           },
           {
             "group": "Build with agents",
             "products": [
               { "product": "Skills", "description": "Reusable agent instructions", "pages": ["skills/quickstart", "skills/installation", "skills/authoring", "skills/cli"] },
-              { "product": "r3", "description": "Persistent agent memory", "pages": ["r3/quickstart", "r3/mcp-tools", "r3/configuration", "r3/troubleshooting"] }
+              { "product": "r3", "description": "Persistent agent memory", "pages": ["r3/quickstart", "r3/mcp", "r3/configuration", "r3/troubleshooting"] }
             ]
           }
         ]

@@ -1,0 +1,96 @@
+---
+title: "Catalog"
+description: "Find Kit components, blocks, hooks, utilities, and required dependencies."
+---
+
+The manifest contains 49 entries: 32 UI items, four blocks, eleven hooks, one utility, and one style. The groups below organize those entries by task. They describe the registry at this source revision, not a guarantee that every published item installs without adjustment.
+
+## Choose an item
+
+Use the exact registry name in its URL. For example:
+
+```bash
+npx shadcn@latest add https://kit.n3wth.com/r/card.json
+npx shadcn@latest add https://kit.n3wth.com/r/use-theme.json
+```
+
+Follow [installation and styling](/kit/quickstart) first. Imports come from installed files, not an `@n3wth/kit` barrel export. The manifest uses a mixture of full URLs and bare registry dependency names; inspect dependencies and installed imports when combining items.
+
+## UI components
+
+| Category | Registry names | Intended use |
+| --- | --- | --- |
+| Forms and actions | `button`, `input`, `label`, `textarea`, `switch` | Buttons, labeled fields, and toggles |
+| Status and identity | `badge`, `avatar`, `progress`, `skeleton` | Status text, images or initials, progress, and loading placeholders |
+| Content | `card`, `separator`, `code-block` | Grouped content, dividers, and code display |
+| Disclosure and selection | `accordion`, `tabs`, `dropdown`, `tooltip`, `modal` | Expandable content, panels, selection, tooltips, and dialogs |
+| Navigation helpers | `nav-link`, `hamburger-icon`, `mobile-drawer`, `theme-toggle` | Links, menu controls, drawers, and theme controls |
+| Feedback and utilities | `toast`, `command-box`, `error-boundary` | Notifications, copyable commands, and render-error handling |
+| Decoration and motion | `noise-overlay`, `scroll-indicator`, `animated-text`, `shape`, `character`, `speech-bubble`, `composite-shape` | Decorative elements and visual animation |
+| Icons | `icon` | Generated registry artifact exists; source file is missing from this checkout |
+
+Several items have multiple exports. For example, `card.tsx` exports `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, and `CardFooter`. Import them from the same installed module:
+
+```tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+
+export function ProjectCard() {
+  return (
+    <Card variant="default" padding="md">
+      <CardHeader>
+        <CardTitle>Project settings</CardTitle>
+        <CardDescription>Configuration for this application.</CardDescription>
+      </CardHeader>
+      <CardContent>Choose a project before editing its settings.</CardContent>
+    </Card>
+  )
+}
+```
+
+Card additionally uses `--color-grey-400`, `--glass-border`, and the `font-display` class. Configure these in your application's theme as needed.
+
+## Page blocks
+
+| Registry name | Purpose | Declared registry dependencies |
+| --- | --- | --- |
+| `nav` | Responsive navigation | `cn`, `nav-link`, `theme-toggle`, `mobile-drawer` |
+| `footer` | Footer content and links | `cn` |
+| `hero` | Introductory section with calls to action | `cn`, `badge`, `button` |
+| `section` | Content width and vertical spacing | `cn` |
+
+These are copied blocks in `registry/new-york`. The Kit website's own header, footer, and documentation pages use application components and shared UI code; editing a registry block does not change the website chrome.
+
+## Hooks, utilities, and style
+
+| Category | Registry names | Dependencies or behavior |
+| --- | --- | --- |
+| Theme and environment | `use-theme`, `use-media-query`, `use-reduced-motion` | React hooks for theme state, media queries, and motion preference |
+| Interaction | `use-keyboard-shortcuts`, `use-toast` | Keyboard handling and notification state; `use-toast` depends on `toast` |
+| Animation | `use-count-up`, `use-scroll-reveal`, `use-stagger-list`, `use-page-transition`, `use-text-reveal`, `use-button-pulse` | Each declares `gsap` as an npm dependency |
+| Class utility | `cn` | Declares `clsx` and `tailwind-merge` |
+| Style | `n3wth` | Contains theme, light, and dark CSS variables; no source files |
+
+`useTheme()` returns `theme`, `setTheme`, `toggleTheme`, `isDark`, and `isLight`. Its defaults are `defaultTheme: 'dark'`, `storageKey: 'n3wth-theme'`, and `attribute: 'data-theme'`. Match your CSS selectors to that attribute. The CLI's Next.js dark-theme setup uses a `dark` class instead; those mechanisms are not automatically synchronized.
+
+## Availability and dependency caveats
+
+- `icon` points to `registry/new-york/icon/icon.tsx`, which is absent from this revision, although `public/r/icon.json` contains generated content. That artifact is not evidence that a clean source rebuild will succeed.
+- `command-box`, `theme-toggle`, and `toast` declare `icon`; `nav` and `use-toast` depend on items that in turn need it. Inspect the generated icon artifact before relying on those chains.
+- `shape` and `composite-shape` each include a supporting TypeScript file. Keep the generated relative imports and supporting files together.
+- The AI catalog is descriptive context. Resolve disagreements about props and exports against the source or the installed artifact.
+
+For maintenance steps, see [authoring registry entries](/kit/registry-authoring).
+
+## Sources
+
+- [Complete manifest and dependency declarations](https://github.com/n3wth/n3wth/blob/main/apps/kit/registry.json)
+- [Generated icon artifact](https://github.com/n3wth/n3wth/blob/main/apps/kit/public/r/icon.json)
+- [Card exports and styles](https://github.com/n3wth/n3wth/blob/main/apps/kit/registry/new-york/card/card.tsx)
+- [Theme hook](https://github.com/n3wth/n3wth/blob/main/apps/kit/registry/hooks/use-theme/use-theme.ts)
+- [Registry versus site chrome](https://github.com/n3wth/n3wth/blob/main/apps/kit/AGENTS.md)
