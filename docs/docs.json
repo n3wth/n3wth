@@ -1,5 +1,10 @@
 {
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
   "name": "My docs",
+  "colors": {
+    "primary": "#08090b"
+  },
   "navigation": {
     "groups": [
       {
