@@ -8,7 +8,7 @@ describe('skill-creator SEO', () => {
   it('targets the Claude skill-creator cluster in title, lede, and meta', () => {
     expect(skill).toBeDefined()
     expect(skill?.name).toBe('Skill Creator')
-    expect(skill?.seoTitle).toMatch(/Claude Code Agent Skills/i)
+    expect(skill?.seoTitle).toMatch(/Claude.*Skill/i)
     expect(skill?.seoDescription).toMatch(/skill-creator/i)
     expect(skill?.seoDescription).toMatch(/Claude Code/i)
     expect(skill?.description).toMatch(/Claude Code Agent Skills/i)

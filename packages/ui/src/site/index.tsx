@@ -231,6 +231,9 @@ export interface SiteFooterProps extends HTMLAttributes<HTMLElement> {
 export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a>, links, sourceHref = 'https://github.com/n3wth/n3wth', legalLinks, signup, children, className, ...props }: SiteFooterProps) {
   const footerLinks = links ?? <>
     <a href="https://n3wth.com/library">Library</a>
+    <a href="https://skills.n3wth.com">Skills</a>
+    <a href="https://r3.n3wth.com">r3</a>
+    <a href="https://kit.n3wth.com">Kit</a>
     <a href="https://docs.n3wth.com">Docs</a>
     <a href="https://n3wth.com/contact">Contact</a>
     <a href={sourceHref}>GitHub</a>
