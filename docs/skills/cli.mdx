@@ -1,25 +1,29 @@
 ---
-title: "newth-skills CLI (Experimental)"
+title: "newth-skills CLI"
 sidebarTitle: "CLI"
-description: "Reference for the experimental newth-skills CLI in apps/skills/cli. It has its own catalog and may diverge from the web catalog at skills.n3wth.com."
+description: "Reference for the experimental newth-skills Node CLI, which maintains its own catalog separate from the shell installer at skills.n3wth.com."
 ---
 
-`apps/skills/cli` contains an experimental Node CLI called `newth-skills` with its own catalog and download base. Most users should use the [shell installer](/skills/installation) instead.
+<Warning>
+  This CLI is experimental and maintains a separate catalog from the web installer. Most users should use the [shell installer](/skills/installation) instead.
+</Warning>
 
-## Status
+The `newth-skills` CLI lives in [apps/skills/cli](https://github.com/n3wth/n3wth/tree/HEAD/apps/skills/cli). It ships its own catalog and download base, so available skills can drift from what you see at [skills.n3wth.com](https://skills.n3wth.com).
 
-The CLI manifest declares:
+## Package details
 
-- **Name**: `newth-skills`
-- **Version**: `1.0.0`
-- **Bin**: `newth-skills` (points to `dist/index.js`)
-- **Engine requirement**: Node `>=18.0.0`
+| Field | Value |
+| --- | --- |
+| Name | `newth-skills` |
+| Version | `1.0.0` |
+| Bin | `newth-skills` → `dist/index.js` |
+| Node | `>=18.0.0` |
 
-The CLI catalog is a separate array in `cli/src/utils/skills.ts` and may diverge from the web catalog in `src/data/skills.ts`. Verify availability before relying on it; the package includes a `prepublishOnly` script but does not guarantee it is published to npm.
+The catalog lives in `cli/src/utils/skills.ts` and is maintained independently from the web catalog in `src/data/skills.ts`. Verify skill availability before depending on it. A `prepublishOnly` script is defined, but publication to npm is not guaranteed.
 
 ## Commands
 
-The CLI exposes six top-level commands through `commander`:
+Six top-level commands are exposed through `commander`:
 
 | Command | Arguments | Options | Description |
 | --- | --- | --- | --- |
@@ -60,17 +64,58 @@ newth-skills update
 
 ## Differences from the shell installer
 
-|  | Shell installer | `newth-skills` CLI |
-| --- | --- | --- |
-| **Catalog source** | `src/data/skills.ts` (web catalog) | `cli/src/utils/skills.ts` (CLI catalog) |
-| **Install method** | Clones repo, copies files | Fetches raw files over HTTP or generates fallback content |
-| **Platforms** | `gemini` (and `all`) | `gemini` only |
-| **Overwrite behavior** | Skips existing files by default | Skips unless `--force` is passed |
-| **Staging support** | `SKILLS_INSTALL_HOME` env var | Not supported |
-| **Folder skills** | Copies full directories | Writes a single `.md` file |
-| **Offline install** | Requires `git` and network | Requires network; generates fallback content if fetch fails |
-| **State tracking** | None | Tracks installed versions in `~/.newth-skills/config.json` |
+The two installers overlap in purpose but differ in almost every detail. Prefer the shell installer for anything user-facing.
+
+<AccordionGroup>
+  <Accordion title="Catalog source">
+    **Shell installer** reads [apps/skills/src/data/skills.ts](https://github.com/n3wth/n3wth/blob/HEAD/apps/skills/src/data/skills.ts), the web catalog powering [skills.n3wth.com](https://skills.n3wth.com).
+
+    **CLI** reads its own `cli/src/utils/skills.ts` array, which is maintained separately and can drift.
+  </Accordion>
+
+  <Accordion title="Install method">
+    **Shell installer** clones the repository and copies files directly.
+
+    **CLI** fetches raw files over HTTP. If a fetch fails, it falls back to generated content built from the catalog record.
+  </Accordion>
+
+  <Accordion title="Supported platforms">
+    **Shell installer** targets `gemini` and `all`.
+
+    **CLI** targets `gemini` only.
+  </Accordion>
+
+  <Accordion title="Overwrite behavior">
+    **Shell installer** skips existing files by default.
+
+    **CLI** also skips by default, but accepts `--force` to reinstall.
+  </Accordion>
+
+  <Accordion title="Staging directory">
+    **Shell installer** honors the `SKILLS_INSTALL_HOME` environment variable.
+
+    **CLI** does not support staging.
+  </Accordion>
+
+  <Accordion title="Folder skills">
+    **Shell installer** copies full directories (`bar/SKILL.md` plus helpers).
+
+    **CLI** writes a single `.md` file, so folder skills lose their helper assets.
+  </Accordion>
+
+  <Accordion title="Offline behavior">
+    **Shell installer** requires `git` and network access.
+
+    **CLI** requires network access, but falls back to generated content when a fetch fails.
+  </Accordion>
+
+  <Accordion title="State tracking">
+    **Shell installer** does not track installed skills.
+
+    **CLI** records installed versions in `~/.newth-skills/config.json`.
+  </Accordion>
+</AccordionGroup>
 
 <Warning>
-  If the CLI cannot fetch the remote skill file, it falls back to generating skill content from the catalog record (name, description, features, use cases, and sample prompts). This generated content is a best-effort substitute and may not match the full instruction file.
+  When the CLI cannot fetch a remote skill file, it generates a best-effort substitute from the catalog record (name, description, features, use cases, and sample prompts). Generated content may not match the full instruction file.
 </Warning>

@@ -1,5 +1,5 @@
 ---
-title: "Set Up the Workspace Monorepo"
+title: "Workspace Setup"
 sidebarTitle: "Workspace"
 description: "Clone the n3wth monorepo, install dependencies, find the source for each product, and validate your change before opening a pull request."
 ---
@@ -29,10 +29,10 @@ creating an app-local lockfile or installing another copy of UI.
 
 | Path | Responsibility | Start or validate |
 | --- | --- | --- |
-| `packages/ui` | Public `@n3wth/ui` package | `npm run check -w @n3wth/ui` |
-| `apps/skills` | Skills catalog, installer, and CLI source | `npm run dev:skills` |
-| `packages/site-config` | Private shared origins and metadata helpers | `npm run check -w @n3wth/site-config` |
-| `docs` | This Docs7 documentation hub | `npx @upstash/docs7 dev docs` |
+| [packages/ui](https://github.com/n3wth/n3wth/tree/HEAD/packages/ui) | Public `@n3wth/ui` package | `npm run check -w @n3wth/ui` |
+| [apps/skills](https://github.com/n3wth/n3wth/tree/HEAD/apps/skills) | Skills catalog, installer, and CLI source | `npm run dev:skills` |
+| [packages/site-config](https://github.com/n3wth/n3wth/tree/HEAD/packages/site-config) | Private shared origins and metadata helpers | `npm run check -w @n3wth/site-config` |
+| [docs](https://github.com/n3wth/n3wth/tree/HEAD/docs) | This Mintlify documentation site | `cd docs && mint dev` |
 
 The portfolio and Garden are also applications in this repository. Their
 public content is not an installable developer product. r3's core server,
@@ -62,10 +62,7 @@ Read the root and relevant package `AGENTS.md` before you edit.
    packaging changes, also run the relevant browser tests.
 4. Push a feature branch and wait for GitHub **Site CI** before merging.
 
-UI changes can affect the portfolio and remaining sites. Check both supported
-themes, mobile and desktop layouts, first paint, code overflow, anchor links,
-and browser Back. Pure edits to this hub use the
-[documentation checks](/publishing#validate-a-change).
+UI changes can affect the portfolio and remaining sites. Check both supported themes, mobile and desktop layouts, first paint, code overflow, anchor links, and browser Back. Pure edits to this site use the [documentation checks](/publishing#check-for-broken-links).
 
 ## Releases and deployments
 
@@ -74,10 +71,7 @@ and browser Back. Pure edits to this hub use the
 for consumer-facing library changes. Do not run `npm publish` locally.
 Documentation-only changes do not need a package release.
 
-The six existing Vercel sites use automatic Git deployments. Docs7 is a
-separate hosting connection to this same repository. Merging documentation
-does not prove that a Docs7 site is connected or deployed. Verify the hosted
-result.
+The existing Vercel sites use automatic Git deployments. This documentation site uses a separate Mintlify hosting connection to the same repository. Merging documentation does not prove the Mintlify build succeeded. Verify the hosted result at [docs.n3wth.com](https://docs.n3wth.com).
 
 ## Troubleshooting
 
@@ -89,6 +83,4 @@ result.
 | Metadata validation reports missing HTML | Build the relevant applications before checking generated metadata |
 | r3 runtime tests are missing here | Run core development and tests in [n3wth/r3](https://github.com/n3wth/r3) |
 
-Source: [workspace instructions](https://github.com/n3wth/n3wth/blob/main/AGENTS.md),
-[build scripts](https://github.com/n3wth/n3wth/blob/main/package.json), and
-[UI release process](https://github.com/n3wth/n3wth/blob/main/docs/workspace/npm-release.md).
+Source: [workspace instructions](https://github.com/n3wth/n3wth/blob/HEAD/AGENTS.md), [build scripts](https://github.com/n3wth/n3wth/blob/HEAD/package.json), and [UI release process](https://github.com/n3wth/n3wth/blob/HEAD/docs/workspace/npm-release.md).

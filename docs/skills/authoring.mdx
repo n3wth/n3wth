@@ -1,10 +1,10 @@
 ---
-title: "Author and Publish a Skill"
+title: "Authoring Skills"
 sidebarTitle: "Authoring"
 description: "Learn how to write a skill, add it to the catalog, and publish it so others can install it via the shell installer at skills.n3wth.com."
 ---
 
-A contribution has two parts: an instruction file checked into `apps/skills/skills/` and a catalog record in `apps/skills/src/data/skills.ts`. Adding only the file makes it installable through the shell installer. Adding the record makes it browsable on [skills.n3wth.com](https://skills.n3wth.com).
+A contribution has two parts: an instruction file checked into [apps/skills/skills/](https://github.com/n3wth/n3wth/tree/HEAD/apps/skills/skills) and a catalog record in [apps/skills/src/data/skills.ts](https://github.com/n3wth/n3wth/blob/HEAD/apps/skills/src/data/skills.ts). Adding only the file makes it installable through the shell installer. Adding the record makes it browsable on [skills.n3wth.com](https://skills.n3wth.com).
 
 <Steps>
   <Step title="Pick an ID and task">
@@ -49,7 +49,7 @@ A contribution has two parts: an instruction file checked into `apps/skills/skil
     ```
   </Step>
   <Step title="Add a catalog record">
-    Open `apps/skills/src/data/skills.ts` and add a `Skill` object to the `skills` array. Here is a real example from the source:
+    Open [apps/skills/src/data/skills.ts](https://github.com/n3wth/n3wth/blob/HEAD/apps/skills/src/data/skills.ts) and add a `Skill` object to the `skills` array. Here is a real example from the source:
 
     ```typescript
     {
@@ -83,6 +83,8 @@ A contribution has two parts: an instruction file checked into `apps/skills/skil
     ```
 
     For folder skills, set `skillFile` to `${GITHUB_RAW_BASE}/<id>/SKILL.md`.
+
+    See the [Skill interface](/skills/interface) reference for every field.
   </Step>
   <Step title="Test locally">
     Run the shell installer against a staging directory and verify the file lands correctly:
@@ -97,98 +99,14 @@ A contribution has two parts: an instruction file checked into `apps/skills/skil
   </Step>
 </Steps>
 
-## Skill interface reference
+## Next steps
 
-Every catalog record must satisfy the `Skill` interface defined in `src/data/skills.ts`.
+<Columns cols={2}>
+  <Card title="Skill interface" href="/skills/interface">
+    Field-by-field reference for every property on the `Skill` type.
+  </Card>
 
-<ParamField path="id" type="string" required>
-  Unique lowercase-hyphenated identifier.
-</ParamField>
-
-<ParamField path="name" type="string" required>
-  Human-readable name shown in the catalog.
-</ParamField>
-
-<ParamField path="description" type="string" required>
-  Short summary for cards and listings.
-</ParamField>
-
-<ParamField path="longDescription" type="string">
-  Extended description for the detail page.
-</ParamField>
-
-<ParamField path="category" type="CategoryId" required>
-  One of: `development`, `documents`, `creative`, `productivity`, `business`.
-</ParamField>
-
-<ParamField path="tags" type="string[]" required>
-  Searchable keywords.
-</ParamField>
-
-<ParamField path="featured" type="boolean">
-  Whether the skill appears in the featured section.
-</ParamField>
-
-<ParamField path="icon" type="string" required>
-  A single-character or short icon string.
-</ParamField>
-
-<ParamField path="color" type="string" required>
-  An OKLCH color value for theming.
-</ParamField>
-
-<ParamField path="features" type="string[]">
-  List of capability bullets.
-</ParamField>
-
-<ParamField path="useCases" type="string[]">
-  List of typical usage scenarios.
-</ParamField>
-
-<ParamField path="compatibility" type="AssistantId[]">
-  Supported assistants. Currently only `['gemini']`.
-</ParamField>
-
-<ParamField path="version" type="string" required>
-  Semantic version of the skill.
-</ParamField>
-
-<ParamField path="lastUpdated" type="string" required>
-  ISO date of the last change.
-</ParamField>
-
-<ParamField path="contributor" type="Contributor">
-  Optional attribution with `name`, `github`, and `url`.
-</ParamField>
-
-<ParamField path="samplePrompts" type="SamplePrompt[]">
-  Example prompts and expected outputs for the detail page.
-</ParamField>
-
-<ParamField path="skillFile" type="string">
-  Raw GitHub URL to the downloadable file or `SKILL.md`.
-</ParamField>
-
-<ParamField path="seoTitle" type="string">
-  Custom page title for SEO.
-</ParamField>
-
-<ParamField path="seoDescription" type="string">
-  Custom meta description for SEO.
-</ParamField>
-
-<ParamField path="relatedSkillIds" type="string[]">
-  IDs of related skills for cross-linking.
-</ParamField>
-
-<ParamField path="faq" type="SkillFaq[]">
-  Questions and answers for the detail page. Each entry can include `links`.
-</ParamField>
-
-<ParamField path="extraInstallCommands" type="ExtraInstallCommand[]">
-  Additional install commands for other assistants. Used by `skill-creator` to provide a Claude Code recipe.
-</ParamField>
-
-<ParamField path="installHint" type="string">
-  Extra guidance shown on the install page.
-</ParamField>
+  <Card title="Shell installer" href="/skills/installation">
+    How the installer resolves flat and folder skills once your record is live.
+  </Card>
+</Columns>

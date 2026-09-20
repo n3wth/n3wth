@@ -1,7 +1,14 @@
 ---
-title: "Quickstart with @n3wth/ui"
+title: "Quickstart"
 sidebarTitle: "Quickstart"
-description: "Install @n3wth/ui 2.1.1 and build a React page with shared components, native controls, and the Newth theme."
+description: "Install the React design system and build a page with shared components, native controls, and the Newth theme in under five minutes."
+keywords:
+  - "@n3wth/ui"
+  - "React"
+  - "quickstart"
+  - "Newth theme"
+  - "N3wthProvider"
+  - "Astryx"
 ---
 
 `@n3wth/ui` is a React design system built on Astryx. This page installs the current version and renders a working page with a site layout and a native control.
@@ -25,20 +32,20 @@ stylesheet entry.
 
 <Steps>
   <Step title="Install the package">
-    From your application directory, install `@n3wth/ui` at `^2.1.1`. React and React DOM are peer dependencies. GSAP is an optional peer (used by animation hooks).
+    From your application directory, install `@n3wth/ui`. React and React DOM are peer dependencies. GSAP is an optional peer used by animation hooks.
 
     <CodeGroup>
 
     ```bash npm
-    npm install @n3wth/ui@^2.1.1
+    npm install @n3wth/ui
     ```
 
     ```bash pnpm
-    pnpm add @n3wth/ui@^2.1.1
+    pnpm add @n3wth/ui
     ```
 
     ```bash yarn
-    yarn add @n3wth/ui@^2.1.1
+    yarn add @n3wth/ui
     ```
 
     </CodeGroup>
@@ -94,31 +101,22 @@ stylesheet entry.
   </Step>
 </Steps>
 
-## Font packaging caveat
-
-<Warning>
-  The public package does not include the workspace's licensed Suisse Intl font
-  files. The theme references Suisse Intl for body and headings, but the release process deliberately excludes those commercial font files from the npm package.
-</Warning>
-
-The package ships these fonts in `public/fonts`: **Geist**, **GeistMono**, **MonaSans**, and **Satoshi**. Workspace apps additionally use **Suisse Intl**, which is not in the npm release. External consumers get a system-font fallback for Suisse; workspace apps supply the licensed files locally. If your bundler reports an unresolved font URL, see [font resolution fails](/ui/troubleshooting#font-resolution-fails).
-
 ## Entry points
 
-<CardGroup cols={2}>
-  <Card title="Primitives & themes" href="/ui/primitives-and-themes">
+<Columns cols={2}>
+  <Card title="Primitives and themes" href="/ui/primitives-and-themes">
     Choose between native Astryx controls and root compatibility adapters, and load the Newth theme.
   </Card>
 
-  <Card title="Site compositions" href="/ui/site-compositions">
+  <Card title="Site layouts" href="/ui/site-compositions">
     Build page frames, navigation, headings, sections, and footers with `@n3wth/ui/site`.
   </Card>
 
-  <Card title="API & recipes" href="/ui/api-and-recipes">
+  <Card title="API and recipes" href="/ui/api-and-recipes">
     Browse public entry points, route scroll reset, reading outlines, and Open Graph images.
   </Card>
 
   <Card title="Troubleshooting" href="/ui/troubleshooting">
     Fix version mismatches, CSS loading, font resolution, and theme issues.
   </Card>
-</CardGroup>
+</Columns>

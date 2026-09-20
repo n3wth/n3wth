@@ -1,5 +1,5 @@
 ---
-title: "Configure r3"
+title: "Configuration"
 sidebarTitle: "Configuration"
 description: "Set environment variables on the r3 MCP process to choose storage backends, intelligence modes, and optional Mem0 cloud sync."
 ---
@@ -8,25 +8,25 @@ You configure r3 through environment variables passed to the process your MCP cl
 
 ## Environment variables
 
-<ParamField body="MEM0_API_KEY" type="string">
+<ResponseField name="MEM0_API_KEY" type="string">
   Enables Mem0 cloud sync. When unset, r3 runs entirely local and nothing leaves your machine.
-</ParamField>
+</ResponseField>
 
-<ParamField body="REDIS_URL" default="embedded" type="string">
+<ResponseField name="REDIS_URL" type="string" default="embedded">
   URL of an external Redis server. Leave unset to use the embedded Redis server (recommended for most setups).
-</ParamField>
+</ResponseField>
 
-<ParamField body="MEM0_USER_ID" default="default" type="string">
+<ResponseField name="MEM0_USER_ID" type="string" default="default">
   Default namespace for memory isolation. Individual tool calls can override this with the `user_id` argument.
-</ParamField>
+</ResponseField>
 
-<ParamField body="INTELLIGENCE_MODE" default="enhanced" type="string">
+<ResponseField name="INTELLIGENCE_MODE" type="string" default="enhanced">
   Set to `enhanced` (default) or `basic`. Enhanced mode adds entity extraction, knowledge graph tools, and HuggingFace embeddings. Basic mode uses a simpler word-hash fallback.
-</ParamField>
+</ResponseField>
 
-<ParamField body="DEBUG" default="false" type="boolean">
+<ResponseField name="DEBUG" type="boolean" default="false">
   Enable debug logging to stderr. Keep quiet mode enabled for normal MCP use so stdout stays reserved for protocol messages.
-</ParamField>
+</ResponseField>
 
 ## Storage backends
 

@@ -1,0 +1,103 @@
+---
+title: "Skill Interface"
+sidebarTitle: "Interface"
+description: "TypeScript field reference for every entry in the skills catalog, including required and optional properties for the Skill interface."
+---
+
+Every catalog record must satisfy the `Skill` interface defined in [apps/skills/src/data/skills.ts](https://github.com/n3wth/n3wth/blob/HEAD/apps/skills/src/data/skills.ts). This page lists every field, its type, and how it renders on [skills.n3wth.com](https://skills.n3wth.com). Use it alongside the [Authoring](/skills/authoring) walkthrough when adding or updating a catalog entry.
+
+## Required fields
+
+<ResponseField name="id" type="string" required>
+  Unique lowercase-hyphenated identifier.
+</ResponseField>
+
+<ResponseField name="name" type="string" required>
+  Human-readable name shown in the catalog.
+</ResponseField>
+
+<ResponseField name="description" type="string" required>
+  Short summary for cards and listings.
+</ResponseField>
+
+<ResponseField name="category" type="CategoryId" required>
+  One of: `development`, `documents`, `creative`, `productivity`, `business`.
+</ResponseField>
+
+<ResponseField name="tags" type="string[]" required>
+  Searchable keywords.
+</ResponseField>
+
+<ResponseField name="icon" type="string" required>
+  A single-character or short icon string.
+</ResponseField>
+
+<ResponseField name="color" type="string" required>
+  An OKLCH color value for theming.
+</ResponseField>
+
+<ResponseField name="version" type="string" required>
+  Semantic version of the skill.
+</ResponseField>
+
+<ResponseField name="lastUpdated" type="string" required>
+  ISO date of the last change.
+</ResponseField>
+
+## Optional fields
+
+<ResponseField name="longDescription" type="string">
+  Extended description for the detail page.
+</ResponseField>
+
+<ResponseField name="skillFile" type="string">
+  Raw GitHub URL to the downloadable file or `SKILL.md`.
+</ResponseField>
+
+<ResponseField name="featured" type="boolean">
+  Whether the skill appears in the featured section.
+</ResponseField>
+
+<ResponseField name="features" type="string[]">
+  List of capability bullets.
+</ResponseField>
+
+<ResponseField name="useCases" type="string[]">
+  List of typical usage scenarios.
+</ResponseField>
+
+<ResponseField name="compatibility" type="AssistantId[]">
+  Supported assistants. Currently only `['gemini']`.
+</ResponseField>
+
+<ResponseField name="contributor" type="Contributor">
+  Attribution with `name`, `github`, and `url`.
+</ResponseField>
+
+<ResponseField name="samplePrompts" type="SamplePrompt[]">
+  Example prompts and expected outputs for the detail page.
+</ResponseField>
+
+<ResponseField name="seoTitle" type="string">
+  Custom page title for SEO.
+</ResponseField>
+
+<ResponseField name="seoDescription" type="string">
+  Custom meta description for SEO.
+</ResponseField>
+
+<ResponseField name="relatedSkillIds" type="string[]">
+  IDs of related skills for cross-linking.
+</ResponseField>
+
+<ResponseField name="faq" type="SkillFaq[]">
+  Questions and answers for the detail page. Each entry can include `links`.
+</ResponseField>
+
+<ResponseField name="extraInstallCommands" type="ExtraInstallCommand[]">
+  Additional install commands for other assistants. Used by `skill-creator` to provide a Claude Code recipe.
+</ResponseField>
+
+<ResponseField name="installHint" type="string">
+  Extra guidance shown on the install page.
+</ResponseField>

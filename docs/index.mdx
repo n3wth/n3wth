@@ -1,13 +1,21 @@
 ---
-title: "n3wth Developer Docs"
+title: "n3wth Docs"
 sidebarTitle: "Overview"
-description: "Documentation for the n3wth workspace: the @n3wth/ui React package, the agent skills catalog, and the r3 local memory server for MCP clients."
+description: "Start here to pick UI, Skills, or r3 and jump to the quickstart. Documentation for the three independent n3wth developer tools."
 mode: "wide"
+keywords:
+  - "n3wth"
+  - "developer tools"
+  - "documentation"
+  - "@n3wth/ui"
+  - "agent skills"
+  - "r3"
+  - "MCP"
 ---
 
 The n3wth workspace ships three independent tools, each with its own package, release cycle, and audience. Pick the one that matches your task; you do not need to install them all.
 
-<CardGroup cols={3}>
+<Columns cols={3}>
   <Card title="UI" href="/ui/quickstart">
     A React design system built on Astryx. Primitives, theme provider, page layout, and social image renderer.
   </Card>
@@ -19,19 +27,19 @@ The n3wth workspace ships three independent tools, each with its own package, re
   <Card title="r3" href="/r3/quickstart">
     A local-first memory server for MCP clients. Embedded Redis and vector index, optional Mem0 cloud sync.
   </Card>
-</CardGroup>
+</Columns>
 
 ## What each one is for
 
-**UI** ([`@n3wth/ui`](https://www.npmjs.com/package/@n3wth/ui)) is a React package. Consume it as a dependency to get the shared Newth theme, component primitives, and page compositions across sites in and outside this workspace. Source lives in `packages/ui`.
+**UI** is a React package published as [@n3wth/ui](https://www.npmjs.com/package/@n3wth/ui). Consume it as a dependency to get the shared Newth theme, component primitives, and page compositions across sites in and outside this workspace. Source lives in [packages/ui](https://github.com/n3wth/n3wth/tree/HEAD/packages/ui).
 
-**Skills** ([skills.n3wth.com](https://skills.n3wth.com)) is a catalog of agent-skill Markdown files with an install script. Skills teach a coding agent one job. Install with a shell one-liner into `~/.gemini/skills` or `~/.claude/skills`. Source lives in `apps/skills`.
+**Skills** is a catalog of agent-skill Markdown files with an install script, hosted at [skills.n3wth.com](https://skills.n3wth.com). Skills teach a coding agent one job. Install with a shell one-liner into `~/.gemini/skills` or `~/.claude/skills`. Source lives in [apps/skills](https://github.com/n3wth/n3wth/tree/HEAD/apps/skills).
 
-**r3** ([`@n3wth/r3`](https://www.npmjs.com/package/@n3wth/r3)) is a standalone MCP server. Point Claude Desktop, Claude Code, or Cursor at `npx @n3wth/r3` and it stores conversation memory in an embedded Redis plus a local vector index. Source lives in the separate [n3wth/r3](https://github.com/n3wth/r3) repository.
+**r3** is a standalone MCP server published as [@n3wth/r3](https://www.npmjs.com/package/@n3wth/r3). Point Claude Desktop, Claude Code, or Cursor at `npx @n3wth/r3` and it stores conversation memory in an embedded Redis plus a local vector index. Source lives in the separate [n3wth/r3](https://github.com/n3wth/r3) repository.
 
 ## Where to start
 
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="Build a React site" href="/ui/quickstart">
     Install `@n3wth/ui`, wrap your app in `N3wthProvider`, and render a page with `SiteContainer` and `PageHeader`.
   </Card>
@@ -47,7 +55,7 @@ The n3wth workspace ships three independent tools, each with its own package, re
   <Card title="Contribute" href="/workspace">
     Set up the monorepo, run the checks, and publish documentation changes.
   </Card>
-</CardGroup>
+</Columns>
 
 ## Related projects
 

@@ -1,7 +1,15 @@
 ---
-title: "Quickstart with r3"
+title: "Quickstart"
 sidebarTitle: "Quickstart"
 description: "Connect r3 to an MCP client and verify memory persistence across conversations. No accounts or API keys required."
+keywords:
+  - "r3"
+  - "MCP"
+  - "memory"
+  - "Claude Desktop"
+  - "Claude Code"
+  - "Cursor"
+  - "quickstart"
 ---
 
 r3 is a local-first memory server for MCP clients. It stores facts and
@@ -9,26 +17,11 @@ conversation context through tools over standard input and output. This page sho
 
 ## How it works
 
-```text
-MCP client (Claude Desktop / Claude Code / Cursor)
-        |
-        v
-   r3 MCP server (stdio)
-        |
-   +----+-----------------------+
-   |                            |
-embedded Redis            vectra local index
-(redis-memory-server,      (on-disk vector store
- auto-downloaded binary,    for semantic search,
- no external service)       no external service)
-   |
-   +--- optional ---> Mem0 cloud API (MEM0_API_KEY)
-                       cross-device sync, off by default
-```
+Your MCP client launches r3 over stdio. r3 stores memory locally in three layers:
 
-- **Embedded Redis** stores memory content and metadata. If it cannot start, r3 falls back to an in-process store.
+- **Embedded Redis** stores memory content and metadata via `redis-memory-server` (auto-downloaded binary, no external service). Falls back to an in-process store if it cannot start.
 - **vectra** provides a local, file-backed vector index for semantic search with no network calls.
-- **Mem0 cloud** is optional. If `MEM0_API_KEY` is set, r3 syncs to Mem0 so memories can follow you across machines. Without a key, nothing leaves your machine.
+- **Mem0 cloud** is optional. Set `MEM0_API_KEY` to sync memories across machines. Without a key, nothing leaves your machine.
 
 ## Prerequisites
 
@@ -108,16 +101,16 @@ embedded Redis            vectra local index
 
 ## Next steps
 
-<CardGroup cols={3}>
+<Columns cols={3}>
   <Card title="Configuration" icon="sliders" href="/r3/configuration">
     Set environment variables, storage backends, and intelligence modes.
   </Card>
 
-  <Card title="Tools" icon="wrench" href="/r3/tools">
+  <Card title="Tool reference" icon="wrench" href="/r3/tools">
     Browse the full MCP tool reference with parameters and return values.
   </Card>
 
   <Card title="Troubleshooting" icon="life-ring" href="/r3/troubleshooting">
     Fix installation, discovery, and retrieval problems.
   </Card>
-</CardGroup>
+</Columns>

@@ -1,5 +1,5 @@
 ---
-title: "r3 MCP Tool Reference"
+title: "Tool Reference"
 sidebarTitle: "Tools"
 description: "Reference for all 14 r3 MCP tools: 11 always available and 3 enhanced-mode tools for entity extraction and knowledge graphs."
 ---
@@ -12,33 +12,33 @@ r3 exposes every capability as an MCP tool. This page lists all 14 tools, their 
 
 Store a new memory with automatic deduplication and indexing. Use for persisting facts, preferences, or conversation context. Prefer this over `update_memory` for new content.
 
-<ParamField body="content" type="string">
+<ResponseField name="content" type="string">
   Plain text content to store. Use instead of `messages` for simple facts.
-</ParamField>
+</ResponseField>
 
-<ParamField body="messages" type="array">
+<ResponseField name="messages" type="array">
   Conversation messages to store. Use instead of `content` for multi-turn context. Each item needs `role` (`user`, `assistant`, or `system`) and `content`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="user_id" type="string">
+<ResponseField name="user_id" type="string">
   User namespace for memory isolation. Default is the value of `MEM0_USER_ID`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="metadata" type="object">
+<ResponseField name="metadata" type="object">
   Key-value pairs for categorization. Searchable via `search_memory`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="priority" type="string">
+<ResponseField name="priority" type="string">
   Cache priority: `high` (L1, 24h TTL), `medium` (standard), or `low` (L2, 7d TTL). Default: `medium`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="async" type="boolean">
+<ResponseField name="async" type="boolean">
   `true` returns immediately and indexes in the background. `false` blocks until complete. Default: `true`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="skip_duplicate_check" type="boolean">
+<ResponseField name="skip_duplicate_check" type="boolean">
   Bypass duplicate detection. Use only when intentionally storing similar content. Default: `false`.
-</ParamField>
+</ResponseField>
 
 **Returns:** `Saved` or `Already saved`.
 
@@ -46,13 +46,13 @@ Store a new memory with automatic deduplication and indexing. Use for persisting
 
 Retrieve a single memory by its unique ID. Use when you have a specific `memory_id` from prior search or list results.
 
-<ParamField body="memory_id" type="string" required>
+<ResponseField name="memory_id" type="string" required>
   Unique identifier of the memory to retrieve.
-</ParamField>
+</ResponseField>
 
-<ParamField body="user_id" type="string">
+<ResponseField name="user_id" type="string">
   User namespace. Must match the `user_id` used when the memory was created.
-</ParamField>
+</ResponseField>
 
 **Returns:** Memory object `{id, content, user_id, metadata}` or `null` if not found.
 
@@ -60,21 +60,21 @@ Retrieve a single memory by its unique ID. Use when you have a specific `memory_
 
 Modify an existing memory's content or metadata. Use for corrections or adding context. Fails if `memory_id` is not found.
 
-<ParamField body="memory_id" type="string" required>
+<ResponseField name="memory_id" type="string" required>
   Unique identifier of the memory to update.
-</ParamField>
+</ResponseField>
 
-<ParamField body="content" type="string">
+<ResponseField name="content" type="string">
   New content to replace existing. Omit to keep current content unchanged.
-</ParamField>
+</ResponseField>
 
-<ParamField body="metadata" type="object">
+<ResponseField name="metadata" type="object">
   Metadata fields to merge. Existing fields not specified are preserved.
-</ParamField>
+</ResponseField>
 
-<ParamField body="user_id" type="string">
+<ResponseField name="user_id" type="string">
   User namespace. Must match the original.
-</ParamField>
+</ResponseField>
 
 **Returns:** Updated memory object.
 
@@ -82,9 +82,9 @@ Modify an existing memory's content or metadata. Use for corrections or adding c
 
 Permanently remove a memory by ID. This is irreversible and removes the record from storage, cache, and search index.
 
-<ParamField body="memory_id" type="string" required>
+<ResponseField name="memory_id" type="string" required>
   Unique identifier of the memory to delete.
-</ParamField>
+</ResponseField>
 
 **Returns:** Confirmation text.
 
@@ -92,21 +92,21 @@ Permanently remove a memory by ID. This is irreversible and removes the record f
 
 Find memories matching a natural language query using hybrid semantic and keyword search. This is the primary retrieval tool for content-based lookup.
 
-<ParamField body="query" type="string" required>
+<ResponseField name="query" type="string" required>
   Natural language search query. Supports keywords, phrases, or questions.
-</ParamField>
+</ResponseField>
 
-<ParamField body="user_id" type="string">
+<ResponseField name="user_id" type="string">
   User namespace to search within. Default is `MEM0_USER_ID`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="limit" type="number">
+<ResponseField name="limit" type="number">
   Maximum results to return. Range: 1-100. Default: 10.
-</ParamField>
+</ResponseField>
 
-<ParamField body="prefer_cache" type="boolean">
+<ResponseField name="prefer_cache" type="boolean">
   `true` checks cache first, then falls back to storage. `false` queries storage directly. Default: `true`.
-</ParamField>
+</ResponseField>
 
 **Returns:** Array of memory objects, or `No memories found`.
 
@@ -114,25 +114,25 @@ Find memories matching a natural language query using hybrid semantic and keywor
 
 List all memories for a user with pagination. Use for browsing or bulk operations. For content search, prefer `search_memory`.
 
-<ParamField body="user_id" type="string">
+<ResponseField name="user_id" type="string">
   User namespace to list. Default is `MEM0_USER_ID`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="limit" type="number">
+<ResponseField name="limit" type="number">
   Maximum memories per page. Range: 1-500. Default: 100.
-</ParamField>
+</ResponseField>
 
-<ParamField body="offset" type="number">
+<ResponseField name="offset" type="number">
   Number of memories to skip. Use for pagination. Default: 0.
-</ParamField>
+</ResponseField>
 
-<ParamField body="include_cache_stats" type="boolean">
+<ResponseField name="include_cache_stats" type="boolean">
   Append cache statistics to the response. Default: `true`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="prefer_cache" type="boolean">
+<ResponseField name="prefer_cache" type="boolean">
   `true` returns cached memories (faster). `false` fetches from storage (fresher). Default: `true`.
-</ParamField>
+</ResponseField>
 
 **Returns:** `{total, limit, offset, returned, hasMore, source, memories[]}`.
 
@@ -140,17 +140,17 @@ List all memories for a user with pagination. Use for browsing or bulk operation
 
 Detect and optionally remove duplicate memories using content similarity. Run with `dry_run: true` first to preview.
 
-<ParamField body="user_id" type="string">
+<ResponseField name="user_id" type="string">
   User namespace to deduplicate. Default is `MEM0_USER_ID`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="similarity_threshold" type="number">
+<ResponseField name="similarity_threshold" type="number">
   Minimum similarity (0-1) to consider as duplicate. Range: 0.5-1.0. Default: 0.85.
-</ParamField>
+</ResponseField>
 
-<ParamField body="dry_run" type="boolean">
+<ResponseField name="dry_run" type="boolean">
   `true` previews duplicates without deletion. `false` actually deletes duplicates. Default: `true`.
-</ParamField>
+</ResponseField>
 
 **Returns:** Summary with duplicate groups.
 
@@ -158,33 +158,33 @@ Detect and optionally remove duplicate memories using content similarity. Run wi
 
 Bulk import memories from external sources. Supports Mem0 API export or local JSON files. Processes in batches with duplicate detection.
 
-<ParamField body="source" type="string" required>
+<ResponseField name="source" type="string" required>
   Import source: `mem0_api` or `json_file`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="api_key" type="string">
+<ResponseField name="api_key" type="string">
   Mem0 API token. Required when `source` is `mem0_api`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="file_path" type="string">
+<ResponseField name="file_path" type="string">
   Absolute path to JSON file. Required when `source` is `json_file`. Must be an array of memory objects or `{memories: [...]}`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="user_id" type="string">
+<ResponseField name="user_id" type="string">
   User namespace for imported memories. Default is `MEM0_USER_ID`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="batch_size" type="number">
+<ResponseField name="batch_size" type="number">
   Memories per batch. Range: 10-200. Default: 50.
-</ParamField>
+</ResponseField>
 
-<ParamField body="priority" type="string">
+<ResponseField name="priority" type="string">
   Cache priority for all imported memories: `high`, `medium`, or `low`. Default: `high`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="skip_duplicates" type="boolean">
+<ResponseField name="skip_duplicates" type="boolean">
   Check each memory for duplicates before import. Default: `true`.
-</ParamField>
+</ResponseField>
 
 **Returns:** Summary with imported, skipped, and failed counts.
 
@@ -200,13 +200,13 @@ View cache performance metrics and health status. Use for monitoring and debuggi
 
 Reorganize cache for optimal hit rates. Promotes frequently accessed memories to L1 (24h TTL) and demotes cold data to L2 (7d TTL).
 
-<ParamField body="force_refresh" type="boolean">
+<ResponseField name="force_refresh" type="boolean">
   `true` clears cache and reloads all from storage. `false` optimizes existing cache. Default: `false`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="max_memories" type="number">
+<ResponseField name="max_memories" type="number">
   Maximum memories to keep in cache. Range: 100-10000. Default: 1000.
-</ParamField>
+</ResponseField>
 
 **Returns:** Summary of cached memories.
 
@@ -226,9 +226,9 @@ Check the background job queue and sync status. Shows pending async operations f
 
 Extract named entities and relationships from text using NLP. Identifies people, organizations, technologies, and projects.
 
-<ParamField body="text" type="string" required>
+<ResponseField name="text" type="string" required>
   Input text to analyze. Longer text yields more entities.
-</ParamField>
+</ResponseField>
 
 **Returns:** `{people[], organizations[], technologies[], projects[], relationships[], keywords[]}`.
 
@@ -236,21 +236,21 @@ Extract named entities and relationships from text using NLP. Identifies people,
 
 Build a knowledge graph from stored memories. Returns entities as nodes and relationships as edges.
 
-<ParamField body="entity_type" type="string">
+<ResponseField name="entity_type" type="string">
   Filter nodes by type: `people`, `organizations`, `technologies`, or `projects`. Omit for all types.
-</ParamField>
+</ResponseField>
 
-<ParamField body="entity_name" type="string">
+<ResponseField name="entity_name" type="string">
   Filter nodes containing this name (case-insensitive substring match). Omit for all entities.
-</ParamField>
+</ResponseField>
 
-<ParamField body="relationship_type" type="string">
+<ResponseField name="relationship_type" type="string">
   Filter edges by relationship: `WORKS_FOR`, `USES`, `BUILT_WITH`, `KNOWS`, etc. Omit for all relationships.
-</ParamField>
+</ResponseField>
 
-<ParamField body="limit" type="number">
+<ResponseField name="limit" type="number">
   Maximum nodes to return. Range: 1-100. Default: 20.
-</ParamField>
+</ResponseField>
 
 **Returns:** `{nodes[], edges[]}` where nodes have `{id, type, name, memories[]}` and edges have `{from, to, type, confidence}`.
 
@@ -258,16 +258,16 @@ Build a knowledge graph from stored memories. Returns entities as nodes and rela
 
 Discover relationship paths between entities in the knowledge graph. Uses BFS traversal to find how entities connect.
 
-<ParamField body="from_entity" type="string" required>
+<ResponseField name="from_entity" type="string" required>
   Starting entity name for path search. Must match an entity in the knowledge graph exactly.
-</ParamField>
+</ResponseField>
 
-<ParamField body="to_entity" type="string">
+<ResponseField name="to_entity" type="string">
   Target entity name. If omitted, returns all reachable entities up to `max_depth`.
-</ParamField>
+</ResponseField>
 
-<ParamField body="max_depth" type="number">
+<ResponseField name="max_depth" type="number">
   Maximum relationship hops to traverse. Range: 1-5. Default: 2.
-</ParamField>
+</ResponseField>
 
 **Returns:** `{from, to, max_depth, paths_found, paths[]}` where each path is an array of `{from, to, type}` edges.

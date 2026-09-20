@@ -1,7 +1,7 @@
 ---
-title: "Page Layouts with @n3wth/ui/site"
-sidebarTitle: "Site Compositions"
-description: "Compose page frames, navigation, headings, sections, and footers using the site components exported from @n3wth/ui/site."
+title: "Site Layouts"
+sidebarTitle: "Layouts"
+description: "Compose page frames, navigation, headings, sections, and footers using the site components exported from the site entry point."
 ---
 
 `@n3wth/ui/site` exports layout components, a theme provider, and scroll helpers. Your application supplies content, route links, and active state. Complete the [quickstart](/ui/quickstart) first. The examples here assume an ancestor `N3wthProvider` and an imported `site.css`.
@@ -56,7 +56,7 @@ inside a full-width section when the section needs its own background.
 
 ## Available site components
 
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="SiteContainer">
     Constrain and align content. Accepts `as`: `div` (default), `main`, `section`, or `article`.
   </Card>
@@ -108,7 +108,7 @@ inside a full-width section when the section needs its own background.
   <Card title="ReadingOutline">
     Scroll-spy outline for long-form pages. Accepts `items`, `label`, and `collapsible`.
   </Card>
-</CardGroup>
+</Columns>
 
 ## Hooks and helpers
 

@@ -1,7 +1,7 @@
 ---
-title: "Troubleshoot @n3wth/ui"
+title: "Troubleshooting"
 sidebarTitle: "Troubleshooting"
-description: "Fix import, CSS, font, and theme problems in @n3wth/ui 2.1.1. Check versions, entry points, and provider setup before adjusting props."
+description: "Fix import, CSS, font, and theme problems in the React design system. Check versions, entry points, and provider setup before adjusting component props."
 ---
 
 Start with the installed version and the import path. Native primitives and
@@ -28,7 +28,7 @@ root install procedure.
     npm ls @n3wth/ui
     ```
 
-    **Resolution:** Align the workspace version in `packages/ui/package.json` with the app's dependency range. In the monorepo, use the root lockfile and avoid installing a second registry copy. Build UI before consuming apps if `dist` is missing.
+    **Resolution:** Align the workspace version in [packages/ui/package.json](https://github.com/n3wth/n3wth/blob/HEAD/packages/ui/package.json) with the app's dependency range. In the monorepo, use the root lockfile and avoid installing a second registry copy. Build UI before consuming apps if `dist` is missing.
   </Accordion>
 
   <Accordion title="CSS not loading">
@@ -54,7 +54,7 @@ root install procedure.
 
     **Resolution:** External consumers use the theme's `system-ui, -apple-system, sans-serif` fallback. If you need Suisse Intl, supply the licensed font files locally in your workspace app and override the CSS variable. Do not copy commercial font binaries into a public package.
 
-    If an older artifact still names a Suisse font, validate the corrected tarball before publishing. Record the UI version, bundler, and exact unresolved URL for a package issue.
+    If an older artifact still names a Suisse font, validate the corrected tarball before publishing. Record the UI version, bundler, and exact unresolved URL when opening a package issue.
   </Accordion>
 
   <Accordion title="Wrong Button API">

@@ -1,5 +1,5 @@
 ---
-title: "Troubleshoot r3"
+title: "Troubleshooting"
 sidebarTitle: "Troubleshooting"
 description: "Fix common r3 problems: macOS build failures, MCP client discovery, empty search results, and memory persistence across restarts and processes."
 ---
@@ -53,7 +53,7 @@ If r3 is not working as expected, start with the smallest failing step: installa
     2. Local Redis records have a 30-day TTL. The embedded backend does not configure durable persistence.
     3. Keep an independent copy of anything you cannot lose. Test the write, read, and restart cycle with disposable data first.
 
-    See [configuration](/r3/configuration) for storage details.
+    See [Configuration](/r3/configuration) for storage details.
   </Accordion>
 
   <Accordion title="Redis connection refused">

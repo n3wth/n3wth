@@ -1,6 +1,6 @@
 ---
-title: "MCP Transport"
-sidebarTitle: "MCP Transport"
+title: "Transport"
+sidebarTitle: "Transport"
 description: "r3 speaks MCP over stdio. Learn the transport, tool-call format, namespaces, and how intelligence modes affect the tool list."
 ---
 
@@ -38,4 +38,4 @@ A tool call uses the `tools/call` method. Always include `arguments`, even when 
 
 Responses use MCP `content` blocks with plain text. Some tools embed serialized JSON inside a text block. Always check `isError` before parsing the text. If `isError` is true, the text contains an error message rather than the expected result.
 
-For the full list of tools and their parameters, see the [r3 MCP tool reference](/r3/tools).
+For the full list of tools and their parameters, see the [tools reference](/r3/tools).
