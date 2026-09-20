@@ -1,5 +1,5 @@
 {
-  "name": "n3wth / docs",
+  "name": "n3wth",
   "theme": "aspen",
   "colors": {
     "primary": "#08090b",
@@ -26,8 +26,9 @@
   "filterSidebar": true,
   "navbar": {
     "primary": {
-      "type": "github",
-      "href": "https://github.com/n3wth/n3wth"
+      "type": "button",
+      "href": "https://n3wth.com",
+      "label": "Back to n3wth.com"
     }
   },
   "navigation": {
@@ -107,6 +108,7 @@
           {
             "group": "Reference",
             "pages": [
+              "r3/tools",
               "r3/mcp"
             ]
           },
