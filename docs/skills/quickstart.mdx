@@ -21,21 +21,39 @@ implementation and its limitations.
 ## Install your first skill
 
 With Bash, Git, curl, and access to GitHub available, install `pdf` for the
-catalog's `gemini` target:
+catalog's `gemini` target.
 
-```bash
-curl -fsSL https://skills.n3wth.com/install.sh -o /tmp/n3wth-skills-install.sh
-less /tmp/n3wth-skills-install.sh
-bash /tmp/n3wth-skills-install.sh gemini pdf
-test -s "$HOME/.gemini/skills/pdf.md"
-sed -n '1,60p' "$HOME/.gemini/skills/pdf.md"
-```
+<Steps>
+  <Step title="Download the installer">
+    ```bash
+    curl -fsSL https://skills.n3wth.com/install.sh -o /tmp/n3wth-skills-install.sh
+    ```
+  </Step>
+  <Step title="Inspect it before running">
+    <Warning>
+      Always review install scripts before piping them into a shell.
+    </Warning>
 
-The target is displayed as Antigravity CLI. The installer skips existing
-files. A successful file check confirms that instructions exist, not that
-the assistant has loaded them. Read the skill's prerequisites before you ask
-the assistant to process a document. See [installation](/skills/installation)
-for staging, folder skills, and troubleshooting.
+    ```bash
+    less /tmp/n3wth-skills-install.sh
+    ```
+  </Step>
+  <Step title="Install the skill">
+    ```bash
+    bash /tmp/n3wth-skills-install.sh gemini pdf
+    ```
+
+    The target is displayed as Antigravity CLI. The installer skips existing files.
+  </Step>
+  <Step title="Verify the file">
+    ```bash
+    test -s "$HOME/.gemini/skills/pdf.md"
+    sed -n '1,60p' "$HOME/.gemini/skills/pdf.md"
+    ```
+
+    A successful file check confirms that instructions exist, not that the assistant has loaded them. Read the skill's prerequisites before you ask the assistant to process a document. See [installation](/skills/installation) for staging, folder skills, and troubleshooting.
+  </Step>
+</Steps>
 
 ## Find a skill
 
@@ -56,11 +74,6 @@ Git timestamp.
 Before you install, read the instruction file and check its tool
 prerequisites. For example, a PDF skill supplies guidance. It does not
 provision a Python environment or PDF dependencies.
-
-<Warning>
-  Inspect an install script before piping it into a shell. The commands above
-  download the script first so you can review exactly what will run.
-</Warning>
 
 ## Catalog entries and downloadable files
 

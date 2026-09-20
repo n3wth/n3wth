@@ -1,6 +1,6 @@
 {
-  "name": "n3wth docs",
-  "theme": "mint",
+  "name": "n3wth / docs",
+  "theme": "aspen",
   "colors": {
     "primary": "#08090b",
     "light": "#f2f3f5",
@@ -25,7 +25,7 @@
   "navbar": {
     "links": [
       { "label": "n3wth.com", "href": "https://n3wth.com" },
-      { "type": "github", "href": "https://github.com/n3wth/n3wth" }
+      { "type": "github", "href": "https://github.com/n3wth" }
     ]
   },
   "navigation": {
@@ -74,6 +74,22 @@
     ]
   },
   "icons": {
-    "library": "tabler"
+    "library": "lucide"
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "fonts": {
+    "heading": {
+      "family": "Suisse",
+      "weight": 600
+    },
+    "body": {
+      "family": "Suisse",
+      "weight": 400
+    }
   }
 }

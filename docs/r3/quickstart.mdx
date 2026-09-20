@@ -61,74 +61,63 @@ See [configuration](/r3/configuration) for storage and mode details.
 Some macOS installations need a newer GNU Make to build the embedded Redis
 dependency. See [troubleshooting](/r3/troubleshooting#installation-fails-on-macos).
 
-## Connect a client
+<Steps>
+  <Step title="Add r3 to your MCP client config">
+    Merge this server entry into your client's MCP configuration:
 
-Merge this server entry into your client's MCP configuration:
-
-```json
-{
-  "mcpServers": {
-    "r3": {
-      "command": "npx",
-      "args": ["-y", "@n3wth/r3", "serve"],
-      "env": {
-        "MEM0_USER_ID": "r3-quickstart",
-        "INTELLIGENCE_MODE": "basic"
+    ```json
+    {
+      "mcpServers": {
+        "r3": {
+          "command": "npx",
+          "args": ["-y", "@n3wth/r3", "serve"],
+          "env": {
+            "MEM0_USER_ID": "r3-quickstart",
+            "INTELLIGENCE_MODE": "basic"
+          }
+        }
       }
     }
-  }
-}
-```
+    ```
 
-Basic mode keeps the first storage check independent of enhanced model
-initialization. Remove `INTELLIGENCE_MODE` to try enhanced mode after the
-basic check.
+    Basic mode keeps the first storage check independent of enhanced model initialization. Remove `INTELLIGENCE_MODE` to try enhanced mode after the basic check.
 
-The core README provides integrations for Claude Desktop and Cursor. On
-macOS, Claude Desktop reads `~/Library/Application Support/Claude/claude_desktop_config.json`. Cursor supports project configuration at
-`.cursor/mcp.json`. The website also documents the same stdio server entry
-for Antigravity CLI in `.gemini/settings.json`. These integrations launch the
-same process. They do not use a hosted r3 endpoint.
+    The core README provides integrations for Claude Desktop and Cursor. On macOS, Claude Desktop reads `~/Library/Application Support/Claude/claude_desktop_config.json`. Cursor supports project configuration at `.cursor/mcp.json`. The website also documents the same stdio server entry for Antigravity CLI in `.gemini/settings.json`. These integrations launch the same process. They do not use a hosted r3 endpoint.
+  </Step>
+  <Step title="Reconnect and confirm tools">
+    Restart or reconnect the client after you edit configuration. Inspect its discovered tools: `add_memory`, `search_memory`, and `cache_stats` should appear. A successful MCP connection confirms transport readiness. Redis initialization continues separately.
+  </Step>
+  <Step title="Write one memory">
+    Use a disposable namespace. Ask the client to call `add_memory`:
 
-Restart or reconnect the client after you edit configuration. Inspect its
-discovered tools: `add_memory`, `search_memory`, and `cache_stats` should
-appear. A successful MCP connection confirms transport readiness. Redis
-initialization continues separately.
+    ```json
+    {
+      "content": "The documentation example project uses TypeScript.",
+      "user_id": "r3-quickstart",
+      "priority": "high",
+      "async": false,
+      "skip_duplicate_check": true
+    }
+    ```
 
-## Check one write and read
+    This diagnostic explicitly skips duplicate detection, because the inspected local adapter has a search-routing defect. Repeating it can create duplicate records. `async: false` waits for the write path instead of returning a background acknowledgement.
+  </Step>
+  <Step title="Read it back">
+    Call `search_memory`:
 
-Use a disposable namespace. Ask the client to call `add_memory` with these
-arguments:
+    ```json
+    {
+      "query": "documentation example TypeScript",
+      "limit": 1
+    }
+    ```
 
-```json
-{
-  "content": "The documentation example project uses TypeScript.",
-  "user_id": "r3-quickstart",
-  "priority": "high",
-  "async": false,
-  "skip_duplicate_check": true
-}
-```
-
-This diagnostic explicitly skips duplicate detection, because the inspected
-local adapter has a search-routing defect. Repeating it can create duplicate
-records. `async: false` waits for the write path instead of returning a
-background acknowledgement.
-
-Call `search_memory` with:
-
-```json
-{
-  "query": "documentation example TypeScript",
-  "limit": 1
-}
-```
-
-Check that the returned text contains the stored fact. Then restart the
-server from the same working directory and repeat the read. Treat an empty
-result, error, or unrelated result as a failed check, even if the write
-returned `Saved`. The [MCP reference](/r3/mcp) explains the response formats
-and namespace limits.
+    Check that the returned text contains the stored fact.
+  </Step>
+  <Step title="Restart and read again">
+    Restart the server from the same working directory and repeat the read. Treat an empty result, error, or unrelated result as a failed check, even if the write returned `Saved`. The [MCP reference](/r3/mcp) explains the response formats and namespace limits.
+  </Step>
+</Steps>
 
 ## Source of truth
 
