@@ -253,7 +253,13 @@ export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = pro
   await ensurePreviewDnsRecord({ identity, env, fetchFn })
   // A Wrangler upload only proves the script uploaded; confirm the host actually
   // resolves, serves TLS, and returns the noindex preview page before reporting success.
-  if (verifyDeployment) await verifyDeployment({ host: generated.identity.host, fetchFn, log })
+  const redirectCheck = app === 'ui-docs'
+    // Workers Static Assets redirects do not apply the asset _headers file.
+    ? { expectStatus: 301, expectLocation: 'https://n3wth.com/projects/ui', requireNoindex: false }
+    : app === 'r3-web'
+      ? { expectStatus: 308, expectLocation: 'https://n3wth.com/projects/r3' }
+      : {}
+  if (verifyDeployment) await verifyDeployment({ host: generated.identity.host, fetchFn, log, ...redirectCheck })
   log(`Deployed ${generated.identity.workerName} at https://${generated.identity.host}`)
   return {
     directory: paths.directory,

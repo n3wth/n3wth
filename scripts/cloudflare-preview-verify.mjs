@@ -22,7 +22,7 @@ export function classifyFetchError(error) {
   return 'network'
 }
 
-export async function checkPreviewOnce({ host, path = '/', fetchFn = fetch, expectStatus = 200, requireNoindex = true }) {
+export async function checkPreviewOnce({ host, path = '/', fetchFn = fetch, expectStatus = 200, expectLocation, requireNoindex = true }) {
   let response
   try {
     response = await fetchFn(`https://${host}${path}`, { redirect: 'manual', headers: { 'user-agent': 'n3wth-preview-readiness' } })
@@ -31,6 +31,9 @@ export async function checkPreviewOnce({ host, path = '/', fetchFn = fetch, expe
   }
   if (response.status !== expectStatus) {
     return { ok: false, failure: 'http', detail: `expected HTTP ${expectStatus}, got ${response.status}` }
+  }
+  if (expectLocation && response.headers.get('location') !== expectLocation) {
+    return { ok: false, failure: 'redirect', detail: `expected Location ${expectLocation}, got ${response.headers.get('location') || 'no header'}` }
   }
   if (requireNoindex) {
     const robots = response.headers.get('x-robots-tag') || ''

@@ -19,6 +19,13 @@ function renderNav(path = '/') {
 }
 
 describe('Navigation disclosure', () => {
+  it('places Projects before Work and keeps it active on product pages', () => {
+    renderNav('/projects/r3')
+    const links = screen.getByRole('navigation', { name: 'Primary' }).querySelectorAll('a')
+    expect(Array.from(links).slice(0, 2).map(link => link.textContent)).toEqual(['Projects', 'Work'])
+    expect(screen.getByRole('link', { name: 'Projects' })).toHaveAttribute('aria-current', 'page')
+  })
+
   it('toggles its expanded state and identifies the controlled navigation', () => {
     const { trigger } = renderNav()
     expect(trigger).toHaveAttribute('aria-expanded', 'false')

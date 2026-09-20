@@ -10,6 +10,7 @@ import Home from './pages/Home'
 // Route-level splitting: Home stays eager (it's the index route); every
 // other page loads on navigation. App.tsx wraps the outlet in Suspense.
 const Work = lazy(() => import('./pages/Work'))
+const Projects = lazy(() => import('./pages/Projects'))
 const Art = lazy(() => import('./pages/Art'))
 const Thinking = lazy(() => import('./pages/Thinking'))
 const ThinkingPiece = lazy(() => import('./pages/ThinkingPiece'))
@@ -89,6 +90,7 @@ const router = createBrowserRouter([
       { path: 'privacy', element: <Privacy /> },
       { path: 'terms', element: <Terms /> },
       { path: 'consent', element: <Consent /> },
+      { path: 'projects', element: <Projects /> },
       { path: 'projects/:slug', element: <ProjectPage /> },
       { path: '*', element: <NotFound /> },
     ],

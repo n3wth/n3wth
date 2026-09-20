@@ -1,3 +1,8 @@
 /docs https://docs.n3wth.com/ui/quickstart 301
+/docs/getting-started https://docs.n3wth.com/ui/quickstart 301
+/docs/theming https://docs.n3wth.com/ui/theme-provider 301
+/docs/components https://docs.n3wth.com/ui/primitives 301
+/docs/hooks https://docs.n3wth.com/ui/scroll-reset 301
+/docs/css-utilities https://docs.n3wth.com/ui/tailwind 301
 /docs/* https://docs.n3wth.com/ui/:splat 301
 /* https://n3wth.com/projects/ui 301

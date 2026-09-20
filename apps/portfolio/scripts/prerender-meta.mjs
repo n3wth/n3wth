@@ -23,6 +23,13 @@ const ORIGIN = 'https://n3wth.com'
 
 const routes = [
   {
+    path: 'projects',
+    title: 'Projects — Oliver Newth',
+    description: 'Independent projects by Oliver Newth: tools for AI agents, a shared component library, and other experiments.',
+    ogImage: '/og/work.png',
+    body: '<h1>Projects</h1><p>Tools for AI agents, a shared component library, and other experiments.</p><ul><li><a href="/projects/r3">r3</a> — persistent memory for AI assistants.</li><li><a href="/projects/ui">@n3wth/ui</a> — shared React components.</li><li><a href="/projects/skills">Agent Skills</a> — installable workflows for coding agents.</li></ul>',
+  },
+  {
     path: 'work',
     title: 'Work — Oliver Newth',
     description:

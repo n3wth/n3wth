@@ -9,11 +9,12 @@ const { options } = ts.parseJsonConfigFileContent(config.config, ts.sys, dirname
 
 it.each([
   ['Getting Started', 'docs/getting-started.md'],
-  ['Primitives and themes', '../../docs/ui/primitives-and-themes.mdx'],
+  ['Primitives', '../../docs/ui/primitives.mdx'],
+  ['Theme provider', '../../docs/ui/theme-provider.mdx'],
   ['Package README', '../../packages/ui/README.md'],
 ])('%s examples compile through public package exports', (_, documentPath) => {
   const markdown = readFileSync(resolve(documentPath), 'utf8')
-  const snippets = [...markdown.matchAll(/^```tsx\n([\s\S]*?)^```/gm)]
+  const snippets = [...markdown.matchAll(/^[ \t]*```tsx\n([\s\S]*?)^[ \t]*```/gm)]
   expect(snippets.length).toBeGreaterThan(0)
 
   const sources = new Map(snippets.map((match, index) => [

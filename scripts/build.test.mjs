@@ -39,11 +39,10 @@ test('Cloudflare uses the same dependency graph and builds each package only onc
     calls.push({ command, args })
     return { status: 0 }
   }, repo, { cloudflare: true })
-  const openNext = ['garden', 'skills'].map(app => `@n3wth/${app}`)
   // Each OpenNext app builds, then populates its static-assets cache; everything else builds once.
-  assert.equal(calls.length, 8)
+  assert.equal(calls.length, 9)
   assert.deepEqual(calls[0].args, ['run', 'build', '--workspace', '@n3wth/ui'])
-  for (const app of ['garden', 'skills']) {
+  for (const app of ['garden', 'skills', 'r3-web']) {
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'build'])
     assert.deepEqual(workspacePopulateCacheArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'populateCache', 'local'])
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`), ['run', 'build', '--workspace', `@n3wth/${app}`])

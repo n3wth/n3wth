@@ -110,6 +110,8 @@ test('local workerd preserves security headers, preview noindex, cache, redirect
   t.after(() => rmSync(root, { recursive: true, force: true }))
   const assets = join(root, 'assets')
   stagePreviewAssets({ sourceDirectory: builtDist, stageDirectory: assets })
+  // Exercise static hosting independently of the retired UI domain's redirects.
+  writeFileSync(join(assets, '_redirects'), '/legacy / 301\n')
   const configPath = join(root, 'wrangler.json')
   writeFileSync(configPath, JSON.stringify({
     name: 'n3wth-ui-docs-local-test',
@@ -133,9 +135,9 @@ test('local workerd preserves security headers, preview noindex, cache, redirect
   assert.equal(response.headers.get('x-robots-tag'), 'noindex, nofollow')
   assert.match(response.headers.get('cache-control') || '', /max-age=0/)
 
-  const redirect = await fetch(`http://127.0.0.1:${port}/docs`, { redirect: 'manual' })
+  const redirect = await fetch(`http://127.0.0.1:${port}/legacy`, { redirect: 'manual' })
   assert.equal(redirect.status, 301)
-  assert.equal(redirect.headers.get('location'), '/docs/getting-started')
+  assert.equal(redirect.headers.get('location'), '/')
   const missing = await fetch(`http://127.0.0.1:${port}/does-not-exist`)
   assert.equal(missing.status, 404)
 })
@@ -598,6 +600,17 @@ test('a single readiness check separates status, header, DNS, and TLS outcomes',
   assert.equal(tlsBad.failure, 'tls')
 })
 
+test('redirect readiness checks the exact destination without following it', async () => {
+  const check = { host: 'ui-docs-pr-1.preview.n3wth.com', expectStatus: 301, expectLocation: 'https://n3wth.com/projects/ui', requireNoindex: false }
+  const pass = await checkPreviewOnce({ ...check, fetchFn: async (url, options) => {
+    assert.equal(options.redirect, 'manual')
+    return pageResponse(301, { location: check.expectLocation })
+  } })
+  assert.deepEqual(pass, { ok: true, status: 301 })
+  const wrong = await checkPreviewOnce({ ...check, fetchFn: async () => pageResponse(301, { location: 'https://n3wth.com/' }) })
+  assert.equal(wrong.failure, 'redirect')
+})
+
 test('readiness retries while the host provisions, then succeeds without disabling TLS', async () => {
   let attempt = 0
   const slept = []
@@ -645,7 +658,7 @@ test('deploy verifies the live preview before reporting success', async t => {
     fetchFn: async (url, options) => {
       if (url.startsWith('https://ui-docs-pr-20.preview.n3wth.com')) {
         pages.push(url)
-        return pageResponse(200, { 'x-robots-tag': 'noindex, nofollow' })
+        return pageResponse(301, { location: 'https://n3wth.com/projects/ui' })
       }
       return cloudflareResponse([])
     },

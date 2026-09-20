@@ -36,7 +36,8 @@ export default defineConfig({
     command: app.command === 'next'
       ? `npm run start --workspace ${app.workspace} -- --hostname 127.0.0.1 --port ${app.port}`
       : `npm exec --workspace ${app.workspace} -- vite preview --host 127.0.0.1 --port ${app.port} --strictPort`,
-    url: `http://127.0.0.1:${app.port}`,
+    // r3's root redirects to production, which must not control local readiness.
+    ...(app.name === 'r3-web' ? { port: app.port } : { url: `http://127.0.0.1:${app.port}` }),
     reuseExistingServer: false,
     timeout: 30_000,
   })),
