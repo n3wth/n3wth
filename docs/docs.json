@@ -91,5 +91,10 @@
       "family": "Suisse",
       "weight": 400
     }
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-4QRMSG5HXK"
+    }
   }
 }
