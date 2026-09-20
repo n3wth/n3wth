@@ -1,1 +1,3 @@
-/docs /docs/getting-started 301
+/docs https://docs.n3wth.com/ui/quickstart 301
+/docs/* https://docs.n3wth.com/ui/:splat 301
+/* https://n3wth.com/projects/ui 301

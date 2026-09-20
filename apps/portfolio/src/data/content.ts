@@ -196,6 +196,16 @@ export const projects: Project[] = [
     github: 'https://github.com/n3wth/r3',
   },
   {
+    id: 'ui',
+    name: '@n3wth/ui',
+    focus: 'Shared foundation',
+    question: 'A common visual system for individual sites',
+    description: 'A React component library with theme tokens, typography, native controls, and page compositions shared across the n3wth sites.',
+    tech: ['React', 'TypeScript', 'Tailwind CSS'],
+    url: '/projects/ui',
+    github: 'https://github.com/n3wth/ui',
+  },
+  {
     id: 'hop-flights',
     name: 'hop.flights',
     description: 'A flight comparison tool that weighs cash fares against points and taxes.',
@@ -217,7 +227,7 @@ export const projects: Project[] = [
     question: 'Turn a way of working into something others can use',
     description: 'A registry of installable markdown skills for coding agents. Each skill packages instructions for a specific task.',
     tech: ['Next.js', 'React', 'Supabase'],
-    url: siteUrls.skills,
+    url: '/projects/skills',
     github: 'https://github.com/n3wth/n3wth/tree/main/apps/skills',
   },
   {

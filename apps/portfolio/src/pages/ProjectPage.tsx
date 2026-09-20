@@ -16,6 +16,7 @@ const details = {
       ['A graph underneath', 'Entities and relationships are extracted as memories are written, giving an assistant more than a flat list of matching text.'],
       ['Source and package', 'The website moved here; the open-source server and npm package remain in the r3 repository.'],
     ],
+    docs: 'https://docs.n3wth.com/r3/quickstart',
     source: 'https://github.com/n3wth/r3',
   },
   ui: {
@@ -29,7 +30,22 @@ const details = {
       ['Tokens and themes', 'The package owns the color, type, spacing, and light and dark theme foundations used by the portfolio and its related projects.'],
       ['Documentation', 'The design-system reference now lives beside the project here, with the source and published package remaining available for installation.'],
     ],
+    docs: 'https://docs.n3wth.com/ui/quickstart',
     source: 'https://github.com/n3wth/ui',
+  },
+  skills: {
+    title: 'Agent Skills',
+    eyebrow: 'Reusable workflows',
+    question: 'Turn a way of working into something others can use',
+    description: 'A catalog of installable Markdown skills for coding agents. Each skill packages instructions for a specific task so a workflow can be inspected, shared, and run locally.',
+    install: 'curl -fsSL https://skills.n3wth.com/install.sh | bash',
+    sections: [
+      ['A catalog with source files', 'Browse the public catalog, inspect the instructions, and install only the skills that fit the work in front of you.'],
+      ['Workflows that stay readable', 'Skills are Markdown files with explicit triggers, steps, and examples. Their behavior is visible before an agent runs them.'],
+      ['Documentation and catalog', 'The shared product documentation lives at docs.n3wth.com. The catalog and installer remain at skills.n3wth.com.'],
+    ],
+    docs: 'https://docs.n3wth.com/skills/quickstart',
+    source: 'https://github.com/n3wth/n3wth/tree/main/apps/skills',
   },
 } as const
 
@@ -68,6 +84,7 @@ export default function ProjectPage() {
       <p className="mt-5 max-w-2xl text-xl leading-relaxed">{detail.question}</p>
       <p className="mt-6 max-w-2xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>{detail.description}</p>
       <div className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
+        <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={detail.docs}>Documentation</a>
         <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={detail.source} target="_blank" rel="noopener noreferrer">Source</a>
         <Link className="inline-flex min-h-11 items-center underline underline-offset-4" to="/work">All work</Link>
       </div>
