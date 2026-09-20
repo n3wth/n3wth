@@ -1,0 +1,60 @@
+---
+title: "Render a Reading Outline"
+sidebarTitle: "Reading Outline"
+description: "Render a ReadingOutline alongside matching section IDs to give long-form pages a scroll-spy table of contents."
+---
+
+`ReadingOutline` renders a scroll-spy outline that highlights the current section as the reader scrolls. Pair it with `SiteDocSection` components whose IDs match your `items`.
+
+## Usage
+
+Render the outline and matching sections inside the provider:
+
+```tsx
+import {
+  ReadingOutline,
+  SiteDocSection,
+  SiteText,
+  type ReadingOutlineProps,
+} from '@n3wth/ui/site'
+
+const items: ReadingOutlineProps['items'] = [
+  { id: 'requirements', label: 'Requirements', level: 2 },
+  { id: 'usage', label: 'Usage', level: 2 },
+]
+
+export function Article() {
+  return (
+    <>
+      <ReadingOutline items={items} label="Article sections" collapsible />
+      <SiteDocSection id="requirements" title="Requirements">
+        <SiteText>Import the stylesheet and mount the provider.</SiteText>
+      </SiteDocSection>
+      <SiteDocSection id="usage" title="Usage">
+        <SiteText>Compose your page with shared components.</SiteText>
+      </SiteDocSection>
+    </>
+  )
+}
+```
+
+## Props
+
+| Prop | Default | Behavior |
+| --- | --- | --- |
+| `items` | Required | Native outline items targeting the article's sections |
+| `label` | `On this page` | Outline label and disclosure button text |
+| `collapsible` | `false` | Enables a disclosure, initially closed |
+| `className` | Unset | Additional wrapper class |
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Layouts" href="/ui/layouts">
+    Compose pages with `SiteDocSection` and other site components.
+  </Card>
+
+  <Card title="Scroll Reset" href="/ui/scroll-reset">
+    Reset scroll to top on route change.
+  </Card>
+</Columns>

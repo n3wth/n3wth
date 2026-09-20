@@ -61,16 +61,31 @@
             ]
           },
           {
-            "group": "Reference",
+            "group": "Theming",
             "pages": [
-              "ui/primitives-and-themes",
-              "ui/site-compositions",
-              "ui/api-and-recipes"
+              "ui/theme-provider",
+              "ui/tailwind"
             ]
           },
           {
-            "group": "Support",
+            "group": "Components",
             "pages": [
+              "ui/primitives",
+              "ui/layouts"
+            ]
+          },
+          {
+            "group": "Recipes",
+            "pages": [
+              "ui/scroll-reset",
+              "ui/reading-outline",
+              "ui/og-images"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "ui/entry-points",
               "ui/troubleshooting"
             ]
           }
@@ -109,8 +124,10 @@
           {
             "group": "Reference",
             "pages": [
-              "r3/tools",
-              "r3/mcp"
+              "r3/transport",
+              "r3/memory-tools",
+              "r3/cache-tools",
+              "r3/knowledge-graph"
             ]
           },
           {
@@ -136,7 +153,8 @@
     }
   },
   "appearance": {
-    "default": "dark"
+    "default": "dark",
+    "strict": true
   },
   "fonts": {
     "heading": {
@@ -168,5 +186,32 @@
       "copy"
     ],
     "display": "header"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/ui/api-and-recipes",
+      "destination": "/ui/entry-points",
+      "permanent": true
+    },
+    {
+      "source": "/ui/primitives-and-themes",
+      "destination": "/ui/primitives",
+      "permanent": true
+    },
+    {
+      "source": "/ui/site-compositions",
+      "destination": "/ui/layouts",
+      "permanent": true
+    },
+    {
+      "source": "/r3/tools",
+      "destination": "/r3/memory-tools",
+      "permanent": true
+    },
+    {
+      "source": "/r3/mcp",
+      "destination": "/r3/transport",
+      "permanent": true
+    }
+  ]
 }

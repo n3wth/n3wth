@@ -1,0 +1,48 @@
+---
+title: "Generate Open Graph Images"
+sidebarTitle: "OG Images"
+description: "Use the OGCard component with Next.js ImageResponse to generate branded Open Graph images at the edge for social sharing."
+---
+
+`OGCard` renders the package's mark and title on a dark background using inline styles, sized for the 1200x630 Open Graph format. It is designed for use inside `next/og` `ImageResponse`.
+
+## Next.js App Router
+
+Create `app/opengraph-image.tsx`:
+
+```tsx
+import { ImageResponse } from 'next/og'
+import { OGCard } from '@n3wth/ui/og'
+
+export const runtime = 'edge'
+export const size = { width: 1200, height: 630 }
+export const contentType = 'image/png'
+
+export default function Image() {
+  return new ImageResponse(<OGCard title="API reference" />, size)
+}
+```
+
+## Props
+
+`OGCard` accepts one required prop:
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `title` | `string` | Card headline; keep it short enough for the fixed title styling |
+
+<Warning>
+  `OGCard` does not accept a description, logo URL, color theme, or image dimensions. Inspect the generated image before shipping to production.
+</Warning>
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Entry Points" href="/ui/entry-points">
+    Reference for the `@n3wth/ui/og` module.
+  </Card>
+
+  <Card title="Theme Provider" href="/ui/theme-provider">
+    Match your app's theme when composing preview pages.
+  </Card>
+</Columns>

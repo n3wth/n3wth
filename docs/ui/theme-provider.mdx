@@ -1,0 +1,79 @@
+---
+title: "Theme Provider and useTheme"
+sidebarTitle: "Theme Provider"
+description: "Mount N3wthProvider at your app root, load the shared stylesheet, and read or toggle the current theme with the useTheme hook."
+---
+
+The Newth theme is delivered through a React provider and a single stylesheet. Mount the provider at the root, import the stylesheet once, then use `useTheme` to read or change the mode from inside the tree.
+
+## Set up the provider
+
+<Steps>
+  <Step title="Wrap your app in the provider">
+    Mount `N3wthProvider` at the root of your application. The default mode is `dark`; pass `light` or `system` to select another mode.
+
+    ```tsx
+    import { N3wthProvider } from '@n3wth/ui/site'
+
+    export function App({ children }) {
+      return <N3wthProvider mode="dark">{children}</N3wthProvider>
+    }
+    ```
+  </Step>
+  <Step title="Import the shared stylesheet once">
+    Import `@n3wth/ui/site.css` at the app root. This supplies the generated theme, component, site, and visual styles.
+
+    ```tsx
+    import '@n3wth/ui/site.css'
+    ```
+  </Step>
+</Steps>
+
+## Toggle the theme with useTheme
+
+For an interactive app, keep the provider and toggle on the same state:
+
+```tsx
+'use client'
+
+import type { ReactNode } from 'react'
+import { useTheme } from '@n3wth/ui'
+import { N3wthProvider } from '@n3wth/ui/site'
+import { Button } from '@n3wth/ui/primitives'
+
+export function ThemeRoot({ children }: { children: ReactNode }) {
+  const { theme, toggleTheme } = useTheme()
+
+  return (
+    <N3wthProvider mode={theme}>
+      <Button
+        label={theme === 'dark' ? 'Use light theme' : 'Use dark theme'}
+        onClick={toggleTheme}
+      />
+      {children}
+    </N3wthProvider>
+  )
+}
+```
+
+## useTheme options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `defaultTheme` | `dark` | Server-rendered value and fallback when there is no saved value or light-system preference |
+| `storageKey` | `n3wth-theme` | Local-storage preference key |
+| `attribute` | `data-theme` | Attribute written on the document root |
+
+The hook returns `theme`, `setTheme`, `toggleTheme`, `isDark`, and `isLight`. Calls that use the same storage key share theme updates.
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Primitives" href="/ui/primitives">
+    Choose between native Astryx controls and root compatibility adapters.
+  </Card>
+
+  <Card title="Tailwind" href="/ui/tailwind">
+    Wire the theme tokens into Tailwind v4.
+  </Card>
+</Columns>

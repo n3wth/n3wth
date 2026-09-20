@@ -1,14 +1,12 @@
 ---
-title: "Tool Reference"
-sidebarTitle: "Tools"
-description: "Reference for all 14 r3 MCP tools: 11 always available and 3 enhanced-mode tools for entity extraction and knowledge graphs."
+title: "Memory Tools Reference"
+sidebarTitle: "Memory Tools"
+description: "Reference for the 8 r3 MCP memory tools: add, get, update, delete, search, list, deduplicate, and import."
 ---
 
-r3 exposes every capability as an MCP tool. This page lists all 14 tools, their parameters, and what they return. Use these references when building prompts or debugging tool calls.
+r3 exposes memory operations as MCP tools. This page documents the 8 always-available memory tools. See [Cache Tools](/r3/cache-tools) for cache and sync, and [Knowledge Graph](/r3/knowledge-graph) for enhanced-mode entity and graph tools.
 
-## Memory tools
-
-### add_memory
+## add_memory
 
 Store a new memory with automatic deduplication and indexing. Use for persisting facts, preferences, or conversation context. Prefer this over `update_memory` for new content.
 
@@ -42,7 +40,7 @@ Store a new memory with automatic deduplication and indexing. Use for persisting
 
 **Returns:** `Saved` or `Already saved`.
 
-### get_memory
+## get_memory
 
 Retrieve a single memory by its unique ID. Use when you have a specific `memory_id` from prior search or list results.
 
@@ -56,7 +54,7 @@ Retrieve a single memory by its unique ID. Use when you have a specific `memory_
 
 **Returns:** Memory object `{id, content, user_id, metadata}` or `null` if not found.
 
-### update_memory
+## update_memory
 
 Modify an existing memory's content or metadata. Use for corrections or adding context. Fails if `memory_id` is not found.
 
@@ -78,7 +76,7 @@ Modify an existing memory's content or metadata. Use for corrections or adding c
 
 **Returns:** Updated memory object.
 
-### delete_memory
+## delete_memory
 
 Permanently remove a memory by ID. This is irreversible and removes the record from storage, cache, and search index.
 
@@ -88,7 +86,7 @@ Permanently remove a memory by ID. This is irreversible and removes the record f
 
 **Returns:** Confirmation text.
 
-### search_memory
+## search_memory
 
 Find memories matching a natural language query using hybrid semantic and keyword search. This is the primary retrieval tool for content-based lookup.
 
@@ -110,7 +108,7 @@ Find memories matching a natural language query using hybrid semantic and keywor
 
 **Returns:** Array of memory objects, or `No memories found`.
 
-### get_all_memories
+## get_all_memories
 
 List all memories for a user with pagination. Use for browsing or bulk operations. For content search, prefer `search_memory`.
 
@@ -136,7 +134,7 @@ List all memories for a user with pagination. Use for browsing or bulk operation
 
 **Returns:** `{total, limit, offset, returned, hasMore, source, memories[]}`.
 
-### deduplicate_memories
+## deduplicate_memories
 
 Detect and optionally remove duplicate memories using content similarity. Run with `dry_run: true` first to preview.
 
@@ -154,7 +152,7 @@ Detect and optionally remove duplicate memories using content similarity. Run wi
 
 **Returns:** Summary with duplicate groups.
 
-### import_memories
+## import_memories
 
 Bulk import memories from external sources. Supports Mem0 API export or local JSON files. Processes in batches with duplicate detection.
 
@@ -188,86 +186,14 @@ Bulk import memories from external sources. Supports Mem0 API export or local JS
 
 **Returns:** Summary with imported, skipped, and failed counts.
 
-## Cache and sync
+## Related
 
-### cache_stats
+<Columns cols={2}>
+  <Card title="Cache Tools" href="/r3/cache-tools">
+    Inspect cache health, optimize hit rates, and check sync status.
+  </Card>
 
-View cache performance metrics and health status. Use for monitoring and debugging.
-
-**Returns:** Summary text with cached memory count.
-
-### optimize_cache
-
-Reorganize cache for optimal hit rates. Promotes frequently accessed memories to L1 (24h TTL) and demotes cold data to L2 (7d TTL).
-
-<ResponseField name="force_refresh" type="boolean">
-  `true` clears cache and reloads all from storage. `false` optimizes existing cache. Default: `false`.
-</ResponseField>
-
-<ResponseField name="max_memories" type="number">
-  Maximum memories to keep in cache. Range: 100-10000. Default: 1000.
-</ResponseField>
-
-**Returns:** Summary of cached memories.
-
-### sync_status
-
-Check the background job queue and sync status. Shows pending async operations from `add_memory` calls.
-
-**Returns:** Count of pending operations, or `All operations complete`.
-
-## Enhanced mode
-
-<Note>
-  These tools appear only when `INTELLIGENCE_MODE=enhanced` (the default).
-</Note>
-
-### extract_entities
-
-Extract named entities and relationships from text using NLP. Identifies people, organizations, technologies, and projects.
-
-<ResponseField name="text" type="string" required>
-  Input text to analyze. Longer text yields more entities.
-</ResponseField>
-
-**Returns:** `{people[], organizations[], technologies[], projects[], relationships[], keywords[]}`.
-
-### get_knowledge_graph
-
-Build a knowledge graph from stored memories. Returns entities as nodes and relationships as edges.
-
-<ResponseField name="entity_type" type="string">
-  Filter nodes by type: `people`, `organizations`, `technologies`, or `projects`. Omit for all types.
-</ResponseField>
-
-<ResponseField name="entity_name" type="string">
-  Filter nodes containing this name (case-insensitive substring match). Omit for all entities.
-</ResponseField>
-
-<ResponseField name="relationship_type" type="string">
-  Filter edges by relationship: `WORKS_FOR`, `USES`, `BUILT_WITH`, `KNOWS`, etc. Omit for all relationships.
-</ResponseField>
-
-<ResponseField name="limit" type="number">
-  Maximum nodes to return. Range: 1-100. Default: 20.
-</ResponseField>
-
-**Returns:** `{nodes[], edges[]}` where nodes have `{id, type, name, memories[]}` and edges have `{from, to, type, confidence}`.
-
-### find_connections
-
-Discover relationship paths between entities in the knowledge graph. Uses BFS traversal to find how entities connect.
-
-<ResponseField name="from_entity" type="string" required>
-  Starting entity name for path search. Must match an entity in the knowledge graph exactly.
-</ResponseField>
-
-<ResponseField name="to_entity" type="string">
-  Target entity name. If omitted, returns all reachable entities up to `max_depth`.
-</ResponseField>
-
-<ResponseField name="max_depth" type="number">
-  Maximum relationship hops to traverse. Range: 1-5. Default: 2.
-</ResponseField>
-
-**Returns:** `{from, to, max_depth, paths_found, paths[]}` where each path is an array of `{from, to, type}` edges.
+  <Card title="Knowledge Graph" href="/r3/knowledge-graph">
+    Extract entities and traverse relationships in enhanced mode.
+  </Card>
+</Columns>

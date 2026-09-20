@@ -1,0 +1,101 @@
+---
+title: "Primitives and Adapters"
+sidebarTitle: "Primitives"
+description: "Choose between native Astryx primitives from @n3wth/ui/primitives and root compatibility adapters, then browse the full component catalog."
+---
+
+`@n3wth/ui/primitives` re-exports the pinned Astryx core. The `@n3wth/ui` root exports adapter components with the Newth theme layered on top and a legacy prop shape. Applications must consume Astryx through `@n3wth/ui/primitives`, never directly.
+
+## Choose your import
+
+<Tabs>
+  <Tab title="@n3wth/ui/primitives">
+    Use native Astryx APIs with the `label` prop.
+
+    ```tsx
+    import { Button } from '@n3wth/ui/primitives'
+
+    export function RefreshButton() {
+      return <Button label="Reload page" onClick={() => window.location.reload()} />
+    }
+    ```
+  </Tab>
+  <Tab title="@n3wth/ui (root)">
+    Use compatibility adapters with `children` and historical props like `variant="glass"`, `leftIcon`, and responsive `size` objects.
+
+    ```tsx
+    import { Button } from '@n3wth/ui'
+
+    export function GlassButton() {
+      return (
+        <Button variant="glass" size="md" leftIcon={<Icon name="ArrowRight" />}>
+          Continue
+        </Button>
+      )
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<Warning>
+  These are different APIs even though both exports are named `Button`. Do not move imports between entry points without checking their types.
+</Warning>
+
+## Component catalog
+
+### Atoms
+
+- `Button`
+- `Badge`
+- `Input`
+- `Icon`
+- `NoiseOverlay`
+- `ScrollIndicator`
+- `HamburgerIcon`
+- `AnimatedText`
+- `CodeBlock`
+- `Skeleton` and `CardSkeleton`
+- `Shape`
+- `Character`
+- `SpeechBubble`
+- `Tooltip`
+- `Switch`
+- `Avatar`
+- `Separator`
+- `Progress`
+- `Label`
+- `Textarea`
+
+### Molecules
+
+- `Card` (with `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`)
+- `NavLink`
+- `CommandBox`
+- `ThemeToggle`
+- `MobileDrawer`
+- `ErrorBoundary` (with `ErrorFallback`)
+- `CompositeShape` (with `presets`)
+- `Modal` (with `ModalHeader`, `ModalTitle`, `ModalDescription`, `ModalBody`, `ModalFooter`, `ModalCloseButton`)
+- `Tabs` (with `TabsList`, `TabsTab`, `TabsPanel`)
+- `Toast` (with `ToastContainer`)
+- `Dropdown` (with `DropdownTrigger`, `DropdownMenu`, `DropdownItem`)
+- `Accordion` (with `AccordionItem`, `AccordionTrigger`, `AccordionContent`)
+
+### Organisms
+
+- `Nav`
+- `Footer`
+- `Hero`
+- `Section` (with `SectionHeader`)
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Theme Provider" href="/ui/theme-provider">
+    Mount `N3wthProvider` and load the Newth theme CSS.
+  </Card>
+
+  <Card title="Layouts" href="/ui/layouts">
+    Build page frames with the site composition components.
+  </Card>
+</Columns>

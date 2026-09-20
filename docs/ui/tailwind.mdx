@@ -1,0 +1,46 @@
+---
+title: "Use with Tailwind"
+sidebarTitle: "Tailwind"
+description: "Wire the @n3wth/ui token bridge into a Tailwind v4 stylesheet for native primitives or root compatibility adapters."
+---
+
+`@n3wth/ui` ships a token bridge that maps the Newth theme onto Tailwind v4's `@theme` layer. Import it alongside Tailwind in your global stylesheet.
+
+## Native primitives
+
+For an app using Tailwind v4, import the token bridge and site CSS in your global stylesheet:
+
+```css
+@import 'tailwindcss';
+@import '@n3wth/ui/tailwind-theme.css';
+@import '@n3wth/ui/site.css';
+```
+
+## Root compatibility adapters
+
+When you retain compatibility components, replace the final import and add an explicit source:
+
+```css
+@import 'tailwindcss';
+@import '@n3wth/ui/tailwind-theme.css';
+@import '@n3wth/ui/styles';
+@source '../node_modules/@n3wth/ui/dist/**/*.js';
+```
+
+Resolve `@source` relative to the CSS file. Workspace consumers scan their built `packages/ui/dist` directory instead.
+
+<Warning>
+  `styles` already includes the site foundation, so you do not need to import both `styles` and `site.css`. Importing both duplicates the shared foundation.
+</Warning>
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Entry Points" href="/ui/entry-points">
+    Reference for `tailwind-theme.css`, `styles`, and the Tailwind preset.
+  </Card>
+
+  <Card title="Primitives" href="/ui/primitives">
+    Choose between native Astryx controls and root adapters.
+  </Card>
+</Columns>
