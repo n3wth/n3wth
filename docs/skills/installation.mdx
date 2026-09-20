@@ -1,119 +1,81 @@
 ---
-title: Install
-description: Install selected skills. Check the files and keep existing installations safe.
+title: "Install skills with the shell installer"
+sidebarTitle: "Installation"
+description: "Use the shell installer at skills.n3wth.com/install.sh to copy committed skill files into your assistant's skills directory. Supports flat files and folder skills."
 ---
 
-Use the shell installer to copy committed skill instructions into
-`~/.gemini/skills`. It preserves folder structure and skips existing
-destinations. No npm package is needed.
+The shell installer at `https://skills.n3wth.com/install.sh` copies committed skill files from the `n3wth/n3wth` repository into your assistant's skills directory. It supports both flat files (`foo.md`) and folder skills (`bar/SKILL.md`).
 
-## Prerequisites
+## Install a single skill
 
-- Bash, Git, and curl available in your terminal.
-- Network access to `skills.n3wth.com` and GitHub.
-- Write access to your home directory, or a staging directory you choose.
-- An assistant configured to read the installed instructions. Installation does not install the assistant itself.
-
-The general target is `gemini`, displayed in the catalog as Antigravity CLI.
-Other target names are rejected, except `all`, which currently selects that
-same single target.
-
-## Install a selected skill
-
-Download and inspect the script before you run it:
+Pass the target assistant and the skill ID:
 
 ```bash
-curl -fsSL https://skills.n3wth.com/install.sh -o /tmp/n3wth-skills-install.sh
-less /tmp/n3wth-skills-install.sh
-bash /tmp/n3wth-skills-install.sh gemini gsap-animations
-test -s "$HOME/.gemini/skills/gsap-animations/SKILL.md"
-sed -n '1,45p' "$HOME/.gemini/skills/gsap-animations/SKILL.md"
+curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini pdf
 ```
 
-The script clones `n3wth/n3wth` at its default branch into a temporary
-directory, reads `apps/skills/skills`, and removes the clone when finished.
-It does not pin a commit or install a catalog version.
+This downloads the `pdf` skill and copies it to `~/.gemini/skills/pdf.md`.
 
-Supply multiple IDs to install a subset:
+## Install all skills
+
+Omit the skill ID to install the entire catalog:
 
 ```bash
-bash /tmp/n3wth-skills-install.sh gemini pdf skill-creator
+curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini
 ```
 
-These two skills use flat files, so verify `~/.gemini/skills/pdf.md` and
-`~/.gemini/skills/skill-creator.md`. IDs may contain lowercase letters,
-digits, and hyphens. The script validates the entire selection before it
-changes the assistant directory. It accepts an ID when either `<id>.md` or
-`<id>/SKILL.md` exists in the cloned source.
+## Install into a staging directory
 
-To copy every top-level entry in the skill source directory, omit IDs:
+Set the `SKILLS_INSTALL_HOME` environment variable to change where the `.gemini` directory is created:
 
 ```bash
-bash /tmp/n3wth-skills-install.sh gemini
+SKILLS_INSTALL_HOME=/tmp/staging bash /tmp/install.sh gemini pdf
 ```
 
-This installs repository contents, including files that a catalog download
-link does not necessarily expose.
+This copies the skill to `/tmp/staging/.gemini/skills/pdf.md` instead of your home directory.
 
-## Stage an installation
+## Folder skills vs flat skills
 
-`SKILLS_INSTALL_HOME` overrides the home directory used by this shell
-script. Use it to inspect files before you place them in the assistant's
-directory:
+The installer handles two layouts:
 
-```bash
-skill_stage=$(mktemp -d)
-SKILLS_INSTALL_HOME="$skill_stage" bash /tmp/n3wth-skills-install.sh gemini pdf
-sed -n '1,60p' "$skill_stage/.gemini/skills/pdf.md"
+| Layout | Source path | Destination |
+| --- | --- | --- |
+| Flat skill | `skills/<id>.md` | `~/.gemini/skills/<id>.md` |
+| Folder skill | `skills/<id>/SKILL.md` | `~/.gemini/skills/<id>/` (copied as a directory) |
+
+Folder skills are useful when a skill includes helper files alongside `SKILL.md`. Flat skills are simpler and sufficient for most instruction-only skills.
+
+## Overwrite protection
+
+The installer skips existing files by default. If a skill is already installed, you will see a warning and the file is left unchanged:
+
+```text
+gemini/pdf.md already exists, skipping
 ```
 
-The override does not configure the assistant, the website's curl commands,
-or the separate CLI. A staged skill will not automatically appear in your
-normal assistant session.
+To force an update, remove the existing file first or use the experimental CLI with the `--force` flag.
 
-## Claude Code: skill-creator only
+## Available targets
 
-The catalog provides this additional recipe specifically for `skill-creator`:
+| Target | Assistant | Skills directory |
+| --- | --- | --- |
+| `gemini` | Antigravity CLI | `~/.gemini/skills` |
+| `all` | Equivalent to `gemini` | `~/.gemini/skills` |
 
-```bash
-mkdir -p "$HOME/.claude/skills/skill-creator"
-curl -fsSL \
-  https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills/skill-creator.md \
-  -o "$HOME/.claude/skills/skill-creator/SKILL.md"
-test -s "$HOME/.claude/skills/skill-creator/SKILL.md"
-```
-
-This direct download overwrites that destination file. Inspect it, then
-start a new Claude Code session as the catalog recipe instructs. This
-exception does not extend to catalog-wide Claude Code compatibility. The
-general installer still accepts only `gemini` and `all`.
-
-## Existing files, updates, and removal
-
-The shell installer skips a destination when it already exists, including
-symbolic links. Rerunning it is therefore not an update operation. To
-compare an update, install into a staging directory, diff the staged copy
-against your installed file or folder, and deliberately replace it after you
-preserve local changes.
-
-The shell installer does not create an uninstall registry. Remove only the
-exact file or folder you installed. The separate CLI cannot discover these
-installations through `list --installed`; its tracking file is independent.
+Only `gemini` is supported today. Passing an unrecognized target prints `Supported target: gemini` and exits with an error.
 
 ## Troubleshooting
 
-| Symptom | Check or action |
-| --- | --- |
-| `Supported target: gemini` | Put `gemini` before skill IDs; `claude` is not a target |
-| `Invalid skill ID` | Use a bare lowercase ID, not a path or URL |
-| `Skill is not available` | Confirm the flat file or folder exists in the repository's default branch |
-| `already exists, skipping` | Compare with a staged copy; the installer intentionally preserves the destination |
-| Clone failure | Check Git installation, GitHub connectivity, and access to `n3wth/n3wth` |
-| File exists but assistant ignores it | Inspect its content and path; confirm discovery in the assistant before you treat installation as successful activation |
-| Direct download has no sibling resources | Use the shell installer for a folder skill; a single curl download copies only the referenced Markdown file |
+<AccordionGroup>
+  <Accordion title="Download refused">
+    If the installer download fails, verify that curl is installed and that `skills.n3wth.com` is reachable. You can also clone the repository manually and copy files from `apps/skills/skills/`.
+  </Accordion>
 
-## Sources
+  <Accordion title="Target not recognized">
+    The installer only accepts `gemini` and `all` as targets. If you pass another value, it exits with `Supported target: gemini`. Use `gemini` for Antigravity CLI.
+  </Accordion>
 
-- [Shell installer](https://github.com/n3wth/n3wth/blob/main/apps/skills/public/install.sh)
-- [Installer regression checks](https://github.com/n3wth/n3wth/blob/main/apps/skills/scripts/install.test.mjs)
-- [Skill Creator's additional install recipe](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/data/skills.ts)
+  <Accordion title="Skill already installed">
+    The installer skips files that already exist. Remove the existing file or directory under `~/.gemini/skills/` if you want to reinstall.
+  </Accordion>
+</AccordionGroup>

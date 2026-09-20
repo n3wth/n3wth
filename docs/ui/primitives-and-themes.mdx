@@ -1,77 +1,68 @@
 ---
-title: "Primitives and themes"
-description: "Choose the native control API and load its CSS. Keep all theme state aligned."
+title: "Component primitives and the Newth theme"
+sidebarTitle: "Primitives & themes"
+description: "Choose between native Astryx controls and root compatibility adapters, and load the Newth theme with CSS and a provider."
 ---
 
-`@n3wth/ui/primitives` re-exports the core Astryx API, and explicitly exports
-`ToastViewport` and its props. The UI package pins the Astryx dependency.
-Applications in this workspace must consume it through UI rather than
-importing Astryx directly.
+`@n3wth/ui/primitives` re-exports the pinned Astryx core, and the `@n3wth/ui` root also exports adapter components with the Newth theme layered on top. Applications must consume Astryx through `@n3wth/ui/primitives`, never directly.
 
-## Use the correct Button API
+## Choose your import
 
-The native button receives its text through `label`:
+<Tabs>
+  <Tab title="@n3wth/ui/primitives">
+    Use native Astryx APIs with the `label` prop.
 
-```tsx
-import { Button } from '@n3wth/ui/primitives'
+    ```tsx
+    import { Button } from '@n3wth/ui/primitives'
+    
+    export function RefreshButton() {
+      return <Button label="Reload page" onClick={() => window.location.reload()} />
+    }
+    ```
+  </Tab>
+  <Tab title="@n3wth/ui (root)">
+    Use compatibility adapters with `children` and historical props like `variant="glass"`, `leftIcon`, and responsive `size` objects.
 
-export function RefreshButton() {
-  return <Button label="Reload page" onClick={() => window.location.reload()} />
-}
-```
+    ```tsx
+    import { Button } from '@n3wth/ui'
+    
+    export function GlassButton() {
+      return (
+        <Button variant="glass" size="md" leftIcon={<Icon name="ArrowRight" />}>
+          Continue
+        </Button>
+      )
+    }
+    ```
+  </Tab>
+</Tabs>
 
-The root compatibility button instead requires `children` and retains older
-props such as `variant="glass"`, `leftIcon`, and responsive `size` objects.
-These are different APIs even though both exports are named `Button`. Do not
-move imports between entry points without checking their types.
+<Warning>
+  These are different APIs even though both exports are named `Button`. Do not move imports between entry points without checking their types.
+</Warning>
 
-The native `label` and `onClick` example matches the packaged starter. For
-additional controls and props, use the declarations supplied by your
-installed version. The primitives surface follows the package's pinned
-Astryx version, currently `0.1.6` in the 2.0.0 source.
+## The Newth theme
 
-## Choose a CSS setup
+<Steps>
+  <Step title="Wrap your app in the provider">
+    Mount `N3wthProvider` at the root of your application. The default mode is `dark`; pass `light` or `system` to select another mode.
 
-| Application | Setup |
-| --- | --- |
-| Site components and native primitives | Import `@n3wth/ui/site.css` once |
-| App uses Tailwind v4 utilities | Import Tailwind, the token bridge, and site CSS in the global stylesheet |
-| App retains root compatibility adapters | Use `@n3wth/ui/styles` and scan the built package for Tailwind classes |
+    ```tsx
+    import { N3wthProvider } from '@n3wth/ui/site'
+    
+    export function App({ children }) {
+      return <N3wthProvider mode="dark">{children}</N3wthProvider>
+    }
+    ```
+  </Step>
+  <Step title="Import the shared stylesheet once">
+    Import `@n3wth/ui/site.css` at the app root. This supplies the generated theme, component, site, and visual styles.
 
-For a consumer whose global stylesheet is `src/app.css` and dependencies are
-in the project root:
-
-```css
-@import 'tailwindcss';
-@import '@n3wth/ui/tailwind-theme.css';
-@import '@n3wth/ui/site.css';
-```
-
-This assumes Tailwind v4 is already configured in the application. The token
-bridge contains Tailwind directives and belongs in that pipeline, not an
-unprocessed browser stylesheet.
-
-When you retain compatibility components, replace the final import and add
-an explicit source:
-
-```css
-@import 'tailwindcss';
-@import '@n3wth/ui/tailwind-theme.css';
-@import '@n3wth/ui/styles';
-@source '../node_modules/@n3wth/ui/dist/**/*.js';
-```
-
-Resolve `@source` relative to the CSS file. Workspace consumers scan their
-built `packages/ui/dist` directory instead. The current UI docs app uses
-this compatibility setup because its examples still render root adapters.
-`styles` already includes the site foundation, so you do not need to import
-both stylesheets.
-
-## Set the theme mode
-
-`N3wthProvider` accepts `children` and optional `mode`. The default is
-`dark`. Pass `light` or `system` to select another mode. The provider alone
-does not provide the local-storage preference behavior of `useTheme`.
+    ```tsx
+    import '@n3wth/ui/site.css'
+    ```
+  </Step>
+</Steps>
 
 For an interactive app, keep the provider and toggle on the same state:
 
@@ -98,46 +89,59 @@ export function ThemeRoot({ children }: { children: ReactNode }) {
 }
 ```
 
-Import the CSS in the app's global entry as described above.
+`useTheme` options and defaults:
 
-| `useTheme` option | Default | Meaning |
+| Option | Default | Meaning |
 | --- | --- | --- |
 | `defaultTheme` | `dark` | Server-rendered value and fallback when there is no saved value or light-system preference |
 | `storageKey` | `n3wth-theme` | Local-storage preference key |
 | `attribute` | `data-theme` | Attribute written on the document root |
 
-The hook returns `theme`, `setTheme`, `toggleTheme`, `isDark`, and `isLight`.
-It accepts a stored `dark` or `light` value, then checks the system's light
-preference, then uses the default. It catches storage access failures.
+The hook returns `theme`, `setTheme`, `toggleTheme`, `isDark`, and `isLight`. Calls that use the same storage key share theme updates.
 
-Calls that use the same storage key share theme updates. Automatic system
-changes do not save a preference. The hook follows system changes until the
-user selects a theme with `setTheme` or `toggleTheme`. Use provider
-`mode="system"` when you do not need a saved user preference.
+## Available components
 
-For server-rendered apps, the hook's server default can differ from the
-saved browser preference. The UI docs app uses a blocking theme
-initialization script to set document attributes before paint. Such a script
-helps initial colors. It does not, by itself, make theme-dependent server
-markup identical to the client.
+### Atoms
 
-## Typography and tokens
+- `Button`
+- `Badge`
+- `Input`
+- `Icon`
+- `NoiseOverlay`
+- `ScrollIndicator`
+- `HamburgerIcon`
+- `AnimatedText`
+- `CodeBlock`
+- `Skeleton` and `CardSkeleton`
+- `Shape`
+- `Character`
+- `SpeechBubble`
+- `Tooltip`
+- `Switch`
+- `Avatar`
+- `Separator`
+- `Progress`
+- `Label`
+- `Textarea`
 
-The canonical theme source currently selects Suisse Intl for headings and
-body, and Geist Mono for code. The Tailwind bridge maps `font-display`,
-`font-sans`, and `font-mono` to the corresponding theme font-family
-variables. Older instructions naming Satoshi headings do not describe this
-theme revision.
+### Molecules
 
-Suisse Intl files are not distributed on npm. The release package omits
-their font rules and uses the theme's system-font fallback. See
-[font troubleshooting](/ui/troubleshooting#font-resolution-fails) for older
-artifacts and workspace differences.
+- `Card` (with `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`)
+- `NavLink`
+- `CommandBox`
+- `ThemeToggle`
+- `MobileDrawer`
+- `ErrorBoundary` (with `ErrorFallback`)
+- `CompositeShape` (with `presets`)
+- `Modal` (with `ModalHeader`, `ModalTitle`, `ModalDescription`, `ModalBody`, `ModalFooter`, `ModalCloseButton`)
+- `Tabs` (with `TabsList`, `TabsTab`, `TabsPanel`)
+- `Toast` (with `ToastContainer`)
+- `Dropdown` (with `DropdownTrigger`, `DropdownMenu`, `DropdownItem`)
+- `Accordion` (with `AccordionItem`, `AccordionTrigger`, `AccordionContent`)
 
-## Sources
+### Organisms
 
-- [Native exports](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/primitives/index.ts)
-- [Root Button adapter](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/atoms/Button/Button.tsx)
-- [Provider](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/theme/N3wthProvider.tsx) and [theme definition](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/theme/n3wthTheme.ts)
-- [Theme hook](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/hooks/useTheme.ts) and [initial-paint script](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/public/theme-init.js)
-- [CSS generation](https://github.com/n3wth/n3wth/blob/main/packages/ui/scripts/build-styles.mjs) and [current app stylesheet](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/demo/demo.css)
+- `Nav`
+- `Footer`
+- `Hero`
+- `Section` (with `SectionHeader`)

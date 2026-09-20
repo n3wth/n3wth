@@ -1,14 +1,14 @@
 ---
-title: "Compositions"
-description: "Build page frames, navigation, headings, sections, and footers with @n3wth/ui/site."
+title: "Build page layouts with @n3wth/ui/site"
+sidebarTitle: "Site compositions"
+description: "Compose page frames, navigation, headings, sections, and footers using the site components exported from @n3wth/ui/site."
 ---
 
-Site components own the shared layout and typography. Your application
-supplies content, route links, and active state. Complete the
-[quickstart](/ui/quickstart) first. The examples here assume an ancestor
-`N3wthProvider` and an imported `site.css`.
+`@n3wth/ui/site` exports layout components, a theme provider, and scroll helpers. Your application supplies content, route links, and active state. Complete the [quickstart](/ui/quickstart) first. The examples here assume an ancestor `N3wthProvider` and an imported `site.css`.
 
-## Build a page frame
+## Page frame
+
+This example assembles a full page with navigation, header, sections, and footer:
 
 ```tsx
 import {
@@ -54,22 +54,72 @@ export function ReferencePage() {
 horizontal constraints. Put sections inside a container, or put a container
 inside a full-width section when the section needs its own background.
 
-## Structure and typography reference
+## Available site components
 
-| Component | Props and defaults | Use |
-| --- | --- | --- |
-| `SiteContainer` | `as`: `div` (default), `main`, `section`, `article`; HTML attributes | Constrain and align content |
-| `SiteSection` | Native section props | Separate page regions vertically |
-| `PageHeader` | Required `title`; optional `description`, `actions`, `aside`; `level`: 1 (default) or 2; `align`: `start` (default) or `center` | Introduce a page or major region |
-| `SiteHeading` | `variant`: `page`, `section` (default), `item`; optional `level`: 1–6 | Choose visual role and semantic heading level |
-| `SiteText` | `variant`: `body` (default), `supporting`, `lede`; `as`: `p` (default), `span`, `div` | Body text with shared typography |
-| `SiteSectionLinks` | Native nav props | In-flow links to sections or documents |
-| `SiteDocSection` | Optional `title`; `level`: 2 (default) or 3; HTML attributes | Group long-form content |
-| `SiteDocList` | Required `items`: React nodes; list attributes except `children` | Render a document list |
+<CardGroup cols={2}>
+  <Card title="SiteContainer">
+    Constrain and align content. Accepts `as`: `div` (default), `main`, `section`, or `article`.
+  </Card>
 
-Heading variants default to levels 1, 2, and 3 respectively. Set `level`
-explicitly when the visual size and document hierarchy differ.
-`SiteDocSection` renders a `div`, not a semantic `section`.
+  <Card title="SiteSection">
+    Separate page regions vertically with native section props.
+  </Card>
+
+  <Card title="SiteSectionLinks">
+    In-flow links to sections or documents. Sticky navigation owns active state separately.
+  </Card>
+
+  <Card title="SiteHeading">
+    Choose visual role (`page`, `section`, `item`) and semantic heading level (`1` through `6`).
+  </Card>
+
+  <Card title="SiteText">
+    Body text with shared typography. Variants: `body` (default), `supporting`, `lede`.
+  </Card>
+
+  <Card title="SiteDocSection">
+    Group long-form content with an optional title and level (`2` or `3`).
+  </Card>
+
+  <Card title="SiteDocList">
+    Render a document list from a required `items` array of React nodes.
+  </Card>
+
+  <Card title="PageHeader">
+    Introduce a page or major region with `title`, optional `description`, `actions`, `aside`, and alignment.
+  </Card>
+
+  <Card title="SiteNavigation">
+    Responsive navigation with brand, links, actions, and a mobile disclosure.
+  </Card>
+
+  <Card title="SiteSignup">
+    One-line email capture for footers. The app owns delivery through `onSubmit(email)`.
+  </Card>
+
+  <Card title="SiteFooter">
+    Shared footer with brand, links, optional signup, and metadata slots.
+  </Card>
+
+  <Card title="N3wthProvider">
+    Theme provider that supplies the Newth theme context. Accepts `mode`: `dark`, `light`, or `system`.
+  </Card>
+
+  <Card title="ReadingOutline">
+    Scroll-spy outline for long-form pages. Accepts `items`, `label`, and `collapsible`.
+  </Card>
+</CardGroup>
+
+## Hooks and helpers
+
+| Export | Purpose |
+| --- | --- |
+| `useRouteScrollReset` | Reset scroll to top after qualifying anchor clicks to a new pathname |
+| `n3wthTheme` | Theme object for programmatic access to Newth tokens |
+
+<Tip>
+  Pair site compositions with `@n3wth/ui/primitives` for interactive controls inside sections. For example, use the native `Button` inside a `SiteSection` or `PageHeader` actions slot.
+</Tip>
 
 ## Navigation behavior
 
@@ -87,28 +137,9 @@ selection, outside pointer interaction, Escape, or a transition to the
 desktop media query. Escape restores focus to the menu button. Keep
 navigation links as actual anchors so the click and focus behavior can find them.
 
-## Document content
+## Customize the footer
 
-```tsx
-import { SiteDocList, SiteDocSection, SiteText } from '@n3wth/ui/site'
-
-export function Requirements() {
-  return (
-    <SiteDocSection title="Requirements">
-      <SiteText>Prepare the application before adding controls.</SiteText>
-      <SiteDocList items={[
-        'Use a supported React version.',
-        'Import the shared stylesheet once.',
-        'Mount the theme provider above the page.',
-      ]} />
-    </SiteDocSection>
-  )
-}
-```
-
-## Customize the footer deliberately
-
-`SiteFooter` defaults to an Oliver Newth brand link and Library, Contact, and
+`SiteFooter` defaults to an Oliver Newth brand link and Library, Skills, r3, Docs, Contact, and
 GitHub links. For another product, pass your own `brand` and `links` as in
 the frame example. The optional `signup` slot renders above the identity
 row. Pair it with `SiteSignup`, which takes an `onSubmit(email)` handler so
@@ -124,9 +155,3 @@ the app decides where addresses go.
 
 If you supply `links`, `legalLinks` and `sourceHref` no longer construct
 that group. Include those links yourself when you replace it.
-
-## Sources
-
-- [Site component implementations and prop types](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/site/index.tsx)
-- [Shared layout CSS](https://github.com/n3wth/n3wth/blob/main/packages/ui/src/site/site.css)
-- [Current documentation navigation](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/demo/SiteNav.tsx)

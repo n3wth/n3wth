@@ -1,121 +1,76 @@
 ---
-title: CLI
-description: Use newth-skills commands. Understand local tracking, fallback content, and distribution limits.
+title: "The newth-skills CLI (experimental)"
+sidebarTitle: "CLI"
+description: "Reference for the experimental newth-skills CLI in apps/skills/cli. It has its own catalog and may diverge from the web catalog at skills.n3wth.com."
 ---
 
-`apps/skills/cli` contains the source for `newth-skills`, a separate
-command-line manager. For installation of committed instruction files, use
-the [shell installer](/skills/installation).
+`apps/skills/cli` contains an experimental Node CLI called `newth-skills` with its own catalog and download base. Most users should use the [shell installer](/skills/installation) instead.
 
-## Distribution status
+## Status
 
-The CLI manifest declares package name `newth-skills`, version `1.0.0`, and
-executable `dist/index.js`. These declarations do not prove that an npm
-release is available. During this documentation review on 2026-09-17, the
-public registry returned HTTP 404 for both the package metadata and its
-`latest` endpoint. Do not rely on `npx newth-skills` or an npm global install
-as a verified distribution route.
+The CLI manifest declares:
 
-The checked-in CLI download base is
-`https://raw.githubusercontent.com/n3wth/n3wth/main/apps/skills/skills`. The
-shell installer also targets the current `n3wth/n3wth` repository. If an
-older installation points at the former standalone `n3wth/skills`
-repository, it does not match this source. Inspect its bundled URLs before
-you trust downloads; a failed fetch can hide behind generated fallback content.
+- **Name**: `newth-skills`
+- **Version**: `1.0.0`
+- **Bin**: `newth-skills` (points to `dist/index.js`)
+- **Engine requirement**: Node `>=18.0.0`
 
-The CLI is nested below `apps/skills` and is not a separate member of the
-root's `apps/*` workspace list. It has its own manifest and lockfile. Its
-manifest declares Node `>=18.0.0`, but that declaration alone does not verify
-that its dependencies are compatible or that it builds successfully. The
-repository's current development requirement is Node 24 and npm 11.19.1.
+The CLI catalog is a separate array in `cli/src/utils/skills.ts` and may diverge from the web catalog in `src/data/skills.ts`. Verify availability before relying on it; the package includes a `prepublishOnly` script but does not guarantee it is published to npm.
 
-Sources: [CLI manifest](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/package.json), [download implementation](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/src/utils/skills.ts), and [public registry metadata endpoint](https://registry.npmjs.org/newth-skills).
+## Commands
 
-## Commands implemented in source
+The CLI exposes six top-level commands through `commander`:
 
-The syntax below describes the checked-in implementation. It assumes you
-already have a working executable built from the source. It is not an npm
-installation promise.
+| Command | Arguments | Options | Description |
+| --- | --- | --- | --- |
+| `list` |  | `-c, --category`, `-i, --installed`, `-f, --featured` | List available skills, optionally filtered |
+| `search` | `<query>` |  | Search by name, description, or tags |
+| `info` | `<skill-id>` |  | Show detailed information about a skill |
+| `install` | `<skill-id>` | `-p, --platform <platform>`, `-f, --force` | Install a skill for the target platform |
+| `uninstall` | `<skill-id>` |  | Remove an installed skill |
+| `update` |  |  | Update all installed skills to their latest versions |
 
-| Command | Options | Behavior |
-| --- | --- | --- |
-| `newth-skills list` | `-c, --category <category>`; `-i, --installed`; `-f, --featured` | Lists the bundled catalog with combined filters |
-| `newth-skills search <query>` | None | Case-insensitive substring search across name, description, tags, and category |
-| `newth-skills info <skill-id>` | None | Displays catalog details and tracking status; attempts a fetch when `skillFile` exists |
-| `newth-skills install <skill-id>` | `-p, --platform <platform>`; `-f, --force` | Writes a flat file and records the catalog version; only `gemini` is accepted |
-| `newth-skills uninstall <skill-id>` | None | Removes a tracked flat file and its tracking record |
-| `newth-skills update` | None | Rewrites tracked skills whose bundled catalog version differs from the recorded version |
-| `newth-skills --help` | `-h` | Shows command help |
-| `newth-skills --version` | `-V` | Prints the program's declared version |
-
-For an existing executable:
+### Examples
 
 ```bash
-newth-skills --help
-newth-skills list --category development --featured
-newth-skills search animation
-newth-skills info gsap-animations
+# List all skills
+newth-skills list
+
+# List installed development skills
+newth-skills list --category development --installed
+
+# Search for PDF-related skills
+newth-skills search pdf
+
+# Install a skill
+newth-skills install pdf
+
+# Force reinstall
+newth-skills install pdf --force
+
+# Show details
+newth-skills info pdf
+
+# Remove a skill
+newth-skills uninstall pdf
+
+# Update everything
+newth-skills update
 ```
 
-Category filtering uses exact IDs. The help text lists fewer categories than
-the type supports. Available results come from the CLI's bundled catalog.
-Search includes categories, unlike the website's name/description/tag search.
+## Differences from the shell installer
 
-## Files and tracking
+|  | Shell installer | `newth-skills` CLI |
+| --- | --- | --- |
+| **Catalog source** | `src/data/skills.ts` (web catalog) | `cli/src/utils/skills.ts` (CLI catalog) |
+| **Install method** | Clones repo, copies files | Fetches raw files over HTTP or generates fallback content |
+| **Platforms** | `gemini` (and `all`) | `gemini` only |
+| **Overwrite behavior** | Skips existing files by default | Skips unless `--force` is passed |
+| **Staging support** | `SKILLS_INSTALL_HOME` env var | Not supported |
+| **Folder skills** | Copies full directories | Writes a single `.md` file |
+| **Offline install** | Requires `git` and network | Requires network; generates fallback content if fetch fails |
+| **State tracking** | None | Tracks installed versions in `~/.newth-skills/config.json` |
 
-| Path | Purpose |
-| --- | --- |
-| `~/.newth-skills/config.json` | `installedSkills` records containing `id`, `version`, `installedAt`, and `platform`; also a `lastUpdated` field initialized to `null` |
-| `~/.gemini/skills/<id>.md` | Instruction or fallback content written by the CLI |
-
-Config reads create the config directory and default file if missing. Even a
-listing command can therefore write local state. The CLI treats malformed
-config JSON as an empty configuration.
-
-Tracking is not a scan of `~/.gemini/skills`. Files installed through the
-shell script, copied manually, or downloaded by curl are not automatically
-registered. A tracking entry also does not prove the file still exists.
-
-`--force` bypasses the existing tracking-record check. It does not protect
-untracked files: an install can overwrite an existing `<id>.md` even without
-`--force`. The CLI always writes a flat file, including when its URL ends in
-`/SKILL.md`.
-
-## What success messages do not prove
-
-When `skillFile` is absent or the fetch fails, install and update generate
-Markdown from catalog descriptions, features, and use cases. This fallback is
-not the authored instruction file, and it has no YAML frontmatter. A
-successful network fetch is not required for an install success message.
-
-The install helper catches file-write errors internally, but the caller
-still records the installation and prints success. Uninstall similarly
-catches file-removal errors before it removes the tracking record. Verify
-the actual file after either operation rather than relying on output or exit
-status alone.
-
-`update` compares version strings against the bundled catalog. It does not
-fetch a current catalog, compare semantic-version ordering, or update the
-CLI itself. A different version string triggers a rewrite even if it
-represents an older version. Unchanged version strings mean the CLI does not
-fetch changed remote content.
-
-## Troubleshooting
-
-| Symptom | Explanation and next step |
-| --- | --- |
-| npm returns 404 | A public package was not available at review time; use the shell installer |
-| CLI cannot find a website skill | Its catalog is separate and may have no matching record |
-| File contains only descriptive bullets | Download failed or no URL was configured; obtain the authored file through the shell installer |
-| `list --installed` omits existing files | CLI tracking does not include shell or manual installations |
-| Install says success but file is absent | Check filesystem permissions and inspect the target directly; the source can swallow write errors |
-| Update says all skills are current | It only compared versions in its bundled catalog |
-| Uninstall leaves a skill folder behind | It targets `<id>.md`, not `<id>/SKILL.md`; remove only the folder you intentionally installed |
-
-## Sources
-
-- [Command registration](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/src/index.ts)
-- [Config and tracking](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/src/utils/config.ts)
-- [Install and fallback generation](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/src/commands/install.ts)
-- [Update behavior](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/src/commands/update.ts)
-- [Uninstall behavior](https://github.com/n3wth/n3wth/blob/main/apps/skills/cli/src/commands/uninstall.ts)
+<Warning>
+  If the CLI cannot fetch the remote skill file, it falls back to generating skill content from the catalog record (name, description, features, use cases, and sample prompts). This generated content is a best-effort substitute and may not match the full instruction file.
+</Warning>

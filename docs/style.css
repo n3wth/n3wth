@@ -1,0 +1,9 @@
+/* Navbar site title: smaller and bolder.
+   The site name renders inside #navbar as a link to "/".
+   Match the link, then let font-size cascade to its text nodes. */
+#navbar a[href="/"] {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}

@@ -25,52 +25,97 @@
   },
   "filterSidebar": true,
   "navbar": {
-    "links": [
-      { "label": "n3wth.com", "href": "https://n3wth.com" },
-      { "type": "github", "href": "https://github.com/n3wth" }
-    ]
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/n3wth/n3wth"
+    }
   },
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": " ",
-        "pages": [
-          "index"
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "index"
+            ]
+          },
+          {
+            "group": "Contribute",
+            "pages": [
+              "workspace",
+              "publishing"
+            ]
+          }
         ]
       },
       {
-        "group": "UI",
-        "pages": [
-          "ui/quickstart",
-          "ui/primitives-and-themes",
-          "ui/site-compositions",
-          "ui/api-and-recipes",
-          "ui/troubleshooting"
+        "tab": "UI",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "ui/quickstart"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "ui/primitives-and-themes",
+              "ui/site-compositions",
+              "ui/api-and-recipes"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "ui/troubleshooting"
+            ]
+          }
         ]
       },
       {
-        "group": "Skills",
-        "pages": [
-          "skills/quickstart",
-          "skills/installation",
-          "skills/authoring",
-          "skills/cli"
+        "tab": "Skills",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "skills/quickstart",
+              "skills/installation"
+            ]
+          },
+          {
+            "group": "Build",
+            "pages": [
+              "skills/authoring",
+              "skills/cli"
+            ]
+          }
         ]
       },
       {
-        "group": "r3",
-        "pages": [
-          "r3/quickstart",
-          "r3/configuration",
-          "r3/mcp",
-          "r3/troubleshooting"
-        ]
-      },
-      {
-        "group": "Contribute",
-        "pages": [
-          "workspace",
-          "publishing"
+        "tab": "r3",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "r3/quickstart",
+              "r3/configuration"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "r3/mcp"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "r3/troubleshooting"
+            ]
+          }
         ]
       }
     ]
@@ -79,7 +124,13 @@
     "library": "lucide"
   },
   "styling": {
-    "eyebrows": "breadcrumbs"
+    "eyebrows": "breadcrumbs",
+    "codeblocks": {
+      "theme": {
+        "light": "min-light",
+        "dark": "min-dark"
+      }
+    }
   },
   "appearance": {
     "default": "dark"
@@ -99,5 +150,20 @@
       "measurementId": "G-4QRMSG5HXK"
     }
   },
-  "description": "Developer documentation for the n3wth workspace: the @n3wth/ui React package, the agent skills catalog, and the r3 local memory server for MCP clients."
+  "description": "Developer documentation for the n3wth workspace: the @n3wth/ui React package, the agent skills catalog, and the r3 local memory server for MCP clients.",
+  "metadata": {
+    "timestamp": true
+  },
+  "contextual": {
+    "options": [
+      "aistudio",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "view",
+      "assistant",
+      "copy"
+    ],
+    "display": "header"
+  }
 }

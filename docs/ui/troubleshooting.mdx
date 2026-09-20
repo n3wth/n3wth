@@ -1,14 +1,11 @@
 ---
-title: "Troubleshooting"
-description: "Fix import, CSS, font, and theme problems. Use the @n3wth/ui 2.x release process."
+title: "Troubleshooting @n3wth/ui"
+sidebarTitle: "Troubleshooting"
+description: "Fix import, CSS, font, and theme problems in @n3wth/ui 2.1.1. Check versions, entry points, and provider setup before adjusting props."
 ---
 
 Start with the installed version and the import path. Native primitives and
-root compatibility adapters have different APIs and styling requirements.
-
-## Inspect the installation
-
-Run these read-only checks from the consuming application:
+root compatibility adapters have different APIs and styling requirements. Run these read-only checks from the consuming application:
 
 ```bash
 node --version
@@ -21,91 +18,65 @@ resolves a nested registry package instead of the workspace package, check
 its dependency range against the workspace version and use the repository's
 root install procedure.
 
-| Symptom | Check | Resolution |
-| --- | --- | --- |
-| `@n3wth/ui/site` cannot resolve | Installed version and export map; whether workspace `dist` exists | Use a version with the site export. Workspace maintainers build UI before consuming apps. |
-| Components render without shared styling | Global CSS import and provider ancestry | Import `site.css` and mount `N3wthProvider`; see [quickstart](/ui/quickstart). |
-| Compatibility controls lose spacing or colors | Root adapter import, compatibility CSS, Tailwind source scanning | Follow the compatibility setup in [primitives and themes](/ui/primitives-and-themes). |
-| Button props fail TypeScript checks | Whether `Button` comes from root or `primitives` | Native examples use `label`; root adapters require `children`. Match props to that entry's declarations. |
-| Theme toggle changes only part of the page | Provider mode and document theme state | Pass the same `useTheme().theme` value to `N3wthProvider`. |
-| Legal links disappear from the footer | Custom `links` prop | Include legal links inside the custom group; `legalLinks` only extends the default group. |
-| Programmatic navigation keeps scroll position | How navigation was triggered | `useRouteScrollReset` handles qualifying anchor clicks, not every route update. |
+<AccordionGroup>
+  <Accordion title="Version mismatch across a monorepo">
+    If components behave differently in different apps, or types do not match the source, a workspace app may be resolving a nested registry copy instead of the workspace package.
 
-## Font resolution fails
+    **Check:**
 
-The source theme selects Suisse Intl. The npm `files` allowlist deliberately
-excludes those commercial font binaries. Licensed workspace sites keep the
-files and their font rules.
+    ```bash
+    npm ls @n3wth/ui
+    ```
 
-The release package check uses `scripts/pack-ui.mjs` to remove excluded
-Suisse font rules from the staged CSS. Shipped font URLs use
-package-relative paths. External consumers use the theme's system-font
-fallback. The release workflow publishes the exact tarball that passes the
-consumer checks.
+    **Resolution:** Align the workspace version in `packages/ui/package.json` with the app's dependency range. In the monorepo, use the root lockfile and avoid installing a second registry copy. Build UI before consuming apps if `dist` is missing.
+  </Accordion>
 
-If an older artifact still names a Suisse font:
+  <Accordion title="CSS not loading">
+    Components render without shared styling, colors, or spacing.
 
-1. Confirm whether the missing path is one of the excluded `SuisseIntl-*` assets.
-2. Record the UI version, bundler, and exact unresolved URL for a package issue.
-3. Check that the artifact came from the release package check, not a direct
-   pack of workspace output. Validate the corrected tarball before you publish it.
+    **Check:** Verify that `@n3wth/ui/site.css` is imported once at the app root, and that an ancestor `N3wthProvider` is mounted above the page.
 
-Do not copy the repository's commercial font binaries into a public package
-as a workaround. Importing both `styles` and `site.css` does not fix absent
-assets; both include the shared foundation.
+    **Resolution:**
 
-## Theme flashes or hydration differs
+    ```tsx
+    import '@n3wth/ui/site.css'
+    // In your app root:
+    <N3wthProvider mode="dark">{children}</N3wthProvider>
+    ```
 
-`useTheme` uses `defaultTheme` during server rendering, but reads local
-storage and system preferences in the browser. Do not assume those initial
-values match. Keep any before-paint initialization aligned with the hook's
-storage key and `data-theme` attribute. The current UI docs app also sets
-`data-astryx-theme="n3wth"` before React starts.
+    If you use compatibility adapters, import `@n3wth/ui/styles` instead and add a Tailwind source scan. Do not import both `styles` and `site.css`; both include the shared foundation.
+  </Accordion>
 
-A before-paint script addresses initial document colors. Theme-dependent
-text or icons rendered by the server still need a consistent rendering
-strategy in the application. Test a saved light preference, no saved
-preference, and disabled storage.
+  <Accordion title="Font resolution fails">
+    The bundler reports an unresolved font URL, or the theme falls back to system fonts.
 
-## How 2.x is released
+    **Check:** Confirm whether the missing path is one of the excluded `SuisseIntl-*` assets. The npm `files` allowlist deliberately excludes those commercial font binaries. The release package check removes excluded Suisse font rules from the staged CSS.
 
-Starting with 2.0.0, `packages/ui` in `n3wth/n3wth` is the publishing
-authority. The former `n3wth/ui` release workflow is historical. Do not
-publish locally.
+    **Resolution:** External consumers use the theme's `system-ui, -apple-system, sans-serif` fallback. If you need Suisse Intl, supply the licensed font files locally in your workspace app and override the CSS variable. Do not copy commercial font binaries into a public package.
 
-For maintainers, the normal process is:
+    If an older artifact still names a Suisse font, validate the corrected tarball before publishing. Record the UI version, bundler, and exact unresolved URL for a package issue.
+  </Accordion>
 
-1. Open one PR that bumps `version` in `packages/ui/package.json`, sets the
-   same version in the starter's `@n3wth/ui` dependency, adds a
-   `CHANGELOG.md` entry, and runs `npm install --package-lock-only --ignore-scripts`.
-2. Merge the PR after a successful **Site CI** run on `main`.
-3. Push a tag `ui-v<version>` on the merge commit, matching the version in
-   `packages/ui/package.json`. This triggers **Release UI**.
-4. With `UI_NPM_PUBLISH_ENABLED=true`, the publish job checks UI, validates
-   a packed consumer, and publishes that exact tarball with provenance.
-5. Verify the registry version and a clean consumer install before you
-   declare the release available.
+  <Accordion title="Wrong Button API">
+    TypeScript errors or runtime warnings when using `Button` props.
 
-The workflow can also be dispatched manually on `main`. Publishing requires
-npm trusted-publisher configuration for owner `n3wth`, repository `n3wth`,
-and workflow `publish-ui.yml`. The publish script skips an already-published
-version and fails on unexpected registry lookup errors.
+    **Check:** Whether `Button` comes from `@n3wth/ui/primitives` or `@n3wth/ui` (root).
 
-| Maintainer command | Purpose and side effects |
-| --- | --- |
-| `npm run check --workspace @n3wth/ui` | Lint, build, inspect build output, and run unit tests; writes build output |
-| `npm run check:package` | Pack UI, install and build a temporary consumer, exercise browsers, save tarball and screenshots under `.release` |
+    **Resolution:**
 
-Package publication and site deployment are separate operations. Current
-site configuration enables automatic Vercel Git deployments; older notes
-that call the UI docs deployment manual are stale. Publishing a package does
-not confirm that a site deployment succeeded.
+    - Native primitives use `label` and `onClick`.
+    - Root adapters require `children` and support props like `variant="glass"`, `leftIcon`, and responsive `size` objects.
 
-## Sources
+    Match props to the entry point's declarations. Do not move imports between entry points without checking types.
+  </Accordion>
 
-- [Manifest and font allowlist](https://github.com/n3wth/n3wth/blob/main/packages/ui/package.json) and [font distribution notes](https://github.com/n3wth/n3wth/blob/main/packages/ui/public/fonts/README.md)
-- [Release UI workflow](https://github.com/n3wth/n3wth/blob/main/.github/workflows/publish-ui.yml)
-- [Publish script](https://github.com/n3wth/n3wth/blob/main/scripts/publish-ui.mjs)
-- [Packed consumer validation](https://github.com/n3wth/n3wth/blob/main/scripts/check-ui-package.mjs)
-- [UI docs Vercel configuration](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/vercel.json)
-- [Theme initialization](https://github.com/n3wth/n3wth/blob/main/apps/ui-docs/public/theme-init.js)
+  <Accordion title="Theme not applied">
+    Theme toggle changes only part of the page, or colors flash on load.
+
+    **Check:** Provider mode and document theme state. `useTheme` uses `defaultTheme` during server rendering, but reads local storage and system preferences in the browser.
+
+    **Resolution:** Pass the same `useTheme().theme` value to `N3wthProvider`. Keep any before-paint initialization aligned with the hook's storage key (`n3wth-theme`) and `data-theme` attribute. The current UI docs app also sets `data-astryx-theme="n3wth"` before React starts.
+
+    Test a saved light preference, no saved preference, and disabled storage. A before-paint script addresses initial document colors; theme-dependent server markup still needs a consistent rendering strategy in the application.
+  </Accordion>
+</AccordionGroup>

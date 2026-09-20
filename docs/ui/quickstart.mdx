@@ -1,125 +1,124 @@
 ---
-title: "Quickstart"
-description: "Install @n3wth/ui 2.x. Build a React page with shared components and native controls."
+title: "Install @n3wth/ui and render a page"
+sidebarTitle: "Quickstart"
+description: "Install @n3wth/ui 2.1.1 and build a React page with shared components, native controls, and the Newth theme."
 ---
 
-Use `@n3wth/ui/site` for page structure and `@n3wth/ui/primitives` for
-controls. These instructions target version 2.0.0, available on npm, and the
-matching source in the n3wth monorepo.
+`@n3wth/ui` is a React design system built on Astryx. This page installs the current version and renders a working page with a site layout and a native control.
 
 <Info>
-  The examples assume a browser application. The package provides components
-  and styles; it does not create a router, fetch data, or supply an app shell.
+  The package supplies components and styles. It does not create a router, fetch data, or supply an app shell.
 </Info>
 
 ## Prerequisites
 
-- Node.js 24, as declared by the package.
-- An existing React application with React and React DOM 18 or 19.
+- **Node.js 24** (declared in the package `engines` field)
+- **React and React DOM 18 or 19** (peer dependencies)
 - A bundler that resolves ESM, package CSS imports, and font URLs. The package includes a Vite starter.
 
 The example below assumes a React TypeScript app with `src/main.tsx` and an
-HTML element with `id="root"`. For Next.js, put the interactive component in
+HTML element with `id="root"`. For Next.js, put interactive components in
 a client module and import the CSS through your application's global
 stylesheet entry.
 
-## Install
+## Steps
 
-From your application directory:
+<Steps>
+  <Step title="Install the package">
+    From your application directory, install `@n3wth/ui` at `^2.1.1`. React and React DOM are peer dependencies. GSAP is an optional peer (used by animation hooks).
 
-```bash
-npm install @n3wth/ui@^2.0.0
-```
+    <CodeGroup>
 
-React and React DOM are peer dependencies. GSAP is an optional peer; the
-site and button example below does not use animation hooks that need it. In
-this monorepo, use the root lockfile and keep workspace UI dependency
-versions aligned rather than installing a second registry copy.
+    ```bash npm
+    npm install @n3wth/ui@^2.1.1
+    ```
 
-## Render a page
+    ```bash pnpm
+    pnpm add @n3wth/ui@^2.1.1
+    ```
 
-Replace `src/main.tsx` with:
+    ```bash yarn
+    yarn add @n3wth/ui@^2.1.1
+    ```
 
-```tsx
-import { useState } from 'react'
-import { createRoot } from 'react-dom/client'
-import {
-  N3wthProvider,
-  PageHeader,
-  SiteContainer,
-  SiteSection,
-  SiteText,
-} from '@n3wth/ui/site'
-import { Button } from '@n3wth/ui/primitives'
-import '@n3wth/ui/site.css'
+    </CodeGroup>
 
-function App() {
-  const [count, setCount] = useState(0)
+    In this monorepo, use the root lockfile and keep workspace UI dependency versions aligned rather than installing a second registry copy.
+  </Step>
+  <Step title="Render a page">
+    Replace `src/main.tsx` with this example. It mounts a provider, imports the shared stylesheet, and renders a counter with a native Astryx button.
 
-  return (
-    <N3wthProvider mode="dark">
-      <SiteContainer as="main">
-        <PageHeader
-          title="Component sandbox"
-          description="Try a native control in the shared site theme."
-        />
-        <SiteSection aria-label="Counter">
-          <Button label="Increment" onClick={() => setCount(value => value + 1)} />
-          <SiteText as="div">
-            <output aria-live="polite">Count: {count}</output>
-          </SiteText>
-        </SiteSection>
-      </SiteContainer>
-    </N3wthProvider>
-  )
-}
+    ```tsx
+    import { useState } from 'react'
+    import { createRoot } from 'react-dom/client'
+    import {
+      N3wthProvider,
+      PageHeader,
+      SiteContainer,
+      SiteSection,
+      SiteText,
+    } from '@n3wth/ui/site'
+    import { Button } from '@n3wth/ui/primitives'
+    import '@n3wth/ui/site.css'
+    
+    function App() {
+      const [count, setCount] = useState(0)
+    
+      return (
+        <N3wthProvider mode="dark">
+          <SiteContainer as="main">
+            <PageHeader
+              title="Component sandbox"
+              description="Try a native control in the shared site theme."
+            />
+            <SiteSection aria-label="Counter">
+              <Button label="Increment" onClick={() => setCount(value => value + 1)} />
+              <SiteText as="div">
+                <output aria-live="polite">Count: {count}</output>
+              </SiteText>
+            </SiteSection>
+          </SiteContainer>
+        </N3wthProvider>
+      )
+    }
+    
+    const root = document.getElementById('root')
+    if (!root) throw new Error('Missing #root element')
+    createRoot(root).render(<App />)
+    ```
+  </Step>
+  <Step title="Start the dev server">
+    Start the app with its existing development command, such as `npm run dev` in a Vite app. The page should display a heading and counter. Selecting **Increment** increases the count.
 
-const root = document.getElementById('root')
-if (!root) throw new Error('Missing #root element')
-createRoot(root).render(<App />)
-```
+    `N3wthProvider` supplies the theme context. `site.css` supplies the generated theme and component CSS. You need both. This example does not require Tailwind utility generation.
+  </Step>
+</Steps>
 
-Start the app with its existing development command, such as `npm run dev`
-in a Vite app. The page should display a heading and counter. Selecting
-**Increment** increases the count.
-
-`N3wthProvider` supplies the theme context. `site.css` supplies the
-generated theme and component CSS. You need both. This example does not
-require Tailwind utility generation.
-
-### Font packaging caveat
+## Font packaging caveat
 
 <Warning>
   The public package does not include the workspace's licensed Suisse Intl font
-  files. Keep a system fallback available and follow the font troubleshooting
-  guide if your bundler reports an unresolved font URL.
+  files. The theme references Suisse Intl for body and headings, but the release process deliberately excludes those commercial font files from the npm package.
 </Warning>
 
-The theme currently names Suisse Intl for body and headings, but the release
-process deliberately excludes its commercial font files from the npm
-package. The CSS still references those files. A browser may use system
-fallbacks; a bundler may instead reject the unresolved package URLs. If
-installation succeeds but CSS compilation fails, follow
-[font troubleshooting](/ui/troubleshooting#font-resolution-fails). This is a
-source-level packaging limitation, not evidence that the React props are wrong.
+The package ships these fonts in `public/fonts`: **Geist**, **GeistMono**, **MonaSans**, and **Satoshi**. Workspace apps additionally use **Suisse Intl**, which is not in the npm release. External consumers get a system-font fallback for Suisse; workspace apps supply the licensed files locally. If your bundler reports an unresolved font URL, see [font resolution fails](/ui/troubleshooting#font-resolution-fails).
 
-## Choose the entry point
+## Entry points
 
-| Import | Purpose |
-| --- | --- |
-| `@n3wth/ui/site` | Provider, page headers, containers, navigation, footer, reading outline |
-| `@n3wth/ui/primitives` | Native Astryx exports through the package-owned dependency |
-| `@n3wth/ui/site.css` | Generated theme, component, site, and visual styles |
-| `@n3wth/ui` | Compatibility adapters, hooks, tokens, and brand utilities |
-| `@n3wth/ui/styles` | Compatibility CSS plus the shared site foundation |
+<CardGroup cols={2}>
+  <Card title="Primitives & themes" href="/ui/primitives-and-themes">
+    Choose between native Astryx controls and root compatibility adapters, and load the Newth theme.
+  </Card>
 
-Continue with [site compositions](/ui/site-compositions) and
-[primitives and themes](/ui/primitives-and-themes). Use
-[API recipes](/ui/api-and-recipes) for router and Open Graph integrations.
+  <Card title="Site compositions" href="/ui/site-compositions">
+    Build page frames, navigation, headings, sections, and footers with `@n3wth/ui/site`.
+  </Card>
 
-## Sources
+  <Card title="API & recipes" href="/ui/api-and-recipes">
+    Browse public entry points, route scroll reset, reading outlines, and Open Graph images.
+  </Card>
 
-- [Package exports, engines, and peers](https://github.com/n3wth/n3wth/blob/main/packages/ui/package.json)
-- [Packaged Vite starter](https://github.com/n3wth/n3wth/blob/main/packages/ui/v0/n3wth-ui/assets/starter/src/main.tsx)
-- [CSS assembly](https://github.com/n3wth/n3wth/blob/main/packages/ui/scripts/build-styles.mjs)
-- [Font distribution notes](https://github.com/n3wth/n3wth/blob/main/packages/ui/public/fonts/README.md)
+  <Card title="Troubleshooting" href="/ui/troubleshooting">
+    Fix version mismatches, CSS loading, font resolution, and theme issues.
+  </Card>
+</CardGroup>

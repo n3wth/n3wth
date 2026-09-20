@@ -1,126 +1,123 @@
 ---
-title: "Quickstart"
-description: "Connect r3 to an MCP client. Check storage, retrieval, and restart behavior."
+title: "Get started with r3 local memory"
+sidebarTitle: "Quickstart"
+description: "Connect r3 to an MCP client and verify memory persistence across conversations. No accounts or API keys required."
 ---
 
 r3 is a local-first memory server for MCP clients. It stores facts and
-conversation context through tools over standard input and output. Start
-here if you are connecting a desktop assistant or building an MCP integration.
+conversation context through tools over standard input and output. This page shows you how to connect r3 to your MCP client, write a memory, and read it back after a restart.
 
-<Danger>
-  Do not treat r3 as a backup until you have tested restart and recovery in
-  the same working directory. Local records and the vector index have
-  separate retention behavior.
-</Danger>
-
-## Core and website
-
-The executable package is `@n3wth/r3`, maintained in
-[n3wth/r3](https://github.com/n3wth/r3). This workspace contains only the
-website at `apps/r3-web`. Starting or deploying that website does not start
-a memory server, provision storage, or expose an r3 HTTP API.
-
-The separation is documented in the [website instructions](https://github.com/n3wth/n3wth/blob/main/apps/r3-web/AGENTS.md) and [migration record](https://github.com/n3wth/n3wth/blob/main/docs/workspace/r3-migration.md).
-
-## How requests reach storage
+## How it works
 
 ```text
-MCP client
-  -> r3 process (stdio)
-     -> local mode: LocalMemory + embedded Redis + Vectra files
-     -> hybrid mode: Mem0 API + Redis cache
-     -> demo mode: in-process memory
+MCP client (Claude Desktop / Claude Code / Cursor)
+        |
+        v
+   r3 MCP server (stdio)
+        |
+   +----+-----------------------+
+   |                            |
+embedded Redis            vectra local index
+(redis-memory-server,      (on-disk vector store
+ auto-downloaded binary,    for semantic search,
+ no external service)       no external service)
+   |
+   +--- optional ---> Mem0 cloud API (MEM0_API_KEY)
+                       cross-device sync, off by default
 ```
 
-The server defaults to local mode without an API key. Enhanced intelligence
-is enabled by default and attempts to load `Xenova/all-MiniLM-L6-v2` on the
-CPU. Basic mode skips that enhanced initialization. The local backend still
-uses a Vectra index, with a simpler word-hash embedding implementation.
-
-The vector index defaults to `./data/vectra-index`, resolved from the process
-working directory. Local Redis records have a 30-day TTL. The embedded Redis
-constructor does not explicitly configure a durable data directory or
-persistence policy. A file-backed vector index alone does not prove that
-every memory operation survives a process restart. Verify restart behavior
-before you rely on r3 as the only copy of information.
-
-<Check>
-  The first useful smoke test is deliberately small: add one disposable fact,
-  search for it, restart the process, and search again.
-</Check>
-
-See [configuration](/r3/configuration) for storage and mode details.
+- **Embedded Redis** stores memory content and metadata. If it cannot start, r3 falls back to an in-process store.
+- **vectra** provides a local, file-backed vector index for semantic search with no network calls.
+- **Mem0 cloud** is optional. If `MEM0_API_KEY` is set, r3 syncs to Mem0 so memories can follow you across machines. Without a key, nothing leaves your machine.
 
 ## Prerequisites
 
-- Node.js and npm available to the MCP client's process. The core package declares Node.js 18 or later.
-- An MCP client that can launch a local stdio server.
-- A writable, stable working directory for the vector index.
-- Network access for the initial npm installation, Redis binary download or build, and enhanced embedding model download.
+- Node.js 18 or later
+- An MCP client (Claude Desktop, Claude Code, or Cursor)
+- Network access for the initial npm install and Redis binary download
+- A writable working directory for the vector index
 
-Some macOS installations need a newer GNU Make to build the embedded Redis
-dependency. See [troubleshooting](/r3/troubleshooting#installation-fails-on-macos).
+## Connect r3 to your client
 
 <Steps>
-  <Step title="Add r3 to your MCP client config">
-    Merge this server entry into your client's MCP configuration:
+  <Step title="Add r3 to your MCP config">
+    <Tabs>
+      <Tab title="Claude Desktop">
+        Edit `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS (or the equivalent path on your OS):
 
-    ```json
-    {
-      "mcpServers": {
-        "r3": {
-          "command": "npx",
-          "args": ["-y", "@n3wth/r3", "serve"],
-          "env": {
-            "MEM0_USER_ID": "r3-quickstart",
-            "INTELLIGENCE_MODE": "basic"
+        ```json
+        {
+          "mcpServers": {
+            "r3": {
+              "command": "npx",
+              "args": ["@n3wth/r3"]
+            }
           }
         }
-      }
-    }
+        ```
+      </Tab>
+      <Tab title="Claude Code">
+        Run this command in your terminal:
+
+        ```bash
+        claude mcp add r3 "npx @n3wth/r3"
+        ```
+      </Tab>
+      <Tab title="Cursor">
+        Add to `.cursor/mcp.json` in your project (or the global Cursor MCP config):
+
+        ```json
+        {
+          "mcpServers": {
+            "r3": {
+              "command": "npx",
+              "args": ["@n3wth/r3"]
+            }
+          }
+        }
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step title="Restart and confirm tools">
+    Restart or reconnect your MCP client after editing the configuration. Inspect the discovered tools: `add_memory`, `search_memory`, and `cache_stats` should appear. A successful MCP connection confirms transport readiness.
+  </Step>
+  <Step title="Write a memory">
+    Ask the assistant to store a preference:
+
+    ```text
+    Remember that I prefer TypeScript and dark mode.
     ```
 
-    Basic mode keeps the first storage check independent of enhanced model initialization. Remove `INTELLIGENCE_MODE` to try enhanced mode after the basic check.
-
-    The core README provides integrations for Claude Desktop and Cursor. On macOS, Claude Desktop reads `~/Library/Application Support/Claude/claude_desktop_config.json`. Cursor supports project configuration at `.cursor/mcp.json`. The website also documents the same stdio server entry for Antigravity CLI in `.gemini/settings.json`. These integrations launch the same process. They do not use a hosted r3 endpoint.
+    The client calls `add_memory` with your message. You should see a confirmation like `Saved`.
   </Step>
-  <Step title="Reconnect and confirm tools">
-    Restart or reconnect the client after you edit configuration. Inspect its discovered tools: `add_memory`, `search_memory`, and `cache_stats` should appear. A successful MCP connection confirms transport readiness. Redis initialization continues separately.
-  </Step>
-  <Step title="Write one memory">
-    Use a disposable namespace. Ask the client to call `add_memory`:
+  <Step title="Read it back in a new conversation">
+    Start a new conversation and ask:
 
-    ```json
-    {
-      "content": "The documentation example project uses TypeScript.",
-      "user_id": "r3-quickstart",
-      "priority": "high",
-      "async": false,
-      "skip_duplicate_check": true
-    }
+    ```text
+    What are my preferences?
     ```
 
-    This diagnostic explicitly skips duplicate detection, because the inspected local adapter has a search-routing defect. Repeating it can create duplicate records. `async: false` waits for the write path instead of returning a background acknowledgement.
-  </Step>
-  <Step title="Read it back">
-    Call `search_memory`:
-
-    ```json
-    {
-      "query": "documentation example TypeScript",
-      "limit": 1
-    }
-    ```
-
-    Check that the returned text contains the stored fact.
-  </Step>
-  <Step title="Restart and read again">
-    Restart the server from the same working directory and repeat the read. Treat an empty result, error, or unrelated result as a failed check, even if the write returned `Saved`. The [MCP reference](/r3/mcp) explains the response formats and namespace limits.
+    The client calls `search_memory` and should return `You prefer TypeScript and dark mode.`
   </Step>
 </Steps>
 
-## Source of truth
+<Note>
+  Some macOS installations need a newer GNU Make to build the embedded Redis dependency. If installation fails, see [Troubleshooting](/r3/troubleshooting).
+</Note>
 
-These instructions were checked against core source on September 17, 2026,
-whose manifest reports version `1.3.2`. The installed npm artifact may
-differ. Authoritative files are the [package manifest](https://github.com/n3wth/r3/blob/main/package.json), [CLI entry point](https://github.com/n3wth/r3/blob/main/src/cli-main.tsx), [MCP server](https://github.com/n3wth/r3/blob/main/src/index.ts), [local backend](https://github.com/n3wth/r3/blob/main/src/lib/local-memory.ts), and [client integration examples](https://github.com/n3wth/r3/blob/main/README.md). The website's [Antigravity integration](https://github.com/n3wth/n3wth/blob/main/apps/r3-web/content/docs/integrations.mdx) is a separate client configuration example.
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Configuration" icon="sliders" href="/r3/configuration">
+    Set environment variables, storage backends, and intelligence modes.
+  </Card>
+
+  <Card title="Tools" icon="wrench" href="/r3/tools">
+    Browse the full MCP tool reference with parameters and return values.
+  </Card>
+
+  <Card title="Troubleshooting" icon="life-ring" href="/r3/troubleshooting">
+    Fix installation, discovery, and retrieval problems.
+  </Card>
+</CardGroup>

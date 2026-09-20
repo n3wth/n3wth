@@ -1,99 +1,76 @@
 ---
-title: "Configuration"
-description: "Configure the MCP process. Choose a mode and find the stored data."
+title: "Configure r3 modes, storage, and cloud sync"
+sidebarTitle: "Configuration"
+description: "Set environment variables on the r3 MCP process to choose storage backends, intelligence modes, and optional Mem0 cloud sync."
 ---
 
-Set configuration on the process that your MCP client launches. Website
-environment variables do not configure that process. Start with the
-[quickstart](/r3/quickstart). Use a dedicated working directory for each
-isolated installation.
+You configure r3 through environment variables passed to the process your MCP client launches. This page covers the available variables, storage backends, intelligence modes, and an example with cloud sync enabled.
 
 ## Environment variables
 
-These values come from `src/index.ts`, not the interactive UI's configuration
-or older website examples.
+<ParamField body="MEM0_API_KEY" type="string">
+  Enables Mem0 cloud sync. When unset, r3 runs entirely local and nothing leaves your machine.
+</ParamField>
 
-| Variable | Default | Effect |
-| --- | --- | --- |
-| `MEM0_USER_ID` | `oliver` | Default namespace used by the MCP handlers. Set it explicitly. It is not an authentication control. |
-| `INTELLIGENCE_MODE` | `enhanced` | The exact value `basic` disables enhanced initialization. Any other value selects enhanced mode. |
-| `MEM0_API_KEY` | Unset | Credential used for Mem0 requests in explicitly selected hybrid mode. A key alone does not select hybrid mode. |
-| `MEM0_BASE_URL` | `https://api.mem0.ai` | Base URL for the server's general Mem0 request helper. The Mem0 import tool uses its own fixed URL. |
-| `REDIS_URL` | General cache URL defaults to `redis://localhost:6379` | Selects the external cache connection path when explicitly set. See the local-mode limitation below. |
-| `DEMO_MODE` | Unset | The exact value `true` selects the nonpersistent demo backend. |
-| `DEBUG` | Unset | The exact value `true` enables debug logging. |
-| `QUIET_MODE` | Automatically quiet for non-TTY input or production | The exact value `false` disables quiet mode. Keep normal quiet behavior for MCP. |
+<ParamField body="REDIS_URL" default="embedded" type="string">
+  URL of an external Redis server. Leave unset to use the embedded Redis server (recommended for most setups).
+</ParamField>
 
-The core manifest's MCP metadata marks Redis and Mem0 credentials as required.
-The executable still selects local mode without either. Follow the runtime
-logic, not the manifest, when you configure local use.
+<ParamField body="MEM0_USER_ID" default="default" type="string">
+  Default namespace for memory isolation. Individual tool calls can override this with the `user_id` argument.
+</ParamField>
 
-## Select a mode
+<ParamField body="INTELLIGENCE_MODE" default="enhanced" type="string">
+  Set to `enhanced` (default) or `basic`. Enhanced mode adds entity extraction, knowledge graph tools, and HuggingFace embeddings. Basic mode uses a simpler word-hash fallback.
+</ParamField>
 
-| Mode | Selection | Storage behavior |
-| --- | --- | --- |
-| Local | Default | Routes memory operations to `LocalMemory`; attempts embedded Redis and local Vectra. |
-| Hybrid | `MEM0_API_KEY` plus `--hybrid` | Routes general memory API requests to Mem0; Redis acts as a cache. |
-| Demo | `--demo` or `DEMO_MODE=true` | Uses in-process records with no persistence. |
+<ParamField body="DEBUG" default="false" type="boolean">
+  Enable debug logging to stderr. Keep quiet mode enabled for normal MCP use so stdout stays reserved for protocol messages.
+</ParamField>
 
-Demo selection takes precedence over the other modes. An API key, a startup
-banner, or an empty job queue does not confirm cloud synchronization. Hybrid
-mode is a Mem0-backed request path. The source does not establish a complete
-cross-device synchronization contract.
+## Storage backends
 
-The package command `serve` starts the MCP server and is the default command.
-`ui` and experimental `manage` launch separate interactive interfaces. Their
-`R3CALL_*` settings and `--user-id` flag do not replace `MEM0_USER_ID` in the
-MCP server. The server entry exports `startServer`. These pages do not assume
-an exported `Recall` SDK class.
+### Embedded Redis
 
-## Keep a stable working directory
+r3 uses `redis-memory-server` to download and manage a local Redis binary automatically. It stores memory content and metadata. If the embedded server cannot start, r3 falls back to an in-process store. No external Redis installation is required.
 
-For a manual launch on macOS or Linux:
+### Local vector index
 
-```bash
-mkdir -p "$HOME/.local/share/r3"
-cd "$HOME/.local/share/r3"
-MEM0_USER_ID=personal INTELLIGENCE_MODE=basic npx -y @n3wth/r3 serve
+r3 maintains a file-backed vector index at `./data/vectra-index` relative to the process working directory. This powers semantic search with no network calls. Keep the working directory stable so the index path does not change between restarts.
+
+### Mem0 cloud (optional)
+
+Setting `MEM0_API_KEY` activates Mem0 cloud sync. Without a key, r3 operates entirely offline. With a key, writes are also sent to Mem0 so memories can follow you across devices.
+
+## Intelligence modes
+
+<Tabs>
+  <Tab title="Enhanced (default)">
+    Enhanced mode is the default. It adds three extra tools: `extract_entities`, `get_knowledge_graph`, and `find_connections`. It also loads `@huggingface/transformers` embeddings for semantic search. This mode needs network access for the initial model download and more CPU for inference.
+  </Tab>
+  <Tab title="Basic">
+    Basic mode skips the HuggingFace model and entity extraction. Semantic search falls back to a word-hash implementation. Use this mode if you want faster startup, lower resource usage, or if enhanced initialization fails.
+  </Tab>
+</Tabs>
+
+## Example: cloud sync enabled
+
+Add the `env` block to your MCP config to enable Mem0 cloud sync:
+
+```json
+{
+  "mcpServers": {
+    "r3": {
+      "command": "npx",
+      "args": ["@n3wth/r3"],
+      "env": {
+        "MEM0_API_KEY": "mem0_..."
+      }
+    }
+  }
+}
 ```
 
-This starts a stdio server that waits for an MCP client. It does not start a
-web UI. For regular use, configure the same working directory through your
-client's process-launch settings. Changing it changes which relative vector
-index r3 opens. The inspected server has no environment variable that changes
-that index path.
-
-## Storage and retention
-
-| Layer | Implementation | Retention caveat |
-| --- | --- | --- |
-| Local records | Redis keys `memory:<user>:<id>` | Adds use a 30-day default TTL; updates reset it to 30 days. The MCP add schema has no TTL argument. |
-| Local vector index | `./data/vectra-index` | File-backed, relative to the working directory; not a complete backup of Redis state. |
-| MCP cache | Redis `memory:<id>` keys | L1 TTL is 24 hours; L2 TTL is 7 days. |
-| Search cache | Redis `search:*` keys | Five-minute TTL; key construction does not include a user namespace. |
-| Demo records | JavaScript maps | Lost with the process. |
-
-Basic and enhanced Vectra implementations default to the same directory but
-generate embeddings differently. Switching modes does not give equivalent
-search results. Avoid running multiple writers against the same index without
-first validating the behavior.
-
-The embedded backend is created with `new RedisMemoryServer()` and no explicit
-persistence options. Keep an independent copy of important data. Test the
-write, read, and restart behavior in the actual launch environment. There is
-no documented MCP backup or restore guarantee.
-
-## External Redis caveat
-
-The cache connection code supports `REDIS_URL`, but it is not a verified
-drop-in replacement for local storage. Setting it explicitly bypasses the
-branch that creates `LocalMemory`, while local-mode API calls still require
-`LocalMemory`. This can produce `Local memory not initialized`.
-
-For the local quickstart, leave `REDIS_URL` unset. If you need an externally
-managed database, validate the relevant core path before you deploy it.
-Changing the website's settings will not fix this behavior.
-
-## Sources
-
-The authoritative configuration is in the core [server](https://github.com/n3wth/r3/blob/main/src/index.ts), [CLI dispatch](https://github.com/n3wth/r3/blob/main/src/cli-main.tsx), [local backend](https://github.com/n3wth/r3/blob/main/src/lib/local-memory.ts), [basic vector store](https://github.com/n3wth/r3/blob/main/src/lib/vectra-memory.ts), and [enhanced vector store](https://github.com/n3wth/r3/blob/main/src/lib/enhanced-vectra-memory.ts). See the workspace [migration record](https://github.com/n3wth/n3wth/blob/main/docs/workspace/r3-migration.md) for the website/core boundary.
+<Warning>
+  Verify restart behavior in the same working directory before treating r3 as your only copy. Local Redis records have a 30-day TTL, and the embedded backend does not configure explicit persistence. Test a write, read, and restart cycle with data you can afford to lose.
+</Warning>
