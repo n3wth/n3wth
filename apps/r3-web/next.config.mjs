@@ -34,9 +34,26 @@ const nextConfig = {
 
   async redirects() {
     return [
+      ...[
+        ['introduction', 'quickstart'],
+        ['installation', 'quickstart'],
+        ['api-reference', 'memory-tools'],
+        ['api/client', 'memory-tools'],
+        ['ai-intelligence', 'knowledge-graph'],
+        ['integrations', 'configuration'],
+        ['sdks/python', 'transport'],
+        ['sdks/typescript', 'transport'],
+        ['examples', 'quickstart'],
+        ['examples/chatbot-memory', 'memory-tools'],
+        ['changelog', 'quickstart'],
+      ].map(([legacy, current]) => ({
+        source: `/docs/${legacy}`,
+        destination: `https://docs.n3wth.com/r3/${current}`,
+        permanent: true,
+      })),
       {
         source: "/docs/getting-started/introduction",
-        destination: "https://docs.n3wth.com/r3/introduction",
+        destination: "https://docs.n3wth.com/r3/quickstart",
         permanent: true,
       },
       {
@@ -46,7 +63,7 @@ const nextConfig = {
       },
       {
         source: "/docs/getting-started/installation",
-        destination: "https://docs.n3wth.com/r3/installation",
+        destination: "https://docs.n3wth.com/r3/quickstart",
         permanent: true,
       },
       {

@@ -5,6 +5,30 @@ test.beforeEach(async ({ page }) => {
   await page.route(/https:\/\/(elephant\.n3wth\.com|[^/]*posthog\.(com|net))\//, route => route.abort())
 })
 
+test('projects index connects navigation, product pages and documentation', async ({ page, request }) => {
+  await page.goto('/projects/')
+  await expect(page.getByRole('heading', { level: 1, name: 'Projects', exact: true })).toBeVisible()
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://n3wth.com/projects')
+  const navigation = page.locator('.n3wth-site-navigation-links')
+  await expect(navigation.locator('a').nth(0)).toHaveText('Projects')
+  await expect(navigation.locator('a').nth(1)).toHaveText('Work')
+  for (const [slug, title] of [['r3', 'r3'], ['ui', '@n3wth/ui'], ['skills', 'Agent Skills']]) {
+    await expect(page.locator('main').locator(`a[href="/projects/${slug}"]`)).toBeVisible()
+    // Vite preview serves clean URLs through its SPA fallback; inspect the
+    // prerendered file that Cloudflare resolves for the production route.
+    const response = await request.get(`/projects/${slug}/index.html`)
+    expect(response.status()).toBe(200)
+    expect(await response.text()).toContain(`<h1>${title}</h1>`)
+    await page.goto(`/projects/${slug}`)
+    await expect(page.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Documentation', exact: true })).toHaveAttribute('href', `https://docs.n3wth.com/${slug}/quickstart`)
+    await page.getByRole('link', { name: 'All projects', exact: true }).click()
+    await expect(page).toHaveURL(/\/projects$/)
+    await expect(page.getByRole('heading', { level: 1, name: 'Projects', exact: true })).toBeVisible()
+  }
+  expect(await (await request.get('/sitemap.xml')).text()).toContain('<loc>https://n3wth.com/projects</loc>')
+})
+
 test('lazy content and its footer appear together', async ({ page }) => {
   let releasePage: () => void = () => {}
   const pendingPage = new Promise<void>(resolve => { releasePage = resolve })

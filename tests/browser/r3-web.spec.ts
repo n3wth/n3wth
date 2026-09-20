@@ -11,3 +11,15 @@ test('r3 documentation redirects to the shared docs host', async ({ request }) =
   expect(response.status()).toBe(308)
   expect(response.headers().location).toBe('https://docs.n3wth.com/r3/quickstart')
 })
+
+test('legacy r3 documentation maps to existing replacement pages', async ({ request }) => {
+  for (const [legacy, current] of [
+    ['introduction', 'quickstart'], ['installation', 'quickstart'],
+    ['api-reference', 'memory-tools'], ['api/client', 'memory-tools'],
+    ['sdks/python', 'transport'], ['examples/chatbot-memory', 'memory-tools'],
+  ]) {
+    const response = await request.get(`/docs/${legacy}`, { maxRedirects: 0 })
+    expect(response.status()).toBe(308)
+    expect(response.headers().location).toBe(`https://docs.n3wth.com/r3/${current}`)
+  }
+})

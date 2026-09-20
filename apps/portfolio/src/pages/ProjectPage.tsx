@@ -66,7 +66,7 @@ export default function ProjectPage() {
         description: detail.description,
         breadcrumbs: [
           { name: 'Home', url: 'https://n3wth.com/' },
-          { name: 'Work', url: 'https://n3wth.com/work' },
+          { name: 'Projects', url: 'https://n3wth.com/projects' },
           { name: detail.title, url: `https://n3wth.com/projects/${slug}` },
         ],
       }),
@@ -74,7 +74,7 @@ export default function ProjectPage() {
   )
 
   if (!detail || !project) {
-    return <div className="site-content-gutter py-24"><SiteHeading level={1}>Project not found</SiteHeading><Link className="mt-6 inline-block underline" to="/work">Back to work</Link></div>
+    return <div className="site-content-gutter py-24"><SiteHeading level={1}>Project not found</SiteHeading><Link className="mt-6 inline-block underline" to="/projects">All projects</Link></div>
   }
 
   return <>
@@ -86,7 +86,7 @@ export default function ProjectPage() {
       <div className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
         <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={detail.docs}>Documentation</a>
         <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={detail.source} target="_blank" rel="noopener noreferrer">Source</a>
-        <Link className="inline-flex min-h-11 items-center underline underline-offset-4" to="/work">All work</Link>
+        <Link className="inline-flex min-h-11 items-center underline underline-offset-4" to="/projects">All projects</Link>
       </div>
     </header>
     <SiteSection className="site-content-gutter">

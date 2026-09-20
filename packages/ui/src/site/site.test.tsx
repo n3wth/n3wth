@@ -133,7 +133,7 @@ describe('shared site composition', () => {
     expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', 'https://n3wth.com/contact')
     expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/n3wth/kit')
     expect(screen.getByRole('navigation', { name: 'Footer' })).toContainElement(screen.getByRole('link', { name: 'Privacy' }))
-    expect(screen.getAllByRole('link')).toHaveLength(9)
+    expect(screen.getAllByRole('link')).toHaveLength(8)
   })
 
   it('renders the footer signup slot above the identity row and hands the address to the app', async () => {
