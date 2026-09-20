@@ -1,0 +1,51 @@
+---
+title: "Package Entry Points"
+sidebarTitle: "Entry Points"
+description: "Reference for every public export path in @n3wth/ui: modules, CSS, fonts, and the Tailwind preset. Use these instead of importing from dist."
+---
+
+Import from the public entry points below. Never import files from `dist` directly. The [Quickstart](/ui/quickstart) covers installation, and [Layouts](/ui/layouts) documents the page components.
+
+## Modules
+
+| Entry point | Description |
+| --- | --- |
+| `@n3wth/ui` | Root adapters, hooks (`useTheme`), tokens, `cn`, provider, theme, and `OGCard` |
+| `@n3wth/ui/site` | Site components, `N3wthProvider`, `n3wthTheme`, `ReadingOutline`, `useRouteScrollReset` |
+| `@n3wth/ui/primitives` | Core Astryx exports, plus `ToastViewport` and `ToastViewportProps` |
+| `@n3wth/ui/og` | `OGCard` and `OGCardProps` for Open Graph image generation |
+| `@n3wth/ui/visuals` | `VisualBand`, `AssembleField`, `ForkLight`, `ConvergeLight`; props types for the first two |
+
+JavaScript entries provide ESM imports and type declarations.
+
+## Stylesheets
+
+| Entry point | Description |
+| --- | --- |
+| `@n3wth/ui/site.css` | Shared generated foundation and visual styles |
+| `@n3wth/ui/tailwind-theme.css` | Tailwind token bridge |
+| `@n3wth/ui/styles` | Compatibility styles with the shared foundation |
+| `@n3wth/ui/theme` | Retained theme CSS export |
+
+<Warning>
+  The CSS `theme` export is not the JavaScript `n3wthTheme` object. Import that object from `site` or the root entry.
+</Warning>
+
+## Fonts and Tailwind
+
+| Entry point | Type | Description |
+| --- | --- | --- |
+| `@n3wth/ui/fonts/*` | Static | Font paths; only the manifest's selected families ship in npm |
+| `@n3wth/ui/tailwind` | CommonJS | Tailwind preset |
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Theme Provider" href="/ui/theme-provider">
+    Mount `N3wthProvider` and load the Newth theme CSS.
+  </Card>
+
+  <Card title="Tailwind Integration" href="/ui/tailwind">
+    Wire the token bridge into a Tailwind v4 stylesheet.
+  </Card>
+</Columns>

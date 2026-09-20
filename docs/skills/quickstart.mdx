@@ -1,134 +1,65 @@
 ---
-title: Quickstart
-description: Choose and install a skill. Check its catalog status and assistant support.
+title: "Quickstart"
+sidebarTitle: "Quickstart"
+description: "Install your first AI coding skill for Antigravity CLI in under a minute using the shell installer at skills.n3wth.com."
 ---
 
-Skills are Markdown instructions for a coding assistant. They describe when
-to apply a workflow, what steps to follow, and what output to produce.
-Installing a skill copies those instructions. It does not install the tools
-or libraries the instructions mention.
-
-<Note>
-  A skill is guidance, not a dependency manager. Read its prerequisites before
-  running the workflow it describes.
-</Note>
-
-Start with [installation](/skills/installation) to use an existing skill, or
-[authoring](/skills/authoring) to contribute one. The
-[CLI reference](/skills/cli) documents the separate command-line
-implementation and its limitations.
-
-## Install your first skill
-
-With Bash, Git, curl, and access to GitHub available, install `pdf` for the
-catalog's `gemini` target.
+Skills are Markdown instructions for coding agents. Installing a skill copies instructions from the catalog into your assistant's skills directory so the agent can follow them during your sessions. It does not install the tools the instructions mention.
 
 <Steps>
+  <Step title="Check prerequisites">
+    You need Bash, curl, and an assistant that reads a skills directory. The current supported target is `gemini` (Antigravity CLI), which reads skills from `~/.gemini/skills`.
+  </Step>
+  <Step title="Browse the catalog">
+    Visit [skills.n3wth.com](https://skills.n3wth.com) to browse available skills. The catalog is organized into categories: Development, Documents, Creative, Productivity, and Business.
+  </Step>
   <Step title="Download the installer">
+    Save the installer to inspect it before running it.
+
     ```bash
-    curl -fsSL https://skills.n3wth.com/install.sh -o /tmp/n3wth-skills-install.sh
+    curl -fsSL https://skills.n3wth.com/install.sh -o /tmp/install.sh
     ```
-  </Step>
-  <Step title="Inspect it before running">
+
     <Warning>
-      Always review install scripts before piping them into a shell.
+      Always review shell scripts before piping them into bash. The installer clones the public [n3wth/n3wth](https://github.com/n3wth/n3wth) repository and copies files into your assistant's skills directory.
     </Warning>
+  </Step>
+  <Step title="Install a skill">
+    Run the installer with the target `gemini` and the skill ID you chose. For example, to install the `pdf` skill:
 
     ```bash
-    less /tmp/n3wth-skills-install.sh
+    bash /tmp/install.sh gemini pdf
     ```
   </Step>
-  <Step title="Install the skill">
-    ```bash
-    bash /tmp/n3wth-skills-install.sh gemini pdf
-    ```
+  <Step title="Verify the installation">
+    Confirm the file was copied into the skills directory:
 
-    The target is displayed as Antigravity CLI. The installer skips existing files.
-  </Step>
-  <Step title="Verify the file">
     ```bash
-    test -s "$HOME/.gemini/skills/pdf.md"
-    sed -n '1,60p' "$HOME/.gemini/skills/pdf.md"
+    ls ~/.gemini/skills/pdf.md
     ```
-
-    A successful file check confirms that instructions exist, not that the assistant has loaded them. Read the skill's prerequisites before you ask the assistant to process a document. See [installation](/skills/installation) for staging, folder skills, and troubleshooting.
   </Step>
 </Steps>
 
-## Find a skill
+<Note>
+  `gemini` is the assistant ID used by the installer. Its display name is **Antigravity CLI** (formerly Gemini CLI). The installer copies files into `~/.gemini/skills`.
+</Note>
 
-Browse the [catalog](https://skills.n3wth.com). Search matches names,
-descriptions, and tags without case sensitivity. A category filter narrows
-the results. Sorting supports name in either direction, category, and the
-catalog's `lastUpdated` date. That date is maintained metadata, not a live
-Git timestamp.
+<Note>
+  The `skill-creator` skill also supplies a Claude Code recipe as an `extraInstallCommands` entry. It copies the file to `~/.claude/skills/skill-creator/SKILL.md`. There is no general `claude` installer target; most skills only support `gemini` today.
+</Note>
 
-| Category ID | Scope |
-| --- | --- |
-| `development` | Coding, testing, and development workflows |
-| `documents` | PDF and office-document workflows |
-| `creative` | Art, animation, and visual design |
-| `productivity` | Tasks, automation, and workflows |
-| `business` | Strategy, analysis, and communication |
+## Next steps
 
-Before you install, read the instruction file and check its tool
-prerequisites. For example, a PDF skill supplies guidance. It does not
-provision a Python environment or PDF dependencies.
+<Columns cols={3}>
+  <Card title="Installation options" href="/skills/installation">
+    Learn about staging directories, folder skills, and overwrite protection.
+  </Card>
 
-## Catalog entries and downloadable files
+  <Card title="Author a skill" href="/skills/authoring">
+    Write and publish your own skill to the catalog.
+  </Card>
 
-The website reads the `skills` array in `apps/skills/src/data/skills.ts`.
-Each record contains an ID, descriptive metadata, version, and an optional
-`skillFile` URL. Instructions live separately under `apps/skills/skills` in
-either layout:
-
-```text
-apps/skills/skills/pdf.md
-apps/skills/skills/gsap-animations/SKILL.md
-```
-
-A catalog record without `skillFile` is not a downloadable skill through the
-website's standard per-skill command. The command helper returns an empty
-string rather than installing the entire collection. The shell installer, in
-contrast, selects files directly from the repository, not from the web catalog.
-
-| Distribution path | What it reads | What it installs |
-| --- | --- | --- |
-| Shell installer | `apps/skills/skills` from a fresh clone | A flat file or a complete skill directory; skips existing destinations |
-| Website per-skill command | The record's `skillFile` URL | One file saved as `~/.gemini/skills/<id>.md`; can overwrite an existing file |
-| `newth-skills` CLI source | Its own bundled catalog | One flat Markdown file plus a local tracking record; may generate fallback text |
-
-The CLI catalog is a separate array in `apps/skills/cli/src/utils/skills.ts`.
-The website does not import it, so names, versions, and available downloads
-can differ. See [CLI distribution caveats](/skills/cli).
-
-## Assistant support
-
-The general assistant configuration has one ID: `gemini`, displayed as
-**Antigravity CLI**. Its install directory is `~/.gemini/skills`. Keep using
-`gemini` in commands even though the displayed name differs.
-
-The `skill-creator` catalog entry additionally supplies a Claude Code recipe
-that writes `~/.claude/skills/skill-creator/SKILL.md`. This is a per-skill
-exception, not a `claude` target for the shell installer or CLI. The
-repository does not configure general installation targets for Codex,
-Cursor, or other assistants.
-
-## When a skill is missing
-
-- **Listed but no download:** inspect the record's `skillFile` and the
-  committed instruction file. Metadata alone does not provide a downloadable
-  workflow.
-- **Present on the website but absent from CLI search:** the two catalogs
-  are maintained separately; use the website and shell installer for files
-  present in the repository.
-- **Installed but not usable:** verify the destination and instruction
-  content, then check the assistant's discovery behavior and any tools that
-  particular skill requires.
-
-## Sources
-
-- [Web catalog and Skill interface](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/data/skills.ts)
-- [Web filtering and sorting](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/lib/skillSearch.ts)
-- [Assistant configuration](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/config/assistants.ts)
-- [Per-skill command generation](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/config/commands.ts)
+  <Card title="CLI reference" href="/skills/cli">
+    Explore the experimental `newth-skills` CLI.
+  </Card>
+</Columns>

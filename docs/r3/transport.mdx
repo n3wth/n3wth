@@ -1,0 +1,41 @@
+---
+title: "Transport"
+sidebarTitle: "Transport"
+description: "r3 speaks MCP over stdio. Learn the transport, tool-call format, namespaces, and how intelligence modes affect the tool list."
+---
+
+r3 is an MCP server that communicates over standard input and output, not HTTP. Every capability is exposed as a tool. This page covers the transport, the tool-call shape, namespaces, and how responses are returned.
+
+## Transport
+
+Your MCP client launches r3 as a child process and speaks the Model Context Protocol over stdio. Message framing is handled by the MCP SDK. You do not send requests to an HTTP URL. The client manages process lifecycle, initialization, and message boundaries.
+
+## Call format
+
+A tool call uses the `tools/call` method. Always include `arguments`, even when the tool has no parameters. Handlers require `arguments` to be present and will return an error if it is missing.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "cache_stats",
+    "arguments": {}
+  }
+}
+```
+
+## Namespaces
+
+`MEM0_USER_ID` sets the default user namespace for all tool calls. You can override it per call with the `user_id` argument. Keep your namespace consistent so memories remain retrievable across sessions.
+
+## Modes change the tool list
+
+`extract_entities`, `get_knowledge_graph`, and `find_connections` appear only when `INTELLIGENCE_MODE=enhanced` (the default). In basic mode, these tools are not registered and will not be discovered by the client.
+
+## Response shape
+
+Responses use MCP `content` blocks with plain text. Some tools embed serialized JSON inside a text block. Always check `isError` before parsing the text. If `isError` is true, the text contains an error message rather than the expected result.
+
+For the full tool reference, see [Memory Tools](/r3/memory-tools), [Cache Tools](/r3/cache-tools), and [Knowledge Graph](/r3/knowledge-graph).

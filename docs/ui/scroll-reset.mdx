@@ -1,0 +1,38 @@
+---
+title: "Reset Scroll on Route Change"
+sidebarTitle: "Scroll Reset"
+description: "Use useRouteScrollReset with React Router to scroll to the top after qualifying same-origin anchor clicks to a new pathname."
+---
+
+`useRouteScrollReset` records unmodified same-origin anchor clicks to a different pathname with no hash, then scrolls to the top when that destination becomes active. It deliberately leaves hash scrolling and browser Back/Forward to the browser or router.
+
+## React Router
+
+Mount this component inside your router:
+
+```tsx
+import { useLocation } from 'react-router'
+import { useRouteScrollReset } from '@n3wth/ui/site'
+
+export function RouteScrollReset() {
+  const { pathname } = useLocation()
+  useRouteScrollReset(pathname)
+  return null
+}
+```
+
+<Warning>
+  Avoid mounting competing scroll-reset implementations. If the router or another hook already resets scroll on navigation, remove one before adding the other.
+</Warning>
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Reading Outline" href="/ui/reading-outline">
+    Render a scroll-spy outline for long-form pages.
+  </Card>
+
+  <Card title="Layouts" href="/ui/layouts">
+    Compose page frames with `SiteContainer` and `PageHeader`.
+  </Card>
+</Columns>

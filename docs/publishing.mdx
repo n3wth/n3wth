@@ -1,141 +1,59 @@
 ---
-title: Publishing
-description: Preview and publish the Docs7 project. Check the site and its Context7 index.
+title: "Preview and Publish"
+sidebarTitle: "Publishing"
+description: "Preview docs locally with the Mintlify CLI, check for broken links, and publish updates to docs.n3wth.com from the n3wth/n3wth repository."
 ---
 
-This documentation project lives at `docs` in `n3wth/n3wth`.
-`docs.json` controls the hosted site. The repository-root `context7.json`
-controls which files Context7 indexes. The two files serve different purposes.
+This documentation site is built with Mintlify. The source lives in [docs/](https://github.com/n3wth/n3wth/tree/HEAD/docs) inside the [n3wth/n3wth](https://github.com/n3wth/n3wth) repository, and `docs.json` controls the hosted site. Deployment is driven by the Mintlify GitHub App: pushes to `main` publish to [docs.n3wth.com](https://docs.n3wth.com).
 
 <Note>
-  Preview changes locally before connecting or publishing the site. A Docs7
-  deployment is separate from the repository's application deployments.
+  Preview every change locally before merging. Mintlify's hosting connection is separate from the Vercel deployments used by the other apps in this repository.
 </Note>
 
 ## Preview locally
 
-From the repository root:
+Install the CLI once, then run it from the docs directory:
 
 ```bash
-npx @upstash/docs7 dev docs --port 3333
+npm install -g mint
+cd docs
+mint dev
 ```
 
-Open `http://localhost:3333`. The first run downloads the Docs7 renderer.
-Later runs reuse its cache. Changes reload locally.
+Open [http://localhost:3000](http://localhost:3000). The dev server hot-reloads MDX and `docs.json` changes.
 
-## Validate a change
+## Check for broken links
 
-After the root `npm ci`, run:
+Before opening a PR, verify internal links resolve:
 
 ```bash
-node docs/check.mjs
+cd docs
+mint broken-links
 ```
 
-The checker verifies navigation targets, page metadata, MDX compilation, and
-local page links. Preview representative pages. Check navigation, code blocks,
-tables, mobile overflow, and both themes. A successful syntax check does not
-prove an example's API is correct. Verify the example against the implementation too.
+Mintlify validates MDX and `docs.json` on save; a `mint dev` server that starts clean is a good signal. Preview representative pages across products, check navigation, code blocks, tables, mobile overflow, and both themes. A syntax check does not prove an example's API is correct, so verify code against the implementation too.
 
-Keep product docs in their product directory. Add every page to `docs.json`.
-Use paths such as `/ui/quickstart` for links inside the hosted site. Link to
-the GitHub source when you describe code that lives outside the docs root.
+## Publish
 
-## Connect Docs7
+Merging to `main` triggers the Mintlify GitHub App to build and deploy. The dashboard at [dashboard.mintlify.com](https://dashboard.mintlify.com) shows build status and previous deployments.
 
-In the [Context7 dashboard](https://context7.com/dashboard), select the intended
-teamspace and open **Docs7 → Add New Site**.
-
-| Setting | Value |
-| --- | --- |
-| Repository | `n3wth/n3wth` |
-| Production branch | `main` |
-| Documentation folder | `docs` |
-| Configuration | `docs/docs.json` |
-
-Authorize repository access if prompted. Then choose **Publish Site**. Verify
-the generated site URL before you add a custom domain. Keep the existing UI,
-Kit, Skills, and r3 site domains attached to their current applications unless
-you intend to migrate them.
-
-If the form says the Free plan's repository slot is already in use, you need
-a plan with another slot before you can add this repository. Do not replace
-an existing site's source to work around that limit.
-
-The public Context7 API supports library indexing and refresh. Its API key
-does not replace the initial Docs7 dashboard-to-GitHub connection. Keep keys
-in a secret store or environment variable. Do not put them in either JSON
-configuration file.
+Every page must be listed in `docs.json`. Use root-relative paths for links inside the site (`/ui/quickstart`, not `/ui/quickstart.mdx`). Link to the [GitHub source](https://github.com/n3wth/n3wth) when describing code that lives outside `docs/`.
 
 ## Verify the published site
 
-1. Confirm the production deployment matches the merged commit.
-2. Open the overview and one page from each product. Load at least one page
-   directly, not only through client-side navigation.
-3. Test the product navigation, page links, and search.
-4. Confirm `/robots.txt`, `/sitemap.xml`, `/llms.txt`, `/llms-full.txt`, and
-   `/.well-known/agent-skills/index.json` are available. Request a page with
-   `Accept: text/markdown` to verify its Markdown representation.
-5. Check that the Context7 library refresh has finished and returns the new
-   product documentation. An accepted refresh request is not proof of completion.
+1. Confirm the deployment matches the merged commit in the Mintlify dashboard.
+2. Load one page per product directly (not only through client-side navigation).
+3. Test product navigation, page links, and search.
+4. Confirm `/sitemap.xml` and `/llms.txt` are available.
 
-Docs7 refreshes its linked Context7 library when production builds finish.
-For repository indexing, use `/n3wth/n3wth`. If dashboard settings currently
-override repository-managed configuration, select repository-managed
-configuration in the library settings instead.
+## SEO
 
-To request a repository refresh through the API:
-
-```bash
-curl --fail-with-body https://context7.com/api/v1/refresh \
-  --header "Authorization: Bearer $CONTEXT7_API_KEY" \
-  --header 'Content-Type: application/json' \
-  --data '{"libraryName":"/n3wth/n3wth","branch":"main"}'
-```
-
-Supply `CONTEXT7_API_KEY` through your environment. Do not print it in shell
-traces or CI logs. If the library has not been added yet, submit the repository
-from the Context7 dashboard first.
-
-## SEO and agent readiness
-
-`docs.json` is the source of shared search metadata. This project limits
-indexing to navigable pages. It publishes `https://docs.n3wth.com` as the
-canonical origin and identifies n3wth as the organization. Add page-specific
-`description`, `keywords`, `image`, `canonical`, or `noindex: true` values in
-frontmatter when you need them. Keep the generated `robots.txt` and
-`sitemap.xml` unless the site needs a full replacement.
-
-Docs7 exposes `/llms.txt`, `/llms-full.txt`, `/<page>.md`, `/search?q=...`, and
-`/.well-known/agent-skills/index.json` for agents. Use exact API names and
-stable headings. Put agent-only context inside `Visibility for="agents"`.
-
-## Docs7 CLI
-
-The CLI requires Node.js 20.19 or newer:
-
-```bash
-npm install -g @upstash/docs7
-# or: npx @upstash/docs7 deploy
-```
-
-Use `docs7 dev [dir]` for a local preview. Use `docs7 login`, `docs7 whoami`,
-and `docs7 logout` for account management. Use `docs7 deploy [dir]` to publish.
-For this repository, run `docs7 dev docs` or `docs7 deploy docs`.
-
-For CI, set `CONTEXT7_API_KEY`. It takes precedence over the saved login.
-Deploys save the site ID in `.docs7/project.json`. Keep that file with the
-documentation source. Use `--preview` for a preview deployment. Use
-`.docs7ignore` to list files that must not upload. The upload does not read
-`.gitignore`, so review your documentation folders for private files first.
+`docs.json` sets the shared metadata: `docs.n3wth.com` as the canonical origin and n3wth as the organization. Add page-specific `description`, `keywords`, `canonical`, or `noindex: true` in frontmatter when needed. See the [Mintlify SEO reference](https://mintlify.com/docs/settings/seo) for the full option list.
 
 ## Maintain accuracy
 
 - Update examples when exports, command flags, or installation sources change.
-- Keep internal plans and operational records outside the indexed docs folder.
-- Link separate runtime repositories instead of copying their release workflows.
+- Keep internal plans and operational records outside `docs/`.
+- Link separate runtime repositories (like [n3wth/r3](https://github.com/n3wth/r3)) instead of copying their release workflows here.
 - Revert a broken documentation commit and verify the replacement deployment.
   Do not change application hosting settings to roll back a docs-only change.
-
-References: [Docs7 quickstart](https://context7.com/docs/docs7/quickstart),
-[site configuration](https://context7.com/docs/docs7/configuration), and
-[Context7 library configuration](https://context7.com/docs/library-owners).

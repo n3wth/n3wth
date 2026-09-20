@@ -1,135 +1,70 @@
 ---
 title: "Troubleshooting"
-description: "Fix installation, MCP startup, storage, and retrieval problems. Check that r3 stored the data."
+sidebarTitle: "Troubleshooting"
+description: "Fix common r3 problems: macOS build failures, MCP client discovery, empty search results, and memory persistence across restarts and processes."
 ---
 
-Start with the smallest failing step: package installation, MCP connection,
-storage initialization, write, read, then restart. The website build does
-not exercise the core server or Redis. Keep diagnostic data disposable until
-the [quickstart check](/r3/quickstart#check-one-write-and-read) succeeds.
+If r3 is not working as expected, start with the smallest failing step: installation, MCP connection, storage initialization, write, read, then restart. This page covers the common symptoms and fixes.
 
-## Installation fails on macOS
+<AccordionGroup>
+  <Accordion title="Installation fails on macOS with a GNU Make error">
+    The embedded Redis dependency compiles from source when a prebuilt binary is not available. This needs GNU Make 4 or later, which is newer than the system default on some macOS versions.
 
-The core launch audit records a Redis dependency build failure with
-`GNU Make version is too old`. A missing prebuilt Redis binary can trigger a
-source build. The audited build needed GNU Make 4 or later.
+    Install a newer make with Homebrew:
 
-Check your environment:
+    ```bash
+    brew install make
+    ```
 
-```bash
-node --version
-npm --version
-make --version
-```
+    Confirm the version:
 
-If the error specifically names an old GNU Make and you use Homebrew:
+    ```bash
+    gmake --version
+    ```
 
-```bash
-brew install make
-export PATH="$(brew --prefix make)/libexec/gnubin:$PATH"
-make --version
-npx -y @n3wth/r3 --help
-```
+    Then relaunch r3:
 
-Make sure the MCP client also inherits the corrected executable path. An
-external Redis URL does not remove the package's embedded Redis dependency.
-It does not guarantee that installation skips the native build either.
+    ```bash
+    npx @n3wth/r3
+    ```
+  </Accordion>
 
-## The client cannot connect
+  <Accordion title="MCP client does not discover r3 tools">
+    1. Restart the MCP client after editing configuration.
+    2. Confirm the config file path matches your client (Claude Desktop, Claude Code, or Cursor).
+    3. Verify the JSON contains `"command": "npx"` and `"args": ["@n3wth/r3"]`.
+    4. Check the client's MCP log for stderr output. Add `"DEBUG": "true"` to the server's `env` for a diagnostic run.
+    5. Confirm the configured package is `@n3wth/r3`, not an unscoped `r3` name.
 
-1. Confirm the configured package is `@n3wth/r3`, not the unscoped `r3`
-   package or the older `@n3wth/recall` name.
-2. Check that the client's launch environment can find `node` and `npx`. A
-   GUI client may have a different `PATH` from your terminal.
-3. Use the `serve` command. `ui` and `manage` launch interactive interfaces,
-   not the configured MCP transport.
-4. Validate your client configuration as JSON and reconnect after changes.
-5. Inspect the client's server stderr logs. Add `"DEBUG": "true"` to the
-   server's environment for a diagnostic run.
+    Keep stdout reserved for MCP messages. Disabling quiet mode can let local logging reach stdout and interfere with the transport.
+  </Accordion>
 
-Keep stdout reserved for MCP messages. Disabling quiet mode can let
-local-backend logging reach stdout and interfere with the transport. Do not
-pipe startup banners into the protocol stream.
+  <Accordion title="add_memory returns Saved but search finds nothing">
+    1. Confirm the intelligence mode. Try `INTELLIGENCE_MODE=basic` to rule out embedding model initialization failures.
+    2. Call `sync_status` to check pending async operations.
+    3. Call `optimize_cache` to refresh the cache and index.
+    4. Verify you are querying with the same `user_id` you used for the write.
 
-## Connection succeeds but tools stall
+    `Saved` can return before async processing finishes. Verify content through retrieval, not through the acknowledgement.
+  </Accordion>
 
-The server connects its transport before it completes enhanced
-initialization and starts Redis in the background. Tool discovery alone does
-not prove storage readiness.
+  <Accordion title="Memories do not persist across restart">
+    1. Restart from the same working directory. The vector index lives at `./data/vectra-index` relative to the launch directory.
+    2. Local Redis records have a 30-day TTL. The embedded backend does not configure durable persistence.
+    3. Keep an independent copy of anything you cannot lose. Test the write, read, and restart cycle with disposable data first.
 
-Use `INTELLIGENCE_MODE=basic` to separate model initialization failures from
-Redis failures. Inspect stderr for embedded Redis startup errors or an
-explicit fallback to demo mode. Demo mode cannot satisfy a persistence check.
+    See [Configuration](/r3/configuration) for storage details.
+  </Accordion>
 
-If you explicitly configured `REDIS_URL` in local mode and see
-`Local memory not initialized`, remove that setting for the embedded
-quickstart. The [configuration reference](/r3/configuration#external-redis-caveat) explains the incomplete external-Redis local path.
+  <Accordion title="Redis connection refused">
+    This applies only when `REDIS_URL` points at an external Redis. Ensure that server is running and reachable from the r3 process.
 
-For an intentionally configured external cache, test connectivity without
-printing credentials:
+    For the local quickstart, leave `REDIS_URL` unset so r3 uses the embedded server.
+  </Accordion>
 
-```bash
-redis-cli -h 127.0.0.1 -p 6379 ping
-```
+  <Accordion title="Enhanced-mode tools are missing">
+    `extract_entities`, `get_knowledge_graph`, and `find_connections` only register when `INTELLIGENCE_MODE=enhanced` (the default).
 
-`PONG` confirms that Redis responds at that address. It does not prove that
-the MCP local backend initialized or that records persist.
-
-## A write times out or duplicate detection behaves unexpectedly
-
-The inspected `simulateLocalAPI` dispatch checks a general POST to
-`/memories/` before the more specific POST to `/memories/search/`. Duplicate
-detection uses the search endpoint, so it reaches the add branch instead of
-search. This is a source-confirmed routing defect. It does not explain every
-timeout.
-
-For one disposable diagnostic, use `async: false` and
-`skip_duplicate_check: true`, as in the quickstart. Do not repeatedly retry a
-timed-out write against important data: the write may have completed even
-when its acknowledgement did not arrive. This diagnostic bypass does not fix
-duplicate detection.
-
-`Saved` can return before asynchronous processing finishes. `sync_status`
-reports in-process queue counts, not a durable transaction receipt. Verify
-the content through retrieval and a separate restart check.
-
-## Reads are empty, unrelated, or stale
-
-| Symptom | What to check |
-| --- | --- |
-| Empty after restart | Same working directory and index path; no demo fallback; actual Redis persistence. |
-| Results cross user boundaries | Search ignores the advertised `user_id` and has unscoped cache/vector paths. Use a separately isolated deployment for separate trust boundaries. |
-| Unrelated basic-mode results | Local fallback retrieval uses a GET listing route whose adapter does not apply the query. Do not treat every result as a semantic match. |
-| Old text after an update | Local updates change Redis but do not refresh the vector entry. Read by known ID to compare the stored record. |
-| List returns only a count | This is the current handler output, not a missing client JSON parser. |
-| No ID after saving | The add acknowledgement omits it; search and list also do not expose IDs in their current output. |
-
-Setting `prefer_cache: false` changes retrieval preference. It does not
-enable cloud mode or repair these local routing and output limits. Metadata
-filters shown in older examples are not registered search parameters.
-
-## Enhanced tools fail
-
-Enhanced mode attempts a model download and initializes entity extraction.
-If initialization fails, the server continues with the enhanced objects
-cleared. The tools stay discoverable but can be unavailable when called.
-
-Check model-download and initialization errors in stderr, network access,
-and write permissions. Compare with a basic-mode run before you change Redis
-configuration. Do not delete the vector directory as a first troubleshooting
-step; it contains stored index data.
-
-## Report a reproducible core issue
-
-Include the installed package version, Node/npm versions, OS and
-architecture, server command, working directory, mode, tool name, sanitized
-arguments, and stderr around the failure. State separately whether
-connection, write, read, and restart checks passed. Remove credentials and
-private memory content.
-
-Report runtime issues to [n3wth/r3](https://github.com/n3wth/r3/issues).
-Report website rendering and routing issues to [n3wth/n3wth](https://github.com/n3wth/n3wth/issues).
-
-## Sources and scope
-
-These diagnostics follow the core [request handlers](https://github.com/n3wth/r3/blob/main/src/index.ts), [local storage](https://github.com/n3wth/r3/blob/main/src/lib/local-memory.ts), and [launch audit](https://github.com/n3wth/r3/blob/main/LAUNCH_AUDIT.md). The workspace [core triage record](https://github.com/n3wth/n3wth/blob/main/docs/workspace/r3-core-triage.md) documents earlier timeout evidence and separates confirmed defects from possible causes. Its historical CI findings are not a claim about the current release's test status.
+    If they are missing, confirm you have not set `INTELLIGENCE_MODE=basic`, then check stderr for model download or embedding initialization errors. On failure the server continues in a degraded state and these tools stay hidden.
+  </Accordion>
+</AccordionGroup>

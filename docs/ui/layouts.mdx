@@ -1,0 +1,153 @@
+---
+title: "Page Layouts and Site Components"
+sidebarTitle: "Layouts"
+description: "Compose page frames, navigation, headings, sections, and footers with the site components exported from @n3wth/ui/site."
+---
+
+`@n3wth/ui/site` exports layout components, a theme provider, and scroll helpers. Your application supplies content, route links, and active state. Complete the [Quickstart](/ui/quickstart) first. The examples here assume an ancestor `N3wthProvider` and an imported `site.css`.
+
+## Page frame
+
+This example assembles a full page with navigation, header, sections, and footer:
+
+```tsx
+import {
+  PageHeader,
+  SiteContainer,
+  SiteFooter,
+  SiteHeading,
+  SiteNavigation,
+  SiteSection,
+  SiteText,
+} from '@n3wth/ui/site'
+
+export function ReferencePage() {
+  return (
+    <>
+      <SiteNavigation
+        brand={<a href="/ui/quickstart">UI</a>}
+        links={<a href="/ui/layouts" aria-current="page">Layouts</a>}
+        actions={<a href="https://github.com/n3wth/n3wth">Source</a>}
+      />
+      <SiteContainer as="main" className="n3wth-site-main">
+        <PageHeader
+          title="Reference"
+          description="Shared page structure for a React application."
+          actions={<a href="#layout">Read the layout notes</a>}
+        />
+        <SiteSection id="layout">
+          <SiteHeading>Layout</SiteHeading>
+          <SiteText>Use one container to align the page content.</SiteText>
+        </SiteSection>
+      </SiteContainer>
+      <SiteFooter
+        brand={<a href="/ui/quickstart">UI documentation</a>}
+        links={<a href="https://github.com/n3wth/n3wth">Source</a>}
+      />
+    </>
+  )
+}
+```
+
+`n3wth-site-main` adds the top spacing used with site navigation. `SiteSection` adds vertical spacing. It does not add the container's horizontal constraints. Put sections inside a container, or put a container inside a full-width section when the section needs its own background.
+
+## Available site components
+
+<Columns cols={2}>
+  <Card title="SiteContainer">
+    Constrain and align content. Accepts `as`: `div` (default), `main`, `section`, or `article`.
+  </Card>
+
+  <Card title="SiteSection">
+    Separate page regions vertically with native section props.
+  </Card>
+
+  <Card title="SiteSectionLinks">
+    In-flow links to sections or documents. Sticky navigation owns active state separately.
+  </Card>
+
+  <Card title="SiteHeading">
+    Choose visual role (`page`, `section`, `item`) and semantic heading level (`1` through `6`).
+  </Card>
+
+  <Card title="SiteText">
+    Body text with shared typography. Variants: `body` (default), `supporting`, `lede`.
+  </Card>
+
+  <Card title="SiteDocSection">
+    Group long-form content with an optional title and level (`2` or `3`).
+  </Card>
+
+  <Card title="SiteDocList">
+    Render a document list from a required `items` array of React nodes.
+  </Card>
+
+  <Card title="PageHeader">
+    Introduce a page or major region with `title`, optional `description`, `actions`, `aside`, and alignment.
+  </Card>
+
+  <Card title="SiteNavigation">
+    Responsive navigation with brand, links, actions, and a mobile disclosure.
+  </Card>
+
+  <Card title="SiteSignup">
+    One-line email capture for footers. The app owns delivery through `onSubmit(email)`.
+  </Card>
+
+  <Card title="SiteFooter">
+    Shared footer with brand, links, optional signup, and metadata slots.
+  </Card>
+
+  <Card title="N3wthProvider">
+    Theme provider that supplies the Newth theme context. Accepts `mode`: `dark`, `light`, or `system`.
+  </Card>
+
+  <Card title="ReadingOutline">
+    Scroll-spy outline for long-form pages. Accepts `items`, `label`, and `collapsible`.
+  </Card>
+</Columns>
+
+## Hooks and helpers
+
+| Export | Purpose |
+| --- | --- |
+| `useRouteScrollReset` | Reset scroll to top after qualifying anchor clicks to a new pathname |
+| `n3wthTheme` | Theme object for programmatic access to Newth tokens |
+
+<Tip>
+  Pair site compositions with `@n3wth/ui/primitives` for interactive controls inside sections. For example, use the native `Button` inside a `SiteSection` or `PageHeader` actions slot.
+</Tip>
+
+## Navigation behavior
+
+`SiteNavigation` requires `brand` and `links`, both React nodes. Optional props are `actions`, `navigationLabel` (default `Primary`), `navigationId`, and `menuLabel` (default `Open menu`). It accepts HTML attributes but does not take a `children` slot.
+
+Pass anchors or your router's link components. The current UI docs app passes React Router `NavLink` elements. The composition does not resolve routes or calculate which link is active.
+
+The mobile disclosure focuses the first link when opened. It closes on link selection, outside pointer interaction, Escape, or a transition to the desktop media query. Escape restores focus to the menu button. Keep navigation links as actual anchors so the click and focus behavior can find them.
+
+## Customize the footer
+
+`SiteFooter` defaults to an Oliver Newth brand link and Library, Skills, r3, Docs, Contact, and GitHub links. For another product, pass your own `brand` and `links` as in the frame example. The optional `signup` slot renders above the identity row. Pair it with `SiteSignup`, which takes an `onSubmit(email)` handler so the app decides where addresses go.
+
+| Prop | Behavior |
+| --- | --- |
+| `brand` | React node; `null` omits the brand |
+| `links` | Replaces the complete default link group |
+| `sourceHref` | Changes the default GitHub link; defaults to the monorepo URL |
+| `legalLinks` | Appended only when using the default link group |
+| `children` | Additional footer metadata below the link row |
+
+If you supply `links`, `legalLinks` and `sourceHref` no longer construct that group. Include those links yourself when you replace it.
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Reading Outline" href="/ui/reading-outline">
+    Add a scroll-spy outline to long-form pages.
+  </Card>
+
+  <Card title="Scroll Reset" href="/ui/scroll-reset">
+    Reset scroll to top on route change.
+  </Card>
+</Columns>

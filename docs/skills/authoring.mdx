@@ -1,199 +1,112 @@
 ---
-title: Authoring
-description: Write focused instructions. Add catalog metadata and check the file format.
+title: "Authoring Skills"
+sidebarTitle: "Authoring"
+description: "Learn how to write a skill, add it to the catalog, and publish it so others can install it via the shell installer at skills.n3wth.com."
 ---
 
-A contribution has two parts: an instruction file and a catalog record. The
-website does not generate its catalog by scanning Markdown files. Adding only
-a file makes it available to the shell installer. It does not add a web
-catalog entry.
+A contribution has two parts: an instruction file checked into [apps/skills/skills/](https://github.com/n3wth/n3wth/tree/HEAD/apps/skills/skills) and a catalog record in [apps/skills/src/data/skills.ts](https://github.com/n3wth/n3wth/blob/HEAD/apps/skills/src/data/skills.ts). Adding only the file makes it installable through the shell installer. Adding the record makes it browsable on [skills.n3wth.com](https://skills.n3wth.com).
 
-## Prerequisites
+<Steps>
+  <Step title="Pick an ID and task">
+    Choose a unique lowercase-hyphenated ID, such as `api-testing` or `react-patterns`. Focus on one well-defined task so the skill stays narrow and reliable.
+  </Step>
+  <Step title="Choose a layout">
+    Decide between a flat file and a folder skill:
 
-Work in a checkout of `n3wth/n3wth` and read the root and
-`apps/skills/AGENTS.md` instructions. Use Node 24 and npm 11.19.1 for
-workspace development. Run the commands below from the repository root
-unless stated otherwise.
+    - **Flat skill**: `skills/<id>.md` for instruction-only skills.
+    - **Folder skill**: `skills/<id>/SKILL.md` for skills that need helper files or assets.
+  </Step>
+  <Step title="Write the instructions">
+    Use the `SKILL.md` format. Start with YAML frontmatter, then add triggers, instructions, and validation prompts.
 
-Choose one task, a unique lowercase hyphenated ID, and a matching and
-unrelated prompt to test. Check the current catalog for overlapping skills
-before you add another workflow.
+    ```markdown title="skills/my-skill/SKILL.md"
+    ---
+    name: my-skill
+    description: What the skill does, and when to use it.
+    ---
+    
+    # My Skill
+    
+    ## Triggers
+    
+    Use this skill when the user wants to:
+    - Perform a specific task
+    - Follow a defined workflow
+    
+    Keywords: "keyword1", "keyword2"
+    
+    ## Instructions
+    
+    1. Read the project manifest.
+    2. Apply the relevant conventions.
+    3. Include an example.
+    4. Run checks and report failures.
+    
+    ## Validation
+    
+    Try: A matching prompt.
+    Check: The output follows the instructions.
+    ```
+  </Step>
+  <Step title="Add a catalog record">
+    Open [apps/skills/src/data/skills.ts](https://github.com/n3wth/n3wth/blob/HEAD/apps/skills/src/data/skills.ts) and add a `Skill` object to the `skills` array. Here is a real example from the source:
 
-## Write the instructions
+    ```typescript
+    {
+      id: 'pdf',
+      name: 'PDF Toolkit',
+      description: 'Extract text and tables from PDFs, create documents, merge and split files, and process forms.',
+      longDescription: 'Work with PDF documents programmatically. Extract text and tables, create new PDFs, merge documents, split pages, and process fillable forms.',
+      category: 'documents',
+      tags: ['pdf', 'documents', 'extraction'],
+      icon: '▣',
+      color: 'oklch(0.60 0.15 25)',
+      skillFile: `${GITHUB_RAW_BASE}/pdf.md`,
+      features: [
+        'Text and table extraction',
+        'PDF creation from scratch',
+        'Document merging and splitting',
+        'Form field processing',
+        'Page manipulation and reordering'
+      ],
+      useCases: [
+        'Invoice data extraction',
+        'Report generation',
+        'Document consolidation',
+        'Form automation',
+        'Contract processing'
+      ],
+      compatibility: ['gemini'],
+      version: '1.0.0',
+      lastUpdated: '2025-11-15'
+    }
+    ```
 
-Use `apps/skills/skills/<id>.md` for a self-contained file, or
-`apps/skills/skills/<id>/SKILL.md` for a folder. Prefer a folder when the
-instructions need sibling references, templates, or scripts. The shell
-installer copies the folder. Direct downloads and CLI installs copy only the
-Markdown content.
+    For folder skills, set `skillFile` to `${GITHUB_RAW_BASE}/<id>/SKILL.md`.
 
-For example, create `apps/skills/skills/release-notes.md`:
+    See the [Skill interface](/skills/interface) reference for every field.
+  </Step>
+  <Step title="Test locally">
+    Run the shell installer against a staging directory and verify the file lands correctly:
 
-```markdown
----
-name: release-notes
-description: Draft release notes from a supplied Git diff when the user asks to summarize a release.
-version: 1.0.0
-author: your-name
-category: development
-tags:
-  - releases
-  - documentation
-compatibility:
-  - gemini
----
+    ```bash
+    SKILLS_INSTALL_HOME=/tmp/staging bash /tmp/install.sh gemini my-skill
+    ls /tmp/staging/.gemini/skills/
+    ```
+  </Step>
+  <Step title="Open a pull request">
+    Push your branch and open a PR against [n3wth/n3wth](https://github.com/n3wth/n3wth). Include both the skill file and the catalog record so the skill appears on the website.
+  </Step>
+</Steps>
 
-# Release notes
+## Next steps
 
-## Triggers
+<Columns cols={2}>
+  <Card title="Skill interface" href="/skills/interface">
+    Field-by-field reference for every property on the `Skill` type.
+  </Card>
 
-Use when the user supplies a diff and requests release notes.
-Do not use for a general code review or a release with no source evidence.
-
-## Instructions
-
-1. Identify user-visible changes in the supplied diff.
-2. Group them under Added, Changed, and Fixed; omit empty groups.
-3. Link each claim to a changed file or supplied issue.
-4. Flag missing migration details instead of inventing them.
-
-## Example
-
-Input: A diff adds a CSV export button to the reports page.
-Output: Added — Reports can now be exported as CSV.
-
-## Constraints
-
-Draft text only. Do not publish a release or change Git state.
-```
-
-`name` and `description` express identity and when to use the skill.
-Existing catalog files also use version, author, category, tags, and
-compatibility metadata. These files are not governed by the stricter Python
-package validator described below.
-
-Keep tool prerequisites and expected output in the body. Include failure
-handling for missing inputs. Test whether a relevant request follows the
-instructions, and whether an unrelated request stays outside the skill's scope.
-
-## Add the web catalog record
-
-Insert an object into the exported `skills` array in
-`apps/skills/src/data/skills.ts`. This example uses the existing
-`GITHUB_RAW_BASE` constant:
-
-```typescript
-{
-  id: 'release-notes',
-  name: 'Release Notes',
-  description: 'Draft release notes from a supplied Git diff.',
-  category: 'development',
-  tags: ['releases', 'documentation'],
-  icon: 'R',
-  color: 'oklch(0.70 0.15 280)',
-  compatibility: ['gemini'],
-  version: '1.0.0',
-  lastUpdated: '2026-09-17',
-  skillFile: `${GITHUB_RAW_BASE}/release-notes.md`,
-},
-```
-
-Use your actual update date. For a folder, set `skillFile` to
-`${GITHUB_RAW_BASE}/release-notes/SKILL.md`. The raw URL points at `main`, so
-a new file on a feature branch will not be downloadable from that URL until
-you merge it.
-
-| Field | Requirement and use |
-| --- | --- |
-| `id` | Required string; unique, matching the file or folder ID |
-| `name`, `description` | Required strings; display text and search inputs |
-| `category` | Required; `development`, `documents`, `creative`, `productivity`, or `business` |
-| `tags` | Required string array; searchable keywords |
-| `icon`, `color` | Required strings; use a simple symbol or letter and an OKLCH color |
-| `version`, `lastUpdated` | Required strings; follow semantic-version and `YYYY-MM-DD` conventions |
-| `skillFile` | Optional in the type; required for a standard website download command |
-| `compatibility` | Optional array; the configured assistant ID is `gemini` |
-| `features`, `useCases`, `samplePrompts` | Optional descriptive content; keep claims grounded in the instructions |
-| `contributor` | Optional object with `name`, and optional `github` and `url` |
-| `relatedSkillIds`, `faq`, `extraInstallCommands` | Optional detail-page content; see the exported interface for structure |
-
-If the contribution also needs to appear in the CLI, maintain its separate
-catalog in `apps/skills/cli/src/utils/skills.ts`. A web catalog edit alone
-does not update the CLI. Do not claim a download URL exists until you have
-committed the instruction file at that path.
-
-## Validate a catalog contribution
-
-The existing catalog tests check structure, unique IDs, category counts,
-configured compatibility, and whether advertised local download paths exist.
-In a development checkout with dependencies installed, run:
-
-```bash
-npm run test:unit --workspace @n3wth/skills -- \
-  src/data/skills.test.ts src/data/skills-files.test.ts
-```
-
-For the full app check, the repository documents
-`npm run check --workspace @n3wth/skills`. It includes typecheck, lint, unit
-tests, and a production build. Run it only in a checkout where generating
-build outputs is appropriate.
-
-Tests that confirm a local file exists do not verify the deployed URL,
-assistant discovery, or the behavior of the instructions. Review those
-separately after publication.
-
-## The Python validator uses a different schema
-
-`apps/skills/scripts/validate-skill.py` accepts a **directory containing
-`SKILL.md`**, even though its usage text shows a flat `pdf.md` example. It
-requires Python 3 and the `yaml` module supplied by PyYAML.
-
-Its required frontmatter keys are `name`, `slug`, `description`, `author`,
-`version`, `categories`, `platforms`, and `status`. To intentionally use this
-package format, start with:
-
-```yaml
----
-name: Release Notes
-slug: release-notes
-description: Draft release notes from a supplied Git diff.
-author: your-name
-version: 1.0.0
-categories: [development]
-platforms: [gemini-cli]
-status: experimental
----
-```
-
-Then validate the directory:
-
-```bash
-python3 apps/skills/scripts/validate-skill.py apps/skills/skills/release-notes
-```
-
-Accepted statuses are `experimental`, `beta`, `stable`, and `deprecated`.
-Missing `scripts`, `templates`, or `references` directories produce
-warnings. Unknown platform values also produce warnings. `gemini-cli` is the
-recognized value here, distinct from the catalog's `gemini` ID.
-
-A failure against this schema does not prove that a flat catalog skill is
-invalid. Choose the validation that matches the layout you are authoring.
-
-## Troubleshooting
-
-| Problem | Likely cause |
-| --- | --- |
-| New file does not appear on the website | Missing record in the web `skills` array |
-| Catalog test reports a missing download | `skillFile` suffix does not match a committed file path |
-| New branch's download returns 404 | Raw URL targets `main`, where the file is not yet merged |
-| Validator says path is not a directory | A flat file was passed to the package-only Python validator |
-| Validator reports missing metadata | Catalog metadata and package-validator metadata use different fields |
-| References disappear after installation | A single-file download was used for a folder with sibling resources |
-
-## Sources
-
-- [Skill interface and web catalog](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/data/skills.ts)
-- [Contributor template](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/data/skillTemplate.ts)
-- [Skill Creator instructions](https://github.com/n3wth/n3wth/blob/main/apps/skills/skills/skill-creator.md)
-- [Download-path tests](https://github.com/n3wth/n3wth/blob/main/apps/skills/src/data/skills-files.test.ts)
-- [Package validator](https://github.com/n3wth/n3wth/blob/main/apps/skills/scripts/validate-skill.py)
+  <Card title="Shell installer" href="/skills/installation">
+    How the installer resolves flat and folder skills once your record is live.
+  </Card>
+</Columns>

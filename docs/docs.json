@@ -1,5 +1,5 @@
 {
-  "name": "n3wth / docs",
+  "name": "n3wth",
   "theme": "aspen",
   "colors": {
     "primary": "#08090b",
@@ -25,52 +25,117 @@
   },
   "filterSidebar": true,
   "navbar": {
-    "links": [
-      { "label": "n3wth.com", "href": "https://n3wth.com" },
-      { "type": "github", "href": "https://github.com/n3wth" }
-    ]
+    "primary": {
+      "type": "button",
+      "href": "https://n3wth.com",
+      "label": "Back to n3wth.com"
+    }
   },
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": " ",
-        "pages": [
-          "index"
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "index"
+            ]
+          },
+          {
+            "group": "Contribute",
+            "pages": [
+              "workspace",
+              "publishing"
+            ]
+          }
         ]
       },
       {
-        "group": "UI",
-        "pages": [
-          "ui/quickstart",
-          "ui/primitives-and-themes",
-          "ui/site-compositions",
-          "ui/api-and-recipes",
-          "ui/troubleshooting"
+        "tab": "UI",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "ui/quickstart"
+            ]
+          },
+          {
+            "group": "Theming",
+            "pages": [
+              "ui/theme-provider",
+              "ui/tailwind"
+            ]
+          },
+          {
+            "group": "Components",
+            "pages": [
+              "ui/primitives",
+              "ui/layouts"
+            ]
+          },
+          {
+            "group": "Recipes",
+            "pages": [
+              "ui/scroll-reset",
+              "ui/reading-outline",
+              "ui/og-images"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "ui/entry-points",
+              "ui/troubleshooting"
+            ]
+          }
         ]
       },
       {
-        "group": "Skills",
-        "pages": [
-          "skills/quickstart",
-          "skills/installation",
-          "skills/authoring",
-          "skills/cli"
+        "tab": "Skills",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "skills/quickstart",
+              "skills/installation"
+            ]
+          },
+          {
+            "group": "Build",
+            "pages": [
+              "skills/authoring",
+              "skills/interface",
+              "skills/cli"
+            ]
+          }
         ]
       },
       {
-        "group": "r3",
-        "pages": [
-          "r3/quickstart",
-          "r3/configuration",
-          "r3/mcp",
-          "r3/troubleshooting"
-        ]
-      },
-      {
-        "group": "Contribute",
-        "pages": [
-          "workspace",
-          "publishing"
+        "tab": "r3",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "r3/quickstart",
+              "r3/configuration"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "r3/transport",
+              "r3/memory-tools",
+              "r3/cache-tools",
+              "r3/knowledge-graph"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "r3/troubleshooting"
+            ]
+          }
         ]
       }
     ]
@@ -79,10 +144,17 @@
     "library": "lucide"
   },
   "styling": {
-    "eyebrows": "breadcrumbs"
+    "eyebrows": "breadcrumbs",
+    "codeblocks": {
+      "theme": {
+        "light": "min-light",
+        "dark": "min-dark"
+      }
+    }
   },
   "appearance": {
-    "default": "dark"
+    "default": "dark",
+    "strict": true
   },
   "fonts": {
     "heading": {
@@ -99,5 +171,47 @@
       "measurementId": "G-4QRMSG5HXK"
     }
   },
-  "description": "Developer documentation for the n3wth workspace: the @n3wth/ui React package, the agent skills catalog, and the r3 local memory server for MCP clients."
+  "description": "Developer documentation for the n3wth workspace: the @n3wth/ui React package, the agent skills catalog, and the r3 local memory server for MCP clients.",
+  "metadata": {
+    "timestamp": true
+  },
+  "contextual": {
+    "options": [
+      "aistudio",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "view",
+      "assistant",
+      "copy"
+    ],
+    "display": "header"
+  },
+  "redirects": [
+    {
+      "source": "/ui/api-and-recipes",
+      "destination": "/ui/entry-points",
+      "permanent": true
+    },
+    {
+      "source": "/ui/primitives-and-themes",
+      "destination": "/ui/primitives",
+      "permanent": true
+    },
+    {
+      "source": "/ui/site-compositions",
+      "destination": "/ui/layouts",
+      "permanent": true
+    },
+    {
+      "source": "/r3/tools",
+      "destination": "/r3/memory-tools",
+      "permanent": true
+    },
+    {
+      "source": "/r3/mcp",
+      "destination": "/r3/transport",
+      "permanent": true
+    }
+  ]
 }

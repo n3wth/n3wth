@@ -1,0 +1,73 @@
+---
+title: "Knowledge Graph Tools"
+sidebarTitle: "Knowledge Graph"
+description: "Enhanced-mode tools for extracting entities from text, building a knowledge graph from stored memories, and finding relationship paths."
+---
+
+These three tools appear only when `INTELLIGENCE_MODE=enhanced` (the default). They add entity extraction and graph traversal on top of the memory store. Basic mode does not register them.
+
+<Note>
+  If these tools are missing from your client, confirm you have not set `INTELLIGENCE_MODE=basic` and check stderr for embedding model download errors. See [Troubleshooting](/r3/troubleshooting).
+</Note>
+
+## extract_entities
+
+Extract named entities and relationships from text using NLP. Identifies people, organizations, technologies, and projects.
+
+<ResponseField name="text" type="string" required>
+  Input text to analyze. Longer text yields more entities.
+</ResponseField>
+
+**Returns:** `{people[], organizations[], technologies[], projects[], relationships[], keywords[]}`.
+
+## get_knowledge_graph
+
+Build a knowledge graph from stored memories. Returns entities as nodes and relationships as edges.
+
+<ResponseField name="entity_type" type="string">
+  Filter nodes by type: `people`, `organizations`, `technologies`, or `projects`. Omit for all types.
+</ResponseField>
+
+<ResponseField name="entity_name" type="string">
+  Filter nodes containing this name (case-insensitive substring match). Omit for all entities.
+</ResponseField>
+
+<ResponseField name="relationship_type" type="string">
+  Filter edges by relationship: `WORKS_FOR`, `USES`, `BUILT_WITH`, `KNOWS`, etc. Omit for all relationships.
+</ResponseField>
+
+<ResponseField name="limit" type="number">
+  Maximum nodes to return. Range: 1-100. Default: 20.
+</ResponseField>
+
+**Returns:** `{nodes[], edges[]}` where nodes have `{id, type, name, memories[]}` and edges have `{from, to, type, confidence}`.
+
+## find_connections
+
+Discover relationship paths between entities in the knowledge graph. Uses BFS traversal to find how entities connect.
+
+<ResponseField name="from_entity" type="string" required>
+  Starting entity name for path search. Must match an entity in the knowledge graph exactly.
+</ResponseField>
+
+<ResponseField name="to_entity" type="string">
+  Target entity name. If omitted, returns all reachable entities up to `max_depth`.
+</ResponseField>
+
+<ResponseField name="max_depth" type="number">
+  Maximum relationship hops to traverse. Range: 1-5. Default: 2.
+</ResponseField>
+
+**Returns:** `{from, to, max_depth, paths_found, paths[]}` where each path is an array of `{from, to, type}` edges.
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Memory Tools" href="/r3/memory-tools">
+    Store the memories the graph is built from.
+  </Card>
+
+  <Card title="Configuration" href="/r3/configuration">
+    Switch between enhanced and basic intelligence modes.
+  </Card>
+</Columns>

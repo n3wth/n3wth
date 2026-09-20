@@ -1,0 +1,199 @@
+---
+title: "Memory Tools Reference"
+sidebarTitle: "Memory Tools"
+description: "Reference for the 8 r3 MCP memory tools: add, get, update, delete, search, list, deduplicate, and import."
+---
+
+r3 exposes memory operations as MCP tools. This page documents the 8 always-available memory tools. See [Cache Tools](/r3/cache-tools) for cache and sync, and [Knowledge Graph](/r3/knowledge-graph) for enhanced-mode entity and graph tools.
+
+## add_memory
+
+Store a new memory with automatic deduplication and indexing. Use for persisting facts, preferences, or conversation context. Prefer this over `update_memory` for new content.
+
+<ResponseField name="content" type="string">
+  Plain text content to store. Use instead of `messages` for simple facts.
+</ResponseField>
+
+<ResponseField name="messages" type="array">
+  Conversation messages to store. Use instead of `content` for multi-turn context. Each item needs `role` (`user`, `assistant`, or `system`) and `content`.
+</ResponseField>
+
+<ResponseField name="user_id" type="string">
+  User namespace for memory isolation. Default is the value of `MEM0_USER_ID`.
+</ResponseField>
+
+<ResponseField name="metadata" type="object">
+  Key-value pairs for categorization. Searchable via `search_memory`.
+</ResponseField>
+
+<ResponseField name="priority" type="string">
+  Cache priority: `high` (L1, 24h TTL), `medium` (standard), or `low` (L2, 7d TTL). Default: `medium`.
+</ResponseField>
+
+<ResponseField name="async" type="boolean">
+  `true` returns immediately and indexes in the background. `false` blocks until complete. Default: `true`.
+</ResponseField>
+
+<ResponseField name="skip_duplicate_check" type="boolean">
+  Bypass duplicate detection. Use only when intentionally storing similar content. Default: `false`.
+</ResponseField>
+
+**Returns:** `Saved` or `Already saved`.
+
+## get_memory
+
+Retrieve a single memory by its unique ID. Use when you have a specific `memory_id` from prior search or list results.
+
+<ResponseField name="memory_id" type="string" required>
+  Unique identifier of the memory to retrieve.
+</ResponseField>
+
+<ResponseField name="user_id" type="string">
+  User namespace. Must match the `user_id` used when the memory was created.
+</ResponseField>
+
+**Returns:** Memory object `{id, content, user_id, metadata}` or `null` if not found.
+
+## update_memory
+
+Modify an existing memory's content or metadata. Use for corrections or adding context. Fails if `memory_id` is not found.
+
+<ResponseField name="memory_id" type="string" required>
+  Unique identifier of the memory to update.
+</ResponseField>
+
+<ResponseField name="content" type="string">
+  New content to replace existing. Omit to keep current content unchanged.
+</ResponseField>
+
+<ResponseField name="metadata" type="object">
+  Metadata fields to merge. Existing fields not specified are preserved.
+</ResponseField>
+
+<ResponseField name="user_id" type="string">
+  User namespace. Must match the original.
+</ResponseField>
+
+**Returns:** Updated memory object.
+
+## delete_memory
+
+Permanently remove a memory by ID. This is irreversible and removes the record from storage, cache, and search index.
+
+<ResponseField name="memory_id" type="string" required>
+  Unique identifier of the memory to delete.
+</ResponseField>
+
+**Returns:** Confirmation text.
+
+## search_memory
+
+Find memories matching a natural language query using hybrid semantic and keyword search. This is the primary retrieval tool for content-based lookup.
+
+<ResponseField name="query" type="string" required>
+  Natural language search query. Supports keywords, phrases, or questions.
+</ResponseField>
+
+<ResponseField name="user_id" type="string">
+  User namespace to search within. Default is `MEM0_USER_ID`.
+</ResponseField>
+
+<ResponseField name="limit" type="number">
+  Maximum results to return. Range: 1-100. Default: 10.
+</ResponseField>
+
+<ResponseField name="prefer_cache" type="boolean">
+  `true` checks cache first, then falls back to storage. `false` queries storage directly. Default: `true`.
+</ResponseField>
+
+**Returns:** Array of memory objects, or `No memories found`.
+
+## get_all_memories
+
+List all memories for a user with pagination. Use for browsing or bulk operations. For content search, prefer `search_memory`.
+
+<ResponseField name="user_id" type="string">
+  User namespace to list. Default is `MEM0_USER_ID`.
+</ResponseField>
+
+<ResponseField name="limit" type="number">
+  Maximum memories per page. Range: 1-500. Default: 100.
+</ResponseField>
+
+<ResponseField name="offset" type="number">
+  Number of memories to skip. Use for pagination. Default: 0.
+</ResponseField>
+
+<ResponseField name="include_cache_stats" type="boolean">
+  Append cache statistics to the response. Default: `true`.
+</ResponseField>
+
+<ResponseField name="prefer_cache" type="boolean">
+  `true` returns cached memories (faster). `false` fetches from storage (fresher). Default: `true`.
+</ResponseField>
+
+**Returns:** `{total, limit, offset, returned, hasMore, source, memories[]}`.
+
+## deduplicate_memories
+
+Detect and optionally remove duplicate memories using content similarity. Run with `dry_run: true` first to preview.
+
+<ResponseField name="user_id" type="string">
+  User namespace to deduplicate. Default is `MEM0_USER_ID`.
+</ResponseField>
+
+<ResponseField name="similarity_threshold" type="number">
+  Minimum similarity (0-1) to consider as duplicate. Range: 0.5-1.0. Default: 0.85.
+</ResponseField>
+
+<ResponseField name="dry_run" type="boolean">
+  `true` previews duplicates without deletion. `false` actually deletes duplicates. Default: `true`.
+</ResponseField>
+
+**Returns:** Summary with duplicate groups.
+
+## import_memories
+
+Bulk import memories from external sources. Supports Mem0 API export or local JSON files. Processes in batches with duplicate detection.
+
+<ResponseField name="source" type="string" required>
+  Import source: `mem0_api` or `json_file`.
+</ResponseField>
+
+<ResponseField name="api_key" type="string">
+  Mem0 API token. Required when `source` is `mem0_api`.
+</ResponseField>
+
+<ResponseField name="file_path" type="string">
+  Absolute path to JSON file. Required when `source` is `json_file`. Must be an array of memory objects or `{memories: [...]}`.
+</ResponseField>
+
+<ResponseField name="user_id" type="string">
+  User namespace for imported memories. Default is `MEM0_USER_ID`.
+</ResponseField>
+
+<ResponseField name="batch_size" type="number">
+  Memories per batch. Range: 10-200. Default: 50.
+</ResponseField>
+
+<ResponseField name="priority" type="string">
+  Cache priority for all imported memories: `high`, `medium`, or `low`. Default: `high`.
+</ResponseField>
+
+<ResponseField name="skip_duplicates" type="boolean">
+  Check each memory for duplicates before import. Default: `true`.
+</ResponseField>
+
+**Returns:** Summary with imported, skipped, and failed counts.
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Cache Tools" href="/r3/cache-tools">
+    Inspect cache health, optimize hit rates, and check sync status.
+  </Card>
+
+  <Card title="Knowledge Graph" href="/r3/knowledge-graph">
+    Extract entities and traverse relationships in enhanced mode.
+  </Card>
+</Columns>

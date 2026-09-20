@@ -1,60 +1,66 @@
 ---
-title: Overview
-description: Choose the n3wth tool that matches your task.
+title: "n3wth Docs"
+sidebarTitle: "Overview"
+description: "Start here to pick UI, Skills, or r3 and jump to the quickstart. Documentation for the three independent n3wth developer tools."
+mode: "wide"
+keywords:
+  - "n3wth"
+  - "developer tools"
+  - "documentation"
+  - "@n3wth/ui"
+  - "agent skills"
+  - "r3"
+  - "MCP"
 ---
 
-These guides cover the developer tools maintained in the n3wth workspace.
-Start with the product that matches your task. You do not need to install them all.
+The n3wth workspace ships three independent tools, each with its own package, release cycle, and audience. Pick the one that matches your task; you do not need to install them all.
 
-This hub documents the public contracts of the workspace. Each guide links to the source of truth so you can verify examples before shipping them.
-
-<CardGroup cols={3}>
+<Columns cols={3}>
   <Card title="UI" href="/ui/quickstart">
-    Build a React site with shared primitives, themes, and layouts.
+    A React design system built on Astryx. Primitives, theme provider, page layout, and social image renderer.
   </Card>
 
   <Card title="Skills" href="/skills/quickstart">
-    Give an agent repeatable, inspectable task instructions.
+    A catalog of Markdown instructions for coding agents. Inspect, install, and adapt agent workflows.
   </Card>
 
   <Card title="r3" href="/r3/quickstart">
-    Keep useful context across agent sessions through MCP.
+    A local-first memory server for MCP clients. Embedded Redis and vector index, optional Mem0 cloud sync.
   </Card>
-</CardGroup>
+</Columns>
 
-## Pick UI or Kit
+## What each one is for
 
-**UI** is a dependency. Upgrade the package to receive shared component changes.
-Use it when you want the same visual foundation across applications.
+**UI** is a React package published as [@n3wth/ui](https://www.npmjs.com/package/@n3wth/ui). Consume it as a dependency to get the shared Newth theme, component primitives, and page compositions across sites in and outside this workspace. Source lives in [packages/ui](https://github.com/n3wth/n3wth/tree/HEAD/packages/ui).
 
-**Kit** distributes source files. You can change those files without changing
-the registry. Use it when your application needs to own its components.
+**Skills** is a catalog of agent-skill Markdown files with an install script, hosted at [skills.n3wth.com](https://skills.n3wth.com). Skills teach a coding agent one job. Install with a shell one-liner into `~/.gemini/skills` or `~/.claude/skills`. Source lives in [apps/skills](https://github.com/n3wth/n3wth/tree/HEAD/apps/skills).
 
-Both expose React UI, but their installation and update contracts differ.
-Follow the relevant guide. Do not mix setup snippets from the two.
+**r3** is a standalone MCP server published as [@n3wth/r3](https://www.npmjs.com/package/@n3wth/r3). Point Claude Desktop, Claude Code, or Cursor at `npx @n3wth/r3` and it stores conversation memory in an embedded Redis plus a local vector index. Source lives in the separate [n3wth/r3](https://github.com/n3wth/r3) repository.
 
-<Tip>
-  If you are unsure where to start, use UI for an existing React application.
-  Use Skills when the deliverable is an assistant workflow, not runtime code.
-</Tip>
+## Where to start
 
-## Start with one working example
+<Columns cols={2}>
+  <Card title="Build a React site" href="/ui/quickstart">
+    Install `@n3wth/ui`, wrap your app in `N3wthProvider`, and render a page with `SiteContainer` and `PageHeader`.
+  </Card>
 
-Each product section starts with prerequisites and a small first task. It then
-explains configuration, reference material, and failures you can diagnose.
-Examples describe the source in `n3wth/n3wth`. The exception is r3's runtime,
-which is maintained separately in `n3wth/r3`.
+  <Card title="Give an agent a workflow" href="/skills/quickstart">
+    Browse the catalog, inspect an install script, and copy one skill into your assistant's skills directory.
+  </Card>
 
-For changes to this repository, use the [workspace guide](/workspace).
-For hosting these pages, see [publishing the documentation](/publishing).
+  <Card title="Connect memory to your MCP client" href="/r3/quickstart">
+    Add r3 to `claude_desktop_config.json`, `.cursor/mcp.json`, or `.gemini/settings.json` and verify with a write then read.
+  </Card>
+
+  <Card title="Contribute" href="/workspace">
+    Set up the monorepo, run the checks, and publish documentation changes.
+  </Card>
+</Columns>
 
 ## Related projects
 
-- [Lunch Money for Agents](https://lunchmoney.sh): a separate read-only financial
-  MCP integration with its own [setup guide](https://github.com/n3wth/lunchmoney-mcp).
-- [Canvas](https://github.com/n3wth/canvas): live canvases and realtime sync.
-- [Markup](https://github.com/n3wth/markup): an independent prototype for agents
-  working with people in documents and chat.
+These repositories share a maintainer but ship separately from this workspace.
 
-Those projects have separate source and release boundaries. This hub links to
-their repositories. It does not imply that their runtimes ship in this workspace.
+- [Lunch Money for Agents](https://github.com/n3wth/lunchmoney-mcp): a read-only financial MCP integration.
+- [Canvas](https://github.com/n3wth/canvas): live canvases with realtime sync.
+- [Markup](https://github.com/n3wth/markup): a prototype for agents collaborating with people in documents and chat.
