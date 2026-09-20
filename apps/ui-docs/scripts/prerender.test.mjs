@@ -28,7 +28,7 @@ test('every application route ships its own metadata and visible content without
 
 test('unknown docs are not silently rendered as Getting Started', () => {
   assert.match(readFileSync('dist/404.html', 'utf8'), /Page not found/)
-  assert.match(readFileSync('public/_redirects', 'utf8'), /^\/docs \/docs\/getting-started \d+$/m)
+  assert.match(readFileSync('public/_redirects', 'utf8'), /^\/docs https:\/\/docs\.n3wth\.com\/ui\/quickstart \d+$/m)
   assert.match(readFileSync('dist/404.html', 'utf8'), /noindex,nofollow/)
 })
 

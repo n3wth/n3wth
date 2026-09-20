@@ -36,17 +36,37 @@ const nextConfig = {
     return [
       {
         source: "/docs/getting-started/introduction",
-        destination: "/docs/introduction",
+        destination: "https://docs.n3wth.com/r3/introduction",
         permanent: true,
       },
       {
         source: "/docs/getting-started/quickstart",
-        destination: "/docs/quickstart",
+        destination: "https://docs.n3wth.com/r3/quickstart",
         permanent: true,
       },
       {
         source: "/docs/getting-started/installation",
-        destination: "/docs/installation",
+        destination: "https://docs.n3wth.com/r3/installation",
+        permanent: true,
+      },
+      {
+        source: "/docs",
+        destination: "https://docs.n3wth.com/r3/quickstart",
+        permanent: true,
+      },
+      {
+        source: "/docs/:path*",
+        destination: "https://docs.n3wth.com/r3/:path*",
+        permanent: true,
+      },
+      {
+        source: "/",
+        destination: "https://n3wth.com/projects/r3",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        destination: "https://n3wth.com/projects/r3",
         permanent: true,
       },
     ];

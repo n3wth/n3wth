@@ -67,6 +67,13 @@ const routes = [
     body: '<h1>@n3wth/ui</h1><p>A React component library with theme tokens, typography, native controls, and page compositions shared across the n3wth sites.</p><p>Install it with <code>npm install @n3wth/ui</code>. <a href="https://github.com/n3wth/ui" rel="noopener">Read the source</a>.</p>',
   },
   {
+    path: 'projects/skills',
+    title: 'Agent Skills — Oliver Newth',
+    description: 'A catalog of installable Markdown skills for coding agents.',
+    ogImage: '/og/work.png',
+    body: '<h1>Agent Skills</h1><p>A catalog of installable Markdown skills for coding agents. Each skill packages instructions for a specific task.</p><p>Install the catalog with <code>curl -fsSL https://skills.n3wth.com/install.sh | bash</code>. <a href="https://docs.n3wth.com/skills/quickstart" rel="noopener">Read the documentation</a>.</p>',
+  },
+  {
     path: 'art',
     title: 'After dark — Oliver Newth',
     description:
