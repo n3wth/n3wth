@@ -13,7 +13,9 @@
     "metatags": {
       "canonical": "https://docs.n3wth.com",
       "robots": "index, follow",
-      "og:site_name": "n3wth developer docs"
+      "og:site_name": "n3wth developer docs",
+      "description": "Developer documentation for the n3wth workspace: the @n3wth/ui React package, the agent skills catalog, and the r3 local memory server for MCP clients.",
+      "og:description": "Developer documentation for the n3wth workspace: the @n3wth/ui React package, the agent skills catalog, and the r3 local memory server for MCP clients."
     },
     "organization": {
       "name": "n3wth",
@@ -96,5 +98,6 @@
     "ga4": {
       "measurementId": "G-4QRMSG5HXK"
     }
-  }
+  },
+  "description": "Developer documentation for the n3wth workspace: the @n3wth/ui React package, the agent skills catalog, and the r3 local memory server for MCP clients."
 }
