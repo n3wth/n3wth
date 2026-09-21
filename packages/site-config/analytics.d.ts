@@ -1,7 +1,15 @@
 export const GA_MEASUREMENT_ID: string
+export const NEWSLETTER_SUBSCRIBED_EVENT: 'newsletter_subscribed'
+export const NEWSLETTER_SOURCES: readonly ['home', 'skills', 'garden', 'r3', 'ui']
 export const googleAnalyticsScript: string
+export type NewsletterSource = (typeof NEWSLETTER_SOURCES)[number]
 export function shouldExcludeTraffic(location?: Location, userAgent?: string): boolean
 export function initializeGoogleAnalytics(): void
+export function sanitizeAnalyticsEvent<Event extends object>(event: Event): Event
+export function createSiteAnalyticsBeforeSend(
+  appBeforeSend?: (event: object) => object | null,
+): (event: object) => object | null
+export function withSiteAnalyticsPrivacy<Options extends object>(options?: Options): Options
 export function initializeSiteAnalytics<Options extends object>(
   client: { init(key: string, options?: Partial<Options>): unknown },
   options: Partial<NoInfer<Options>> & { api_host: string },
@@ -11,7 +19,7 @@ export function captureSiteEvent(
   event: string,
   properties?: Record<string, unknown>,
 ): void
-export function captureEmailSignup(
-  client: { setPersonProperties(properties: Record<string, unknown>): unknown; capture(event: string): unknown },
-  email: string,
+export function captureNewsletterSubscribed(
+  client: { capture(event: string, properties?: Record<string, unknown>): unknown } | null | undefined,
+  source: NewsletterSource,
 ): void

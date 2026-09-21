@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { flushAnalytics } from './lib/analytics'
-import { initializeGoogleAnalytics, shouldExcludeTraffic } from '@n3wth/site-config/analytics'
+import { initializeGoogleAnalytics, withSiteAnalyticsPrivacy } from '@n3wth/site-config/analytics'
 import Home from './pages/Home'
 
 // Route-level splitting: Home stays eager (it's the index route); every
@@ -43,11 +43,10 @@ initializeGoogleAnalytics()
 const deferCallback = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 1))
 deferCallback(() => {
   import('posthog-js').then(({ default: posthog }) => {
-    posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
+    posthog.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', withSiteAnalyticsPrivacy({
       api_host: 'https://elephant.n3wth.com',
       ui_host: 'https://us.i.posthog.com',
       defaults: '2026-01-30',
-      before_send: event => shouldExcludeTraffic() ? null : event,
       person_profiles: 'identified_only',
       capture_pageview: 'history_change',
       capture_pageleave: true,
@@ -64,7 +63,7 @@ deferCallback(() => {
       // Prevent /decide (flags) call from blocking - bootstrap with empty state
       advanced_disable_decide: true,
       bootstrap: { featureFlags: {} },
-    })
+    }))
     flushAnalytics()
   })
 })
