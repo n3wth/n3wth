@@ -178,12 +178,13 @@ export interface SiteSignupProps extends Omit<ComponentProps<'form'>, 'onSubmit'
   buttonLabel?: ReactNode
   successMessage?: ReactNode
   errorMessage?: ReactNode
+  compact?: boolean
 }
 
 type SignupStatus = 'idle' | 'sending' | 'done' | 'error'
 
 /** One-line email capture for footers. Native controls, app-owned delivery. */
-export function SiteSignup({ onSubmit, label = 'Notes and new work across design, technology, AI, and the things I’m exploring.', buttonLabel = 'Subscribe', successMessage = 'Thanks. You are on the list.', errorMessage = 'That did not go through. Try again.', className, ...props }: SiteSignupProps) {
+export function SiteSignup({ onSubmit, label = 'Notes and new work across design, technology, AI, and the things I’m exploring.', buttonLabel = 'Subscribe', successMessage = 'Thanks. You are on the list.', errorMessage = 'That did not go through. Try again.', compact = false, className, ...props }: SiteSignupProps) {
   const id = useId()
   const [status, setStatus] = useState<SignupStatus>('idle')
   const busy = status === 'sending' || status === 'done'
@@ -204,11 +205,11 @@ export function SiteSignup({ onSubmit, label = 'Notes and new work across design
   }
 
   return (
-    <form {...props} className={cn('n3wth-site-signup', 'ph-no-capture', 'ph-mask', className)} data-ph-no-capture onSubmit={handleSubmit} noValidate={false}>
+    <form {...props} className={cn('n3wth-site-signup', compact && 'n3wth-site-signup--compact', 'ph-no-capture', 'ph-mask', className)} data-ph-no-capture onSubmit={handleSubmit} noValidate={false}>
       <label htmlFor={id} className="n3wth-site-signup-label">{label}</label>
       <div className="n3wth-site-signup-row">
-        <input id={id} name="email" type="email" required autoComplete="email" inputMode="email" placeholder="you@example.com" disabled={busy} className="ph-no-capture ph-mask" data-ph-no-capture />
-        <button type="submit" disabled={busy}>{buttonLabel}</button>
+        <input id={id} name="email" type="email" required autoComplete="email" inputMode="email" placeholder={compact ? 'Email to subscribe' : 'you@example.com'} disabled={busy} className="ph-no-capture ph-mask" data-ph-no-capture />
+        <button type="submit" disabled={busy} aria-label={compact ? 'Subscribe' : undefined}>{compact ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg> : buttonLabel}</button>
       </div>
       {/* Established before it changes so assistive technology announces the update.
           Not role="status": shared chrome must not duplicate a page's own status element. */}
@@ -226,9 +227,11 @@ export interface SiteFooterProps extends HTMLAttributes<HTMLElement> {
   legalLinks?: ReactNode
   /** Usually a SiteSignup. Rendered above the identity row. */
   signup?: ReactNode
+  /** Place a compact signup beside the footer links. */
+  inlineSignup?: boolean
 }
 
-export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a>, links, sourceHref = 'https://github.com/n3wth/n3wth', legalLinks, signup, children, className, ...props }: SiteFooterProps) {
+export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a>, links, sourceHref = 'https://github.com/n3wth/n3wth', legalLinks, signup, inlineSignup = false, children, className, ...props }: SiteFooterProps) {
   const footerLinks = links ?? <>
     <a href="https://n3wth.com/library">Library</a>
     <a href="https://skills.n3wth.com">Skills</a>
@@ -240,10 +243,11 @@ export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a
   </>
   return <footer {...props} className={cn('n3wth-site-footer', className)}>
     <SiteContainer data-nosnippet>
-      {signup != null && <div className="n3wth-site-footer-signup">{signup}</div>}
+      {signup != null && !inlineSignup && <div className="n3wth-site-footer-signup">{signup}</div>}
       <div className="n3wth-site-footer-row">
         {brand != null && <div className="n3wth-site-footer-brand">{brand}</div>}
         <nav aria-label="Footer" className="n3wth-site-footer-links">{footerLinks}</nav>
+        {signup != null && inlineSignup && <div className="n3wth-site-footer-inline-signup">{signup}</div>}
       </div>
       {children != null && <div className="n3wth-site-footer-meta">{children}</div>}
     </SiteContainer>

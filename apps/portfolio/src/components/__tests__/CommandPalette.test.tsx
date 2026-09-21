@@ -76,10 +76,10 @@ describe('CommandPalette AI search', () => {
     // No AI row (Thinking... or Ask AI) should appear for single-char queries
     // Use aria-live="polite" to find the AI status area specifically
     expect(screen.queryByText(/Thinking…/)).toBeNull()
-    expect(screen.queryByText(/Ask AI about/)).toBeNull()
+    expect(screen.queryByRole('button', { name: /Ask about/ })).toBeNull()
   })
 
-  it('auto-triggers AI search after debounce for 2+ character queries', async () => {
+  it('requests an AI answer only after explicit activation', async () => {
     const mockFetch = vi.fn().mockImplementation(() =>
       Promise.resolve({
         ok: true,
@@ -98,7 +98,8 @@ describe('CommandPalette AI search', () => {
 
     fireEvent.change(input, { target: { value: 'astryx' } })
 
-    // Should trigger fetch after debounce period
+    expect(mockFetch).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: /Ask about/ }))
     await waitFor(
       () => {
         expect(mockFetch).toHaveBeenCalledWith(
@@ -111,6 +112,23 @@ describe('CommandPalette AI search', () => {
       },
       { timeout: 1000 }
     )
+  })
+
+  it('shows pending feedback immediately and ignores an answer after the query is cleared', async () => {
+    let complete!: (value: unknown) => void
+    globalThis.fetch = vi.fn(() => new Promise(resolve => { complete = resolve })) as typeof fetch
+    render(<MemoryRouter><CommandPalette open onClose={noop} /></MemoryRouter>)
+    const input = screen.getByRole('combobox')
+    fireEvent.change(input, { target: { value: 'zzzznotathing' } })
+    expect(globalThis.fetch).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: /Ask about/ }))
+    expect(screen.getByRole('status', { name: 'Searching' })).toBeTruthy()
+    expect(screen.queryByText(/Nothing matches/)).toBeNull()
+    await waitFor(() => expect(globalThis.fetch).toHaveBeenCalledOnce())
+    fireEvent.change(input, { target: { value: '' } })
+    complete({ ok: true, body: null, json: async () => ({ answer: 'Stale answer' }) })
+    await waitFor(() => expect(screen.queryByRole('status', { name: 'Searching' })).toBeNull())
+    expect(screen.queryByText('Stale answer')).toBeNull()
   })
 
   it('aborts previous request when typing a new query', async () => {
@@ -141,8 +159,9 @@ describe('CommandPalette AI search', () => {
 
     // Type first query
     fireEvent.change(input, { target: { value: 'astryx' } })
+    fireEvent.click(screen.getByRole('button', { name: /Ask about/ }))
 
-    // Wait for debounce and first fetch to start
+    // Wait for the explicitly requested answer to start
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledTimes(1)
     }, { timeout: 1000 })
@@ -160,7 +179,7 @@ describe('CommandPalette AI search', () => {
     globalThis.AbortController = OriginalAbortController
   })
 
-  it('does not show the old Ask AI button', () => {
+  it('offers a question action separately from page matches', () => {
     render(
       <MemoryRouter>
         <CommandPalette open onClose={noop} />
@@ -170,8 +189,7 @@ describe('CommandPalette AI search', () => {
 
     fireEvent.change(input, { target: { value: 'astryx' } })
 
-    // There should be no "Ask AI about" button - AI triggers automatically
-    expect(screen.queryByText(/Ask AI about/)).toBeNull()
+    expect(screen.getByRole('button', { name: 'Ask about “astryx”' })).toBeTruthy()
   })
 
   it('shows retry button only on error', async () => {
@@ -187,6 +205,7 @@ describe('CommandPalette AI search', () => {
 
     fireEvent.change(input, { target: { value: 'astryx' } })
 
+    fireEvent.click(screen.getByRole('button', { name: /Ask about/ }))
     // Use a function matcher since the apostrophe may be a curly quote
     await waitFor(
       () => {
@@ -198,7 +217,7 @@ describe('CommandPalette AI search', () => {
     expect(screen.getByRole('button', { name: /Retry/i })).toBeTruthy()
   })
 
-  it('Enter fires AI search immediately', async () => {
+  it('Enter on a page match does not request an AI answer', async () => {
     const mockFetch = vi.fn().mockImplementation(() =>
       Promise.resolve({
         ok: true,
@@ -216,13 +235,13 @@ describe('CommandPalette AI search', () => {
     const input = screen.getByRole('combobox')
 
     fireEvent.change(input, { target: { value: 'astryx' } })
-    // Press Enter immediately (before debounce completes)
+    // Enter selects the page result.
     fireEvent.keyDown(input, { key: 'Enter' })
 
-    // Should fire immediately
+    // Navigation must not also start an AI request.
     await waitFor(
       () => {
-        expect(mockFetch).toHaveBeenCalled()
+        expect(mockFetch).not.toHaveBeenCalled()
       },
       { timeout: 500 }
     )

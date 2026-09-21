@@ -1,3 +1,4 @@
+import { Button } from '@n3wth/ui/primitives'
 import { Experience } from '../components/sections/Experience'
 import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
@@ -26,13 +27,12 @@ export default function Work() {
         title="Work"
         lede="I lead AI product development at Google. Previously at Covariant, Meta, and Microsoft."
         action={
-          <a
+          <Button
+            label="Open resume"
+            variant="primary"
+            size="md"
             href="https://r2.n3wth.com/resume/oliver-newth-resume.pdf"
-            className="inline-flex min-h-11 w-fit shrink-0 items-center gap-2 underline underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
-            aria-label="Resume (PDF)"
-          >
-            Resume (PDF)
-          </a>
+          />
         }
       />
       <Experience />

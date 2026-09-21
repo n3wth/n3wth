@@ -4,6 +4,15 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig(() => ({
   plugins: [react()],
+  // Vite preview inherits this proxy, so both local modes support real search.
+  server: {
+    proxy: {
+      '^/api/search(?:\\?|$)': {
+        target: 'https://n3wth.com',
+        changeOrigin: true,
+      },
+    },
+  },
   build: {
     sourcemap: true,
     rollupOptions: {

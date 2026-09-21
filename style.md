@@ -10,6 +10,7 @@ Use the existing system; do not introduce another visual scale or a new set of c
 - Reading outlines use `--font-size-sm` for labels, counts and links. Do not introduce a smaller count size or disabled ink for readable metadata.
 - Use `n3wth-site-prose` on reading bodies so lists share the softer paragraph ink.
 - Use existing semantic colors for canvas, surfaces, text and borders. Flat surfaces, subtle borders, no added glows, shadows or gradients. No sparkle icons.
+- Short hero subtitles use `text-wrap: balance` to keep line lengths similar across viewport sizes.
 - Documentation examples use `CodeBlock size="sm"`. Use `isWrapped` when long lines should remain readable without sideways scrolling; preserve scrolling when wrapping is disabled. Keep copy controls inset from the edge with space reserved beside code. Add line numbers or language labels only when useful.
 - Code punctuation is readable content, not disabled text. Measure contrast against the actual code surface in both themes.
 

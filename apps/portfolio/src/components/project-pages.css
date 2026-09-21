@@ -46,15 +46,15 @@
 .project-detail { padding-top: 3rem; }
 .project-detail-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 4rem; align-items: center; }
 .project-detail-title { font-size: var(--font-size-5xl); letter-spacing: -.04em; line-height: 1.1; font-weight: 600; overflow-wrap: anywhere; }
-.project-detail-purpose { font-size: var(--font-size-2xl); line-height: 1.35; max-width: 25ch; margin-top: 1.5rem; }
+.project-detail-purpose { font-size: var(--font-size-2xl); line-height: 1.35; max-width: 25ch; margin-top: 1.5rem; text-wrap: balance; }
 .project-detail-description { margin-top: 1.5rem; line-height: 1.7; max-width: 60ch; }
-.project-detail-body { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 4rem; }
-.project-install { min-width: 0; }
+.project-detail-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem; }
+.project-install { min-width: 0; width: 100%; max-width: 40rem; }
 .project-install h2 { margin-bottom: 1.5rem; }
-.project-detail-notes { display: grid; gap: 2.5rem; }
+.project-detail-notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
 .project-detail-notes p { margin-top: .75rem; line-height: 1.7; }
 @media (max-width: 767px) {
-  .project-feature, .project-detail-hero, .project-detail-body { grid-template-columns: 1fr; gap: 2rem; }
+  .project-feature, .project-detail-hero, .project-detail-body, .project-detail-notes { grid-template-columns: 1fr; gap: 2rem; }
   .project-feature { padding-block: 1.5rem; }
   .project-feature + .project-feature { margin-top: 3rem; }
   .project-visual { padding: 1.5rem; min-height: 320px; }

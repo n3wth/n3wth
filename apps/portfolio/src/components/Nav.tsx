@@ -21,7 +21,7 @@ export function Nav({ onOpenSearch, searchOpen = false }: NavProps) {
       navigationId="primary-navigation"
       menuLabel="Open menu"
       data-nosnippet
-      brand={<Link to="/" aria-label="n3wth — home" onClick={sameRouteClick('/')}>n3wth</Link>}
+      brand={<Link to="/" aria-label="Oliver Newth — home" onClick={sameRouteClick('/')}>Oliver Newth</Link>}
       links={navigation.map((item) => <NavLink key={item.href} to={item.href} onClick={sameRouteClick(item.href)}>{item.name}</NavLink>)}
       actions={<>
         <a href="https://github.com/n3wth/n3wth" rel="noopener me" aria-label="GitHub" onClick={() => trackOutbound('https://github.com/n3wth/n3wth', 'nav')}><Icon name="github" size="md" /></a>

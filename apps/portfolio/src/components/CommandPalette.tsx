@@ -9,10 +9,8 @@ import { registeredPieces } from './thinking/registry'
 import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
 import { siteUrls } from '../data/sites'
 
-/** Minimum query length before auto-triggering AI search */
+/** Minimum query length for an explicit AI question. */
 const AI_MIN_CHARS = 2
-/** Debounce delay for auto-triggering AI search (ms) */
-const AI_DEBOUNCE_MS = 300
 
 /**
  * One input over four properties: this site's routes, every Thinking piece,
@@ -380,7 +378,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         }
 
         // Handle streaming response
-        if (response.body) {
+        if (response.body && response.headers?.get('content-type')?.includes('text/event-stream')) {
           const reader = response.body.getReader()
           const decoder = new TextDecoder()
           let buffer = ''
@@ -413,7 +411,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                     // Update answer progressively
                     if (version === aiRequestVersion.current) {
                       setAskAnswer(accumulated)
-                      if (askState !== 'answered') setAskState('answered')
+                      setAskState('answered')
                     }
                   }
                 } catch {
@@ -448,32 +446,22 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         }
       }
     },
-    [trimmed, askState]
+    [trimmed]
   )
 
-  /**
-   * Auto-trigger AI search when the query changes, with debouncing.
-   * Fires immediately on Enter via the separate keyboard handler.
-   */
+  /** Editing or closing search invalidates the previous AI answer. */
   useEffect(() => {
-    // Reset AI state when query becomes too short or empty
-    if (trimmed.length < AI_MIN_CHARS) {
-      if (aiAbortController.current) {
-        aiAbortController.current.abort()
-        aiAbortController.current = null
-      }
-      setAskState('idle')
-      setAskAnswer('')
-      return
+    aiAbortController.current?.abort()
+    aiAbortController.current = null
+    aiRequestVersion.current += 1
+    setAskAnswer('')
+    setAskState('idle')
+
+    return () => {
+      aiAbortController.current?.abort()
+      aiRequestVersion.current += 1
     }
-
-    // Debounce the AI request
-    const timeout = setTimeout(() => {
-      askAi(false)
-    }, AI_DEBOUNCE_MS)
-
-    return () => clearTimeout(timeout)
-  }, [trimmed]) // eslint-disable-line react-hooks/exhaustive-deps -- askAi is intentionally excluded to avoid re-triggering
+  }, [trimmed, open])
 
   useEffect(() => {
     if (safeIndex < 0) return
@@ -518,7 +506,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       return
     }
 
-    if (flat.length === 0) return
+    if (event.target !== inputRef.current || flat.length === 0) return
 
     if (event.key === 'ArrowDown') {
       event.preventDefault()
@@ -534,10 +522,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       setActiveIndex(flat.length - 1)
     } else if (event.key === 'Enter') {
       event.preventDefault()
-      // If AI is loading or hasn't started yet and we have a valid query, fire immediately
-      if (trimmed.length >= AI_MIN_CHARS && askState !== 'answered') {
-        askAi(true)
-      }
       const item = flat[safeIndex]
       if (item) activate(item)
     }
@@ -636,11 +620,18 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           </div>
 
           {trimmed.length >= AI_MIN_CHARS && (
-            <div className="shrink-0 px-4 py-2.5" style={{ borderBottom: '1px solid var(--rail)' }}>
+            <div className="shrink-0 px-4 py-3">
+              {askState === 'idle' ? (
+                <button type="button" onClick={() => askAi(true)} className="inline-flex min-h-11 items-center font-sans text-sm underline underline-offset-4" style={{ color: 'var(--ink-dim)' }}>
+                  Ask about “{trimmed}”
+                </button>
+              ) : (
+                <p className="mb-2 font-sans text-sm" style={{ color: 'var(--ink-dim)' }}>AI answer from this site and garden notes</p>
+              )}
               {askState === 'loading' && (
-                <p className="font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
-                  Thinking…
-                </p>
+                <div className="command-palette-loading" role="status" aria-label="Searching">
+                  <span /><span /><span />
+                </div>
               )}
               {askState === 'error' && (
                 <p className="flex items-center gap-2 font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
@@ -693,7 +684,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           )}
 
           <p role="status" aria-live="polite" className="sr-only">
-            {flat.length === 0
+            {askState === 'loading' ? 'Searching' : flat.length === 0
               ? 'No results'
               : `${matches.length} result${matches.length === 1 ? '' : 's'}`}
           </p>
@@ -704,15 +695,15 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             id={LIST_ID}
             role="listbox"
             aria-label="Search results"
-            className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"
+            className={`min-h-0 flex-1 overflow-y-auto overscroll-contain${flat.length === 0 && (askState === 'loading' || askState === 'answered') ? '' : ' py-2'}`}
           >
-            {flat.length === 0 ? (
+            {flat.length === 0 ? (askState === 'loading' || askState === 'answered' ? null : (
               <p className="px-4 py-6 font-sans text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                 {gardenReady
                   ? `Nothing matches “${trimmed}”. Try one word instead of a phrase.`
                   : `Nothing matches “${trimmed}” yet; the garden notes are still loading.`}
               </p>
-            ) : (
+            )) : (
               rendered.map((group) => {
                 const labelId = `command-palette-group-${group.group.toLowerCase()}`
                 return (

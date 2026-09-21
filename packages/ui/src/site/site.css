@@ -118,7 +118,7 @@ html[data-astryx-theme='n3wth'] {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
-.n3wth-site-description { margin-top: 16px; color: var(--color-text-secondary); }
+.n3wth-site-description { margin-top: 16px; color: var(--color-text-secondary); text-wrap: balance; }
 .n3wth-site-text, .n3wth-site-description, .n3wth-site-heading { overflow-wrap: break-word; }
 .n3wth-site-container :where(pre) { box-sizing: border-box; max-width: 100%; overflow-x: auto; }
 .n3wth-site-container :where(code, kbd, samp) { font-family: var(--font-family-code); }
@@ -307,6 +307,7 @@ html[data-astryx-theme='n3wth'] {
 .n3wth-site-footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; }
 .n3wth-site-footer a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: none; }
 .n3wth-site-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.n3wth-site-footer-inline-signup { flex: 0 1 260px; min-width: 0; }
 .n3wth-site-footer-meta { margin-top: 16px; line-height: 1.6; }
 .n3wth-site-footer-meta p { margin: 0; }
 .n3wth-site-footer-signup { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border); }
@@ -338,8 +339,18 @@ html[data-astryx-theme='n3wth'] {
 .n3wth-site-signup :is(input, button):disabled { opacity: 0.6; cursor: default; }
 .n3wth-site-signup :is(input, button):focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 .n3wth-site-signup-status { margin: 0; min-height: 1.6em; line-height: 1.6; }
+.n3wth-site-signup--compact { position: relative; width: 100%; max-width: none; }
+.n3wth-site-signup--compact .n3wth-site-signup-status:empty { position: absolute; width: 0; height: 0; min-height: 0; overflow: hidden; }
+.n3wth-site-signup--compact .n3wth-site-signup-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.n3wth-site-signup--compact .n3wth-site-signup-row { flex-wrap: nowrap; gap: 0; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-background-body); }
+.n3wth-site-signup--compact input { min-width: 0; }
+.n3wth-site-signup--compact :is(input, button) { border: 0; background: transparent; }
+.n3wth-site-signup--compact button { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; width: 44px; padding: 0; color: var(--color-text-secondary); }
 @media (max-width: 767px) {
   .n3wth-site-signup { max-width: none; width: 100%; }
+}
+@media (max-width: 1023px) {
+  .n3wth-site-footer-inline-signup { flex-basis: 100%; }
 }
 @media (min-width: 768px) {
   .n3wth-site-footer { padding-block: 32px; }
