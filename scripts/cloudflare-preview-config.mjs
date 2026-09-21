@@ -115,6 +115,32 @@ function previewStatefulBindings(source, previewBindings) {
   return output
 }
 
+function previewRatelimits(source, identity, previewBindings) {
+  const provided = previewBindings?.ratelimits
+  if (Array.isArray(provided)) {
+    const sourceNames = new Set((source.ratelimits || []).map(binding => binding.binding || binding.name))
+    const providedNames = new Set(provided.map(binding => binding.binding || binding.name))
+    for (const name of sourceNames) {
+      if (!providedNames.has(name)) throw new Error(`Missing per-preview ratelimits binding: ${name}`)
+    }
+    return structuredClone(provided)
+  }
+  return (source.ratelimits || []).map(binding => ({
+    ...structuredClone(binding),
+    namespace_id: `${identity.workerName}-${binding.name}`.slice(0, 64),
+  }))
+}
+
+function previewSubscribeVars(source, previewBindings) {
+  const testSegment = previewBindings?.vars?.RESEND_SEGMENT_ID
+    || source.vars?.RESEND_PREVIEW_SEGMENT_ID
+    || process.env.RESEND_PREVIEW_SEGMENT_ID
+  const vars = { ...source.vars }
+  if (testSegment) vars.RESEND_SEGMENT_ID = testSegment
+  delete vars.RESEND_PREVIEW_SEGMENT_ID
+  return Object.keys(vars).length > 0 ? vars : undefined
+}
+
 function previewServices(services, workerName) {
   if (!services) return undefined
   return services.map(service => {
@@ -142,6 +168,8 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)
   if (config.main) config.main = absolutePath(config.main, sourcePath)
   Object.assign(config, previewStatefulBindings(source, previewBindings))
+  if (config.ratelimits) config.ratelimits = previewRatelimits(source, identity, previewBindings)
+  if (app === 'portfolio') config.vars = previewSubscribeVars(source, previewBindings)
   if (config.services) config.services = previewServices(config.services, identity.workerName)
   if (assetsDirectory) config.assets = { ...config.assets, directory: assetsDirectory }
   if (!STATIC_APPS.has(app)) {

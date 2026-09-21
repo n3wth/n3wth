@@ -12,5 +12,14 @@
     "html_handling": "drop-trailing-slash",
     "not_found_handling": "404-page",
     "binding": "ASSETS"
-  }
+  },
+  // RESEND_API_KEY is a Worker secret. Task 1 sets RESEND_SEGMENT_ID and
+  // RESEND_PREVIEW_SEGMENT_ID as vars; never put either value in the client bundle.
+  "ratelimits": [
+    {
+      "name": "SUBSCRIBE",
+      "namespace_id": "n3wth-portfolio-subscribe",
+      "simple": { "limit": 5, "period": 60 }
+    }
+  ]
 }
