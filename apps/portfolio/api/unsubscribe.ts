@@ -78,7 +78,7 @@ export async function handleUnsubscribeRequest(request: Request, env: Unsubscrib
     const response = await fetchImpl(`https://api.resend.com/contacts/${contactId}/topics`, {
       method: 'PATCH',
       headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topics: [{ id: topicId, subscription: 'opt_out' }] }),
+      body: JSON.stringify([{ id: topicId, subscription: 'opt_out' }]),
       signal: AbortSignal.timeout(5000),
     })
     if (!response.ok) throw new Error('Preference update unavailable')
