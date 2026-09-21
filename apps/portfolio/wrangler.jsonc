@@ -16,6 +16,8 @@
   // RESEND_API_KEY is a Worker secret. Previews replace all newsletter destinations.
   "vars": {
     "SUBSCRIBE_ENVIRONMENT": "production",
+    "RESEND_WELCOME_TEMPLATE_ID": "68d8d7db-2025-41cf-94e0-31bd07537b19",
+    "RESEND_WELCOME_FROM": "Oliver Newth <hey@n3wth.com>",
     "RESEND_SEGMENT_ID": "f786bcec-500c-4959-8d2a-07fa2e51d44f",
     "RESEND_PREVIEW_SEGMENT_ID": "0781dff8-5eac-4986-9766-b58e5dc157ad",
     "RESEND_PREVIEW_TOPIC_ID": "50cbe6b4-0ec5-4f37-a1e2-83be76fbc77a",

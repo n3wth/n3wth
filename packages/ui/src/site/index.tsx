@@ -183,7 +183,7 @@ export interface SiteSignupProps extends Omit<ComponentProps<'form'>, 'onSubmit'
 type SignupStatus = 'idle' | 'sending' | 'done' | 'error'
 
 /** One-line email capture for footers. Native controls, app-owned delivery. */
-export function SiteSignup({ onSubmit, label = 'Occasional notes on agent infrastructure. No spam.', buttonLabel = 'Subscribe', successMessage = 'Thanks. You are on the list.', errorMessage = 'That did not go through. Try again.', className, ...props }: SiteSignupProps) {
+export function SiteSignup({ onSubmit, label = 'Notes and new work across design, technology, AI, and the things I’m exploring.', buttonLabel = 'Subscribe', successMessage = 'Thanks. You are on the list.', errorMessage = 'That did not go through. Try again.', className, ...props }: SiteSignupProps) {
   const id = useId()
   const [status, setStatus] = useState<SignupStatus>('idle')
   const busy = status === 'sending' || status === 'done'

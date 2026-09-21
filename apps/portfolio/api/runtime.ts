@@ -1,4 +1,5 @@
-import { handleSubscribe, type SubscribeEnv } from './subscribe'
+import { handleSubscribe, type SubscribeEnv, type SubscribeOptions } from './subscribe'
+import { handleUnsubscribeRequest } from './unsubscribe'
 
 interface RuntimeEnv extends SubscribeEnv {
   GEMINI_API_KEY?: string
@@ -283,12 +284,13 @@ async function githubStats(request: Request, env: RuntimeEnv, fetchImpl: FetchIm
   }
 }
 
-export async function handlePortfolioApi(request: Request, env: RuntimeEnv = {}, fetchImpl: FetchImplementation = fetch): Promise<Response | undefined> {
+export async function handlePortfolioApi(request: Request, env: RuntimeEnv = {}, fetchImpl: FetchImplementation = fetch, subscribeOptions: SubscribeOptions = {}): Promise<Response | undefined> {
   const path = new URL(request.url).pathname.replace(/\/$/, '')
   if (path === '/api/agent') return agent(request, env, fetchImpl)
   if (path === '/api/search') return search(request, fetchImpl)
   if (path === '/api/github-stats') return githubStats(request, env, fetchImpl)
-  if (path === '/api/subscribe') return handleSubscribe(request, env, fetchImpl)
+  if (path === '/api/subscribe') return handleSubscribe(request, env, fetchImpl, subscribeOptions)
+  if (path === '/api/unsubscribe') return handleUnsubscribeRequest(request, env, fetchImpl)
   return undefined
 }
 

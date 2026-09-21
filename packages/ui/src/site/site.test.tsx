@@ -143,7 +143,7 @@ describe('shared site composition', () => {
     expect(signup?.nextElementSibling).toHaveClass('n3wth-site-footer-row')
     expect(container.querySelector('form.n3wth-site-signup')).toHaveClass('ph-no-capture', 'ph-mask')
     expect(container.querySelector('input[type="email"]')).toHaveClass('ph-no-capture', 'ph-mask')
-    const input = screen.getByRole('textbox', { name: /Occasional notes/ })
+    const input = screen.getByRole('textbox', { name: 'Notes and new work across design, technology, AI, and the things I’m exploring.' })
     fireEvent.change(input, { target: { value: '  reader@example.com ' } })
     await act(async () => { fireEvent.submit(screen.getByRole('button', { name: 'Subscribe' }).closest('form')!) })
     expect(received).toEqual(['reader@example.com'])
