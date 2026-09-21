@@ -45,6 +45,26 @@ describe('portfolio Worker API runtime', () => {
     expect(text).toContain('data: [DONE]')
   })
 
+  it.each([
+    'No relevant information found. Try another search.',
+    'The provided documents do not contain any information related to the query "fgh". It is not possible to provide a relevant answer based on the retrieved context.',
+  ])('does not cite unrelated retrieval candidates for an abstention: %s', async answer => {
+    const chunks = [{ item: { key: 'https://n3wth.com/elsa' } }]
+    const fetchMock: typeof fetch = async () => new Response(JSON.stringify({ choices: [{ message: { content: answer } }], chunks }))
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'fgh' }) }), {}, fetchMock)
+    expect(await response?.json()).toEqual({ answer: 'No relevant information found. Try another search.' })
+
+    // Split the answer across deltas: abstention detection must use the whole response.
+    const upstream = `event: chunks\ndata: ${JSON.stringify(chunks)}\n\n`
+      + [answer.slice(0, 20), answer.slice(20)].map(content => `data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\n`).join('')
+      + 'data: [DONE]\n\n'
+    const streamed = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'fgh', stream: true }) }), {}, async () => new Response(upstream))
+    const text = await streamed?.text()
+    expect(text).not.toContain('Sources:')
+    expect(text).not.toContain('https://n3wth.com/elsa')
+    expect(text).toContain('data: [DONE]')
+  })
+
   it('keeps GitHub stats request, auth header, and error status behavior', async () => {
     const calls: Request[] = []
     const fetchMock: typeof fetch = async (input, init) => {
