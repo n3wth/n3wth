@@ -133,6 +133,7 @@ function newContactFake() {
 function welcomeFake(options: {
   existing?: boolean
   properties?: Record<string, string>
+  flatProperties?: boolean
   emailFailures?: number
   patchFails?: boolean
   topicSubscription?: string
@@ -172,7 +173,12 @@ function welcomeFake(options: {
       return Response.json({ id: WELCOME_CONTACT })
     }
     if (url.includes('/contacts/')) return exists
-      ? Response.json({ id: WELCOME_CONTACT, unsubscribed: options.unsubscribed ?? false, properties })
+      ? Response.json({
+        id: WELCOME_CONTACT,
+        unsubscribed: options.unsubscribed ?? false,
+        properties: options.flatProperties ? properties
+          : Object.fromEntries(Object.entries(properties).map(([key, value]) => [key, { value, type: 'string' }])),
+      })
       : new Response('{}', { status: 404 })
     throw new Error(`Unexpected endpoint: ${url}`)
   }
@@ -194,7 +200,7 @@ describe('new website subscriber welcome', () => {
     website_welcome_started_at: new Date().toISOString(),
   })
 
-  it('sends the published template only after confirmed membership and records its receipt', async () => {
+  it('reads Resend typed property values, sends after confirmed membership, and records its receipt', async () => {
     const fake = welcomeFake()
     const response = await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
     expect(response?.status).toBe(200)
@@ -212,6 +218,13 @@ describe('new website subscriber welcome', () => {
     expect(fake.calls.at(-1)?.body).toEqual({ properties: { website_welcome_status: 'sent', website_welcome_email_id: 'email_welcome' } })
     await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
     expect(fake.calls.filter(call => call.url.endsWith('/emails'))).toHaveLength(1)
+  })
+
+  it('also accepts legacy flat string properties when retrying a pending welcome', async () => {
+    const fake = welcomeFake({ existing: true, properties: pending(), flatProperties: true })
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
+    expect(response?.status).toBe(200)
+    expect(fake.delivered.size).toBe(1)
   })
 
   it('never welcomes historical contacts, opted-out contacts, or partial memberships', async () => {

@@ -75,6 +75,15 @@ interface WelcomeConfig {
 // retries earlier, so an expired key can never produce a second welcome.
 const WELCOME_RETRY_WINDOW_MS = 23 * 60 * 60 * 1000
 
+function stringProperty(value: unknown): string | undefined {
+  if (typeof value === 'string') return value
+  // Contact reads wrap custom properties as { value, type }, while writes use
+  // flat values. Accept only the expected string type for welcome state.
+  const property = readObject(value)
+  return property?.type === 'string' && typeof property.value === 'string'
+    ? property.value : undefined
+}
+
 async function sendPendingWelcome(
   fetchImpl: FetchImplementation,
   apiKey: string,
@@ -88,10 +97,10 @@ async function sendPendingWelcome(
   const record = readObject(contact)
   const properties = readObject(record?.properties)
   const id = contactId(contact)
-  if (!id || properties?.website_welcome_status !== 'pending'
-    || properties.website_signup_source !== welcome.source) return
-  const started = typeof properties.website_welcome_started_at === 'string'
-    ? Date.parse(properties.website_welcome_started_at) : NaN
+  if (!id || stringProperty(properties?.website_welcome_status) !== 'pending'
+    || stringProperty(properties?.website_signup_source) !== welcome.source) return
+  const startedAt = stringProperty(properties?.website_welcome_started_at)
+  const started = startedAt ? Date.parse(startedAt) : NaN
   const age = Date.now() - started
   if (!Number.isFinite(age) || age < 0 || age >= WELCOME_RETRY_WINDOW_MS) {
     logSubscribe('subscribe_welcome_pending', { reason: 'retry_window_expired', source: welcome.source })
