@@ -85,17 +85,30 @@ verified, with subject “Welcome to the new Plex”. All seven contacts have
 terminal welcome receipts so later provisioning does not send another intro.
 Do not clear those receipts or repeat the broadcast to introduce the new worker.
 
-Future welcome provisioning is being implemented and is not yet deployed.
-The approved design is a deterministic local worker running every five minutes.
-It selects verified Auth0 accounts from the deployed Seerr approval list,
-provisions Plex access, preserves existing Resend names and opt-outs, and sends
-through the durable welcome-receipt helper after access is ready. It uses no
-LLM and does not depend on a Seerr login. Its Auth0 machine credential is scoped
-to `read:users` and `read:actions`; credential setup and deployment verification
-must finish before automatic future welcomes can be reported as active.
-The tenant's application limit blocks creating a separate machine client.
-Using the existing Seerr application for the machine grant is pending owner
-authorization; the worker remains disabled until that grant is configured.
+Automatic provisioning is deployed in image
+`seerr-n3wth:oidc-provision-welcome-20260921`. The deterministic worker starts
+10 seconds after startup and runs every five minutes. It selects existing,
+verified Auth0 accounts from the deployed Seerr Action's canonical approval
+list. The parser rejects unsupported list syntax without evaluating code.
+Successful Plex sharing, an invitation, or a prior success receipt is required
+before Resend sync and welcome delivery. Existing names are preserved and only
+missing names are filled. Global and topic opt-outs are preserved.
+
+The worker uses no LLM and does not depend on a Seerr login. The existing Seerr
+Auth0 application retains authorization-code login and has an owner-approved
+client-credentials grant scoped to exactly `read:users` and `read:actions`.
+The old login welcome hook and standalone recovery process are removed.
+Eligible provisioning ticks recover pending welcomes through the same durable
+welcome receipts and idempotency keys.
+
+On the Docker host, the worker is
+`/home/onewth/docker/seerr/oidc-image/plex-provision.cjs`.
+The enabled `plex-provision.json` and `plex-welcome.json` files live in
+`/home/onewth/docker/seerr/config/`, owned by UID 1000 with mode 0600.
+The first verified tick reported six approved entries, two verified accounts,
+two provisioned accounts, zero welcomes, and zero failures. All seven campaign
+recipients retained terminal receipts; no duplicate welcome was sent. The
+container was healthy and the public settings endpoint returned HTTP 200.
 
 ## Signed unsubscribe links
 
@@ -136,7 +149,8 @@ The standard footer uses small, left-aligned text with no divider: `n3wth`,
 `1333 Minna St San Francisco CA 94103`, then `Unsubscribe` linked to the reserved
 recipient-specific URL for broadcasts/automations, or the signed
 `UNSUBSCRIBE_URL` for direct welcomes. It remains inside the main content column. Saved
-templates contain no preview notice above the mark. Plex grids use one Open
+templates contain no preview notice above the mark. Both published welcome
+templates contain no empty paragraphs and use 16px of bottom spacing. Plex grids use one Open
 Plex action below the grid and a secondary Request movies or TV link, rather
 than repeated links under each cover. Industry digests use editorial imagery.
 Complete each template's content variables before sending. Names are optional: public email-only signups
@@ -144,8 +158,8 @@ remain unnamed, while Auth0 fills missing Plex contact names from authenticated
 given/family names and preserves existing names.
 
 Templates do not select recipients or schedule delivery. Future broadcasts must
-select the matching topic and intended segment. Newsletter layouts remain drafts
-unless explicitly published; automatic welcomes use their published template.
+select the matching topic and intended segment. Five newsletter layouts remain
+drafts; the website and Plex welcome templates are published.
 Owner-requested sample emails are separate from audience sends. No audience
 campaign or recurring digest is enabled by the website welcome integration.
 
