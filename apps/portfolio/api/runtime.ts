@@ -11,10 +11,12 @@ type FetchImplementation = typeof fetch
 const AI_SEARCH_ENDPOINT =
   'https://ns-5d811e45-2200-4a51-815d-66292af832dd.search.ai.cloudflare.com/chat/completions'
 
+const NO_SEARCH_ANSWER = "No relevant information found. Try another search."
+
 const SYSTEM_PROMPT = `You answer questions about n3wth.com and its related properties (the garden, @n3wth/ui) using ONLY the retrieved context. Never use outside knowledge about Oliver Newth or these projects.
 
 Rules:
-- Ground every claim in the retrieved context. If it doesn't answer the question, say so plainly and suggest browsing instead of guessing.
+- Ground every claim in the retrieved context. If it doesn't answer the question, or the query is unintelligible, reply exactly: ${NO_SEARCH_ANSWER}
 - Two to four sentences. No preamble, no "Based on the provided context".
 - No marketing language, no emoji, no exclamation marks.
 - Do not fabricate links yourself — citations are added separately.`
@@ -108,7 +110,14 @@ function titleFromKey(key: string): string {
   }
 }
 
-function citations(chunks: SearchChunk[]): string {
+function hasNoSearchAnswer(content: string): boolean {
+  return content.includes(NO_SEARCH_ANSWER)
+    || /(?:no (?:relevant|related) (?:information|results|content)|(?:documents?|context|sources?) (?:do(?:es)? not|doesn't|don't) (?:contain|provide|include)|(?:cannot|can't|unable to|not possible to) (?:provide|find) (?:a )?(?:relevant|answer))/i.test(content)
+}
+
+function citations(chunks: SearchChunk[], content: string): string {
+  // Retrieval candidates are not evidence when the model abstains.
+  if (hasNoSearchAnswer(content)) return ''
   const seen = new Set<string>()
   const links: string[] = []
   for (const chunk of chunks) {
@@ -156,7 +165,7 @@ function streamSearch(upstream: Response, responseHeaders: Headers): Response {
         if (!line.startsWith('data: ')) return
         const data = line.slice(6)
         if (data === '[DONE]') {
-          const sourceText = citations(chunks)
+          const sourceText = citations(chunks, content)
           if (sourceText) emit({ delta: sourceText })
           emitDone()
           return
@@ -262,7 +271,7 @@ async function search(request: Request, fetchImpl: FetchImplementation): Promise
     if (body.stream && upstream.body) return streamSearch(upstream, cors)
     const data = await upstream.json() as { choices?: Array<{ message?: { content?: string } }>; chunks?: SearchChunk[] }
     const content = data.choices?.[0]?.message?.content
-    return content ? json({ answer: content.trim() + citations(data.chunks ?? []) }, 200, true) : json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
+    return content ? json({ answer: hasNoSearchAnswer(content) ? NO_SEARCH_ANSWER : content.trim() + citations(data.chunks ?? [], content) }, 200, true) : json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
   } catch {
     return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
   }
