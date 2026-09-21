@@ -31,30 +31,46 @@ The production workflow provisions the secret and deploys Portfolio before the
 other sites. Confirm a controlled signup and Resend read-back before importing
 historical data. See [historical import](resend-newsletter-import.md).
 
-r3 is now a retired site served by Cloudflare redirects. Its source form remains
-tested, and its topic/template are available for project updates, but it is not
-a separate live signup consumer. See [retired sites](retired-sites.md).
+r3 and UI docs are retired sites served by Cloudflare redirects. Their source
+forms remain tested, and their topics are available for project updates, but
+they are not separate live signup consumers. Portfolio, Garden and Skills are
+the three active signup sites. See [retired sites](retired-sites.md).
 
 ## Draft newsletter templates
 
-Six editable drafts exist in Resend, one for each requested topic:
+The six subscription topics are separate from the message layouts. Six editable
+drafts share the black Newth mark and an unsubscribe footer inside the main
+content column:
 
 | Newsletter | Template ID |
 | --- | --- |
-| Portfolio | b086e967-6929-40b6-b813-7bc787f7e010 |
-| Skills | acaceaca-9005-483e-a3d1-16e3008ab761 |
-| Garden | 690d112b-a1eb-4523-b316-b6eba4800365 |
-| r3 | 8b0bab4f-0371-4f37-a06e-40f75a052ed5 |
-| UI docs | e0618918-49f2-4868-8b66-31e3be4ff049 |
-| Plex | f96d94d4-bd94-405e-aed6-dccab77e5a7e |
+| n3wth updates | b086e967-6929-40b6-b813-7bc787f7e010 |
+| Product release | acaceaca-9005-483e-a3d1-16e3008ab761 |
+| Industry news digest | 690d112b-a1eb-4523-b316-b6eba4800365 |
+| Plex welcome | 8b0bab4f-0371-4f37-a06e-40f75a052ed5 |
+| Plex weekly additions | e0618918-49f2-4868-8b66-31e3be4ff049 |
+| Seerr notification | f96d94d4-bd94-405e-aed6-dccab77e5a7e |
 
 Sender: Oliver Newth `<hey@n3wth.com>`. Reply-to: `hey@n3wth.com`.
-The n3wth.com sending domain is verified. Drafts use the supplied mark as a PNG
-for email-client compatibility and the reserved Resend unsubscribe URL.
-Fill ISSUE_TITLE, INTRODUCTION, MAIN_UPDATE, UPDATE_URL and MAILING_ADDRESS
-before publishing or sending. LINK_LABEL defaults to Read more. Templates do
-not automatically select recipients: future broadcasts must select the matching
-topic and intended segment. No template is published and no campaign is sent.
+The n3wth.com sending domain is verified. The black email mark is
+`https://r2.n3wth.com/mark-black.png`. Every list-triggered layout includes
+`RESEND_UNSUBSCRIBE_URL` in its footer, including Plex notifications. Plex
+layouts link to `https://app.plex.tv/desktop` and `https://seerr.n3wth.com/`.
+The standard footer uses small, left-aligned text with no divider: `n3wth`,
+`1333 Minna St San Francisco CA 94103`, then `Unsubscribe` linked to the reserved
+recipient-specific URL. It remains inside the main content column. Saved
+templates contain no preview notice above the mark. Plex grids use one Open
+Plex action below the grid and a secondary Request movies or TV link, rather
+than repeated links under each cover. Industry digests use editorial imagery.
+Complete each template's content variables before sending. Names are optional: public email-only signups
+remain unnamed, while Auth0 fills missing Plex contact names from authenticated
+given/family names and preserves existing names.
+
+Templates do not select recipients or schedule delivery. Future broadcasts must
+select the matching topic and intended segment. Drafts remain unpublished;
+owner-requested sample emails are separate from audience sends. No audience
+campaign or recurring digest has been enabled. Welcome messages must exclude
+existing contacts and historical imports if automatic sending is enabled later.
 
 For rollback, prefer a fix that returns an honest unavailable error. Disable
 submission by removing the newsletter secret if necessary, then deploy the

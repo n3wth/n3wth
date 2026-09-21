@@ -47,7 +47,6 @@ jobs:
           const files = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`, '--'], { encoding: 'utf8' }).split('\n')
           const infrastructure = files.some(file => file === '.github/workflows/cloudflare-preview.yml' || file.startsWith('scripts/cloudflare-preview'))
           const previewApps = {
-            '@n3wth/ui-docs': 'ui-docs',
             '@n3wth/portfolio': 'portfolio',
             '@n3wth/garden': 'garden',
             '@n3wth/skills': 'skills',
