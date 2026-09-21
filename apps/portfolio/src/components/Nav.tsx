@@ -1,6 +1,6 @@
 import { type MouseEvent } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Mail, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { Icon } from '@n3wth/ui'
 import { SiteNavigation } from '@n3wth/ui/site'
 import { navigation } from '../data/content'
@@ -25,7 +25,6 @@ export function Nav({ onOpenSearch, searchOpen = false }: NavProps) {
       links={navigation.map((item) => <NavLink key={item.href} to={item.href} onClick={sameRouteClick(item.href)}>{item.name}</NavLink>)}
       actions={<>
         <a href="https://github.com/n3wth/n3wth" rel="noopener me" aria-label="GitHub" onClick={() => trackOutbound('https://github.com/n3wth/n3wth', 'nav')}><Icon name="github" size="md" /></a>
-        <Link to="/contact" onClick={sameRouteClick('/contact')} aria-label="Contact"><Mail size={16} aria-hidden="true" /></Link>
         {onOpenSearch && (
           <button
             type="button"

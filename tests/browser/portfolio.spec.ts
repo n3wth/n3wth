@@ -6,6 +6,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('projects index connects navigation, product pages and documentation', async ({ page, request }) => {
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.goto('/projects/')
   await expect(page.getByRole('heading', { level: 1, name: 'Projects', exact: true })).toBeVisible()
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://n3wth.com/projects')
@@ -22,7 +23,20 @@ test('projects index connects navigation, product pages and documentation', asyn
     await page.goto(`/projects/${slug}`)
     await expect(page.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible()
     await expect(page.getByRole('link', { name: 'Documentation', exact: true })).toHaveAttribute('href', `https://docs.n3wth.com/${slug}/quickstart`)
-    await page.getByRole('link', { name: 'All projects', exact: true }).click()
+    await expect(page.getByRole('link', { name: 'All projects', exact: true })).toHaveCount(0)
+    await expect(page.locator('.project-install button')).toBeVisible()
+    await page.getByRole('button', { name: 'Copy code', exact: true }).click()
+    const command = await page.locator('.project-install code').innerText()
+    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(command)
+    if (slug === 'ui') {
+      const checkbox = page.getByRole('checkbox', { name: 'Selected', exact: true })
+      await expect(checkbox).toBeChecked()
+      await checkbox.click()
+      await expect(checkbox).not.toBeChecked()
+    }
+    const projectsLink = navigation.getByRole('link', { name: 'Projects', exact: true })
+    if (!await projectsLink.isVisible()) await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+    await projectsLink.click()
     await expect(page).toHaveURL(/\/projects$/)
     await expect(page.getByRole('heading', { level: 1, name: 'Projects', exact: true })).toBeVisible()
   }

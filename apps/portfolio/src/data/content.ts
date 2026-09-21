@@ -24,6 +24,7 @@ export const navigation: NavItem[] = [
   { name: 'Art', href: '/art' },
   { name: 'Thinking', href: '/thinking' },
   { name: 'Library', href: '/library' },
+  { name: 'Contact', href: '/contact' },
 ]
 
 /** Family sites for quiet access in the scene or keyboard nav */
