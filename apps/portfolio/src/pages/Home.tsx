@@ -1,9 +1,10 @@
 import { Component, Suspense, lazy, useCallback, useMemo } from 'react'
 import type { ReactNode } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../data/content'
-import { PageHeader } from '@n3wth/ui/site'
+import { PageHeader, SiteText } from '@n3wth/ui/site'
+import { Button } from '@n3wth/ui/primitives'
 import { track } from '../lib/analytics'
 
 /* The front door is a field at night (three.js, lazy so the rest of the
@@ -102,15 +103,22 @@ export default function Home() {
         </>
       )}
     </section>
-    <PageHeader className="site-content-gutter" title={<span data-nosnippet>I build new ways to work with AI.</span>} description={<>
-      <span className="block mb-4">{siteConfig.name}</span>
-      <span className="block" data-nosnippet>
-        I’m a product leader who spots opportunities, builds early versions, and learns by putting them in people’s hands.
-      </span>
-      <span className="block mt-5">
-        My independent projects explore personal agents, tools for creating software, and skills that help people use both.
-      </span>
-    </>} actions={<Link className="btn" to="/projects" onClick={() => track('home_projects_clicked', { source_page: '/' })}>Explore my projects</Link>} />
+    <PageHeader
+      className="site-content-gutter"
+      title={<span data-nosnippet>I build new ways to work with AI.</span>}
+      description={siteConfig.name}
+      aside={
+        <div className="flex flex-col items-start gap-5">
+          <SiteText data-nosnippet>
+            I’m a product leader who spots opportunities, builds early versions, and learns by putting them in people’s hands.
+          </SiteText>
+          <SiteText>
+            My independent projects explore personal agents, tools for creating software, and skills that help people use both.
+          </SiteText>
+          <Button label="Explore my projects" variant="primary" size="md" href="/projects" clickAction={() => track('home_projects_clicked', { source_page: '/' })} />
+        </div>
+      }
+    />
     </>
   )
 }

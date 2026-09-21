@@ -169,9 +169,30 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
 
 test('work uses the shared theme and a usable resume action', async ({ page }) => {
   await page.goto('/work')
-  await expectSiteFoundation(page)
+  await expectSiteFoundation(page, { sectionTopPadding: '0px' })
   await expect(page.locator('#building')).toHaveCount(0)
-  await expect(page.getByRole('link', { name: 'Resume (PDF)', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
+  await expect(page.getByRole('link', { name: 'Open resume', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
+})
+
+test('AI answers require an explicit action and support keyboard activation', async ({ page }) => {
+  let requests = 0
+  await page.route('**/api/search', async route => {
+    requests += 1
+    await route.fulfill({ json: { answer: 'An answer from the site.' } })
+  })
+  await page.goto('/work')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page.getByRole('combobox').fill('garden')
+  await expect(page.getByRole('option').first()).toBeVisible()
+  // Exceeds the old debounce: typing must never start an AI request.
+  await page.waitForTimeout(400)
+  expect(requests).toBe(0)
+  await page.getByRole('button', { name: 'Ask about “garden”' }).focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByText('An answer from the site.')).toBeVisible()
+  await expect(page.getByText('AI answer from this site and garden notes')).toBeVisible()
+  expect(requests).toBe(1)
+  await expect(page).toHaveURL(/\/work$/)
 })
 
 for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact']) {

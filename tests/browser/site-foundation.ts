@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test'
 
-export async function expectSiteFoundation(page: Page) {
+export async function expectSiteFoundation(page: Page, options: { sectionTopPadding?: string } = {}) {
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
   await expect(page.locator('html')).toHaveAttribute('data-astryx-theme', 'n3wth')
   const heading = page.locator('.n3wth-site-heading--page').first()
@@ -11,7 +11,7 @@ export async function expectSiteFoundation(page: Page) {
   await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-bottom', sectionSpacing)
   const section = page.locator('.n3wth-site-section').first()
   if (await section.count()) {
-    await expect(section).toHaveCSS('padding-top', sectionSpacing)
+    await expect(section).toHaveCSS('padding-top', options.sectionTopPadding ?? sectionSpacing)
     await expect(section).toHaveCSS('padding-bottom', sectionSpacing)
   }
   const fonts = await page.evaluate(async () => {

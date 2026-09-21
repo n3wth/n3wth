@@ -18,7 +18,7 @@ export function GardenShelf() {
   return (
     <Shelf
       id="garden"
-      title="The garden"
+      title="Digital garden"
       intro={
         <>
           {gardenIndex.noteCount} working notes, grouped by topic and connected by links.

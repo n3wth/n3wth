@@ -246,15 +246,8 @@ export interface EcosystemProperty {
  */
 export const ecosystem: EcosystemProperty[] = [
   {
-    id: 'n3wth-com',
-    name: 'n3wth.com',
-    href: '/',
-    purpose:
-      'Work, art, essays, and source code.',
-  },
-  {
     id: 'garden',
-    name: 'n3wth/garden',
+    name: 'Digital garden',
     href: 'https://garden.n3wth.com',
     purpose:
       'Working notes, connected by topic and links.',
@@ -268,7 +261,7 @@ export const ecosystem: EcosystemProperty[] = [
   {
     id: 'skills',
     name: 'Agent Skills',
-    href: 'https://skills.n3wth.com',
+    href: '/projects/skills',
     purpose: 'Skills to install locally for coding agents.',
   },
 ]

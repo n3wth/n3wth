@@ -282,30 +282,13 @@ body {
 
 /* ---------- Links ---------- */
 .link-underline {
-  position: relative;
   color: var(--ink);
+  text-decoration: none;
+  text-underline-offset: .2em;
+  text-decoration-thickness: 1px;
 }
-.link-underline::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.7;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.35s cubic-bezier(0.16, 0, 0.1, 1);
-}
-.link-underline:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-@media (prefers-reduced-motion: reduce) {
-  .link-underline::after {
-    transition: none;
-  }
+.link-underline:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
 }
 
 /* ---------- Surface card (soft, borderless) ---------- */
@@ -398,6 +381,15 @@ body {
    sits in the utilities layer and loses to it.) */
 .command-palette-input:focus-visible {
   outline: none;
+}
+
+.command-palette-loading { display: flex; align-items: center; gap: 5px; height: 24px; color: var(--ink-dim); }
+.command-palette-loading span { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: search-pulse 1s ease-in-out infinite; }
+.command-palette-loading span:nth-child(2) { animation-delay: 120ms; }
+.command-palette-loading span:nth-child(3) { animation-delay: 240ms; }
+@keyframes search-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .command-palette-loading span { animation: none; }
 }
 
 /* ---------- Scrollbar ---------- */
