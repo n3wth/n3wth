@@ -26,8 +26,10 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Use a clear title and short description in a hero. Omit actions that repeat navigation or merely jump to the content immediately below. Keep useful product actions such as installation or a resume download.
 - Do not place small category labels or eyebrow text above titles. Let the title stand on its own.
 - Experience dates belong beneath the role within the company group, rather than in a separate grid column.
+- Portfolio art photographs align with their captions and the page content gutters.
 - Documentation articles use `PageHeader spacing="compact"` with parent-owned margins. Keep the title, description and useful start links together; avoid hero-sized gaps and cards for simple navigation.
 - Documentation brand paths link each segment to its own home. Keep page-copy and Markdown actions compact below the title. Use one search dialog for content results and explicitly requested, cited AI answers; keep results available when AI fails.
+- Portfolio search starts AI answers after typing pauses, with loading dots while waiting. Sources appear as wrapping link chips below the answer, without a separate AI introduction label.
 - Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color.
 - The portfolio footer keeps links and a compact email signup on one desktop row, without repeating the identity. The signup has an inset arrow submit button and fills the content width on mobile. Empty signup status messages take no layout space.
 - Keep the footer identity and links on one row when their content fits; wrap naturally on narrow screens instead of stacking at a fixed breakpoint.

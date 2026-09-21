@@ -174,23 +174,20 @@ test('work uses the shared theme and a usable resume action', async ({ page }) =
   await expect(page.getByRole('link', { name: 'Open resume', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
 })
 
-test('AI answers require an explicit action and support keyboard activation', async ({ page }) => {
+test('AI answers start automatically after typing pauses', async ({ page }) => {
   let requests = 0
   await page.route('**/api/search', async route => {
     requests += 1
-    await route.fulfill({ json: { answer: 'An answer from the site.' } })
+    await route.fulfill({ json: { answer: 'An answer from the site. Sources: [UI](https://ui.n3wth.com/), [Agent Skills](https://n3wth.com/projects/skills).' } })
   })
   await page.goto('/work')
   await page.getByRole('button', { name: 'Search', exact: true }).click()
   await page.getByRole('combobox').fill('garden')
   await expect(page.getByRole('option').first()).toBeVisible()
-  // Exceeds the old debounce: typing must never start an AI request.
-  await page.waitForTimeout(400)
-  expect(requests).toBe(0)
-  await page.getByRole('button', { name: 'Ask about “garden”' }).focus()
-  await page.keyboard.press('Enter')
+  await expect(page.getByRole('status', { name: 'Searching', exact: true })).toBeVisible()
   await expect(page.getByText('An answer from the site.')).toBeVisible()
-  await expect(page.getByText('AI answer from this site and garden notes')).toBeVisible()
+  await expect(page.getByText('AI answer from this site and garden notes')).toHaveCount(0)
+  await expect(page.getByRole('navigation', { name: 'Answer sources' }).getByRole('link')).toHaveCount(2)
   expect(requests).toBe(1)
   await expect(page).toHaveURL(/\/work$/)
 })

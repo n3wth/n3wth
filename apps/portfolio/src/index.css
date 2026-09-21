@@ -383,6 +383,9 @@ body {
   outline: none;
 }
 
+.command-palette-sources { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.command-palette-source { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; padding: 6px 12px; border: 1px solid var(--color-border); border-radius: 999px; color: var(--ink-dim); overflow-wrap: anywhere; }
+.command-palette-source:hover, .command-palette-source:focus-visible { color: var(--ink); border-color: currentColor; }
 .command-palette-loading { display: flex; align-items: center; gap: 5px; height: 24px; color: var(--ink-dim); }
 .command-palette-loading span { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: search-pulse 1s ease-in-out infinite; }
 .command-palette-loading span:nth-child(2) { animation-delay: 120ms; }

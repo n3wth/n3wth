@@ -90,15 +90,15 @@ export function Creative() {
           <WorkCredit inst={opener} />
         </figcaption>
         <div
-          className="relative overflow-hidden bleed"
-          style={{ height: 'clamp(360px, 65svh, 800px)' }}
+          className="site-content-gutter"
         >
           <img
             src={opener.image}
             alt={opener.imageAlt}
             loading="eager"
             decoding="async"
-            className="h-full w-full object-cover object-bottom"
+            className="w-full object-cover object-bottom"
+            style={{ height: 'clamp(360px, 65svh, 800px)' }}
           />
         </div>
       </figure>
@@ -111,15 +111,15 @@ export function Creative() {
               <WorkCredit inst={inst} />
             </figcaption>
             <div
-              className="relative overflow-hidden bleed"
-              style={{ height: 'clamp(360px, 65svh, 800px)' }}
+              className="site-content-gutter"
             >
               <img
                 src={inst.image}
                 alt={inst.imageAlt}
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-cover"
+                className="w-full object-cover"
+                style={{ height: 'clamp(360px, 65svh, 800px)' }}
               />
             </div>
           </figure>
