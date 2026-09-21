@@ -178,7 +178,12 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   delete config.route
   // Production-only environment sections must never survive a preview override.
   delete config.env
-  if (app === 'skills') config.vars = { ...config.vars, BETTER_AUTH_URL: `https://${identity.host}` }
+  if (app === 'skills') {
+    config.vars = { ...config.vars, BETTER_AUTH_URL: `https://${identity.host}` }
+    // The development in-memory email outbox must stay local-only; previews
+    // fail loud without a real sender instead of silently dropping logins.
+    delete config.vars.MAGIC_LINK_OUTBOX
+  }
   if (config.assets?.directory) config.assets = { ...config.assets, directory: absolutePath(config.assets.directory, sourcePath) }
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)
   if (config.main) config.main = absolutePath(config.main, sourcePath)

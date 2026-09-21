@@ -1,0 +1,44 @@
+---
+title: "Skills preview databases"
+sidebarTitle: "Preview D1"
+description: "How Skills PR previews get an isolated D1 database with migrations applied, and how auth config is verified."
+---
+
+Every Skills pull request preview gets its own D1 database, `n3wth-skills-pr-<N>`. The preview workflow creates it, applies the committed migrations in `apps/skills/migrations/`, binds it to the preview Worker, and drops it when the PR closes.
+
+## Isolation strategy
+
+One database per PR. Concurrent previews never share auth tables, so a magic-link test in one PR cannot consume tokens or pollute sessions in another. Preview tests cannot reach production data: setup refuses the production database name and ID before any mutation, and every managed name must match `n3wth-skills-pr-<N>`.
+
+## Pipeline
+
+1. **Setup** (`scripts/cloudflare-preview-skills-d1.mjs setup --pr <N>`, before deploy): checks the account ID and token permissions with a read-only database list, reuses or creates the per-PR database, applies pending migrations through Wrangler's tracked migration workflow (reruns are safe; the `d1_migrations` journal records what applied), and emits the binding JSON the deploy step uses.
+2. **Deploy**: the preview Worker binds the per-PR database as `DB`. Production bindings are never copied.
+3. **Check** (`... check --pr <N>`, after deploy): confirms the `BETTER_AUTH_SECRET` secret name exists, confirms `BETTER_AUTH_URL` is exactly the preview host, and refuses previews with the development email outbox enabled. Secret values are never read or printed.
+4. **Close**: the preview Worker, domain, DNS record, and per-PR database are deleted. Database deletion tolerates an already-absent database.
+
+## Secrets
+
+`BETTER_AUTH_SECRET` is set once per preview Worker and preserved on routine deploys; the pipeline never overwrites it. If the check reports it missing, set it manually:
+
+```bash
+wrangler secret put BETTER_AUTH_SECRET --name n3wth-skills-pr-<N>
+```
+
+Rotation is the same command run deliberately, never part of a deploy. Never commit secret values; the pipeline only ever handles secret names.
+
+## Reconciling an old database
+
+If a database has tables but no migration journal, rerun setup: every committed migration uses `CREATE TABLE IF NOT EXISTS`, so apply backfills the journal without touching existing rows. If apply failed midway, rerun setup; the journal resumes where it stopped. If the journal lists migrations the tree does not have, they are left untouched (usually the branch is behind main; merge and rerun). Recovery never deletes the database or its tables; each apply captures an automatic backup first.
+
+## Local preview equivalent
+
+```bash
+node scripts/cloudflare-preview-skills-d1.mjs setup --pr <N>
+node scripts/cloudflare-preview.mjs deploy --app skills --pr <N> --bindings-json '<setup-output>'
+node scripts/cloudflare-preview-skills-d1.mjs check --pr <N>
+```
+
+## Magic-link email in previews
+
+Previews use the same sender configuration as production and fail loud without one. The development in-memory outbox (`MAGIC_LINK_OUTBOX=1`) is local-only: preview configs strip it, and the post-deploy check refuses any preview that has it set.
