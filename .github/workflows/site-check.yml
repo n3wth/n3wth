@@ -30,6 +30,8 @@ jobs:
         run: node --test scripts/affected.test.mjs scripts/create-site.test.mjs scripts/build.test.mjs scripts/check-built-metadata.test.mjs scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs
       - name: Verify repository invariants
         run: node --test scripts/check-invariants.test.mjs && node scripts/check-invariants.mjs
+      - name: Verify newsletter import safeguards
+        run: node --test scripts/resend-newsletter-import.test.mjs
       - name: Select affected workspaces
         id: affected
         env:
@@ -49,6 +51,9 @@ jobs:
         env:
           AFFECTED_WORKSPACES: ${{ steps.affected.outputs.workspaces }}
         run: npm run check:metadata
+      - name: Check newsletter forms
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web') || contains(steps.affected.outputs.workspaces, '@n3wth/skills')
+        run: npm run test:newsletter
       - name: Check article figure evidence and assets
         if: contains(steps.affected.outputs.workspaces, '@n3wth/garden')
         run: node docs/editorial/visuals/check.mjs

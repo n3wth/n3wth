@@ -1,12 +1,9 @@
-import { handleSubscribe, type RateLimiter } from './subscribe'
+import { handleSubscribe, type SubscribeEnv } from './subscribe'
 
-interface RuntimeEnv {
+interface RuntimeEnv extends SubscribeEnv {
   GEMINI_API_KEY?: string
   OPENROUTER_API_KEY?: string
   GITHUB_TOKEN?: string
-  RESEND_API_KEY?: string
-  RESEND_SEGMENT_ID?: string
-  SUBSCRIBE?: RateLimiter
 }
 type FetchImplementation = typeof fetch
 

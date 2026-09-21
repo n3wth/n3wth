@@ -1,22 +1,23 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { handlePortfolioApi } from './runtime'
-import { SUBSCRIBE_MAX_BODY_BYTES, allowedSubscribeOrigin, sourceForOrigin } from './subscribe'
+import { SUBSCRIBE_MAX_BODY_BYTES, allowedSubscribeOrigin, sourceForOrigin, type SubscribeEnv } from './subscribe'
 
 const ADDRESS = 'reader@example.com'
 const SECRET = 're_test_secret'
 const SEGMENT = 'seg_test_preview'
 const ORIGIN = 'https://n3wth.com'
+const TOPIC = 'topic_home'
 
 const allow = { SUBSCRIBE: { limit: async () => ({ success: true }) } }
 const deny = { SUBSCRIBE: { limit: async () => ({ success: false }) } }
-const configured = { RESEND_API_KEY: SECRET, RESEND_SEGMENT_ID: SEGMENT, ...allow }
+const configured: SubscribeEnv = { RESEND_API_KEY: SECRET, RESEND_SEGMENT_ID: SEGMENT, RESEND_TOPIC_IDS: JSON.stringify({ home: TOPIC, skills: 'topic_skills', garden: 'topic_garden', r3: 'topic_r3', ui: 'topic_ui' }), SUBSCRIBE_ENVIRONMENT: 'production', ...allow }
 
 function subscribeRequest(init: RequestInit & { origin?: string; url?: string } = {}) {
   const { origin = ORIGIN, url = '/api/subscribe', ...rest } = init
   const headers = new Headers(rest.headers)
   if (origin) headers.set('Origin', origin)
   if (rest.body && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json')
-  return new Request(`https://n3wth.com${url}`, { method: 'POST', ...rest, headers })
+  return new Request(url.startsWith('https://') ? url : `https://n3wth.com${url}`, { method: 'POST', ...rest, headers })
 }
 
 function body(address = ADDRESS, source = 'home') {
@@ -33,6 +34,8 @@ interface FakeOptions {
   confirmSegments?: boolean | 'empty-then-member'
   timeoutOn?: string
   failOn?: string
+  topicSubscription?: string
+  missingTopic?: boolean
 }
 
 function resendFake(options: FakeOptions = {}) {
@@ -73,6 +76,9 @@ function resendFake(options: FakeOptions = {}) {
       }
       return new Response(JSON.stringify({ object: 'list', data }), { status: 200 })
     }
+    if (url.includes('/topics')) {
+      return Response.json({ data: options.missingTopic ? [] : [{ id: TOPIC, subscription: options.topicSubscription ?? 'opt_in' }], has_more: false })
+    }
     if (url.includes('/contacts/') && method === 'GET') {
       if (!options.existing && options.createStatus === undefined && !calls.some(call => call.method === 'POST' && call.url.endsWith('/contacts'))) {
         return new Response(JSON.stringify({ statusCode: 404, name: 'not_found' }), { status: 404 })
@@ -111,6 +117,7 @@ function newContactFake() {
     if (url.includes('/segments')) {
       return new Response(JSON.stringify({ object: 'list', data: created ? [{ id: SEGMENT }] : [] }), { status: 200 })
     }
+    if (url.includes('/topics')) return Response.json({ data: [{ id: TOPIC, subscription: 'opt_in' }], has_more: false })
     if (url.includes('/contacts/')) {
       if (!created) return new Response('{}', { status: 404 })
       return new Response(JSON.stringify({ object: 'contact', id: 'con_1', unsubscribed: false }), { status: 200 })
@@ -125,6 +132,7 @@ describe('POST /api/subscribe', () => {
 
   afterEach(() => {
     warnings.length = 0
+    vi.useRealTimers()
     vi.restoreAllMocks()
   })
 
@@ -151,6 +159,8 @@ describe('POST /api/subscribe', () => {
     expect(response?.headers.get('access-control-allow-origin')).toBe(ORIGIN)
     expect(response?.headers.get('access-control-allow-origin')).not.toBe('*')
     expect(calls.some(call => call.method === 'POST' && call.url === 'https://api.resend.com/contacts')).toBe(true)
+    const created = calls.find(call => call.method === 'POST' && call.url.endsWith('/contacts'))
+    expect(JSON.parse(created!.body!).topics).toEqual([{ id: TOPIC, subscription: 'opt_in' }])
     expect(calls.every(call => call.authorization === `Bearer ${SECRET}`)).toBe(true)
     expect(calls.every(call => !call.url.includes(SECRET))).toBe(true)
     expectPrivacy()
@@ -177,7 +187,7 @@ describe('POST /api/subscribe', () => {
     const { fetchMock, calls } = resendFake({ suppressed: true })
     const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, fetchMock)
     expect(response?.status).toBe(409)
-    expect(await response?.json()).toEqual({ error: 'suppressed' })
+    expect(await response?.json()).toEqual({ ok: false, code: 'subscription_unavailable' })
     expect(calls.some(call => call.method === 'POST')).toBe(false)
   })
 
@@ -185,9 +195,94 @@ describe('POST /api/subscribe', () => {
     const { fetchMock, calls } = resendFake({ existing: true, unsubscribed: true })
     const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, fetchMock)
     expect(response?.status).toBe(409)
-    expect(await response?.json()).toEqual({ error: 'suppressed' })
+    expect(await response?.json()).toEqual({ ok: false, code: 'subscription_unavailable' })
     expect(calls.some(call => call.method === 'POST')).toBe(false)
     expect(calls.some(call => call.body?.includes('"unsubscribed":false'))).toBe(false)
+  })
+
+  it('preserves topic opt-outs even when the contact is globally active', async () => {
+    const { fetchMock, calls } = resendFake({ existing: true, topicSubscription: 'opt_out' })
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, fetchMock)
+    expect(response?.status).toBe(409)
+    expect(await response?.json()).toEqual({ ok: false, code: 'subscription_unavailable' })
+    expect(calls.every(call => call.method === 'GET')).toBe(true)
+  })
+
+  it('never reports success for missing topic membership or failed topic checks', async () => {
+    for (const options of [{ missingTopic: true }, { failOn: '/topics' }]) {
+      const { fetchMock } = resendFake({ existing: true, alreadyInSegment: true, ...options })
+      const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, fetchMock)
+      expect(response?.status).toBe(503)
+      expect(await response?.json()).toEqual({ ok: false, code: 'service_unavailable' })
+    }
+  })
+
+  it('retries transient account rate limits without treating them as an absent suppression', async () => {
+    vi.useFakeTimers()
+    const { fetchMock } = resendFake({ existing: true, alreadyInSegment: true })
+    let limited = 0
+    const retrying: typeof fetch = async (input, init) => {
+      if (limited++ < 2) return new Response('{}', { status: 429, headers: { 'retry-after': '1' } })
+      return fetchMock(input, init)
+    }
+    const pending = handlePortfolioApi(subscribeRequest({ body: body() }), configured, retrying)
+    await vi.runAllTimersAsync()
+    expect((await pending)?.status).toBe(200)
+  })
+
+  it('bounds persistent account rate limits and fails closed before mutation', async () => {
+    vi.useFakeTimers()
+    const limited = vi.fn(async () => new Response('{}', { status: 429 }))
+    const pending = handlePortfolioApi(subscribeRequest({ body: body() }), configured, limited)
+    await vi.runAllTimersAsync()
+    const response = await pending
+    expect(response?.status).toBe(503)
+    expect(limited).toHaveBeenCalledTimes(3)
+  })
+
+  it('does not retry a provider rate limit beyond the bounded wait', async () => {
+    const limited = vi.fn(async () => new Response('{}', { status: 429, headers: { 'retry-after': '60' } }))
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, limited)
+    expect(response?.status).toBe(503)
+    expect(limited).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not start another provider call after the shared deadline is exhausted', async () => {
+    vi.useFakeTimers()
+    const started = Date.now()
+    const slow = vi.fn(async () => {
+      vi.setSystemTime(started + 20000)
+      return new Response('{}', { status: 404 })
+    })
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, slow)
+    expect(response?.status).toBe(503)
+    expect(await response?.json()).toEqual({ ok: false, code: 'service_unavailable' })
+    expect(slow).toHaveBeenCalledTimes(1)
+  })
+
+  it('rejects a retry wait that would exceed the shared deadline', async () => {
+    vi.useFakeTimers()
+    const started = Date.now()
+    const limited = vi.fn(async () => {
+      vi.setSystemTime(started + 19500)
+      return new Response('{}', { status: 429, headers: { 'retry-after': '1' } })
+    })
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, limited)
+    expect(response?.status).toBe(503)
+    expect(limited).toHaveBeenCalledTimes(1)
+    expect(Date.now() - started).toBeLessThan(20000)
+  })
+
+  it('rejects preview requests against production and unrelated PRs against preview', async () => {
+    const provider = vi.fn(async () => Response.json({}))
+    const preview = { ...configured, SUBSCRIBE_ENVIRONMENT: 'preview', SUBSCRIBE_PREVIEW_PR: '12' }
+    const production = await handlePortfolioApi(subscribeRequest({ origin: 'https://portfolio-pr-12.preview.n3wth.com', body: body() }), configured, provider)
+    expect(production?.status).toBe(403)
+    for (const origin of [ORIGIN, 'https://portfolio-pr-13.preview.n3wth.com']) {
+      const response = await handlePortfolioApi(subscribeRequest({ origin, url: 'https://portfolio-pr-12.preview.n3wth.com/api/subscribe', body: body() }), preview, provider)
+      expect(response?.status).toBe(403)
+    }
+    expect(provider).not.toHaveBeenCalled()
   })
 
   it('rejects invalid addresses, sources, oversized bodies, and origin/source mismatches', async () => {
@@ -202,7 +297,7 @@ describe('POST /api/subscribe', () => {
     for (const request of invalid) {
       const response = await handlePortfolioApi(request, configured, fetchMock)
       expect(response?.status).toBe(400)
-      expect(await response?.json()).toEqual({ error: 'invalid_request' })
+      expect(await response?.json()).toEqual({ ok: false, code: 'invalid_request' })
     }
   })
 
@@ -233,7 +328,7 @@ describe('POST /api/subscribe', () => {
     )
     expect(response?.status).toBe(429)
     expect(response?.headers.get('retry-after')).toBe('60')
-    expect(await response?.json()).toEqual({ error: 'rate_limited' })
+    expect(await response?.json()).toEqual({ ok: false, code: 'rate_limited' })
   })
 
   it('fails closed when the provider key, segment, or limiter is missing', async () => {
@@ -243,11 +338,14 @@ describe('POST /api/subscribe', () => {
       { RESEND_SEGMENT_ID: SEGMENT, ...allow },
       { RESEND_API_KEY: SECRET, ...allow },
       { RESEND_API_KEY: SECRET, RESEND_SEGMENT_ID: SEGMENT },
+      { ...configured, RESEND_TOPIC_IDS: undefined },
+      { ...configured, RESEND_TOPIC_IDS: '{}' },
+      { ...configured, SUBSCRIBE_ENVIRONMENT: undefined },
     ]
     for (const env of missing) {
       const response = await handlePortfolioApi(subscribeRequest({ body: body() }), env, fetchMock)
       expect(response?.status).toBe(503)
-      expect(await response?.json()).toEqual({ error: 'unavailable' })
+      expect(await response?.json()).toEqual({ ok: false, code: 'service_unavailable' })
     }
     expectPrivacy()
   })
@@ -260,7 +358,7 @@ describe('POST /api/subscribe', () => {
     const failed = resendFake({ failOn: '/suppressions/' })
     const unavailable = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, failed.fetchMock)
     expect(unavailable?.status).toBe(503)
-    expect(await unavailable?.json()).toEqual({ error: 'unavailable' })
+    expect(await unavailable?.json()).toEqual({ ok: false, code: 'service_unavailable' })
     expectPrivacy()
   })
 
@@ -269,14 +367,20 @@ describe('POST /api/subscribe', () => {
     const { fetchMock } = resendFake({ createStatus: 200, addStatus: 500, confirmSegments: false })
     const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, fetchMock)
     expect(response?.status).toBe(503)
-    expect(await response?.json()).toEqual({ error: 'unavailable' })
+    expect(await response?.json()).toEqual({ ok: false, code: 'service_unavailable' })
     expectPrivacy()
   })
 
-  it('accepts the five public site origins and preview hosts with matching sources', () => {
+  it('separates production origins from the exact preview PR and Worker host', () => {
     expect(allowedSubscribeOrigin('https://skills.n3wth.com')).toBe(true)
     expect(allowedSubscribeOrigin('https://ui.n3wth.com')).toBe(true)
-    expect(allowedSubscribeOrigin('https://garden-pr-12.preview.n3wth.com')).toBe(true)
+    expect(allowedSubscribeOrigin('https://garden-pr-12.preview.n3wth.com')).toBe(false)
+    const preview = { SUBSCRIBE_ENVIRONMENT: 'preview', SUBSCRIBE_PREVIEW_PR: '12' }
+    const target = 'https://portfolio-pr-12.preview.n3wth.com'
+    expect(allowedSubscribeOrigin('https://garden-pr-12.preview.n3wth.com', preview, target)).toBe(true)
+    expect(allowedSubscribeOrigin('https://garden-pr-13.preview.n3wth.com', preview, target)).toBe(false)
+    expect(allowedSubscribeOrigin('https://garden.n3wth.com', preview, target)).toBe(false)
+    expect(allowedSubscribeOrigin('https://garden-pr-12.preview.n3wth.com', preview, ORIGIN)).toBe(false)
     expect(allowedSubscribeOrigin('https://garden.n3wth.com.evil.example')).toBe(false)
     expect(sourceForOrigin('https://r3.n3wth.com')).toBe('r3')
     expect(sourceForOrigin('https://ui-docs-pr-3.preview.n3wth.com')).toBe('ui')

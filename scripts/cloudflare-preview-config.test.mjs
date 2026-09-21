@@ -95,7 +95,7 @@ test('rejects production stateful bindings unless explicit per-preview replaceme
 test('isolates portfolio subscribe rate limits and uses the preview test segment', () => {
   const source = {
     main: './worker.ts',
-    vars: { RESEND_SEGMENT_ID: 'production-segment', RESEND_PREVIEW_SEGMENT_ID: 'preview-test-segment' },
+    vars: { RESEND_SEGMENT_ID: 'production-segment', RESEND_PREVIEW_SEGMENT_ID: 'preview-test-segment', RESEND_TOPIC_IDS: '{"home":"production-topic"}', RESEND_PREVIEW_TOPIC_ID: 'test-topic' },
     ratelimits: [{ name: 'SUBSCRIBE', namespace_id: 'n3wth-portfolio-subscribe', simple: { limit: 5, period: 60 } }],
   }
   const original = structuredClone(source)
@@ -104,10 +104,14 @@ test('isolates portfolio subscribe rate limits and uses the preview test segment
   })
   assert.deepEqual(source, original)
   assert.equal(config.ratelimits[0].name, 'SUBSCRIBE')
-  assert.equal(config.ratelimits[0].namespace_id, 'n3wth-portfolio-pr-8-SUBSCRIBE')
+  assert.match(config.ratelimits[0].namespace_id, /^\d+$/)
   assert.notEqual(config.ratelimits[0].namespace_id, source.ratelimits[0].namespace_id)
   assert.equal(config.vars.RESEND_SEGMENT_ID, 'preview-test-segment')
   assert.equal(config.vars.RESEND_PREVIEW_SEGMENT_ID, undefined)
+  assert.equal(config.vars.SUBSCRIBE_ENVIRONMENT, 'preview')
+  assert.equal(config.vars.SUBSCRIBE_PREVIEW_PR, '8')
+  assert.equal(JSON.parse(config.vars.RESEND_TOPIC_IDS).home, 'test-topic')
+  assert.equal(config.vars.RESEND_PREVIEW_TOPIC_ID, undefined)
 })
 
 test('explicit preview subscribe bindings win over production values', () => {
@@ -119,11 +123,11 @@ test('explicit preview subscribe bindings win over production values', () => {
     },
     sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 9, accountId,
     previewBindings: {
-      ratelimits: [{ name: 'SUBSCRIBE', namespace_id: 'explicit-preview', simple: { limit: 5, period: 60 } }],
+      ratelimits: [{ name: 'SUBSCRIBE', namespace_id: '92001', simple: { limit: 5, period: 60 } }],
       vars: { RESEND_SEGMENT_ID: 'explicit-test-segment' },
     },
   })
-  assert.equal(config.ratelimits[0].namespace_id, 'explicit-preview')
+  assert.equal(config.ratelimits[0].namespace_id, '92001')
   assert.equal(config.vars.RESEND_SEGMENT_ID, 'explicit-test-segment')
 })
 

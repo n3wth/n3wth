@@ -3,7 +3,7 @@
  *
  * Body: { address: string, source: 'home' | 'skills' | 'garden' | 'r3' | 'ui' }
  * Success: 200 { ok: true } after Resend confirms an active contact in the segment.
- * Errors: 400 invalid_request, 403 forbidden, 409 suppressed, 429 rate_limited, 503 unavailable.
+ * Errors use { ok: false, code }; opt-outs are never cleared.
  * CORS: exact allowed Origin only. Responses are Cache-Control: no-store.
  */
 import { siteUrls } from '@n3wth/site-config'
@@ -11,12 +11,13 @@ import { siteUrls } from '@n3wth/site-config'
 export const SUBSCRIBE_PATH = '/api/subscribe'
 export const SUBSCRIBE_MAX_BODY_BYTES = 2048
 export const SUBSCRIBE_TIMEOUT_MS = 4000
+export const SUBSCRIBE_TOTAL_TIMEOUT_MS = 20000
 export const SUBSCRIBE_SOURCES = ['home', 'skills', 'garden', 'r3', 'ui'] as const
 export type NewsletterSource = (typeof SUBSCRIBE_SOURCES)[number]
 
 const RESEND_API = 'https://api.resend.com'
 const ADDRESS_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const PREVIEW_ORIGIN = /^https:\/\/(portfolio|skills|garden|r3-web|ui-docs)-pr-[1-9]\d{0,8}\.preview\.n3wth\.com$/
+const PREVIEW_ORIGIN = /^https:\/\/(portfolio|skills|garden|r3-web|ui-docs)-pr-([1-9]\d{0,8})\.preview\.n3wth\.com$/
 const PREVIEW_SOURCE: Record<string, NewsletterSource> = {
   portfolio: 'home',
   skills: 'skills',
@@ -40,6 +41,9 @@ export interface RateLimiter {
 export interface SubscribeEnv {
   RESEND_API_KEY?: string
   RESEND_SEGMENT_ID?: string
+  RESEND_TOPIC_IDS?: string
+  SUBSCRIBE_ENVIRONMENT?: string
+  SUBSCRIBE_PREVIEW_PR?: string
   SUBSCRIBE?: RateLimiter
 }
 
@@ -49,15 +53,26 @@ interface SubscribeOptions {
   timeoutMs?: number
 }
 
-type SubscribeError = 'invalid_request' | 'forbidden' | 'rate_limited' | 'suppressed' | 'unavailable'
+interface ProviderBudget {
+  requestMs: number
+  deadline: number
+}
+
+type SubscribeError = 'invalid_request' | 'forbidden' | 'rate_limited' | 'subscription_unavailable' | 'service_unavailable'
 type ProviderResult = 'ok' | 'suppressed' | 'timeout' | 'provider' | 'partial'
 
 function isSubscribeSource(value: unknown): value is NewsletterSource {
   return typeof value === 'string' && (SUBSCRIBE_SOURCES as readonly string[]).includes(value)
 }
 
-export function allowedSubscribeOrigin(origin: string): boolean {
-  return Object.values(PRODUCTION_ORIGINS).includes(origin) || PREVIEW_ORIGIN.test(origin)
+export function allowedSubscribeOrigin(origin: string, env: SubscribeEnv = {}, requestOrigin = siteUrls.home): boolean {
+  if (env.SUBSCRIBE_ENVIRONMENT === 'preview') {
+    const match = origin.match(PREVIEW_ORIGIN)
+    return Boolean(match && match[2] === env.SUBSCRIBE_PREVIEW_PR
+      && requestOrigin === `https://portfolio-pr-${match[2]}.preview.n3wth.com`)
+  }
+  return (!env.SUBSCRIBE_ENVIRONMENT || env.SUBSCRIBE_ENVIRONMENT === 'production')
+    && requestOrigin === siteUrls.home && Object.values(PRODUCTION_ORIGINS).includes(origin)
 }
 
 export function sourceForOrigin(origin: string): NewsletterSource | undefined {
@@ -86,7 +101,7 @@ function json(origin: string, body: unknown, status: number): Response {
 }
 
 function errorResponse(origin: string, error: SubscribeError, status: number, extra?: HeadersInit): Response {
-  const response = json(origin, { error }, status)
+  const response = json(origin, { ok: false, code: error }, status)
   if (extra) {
     const headers = new Headers(response.headers)
     new Headers(extra).forEach((value, key) => headers.set(key, value))
@@ -140,17 +155,30 @@ async function resend(
   apiKey: string,
   url: string,
   init: RequestInit,
-  timeoutMs: number,
+  budget: ProviderBudget,
 ): Promise<Response> {
-  return fetchImpl(url, {
+  const options = {
     ...init,
     headers: {
       Authorization: `Bearer ${apiKey}`,
       ...(init.body ? { 'Content-Type': 'application/json' } : {}),
       ...init.headers,
     },
-    signal: AbortSignal.timeout(timeoutMs),
-  })
+  }
+  // Other Workers share the account's two-requests-per-second quota. Retry only
+  // bounded 429s; exhausted limits fail closed and can be retried by the user.
+  for (let attempt = 0; ; attempt += 1) {
+    const remaining = budget.deadline - Date.now()
+    if (remaining <= 0) throw new DOMException('Subscription deadline exceeded', 'TimeoutError')
+    const response = await fetchImpl(url, { ...options, signal: AbortSignal.timeout(Math.min(budget.requestMs, remaining)) })
+    if (response.status !== 429 || attempt === 2) return response
+    const retryAfter = Number(response.headers.get('retry-after') || '1')
+    if (!Number.isFinite(retryAfter) || retryAfter < 0 || retryAfter > 2) return response
+    await response.body?.cancel()
+    const waitMs = Math.max(1000, retryAfter * 1000)
+    if (waitMs >= budget.deadline - Date.now()) throw new DOMException('Subscription deadline exceeded', 'TimeoutError')
+    await new Promise(resolve => setTimeout(resolve, waitMs))
+  }
 }
 
 function isTimeout(error: unknown): boolean {
@@ -194,17 +222,40 @@ async function confirmMembership(
   apiKey: string,
   address: string,
   segmentId: string,
-  timeoutMs: number,
+  topicId: string,
+  budget: ProviderBudget,
 ): Promise<ProviderResult> {
-  const contactResponse = await resend(fetchImpl, apiKey, resendPath('contacts', address), { method: 'GET' }, timeoutMs)
+  const contactResponse = await resend(fetchImpl, apiKey, resendPath('contacts', address), { method: 'GET' }, budget)
   if (!contactResponse.ok) return 'partial'
   const contact = await readJson(contactResponse)
   if (isUnsubscribed(contact)) return 'suppressed'
+  if (readObject(contact)?.unsubscribed !== false) return 'partial'
   const id = contactId(contact)
   if (!id) return 'partial'
-  const segmentsResponse = await resend(fetchImpl, apiKey, resendPath('contacts', id, '/segments'), { method: 'GET' }, timeoutMs)
+  const segmentsResponse = await resend(fetchImpl, apiKey, resendPath('contacts', id, '/segments'), { method: 'GET' }, budget)
   if (!segmentsResponse.ok) return 'partial'
-  return segmentIds(await readJson(segmentsResponse)).includes(segmentId) ? 'ok' : 'partial'
+  if (!segmentIds(await readJson(segmentsResponse)).includes(segmentId)) return 'partial'
+  return confirmTopic(fetchImpl, apiKey, id, topicId, budget)
+}
+
+async function confirmTopic(fetchImpl: FetchImplementation, apiKey: string, identity: string, topicId: string, budget: ProviderBudget): Promise<ProviderResult> {
+  let url: string | undefined = resendPath('contacts', identity, '/topics?limit=100')
+  for (let page = 0; url && page < 10; page += 1) {
+    const response = await resend(fetchImpl, apiKey, url, { method: 'GET' }, budget)
+    if (!response.ok) return 'provider'
+    const body = readObject(await readJson(response))
+    if (!Array.isArray(body?.data)) return 'partial'
+    const topics = body.data.map(readObject)
+    const topic = topics.find(item => item?.id === topicId)
+    if (topic?.subscription === 'opt_in') return 'ok'
+    // Resend does not distinguish default opt-out from an explicit opt-out.
+    // Preserve both; existing contacts can change this in their preferences.
+    if (topic?.subscription === 'opt_out') return 'suppressed'
+    const lastId = topics.at(-1)?.id
+    if (body.has_more !== true || typeof lastId !== 'string') return 'partial'
+    url = resendPath('contacts', identity, `/topics?limit=100&after=${encodeURIComponent(lastId)}`)
+  }
+  return 'partial'
 }
 
 async function addToSegment(
@@ -212,14 +263,14 @@ async function addToSegment(
   apiKey: string,
   identity: string,
   segmentId: string,
-  timeoutMs: number,
+  budget: ProviderBudget,
 ): Promise<boolean> {
   const response = await resend(
     fetchImpl,
     apiKey,
     resendPath('contacts', identity, `/segments/${encodeURIComponent(segmentId)}`),
     { method: 'POST' },
-    timeoutMs,
+    budget,
   )
   return response.ok || response.status === 409
 }
@@ -229,35 +280,39 @@ async function subscribeWithResend(
   apiKey: string,
   address: string,
   segmentId: string,
-  timeoutMs: number,
+  topicId: string,
+  budget: ProviderBudget,
 ): Promise<ProviderResult> {
-  const suppression = await resend(fetchImpl, apiKey, resendPath('suppressions', address), { method: 'GET' }, timeoutMs)
+  const suppression = await resend(fetchImpl, apiKey, resendPath('suppressions', address), { method: 'GET' }, budget)
   if (suppression.ok) return 'suppressed'
   if (suppression.status !== 404) return 'provider'
 
-  const existing = await resend(fetchImpl, apiKey, resendPath('contacts', address), { method: 'GET' }, timeoutMs)
+  const existing = await resend(fetchImpl, apiKey, resendPath('contacts', address), { method: 'GET' }, budget)
   if (existing.ok) {
     const contact = await readJson(existing)
     if (isUnsubscribed(contact)) return 'suppressed'
+    if (readObject(contact)?.unsubscribed !== false) return 'partial'
     const id = contactId(contact) ?? address
-    const segmentsResponse = await resend(fetchImpl, apiKey, resendPath('contacts', id, '/segments'), { method: 'GET' }, timeoutMs)
+    const topic = await confirmTopic(fetchImpl, apiKey, id, topicId, budget)
+    if (topic !== 'ok') return topic
+    const segmentsResponse = await resend(fetchImpl, apiKey, resendPath('contacts', id, '/segments'), { method: 'GET' }, budget)
     if (segmentsResponse.ok && segmentIds(await readJson(segmentsResponse)).includes(segmentId)) {
-      return confirmMembership(fetchImpl, apiKey, address, segmentId, timeoutMs)
+      return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget)
     }
-    if (!await addToSegment(fetchImpl, apiKey, id, segmentId, timeoutMs)) return 'provider'
-    return confirmMembership(fetchImpl, apiKey, address, segmentId, timeoutMs)
+    if (!await addToSegment(fetchImpl, apiKey, id, segmentId, budget)) return 'provider'
+    return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget)
   }
   if (existing.status !== 404) return 'provider'
 
   const created = await resend(fetchImpl, apiKey, `${RESEND_API}/contacts`, {
     method: 'POST',
-    body: JSON.stringify({ email: address, unsubscribed: false, segments: [{ id: segmentId }] }),
-  }, timeoutMs)
+    body: JSON.stringify({ email: address, unsubscribed: false, segments: [{ id: segmentId }], topics: [{ id: topicId, subscription: 'opt_in' }] }),
+  }, budget)
   if (!created.ok && created.status !== 409) return 'provider'
-  const confirmed = await confirmMembership(fetchImpl, apiKey, address, segmentId, timeoutMs)
+  const confirmed = await confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget)
   if (confirmed !== 'partial') return confirmed
-  if (!await addToSegment(fetchImpl, apiKey, address, segmentId, timeoutMs)) return 'partial'
-  return confirmMembership(fetchImpl, apiKey, address, segmentId, timeoutMs)
+  if (!await addToSegment(fetchImpl, apiKey, address, segmentId, budget)) return 'partial'
+  return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget)
 }
 
 export async function handleSubscribe(
@@ -267,8 +322,8 @@ export async function handleSubscribe(
   options: SubscribeOptions = {},
 ): Promise<Response> {
   const origin = request.headers.get('Origin') ?? ''
-  if (!allowedSubscribeOrigin(origin)) {
-    return new Response(JSON.stringify({ error: 'forbidden' }), {
+  if (!allowedSubscribeOrigin(origin, env, new URL(request.url).origin)) {
+    return new Response(JSON.stringify({ ok: false, code: 'forbidden' }), {
       status: 403,
       headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
     })
@@ -278,9 +333,13 @@ export async function handleSubscribe(
 
   const apiKey = env.RESEND_API_KEY?.trim()
   const segmentId = env.RESEND_SEGMENT_ID?.trim()
-  if (!apiKey || !segmentId || !env.SUBSCRIBE) {
+  let topicIds: Record<string, unknown> | undefined
+  try { topicIds = readObject(JSON.parse(env.RESEND_TOPIC_IDS || '')) } catch { /* Missing configuration fails closed. */ }
+  if (!apiKey || !segmentId || !env.SUBSCRIBE || !topicIds
+    || !SUBSCRIBE_SOURCES.every(source => typeof topicIds[source] === 'string' && (topicIds[source] as string).trim())
+    || !['production', 'preview'].includes(env.SUBSCRIBE_ENVIRONMENT || '')) {
     logSubscribe('subscribe_unavailable', { reason: 'missing_configuration' })
-    return errorResponse(origin, 'unavailable', 503)
+    return errorResponse(origin, 'service_unavailable', 503)
   }
 
   if (!(await env.SUBSCRIBE.limit({ key: clientAddress(request) })).success) {
@@ -306,19 +365,19 @@ export async function handleSubscribe(
     return errorResponse(origin, 'invalid_request', 400)
   }
 
-  const timeoutMs = options.timeoutMs ?? SUBSCRIBE_TIMEOUT_MS
+  const budget = { requestMs: options.timeoutMs ?? SUBSCRIBE_TIMEOUT_MS, deadline: Date.now() + SUBSCRIBE_TOTAL_TIMEOUT_MS }
   try {
-    const result = await subscribeWithResend(fetchImpl, apiKey, address, segmentId, timeoutMs)
+    const result = await subscribeWithResend(fetchImpl, apiKey, address, segmentId, topicIds[source] as string, budget)
     if (result === 'ok') return json(origin, { ok: true }, 200)
     if (result === 'suppressed') {
       logSubscribe('subscribe_rejected', { reason: 'suppressed', source })
-      return errorResponse(origin, 'suppressed', 409)
+      return errorResponse(origin, 'subscription_unavailable', 409)
     }
     logSubscribe('subscribe_unavailable', { reason: result, source })
-    return errorResponse(origin, 'unavailable', 503)
+    return errorResponse(origin, 'service_unavailable', 503)
   } catch (error) {
     const reason = isTimeout(error) ? 'timeout' : 'provider'
     logSubscribe('subscribe_unavailable', { reason, source })
-    return errorResponse(origin, 'unavailable', 503)
+    return errorResponse(origin, 'service_unavailable', 503)
   }
 }
