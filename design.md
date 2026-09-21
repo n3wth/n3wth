@@ -41,6 +41,8 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 
 ## Interaction
 
+The portfolio homepage combines topic groves with its existing art and navigation landmarks in one canvas, camera and lighting system. Writing appears as trees without obscuring landmarks. A selected tree exposes its title, description and an explicit local reading link; only its connections are highlighted. Keep selection usable by touch and dismissible with Escape. Thinking remains a searchable, keyboard-accessible reading index independent of WebGL. Reduced motion keeps the world still.
+
 Article graphics explain the adjacent argument. Keep each figure with a descriptive caption, visible source links and useful alt text. Distinguish original conceptual diagrams from measured charts and reproduced images. Use a single supporting text style for captions, reserve the image dimensions, and let readers open detailed graphics at full size. Record reuse rights for third-party assets; a citation alone is not permission.
 
 Original diagrams stay in SVG format and follow the surrounding page's color scheme. Generate embedded light/dark palettes from the shared theme; an SVG loaded as an image cannot inherit page custom properties. Keep photographs in their original colors.

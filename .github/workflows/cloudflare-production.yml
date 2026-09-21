@@ -140,6 +140,13 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'CLOUDFLARE_ACCOUNT_ID repository secret is required'; exit 1; }
           test -n "$CLOUDFLARE_ZONE_ID" || { echo 'CLOUDFLARE_ZONE_ID repository secret is required'; exit 1; }
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
+          # Keep the pre-cutover version IDs available for rollback, including failed releases.
+          mkdir -p rollback-versions
+          for app in portfolio garden; do
+            if [[ " $APPS " == *" $app "* ]]; then
+              npm exec -- wrangler deployments list --config "apps/$app/wrangler.jsonc" --json | tee "rollback-versions/$app.json"
+            fi
+          done
           # Release the shared signup API before its form consumers.
           if [[ " $APPS " == *" portfolio "* ]]; then
             test -n "$RESEND_API_KEY" || { echo 'RESEND_API_KEY repository secret is required'; exit 1; }
@@ -150,8 +157,41 @@ jobs:
           fi
           for app in $APPS; do
             [ "$app" = portfolio ] && continue
+            if [ "$app" = garden ]; then
+              # Never activate redirects before their published destination is readable.
+              node --input-type=module <<'JS'
+          import { setTimeout } from 'node:timers/promises'
+
+          const url = 'https://n3wth.com/thinking/frameworks/5-whys'
+          for (let attempt = 1; attempt <= 12; attempt++) {
+            try {
+              const response = await fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(30000) })
+              const html = await response.text()
+              if (response.status !== 200 ||
+                  !html.includes(`<link rel="canonical" href="${url}"`) ||
+                  !html.includes('The 5 Whys is a framework for identifying root causes of problems.') ||
+                  !html.includes('id="usage"')) {
+                throw new Error(`Note readiness failed (HTTP ${response.status}, canonical or body missing)`)
+              }
+              console.log(`Verified published note before Garden cutover: ${url}`)
+              break
+            } catch (error) {
+              if (attempt === 12) throw error
+              console.log(`Waiting for portfolio note (${attempt}/12): ${error.message}`)
+              await setTimeout(5000)
+            }
+          }
+          JS
+            fi
             npm exec -- wrangler deploy --config "apps/$app/wrangler.jsonc"
           done
+      - name: Preserve pre-release Worker versions
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: rollback-versions-${{ github.sha }}
+          path: rollback-versions/
+          if-no-files-found: ignore
       - name: Check production readiness
         env:
           APPS: ${{ needs.validate.outputs.apps }}

@@ -1,10 +1,12 @@
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree, type ThreeElements, type ThreeEvent } from '@react-three/fiber'
 import { Html, Line, Stars, useCursor, useProgress, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { useOptionalTexture } from '../lib/optionalTexture'
 import { preloadOptionalGLTF, useOptionalGLTF } from '../lib/optionalGLTF'
+
+const WritingGroves = lazy(() => import('./WritingGroves'))
 
 /**
  * The front door as a real night field (three.js): every glowing
@@ -1480,7 +1482,7 @@ const PORTALS: Record<string, PortalDef> = {
   work: { id: 'work', label: 'Work', sub: 'A decade of AI in production', href: '/work' },
   thinking: { id: 'thinking', label: 'Thinking', sub: 'Trade-offs, not clean answers', href: '/thinking' },
   contact: { id: 'contact', label: "Let's talk", sub: 'hey@n3wth.com', href: '/contact' },
-  garden: { id: 'garden', label: 'Garden', sub: '250+ notes, growing', href: 'https://garden.n3wth.com', external: true },
+  garden: { id: 'garden', label: 'Notes', sub: 'Notes and connections', href: '/thinking#notes' },
   triangle: { id: 'triangle', label: 'Pink Triangle', sub: 'View this artwork', href: '/art#pink-triangle' },
 }
 
@@ -1625,6 +1627,9 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       <Suspense fallback={null}>
         <PinkTriangle def={PORTALS.triangle} onEnter={focusThenEnter} />
       </Suspense>
+      {ready && <Suspense fallback={null}>
+        <WritingGroves onEnter={onEnter} />
+      </Suspense>}
 
       <Meteors reducedMotion={reducedMotion} />
       <PlayaDust reducedMotion={reducedMotion} />

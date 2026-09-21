@@ -5,6 +5,29 @@ test.beforeEach(async ({ page }) => {
   await page.route(/https:\/\/(elephant\.n3wth\.com|[^/]*posthog\.(com|net))\//, route => route.abort())
 })
 
+test('Thinking notes keep local links, topics, anchors and browser Back', async ({ page, request }) => {
+  await page.goto('/thinking/frameworks/5-whys#usage')
+  await expect(page.getByRole('heading', { level: 1, name: '5 Whys', exact: true })).toBeVisible()
+  await expect(page.locator('#usage')).toBeInViewport()
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://n3wth.com/thinking/frameworks/5-whys')
+  await expect(page.locator('.thinking-note-prose img').first()).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.getByRole('navigation', { name: 'Note topics' }).getByRole('link', { name: 'strategy', exact: true }).click()
+  await expect(page).toHaveURL(/\/thinking\?topic=strategy#notes$/)
+  await expect(page.getByLabel('Search writing', { exact: true })).toBeVisible()
+  await page.getByLabel('Search writing', { exact: true }).fill('5 Whys')
+  await expect(page.getByRole('status')).toContainText('1 result')
+  await page.locator('#notes').getByRole('link', { name: '5 Whys', exact: true }).click()
+  await expect(page).toHaveURL(/\/thinking\/frameworks\/5-whys$/)
+  await expect(page.getByRole('heading', { name: 'Linked from', exact: true })).toBeVisible()
+  await page.goBack()
+  await expect(page.getByLabel('Search writing', { exact: true })).toHaveValue('5 Whys')
+  const html = await (await request.get('/thinking/frameworks/5-whys/index.html')).text()
+  expect(html).toContain('<h1>5 Whys</h1>')
+  expect(html).toContain('https://n3wth.com/thinking/frameworks/5-whys')
+  expect(html).toContain('href="/thinking/frameworks/frameworks-map"')
+})
+
 test('projects index connects navigation, product pages and documentation', async ({ page, request }) => {
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.goto('/projects/')
@@ -205,7 +228,7 @@ for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact'])
       test.setTimeout(60_000)
       await expect(page.locator('.night-field-stage.is-settled')).toBeVisible({ timeout: 45_000 })
       await expect(page.locator('.night-field-loader')).toHaveAttribute('data-ready', 'true')
-      for (const name of ['Art', 'Work', 'Thinking', 'Contact', 'Garden', 'Pink Triangle']) {
+      for (const name of ['Art', 'Work', 'Thinking', 'Contact', 'Notes', 'Pink Triangle']) {
         const label = page.locator(`.world-portal-link[aria-label="${name}"]`)
         await expect(label).toBeVisible()
       }
@@ -219,6 +242,28 @@ for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact'])
     expect(errors).toEqual([])
   })
 }
+
+test('home keeps ordinary writing navigation when WebGL is unavailable', async ({ page }) => {
+  await page.addInitScript(() => {
+    const getContext = HTMLCanvasElement.prototype.getContext
+    HTMLCanvasElement.prototype.getContext = function (...args) {
+      return String(args[0]).includes('webgl') ? null : getContext.apply(this, args)
+    } as typeof getContext
+  })
+  await page.goto('/')
+  await expect(page.locator('section[aria-label="Explore the night scene"] img')).toBeVisible()
+  await expect(page.locator('canvas')).toHaveCount(0)
+  const thinking = page.locator('#primary-navigation').getByRole('link', { name: 'Thinking', exact: true })
+  if (!await thinking.isVisible()) await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+  await thinking.focus()
+  await page.keyboard.press('Enter')
+  await expect(page).toHaveURL(/\/thinking$/)
+  await expect(page.getByLabel('Search writing', { exact: true })).toBeVisible()
+  await page.getByLabel('Search writing', { exact: true }).fill('5 Whys')
+  await page.locator('#notes').getByRole('link', { name: '5 Whys', exact: true }).click()
+  await expect(page).toHaveURL(/\/thinking\/frameworks\/5-whys$/)
+  await expect(page.getByRole('heading', { level: 1, name: '5 Whys', exact: true })).toBeVisible()
+})
 
 test('home primary navigation works before the scene settles', async ({ page }) => {
   await page.goto('/')

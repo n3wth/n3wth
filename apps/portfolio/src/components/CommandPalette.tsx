@@ -259,7 +259,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 .filter((part): part is string => Boolean(part && part.length > 0))
                 .join(' · ') || undefined,
             href: note.href,
-            external: true,
+            external: false,
             group: 'Garden' as ResultGroup,
           }))
         )

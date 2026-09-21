@@ -68,7 +68,7 @@ export default function HomeAutomation() {
         }
         margin={
           <MarginNote
-            href="https://garden.n3wth.com/setting-up-my-smart-home"
+            href="/thinking/setting-up-my-smart-home"
             title="Setting Up My Smart Home"
             description="The fuller writeup of the stack this piece is about — Home Assistant as hub, Zigbee and Z-Wave underneath, Hue and Sonos on top."
           />

@@ -2,1507 +2,1573 @@
   "notes": [
     {
       "title": "5 Whys",
-      "href": "https://garden.n3wth.com/frameworks/5-whys",
+      "href": "/thinking/frameworks/5-whys",
       "description": "A framework for identifying root causes of problems through iterative questioning",
       "section": "frameworks"
     },
     {
       "title": "5-Year Health and Wellness Plan",
-      "href": "https://garden.n3wth.com/health/5-year-health-and-wellness-plan",
+      "href": "/thinking/health/5-year-health-and-wellness-plan",
       "description": "Structured health goals and checkpoints from 2025–2030",
       "section": "health"
     },
     {
       "title": "AARM",
-      "href": "https://garden.n3wth.com/frameworks/aarm",
+      "href": "/thinking/frameworks/aarm",
       "description": "A framework for product strategy and growth through user lifecycle management",
       "section": "frameworks"
     },
     {
+      "title": "About",
+      "href": "/thinking/about",
+      "description": "About this digital garden and its gardener",
+      "section": null
+    },
+    {
+      "title": "About This Vault",
+      "href": "/thinking/vault",
+      "description": "Meta information about this digital garden and knowledge system",
+      "section": null
+    },
+    {
       "title": "Acne Prevention",
-      "href": "https://garden.n3wth.com/health/acne-prevention",
+      "href": "/thinking/health/acne-prevention",
       "description": "Strategies for preventing and managing acne",
       "section": "health"
     },
     {
       "title": "Active Learning",
-      "href": "https://garden.n3wth.com/active-learning",
+      "href": "/thinking/active-learning",
       "description": "Techniques for engaging and effective learning",
       "section": null
     },
     {
       "title": "Actual Gardening Costs",
-      "href": "https://garden.n3wth.com/actual-gardening-costs",
+      "href": "/thinking/actual-gardening-costs",
       "description": "A line-item breakdown of what a San Francisco garden actually cost: irrigation, beds, soil, tools",
       "section": null
     },
     {
       "title": "Aging Well",
-      "href": "https://garden.n3wth.com/health/aging-well",
+      "href": "/thinking/health/aging-well",
       "description": "Strategies for maintaining health and vitality as we age",
       "section": "health"
     },
     {
       "title": "Alaska Subscriptions",
-      "href": "https://garden.n3wth.com/alaska-subscriptions",
+      "href": "/thinking/alaska-subscriptions",
       "description": "Fare deals and alerts for Alaska Airlines travel",
       "section": null
     },
     {
       "title": "An Unquiet Mind: A Memoir of Moods and Madness",
-      "href": "https://garden.n3wth.com/references/books/an-unquiet-mind",
+      "href": "/thinking/references/books/an-unquiet-mind",
       "description": "Reading list entry for Kay Redfield Jamison's memoir on living with bipolar illness as a doctor",
       "section": "references"
     },
     {
       "title": "Anki",
-      "href": "https://garden.n3wth.com/anki/anki",
+      "href": "/thinking/anki/anki",
       "description": "Spaced repetition for long-term memory retention",
       "section": "anki"
     },
     {
       "title": "Annual Physical",
-      "href": "https://garden.n3wth.com/health/annual-physical",
+      "href": "/thinking/health/annual-physical",
       "description": "The importance of regular check-ups and what to expect",
       "section": "health"
     },
     {
       "title": "Application Tracking System",
-      "href": "https://garden.n3wth.com/application-tracking-system",
+      "href": "/thinking/application-tracking-system",
       "description": "Software for managing recruitment processes",
       "section": null
     },
     {
       "title": "Are Tomatoes Self-Pollinating?",
-      "href": "https://garden.n3wth.com/tomatoes-self-pollinate",
+      "href": "/thinking/tomatoes-self-pollinate",
       "description": "Yes. Tomato plants are self-pollinating: each flower has male and female parts. How tomatoes pollinate, why fruit still fails, and when to help.",
       "section": null
     },
     {
       "title": "Astryx vs shadcn: which design system for LLM-written UI",
-      "href": "https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material",
+      "href": "/thinking/astryx-vs-shadcn-vs-angular-material",
       "description": "Field notes from this garden: Astryx, shadcn and component ownership, with a reproducible table of contents example and the limits of type-level accessibility checks.",
       "section": null
     },
     {
       "title": "Atomic Habits",
-      "href": "https://garden.n3wth.com/frameworks/atomic-habits",
+      "href": "/thinking/frameworks/atomic-habits",
       "description": "A framework for building better habits through small, consistent actions",
       "section": "frameworks"
     },
     {
       "title": "Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones",
-      "href": "https://garden.n3wth.com/references/books/atomic-habits",
+      "href": "/thinking/references/books/atomic-habits",
       "description": "Summary and quotes from Atomic Habits, with notes linking its habit framework to other reading and goals",
       "section": "references"
     },
     {
       "title": "Atomic Notes",
-      "href": "https://garden.n3wth.com/atomic-notes",
+      "href": "/thinking/atomic-notes",
       "description": "An atomic note is a self-contained, single-idea note in a Zettelkasten: concise, linked, and understandable on its own.",
       "section": null
     },
     {
       "title": "ATS Optimization",
-      "href": "https://garden.n3wth.com/ats-optimization",
+      "href": "/thinking/ats-optimization",
       "description": "Strategies for enhancing the effectiveness of an Application Tracking System",
       "section": null
     },
     {
+      "title": "Audit retrieval before trusting an answer",
+      "href": "/thinking/audit-retrieval-before-trusting-an-answer",
+      "description": "A practical protocol for checking corpus coverage, retrieval quality, and whether source records support an answer.",
+      "section": null
+    },
+    {
       "title": "Autism",
-      "href": "https://garden.n3wth.com/autism",
+      "href": "/thinking/autism",
       "description": "Strengths and challenges of autism spectrum conditions, covering focus, pattern recognition, sensory needs and social communication",
       "section": null
     },
     {
       "title": "Award Flight Hacking & Sweet Spots",
-      "href": "https://garden.n3wth.com/award-flight-hacking",
+      "href": "/thinking/award-flight-hacking",
       "description": "Practical strategies for finding saver award seats, transferring flexible points, and using partner award charts",
       "section": null
     },
     {
       "title": "Bedtime Routine",
-      "href": "https://garden.n3wth.com/health/bedtime-routine",
+      "href": "/thinking/health/bedtime-routine",
       "description": "Practices for improving sleep quality and relaxation",
       "section": "health"
     },
     {
       "title": "Behavior Change",
-      "href": "https://garden.n3wth.com/behavior-change",
+      "href": "/thinking/behavior-change",
       "description": "How self-awareness, motivation, and habit formation combine to change behavior, linked to book notes",
       "section": null
     },
     {
       "title": "Behavioral Interviews",
-      "href": "https://garden.n3wth.com/behavioral-interviews",
+      "href": "/thinking/behavioral-interviews",
       "description": "Interview technique focusing on past experiences and behaviors",
       "section": null
     },
     {
       "title": "Benefits Analysis",
-      "href": "https://garden.n3wth.com/benefits-analysis",
+      "href": "/thinking/benefits-analysis",
       "description": "Evaluation of employee benefits and compensation packages",
       "section": null
     },
     {
       "title": "Board Games",
-      "href": "https://garden.n3wth.com/board-games",
+      "href": "/thinking/board-games",
       "description": "Collection of tabletop games I enjoy",
       "section": null
     },
     {
       "title": "Book Learning Synthesis",
-      "href": "https://garden.n3wth.com/book-learning-synthesis",
+      "href": "/thinking/book-learning-synthesis",
       "description": "How the books I've read connect to each other",
       "section": null
     },
     {
       "title": "Book Reviews",
-      "href": "https://garden.n3wth.com/book-reviews",
+      "href": "/thinking/book-reviews",
       "description": "Reading log with ratings, currently-reading list, 2024 stats, and a full backlog of book notes",
       "section": null
     },
     {
       "title": "Books",
-      "href": "https://garden.n3wth.com/references/books/books",
+      "href": "/thinking/references/books/books",
       "description": "Collection of book references, reviews, and reading notes",
       "section": "references"
     },
     {
       "title": "Boy Parts",
-      "href": "https://garden.n3wth.com/references/books/boy-parts",
+      "href": "/thinking/references/books/boy-parts",
       "description": "Book blurb for Eliza Clark's dark comedy about a photographer's self-destructive spiral",
       "section": "references"
     },
     {
       "title": "Bullet Journal",
-      "href": "https://garden.n3wth.com/bullet-journal",
+      "href": "/thinking/bullet-journal",
       "description": "A method for personal organization and productivity",
       "section": null
     },
     {
       "title": "Business Acumen",
-      "href": "https://garden.n3wth.com/business-acumen",
+      "href": "/thinking/business-acumen",
       "description": "Understanding and applying business knowledge and skills",
       "section": null
     },
     {
       "title": "Career Achievements",
-      "href": "https://garden.n3wth.com/career-achievements",
+      "href": "/thinking/career-achievements",
       "description": "Documenting and showcasing professional accomplishments",
       "section": null
     },
     {
       "title": "Career Development",
-      "href": "https://garden.n3wth.com/career-development",
+      "href": "/thinking/career-development",
       "description": "Strategies for advancing professional growth and success",
       "section": null
     },
     {
       "title": "Career Direction Framework",
-      "href": "https://garden.n3wth.com/career-direction-framework",
+      "href": "/thinking/career-direction-framework",
       "description": "A structured approach to defining and pursuing career goals",
       "section": null
     },
     {
       "title": "Career Frameworks",
-      "href": "https://garden.n3wth.com/career-frameworks",
+      "href": "/thinking/career-frameworks",
       "description": "Models and frameworks for career development and progression",
       "section": null
     },
     {
       "title": "Career Goals Framework",
-      "href": "https://garden.n3wth.com/career-goals-framework",
+      "href": "/thinking/career-goals-framework",
       "description": "A practical approach to setting and achieving meaningful career objectives",
       "section": null
     },
     {
       "title": "Career Journey",
-      "href": "https://garden.n3wth.com/career-journey",
+      "href": "/thinking/career-journey",
       "description": "My path through tech, leadership, and continuous learning",
       "section": null
     },
     {
       "title": "Career Map",
-      "href": "https://garden.n3wth.com/mocs/career-map",
+      "href": "/thinking/mocs/career-map",
       "description": "Documenting my path in tech and leadership",
       "section": "mocs"
     },
     {
       "title": "Career Milestones Tracker",
-      "href": "https://garden.n3wth.com/career-milestones-tracker",
+      "href": "/thinking/career-milestones-tracker",
       "description": "Track and celebrate your professional achievements and progress",
       "section": null
     },
     {
       "title": "Career Planning",
-      "href": "https://garden.n3wth.com/career-planning",
+      "href": "/thinking/career-planning",
       "description": "Strategic career development and goal setting",
       "section": null
     },
     {
       "title": "Career Roadmap",
-      "href": "https://garden.n3wth.com/career-roadmap",
+      "href": "/thinking/career-roadmap",
       "description": "Strategic planning for career progression",
       "section": null
     },
     {
       "title": "Career Transition Guide",
-      "href": "https://garden.n3wth.com/career-transition-guide",
+      "href": "/thinking/career-transition-guide",
       "description": "Strategic framework for navigating career transitions in tech",
       "section": null
     },
     {
       "title": "Career Transitions",
-      "href": "https://garden.n3wth.com/career-transitions",
+      "href": "/thinking/career-transitions",
       "description": "Guide to successfully navigating career changes",
       "section": null
     },
     {
       "title": "Case Interviews",
-      "href": "https://garden.n3wth.com/case-interviews",
+      "href": "/thinking/case-interviews",
       "description": "Interview technique focusing on business problem-solving",
       "section": null
     },
     {
       "title": "Change Management",
-      "href": "https://garden.n3wth.com/change-management",
+      "href": "/thinking/change-management",
       "description": "Strategies for managing organizational change effectively",
       "section": null
     },
     {
       "title": "Choose UI component ownership",
-      "href": "https://garden.n3wth.com/choose-ui-component-ownership",
+      "href": "/thinking/choose-ui-component-ownership",
       "description": "A practical checklist for deciding where a UI component should live and who maintains it",
       "section": null
     },
     {
       "title": "Circadian Rhythm",
-      "href": "https://garden.n3wth.com/health/circadian-rhythm",
+      "href": "/thinking/health/circadian-rhythm",
       "description": "Understanding and optimizing the body's natural sleep-wake cycle",
       "section": "health"
     },
     {
       "title": "CIRCLES",
-      "href": "https://garden.n3wth.com/frameworks/circles",
+      "href": "/thinking/frameworks/circles",
       "description": "A systematic approach to product design and improvement",
       "section": "frameworks"
     },
     {
       "title": "Communication Skills",
-      "href": "https://garden.n3wth.com/communication-skills",
+      "href": "/thinking/communication-skills",
       "description": "Essential skills for effective interpersonal and professional communication",
       "section": null
     },
     {
       "title": "Companies",
-      "href": "https://garden.n3wth.com/companies",
+      "href": "/thinking/companies",
       "description": "Organizations I'm tracking, researching, or have worked with",
       "section": null
     },
     {
       "title": "Company Research Template",
-      "href": "https://garden.n3wth.com/company-research-template",
+      "href": "/thinking/company-research-template",
       "description": "A structured approach to researching potential employers",
       "section": null
     },
     {
       "title": "Content Strategy",
-      "href": "https://garden.n3wth.com/content-strategy",
+      "href": "/thinking/content-strategy",
       "description": "Planning and managing content to achieve business goals",
       "section": null
     },
     {
       "title": "Cooking",
-      "href": "https://garden.n3wth.com/recipes",
+      "href": "/thinking/recipes",
       "description": "Recipes, techniques, and culinary experiments",
       "section": null
     },
     {
       "title": "Cooking Methods",
-      "href": "https://garden.n3wth.com/cooking-methods",
+      "href": "/thinking/cooking-methods",
       "description": "Techniques for preparing and cooking food",
       "section": null
     },
     {
       "title": "Cosmetic Ingredients",
-      "href": "https://garden.n3wth.com/health/cosmetic-ingredients",
+      "href": "/thinking/health/cosmetic-ingredients",
       "description": "Understanding the components of skincare and beauty products",
       "section": "health"
     },
     {
       "title": "Course Reviews",
-      "href": "https://garden.n3wth.com/course-reviews",
+      "href": "/thinking/course-reviews",
       "description": "Evaluations and feedback on educational courses",
       "section": null
     },
     {
       "title": "Cover Letter Templates",
-      "href": "https://garden.n3wth.com/cover-letter-templates",
+      "href": "/thinking/cover-letter-templates",
       "description": "Templates for crafting effective cover letters",
       "section": null
     },
     {
       "title": "Cracking the PM Career: The Skills, Frameworks, and Practices to Become a Great Product Manager",
-      "href": "https://garden.n3wth.com/references/books/cracking-the-pm-career",
+      "href": "/thinking/references/books/cracking-the-pm-career",
       "description": "Book note on Bavaro's guide to product manager skills, frameworks, and career progression",
       "section": "references"
     },
     {
       "title": "Creation Lake",
-      "href": "https://garden.n3wth.com/references/books/creation-lake",
+      "href": "/thinking/references/books/creation-lake",
       "description": "Publisher blurb for Rachel Kushner's Creation Lake, a novel about a spy infiltrating a French anarchist commune",
       "section": "references"
     },
     {
       "title": "Cue-Routine-Reward",
-      "href": "https://garden.n3wth.com/health/cue-routine-reward",
+      "href": "/thinking/health/cue-routine-reward",
       "description": "Understanding the habit loop for behavior change",
       "section": "health"
     },
     {
       "title": "Cultish: The Language of Fanaticism",
-      "href": "https://garden.n3wth.com/references/books/cultish",
+      "href": "/thinking/references/books/cultish",
       "description": "Reading list entry for Amanda Montell's book on how language creates and sustains cult influence",
       "section": "references"
     },
     {
       "title": "Daring Greatly: How the Courage to Be Vulnerable Transforms the Way We Live, Love, Parent, and Lead",
-      "href": "https://garden.n3wth.com/references/books/daring-greatly",
+      "href": "/thinking/references/books/daring-greatly",
       "description": "Summary and key themes from Daring Greatly, on vulnerability, shame resilience and wholehearted living",
       "section": "references"
     },
     {
       "title": "Dark Matter",
-      "href": "https://garden.n3wth.com/references/books/dark-matter",
+      "href": "/thinking/references/books/dark-matter",
       "description": "Synopsis of Blake Crouch's thriller about a physicist waking into an alternate version of his life",
       "section": "references"
     },
     {
       "title": "Deep Learning",
-      "href": "https://garden.n3wth.com/references/books/deep-learning",
+      "href": "/thinking/references/books/deep-learning",
       "description": "Notes on Goodfellow's deep learning textbook, covering core concepts and links to related skills",
       "section": "references"
     },
     {
       "title": "Delegation Skills",
-      "href": "https://garden.n3wth.com/delegation-skills",
+      "href": "/thinking/delegation-skills",
       "description": "Techniques for effective task delegation and team management",
       "section": null
     },
     {
       "title": "Deliberate Practice",
-      "href": "https://garden.n3wth.com/deliberate-practice",
+      "href": "/thinking/deliberate-practice",
       "description": "A structured approach to skill improvement and mastery",
       "section": null
     },
     {
       "title": "Digital Garden",
-      "href": "https://garden.n3wth.com/digital-garden",
+      "href": "/thinking/digital-garden",
       "description": "A method for cultivating and organizing digital knowledge",
       "section": null
     },
     {
       "title": "Digital Gardening",
-      "href": "https://garden.n3wth.com/digital-gardening",
+      "href": "/thinking/digital-gardening",
       "description": "The practice and philosophy of digital knowledge cultivation",
       "section": null
     },
     {
       "title": "Eisenhower",
-      "href": "https://garden.n3wth.com/frameworks/eisenhower",
+      "href": "/thinking/frameworks/eisenhower",
       "description": "A framework for prioritizing tasks based on urgency and importance",
       "section": "frameworks"
     },
     {
       "title": "Energy Management",
-      "href": "https://garden.n3wth.com/energy",
+      "href": "/thinking/energy",
       "description": "Understanding and optimizing personal energy for sustainable performance",
       "section": null
     },
     {
       "title": "Environmental Design",
-      "href": "https://garden.n3wth.com/health/environmental-design",
+      "href": "/thinking/health/environmental-design",
       "description": "Designing spaces to promote health and well-being",
       "section": "health"
     },
     {
       "title": "Events",
-      "href": "https://garden.n3wth.com/events",
+      "href": "/thinking/events",
       "description": "Conferences, meetups, and professional events",
       "section": null
     },
     {
       "title": "Exercise",
-      "href": "https://garden.n3wth.com/health/exercise",
+      "href": "/thinking/health/exercise",
       "description": "Current workout structure and movement philosophy",
       "section": "health"
     },
     {
       "title": "Favorite Blogs",
-      "href": "https://garden.n3wth.com/favorite-blogs",
+      "href": "/thinking/favorite-blogs",
       "description": "A shortlist of blogs on writing, software, note-taking, digital gardens, and tech strategy",
       "section": null
     },
     {
       "title": "Feel-Good Productivity: How to Do More of What Matters to You",
-      "href": "https://garden.n3wth.com/references/books/feel-good-productivity",
+      "href": "/thinking/references/books/feel-good-productivity",
       "description": "Reading list entry for Ali Abdaal's book linking productivity to joy, play, and connection",
       "section": "references"
     },
     {
       "title": "First Lie Wins",
-      "href": "https://garden.n3wth.com/references/books/first-lie-wins",
+      "href": "/thinking/references/books/first-lie-wins",
       "description": "Publisher blurb for the thriller First Lie Wins, about a woman living under a false identity",
       "section": "references"
     },
     {
       "title": "FITT Principle",
-      "href": "https://garden.n3wth.com/health/fitt",
+      "href": "/thinking/health/fitt",
       "description": "Framework for exercise program design",
       "section": "health"
     },
     {
       "title": "Fleeting Notes",
-      "href": "https://garden.n3wth.com/fleeting-notes",
+      "href": "/thinking/fleeting-notes",
       "description": "Quick, temporary notes for capturing ideas and thoughts",
       "section": null
     },
     {
       "title": "Flow State",
-      "href": "https://garden.n3wth.com/flow",
+      "href": "/thinking/flow",
       "description": "The psychology and practice of deep, focused engagement",
       "section": null
     },
     {
       "title": "Food Preservation",
-      "href": "https://garden.n3wth.com/food-preservation",
+      "href": "/thinking/food-preservation",
       "description": "Techniques for extending the shelf life of food",
       "section": null
     },
     {
       "title": "Frameworks",
-      "href": "https://garden.n3wth.com/frameworks/frameworks-map",
+      "href": "/thinking/frameworks/frameworks-map",
       "description": "Structured approaches and mental models for effective thinking and decision-making",
       "section": "frameworks"
     },
     {
       "title": "Frameworks",
-      "href": "https://garden.n3wth.com/frameworks/frameworks",
+      "href": "/thinking/frameworks/frameworks",
       "description": "Mental models and structured approaches for effective thinking and decision-making",
       "section": "frameworks"
     },
     {
       "title": "Funny Story",
-      "href": "https://garden.n3wth.com/references/books/funny-story",
+      "href": "/thinking/references/books/funny-story",
       "description": "Synopsis of Emily Henry's novel about two exes' roommates who fake a rebound romance",
       "section": "references"
     },
     {
       "title": "GAME",
-      "href": "https://garden.n3wth.com/frameworks/game",
+      "href": "/thinking/frameworks/game",
       "description": "A framework for developing and tracking product initiatives through experimentation",
       "section": "frameworks"
     },
     {
       "title": "Garden Planning",
-      "href": "https://garden.n3wth.com/garden-planning",
+      "href": "/thinking/garden-planning",
       "description": "Strategies for designing and maintaining a garden",
       "section": null
     },
     {
       "title": "Gardening",
-      "href": "https://garden.n3wth.com/gardening",
+      "href": "/thinking/gardening",
       "description": "Growing plants, creating outdoor spaces, and connecting with nature",
       "section": null
     },
     {
       "title": "Gardening",
-      "href": "https://garden.n3wth.com/mocs/gardening",
+      "href": "/thinking/mocs/gardening",
       "description": "A personal collection of gardening knowledge, techniques, and sustainable practices",
       "section": "mocs"
     },
     {
       "title": "Gardening Tasks",
-      "href": "https://garden.n3wth.com/gardening-tasks",
+      "href": "/thinking/gardening-tasks",
       "description": "Active task list for garden projects and maintenance",
       "section": null
     },
     {
       "title": "Gardening Tips",
-      "href": "https://garden.n3wth.com/gardening-tips",
+      "href": "/thinking/gardening-tips",
       "description": "Practical insights and principles for successful gardening",
       "section": null
     },
     {
       "title": "Good Material",
-      "href": "https://garden.n3wth.com/references/books/good-material",
+      "href": "/thinking/references/books/good-material",
       "description": "Book note on Dolly Alderton's novel about heartbreak, friendship, and starting over at 35",
       "section": "references"
     },
     {
       "title": "Grit: The Power of Passion and Perseverance",
-      "href": "https://garden.n3wth.com/references/books/grit",
+      "href": "/thinking/references/books/grit",
       "description": "Notes on Angela Duckworth's Grit, its four components, and links to related career and habit pages",
       "section": "references"
     },
     {
       "title": "GROW",
-      "href": "https://garden.n3wth.com/frameworks/grow",
+      "href": "/thinking/frameworks/grow",
       "description": "A coaching model for goal setting and problem solving",
       "section": "frameworks"
     },
     {
+      "title": "Growth gates before growth work",
+      "href": "/thinking/growth-gates-before-growth-work",
+      "description": "Sequence growth on a side project by gates you can pass, not dates you can miss: measure, get indexed, check demand, take one real payment, then build.",
+      "section": null
+    },
+    {
       "title": "GTD",
-      "href": "https://garden.n3wth.com/frameworks/gtd",
+      "href": "/thinking/frameworks/gtd",
       "description": "David Allen's five-step task management system",
       "section": "frameworks"
     },
     {
       "title": "Habit Tracking",
-      "href": "https://garden.n3wth.com/health/habit-tracking",
+      "href": "/thinking/health/habit-tracking",
       "description": "Methods for monitoring and improving health habits",
       "section": "health"
     },
     {
       "title": "Happy: Why More or Less Everything is Absolutely Fine",
-      "href": "https://garden.n3wth.com/references/books/happy",
+      "href": "/thinking/references/books/happy",
       "description": "Reading list entry for Derren Brown's book on stoic philosophy and the nature of happiness",
       "section": "references"
     },
     {
       "title": "Health",
-      "href": "https://garden.n3wth.com/health/health-map",
+      "href": "/thinking/health/health-map",
       "description": "Physical and mental health tracking and routines",
       "section": "health"
     },
     {
       "title": "Health",
-      "href": "https://garden.n3wth.com/health/health",
+      "href": "/thinking/health/health",
       "description": "Overview of health and wellness topics",
       "section": "health"
     },
     {
       "title": "Health Index",
-      "href": "https://garden.n3wth.com/health",
+      "href": "/thinking/health",
       "description": "Central hub for health, wellness, and medical information",
       "section": null
     },
     {
       "title": "Health Metrics",
-      "href": "https://garden.n3wth.com/health/health-metrics",
+      "href": "/thinking/health/health-metrics",
       "description": "Framework for tracking and improving health indicators",
       "section": "health"
     },
     {
       "title": "HEART",
-      "href": "https://garden.n3wth.com/frameworks/heart",
+      "href": "/thinking/frameworks/heart",
       "description": "A user-centered metrics framework developed by Google for measuring user experience",
       "section": "frameworks"
     },
     {
       "title": "Hello Beautiful",
-      "href": "https://garden.n3wth.com/references/books/hello-beautiful",
+      "href": "/thinking/references/books/hello-beautiful",
       "description": "Publisher blurb for the novel Hello Beautiful, about a family fractured by loyalty and tragedy",
       "section": "references"
     },
     {
       "title": "Helvetica",
-      "href": "https://garden.n3wth.com/helvetica",
+      "href": "/thinking/helvetica",
       "description": "Thoughts on the world's most ubiquitous typeface",
       "section": null
     },
     {
       "title": "Him",
-      "href": "https://garden.n3wth.com/references/books/him",
+      "href": "/thinking/references/books/him",
       "description": "Book blurb for Sarina Bowen's romance about two former hockey teammates reuniting years later",
       "section": "references"
     },
     {
       "title": "Hobbies & Interests",
-      "href": "https://garden.n3wth.com/hobby",
+      "href": "/thinking/hobby",
       "description": "Personal interests and activities outside of work",
       "section": null
     },
     {
+      "title": "Home",
+      "href": "/thinking/olivers-garden",
+      "description": "Introduction to the site, current projects, and recurring questions about habits and learning",
+      "section": null
+    },
+    {
       "title": "Hook Model",
-      "href": "https://garden.n3wth.com/frameworks/hook-model",
+      "href": "/thinking/frameworks/hook-model",
       "description": "A framework for building habit-forming products through behavioral cycles",
       "section": "frameworks"
     },
     {
       "title": "Hotel Loyalty & Points Optimization",
-      "href": "https://garden.n3wth.com/hotel-loyalty-optimization",
+      "href": "/thinking/hotel-loyalty-optimization",
       "description": "Strategic transfers and points splicing for World of Hyatt and luxury hotel redemptions",
       "section": null
     },
     {
       "title": "How OpenClaw Dreaming Works",
-      "href": "https://garden.n3wth.com/how-openclaw-dreaming-works",
+      "href": "/thinking/how-openclaw-dreaming-works",
       "description": "A detailed research report exploring the inner workings of OpenClaw's autonomous background memory consolidation sweeps, sleep-inspired phases, scoring logic, and operational tuning.",
       "section": null
     },
     {
       "title": "How to End a Love Story",
-      "href": "https://garden.n3wth.com/references/books/how-to-end-a-love-story",
+      "href": "/thinking/references/books/how-to-end-a-love-story",
       "description": "Book note on Yulin Kuang's enemies-to-lovers romance between two writers with a shared past",
       "section": "references"
     },
     {
       "title": "How to Use MOCs",
-      "href": "https://garden.n3wth.com/how-to-use-mocs",
+      "href": "/thinking/how-to-use-mocs",
       "description": "Guide for effectively using Maps of Content for knowledge navigation",
       "section": null
     },
     {
       "title": "I'll Be Gone in the Dark: One Woman's Obsessive Search for the Golden State Killer",
-      "href": "https://garden.n3wth.com/references/books/ill-be-gone-in-the-dark",
+      "href": "/thinking/references/books/ill-be-gone-in-the-dark",
       "description": "Publisher blurb for Michelle McNamara's true crime book chasing the Golden State Killer",
       "section": "references"
     },
     {
       "title": "I'm Starting to Worry About This Black Box of Doom",
-      "href": "https://garden.n3wth.com/references/books/im-starting-to-worry-about-this-black-box-of-doom",
+      "href": "/thinking/references/books/im-starting-to-worry-about-this-black-box-of-doom",
       "description": "Reading list entry for Jason Pargin's thriller about a cross-country trip with a mysterious sealed box",
       "section": "references"
     },
     {
       "title": "ICE",
-      "href": "https://garden.n3wth.com/frameworks/ice",
+      "href": "/thinking/frameworks/ice",
       "description": "A framework for prioritizing ideas based on Impact, Confidence, and Ease",
       "section": "frameworks"
     },
     {
       "title": "Immunization",
-      "href": "https://garden.n3wth.com/health/immunization",
+      "href": "/thinking/health/immunization",
       "description": "Notes on tracking a personal vaccination schedule and finding travel vaccine guidance",
       "section": "health"
     },
     {
       "title": "Indoor Soil Mix",
-      "href": "https://garden.n3wth.com/plants/indoor-soil-mix",
+      "href": "/thinking/plants/indoor-soil-mix",
       "description": "Custom potting mix recipe for healthy indoor plants",
       "section": "plants"
     },
     {
       "title": "Interview Prep Checklist",
-      "href": "https://garden.n3wth.com/interview-prep-checklist",
+      "href": "/thinking/interview-prep-checklist",
       "description": "Daily and weekly prep tasks for PM interviews",
       "section": null
     },
     {
       "title": "Interview Preparation",
-      "href": "https://garden.n3wth.com/interview-preparation",
+      "href": "/thinking/interview-preparation",
       "description": "Checklists and frameworks I use before interviews",
       "section": null
     },
     {
       "title": "Interview Preparation Hub",
-      "href": "https://garden.n3wth.com/interview-preparation-hub",
+      "href": "/thinking/interview-preparation-hub",
       "description": "Comprehensive guide for mastering all types of interviews",
       "section": null
     },
     {
       "title": "Interview Presence",
-      "href": "https://garden.n3wth.com/interview-presence",
+      "href": "/thinking/interview-presence",
       "description": "Building confidence and professional presence in interviews",
       "section": null
     },
     {
       "title": "Interview Types",
-      "href": "https://garden.n3wth.com/types-of-interviews",
+      "href": "/thinking/types-of-interviews",
       "description": "Comprehensive guide to different interview formats and preparation strategies",
       "section": null
     },
     {
       "title": "Job Search Strategy",
-      "href": "https://garden.n3wth.com/job-search-strategy",
+      "href": "/thinking/job-search-strategy",
       "description": "Systematic approach to finding and securing ideal roles",
       "section": null
     },
     {
       "title": "Journal",
-      "href": "https://garden.n3wth.com/journal",
+      "href": "/thinking/journal",
       "description": "Personal reflections and daily practice",
       "section": null
     },
     {
       "title": "JTBD",
-      "href": "https://garden.n3wth.com/frameworks/jtbd",
+      "href": "/thinking/frameworks/jtbd",
       "description": "A framework for understanding underlying customer motivations and needs",
       "section": "frameworks"
     },
     {
       "title": "Kano",
-      "href": "https://garden.n3wth.com/frameworks/kano",
+      "href": "/thinking/frameworks/kano",
       "description": "A framework for feature prioritization based on customer satisfaction",
       "section": "frameworks"
     },
     {
       "title": "Kazuo Ishiguro",
-      "href": "https://garden.n3wth.com/kazuo-ishiguro",
+      "href": "/thinking/kazuo-ishiguro",
       "description": "A stub author page with a dataview query meant to list books by Kazuo Ishiguro",
       "section": null
     },
     {
+      "title": "Keep your notes in the repo",
+      "href": "/thinking/keep-your-notes-in-the-repo",
+      "description": "For a personal digital garden, markdown in git beats a database. The vault is the source of truth, git is the history, and static output is the fastest thing you can serve.",
+      "section": null
+    },
+    {
       "title": "Kill for Me Kill for You",
-      "href": "https://garden.n3wth.com/references/books/kill-for-me-kill-for-you",
+      "href": "/thinking/references/books/kill-for-me-kill-for-you",
       "description": "Publisher blurb for the thriller Kill for Me Kill for You, about two women's revenge pact",
       "section": "references"
     },
     {
       "title": "Klara and the Sun",
-      "href": "https://garden.n3wth.com/references/books/klara-and-the-sun",
+      "href": "/thinking/references/books/klara-and-the-sun",
       "description": "Synopsis of Kazuo Ishiguro's novel narrated by an artificial companion waiting to be chosen",
       "section": "references"
     },
     {
       "title": "Knowledge Graph Linking Strategy",
-      "href": "https://garden.n3wth.com/knowledge-graph-linking-strategy",
+      "href": "/thinking/knowledge-graph-linking-strategy",
       "description": "A strategy document on link density, connection types, and maintenance workflows for an Obsidian knowledge graph",
       "section": null
     },
     {
       "title": "Knowledge Graph Visual Maps",
-      "href": "https://garden.n3wth.com/knowledge-graph-visual-maps",
+      "href": "/thinking/knowledge-graph-visual-maps",
       "description": "Visual representations of knowledge connections in the garden",
       "section": null
     },
     {
       "title": "Knowledge Management and Personal Growth Synthesis",
-      "href": "https://garden.n3wth.com/knowledge-management-personal-growth-synthesis",
+      "href": "/thinking/knowledge-management-personal-growth-synthesis",
       "description": "How organizing knowledge accelerates development - the meta-skill of learning how to learn",
       "section": null
     },
     {
       "title": "Knowledge Management Systems",
-      "href": "https://garden.n3wth.com/knowledge-management-systems",
+      "href": "/thinking/knowledge-management-systems",
       "description": "Frameworks for organizing, storing, and sharing information effectively",
       "section": null
     },
     {
       "title": "Knowledge Map",
-      "href": "https://garden.n3wth.com/mocs/knowledge-map",
+      "href": "/thinking/mocs/knowledge-map",
       "description": "Navigation hub for my digital garden",
       "section": "mocs"
     },
     {
       "title": "Knowledge Organization",
-      "href": "https://garden.n3wth.com/knowledge-organization",
+      "href": "/thinking/knowledge-organization",
       "description": "Principles and practices for effective knowledge management",
       "section": null
     },
     {
       "title": "Leadership and Communication Synthesis",
-      "href": "https://garden.n3wth.com/leadership-communication-synthesis",
+      "href": "/thinking/leadership-communication-synthesis",
       "description": "Communication as core leadership skill - how communication excellence drives leadership impact",
       "section": null
     },
     {
       "title": "Leadership Development",
-      "href": "https://garden.n3wth.com/leadership-development",
+      "href": "/thinking/leadership-development",
       "description": "Building and enhancing leadership capabilities",
       "section": null
     },
     {
       "title": "Leadership Skills",
-      "href": "https://garden.n3wth.com/leadership-skills",
+      "href": "/thinking/leadership-skills",
       "description": "A list of core leadership skills, ways to develop them and links to related growth notes",
       "section": null
     },
     {
       "title": "Learning and Career Development Synthesis",
-      "href": "https://garden.n3wth.com/learning-career-development-synthesis",
+      "href": "/thinking/learning-career-development-synthesis",
       "description": "How continuous learning drives career growth - exploring the interconnections",
       "section": null
     },
     {
       "title": "Learning Atlas",
-      "href": "https://garden.n3wth.com/learning-atlas",
+      "href": "/thinking/learning-atlas",
       "description": "How to structure a personal knowledge base for organization, access, and linked concepts",
       "section": null
     },
     {
       "title": "Learning Log",
-      "href": "https://garden.n3wth.com/learninglog",
+      "href": "/thinking/learninglog",
       "description": "Track learning progress, successes, and challenges",
       "section": null
     },
     {
       "title": "Learning Plan",
-      "href": "https://garden.n3wth.com/learning-plan",
+      "href": "/thinking/learning-plan",
       "description": "Structured approach to continuous learning and development",
       "section": null
     },
     {
       "title": "Let's Explore Diabetes with Owls",
-      "href": "https://garden.n3wth.com/references/books/lets-explore-diabetes-with-owls",
+      "href": "/thinking/references/books/lets-explore-diabetes-with-owls",
       "description": "Book note on David Sedaris's essay collection, from family memories to offbeat encounters",
       "section": "references"
     },
     {
       "title": "Living Documents",
-      "href": "https://garden.n3wth.com/living-documents",
+      "href": "/thinking/living-documents",
       "description": "The practice of maintaining evergreen, evolving notes",
       "section": null
     },
     {
       "title": "Lunch Money",
-      "href": "https://garden.n3wth.com/lunch-money",
+      "href": "/thinking/lunch-money",
       "description": "Unofficial Lunch Money plugin at lunchmoney.sh: read-only spending, budgets, and bills for coding agents.",
       "section": null
     },
     {
       "title": "Madwoman",
-      "href": "https://garden.n3wth.com/references/books/madwoman",
+      "href": "/thinking/references/books/madwoman",
       "description": "Publisher blurb for Chelsea Bieker's Madwoman, a novel about a mother's buried past resurfacing",
       "section": "references"
     },
     {
       "title": "Maps of Content",
-      "href": "https://garden.n3wth.com/mocs/mocs",
+      "href": "/thinking/mocs/mocs",
       "description": "Central navigation hub for all MOCs in my digital garden",
       "section": "mocs"
     },
     {
       "title": "MECE",
-      "href": "https://garden.n3wth.com/frameworks/mece",
+      "href": "/thinking/frameworks/mece",
       "description": "A framework for breaking down complex problems into manageable components",
       "section": "frameworks"
     },
     {
       "title": "Mental Health",
-      "href": "https://garden.n3wth.com/health/mental-health",
+      "href": "/thinking/health/mental-health",
       "description": "Mental wellness strategies and emotional well-being practices",
       "section": "health"
     },
     {
       "title": "Mindset: The New Psychology of Success",
-      "href": "https://garden.n3wth.com/references/books/mindset",
+      "href": "/thinking/references/books/mindset",
       "description": "Reading list entry for Carol Dweck's book on fixed versus growth mindsets, with personal synthesis notes",
       "section": "references"
     },
     {
       "title": "Mobility",
-      "href": "https://garden.n3wth.com/health/mobility",
+      "href": "/thinking/health/mobility",
       "description": "Improving flexibility, range of motion, and functional movement",
       "section": "health"
     },
     {
       "title": "MOC Best Practices",
-      "href": "https://garden.n3wth.com/moc-best-practices",
+      "href": "/thinking/moc-best-practices",
       "description": "Guidelines for creating effective Maps of Content",
       "section": null
     },
     {
       "title": "Monstera deliciosa",
-      "href": "https://garden.n3wth.com/plants/monsterra",
+      "href": "/thinking/plants/monsterra",
       "description": "Care guide for my monstera plant",
       "section": "plants"
     },
     {
       "title": "Motivation Techniques",
-      "href": "https://garden.n3wth.com/motivation-techniques",
+      "href": "/thinking/motivation-techniques",
       "description": "Ten motivation techniques, from goal setting and visualization to habit stacking and accountability partners",
       "section": null
     },
     {
       "title": "Networking",
-      "href": "https://garden.n3wth.com/networking",
+      "href": "/thinking/networking",
       "description": "Building and maintaining professional relationships",
       "section": null
     },
     {
       "title": "Never Let Me Go",
-      "href": "https://garden.n3wth.com/never-let-me-go",
+      "href": "/thinking/never-let-me-go",
       "description": "Reading notes on Ishiguro's Never Let Me Go, covering its themes of memory, identity, and mortality",
       "section": null
     },
     {
       "title": "Never Let Me Go",
-      "href": "https://garden.n3wth.com/references/books/never-let-me-go",
+      "href": "/thinking/references/books/never-let-me-go",
       "description": "Publisher blurb for Kazuo Ishiguro's Never Let Me Go, about students raised at a secretive boarding school",
       "section": "references"
     },
     {
       "title": "Nobody is Watching",
-      "href": "https://garden.n3wth.com/nobody-is-watching",
+      "href": "/thinking/nobody-is-watching",
       "description": "The liberating mindset of acting without fear of judgment",
       "section": null
     },
     {
       "title": "Non-Comedogenic",
-      "href": "https://garden.n3wth.com/health/non-comedogenic",
+      "href": "/thinking/health/non-comedogenic",
       "description": "Non-comedogenic means a product is formulated not to clog pores (comedones). Definition, why the label is unregulated, and when it matters for acne-prone skin.",
       "section": "health"
     },
     {
       "title": "None of This Is True",
-      "href": "https://garden.n3wth.com/none-of-this-is-true",
+      "href": "/thinking/none-of-this-is-true",
       "description": "A review of Lisa Jewell's meta-thriller about a true crime podcaster who becomes the story's subject",
       "section": null
     },
     {
       "title": "None of This Is True",
-      "href": "https://garden.n3wth.com/references/books/none-of-this-is-true",
+      "href": "/thinking/references/books/none-of-this-is-true",
       "description": "Synopsis of Lisa Jewell's thriller about a podcaster drawn into a stranger's dark secrets",
       "section": "references"
     },
     {
       "title": "Note Linking",
-      "href": "https://garden.n3wth.com/note-linking",
+      "href": "/thinking/note-linking",
       "description": "What note linking means in a zettelkasten system, its benefits and best practices for connecting notes",
       "section": null
     },
     {
       "title": "Note Status Guide",
-      "href": "https://garden.n3wth.com/note-status-guide",
+      "href": "/thinking/note-status-guide",
       "description": "Understanding and using the note maturity system",
       "section": null
     },
     {
       "title": "Now",
-      "href": "https://garden.n3wth.com/now",
+      "href": "/thinking/now",
       "description": "What I'm focused on right now",
       "section": null
     },
     {
       "title": "Nutrition",
-      "href": "https://garden.n3wth.com/health/nutrition",
+      "href": "/thinking/health/nutrition",
       "description": "Guide to balanced and healthy eating",
       "section": "health"
     },
     {
+      "title": "One live region per page",
+      "href": "/thinking/one-live-region-per-page",
+      "description": "A status message in a shared footer turned every page into a page with two live regions. Render live regions only when they have something to say.",
+      "section": null
+    },
+    {
       "title": "Open Questions",
-      "href": "https://garden.n3wth.com/questions",
+      "href": "/thinking/questions",
       "description": "Running list of questions I'm curious about and exploring",
       "section": null
     },
     {
       "title": "People",
-      "href": "https://garden.n3wth.com/people",
+      "href": "/thinking/people",
       "description": "Notes on people who influence my thinking and work",
       "section": null
     },
     {
       "title": "People We Meet on Vacation",
-      "href": "https://garden.n3wth.com/references/books/people-we-meet-on-vacation",
+      "href": "/thinking/references/books/people-we-meet-on-vacation",
       "description": "Book note on Emily Henry's novel about two best friends and a decade of shared vacations",
       "section": "references"
     },
     {
       "title": "Personal Brand",
-      "href": "https://garden.n3wth.com/personal-brand",
+      "href": "/thinking/personal-brand",
       "description": "Building and maintaining a professional identity",
       "section": null
     },
     {
       "title": "Personal Development",
-      "href": "https://garden.n3wth.com/personal-development",
+      "href": "/thinking/personal-development",
       "description": "Overview of personal development areas: self-awareness, goal setting, habits, mindset, and related notes",
       "section": null
     },
     {
       "title": "PESTLE",
-      "href": "https://garden.n3wth.com/frameworks/pestle",
+      "href": "/thinking/frameworks/pestle",
       "description": "A framework for analyzing macro-environmental factors affecting business",
       "section": "frameworks"
     },
     {
       "title": "Plants Index",
-      "href": "https://garden.n3wth.com/plants",
+      "href": "/thinking/plants",
       "description": "Information about plants, gardening, and plant care",
       "section": null
     },
     {
       "title": "Podcasts",
-      "href": "https://garden.n3wth.com/podcasts",
+      "href": "/thinking/podcasts",
       "description": "Audio content I listen to and recommend",
       "section": null
     },
     {
       "title": "Posts",
-      "href": "https://garden.n3wth.com/posts",
+      "href": "/thinking/posts",
       "description": "Published and draft writing for public consumption",
       "section": null
     },
     {
       "title": "Presence",
-      "href": "https://garden.n3wth.com/presence",
+      "href": "/thinking/presence",
       "description": "Notes on Amy Cuddy's Presence, on mindfulness, personal power, and staying grounded under pressure",
       "section": null
     },
     {
       "title": "Presence: Bringing Your Boldest Self to Your Biggest Challenges",
-      "href": "https://garden.n3wth.com/references/books/presence",
+      "href": "/thinking/references/books/presence",
       "description": "Publisher blurb for Amy Cuddy's Presence, on power poses and facing high-pressure moments with confidence",
       "section": "references"
     },
     {
       "title": "Preventive Care",
-      "href": "https://garden.n3wth.com/health/preventive-care",
+      "href": "/thinking/health/preventive-care",
       "description": "Proactive measures for maintaining long-term health",
       "section": "health"
     },
     {
       "title": "Product Management",
-      "href": "https://garden.n3wth.com/product-management",
+      "href": "/thinking/product-management",
       "description": "Guide to product management roles and responsibilities",
       "section": null
     },
     {
+      "title": "Productive Laziness in Engineering",
+      "href": "/thinking/productive-laziness-in-engineering",
+      "description": "Why minimal, lazy-by-design code beats speculative building — YAGNI, worse-is-better, and the three virtues of a programmer",
+      "section": null
+    },
+    {
       "title": "Productivity and Health Synthesis",
-      "href": "https://garden.n3wth.com/productivity-health-synthesis",
+      "href": "/thinking/productivity-health-synthesis",
       "description": "The intersection of wellness and performance - how health practices enhance productivity",
       "section": null
     },
     {
       "title": "Productivity Systems Hub",
-      "href": "https://garden.n3wth.com/productivity-systems-hub",
+      "href": "/thinking/productivity-systems-hub",
       "description": "Task management, prioritization, and time-blocking methods I actually use",
       "section": null
     },
     {
       "title": "Professional Development",
-      "href": "https://garden.n3wth.com/professional-development",
+      "href": "/thinking/professional-development",
       "description": "Guide to continuous professional growth and advancement",
       "section": null
     },
     {
       "title": "Professional Writing Hub",
-      "href": "https://garden.n3wth.com/professional-writing-hub",
+      "href": "/thinking/professional-writing-hub",
       "description": "Templates and notes on technical docs, emails, and content",
       "section": null
     },
     {
       "title": "Progressive Overload",
-      "href": "https://garden.n3wth.com/health/progressive-overload",
+      "href": "/thinking/health/progressive-overload",
       "description": "A fundamental principle of exercise training involving gradual increases in workout demands",
       "section": "health"
     },
     {
       "title": "Progressive Summarization",
-      "href": "https://garden.n3wth.com/progressive-summarization",
+      "href": "/thinking/progressive-summarization",
       "description": "Layered highlighting technique for making notes more actionable and discoverable",
       "section": null
     },
     {
       "title": "Projects",
-      "href": "https://garden.n3wth.com/projects",
+      "href": "/thinking/projects",
       "description": "Active and completed projects across various domains",
       "section": null
     },
     {
       "title": "Raised Beds",
-      "href": "https://garden.n3wth.com/raised-beds",
+      "href": "/thinking/raised-beds",
       "description": "Planning and considerations for raised bed gardening",
       "section": null
     },
     {
       "title": "Rate of Perceived Exertion",
-      "href": "https://garden.n3wth.com/health/rpe",
+      "href": "/thinking/health/rpe",
       "description": "A subjective scale for measuring exercise intensity during [[Health/Exercise|Exercise]]",
       "section": "health"
     },
     {
       "title": "Reading Goals 2024",
-      "href": "https://garden.n3wth.com/reading-goals-2024",
+      "href": "/thinking/reading-goals-2024",
       "description": "Annual reading goals and progress tracking",
       "section": null
     },
     {
       "title": "Reading List",
-      "href": "https://garden.n3wth.com/reading-list",
+      "href": "/thinking/reading-list",
       "description": "My personal reading journey and book recommendations",
       "section": null
     },
     {
       "title": "References",
-      "href": "https://garden.n3wth.com/references/references",
+      "href": "/thinking/references/references",
       "description": "Central repository for all reference materials, books, articles, and external resources",
       "section": "references"
     },
     {
       "title": "References Index",
-      "href": "https://garden.n3wth.com/references",
+      "href": "/thinking/references",
       "description": "Central hub for all reference materials, books, articles, and external resources",
       "section": null
     },
     {
       "title": "Remote Work",
-      "href": "https://garden.n3wth.com/remote-work",
+      "href": "/thinking/remote-work",
       "description": "Strategies for successful remote and distributed work",
       "section": null
     },
     {
       "title": "Remote Work Notes",
-      "href": "https://garden.n3wth.com/remote-work-excellence-guide",
+      "href": "/thinking/remote-work-excellence-guide",
       "description": "What I've learned working remotely since 2020",
       "section": null
     },
     {
       "title": "Resume Building",
-      "href": "https://garden.n3wth.com/resume-building",
+      "href": "/thinking/resume-building",
       "description": "Creating effective professional resumes and CVs",
       "section": null
     },
     {
       "title": "RICE",
-      "href": "https://garden.n3wth.com/health/rice",
+      "href": "/thinking/health/rice",
       "description": "Rest, ice, compression, and elevation protocol for treating sprains and soft tissue injuries",
       "section": "health"
     },
     {
       "title": "Rice with Instapot",
-      "href": "https://garden.n3wth.com/rice-with-instapot",
+      "href": "/thinking/rice-with-instapot",
       "description": "Perfect pressure cooker rice every time",
       "section": null
     },
     {
+      "title": "Running Five Agents at Once",
+      "href": "/thinking/running-five-agents-at-once",
+      "description": "What it takes to keep Claude Code, Devin, Hermes, Gemini CLI, and gbrain coherent without duplicated memory or contradictory state",
+      "section": null
+    },
+    {
       "title": "SCQA",
-      "href": "https://garden.n3wth.com/frameworks/scqa",
+      "href": "/thinking/frameworks/scqa",
       "description": "A framework for structured communication and storytelling",
       "section": "frameworks"
     },
     {
       "title": "Setting Up My Smart Home",
-      "href": "https://garden.n3wth.com/setting-up-my-smart-home",
+      "href": "/thinking/setting-up-my-smart-home",
       "description": "A short rundown of the smart home setup: Home Assistant hub, Hue lighting, Sonos, and Synology surveillance",
       "section": null
     },
     {
       "title": "SF Terraced Garden Transformation Guide",
-      "href": "https://garden.n3wth.com/sf-terraced-garden-transformation-guide",
+      "href": "/thinking/sf-terraced-garden-transformation-guide",
       "description": "Detailed plan for terracing a sloped San Francisco garden: decking, beds, irrigation, budget, and phasing",
       "section": null
     },
     {
       "title": "Short Term Disability Insurance",
-      "href": "https://garden.n3wth.com/short-term-disability",
+      "href": "/thinking/short-term-disability",
       "description": "Explains how short term disability insurance works, required documentation, and California-specific resources",
       "section": null
     },
     {
       "title": "Short-Haul Flight Hacks",
-      "href": "https://garden.n3wth.com/short-haul-flight-hacks",
+      "href": "/thinking/short-haul-flight-hacks",
       "description": "High-cpp regional flight redemptions, JetBlue TrueBlue partner tricks, and British Airways Avios short-hauls",
       "section": null
     },
     {
       "title": "Shows",
-      "href": "https://garden.n3wth.com/shows",
+      "href": "/thinking/shows",
       "description": "TV series and films worth watching and remembering",
       "section": null
     },
     {
       "title": "Sing, Unburied, Sing",
-      "href": "https://garden.n3wth.com/references/books/sing-unburied-sing",
+      "href": "/thinking/references/books/sing-unburied-sing",
       "description": "Reading list entry for Jesmyn Ward's novel about a family road trip across Mississippi's past and present",
       "section": "references"
     },
     {
       "title": "Skills",
-      "href": "https://garden.n3wth.com/skills-map",
+      "href": "/thinking/skills-map",
       "description": "Core skills development and learning paths",
       "section": null
     },
     {
       "title": "Skills Development",
-      "href": "https://garden.n3wth.com/skills-development",
+      "href": "/thinking/skills-development",
       "description": "Structured approach to building professional capabilities",
       "section": null
     },
     {
       "title": "Skills Development Hub",
-      "href": "https://garden.n3wth.com/skills-development-hub",
+      "href": "/thinking/skills-development-hub",
       "description": "Central hub for tracking and developing professional skills",
       "section": null
     },
     {
       "title": "Skills Matrix",
-      "href": "https://garden.n3wth.com/skills-matrix",
+      "href": "/thinking/skills-matrix",
       "description": "Framework for assessing and tracking professional skills",
       "section": null
     },
     {
       "title": "Skin Cleanse: The Simple, All-Natural Program for Clear, Calm, Happy Skin",
-      "href": "https://garden.n3wth.com/references/books/skin-cleanse",
+      "href": "/thinking/references/books/skin-cleanse",
       "description": "Publisher blurb for Skin Cleanse, a holistic guide to clearer skin through diet and simplified routines",
       "section": "references"
     },
     {
       "title": "Skincare",
-      "href": "https://garden.n3wth.com/health/skincare",
+      "href": "/thinking/health/skincare",
       "description": "Daily and weekly skincare checklist covering sunscreen, moisturizer, exfoliation, and a breakout protocol",
       "section": "health"
     },
     {
       "title": "Sleep",
-      "href": "https://garden.n3wth.com/health/sleep",
+      "href": "/thinking/health/sleep",
       "description": "Understanding and improving sleep quality",
       "section": "health"
     },
     {
       "title": "Smart Brevity: The Power of Saying More with Less",
-      "href": "https://garden.n3wth.com/references/books/smart-brevity",
+      "href": "/thinking/references/books/smart-brevity",
       "description": "Book blurb for Smart Brevity, the Axios formula for writing clear, concise communication",
       "section": "references"
     },
     {
       "title": "SMART Goals",
-      "href": "https://garden.n3wth.com/health/smart-goals",
+      "href": "/thinking/health/smart-goals",
       "description": "Framework for setting effective health and fitness goals",
       "section": "health"
     },
     {
       "title": "Someday Is Today: 22 Simple, Actionable Ways to Propel Your Creative Life",
-      "href": "https://garden.n3wth.com/references/books/someday-is-today",
+      "href": "/thinking/references/books/someday-is-today",
       "description": "Book note on Matthew Dicks's guide to turning creative dreams into daily action",
       "section": "references"
     },
     {
       "title": "Something in the Water",
-      "href": "https://garden.n3wth.com/references/books/something-in-the-water",
+      "href": "/thinking/references/books/something-in-the-water",
       "description": "Publisher blurb for Catherine Steadman's thriller about newlyweds who find something dangerous on their honeymoon",
       "section": "references"
     },
     {
       "title": "Something in the Water",
-      "href": "https://garden.n3wth.com/something-in-the-water",
+      "href": "/thinking/something-in-the-water",
       "description": "Personal review of the thriller Something in the Water, on greed, trust and moral choices",
       "section": null
     },
     {
       "title": "Spaced Repetition",
-      "href": "https://garden.n3wth.com/spaced-repetition",
+      "href": "/thinking/spaced-repetition",
       "description": "Learning technique that optimizes review intervals for long-term retention",
       "section": null
     },
     {
       "title": "Spending",
-      "href": "https://garden.n3wth.com/spending",
+      "href": "/thinking/spending",
       "description": "Personal finance tracking and expense analysis",
       "section": null
     },
     {
       "title": "STAR",
-      "href": "https://garden.n3wth.com/frameworks/star",
+      "href": "/thinking/frameworks/star",
       "description": "A structured approach for answering behavioral interview questions",
       "section": "frameworks"
     },
     {
+      "title": "Static routes on serverless workers",
+      "href": "/thinking/static-routes-on-serverless-workers",
+      "description": "A route handler that reads the filesystem at request time will build fine and fail in production on edge workers. Prerender it.",
+      "section": null
+    },
+    {
       "title": "Storyworthy: Engage, Teach, Persuade, and Change Your Life through the Power of Storytelling",
-      "href": "https://garden.n3wth.com/references/books/storyworthy",
+      "href": "/thinking/references/books/storyworthy",
       "description": "Reading list entry for Matthew Dicks' book on storytelling technique from a Moth GrandSLAM champion",
       "section": "references"
     },
     {
       "title": "Stress",
-      "href": "https://garden.n3wth.com/health/stress",
+      "href": "/thinking/health/stress",
       "description": "My personal approach to understanding and managing stress",
       "section": "health"
     },
     {
       "title": "SWOT",
-      "href": "https://garden.n3wth.com/frameworks/swot",
+      "href": "/thinking/frameworks/swot",
       "description": "Explains the SWOT framework and its four components for strategic and career planning",
       "section": "frameworks"
     },
     {
       "title": "System Design",
-      "href": "https://garden.n3wth.com/system-design",
+      "href": "/thinking/system-design",
       "description": "Overview of system design concepts: architecture patterns, scalability, reliability, and the design process",
       "section": null
     },
     {
       "title": "Technical Skills",
-      "href": "https://garden.n3wth.com/technical-skills",
+      "href": "/thinking/technical-skills",
       "description": "Outline of technical skill areas: programming, system design, tools, and product management",
       "section": null
     },
     {
       "title": "Technical Skills Roadmap 2025",
-      "href": "https://garden.n3wth.com/technical-skills-roadmap-2025",
+      "href": "/thinking/technical-skills-roadmap-2025",
       "description": "Comprehensive technical learning paths for software engineers",
       "section": null
     },
     {
       "title": "Technology Trends",
-      "href": "https://garden.n3wth.com/technology-trends",
+      "href": "/thinking/technology-trends",
       "description": "Key technology trends and their impact on the industry",
       "section": null
     },
     {
       "title": "Test Cards",
-      "href": "https://garden.n3wth.com/anki/test-cards",
+      "href": "/thinking/anki/test-cards",
       "description": "Sample Anki flashcards testing trivia questions and notes on the Obsidian-to-Anki plugin's internals",
       "section": "anki"
     },
     {
       "title": "The Body Keeps the Score: Brain, Mind, and Body in the Healing of Trauma",
-      "href": "https://garden.n3wth.com/references/books/the-body-keeps-the-score",
+      "href": "/thinking/references/books/the-body-keeps-the-score",
       "description": "Summary and quotes from The Body Keeps the Score, on how trauma reshapes the body and brain",
       "section": "references"
     },
     {
       "title": "The Courage to Be Disliked: The Japanese Philosophy That Will Transform Your Life",
-      "href": "https://garden.n3wth.com/references/books/the-courage-to-be-disliked",
+      "href": "/thinking/references/books/the-courage-to-be-disliked",
       "description": "Reading notes on Adlerian psychology, task separation, and self-acceptance, linked to other personal development books",
       "section": "references"
     },
     {
       "title": "The Eight",
-      "href": "https://garden.n3wth.com/references/books/eight",
+      "href": "/thinking/references/books/eight",
       "description": "",
       "section": "references"
     },
     {
       "title": "The Guest List",
-      "href": "https://garden.n3wth.com/references/books/the-guest-list",
+      "href": "/thinking/references/books/the-guest-list",
       "description": "Book note on Lucy Foley's wedding-thriller about a remote island celebration gone wrong",
       "section": "references"
     },
     {
       "title": "The Hidden Economics of Grocery Delivery",
-      "href": "https://garden.n3wth.com/the-hidden-economics-of-grocery-delivery",
+      "href": "/thinking/the-hidden-economics-of-grocery-delivery",
       "description": "An analysis comparing the true costs of grocery delivery versus in-store shopping, including time value",
       "section": null
     },
     {
       "title": "The Housemaid",
-      "href": "https://garden.n3wth.com/references/books/the-housemaid",
+      "href": "/thinking/references/books/the-housemaid",
       "description": "Publisher blurb for Freida McFadden's thriller about a housemaid uncovering her employers' dark secrets",
       "section": "references"
     },
     {
       "title": "The Housemaid's Secret",
-      "href": "https://garden.n3wth.com/references/books/the-housemaids-secret",
+      "href": "/thinking/references/books/the-housemaids-secret",
       "description": "Reading list entry for Freida McFadden's thriller about a housemaid uncovering her employer's dark secret",
       "section": "references"
     },
     {
       "title": "The Housemaid's Secret",
-      "href": "https://garden.n3wth.com/the-housemaids-secret",
+      "href": "/thinking/the-housemaids-secret",
       "description": "A personal review of Freida McFadden's thriller about a housemaid entangled in a wealthy family's secrets",
       "section": null
     },
     {
       "title": "The Paris Apartment",
-      "href": "https://garden.n3wth.com/references/books/the-paris-apartment",
+      "href": "/thinking/references/books/the-paris-apartment",
       "description": "Publisher blurb for the mystery The Paris Apartment, about a missing brother and suspicious neighbors",
       "section": "references"
     },
     {
       "title": "The Perfect Couple",
-      "href": "https://garden.n3wth.com/references/books/the-perfect-couple",
+      "href": "/thinking/references/books/the-perfect-couple",
       "description": "Synopsis of Elin Hilderbrand's mystery about a body found before a lavish Nantucket wedding",
       "section": "references"
     },
     {
       "title": "The Remains of the Day",
-      "href": "https://garden.n3wth.com/references/books/the-remains-of-the-day",
+      "href": "/thinking/references/books/the-remains-of-the-day",
       "description": "Book note on Ishiguro's novel about an English butler reflecting on duty and regret",
       "section": "references"
     },
     {
       "title": "The Remains of the Day",
-      "href": "https://garden.n3wth.com/the-remains-of-the-day",
+      "href": "/thinking/the-remains-of-the-day",
       "description": "Personal review of The Remains of the Day, on duty, repression and regret in Ishiguro's novel",
       "section": null
     },
     {
       "title": "The Seven Husbands of Evelyn Hugo",
-      "href": "https://garden.n3wth.com/references/books/the-seven-husbands-of-evelyn-hugo",
+      "href": "/thinking/references/books/the-seven-husbands-of-evelyn-hugo",
       "description": "Publisher blurb for Taylor Jenkins Reid's novel about a reclusive Hollywood icon telling her life story",
       "section": "references"
     },
     {
       "title": "The Surrender Experiment: My Journey into Life's Perfection",
-      "href": "https://garden.n3wth.com/references/books/the-surrender-experiment",
+      "href": "/thinking/references/books/the-surrender-experiment",
       "description": "Reading list entry for Michael Singer's memoir on letting go of control and spiritual surrender",
       "section": "references"
     },
     {
       "title": "The Winner",
-      "href": "https://garden.n3wth.com/references/books/the-winner",
+      "href": "/thinking/references/books/the-winner",
       "description": "Synopsis of Teddy Wayne's thriller about a tennis instructor's affair in a wealthy enclave",
       "section": "references"
     },
     {
       "title": "The Winner",
-      "href": "https://garden.n3wth.com/the-winner",
+      "href": "/thinking/the-winner",
       "description": "Personal review of Teddy Wayne's The Winner, rated three stars for its social commentary",
       "section": null
     },
     {
       "title": "The Winner Effect: The Neuroscience of Success and Failure",
-      "href": "https://garden.n3wth.com/references/books/the-winner-effect",
+      "href": "/thinking/references/books/the-winner-effect",
       "description": "Publisher blurb for The Winner Effect, on how winning changes brain chemistry and behavior",
       "section": "references"
     },
     {
       "title": "Thinking, Fast and Slow",
-      "href": "https://garden.n3wth.com/references/books/thinking-fast-and-slow",
+      "href": "/thinking/references/books/thinking-fast-and-slow",
       "description": "Book note on Kahneman's account of the mind's two systems of fast and slow thinking",
       "section": "references"
     },
     {
       "title": "This Book Is Full of Spiders: Seriously, Dude, Don't Touch It",
-      "href": "https://garden.n3wth.com/references/books/this-book-is-full-of-spiders",
+      "href": "/thinking/references/books/this-book-is-full-of-spiders",
       "description": "Publisher blurb for David Wong's horror comedy sequel to John Dies at the End",
       "section": "references"
     },
     {
       "title": "Tools",
-      "href": "https://garden.n3wth.com/tools",
+      "href": "/thinking/tools",
       "description": "Essential tools and software for productivity and development",
       "section": null
     },
     {
       "title": "Travel & Award Hacking",
-      "href": "https://garden.n3wth.com/travel",
+      "href": "/thinking/travel",
       "description": "Navigation hub for points optimization, award flights, hotel loyalty, and short-haul travel strategies",
       "section": null
     },
     {
+      "title": "Unifying the n3wth UI Package Across Six Sites",
+      "href": "/thinking/unifying-the-n3wth-ui-package-across-six-sites",
+      "description": "How a single Changesets release pinned @n3wth/ui to 2.1.1 across six apps, Next.js and Vite alike, and why the exact pin was the right call",
+      "section": null
+    },
+    {
       "title": "Wellness Journal",
-      "href": "https://garden.n3wth.com/health/wellness-journal",
+      "href": "/thinking/health/wellness-journal",
       "description": "Guide to maintaining a comprehensive health and wellness journal",
       "section": "health"
     },
     {
       "title": "What the Hell Did I Just Read: A Novel of Cosmic Horror",
-      "href": "https://garden.n3wth.com/references/books/what-the-hell-did-i-just-read",
+      "href": "/thinking/references/books/what-the-hell-did-i-just-read",
       "description": "Publisher blurb for the comic horror novel What the Hell Did I Just Read",
       "section": "references"
     },
     {
       "title": "What We Owe the Future",
-      "href": "https://garden.n3wth.com/references/books/what-we-owe-the-future",
+      "href": "/thinking/references/books/what-we-owe-the-future",
       "description": "Reading list entry for William MacAskill's book arguing for longtermism and moral responsibility to the future",
       "section": "references"
     },
     {
       "title": "Write Like No One's Watching",
-      "href": "https://garden.n3wth.com/write-like-no-ones-watching",
+      "href": "/thinking/write-like-no-ones-watching",
       "description": "The philosophy of authentic, unselfconscious writing in a digital garden",
       "section": null
     },
     {
       "title": "Yellowface",
-      "href": "https://garden.n3wth.com/references/books/yellowface",
+      "href": "/thinking/references/books/yellowface",
       "description": "Synopsis of R.F. Kuang's novel about a writer who steals her dead friend's manuscript",
       "section": "references"
     },
     {
       "title": "Yellowface",
-      "href": "https://garden.n3wth.com/yellowface",
+      "href": "/thinking/yellowface",
       "description": "Book note on R.F. Kuang's satire about a writer who steals a dead friend's manuscript",
       "section": null
     },
     {
       "title": "Zettelkasten Method",
-      "href": "https://garden.n3wth.com/zettelkasten-method",
+      "href": "/thinking/zettelkasten-method",
       "description": "Personal knowledge management system for enhanced learning through connected atomic notes",
       "section": null
     }

@@ -1,9 +1,6 @@
 /**
- * Refreshes the committed content snapshots in src/data/*.json from their
- * live sources (garden feed/index, the npm registry). This is the ONLY
- * place this repo makes those network calls — `npm run build` no longer
- * does, so the same commit always compiles to the same output regardless
- * of network state (see scripts/verify-content.mjs).
+ * Refreshes the committed npm registry snapshot in src/data/ui-meta.json.
+ * Garden content is generated locally by build-notes.mjs and is never fetched.
  *
  * Run manually, or on a schedule. This repo has no
  * refresh-portfolio-content workflow yet; add one under .github/workflows
