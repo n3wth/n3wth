@@ -25,7 +25,7 @@ describe('portfolio analytics signup contract', () => {
   it('records source site only and never forwards the address', async () => {
     const { trackSignup, flushAnalytics } = await import('../analytics')
     flushAnalytics()
-    trackSignup('reader@example.com')
+    trackSignup()
     await vi.waitFor(() => {
       expect(captureNewsletterSubscribed).toHaveBeenCalledWith(posthog, 'home')
     })
@@ -39,6 +39,6 @@ describe('portfolio analytics signup contract', () => {
     })
     const { trackSignup, flushAnalytics } = await import('../analytics')
     flushAnalytics()
-    expect(() => trackSignup('reader@example.com')).not.toThrow()
+    expect(() => trackSignup()).not.toThrow()
   })
 })

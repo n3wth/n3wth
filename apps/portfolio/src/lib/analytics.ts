@@ -35,7 +35,7 @@ export function track(event: string, props?: Props) {
 }
 
 /** Call only after the subscription API succeeds. Address is never sent to analytics. */
-export function trackSignup(_email?: string) {
+export function trackSignup() {
   run(posthog => captureNewsletterSubscribed(posthog, 'home'))
 }
 
