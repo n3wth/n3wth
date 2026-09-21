@@ -28,7 +28,7 @@ describe('Homepage without a ready scene', () => {
       expect(screen.getByRole('link', { name, exact: true })).toHaveAttribute('href', `/${name.toLowerCase()}`)
     }
     expect(screen.queryByRole('navigation', { name: 'Scene destinations' })).toBeNull()
-    expect(screen.getByRole('link', { name: 'Explore my projects' })).toHaveAttribute('href', '/work#building')
+    expect(screen.getByRole('link', { name: 'Explore my projects' })).toHaveAttribute('href', '/projects')
     expect(screen.queryByRole('navigation', { name: 'Site chapters' })).toBeNull()
   })
 
