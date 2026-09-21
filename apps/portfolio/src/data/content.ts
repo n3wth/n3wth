@@ -9,7 +9,7 @@ export const siteConfig = {
     github: 'https://github.com/n3wth',
     linkedin: 'https://www.linkedin.com/in/n3wth',
   },
-  gardenSite: siteUrls.garden,
+  gardenSite: '/thinking',
 }
 
 export interface NavItem {
@@ -32,7 +32,7 @@ export const familySites = [
   { name: 'hop.flights', href: siteUrls.hop },
   { name: 'lunchmoney.sh', href: siteUrls.lunch },
   { name: 'r3', href: siteUrls.r3 },
-  { name: 'garden', href: siteUrls.garden },
+  { name: 'garden', href: '/thinking' },
   { name: 'Agent Skills', href: siteUrls.skills },
   { name: 'ui', href: siteUrls.ui },
 ]
@@ -237,6 +237,6 @@ export const projects: Project[] = [
     name: 'garden',
     description: 'A digital garden: Obsidian-flavored markdown rendered as a wiki, every note linked.',
     tech: ['Next.js', 'Astryx', 'Wikilinks'],
-    url: siteUrls.garden,
+    url: '/thinking',
   },
 ]

@@ -25,7 +25,6 @@ const signupPaths = [
   'apps/portfolio/src/lib/analytics.ts',
   'apps/portfolio/src/components/Footer.tsx',
   'apps/skills/src/components/Footer.tsx',
-  'apps/garden/src/components/SiteFooter.tsx',
   'apps/r3-web/components/FooterSignup.tsx',
   'apps/ui-docs/demo/Signup.tsx',
 ]

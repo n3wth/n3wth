@@ -44,6 +44,8 @@ export function checkSiteDesign(root = fileURLToPath(new URL('../', import.meta.
       throw new Error(`${app.name}: Astryx dependencies belong in @n3wth/ui`)
     }
     const shared = checkImports(resolve(root, 'apps', entry.name))
+    // Garden is a redirect Worker; it serves no UI.
+    if (app.name === '@n3wth/garden') continue
     if (!app.dependencies?.['@n3wth/ui']) {
       throw new Error(`${app.name} is missing the shared UI dependency`)
     }

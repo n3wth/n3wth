@@ -1,6 +1,6 @@
 {
   "id": "G21",
-  "contentPath": "apps/garden/content/Growth gates before growth work.md",
+  "contentPath": "apps/portfolio/content/Growth gates before growth work.md",
   "contentSha256": "3211f879bf900f9d2fd1892da2b60ce1c894456b85abeffb01f0b50a65428186",
   "reviewedAt": "2026-09-18",
   "reviewer": "Author's editorial pass, 2026-09-18: research subagents fetched and quoted each source; every quoted passage was re-fetched independently and matched verbatim before scoring. First-person incident notes; external sources ground the mechanisms named, not the incidents themselves.",

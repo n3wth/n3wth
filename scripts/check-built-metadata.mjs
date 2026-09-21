@@ -87,6 +87,10 @@ export function checkBuiltMetadata(root, options = {}) {
   let JSDOM
   const results = []
   for (const app of applications) {
+    if (app.directory === 'garden') {
+      log('garden: redirect Worker has no public HTML')
+      continue
+    }
     const output = join(root, 'apps', app.directory, app.next ? '.next/server/app' : 'dist')
     let checked = 0
     for (const file of htmlFiles(output)) {

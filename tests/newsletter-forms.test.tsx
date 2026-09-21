@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { Footer as PortfolioFooter } from '../apps/portfolio/src/components/Footer'
 import { Footer as SkillsFooter } from '../apps/skills/src/components/Footer'
-import { SiteFooter as GardenFooter } from '../apps/garden/src/components/SiteFooter'
 import { FooterSignup as R3Footer } from '../apps/r3-web/components/FooterSignup'
 import { Signup as UiFooter } from '../apps/ui-docs/demo/Signup'
 
@@ -20,7 +19,7 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
 for (const [source, Form] of [
-  ['home', PortfolioFooter], ['skills', SkillsFooter], ['garden', GardenFooter], ['r3', R3Footer], ['ui', UiFooter],
+  ['home', PortfolioFooter], ['skills', SkillsFooter], ['r3', R3Footer], ['ui', UiFooter],
 ] as const) {
   describe(`${source} newsletter form`, () => {
     it('waits for confirmed API success before showing success or capturing analytics', async () => {

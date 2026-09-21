@@ -1,5 +1,5 @@
 /**
- * A sidenote pointing out to a garden.n3wth.com note — the connector is a
+ * A sidenote pointing out to a Thinking note — the connector is a
  * small organic stem-and-leaf line, the same base/mid/tip + leaf-offshoot
  * construction as the night field's GardenPatch (src/components/NightField.tsx),
  * just flattened to 2D. On desktop it sits in the margin beside the
@@ -45,8 +45,6 @@ export function MarginNote({ href, title, description }: MarginNoteProps) {
       </svg>
       <a
         href={href}
-        target="_blank"
-        rel="noreferrer"
         className="link-underline block max-w-[26ch]"
       >
         <p className="text-[11px] uppercase tracking-wide" style={{ color: 'var(--ink-dim)' }}>
@@ -60,7 +58,6 @@ export function MarginNote({ href, title, description }: MarginNoteProps) {
             {description}
           </p>
         )}
-      <span className="sr-only"> (opens in new tab)</span>
       </a>
     </aside>
   )

@@ -1,0 +1,3652 @@
+[
+  {
+    "slug": "frameworks/5-whys",
+    "href": "/thinking/frameworks/5-whys",
+    "title": "5 Whys",
+    "description": "A framework for identifying root causes of problems through iterative questioning",
+    "tags": [
+      "strategy",
+      "problem-solving",
+      "analysis"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/5-year-health-and-wellness-plan",
+    "href": "/thinking/health/5-year-health-and-wellness-plan",
+    "title": "5-Year Health and Wellness Plan",
+    "description": "Structured health goals and checkpoints from 2025–2030",
+    "tags": [
+      "health",
+      "wellness",
+      "planning",
+      "goals",
+      "long-term"
+    ],
+    "stage": "evergreen",
+    "readingTime": "9 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/aarm",
+    "href": "/thinking/frameworks/aarm",
+    "title": "AARM",
+    "description": "A framework for product strategy and growth through user lifecycle management",
+    "tags": [
+      "product",
+      "growth",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "about",
+    "href": "/thinking/about",
+    "title": "About",
+    "description": "About this digital garden and its gardener",
+    "tags": [
+      "hub",
+      "about"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "vault",
+    "href": "/thinking/vault",
+    "title": "About This Vault",
+    "description": "Meta information about this digital garden and knowledge system",
+    "tags": [
+      "meta",
+      "knowledge-management",
+      "obsidian"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/acne-prevention",
+    "href": "/thinking/health/acne-prevention",
+    "title": "Acne Prevention",
+    "description": "Strategies for preventing and managing acne",
+    "tags": [
+      "health",
+      "skincare",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "active-learning",
+    "href": "/thinking/active-learning",
+    "title": "Active Learning",
+    "description": "Techniques for engaging and effective learning",
+    "tags": [
+      "learning",
+      "education",
+      "skills"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "actual-gardening-costs",
+    "href": "/thinking/actual-gardening-costs",
+    "title": "Actual Gardening Costs",
+    "description": "A line-item breakdown of what a San Francisco garden actually cost: irrigation, beds, soil, tools",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/aging-well",
+    "href": "/thinking/health/aging-well",
+    "title": "Aging Well",
+    "description": "Strategies for maintaining health and vitality as we age",
+    "tags": [
+      "health",
+      "aging",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "alaska-subscriptions",
+    "href": "/thinking/alaska-subscriptions",
+    "title": "Alaska Subscriptions",
+    "description": "Fare deals and alerts for Alaska Airlines travel",
+    "tags": [
+      "travel",
+      "flights",
+      "deals",
+      "planning"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/an-unquiet-mind",
+    "href": "/thinking/references/books/an-unquiet-mind",
+    "title": "An Unquiet Mind: A Memoir of Moods and Madness",
+    "description": "Reading list entry for Kay Redfield Jamison's memoir on living with bipolar illness as a doctor",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "anki/anki",
+    "href": "/thinking/anki/anki",
+    "title": "Anki",
+    "description": "Spaced repetition for long-term memory retention",
+    "tags": [
+      "learning",
+      "memory",
+      "tools",
+      "spaced-repetition"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/annual-physical",
+    "href": "/thinking/health/annual-physical",
+    "title": "Annual Physical",
+    "description": "The importance of regular check-ups and what to expect",
+    "tags": [
+      "health",
+      "prevention",
+      "check-up"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "application-tracking-system",
+    "href": "/thinking/application-tracking-system",
+    "title": "Application Tracking System",
+    "description": "Software for managing recruitment processes",
+    "tags": [
+      "recruitment",
+      "hr",
+      "technology"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "tomatoes-self-pollinate",
+    "href": "/thinking/tomatoes-self-pollinate",
+    "title": "Are Tomatoes Self-Pollinating?",
+    "description": "Yes. Tomato plants are self-pollinating: each flower has male and female parts. How tomatoes pollinate, why fruit still fails, and when to help.",
+    "tags": [
+      "gardening",
+      "tomatoes",
+      "pollination"
+    ],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "astryx-vs-shadcn-vs-angular-material",
+    "href": "/thinking/astryx-vs-shadcn-vs-angular-material",
+    "title": "Astryx vs shadcn: which design system for LLM-written UI",
+    "description": "Field notes from this garden: Astryx, shadcn and component ownership, with a reproducible table of contents example and the limits of type-level accessibility checks.",
+    "tags": [
+      "technology",
+      "engineering",
+      "design",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-07-14"
+  },
+  {
+    "slug": "frameworks/atomic-habits",
+    "href": "/thinking/frameworks/atomic-habits",
+    "title": "Atomic Habits",
+    "description": "A framework for building better habits through small, consistent actions",
+    "tags": [
+      "personal-development",
+      "habits",
+      "productivity"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/atomic-habits",
+    "href": "/thinking/references/books/atomic-habits",
+    "title": "Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones",
+    "description": "Summary and quotes from Atomic Habits, with notes linking its habit framework to other reading and goals",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "atomic-notes",
+    "href": "/thinking/atomic-notes",
+    "title": "Atomic Notes",
+    "description": "An atomic note is a self-contained, single-idea note in a Zettelkasten: concise, linked, and understandable on its own.",
+    "tags": [
+      "knowledge-management",
+      "note-taking",
+      "zettelkasten"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "ats-optimization",
+    "href": "/thinking/ats-optimization",
+    "title": "ATS Optimization",
+    "description": "Strategies for enhancing the effectiveness of an Application Tracking System",
+    "tags": [
+      "recruitment",
+      "hr",
+      "technology"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "audit-retrieval-before-trusting-an-answer",
+    "href": "/thinking/audit-retrieval-before-trusting-an-answer",
+    "title": "Audit retrieval before trusting an answer",
+    "description": "A practical protocol for checking corpus coverage, retrieval quality, and whether source records support an answer.",
+    "tags": [
+      "knowledge-management",
+      "engineering",
+      "research"
+    ],
+    "stage": "budding",
+    "readingTime": "5 min read",
+    "date": "2026-09-18"
+  },
+  {
+    "slug": "autism",
+    "href": "/thinking/autism",
+    "title": "Autism",
+    "description": "Strengths and challenges of autism spectrum conditions, covering focus, pattern recognition, sensory needs and social communication",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "award-flight-hacking",
+    "href": "/thinking/award-flight-hacking",
+    "title": "Award Flight Hacking & Sweet Spots",
+    "description": "Practical strategies for finding saver award seats, transferring flexible points, and using partner award charts",
+    "tags": [
+      "travel",
+      "flights",
+      "award-travel",
+      "points",
+      "sweet-spots"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read"
+  },
+  {
+    "slug": "health/bedtime-routine",
+    "href": "/thinking/health/bedtime-routine",
+    "title": "Bedtime Routine",
+    "description": "Practices for improving sleep quality and relaxation",
+    "tags": [
+      "health",
+      "sleep",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "behavior-change",
+    "href": "/thinking/behavior-change",
+    "title": "Behavior Change",
+    "description": "How self-awareness, motivation, and habit formation combine to change behavior, linked to book notes",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "behavioral-interviews",
+    "href": "/thinking/behavioral-interviews",
+    "title": "Behavioral Interviews",
+    "description": "Interview technique focusing on past experiences and behaviors",
+    "tags": [
+      "interviews",
+      "career",
+      "hr"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "benefits-analysis",
+    "href": "/thinking/benefits-analysis",
+    "title": "Benefits Analysis",
+    "description": "Evaluation of employee benefits and compensation packages",
+    "tags": [
+      "hr",
+      "compensation",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "board-games",
+    "href": "/thinking/board-games",
+    "title": "Board Games",
+    "description": "Collection of tabletop games I enjoy",
+    "tags": [
+      "hobbies",
+      "games",
+      "social",
+      "entertainment"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "book-learning-synthesis",
+    "href": "/thinking/book-learning-synthesis",
+    "title": "Book Learning Synthesis",
+    "description": "How the books I've read connect to each other",
+    "tags": [
+      "synthesis",
+      "books",
+      "learning",
+      "personal-development"
+    ],
+    "stage": "evergreen",
+    "readingTime": "6 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "book-reviews",
+    "href": "/thinking/book-reviews",
+    "title": "Book Reviews",
+    "description": "Reading log with ratings, currently-reading list, 2024 stats, and a full backlog of book notes",
+    "tags": [
+      "books",
+      "reviews",
+      "reading-list"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/books",
+    "href": "/thinking/references/books/books",
+    "title": "Books",
+    "description": "Collection of book references, reviews, and reading notes",
+    "tags": [
+      "books",
+      "reading",
+      "references",
+      "literature",
+      "learning"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/boy-parts",
+    "href": "/thinking/references/books/boy-parts",
+    "title": "Boy Parts",
+    "description": "Book blurb for Eliza Clark's dark comedy about a photographer's self-destructive spiral",
+    "tags": [
+      "books",
+      "references",
+      "currently-reading"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "bullet-journal",
+    "href": "/thinking/bullet-journal",
+    "title": "Bullet Journal",
+    "description": "A method for personal organization and productivity",
+    "tags": [
+      "productivity",
+      "organization",
+      "journaling"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "business-acumen",
+    "href": "/thinking/business-acumen",
+    "title": "Business Acumen",
+    "description": "Understanding and applying business knowledge and skills",
+    "tags": [
+      "business",
+      "skills",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-achievements",
+    "href": "/thinking/career-achievements",
+    "title": "Career Achievements",
+    "description": "Documenting and showcasing professional accomplishments",
+    "tags": [
+      "career",
+      "achievements",
+      "professional-development"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-development",
+    "href": "/thinking/career-development",
+    "title": "Career Development",
+    "description": "Strategies for advancing professional growth and success",
+    "tags": [
+      "career",
+      "development",
+      "growth"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-direction-framework",
+    "href": "/thinking/career-direction-framework",
+    "title": "Career Direction Framework",
+    "description": "A structured approach to defining and pursuing career goals",
+    "tags": [
+      "career",
+      "planning",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-frameworks",
+    "href": "/thinking/career-frameworks",
+    "title": "Career Frameworks",
+    "description": "Models and frameworks for career development and progression",
+    "tags": [
+      "career",
+      "frameworks",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-goals-framework",
+    "href": "/thinking/career-goals-framework",
+    "title": "Career Goals Framework",
+    "description": "A practical approach to setting and achieving meaningful career objectives",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-journey",
+    "href": "/thinking/career-journey",
+    "title": "Career Journey",
+    "description": "My path through tech, leadership, and continuous learning",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "mocs/career-map",
+    "href": "/thinking/mocs/career-map",
+    "title": "Career Map",
+    "description": "Documenting my path in tech and leadership",
+    "tags": [
+      "career",
+      "development",
+      "leadership"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-milestones-tracker",
+    "href": "/thinking/career-milestones-tracker",
+    "title": "Career Milestones Tracker",
+    "description": "Track and celebrate your professional achievements and progress",
+    "tags": [
+      "career",
+      "achievements",
+      "tracking",
+      "milestones"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-planning",
+    "href": "/thinking/career-planning",
+    "title": "Career Planning",
+    "description": "Strategic career development and goal setting",
+    "tags": [
+      "career",
+      "planning",
+      "goals"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-roadmap",
+    "href": "/thinking/career-roadmap",
+    "title": "Career Roadmap",
+    "description": "Strategic planning for career progression",
+    "tags": [
+      "career",
+      "planning",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-transition-guide",
+    "href": "/thinking/career-transition-guide",
+    "title": "Career Transition Guide",
+    "description": "Strategic framework for navigating career transitions in tech",
+    "tags": [
+      "career-transition",
+      "career-change",
+      "job-search",
+      "career-planning",
+      "professional-development"
+    ],
+    "stage": "evergreen",
+    "readingTime": "7 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "career-transitions",
+    "href": "/thinking/career-transitions",
+    "title": "Career Transitions",
+    "description": "Guide to successfully navigating career changes",
+    "tags": [
+      "career",
+      "transitions",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "case-interviews",
+    "href": "/thinking/case-interviews",
+    "title": "Case Interviews",
+    "description": "Interview technique focusing on business problem-solving",
+    "tags": [
+      "interviews",
+      "career",
+      "consulting"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "change-management",
+    "href": "/thinking/change-management",
+    "title": "Change Management",
+    "description": "Strategies for managing organizational change effectively",
+    "tags": [
+      "management",
+      "strategy",
+      "leadership"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "choose-ui-component-ownership",
+    "href": "/thinking/choose-ui-component-ownership",
+    "title": "Choose UI component ownership",
+    "description": "A practical checklist for deciding where a UI component should live and who maintains it",
+    "tags": [
+      "technology",
+      "engineering",
+      "design",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-09-16"
+  },
+  {
+    "slug": "health/circadian-rhythm",
+    "href": "/thinking/health/circadian-rhythm",
+    "title": "Circadian Rhythm",
+    "description": "Understanding and optimizing the body's natural sleep-wake cycle",
+    "tags": [
+      "health",
+      "sleep",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/circles",
+    "href": "/thinking/frameworks/circles",
+    "title": "CIRCLES",
+    "description": "A systematic approach to product design and improvement",
+    "tags": [
+      "product",
+      "design",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "communication-skills",
+    "href": "/thinking/communication-skills",
+    "title": "Communication Skills",
+    "description": "Essential skills for effective interpersonal and professional communication",
+    "tags": [
+      "communication",
+      "skills",
+      "professional-development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "companies",
+    "href": "/thinking/companies",
+    "title": "Companies",
+    "description": "Organizations I'm tracking, researching, or have worked with",
+    "tags": [
+      "career",
+      "research",
+      "industry",
+      "organizations"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "company-research-template",
+    "href": "/thinking/company-research-template",
+    "title": "Company Research Template",
+    "description": "A structured approach to researching potential employers",
+    "tags": [
+      "career",
+      "job-search",
+      "research"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "content-strategy",
+    "href": "/thinking/content-strategy",
+    "title": "Content Strategy",
+    "description": "Planning and managing content to achieve business goals",
+    "tags": [
+      "marketing",
+      "strategy",
+      "content"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "recipes",
+    "href": "/thinking/recipes",
+    "title": "Cooking",
+    "description": "Recipes, techniques, and culinary experiments",
+    "tags": [
+      "cooking",
+      "food",
+      "recipes"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "cooking-methods",
+    "href": "/thinking/cooking-methods",
+    "title": "Cooking Methods",
+    "description": "Techniques for preparing and cooking food",
+    "tags": [
+      "cooking",
+      "food",
+      "techniques"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/cosmetic-ingredients",
+    "href": "/thinking/health/cosmetic-ingredients",
+    "title": "Cosmetic Ingredients",
+    "description": "Understanding the components of skincare and beauty products",
+    "tags": [
+      "health",
+      "skincare",
+      "beauty"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "course-reviews",
+    "href": "/thinking/course-reviews",
+    "title": "Course Reviews",
+    "description": "Evaluations and feedback on educational courses",
+    "tags": [
+      "education",
+      "reviews",
+      "learning"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "cover-letter-templates",
+    "href": "/thinking/cover-letter-templates",
+    "title": "Cover Letter Templates",
+    "description": "Templates for crafting effective cover letters",
+    "tags": [
+      "career",
+      "job-search",
+      "writing"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/cracking-the-pm-career",
+    "href": "/thinking/references/books/cracking-the-pm-career",
+    "title": "Cracking the PM Career: The Skills, Frameworks, and Practices to Become a Great Product Manager",
+    "description": "Book note on Bavaro's guide to product manager skills, frameworks, and career progression",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/creation-lake",
+    "href": "/thinking/references/books/creation-lake",
+    "title": "Creation Lake",
+    "description": "Publisher blurb for Rachel Kushner's Creation Lake, a novel about a spy infiltrating a French anarchist commune",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/cue-routine-reward",
+    "href": "/thinking/health/cue-routine-reward",
+    "title": "Cue-Routine-Reward",
+    "description": "Understanding the habit loop for behavior change",
+    "tags": [
+      "habits",
+      "behavior-change",
+      "psychology"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/cultish",
+    "href": "/thinking/references/books/cultish",
+    "title": "Cultish: The Language of Fanaticism",
+    "description": "Reading list entry for Amanda Montell's book on how language creates and sustains cult influence",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/daring-greatly",
+    "href": "/thinking/references/books/daring-greatly",
+    "title": "Daring Greatly: How the Courage to Be Vulnerable Transforms the Way We Live, Love, Parent, and Lead",
+    "description": "Summary and key themes from Daring Greatly, on vulnerability, shame resilience and wholehearted living",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/dark-matter",
+    "href": "/thinking/references/books/dark-matter",
+    "title": "Dark Matter",
+    "description": "Synopsis of Blake Crouch's thriller about a physicist waking into an alternate version of his life",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/deep-learning",
+    "href": "/thinking/references/books/deep-learning",
+    "title": "Deep Learning",
+    "description": "Notes on Goodfellow's deep learning textbook, covering core concepts and links to related skills",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "delegation-skills",
+    "href": "/thinking/delegation-skills",
+    "title": "Delegation Skills",
+    "description": "Techniques for effective task delegation and team management",
+    "tags": [
+      "management",
+      "leadership",
+      "skills"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "deliberate-practice",
+    "href": "/thinking/deliberate-practice",
+    "title": "Deliberate Practice",
+    "description": "A structured approach to skill improvement and mastery",
+    "tags": [
+      "learning",
+      "skills",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "digital-garden",
+    "href": "/thinking/digital-garden",
+    "title": "Digital Garden",
+    "description": "A method for cultivating and organizing digital knowledge",
+    "tags": [
+      "productivity",
+      "knowledge-management",
+      "organization"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "digital-gardening",
+    "href": "/thinking/digital-gardening",
+    "title": "Digital Gardening",
+    "description": "The practice and philosophy of digital knowledge cultivation",
+    "tags": [
+      "digital-gardening",
+      "knowledge-management",
+      "learning"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/eisenhower",
+    "href": "/thinking/frameworks/eisenhower",
+    "title": "Eisenhower",
+    "description": "A framework for prioritizing tasks based on urgency and importance",
+    "tags": [
+      "productivity",
+      "time-management",
+      "prioritization"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "energy",
+    "href": "/thinking/energy",
+    "title": "Energy Management",
+    "description": "Understanding and optimizing personal energy for sustainable performance",
+    "tags": [
+      "energy",
+      "wellness",
+      "productivity",
+      "self-care"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/environmental-design",
+    "href": "/thinking/health/environmental-design",
+    "title": "Environmental Design",
+    "description": "Designing spaces to promote health and well-being",
+    "tags": [
+      "health",
+      "design",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "events",
+    "href": "/thinking/events",
+    "title": "Events",
+    "description": "Conferences, meetups, and professional events",
+    "tags": [
+      "networking",
+      "learning",
+      "career",
+      "community"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/exercise",
+    "href": "/thinking/health/exercise",
+    "title": "Exercise",
+    "description": "Current workout structure and movement philosophy",
+    "tags": [
+      "health",
+      "fitness",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "favorite-blogs",
+    "href": "/thinking/favorite-blogs",
+    "title": "Favorite Blogs",
+    "description": "A shortlist of blogs on writing, software, note-taking, digital gardens, and tech strategy",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/feel-good-productivity",
+    "href": "/thinking/references/books/feel-good-productivity",
+    "title": "Feel-Good Productivity: How to Do More of What Matters to You",
+    "description": "Reading list entry for Ali Abdaal's book linking productivity to joy, play, and connection",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/first-lie-wins",
+    "href": "/thinking/references/books/first-lie-wins",
+    "title": "First Lie Wins",
+    "description": "Publisher blurb for the thriller First Lie Wins, about a woman living under a false identity",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/fitt",
+    "href": "/thinking/health/fitt",
+    "title": "FITT Principle",
+    "description": "Framework for exercise program design",
+    "tags": [
+      "health",
+      "exercise",
+      "fitness"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "fleeting-notes",
+    "href": "/thinking/fleeting-notes",
+    "title": "Fleeting Notes",
+    "description": "Quick, temporary notes for capturing ideas and thoughts",
+    "tags": [
+      "productivity",
+      "note-taking",
+      "organization"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "flow",
+    "href": "/thinking/flow",
+    "title": "Flow State",
+    "description": "The psychology and practice of deep, focused engagement",
+    "tags": [
+      "productivity",
+      "focus",
+      "psychology",
+      "performance"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "food-preservation",
+    "href": "/thinking/food-preservation",
+    "title": "Food Preservation",
+    "description": "Techniques for extending the shelf life of food",
+    "tags": [
+      "cooking",
+      "food",
+      "preservation"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/frameworks-map",
+    "href": "/thinking/frameworks/frameworks-map",
+    "title": "Frameworks",
+    "description": "Structured approaches and mental models for effective thinking and decision-making",
+    "tags": [
+      "frameworks",
+      "mental-models",
+      "productivity",
+      "thinking"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/frameworks",
+    "href": "/thinking/frameworks/frameworks",
+    "title": "Frameworks",
+    "description": "Mental models and structured approaches for effective thinking and decision-making",
+    "tags": [
+      "frameworks",
+      "mental-models",
+      "productivity"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/funny-story",
+    "href": "/thinking/references/books/funny-story",
+    "title": "Funny Story",
+    "description": "Synopsis of Emily Henry's novel about two exes' roommates who fake a rebound romance",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/game",
+    "href": "/thinking/frameworks/game",
+    "title": "GAME",
+    "description": "A framework for developing and tracking product initiatives through experimentation",
+    "tags": [
+      "product",
+      "metrics",
+      "experimentation"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "garden-planning",
+    "href": "/thinking/garden-planning",
+    "title": "Garden Planning",
+    "description": "Strategies for designing and maintaining a garden",
+    "tags": [
+      "gardening",
+      "planning",
+      "outdoors"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "gardening",
+    "href": "/thinking/gardening",
+    "title": "Gardening",
+    "description": "Growing plants, creating outdoor spaces, and connecting with nature",
+    "tags": [
+      "hobbies",
+      "nature",
+      "outdoors",
+      "plants",
+      "sustainability"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "mocs/gardening",
+    "href": "/thinking/mocs/gardening",
+    "title": "Gardening",
+    "description": "A personal collection of gardening knowledge, techniques, and sustainable practices",
+    "tags": [
+      "gardening",
+      "nature",
+      "sustainability"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "gardening-tasks",
+    "href": "/thinking/gardening-tasks",
+    "title": "Gardening Tasks",
+    "description": "Active task list for garden projects and maintenance",
+    "tags": [
+      "gardening",
+      "tasks",
+      "projects"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "gardening-tips",
+    "href": "/thinking/gardening-tips",
+    "title": "Gardening Tips",
+    "description": "Practical insights and principles for successful gardening",
+    "tags": [
+      "gardening",
+      "tips",
+      "techniques"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/good-material",
+    "href": "/thinking/references/books/good-material",
+    "title": "Good Material",
+    "description": "Book note on Dolly Alderton's novel about heartbreak, friendship, and starting over at 35",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/grit",
+    "href": "/thinking/references/books/grit",
+    "title": "Grit: The Power of Passion and Perseverance",
+    "description": "Notes on Angela Duckworth's Grit, its four components, and links to related career and habit pages",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/grow",
+    "href": "/thinking/frameworks/grow",
+    "title": "GROW",
+    "description": "A coaching model for goal setting and problem solving",
+    "tags": [
+      "coaching",
+      "personal-development",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "growth-gates-before-growth-work",
+    "href": "/thinking/growth-gates-before-growth-work",
+    "title": "Growth gates before growth work",
+    "description": "Sequence growth on a side project by gates you can pass, not dates you can miss: measure, get indexed, check demand, take one real payment, then build.",
+    "tags": [
+      "product",
+      "growth",
+      "indie",
+      "strategy"
+    ],
+    "stage": "seedling",
+    "readingTime": "3 min read",
+    "date": "2026-09-18"
+  },
+  {
+    "slug": "frameworks/gtd",
+    "href": "/thinking/frameworks/gtd",
+    "title": "GTD",
+    "description": "David Allen's five-step task management system",
+    "tags": [
+      "productivity",
+      "task-management",
+      "organization"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/habit-tracking",
+    "href": "/thinking/health/habit-tracking",
+    "title": "Habit Tracking",
+    "description": "Methods for monitoring and improving health habits",
+    "tags": [
+      "health",
+      "habits",
+      "productivity"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/happy",
+    "href": "/thinking/references/books/happy",
+    "title": "Happy: Why More or Less Everything is Absolutely Fine",
+    "description": "Reading list entry for Derren Brown's book on stoic philosophy and the nature of happiness",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/health-map",
+    "href": "/thinking/health/health-map",
+    "title": "Health",
+    "description": "Physical and mental health tracking and routines",
+    "tags": [
+      "health",
+      "wellness",
+      "fitness"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/health",
+    "href": "/thinking/health/health",
+    "title": "Health",
+    "description": "Overview of health and wellness topics",
+    "tags": [
+      "health",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health",
+    "href": "/thinking/health",
+    "title": "Health Index",
+    "description": "Central hub for health, wellness, and medical information",
+    "tags": [
+      "health",
+      "wellness",
+      "index"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/health-metrics",
+    "href": "/thinking/health/health-metrics",
+    "title": "Health Metrics",
+    "description": "Framework for tracking and improving health indicators",
+    "tags": [
+      "health",
+      "wellness",
+      "tracking"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/heart",
+    "href": "/thinking/frameworks/heart",
+    "title": "HEART",
+    "description": "A user-centered metrics framework developed by Google for measuring user experience",
+    "tags": [
+      "product",
+      "metrics",
+      "user-experience"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/hello-beautiful",
+    "href": "/thinking/references/books/hello-beautiful",
+    "title": "Hello Beautiful",
+    "description": "Publisher blurb for the novel Hello Beautiful, about a family fractured by loyalty and tragedy",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "helvetica",
+    "href": "/thinking/helvetica",
+    "title": "Helvetica",
+    "description": "Thoughts on the world's most ubiquitous typeface",
+    "tags": [
+      "design",
+      "typography",
+      "aesthetics",
+      "culture"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/him",
+    "href": "/thinking/references/books/him",
+    "title": "Him",
+    "description": "Book blurb for Sarina Bowen's romance about two former hockey teammates reuniting years later",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "hobby",
+    "href": "/thinking/hobby",
+    "title": "Hobbies & Interests",
+    "description": "Personal interests and activities outside of work",
+    "tags": [
+      "personal",
+      "hobbies",
+      "interests",
+      "lifestyle"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "olivers-garden",
+    "href": "/thinking/olivers-garden",
+    "title": "Home",
+    "description": "Introduction to the site, current projects, and recurring questions about habits and learning",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/hook-model",
+    "href": "/thinking/frameworks/hook-model",
+    "title": "Hook Model",
+    "description": "A framework for building habit-forming products through behavioral cycles",
+    "tags": [
+      "product",
+      "engagement",
+      "behavior"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "hotel-loyalty-optimization",
+    "href": "/thinking/hotel-loyalty-optimization",
+    "title": "Hotel Loyalty & Points Optimization",
+    "description": "Strategic transfers and points splicing for World of Hyatt and luxury hotel redemptions",
+    "tags": [
+      "travel",
+      "hotels",
+      "points",
+      "hyatt",
+      "loyalty"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read"
+  },
+  {
+    "slug": "how-openclaw-dreaming-works",
+    "href": "/thinking/how-openclaw-dreaming-works",
+    "title": "How OpenClaw Dreaming Works",
+    "description": "A detailed research report exploring the inner workings of OpenClaw's autonomous background memory consolidation sweeps, sleep-inspired phases, scoring logic, and operational tuning.",
+    "tags": [
+      "openclaw",
+      "artificial-intelligence",
+      "memory-consolidation",
+      "engineering"
+    ],
+    "stage": "evergreen",
+    "readingTime": "10 min read",
+    "date": "2026-06-10"
+  },
+  {
+    "slug": "references/books/how-to-end-a-love-story",
+    "href": "/thinking/references/books/how-to-end-a-love-story",
+    "title": "How to End a Love Story",
+    "description": "Book note on Yulin Kuang's enemies-to-lovers romance between two writers with a shared past",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "how-to-use-mocs",
+    "href": "/thinking/how-to-use-mocs",
+    "title": "How to Use MOCs",
+    "description": "Guide for effectively using Maps of Content for knowledge navigation",
+    "tags": [
+      "moc",
+      "guide",
+      "knowledge-management",
+      "navigation"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/ill-be-gone-in-the-dark",
+    "href": "/thinking/references/books/ill-be-gone-in-the-dark",
+    "title": "I'll Be Gone in the Dark: One Woman's Obsessive Search for the Golden State Killer",
+    "description": "Publisher blurb for Michelle McNamara's true crime book chasing the Golden State Killer",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/im-starting-to-worry-about-this-black-box-of-doom",
+    "href": "/thinking/references/books/im-starting-to-worry-about-this-black-box-of-doom",
+    "title": "I'm Starting to Worry About This Black Box of Doom",
+    "description": "Reading list entry for Jason Pargin's thriller about a cross-country trip with a mysterious sealed box",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/ice",
+    "href": "/thinking/frameworks/ice",
+    "title": "ICE",
+    "description": "A framework for prioritizing ideas based on Impact, Confidence, and Ease",
+    "tags": [
+      "prioritization",
+      "strategy",
+      "product"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/immunization",
+    "href": "/thinking/health/immunization",
+    "title": "Immunization",
+    "description": "Notes on tracking a personal vaccination schedule and finding travel vaccine guidance",
+    "tags": [
+      "health",
+      "prevention",
+      "vaccines"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "plants/indoor-soil-mix",
+    "href": "/thinking/plants/indoor-soil-mix",
+    "title": "Indoor Soil Mix",
+    "description": "Custom potting mix recipe for healthy indoor plants",
+    "tags": [
+      "gardening",
+      "plants",
+      "growing",
+      "soil"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "interview-prep-checklist",
+    "href": "/thinking/interview-prep-checklist",
+    "title": "Interview Prep Checklist",
+    "description": "Daily and weekly prep tasks for PM interviews",
+    "tags": [
+      "interviews",
+      "career",
+      "preparation",
+      "product-management"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "interview-preparation",
+    "href": "/thinking/interview-preparation",
+    "title": "Interview Preparation",
+    "description": "Checklists and frameworks I use before interviews",
+    "tags": [
+      "interviews",
+      "career",
+      "preparation"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "interview-preparation-hub",
+    "href": "/thinking/interview-preparation-hub",
+    "title": "Interview Preparation Hub",
+    "description": "Comprehensive guide for mastering all types of interviews",
+    "tags": [
+      "interviews",
+      "career",
+      "preparation",
+      "job-search"
+    ],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "interview-presence",
+    "href": "/thinking/interview-presence",
+    "title": "Interview Presence",
+    "description": "Building confidence and professional presence in interviews",
+    "tags": [
+      "interviews",
+      "communication",
+      "soft-skills"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "types-of-interviews",
+    "href": "/thinking/types-of-interviews",
+    "title": "Interview Types",
+    "description": "Comprehensive guide to different interview formats and preparation strategies",
+    "tags": [
+      "interviews",
+      "career",
+      "preparation"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "job-search-strategy",
+    "href": "/thinking/job-search-strategy",
+    "title": "Job Search Strategy",
+    "description": "Systematic approach to finding and securing ideal roles",
+    "tags": [
+      "job-search",
+      "career",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "journal",
+    "href": "/thinking/journal",
+    "title": "Journal",
+    "description": "Personal reflections and daily practice",
+    "tags": [
+      "journal",
+      "reflection",
+      "writing",
+      "personal-growth"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/jtbd",
+    "href": "/thinking/frameworks/jtbd",
+    "title": "JTBD",
+    "description": "A framework for understanding underlying customer motivations and needs",
+    "tags": [
+      "product",
+      "user-research",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/kano",
+    "href": "/thinking/frameworks/kano",
+    "title": "Kano",
+    "description": "A framework for feature prioritization based on customer satisfaction",
+    "tags": [
+      "product",
+      "prioritization",
+      "user-research"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "kazuo-ishiguro",
+    "href": "/thinking/kazuo-ishiguro",
+    "title": "Kazuo Ishiguro",
+    "description": "A stub author page with a dataview query meant to list books by Kazuo Ishiguro",
+    "tags": [
+      "people",
+      "authors"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "keep-your-notes-in-the-repo",
+    "href": "/thinking/keep-your-notes-in-the-repo",
+    "title": "Keep your notes in the repo",
+    "description": "For a personal digital garden, markdown in git beats a database. The vault is the source of truth, git is the history, and static output is the fastest thing you can serve.",
+    "tags": [
+      "knowledge-management",
+      "digital-garden",
+      "architecture"
+    ],
+    "stage": "seedling",
+    "readingTime": "3 min read",
+    "date": "2026-09-18"
+  },
+  {
+    "slug": "references/books/kill-for-me-kill-for-you",
+    "href": "/thinking/references/books/kill-for-me-kill-for-you",
+    "title": "Kill for Me Kill for You",
+    "description": "Publisher blurb for the thriller Kill for Me Kill for You, about two women's revenge pact",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/klara-and-the-sun",
+    "href": "/thinking/references/books/klara-and-the-sun",
+    "title": "Klara and the Sun",
+    "description": "Synopsis of Kazuo Ishiguro's novel narrated by an artificial companion waiting to be chosen",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "knowledge-graph-linking-strategy",
+    "href": "/thinking/knowledge-graph-linking-strategy",
+    "title": "Knowledge Graph Linking Strategy",
+    "description": "A strategy document on link density, connection types, and maintenance workflows for an Obsidian knowledge graph",
+    "tags": [],
+    "stage": "evergreen",
+    "readingTime": "10 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "knowledge-graph-visual-maps",
+    "href": "/thinking/knowledge-graph-visual-maps",
+    "title": "Knowledge Graph Visual Maps",
+    "description": "Visual representations of knowledge connections in the garden",
+    "tags": [
+      "visualization",
+      "knowledge-graph",
+      "maps"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "knowledge-management-personal-growth-synthesis",
+    "href": "/thinking/knowledge-management-personal-growth-synthesis",
+    "title": "Knowledge Management and Personal Growth Synthesis",
+    "description": "How organizing knowledge accelerates development - the meta-skill of learning how to learn",
+    "tags": [
+      "synthesis",
+      "knowledge-management",
+      "personal-growth",
+      "learning",
+      "development"
+    ],
+    "stage": "evergreen",
+    "readingTime": "7 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "knowledge-management-systems",
+    "href": "/thinking/knowledge-management-systems",
+    "title": "Knowledge Management Systems",
+    "description": "Frameworks for organizing, storing, and sharing information effectively",
+    "tags": [
+      "knowledge-management",
+      "organization",
+      "learning"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "mocs/knowledge-map",
+    "href": "/thinking/mocs/knowledge-map",
+    "title": "Knowledge Map",
+    "description": "Navigation hub for my digital garden",
+    "tags": [
+      "map-of-content",
+      "navigation",
+      "index"
+    ],
+    "stage": "evergreen",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "knowledge-organization",
+    "href": "/thinking/knowledge-organization",
+    "title": "Knowledge Organization",
+    "description": "Principles and practices for effective knowledge management",
+    "tags": [
+      "moc",
+      "organization",
+      "knowledge-management"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "leadership-communication-synthesis",
+    "href": "/thinking/leadership-communication-synthesis",
+    "title": "Leadership and Communication Synthesis",
+    "description": "Communication as core leadership skill - how communication excellence drives leadership impact",
+    "tags": [
+      "synthesis",
+      "leadership",
+      "communication",
+      "influence",
+      "impact"
+    ],
+    "stage": "evergreen",
+    "readingTime": "7 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "leadership-development",
+    "href": "/thinking/leadership-development",
+    "title": "Leadership Development",
+    "description": "Building and enhancing leadership capabilities",
+    "tags": [
+      "leadership",
+      "career",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "leadership-skills",
+    "href": "/thinking/leadership-skills",
+    "title": "Leadership Skills",
+    "description": "A list of core leadership skills, ways to develop them and links to related growth notes",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "learning-career-development-synthesis",
+    "href": "/thinking/learning-career-development-synthesis",
+    "title": "Learning and Career Development Synthesis",
+    "description": "How continuous learning drives career growth - exploring the interconnections",
+    "tags": [
+      "synthesis",
+      "learning",
+      "career",
+      "development",
+      "growth"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "learning-atlas",
+    "href": "/thinking/learning-atlas",
+    "title": "Learning Atlas",
+    "description": "How to structure a personal knowledge base for organization, access, and linked concepts",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "learninglog",
+    "href": "/thinking/learninglog",
+    "title": "Learning Log",
+    "description": "Track learning progress, successes, and challenges",
+    "tags": [
+      "learning",
+      "progress",
+      "reflection"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "learning-plan",
+    "href": "/thinking/learning-plan",
+    "title": "Learning Plan",
+    "description": "Structured approach to continuous learning and development",
+    "tags": [
+      "learning",
+      "development",
+      "planning"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/lets-explore-diabetes-with-owls",
+    "href": "/thinking/references/books/lets-explore-diabetes-with-owls",
+    "title": "Let's Explore Diabetes with Owls",
+    "description": "Book note on David Sedaris's essay collection, from family memories to offbeat encounters",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "living-documents",
+    "href": "/thinking/living-documents",
+    "title": "Living Documents",
+    "description": "The practice of maintaining evergreen, evolving notes",
+    "tags": [
+      "knowledge-management",
+      "writing",
+      "digital-garden"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "lunch-money",
+    "href": "/thinking/lunch-money",
+    "title": "Lunch Money",
+    "description": "Unofficial Lunch Money plugin at lunchmoney.sh: read-only spending, budgets, and bills for coding agents.",
+    "tags": [
+      "finance",
+      "money",
+      "tools"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read"
+  },
+  {
+    "slug": "references/books/madwoman",
+    "href": "/thinking/references/books/madwoman",
+    "title": "Madwoman",
+    "description": "Publisher blurb for Chelsea Bieker's Madwoman, a novel about a mother's buried past resurfacing",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "mocs/mocs",
+    "href": "/thinking/mocs/mocs",
+    "title": "Maps of Content",
+    "description": "Central navigation hub for all MOCs in my digital garden",
+    "tags": [
+      "navigation",
+      "maps-of-content",
+      "index"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/mece",
+    "href": "/thinking/frameworks/mece",
+    "title": "MECE",
+    "description": "A framework for breaking down complex problems into manageable components",
+    "tags": [
+      "strategy",
+      "problem-solving",
+      "analysis"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/mental-health",
+    "href": "/thinking/health/mental-health",
+    "title": "Mental Health",
+    "description": "Mental wellness strategies and emotional well-being practices",
+    "tags": [
+      "health",
+      "mental-health",
+      "wellness",
+      "emotional-health"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/mindset",
+    "href": "/thinking/references/books/mindset",
+    "title": "Mindset: The New Psychology of Success",
+    "description": "Reading list entry for Carol Dweck's book on fixed versus growth mindsets, with personal synthesis notes",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/mobility",
+    "href": "/thinking/health/mobility",
+    "title": "Mobility",
+    "description": "Improving flexibility, range of motion, and functional movement",
+    "tags": [
+      "health",
+      "fitness",
+      "mobility"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "moc-best-practices",
+    "href": "/thinking/moc-best-practices",
+    "title": "MOC Best Practices",
+    "description": "Guidelines for creating effective Maps of Content",
+    "tags": [
+      "moc",
+      "best-practices",
+      "knowledge-management"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "plants/monsterra",
+    "href": "/thinking/plants/monsterra",
+    "title": "Monstera deliciosa",
+    "description": "Care guide for my monstera plant",
+    "tags": [
+      "plants",
+      "gardening",
+      "indoor-plants"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "motivation-techniques",
+    "href": "/thinking/motivation-techniques",
+    "title": "Motivation Techniques",
+    "description": "Ten motivation techniques, from goal setting and visualization to habit stacking and accountability partners",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "networking",
+    "href": "/thinking/networking",
+    "title": "Networking",
+    "description": "Building and maintaining professional relationships",
+    "tags": [
+      "networking",
+      "career",
+      "relationships"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "never-let-me-go",
+    "href": "/thinking/never-let-me-go",
+    "title": "Never Let Me Go",
+    "description": "Reading notes on Ishiguro's Never Let Me Go, covering its themes of memory, identity, and mortality",
+    "tags": [
+      "books",
+      "fiction",
+      "literary-fiction",
+      "dystopian",
+      "currently-reading"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/never-let-me-go",
+    "href": "/thinking/references/books/never-let-me-go",
+    "title": "Never Let Me Go",
+    "description": "Publisher blurb for Kazuo Ishiguro's Never Let Me Go, about students raised at a secretive boarding school",
+    "tags": [
+      "books",
+      "references",
+      "currently-reading"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "nobody-is-watching",
+    "href": "/thinking/nobody-is-watching",
+    "title": "Nobody is Watching",
+    "description": "The liberating mindset of acting without fear of judgment",
+    "tags": [
+      "mindset",
+      "creativity",
+      "productivity",
+      "personal-growth"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/non-comedogenic",
+    "href": "/thinking/health/non-comedogenic",
+    "title": "Non-Comedogenic",
+    "description": "Non-comedogenic means a product is formulated not to clog pores (comedones). Definition, why the label is unregulated, and when it matters for acne-prone skin.",
+    "tags": [
+      "health",
+      "skincare",
+      "cosmetics"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "none-of-this-is-true",
+    "href": "/thinking/none-of-this-is-true",
+    "title": "None of This Is True",
+    "description": "A review of Lisa Jewell's meta-thriller about a true crime podcaster who becomes the story's subject",
+    "tags": [
+      "books",
+      "fiction",
+      "psychological-thriller",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/none-of-this-is-true",
+    "href": "/thinking/references/books/none-of-this-is-true",
+    "title": "None of This Is True",
+    "description": "Synopsis of Lisa Jewell's thriller about a podcaster drawn into a stranger's dark secrets",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "note-linking",
+    "href": "/thinking/note-linking",
+    "title": "Note Linking",
+    "description": "What note linking means in a zettelkasten system, its benefits and best practices for connecting notes",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "note-status-guide",
+    "href": "/thinking/note-status-guide",
+    "title": "Note Status Guide",
+    "description": "Understanding and using the note maturity system",
+    "tags": [
+      "meta",
+      "guide",
+      "organization"
+    ],
+    "stage": "evergreen",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "now",
+    "href": "/thinking/now",
+    "title": "Now",
+    "description": "What I'm focused on right now",
+    "tags": [
+      "hub",
+      "now"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/nutrition",
+    "href": "/thinking/health/nutrition",
+    "title": "Nutrition",
+    "description": "Guide to balanced and healthy eating",
+    "tags": [
+      "health",
+      "nutrition",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "one-live-region-per-page",
+    "href": "/thinking/one-live-region-per-page",
+    "title": "One live region per page",
+    "description": "A status message in a shared footer turned every page into a page with two live regions. Render live regions only when they have something to say.",
+    "tags": [
+      "accessibility",
+      "frontend",
+      "design-systems",
+      "testing"
+    ],
+    "stage": "seedling",
+    "readingTime": "2 min read",
+    "date": "2026-09-18"
+  },
+  {
+    "slug": "questions",
+    "href": "/thinking/questions",
+    "title": "Open Questions",
+    "description": "Running list of questions I'm curious about and exploring",
+    "tags": [
+      "questions",
+      "learning",
+      "curiosity",
+      "exploration"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "people",
+    "href": "/thinking/people",
+    "title": "People",
+    "description": "Notes on people who influence my thinking and work",
+    "tags": [
+      "people",
+      "relationships",
+      "mentors",
+      "influences"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/people-we-meet-on-vacation",
+    "href": "/thinking/references/books/people-we-meet-on-vacation",
+    "title": "People We Meet on Vacation",
+    "description": "Book note on Emily Henry's novel about two best friends and a decade of shared vacations",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "personal-brand",
+    "href": "/thinking/personal-brand",
+    "title": "Personal Brand",
+    "description": "Building and maintaining a professional identity",
+    "tags": [
+      "personal-brand",
+      "career",
+      "professional-development"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "personal-development",
+    "href": "/thinking/personal-development",
+    "title": "Personal Development",
+    "description": "Overview of personal development areas: self-awareness, goal setting, habits, mindset, and related notes",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/pestle",
+    "href": "/thinking/frameworks/pestle",
+    "title": "PESTLE",
+    "description": "A framework for analyzing macro-environmental factors affecting business",
+    "tags": [
+      "strategy",
+      "analysis",
+      "business"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "plants",
+    "href": "/thinking/plants",
+    "title": "Plants Index",
+    "description": "Information about plants, gardening, and plant care",
+    "tags": [
+      "plants",
+      "gardening",
+      "index",
+      "nature"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "podcasts",
+    "href": "/thinking/podcasts",
+    "title": "Podcasts",
+    "description": "Audio content I listen to and recommend",
+    "tags": [
+      "learning",
+      "media",
+      "podcasts",
+      "audio"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "posts",
+    "href": "/thinking/posts",
+    "title": "Posts",
+    "description": "Published and draft writing for public consumption",
+    "tags": [
+      "writing",
+      "publishing",
+      "content",
+      "sharing"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "presence",
+    "href": "/thinking/presence",
+    "title": "Presence",
+    "description": "Notes on Amy Cuddy's Presence, on mindfulness, personal power, and staying grounded under pressure",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/presence",
+    "href": "/thinking/references/books/presence",
+    "title": "Presence: Bringing Your Boldest Self to Your Biggest Challenges",
+    "description": "Publisher blurb for Amy Cuddy's Presence, on power poses and facing high-pressure moments with confidence",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/preventive-care",
+    "href": "/thinking/health/preventive-care",
+    "title": "Preventive Care",
+    "description": "Proactive measures for maintaining long-term health",
+    "tags": [
+      "health",
+      "prevention",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "product-management",
+    "href": "/thinking/product-management",
+    "title": "Product Management",
+    "description": "Guide to product management roles and responsibilities",
+    "tags": [
+      "product-management",
+      "career",
+      "leadership"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "productive-laziness-in-engineering",
+    "href": "/thinking/productive-laziness-in-engineering",
+    "title": "Productive Laziness in Engineering",
+    "description": "Why minimal, lazy-by-design code beats speculative building — YAGNI, worse-is-better, and the three virtues of a programmer",
+    "tags": [
+      "software-engineering",
+      "yagni",
+      "simplicity"
+    ],
+    "stage": "budding",
+    "readingTime": "4 min read"
+  },
+  {
+    "slug": "productivity-health-synthesis",
+    "href": "/thinking/productivity-health-synthesis",
+    "title": "Productivity and Health Synthesis",
+    "description": "The intersection of wellness and performance - how health practices enhance productivity",
+    "tags": [
+      "synthesis",
+      "productivity",
+      "health",
+      "wellness",
+      "performance"
+    ],
+    "stage": "evergreen",
+    "readingTime": "6 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "productivity-systems-hub",
+    "href": "/thinking/productivity-systems-hub",
+    "title": "Productivity Systems Hub",
+    "description": "Task management, prioritization, and time-blocking methods I actually use",
+    "tags": [
+      "productivity",
+      "systems",
+      "organization",
+      "efficiency"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "professional-development",
+    "href": "/thinking/professional-development",
+    "title": "Professional Development",
+    "description": "Guide to continuous professional growth and advancement",
+    "tags": [
+      "development",
+      "career",
+      "growth"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "professional-writing-hub",
+    "href": "/thinking/professional-writing-hub",
+    "title": "Professional Writing Hub",
+    "description": "Templates and notes on technical docs, emails, and content",
+    "tags": [
+      "writing",
+      "communication",
+      "documentation",
+      "content"
+    ],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/progressive-overload",
+    "href": "/thinking/health/progressive-overload",
+    "title": "Progressive Overload",
+    "description": "A fundamental principle of exercise training involving gradual increases in workout demands",
+    "tags": [
+      "health",
+      "fitness",
+      "exercise",
+      "training"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "progressive-summarization",
+    "href": "/thinking/progressive-summarization",
+    "title": "Progressive Summarization",
+    "description": "Layered highlighting technique for making notes more actionable and discoverable",
+    "tags": [
+      "learning",
+      "note-taking",
+      "knowledge-management"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "projects",
+    "href": "/thinking/projects",
+    "title": "Projects",
+    "description": "Active and completed projects across various domains",
+    "tags": [
+      "projects",
+      "work",
+      "learning",
+      "building"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "raised-beds",
+    "href": "/thinking/raised-beds",
+    "title": "Raised Beds",
+    "description": "Planning and considerations for raised bed gardening",
+    "tags": [
+      "gardening",
+      "raised-beds",
+      "infrastructure"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/rpe",
+    "href": "/thinking/health/rpe",
+    "title": "Rate of Perceived Exertion",
+    "description": "A subjective scale for measuring exercise intensity during [[Health/Exercise|Exercise]]",
+    "tags": [
+      "health",
+      "fitness",
+      "exercise"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "reading-goals-2024",
+    "href": "/thinking/reading-goals-2024",
+    "title": "Reading Goals 2024",
+    "description": "Annual reading goals and progress tracking",
+    "tags": [
+      "reading",
+      "goals",
+      "books",
+      "learning",
+      "habits"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "reading-list",
+    "href": "/thinking/reading-list",
+    "title": "Reading List",
+    "description": "My personal reading journey and book recommendations",
+    "tags": [
+      "books",
+      "reading",
+      "learning"
+    ],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/references",
+    "href": "/thinking/references/references",
+    "title": "References",
+    "description": "Central repository for all reference materials, books, articles, and external resources",
+    "tags": [
+      "references",
+      "books",
+      "articles",
+      "resources",
+      "learning"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references",
+    "href": "/thinking/references",
+    "title": "References Index",
+    "description": "Central hub for all reference materials, books, articles, and external resources",
+    "tags": [
+      "references",
+      "books",
+      "articles",
+      "index",
+      "learning"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "remote-work",
+    "href": "/thinking/remote-work",
+    "title": "Remote Work",
+    "description": "Strategies for successful remote and distributed work",
+    "tags": [
+      "remote-work",
+      "career",
+      "productivity"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "remote-work-excellence-guide",
+    "href": "/thinking/remote-work-excellence-guide",
+    "title": "Remote Work Notes",
+    "description": "What I've learned working remotely since 2020",
+    "tags": [
+      "remote-work",
+      "distributed-teams",
+      "productivity",
+      "career",
+      "communication"
+    ],
+    "stage": "evergreen",
+    "readingTime": "6 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "resume-building",
+    "href": "/thinking/resume-building",
+    "title": "Resume Building",
+    "description": "Creating effective professional resumes and CVs",
+    "tags": [
+      "resume",
+      "career",
+      "job-search"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/rice",
+    "href": "/thinking/health/rice",
+    "title": "RICE",
+    "description": "Rest, ice, compression, and elevation protocol for treating sprains and soft tissue injuries",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "rice-with-instapot",
+    "href": "/thinking/rice-with-instapot",
+    "title": "Rice with Instapot",
+    "description": "Perfect pressure cooker rice every time",
+    "tags": [
+      "recipes",
+      "cooking",
+      "instapot",
+      "basics"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "running-five-agents-at-once",
+    "href": "/thinking/running-five-agents-at-once",
+    "title": "Running Five Agents at Once",
+    "description": "What it takes to keep Claude Code, Devin, Hermes, Gemini CLI, and gbrain coherent without duplicated memory or contradictory state",
+    "tags": [
+      "agents",
+      "ai-tools",
+      "knowledge-management",
+      "automation"
+    ],
+    "stage": "evergreen",
+    "readingTime": "6 min read"
+  },
+  {
+    "slug": "frameworks/scqa",
+    "href": "/thinking/frameworks/scqa",
+    "title": "SCQA",
+    "description": "A framework for structured communication and storytelling",
+    "tags": [
+      "communication",
+      "presentation",
+      "strategy"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "setting-up-my-smart-home",
+    "href": "/thinking/setting-up-my-smart-home",
+    "title": "Setting Up My Smart Home",
+    "description": "A short rundown of the smart home setup: Home Assistant hub, Hue lighting, Sonos, and Synology surveillance",
+    "tags": [],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "sf-terraced-garden-transformation-guide",
+    "href": "/thinking/sf-terraced-garden-transformation-guide",
+    "title": "SF Terraced Garden Transformation Guide",
+    "description": "Detailed plan for terracing a sloped San Francisco garden: decking, beds, irrigation, budget, and phasing",
+    "tags": [],
+    "stage": "evergreen",
+    "readingTime": "6 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "short-term-disability",
+    "href": "/thinking/short-term-disability",
+    "title": "Short Term Disability Insurance",
+    "description": "Explains how short term disability insurance works, required documentation, and California-specific resources",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "short-haul-flight-hacks",
+    "href": "/thinking/short-haul-flight-hacks",
+    "title": "Short-Haul Flight Hacks",
+    "description": "High-cpp regional flight redemptions, JetBlue TrueBlue partner tricks, and British Airways Avios short-hauls",
+    "tags": [
+      "travel",
+      "flights",
+      "short-haul",
+      "hacks",
+      "avios"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read"
+  },
+  {
+    "slug": "shows",
+    "href": "/thinking/shows",
+    "title": "Shows",
+    "description": "TV series and films worth watching and remembering",
+    "tags": [
+      "media",
+      "entertainment",
+      "culture",
+      "storytelling"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/sing-unburied-sing",
+    "href": "/thinking/references/books/sing-unburied-sing",
+    "title": "Sing, Unburied, Sing",
+    "description": "Reading list entry for Jesmyn Ward's novel about a family road trip across Mississippi's past and present",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "skills-map",
+    "href": "/thinking/skills-map",
+    "title": "Skills",
+    "description": "Core skills development and learning paths",
+    "tags": [
+      "learning",
+      "skills",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "skills-development",
+    "href": "/thinking/skills-development",
+    "title": "Skills Development",
+    "description": "Structured approach to building professional capabilities",
+    "tags": [
+      "skills",
+      "learning",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "skills-development-hub",
+    "href": "/thinking/skills-development-hub",
+    "title": "Skills Development Hub",
+    "description": "Central hub for tracking and developing professional skills",
+    "tags": [
+      "skills",
+      "development",
+      "learning",
+      "career"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "skills-matrix",
+    "href": "/thinking/skills-matrix",
+    "title": "Skills Matrix",
+    "description": "Framework for assessing and tracking professional skills",
+    "tags": [
+      "skills",
+      "assessment",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/skin-cleanse",
+    "href": "/thinking/references/books/skin-cleanse",
+    "title": "Skin Cleanse: The Simple, All-Natural Program for Clear, Calm, Happy Skin",
+    "description": "Publisher blurb for Skin Cleanse, a holistic guide to clearer skin through diet and simplified routines",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/skincare",
+    "href": "/thinking/health/skincare",
+    "title": "Skincare",
+    "description": "Daily and weekly skincare checklist covering sunscreen, moisturizer, exfoliation, and a breakout protocol",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/sleep",
+    "href": "/thinking/health/sleep",
+    "title": "Sleep",
+    "description": "Understanding and improving sleep quality",
+    "tags": [
+      "health",
+      "sleep",
+      "wellness"
+    ],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/smart-brevity",
+    "href": "/thinking/references/books/smart-brevity",
+    "title": "Smart Brevity: The Power of Saying More with Less",
+    "description": "Book blurb for Smart Brevity, the Axios formula for writing clear, concise communication",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/smart-goals",
+    "href": "/thinking/health/smart-goals",
+    "title": "SMART Goals",
+    "description": "Framework for setting effective health and fitness goals",
+    "tags": [
+      "goals",
+      "health",
+      "planning",
+      "productivity"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/someday-is-today",
+    "href": "/thinking/references/books/someday-is-today",
+    "title": "Someday Is Today: 22 Simple, Actionable Ways to Propel Your Creative Life",
+    "description": "Book note on Matthew Dicks's guide to turning creative dreams into daily action",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/something-in-the-water",
+    "href": "/thinking/references/books/something-in-the-water",
+    "title": "Something in the Water",
+    "description": "Publisher blurb for Catherine Steadman's thriller about newlyweds who find something dangerous on their honeymoon",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "something-in-the-water",
+    "href": "/thinking/something-in-the-water",
+    "title": "Something in the Water",
+    "description": "Personal review of the thriller Something in the Water, on greed, trust and moral choices",
+    "tags": [
+      "books",
+      "fiction",
+      "thriller",
+      "psychological-thriller",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "spaced-repetition",
+    "href": "/thinking/spaced-repetition",
+    "title": "Spaced Repetition",
+    "description": "Learning technique that optimizes review intervals for long-term retention",
+    "tags": [
+      "learning",
+      "memory",
+      "study-techniques"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "spending",
+    "href": "/thinking/spending",
+    "title": "Spending",
+    "description": "Personal finance tracking and expense analysis",
+    "tags": [
+      "finance",
+      "money",
+      "budgeting",
+      "tracking"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/star",
+    "href": "/thinking/frameworks/star",
+    "title": "STAR",
+    "description": "A structured approach for answering behavioral interview questions",
+    "tags": [
+      "career",
+      "interview",
+      "communication"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "static-routes-on-serverless-workers",
+    "href": "/thinking/static-routes-on-serverless-workers",
+    "title": "Static routes on serverless workers",
+    "description": "A route handler that reads the filesystem at request time will build fine and fail in production on edge workers. Prerender it.",
+    "tags": [
+      "engineering",
+      "nextjs",
+      "cloudflare",
+      "seo"
+    ],
+    "stage": "seedling",
+    "readingTime": "2 min read",
+    "date": "2026-09-18"
+  },
+  {
+    "slug": "references/books/storyworthy",
+    "href": "/thinking/references/books/storyworthy",
+    "title": "Storyworthy: Engage, Teach, Persuade, and Change Your Life through the Power of Storytelling",
+    "description": "Reading list entry for Matthew Dicks' book on storytelling technique from a Moth GrandSLAM champion",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "health/stress",
+    "href": "/thinking/health/stress",
+    "title": "Stress",
+    "description": "My personal approach to understanding and managing stress",
+    "tags": [
+      "health",
+      "mental-health",
+      "wellness",
+      "stress-management",
+      "personal"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "frameworks/swot",
+    "href": "/thinking/frameworks/swot",
+    "title": "SWOT",
+    "description": "Explains the SWOT framework and its four components for strategic and career planning",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "system-design",
+    "href": "/thinking/system-design",
+    "title": "System Design",
+    "description": "Overview of system design concepts: architecture patterns, scalability, reliability, and the design process",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "technical-skills",
+    "href": "/thinking/technical-skills",
+    "title": "Technical Skills",
+    "description": "Outline of technical skill areas: programming, system design, tools, and product management",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "technical-skills-roadmap-2025",
+    "href": "/thinking/technical-skills-roadmap-2025",
+    "title": "Technical Skills Roadmap 2025",
+    "description": "Comprehensive technical learning paths for software engineers",
+    "tags": [
+      "technical-skills",
+      "learning",
+      "software-engineering",
+      "roadmap",
+      "career-development"
+    ],
+    "stage": "evergreen",
+    "readingTime": "6 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "technology-trends",
+    "href": "/thinking/technology-trends",
+    "title": "Technology Trends",
+    "description": "Key technology trends and their impact on the industry",
+    "tags": [
+      "technology",
+      "trends",
+      "innovation"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "anki/test-cards",
+    "href": "/thinking/anki/test-cards",
+    "title": "Test Cards",
+    "description": "Sample Anki flashcards testing trivia questions and notes on the Obsidian-to-Anki plugin's internals",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "12 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-body-keeps-the-score",
+    "href": "/thinking/references/books/the-body-keeps-the-score",
+    "title": "The Body Keeps the Score: Brain, Mind, and Body in the Healing of Trauma",
+    "description": "Summary and quotes from The Body Keeps the Score, on how trauma reshapes the body and brain",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "evergreen",
+    "readingTime": "5 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-courage-to-be-disliked",
+    "href": "/thinking/references/books/the-courage-to-be-disliked",
+    "title": "The Courage to Be Disliked: The Japanese Philosophy That Will Transform Your Life",
+    "description": "Reading notes on Adlerian psychology, task separation, and self-acceptance, linked to other personal development books",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/eight",
+    "href": "/thinking/references/books/eight",
+    "title": "The Eight",
+    "description": "",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-guest-list",
+    "href": "/thinking/references/books/the-guest-list",
+    "title": "The Guest List",
+    "description": "Book note on Lucy Foley's wedding-thriller about a remote island celebration gone wrong",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "the-hidden-economics-of-grocery-delivery",
+    "href": "/thinking/the-hidden-economics-of-grocery-delivery",
+    "title": "The Hidden Economics of Grocery Delivery",
+    "description": "An analysis comparing the true costs of grocery delivery versus in-store shopping, including time value",
+    "tags": [],
+    "stage": "budding",
+    "readingTime": "4 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-housemaid",
+    "href": "/thinking/references/books/the-housemaid",
+    "title": "The Housemaid",
+    "description": "Publisher blurb for Freida McFadden's thriller about a housemaid uncovering her employers' dark secrets",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-housemaids-secret",
+    "href": "/thinking/references/books/the-housemaids-secret",
+    "title": "The Housemaid's Secret",
+    "description": "Reading list entry for Freida McFadden's thriller about a housemaid uncovering her employer's dark secret",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "the-housemaids-secret",
+    "href": "/thinking/the-housemaids-secret",
+    "title": "The Housemaid's Secret",
+    "description": "A personal review of Freida McFadden's thriller about a housemaid entangled in a wealthy family's secrets",
+    "tags": [
+      "books",
+      "fiction",
+      "thriller",
+      "psychological-thriller",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-paris-apartment",
+    "href": "/thinking/references/books/the-paris-apartment",
+    "title": "The Paris Apartment",
+    "description": "Publisher blurb for the mystery The Paris Apartment, about a missing brother and suspicious neighbors",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-perfect-couple",
+    "href": "/thinking/references/books/the-perfect-couple",
+    "title": "The Perfect Couple",
+    "description": "Synopsis of Elin Hilderbrand's mystery about a body found before a lavish Nantucket wedding",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-remains-of-the-day",
+    "href": "/thinking/references/books/the-remains-of-the-day",
+    "title": "The Remains of the Day",
+    "description": "Book note on Ishiguro's novel about an English butler reflecting on duty and regret",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "the-remains-of-the-day",
+    "href": "/thinking/the-remains-of-the-day",
+    "title": "The Remains of the Day",
+    "description": "Personal review of The Remains of the Day, on duty, repression and regret in Ishiguro's novel",
+    "tags": [
+      "books",
+      "fiction",
+      "literary-fiction",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-seven-husbands-of-evelyn-hugo",
+    "href": "/thinking/references/books/the-seven-husbands-of-evelyn-hugo",
+    "title": "The Seven Husbands of Evelyn Hugo",
+    "description": "Publisher blurb for Taylor Jenkins Reid's novel about a reclusive Hollywood icon telling her life story",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-surrender-experiment",
+    "href": "/thinking/references/books/the-surrender-experiment",
+    "title": "The Surrender Experiment: My Journey into Life's Perfection",
+    "description": "Reading list entry for Michael Singer's memoir on letting go of control and spiritual surrender",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-winner",
+    "href": "/thinking/references/books/the-winner",
+    "title": "The Winner",
+    "description": "Synopsis of Teddy Wayne's thriller about a tennis instructor's affair in a wealthy enclave",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "the-winner",
+    "href": "/thinking/the-winner",
+    "title": "The Winner",
+    "description": "Personal review of Teddy Wayne's The Winner, rated three stars for its social commentary",
+    "tags": [
+      "books",
+      "fiction",
+      "thriller",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/the-winner-effect",
+    "href": "/thinking/references/books/the-winner-effect",
+    "title": "The Winner Effect: The Neuroscience of Success and Failure",
+    "description": "Publisher blurb for The Winner Effect, on how winning changes brain chemistry and behavior",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/thinking-fast-and-slow",
+    "href": "/thinking/references/books/thinking-fast-and-slow",
+    "title": "Thinking, Fast and Slow",
+    "description": "Book note on Kahneman's account of the mind's two systems of fast and slow thinking",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/this-book-is-full-of-spiders",
+    "href": "/thinking/references/books/this-book-is-full-of-spiders",
+    "title": "This Book Is Full of Spiders: Seriously, Dude, Don't Touch It",
+    "description": "Publisher blurb for David Wong's horror comedy sequel to John Dies at the End",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "tools",
+    "href": "/thinking/tools",
+    "title": "Tools",
+    "description": "Essential tools and software for productivity and development",
+    "tags": [
+      "tools",
+      "software",
+      "productivity",
+      "development"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "travel",
+    "href": "/thinking/travel",
+    "title": "Travel & Award Hacking",
+    "description": "Navigation hub for points optimization, award flights, hotel loyalty, and short-haul travel strategies",
+    "tags": [
+      "travel",
+      "flights",
+      "points",
+      "award-travel",
+      "loyalty",
+      "index"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read"
+  },
+  {
+    "slug": "unifying-the-n3wth-ui-package-across-six-sites",
+    "href": "/thinking/unifying-the-n3wth-ui-package-across-six-sites",
+    "title": "Unifying the n3wth UI Package Across Six Sites",
+    "description": "How a single Changesets release pinned @n3wth/ui to 2.1.1 across six apps, Next.js and Vite alike, and why the exact pin was the right call",
+    "tags": [
+      "monorepo",
+      "changesets",
+      "n3wth",
+      "dependency-management"
+    ],
+    "stage": "budding",
+    "readingTime": "3 min read"
+  },
+  {
+    "slug": "health/wellness-journal",
+    "href": "/thinking/health/wellness-journal",
+    "title": "Wellness Journal",
+    "description": "Guide to maintaining a comprehensive health and wellness journal",
+    "tags": [
+      "health",
+      "journaling",
+      "self-reflection"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/what-the-hell-did-i-just-read",
+    "href": "/thinking/references/books/what-the-hell-did-i-just-read",
+    "title": "What the Hell Did I Just Read: A Novel of Cosmic Horror",
+    "description": "Publisher blurb for the comic horror novel What the Hell Did I Just Read",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/what-we-owe-the-future",
+    "href": "/thinking/references/books/what-we-owe-the-future",
+    "title": "What We Owe the Future",
+    "description": "Reading list entry for William MacAskill's book arguing for longtermism and moral responsibility to the future",
+    "tags": [
+      "books",
+      "references",
+      "to-read"
+    ],
+    "stage": "seedling",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "write-like-no-ones-watching",
+    "href": "/thinking/write-like-no-ones-watching",
+    "title": "Write Like No One's Watching",
+    "description": "The philosophy of authentic, unselfconscious writing in a digital garden",
+    "tags": [
+      "writing",
+      "digital-garden",
+      "creativity",
+      "mindset"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "references/books/yellowface",
+    "href": "/thinking/references/books/yellowface",
+    "title": "Yellowface",
+    "description": "Synopsis of R.F. Kuang's novel about a writer who steals her dead friend's manuscript",
+    "tags": [
+      "books",
+      "references",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "yellowface",
+    "href": "/thinking/yellowface",
+    "title": "Yellowface",
+    "description": "Book note on R.F. Kuang's satire about a writer who steals a dead friend's manuscript",
+    "tags": [
+      "books",
+      "fiction",
+      "literary-fiction",
+      "read"
+    ],
+    "stage": "budding",
+    "readingTime": "1 min read",
+    "date": "2026-02-15"
+  },
+  {
+    "slug": "zettelkasten-method",
+    "href": "/thinking/zettelkasten-method",
+    "title": "Zettelkasten Method",
+    "description": "Personal knowledge management system for enhanced learning through connected atomic notes",
+    "tags": [
+      "knowledge-management",
+      "note-taking",
+      "learning"
+    ],
+    "stage": "budding",
+    "readingTime": "2 min read",
+    "date": "2026-02-15"
+  }
+]
