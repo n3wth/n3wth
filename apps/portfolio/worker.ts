@@ -5,6 +5,9 @@ interface Env {
   GEMINI_API_KEY?: string
   OPENROUTER_API_KEY?: string
   GITHUB_TOKEN?: string
+  RESEND_API_KEY?: string
+  RESEND_SEGMENT_ID?: string
+  SUBSCRIBE?: { limit(options: { key: string }): Promise<{ success: boolean }> }
 }
 
 function cacheControl(path: string): string {
