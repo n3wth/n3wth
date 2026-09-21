@@ -56,8 +56,13 @@ The n3wth.com sending domain is verified. The black email mark is
 `https://r2.n3wth.com/mark-black.png`. Every list-triggered layout includes
 `RESEND_UNSUBSCRIBE_URL` in its footer, including Plex notifications. Plex
 layouts link to `https://app.plex.tv/desktop` and `https://seerr.n3wth.com/`.
-Complete each template's content variables and the marketing mailing-address
-placeholder before sending. Names are optional: public email-only signups
+The standard footer uses small, left-aligned text with no divider: `n3wth`,
+`1333 Minna St San Francisco CA 94103`, then `Unsubscribe` linked to the reserved
+recipient-specific URL. It remains inside the main content column. Saved
+templates contain no preview notice above the mark. Plex grids use one Open
+Plex action below the grid and a secondary Request movies or TV link, rather
+than repeated links under each cover. Industry digests use editorial imagery.
+Complete each template's content variables before sending. Names are optional: public email-only signups
 remain unnamed, while Auth0 fills missing Plex contact names from authenticated
 given/family names and preserves existing names.
 
