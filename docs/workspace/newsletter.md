@@ -93,6 +93,9 @@ through the durable welcome-receipt helper after access is ready. It uses no
 LLM and does not depend on a Seerr login. Its Auth0 machine credential is scoped
 to `read:users` and `read:actions`; credential setup and deployment verification
 must finish before automatic future welcomes can be reported as active.
+The tenant's application limit blocks creating a separate machine client.
+Using the existing Seerr application for the machine grant is pending owner
+authorization; the worker remains disabled until that grant is configured.
 
 ## Signed unsubscribe links
 

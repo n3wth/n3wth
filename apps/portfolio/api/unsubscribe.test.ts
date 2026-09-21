@@ -24,12 +24,19 @@ describe('signed unsubscribe', () => {
 
   it('supports one-click POST and opts out only the signed topic', async () => {
     const url = await createUnsubscribeUrl(contact, topic, secret)
-    const fetchImpl = vi.fn().mockResolvedValue(new Response('{}'))
+    const fetchImpl = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      const body: unknown = JSON.parse(init?.body as string)
+      if (!Array.isArray(body)) {
+        return Response.json({ name: 'validation_error', message: 'The `` field must be an `array`.' }, { status: 422 })
+      }
+      return Response.json({ data: body })
+    })
     const response = await handleUnsubscribeRequest(new Request(url, { method: 'POST', body: 'List-Unsubscribe=One-Click' }), env, fetchImpl)
     expect(response.status).toBe(200)
     expect(fetchImpl).toHaveBeenCalledOnce()
     expect(fetchImpl.mock.calls[0][0]).toBe(`https://api.resend.com/contacts/${contact}/topics`)
-    expect(JSON.parse(fetchImpl.mock.calls[0][1].body)).toEqual({ topics: [{ id: topic, subscription: 'opt_out' }] })
+    expect(fetchImpl.mock.calls[0][1]?.method).toBe('PATCH')
+    expect(JSON.parse(fetchImpl.mock.calls[0][1]?.body as string)).toEqual([{ id: topic, subscription: 'opt_out' }])
   })
 
   it('rejects forged and modified tokens without contacting the provider', async () => {
