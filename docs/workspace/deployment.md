@@ -44,8 +44,34 @@ requests the target host over HTTPS through `scripts/cloudflare-preview-verify.m
 The deploy fails unless the host resolves, the certificate validates, the page
 returns HTTP 200, and the preview `X-Robots-Tag: noindex` header is present. The
 gate keeps certificate validation on and retries while the Worker custom domain
-and its proxied DNS record finish provisioning. Production automation, D1 setup
-and rollback tracking remain separate work.
+and its proxied DNS record finish provisioning. Production automation and D1
+setup remain separate work.
+
+## Cloudflare release records and rollback
+
+Each production deploy writes one release record per app (commit SHA, Worker
+version, env, URL, readiness result) to the run's step summary and to the
+`release-records-<sha>` artifact. Use that record to pick the known-good
+Worker version and its source commit for a rollback.
+
+```bash
+# Inspect available versions, then restore one app without rebuilding.
+npm exec -- wrangler versions list --config apps/garden/wrangler.jsonc
+node scripts/cloudflare-rollback.mjs --app garden --version <version-id> \
+  --sha <source-commit> --acknowledge-d1
+```
+
+Code rollback restores only the Worker bundle: it does not restore D1 data,
+and it leaves other apps, domains and bindings untouched. Check
+database/schema compatibility before rolling back, demonstrate the procedure in
+a non-production (preview) environment first with `--url <preview-host>`, and
+preview the plan with `--dry-run`. The command runs the same live readiness
+check as a normal deployment and records the before/after versions and result.
+
+Manual deploys: run the production workflow from the Actions tab with an app
+(portfolio, garden, skills, or all) and an exact commit SHA. To retry after a
+partial failure, use "Re-run failed jobs" so successful apps are not
+redeployed.
 
 ## Vercel: retired
 
