@@ -169,7 +169,7 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
 
 test('work uses the shared theme and a usable resume action', async ({ page }) => {
   await page.goto('/work')
-  await expectSiteFoundation(page)
+  await expectSiteFoundation(page, { sectionTopPadding: '0px' })
   await expect(page.locator('#building')).toHaveCount(0)
   await expect(page.getByRole('link', { name: 'Open resume', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
 })
