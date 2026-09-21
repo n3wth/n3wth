@@ -75,15 +75,9 @@ export function sanitizeAnalyticsEvent(event) {
   return sanitized
 }
 
-function frameLocations(frame) {
-  if (!frame || typeof frame !== 'object') return []
-  const raw = frame.junk_drawer?.raw_frame
-  return [frame.filename, frame.source, frame.abs_path, raw?.filename, raw?.source, raw?.abs_path]
-    .filter(value => typeof value === 'string')
-}
-
 function isThirdPartyFrame(frame) {
-  const locations = frameLocations(frame)
+  if (!frame || typeof frame !== 'object') return false
+  const locations = [frame.filename, frame.source, frame.abs_path].filter(value => typeof value === 'string')
   return locations.length > 0
     && locations.some(location => thirdPartyFrameSources.some(source => location.includes(source)))
 }

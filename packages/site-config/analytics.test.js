@@ -144,10 +144,7 @@ test('before_send sanitizer and privacy defaults stay applied when apps pass opt
 
 test('before_send drops exceptions whose only frames are edge-injected third-party scripts', () => {
   const beforeSend = createSiteAnalyticsBeforeSend()
-  const zarazFrame = {
-    in_app: true,
-    junk_drawer: { raw_frame: { filename: 'https://ui.n3wth.com/cdn-cgi/zaraz/s.js?z=abc' } },
-  }
+  const zarazFrame = { in_app: true, filename: 'https://ui.n3wth.com/cdn-cgi/zaraz/s.js?z=abc' }
   const thirdParty = {
     event: '$exception',
     properties: { $exception_list: [{ type: 'TypeError', value: 'Failed to fetch', stacktrace: { frames: [zarazFrame] } }] },
