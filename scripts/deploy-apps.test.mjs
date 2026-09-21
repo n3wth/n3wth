@@ -9,10 +9,11 @@ import { PREVIEW_APPS } from './cloudflare-preview-config.mjs'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const scriptPath = fileURLToPath(new URL('./deploy-apps.mjs', import.meta.url))
 
-test('the deploy list is the exact set of application workspaces', () => {
+test('the deploy list excludes the retired r3 site', () => {
   const apps = readWorkspaces(root)
     .filter(workspace => workspace.path.startsWith('apps/') && !workspace.path.includes('/', 5))
     .map(workspace => workspace.name)
+    .filter(name => name !== '@n3wth/r3-web')
     .sort()
   assert.deepEqual(DEPLOY_APPS.map(entry => entry.workspace).sort(), apps)
 })
@@ -24,12 +25,13 @@ test('each app slug equals its directory so wrangler config paths resolve', () =
 })
 
 test('preview apps read the same source list', () => {
-  assert.deepEqual([...PREVIEW_APPS], DEPLOY_APP_SLUGS)
+  assert.deepEqual([...PREVIEW_APPS], [...DEPLOY_APP_SLUGS, 'r3-web'])
 })
 
 test('deployAppForWorkspace maps known workspaces and ignores others', () => {
   assert.equal(deployAppForWorkspace('@n3wth/garden'), 'garden')
   assert.equal(deployAppForWorkspace('@n3wth/ui'), undefined)
+  assert.equal(deployAppForWorkspace('@n3wth/r3-web'), undefined)
 })
 
 test('the CLI prints slugs and JSON for the workflows', () => {

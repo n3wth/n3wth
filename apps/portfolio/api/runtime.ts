@@ -1,4 +1,6 @@
-interface RuntimeEnv {
+import { handleSubscribe, type SubscribeEnv } from './subscribe'
+
+interface RuntimeEnv extends SubscribeEnv {
   GEMINI_API_KEY?: string
   OPENROUTER_API_KEY?: string
   GITHUB_TOKEN?: string
@@ -286,6 +288,7 @@ export async function handlePortfolioApi(request: Request, env: RuntimeEnv = {},
   if (path === '/api/agent') return agent(request, env, fetchImpl)
   if (path === '/api/search') return search(request, fetchImpl)
   if (path === '/api/github-stats') return githubStats(request, env, fetchImpl)
+  if (path === '/api/subscribe') return handleSubscribe(request, env, fetchImpl)
   return undefined
 }
 

@@ -4,6 +4,12 @@ One visual system, with small differences for each site's content. This applies 
 
 ## Ownership
 
+Use the supplied Newth four-part mark across site identity, favicons and social
+images. The exact SVG geometry is shared in `packages/site-config/brand-marks.js`.
+Use black or white on contrasting surfaces and the contained version for app
+icons. Originals are also hosted at `https://r2.n3wth.com/mark-contained.svg`,
+`mark-black.svg` and `mark-white.svg`. Generate raster sizes from these originals.
+
 - Astryx provides primitive controls and interaction behavior. Link to its [external source](https://github.com/facebook/astryx).
 - `packages/ui` owns the Newth theme, fonts, site compositions, component adapters and decorative primitives.
 - `packages/site-config` owns shared site identity, metadata and analytics helpers.

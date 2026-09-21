@@ -110,7 +110,7 @@ export default function Home() {
       <span className="block mt-5">
         My independent projects explore personal agents, tools for creating software, and skills that help people use both.
       </span>
-    </>} actions={<Link className="btn" to="/work#building" onClick={() => track('home_projects_clicked', { source_page: '/' })}>Explore my projects</Link>} />
+    </>} actions={<Link className="btn" to="/projects" onClick={() => track('home_projects_clicked', { source_page: '/' })}>Explore my projects</Link>} />
     </>
   )
 }

@@ -1,10 +1,24 @@
 const initialized = new WeakSet()
 
 export const GA_MEASUREMENT_ID = 'G-4QRMSG5HXK'
+export const NEWSLETTER_SUBSCRIBED_EVENT = 'newsletter_subscribed'
+export const NEWSLETTER_SOURCES = Object.freeze(['home', 'skills', 'garden', 'r3', 'ui'])
 
 const excludedHostnames = ['localhost', '127.0.0.1', '[::1]']
 const excludedHostnameSuffixes = ['.vercel.app', '.pages.dev', '.workers.dev']
 const agentUserAgent = /bot|crawler|spider|headless|lighthouse|playwright|puppeteer|agent/i
+const emailValue = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const emailKey = /email/i
+const defaultAutocaptureIgnorelist = Object.freeze([
+  '.ph-no-capture',
+  '.ph-no-autocapture',
+  '[data-ph-no-capture]',
+  '[data-ph-no-autocapture]',
+  'input[type="email"]',
+  'input[autocomplete="email"]',
+  '.n3wth-site-signup',
+  '.n3wth-site-signup *',
+])
 
 /** Explicit opt-out markers keep local, preview, internal, and automated traffic out of production reports. */
 export function shouldExcludeTraffic(location = globalThis.location, userAgent = globalThis.navigator?.userAgent ?? '') {
@@ -26,16 +40,88 @@ export function shouldExcludeTraffic(location = globalThis.location, userAgent =
     || userAgent.search(agentUserAgent) !== -1
 }
 
+function looksLikeEmail(value) {
+  return typeof value === 'string' && emailValue.test(value.trim())
+}
+
+function stripEmailFields(value) {
+  if (Array.isArray(value)) return value.map(stripEmailFields)
+  if (!value || typeof value !== 'object') return looksLikeEmail(value) ? undefined : value
+  const next = {}
+  for (const [key, nested] of Object.entries(value)) {
+    if (emailKey.test(key) || looksLikeEmail(nested)) continue
+    const cleaned = stripEmailFields(nested)
+    if (cleaned !== undefined) next[key] = cleaned
+  }
+  return next
+}
+
+/** Drops subscriber addresses from outgoing events. Older identified signup records stay in PostHog. */
+export function sanitizeAnalyticsEvent(event) {
+  if (!event || typeof event !== 'object') return event
+  const properties = stripEmailFields(event.properties ?? {})
+  const sanitized = {
+    ...event,
+    properties,
+    ...('$set' in event ? { $set: stripEmailFields(event.$set) } : {}),
+    ...('$set_once' in event ? { $set_once: stripEmailFields(event.$set_once) } : {}),
+  }
+  if (sanitized.event !== NEWSLETTER_SUBSCRIBED_EVENT) return sanitized
+  const reserved = Object.fromEntries(Object.entries(properties).filter(([key]) => key.startsWith('$')))
+  const source = NEWSLETTER_SOURCES.includes(properties.source) ? properties.source : undefined
+  sanitized.properties = source ? { ...reserved, source } : reserved
+  return sanitized
+}
+
+export function createSiteAnalyticsBeforeSend(appBeforeSend) {
+  return event => {
+    if (shouldExcludeTraffic()) return null
+    const sanitized = sanitizeAnalyticsEvent(event)
+    if (sanitized == null) return null
+    return typeof appBeforeSend === 'function' ? appBeforeSend(sanitized) : sanitized
+  }
+}
+
+function mergeAutocapture(autocapture) {
+  if (autocapture === false) return false
+  const app = autocapture && typeof autocapture === 'object' ? autocapture : {}
+  return {
+    ...app,
+    css_selector_ignorelist: [...new Set([
+      ...defaultAutocaptureIgnorelist,
+      ...(Array.isArray(app.css_selector_ignorelist) ? app.css_selector_ignorelist : []),
+    ])],
+  }
+}
+
+/** Keeps email out of autocapture and recordings even when apps pass their own init options. */
+export function withSiteAnalyticsPrivacy(options = {}) {
+  const {
+    before_send: appBeforeSend,
+    autocapture: appAutocapture,
+    session_recording: appSessionRecording,
+    ...rest
+  } = options
+  return {
+    ...rest,
+    session_recording: {
+      ...(appSessionRecording && typeof appSessionRecording === 'object' ? appSessionRecording : {}),
+      maskAllInputs: true,
+    },
+    autocapture: mergeAutocapture(appAutocapture),
+    before_send: createSiteAnalyticsBeforeSend(appBeforeSend),
+  }
+}
+
 /** Apps supply their installed client and host policy; UI never initializes analytics. */
 export function initializeSiteAnalytics(client, options) {
   if (initialized.has(client)) return
-  client.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', {
+  client.init('phc_q39ZGuvXLQuwCgCkHZYAeaUlWm5bIhx2XKMCtTdhJ7o', withSiteAnalyticsPrivacy({
     person_profiles: 'identified_only',
     capture_pageview: true,
     capture_pageleave: true,
-    before_send: event => shouldExcludeTraffic() ? null : event,
     ...options,
-  })
+  }))
   initialized.add(client)
 }
 
@@ -43,11 +129,18 @@ export function captureSiteEvent(client, event, properties = {}) {
   if (!shouldExcludeTraffic()) client.capture(event, properties)
 }
 
-/** Records a footer signup. The identified person profile is the list until a mailing provider exists. */
-export function captureEmailSignup(client, email) {
-  if (shouldExcludeTraffic()) return
-  client.setPersonProperties({ email })
-  client.capture('email_captured')
+/**
+ * Success-only newsletter analytics. Source site only; never writes a person profile or address.
+ * Swallows client errors so a failed capture cannot fail the subscription.
+ */
+export function captureNewsletterSubscribed(client, source) {
+  try {
+    if (!client || shouldExcludeTraffic()) return
+    if (!NEWSLETTER_SOURCES.includes(source)) return
+    client.capture(NEWSLETTER_SUBSCRIBED_EVENT, { source })
+  } catch {
+    /* analytics must never fail an otherwise successful subscription */
+  }
 }
 
 /** Inline equivalent for server-rendered layouts; keeps the same policy without a client component. */

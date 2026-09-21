@@ -45,7 +45,7 @@ async function main() {
   const dart = dartPath()
   const dartBox = await measureDart(dart)
   console.log(
-    `mark: ink ${dartBox.w.toFixed(2)}x${dartBox.h.toFixed(2)} in a 32-unit box, drawn ` +
+    `mark: ink ${dartBox.w.toFixed(2)}x${dartBox.h.toFixed(2)} in a 561-unit box, drawn ` +
       `${LAYOUT.markInk.h}px tall at (${LAYOUT.markInk.x}, ${LAYOUT.markInk.y}) in ${INK.dart}`
   )
   console.log(

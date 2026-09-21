@@ -40,11 +40,22 @@ export default function Privacy() {
 
         <SiteDocSection title="Information Collection">
           <SiteText>
-            The portfolio pages on n3wth.com do not require accounts or tracking cookies for
-            browsing. When you use the SMS or voice lines described below, we collect the personal
-            information needed to operate those services (for example your phone number and message
-            content). Server hosting and analytics may also process limited technical data as
-            described in this policy.
+            The portfolio pages on n3wth.com do not require accounts for browsing. When you use the
+            SMS or voice lines described below, we collect the personal information needed to operate
+            those services (for example your phone number and message content). Newsletter signup,
+            hosting, and analytics may also process limited data as described in this policy.
+          </SiteText>
+        </SiteDocSection>
+
+        <SiteDocSection title="Newsletter">
+          <SiteText>
+            Footer forms on n3wth.com, skills.n3wth.com, garden.n3wth.com, r3.n3wth.com, and
+            ui.n3wth.com collect an email address for occasional notes on agent infrastructure.
+            Resend stores the address and segment membership. Signup is immediate; there is no
+            confirmation email. A subscription is recorded only after Resend confirms the contact
+            and segment. You can unsubscribe from the link on any note or by emailing{' '}
+            <a href="mailto:hey@n3wth.com" className="link-underline">hey@n3wth.com</a>. Resend
+            keeps unsubscribe and suppression status.
           </SiteText>
         </SiteDocSection>
 
@@ -77,9 +88,9 @@ export default function Privacy() {
 
         <SiteDocSection title="Analytics">
           <SiteText>
-            The site may use privacy-focused analytics to understand general traffic patterns. Any
-            analytics in use do not track individual users, do not use cookies, and do not collect
-            personally identifiable information.
+            The site uses PostHog to understand traffic. After a successful newsletter signup,
+            PostHog may receive a newsletter_subscribed event that includes only the source site.
+            Subscriber email is not sent to analytics.
           </SiteText>
         </SiteDocSection>
 
@@ -96,6 +107,18 @@ export default function Privacy() {
               Vercel&apos;s Privacy Policy
             </a>{' '}
             for more information.
+          </SiteText>
+          <SiteText>
+            Resend processes newsletter addresses as a service provider on our behalf. See{' '}
+            <a
+              href="https://resend.com/legal/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-underline"
+            >
+              Resend&apos;s Privacy Policy
+            </a>
+            .
           </SiteText>
           <SiteText>
             Messaging service providers process SMS for the Elsa assistant line at +1 463 258-8004
@@ -137,9 +160,10 @@ export default function Privacy() {
         <SiteDocSection title="California privacy rights (CCPA/CPRA)">
           <SiteText>
             If you are a California resident, you have the right to know/access, delete, and
-            correct personal information we hold about you. n3wth.com does not sell personal
-            information or share it for cross-context behavioral advertising as those terms are used
-            under the CCPA/CPRA. To exercise these rights, email{' '}
+            correct personal information we hold about you, including a newsletter address held by
+            Resend. n3wth.com does not sell personal information or share it for cross-context
+            behavioral advertising as those terms are used under the CCPA/CPRA. To exercise these
+            rights, email{' '}
             <a href="mailto:hey@n3wth.com" className="link-underline">hey@n3wth.com</a>. We will not
             discriminate against you for exercising your privacy rights. See also{' '}
             <RouterLink href="/terms" className="link-underline">Terms of Service</RouterLink> and

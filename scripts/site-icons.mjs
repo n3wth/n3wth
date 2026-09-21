@@ -13,6 +13,9 @@ for (const [site, app] of Object.entries(apps)) {
   const svg = siteIconSvg(site)
   await writeFile(join(directory, 'favicon.svg'), svg + '\n')
   await writeFile(join(directory, 'logo.svg'), siteIconSvg(site, { background: false }) + '\n')
+  for (const variant of ['black', 'white']) {
+    await writeFile(join(directory, `logo-${variant}.svg`), siteIconSvg(site, { background: false, variant }) + '\n')
+  }
   const sizes = { 'favicon-16x16.png': 16, 'favicon-32x32.png': 32, 'favicon-96.png': 96, 'favicon.png': 96, 'apple-touch-icon.png': 180, 'icon-192.png': 192, 'icon-512.png': 512 }
   if (site === 'skills') Object.assign(sizes, { 'icons/icon-192.png': 192, 'icons/icon-512.png': 512 })
   if (site === 'r3') Object.assign(sizes, { 'android-chrome-192x192.png': 192, 'android-chrome-512x512.png': 512 })

@@ -64,7 +64,7 @@ test('lazy content and its footer appear together', async ({ page }) => {
   await expect(page.locator('.n3wth-site-footer')).toHaveCount(1)
 })
 
-test('the project action reaches its anchor after a cold route load', async ({ page }) => {
+test('the project action reaches the projects page after a cold route load', async ({ page }) => {
   // Keep GPU startup out of this routing check. Scene rendering is covered by
   // the home-page checks; this also exercises navigation while it is loading.
   let releaseScene: () => void = () => {}
@@ -73,16 +73,15 @@ test('the project action reaches its anchor after a cold route load', async ({ p
     await pendingScene
     await route.continue()
   })
-  await page.route('**/assets/Work-*.js', async route => {
+  await page.route('**/assets/Projects-*.js', async route => {
     await new Promise(resolve => setTimeout(resolve, 600))
     await route.continue()
   })
   try {
     await page.goto('/')
     await page.getByRole('link', { name: 'Explore my projects', exact: true }).click()
-    await expect(page).toHaveURL(/\/work#building$/)
-    await expect(page.locator('#building')).toBeInViewport()
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+    await expect(page).toHaveURL(/\/projects$/)
+    await expect(page.getByRole('heading', { level: 1, name: 'Projects' })).toBeInViewport()
   } finally {
     releaseScene()
     await page.unrouteAll({ behavior: 'wait' })
@@ -147,7 +146,7 @@ test('diagrams are immediately visible with normal motion', async ({ page }) => 
 for (const reducedMotion of ['no-preference', 'reduce'] as const) {
   test(`shared visual bands remain visible with ${reducedMotion} motion`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion })
-    for (const route of ['/library', '/work', '/thinking', '/contact']) {
+    for (const route of ['/library', '/thinking', '/contact']) {
       await page.goto(route)
       const band = page.locator('.n3wth-visual-band').first()
       await expect(band).toBeAttached()
@@ -171,6 +170,7 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
 test('work uses the shared theme and a usable resume action', async ({ page }) => {
   await page.goto('/work')
   await expectSiteFoundation(page)
+  await expect(page.locator('#building')).toHaveCount(0)
   await expect(page.getByRole('link', { name: 'Resume (PDF)', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
 })
 

@@ -1,8 +1,10 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 import { DEPLOY_APP_SLUGS } from './deploy-apps.mjs'
+import { createHash } from 'node:crypto'
 
-export const PREVIEW_APPS = new Set(DEPLOY_APP_SLUGS)
+// Retain identity support so old r3 previews can still be cleaned up.
+export const PREVIEW_APPS = new Set([...DEPLOY_APP_SLUGS, 'r3-web'])
 const STATIC_APPS = new Set(['ui-docs'])
 const PREVIEW_SUFFIX = 'preview.n3wth.com'
 const STATEFUL_BINDINGS = ['d1_databases', 'r2_buckets', 'kv_namespaces', 'durable_objects', 'hyperdrive', 'queues', 'vectorize', 'mtls_certificates']
@@ -115,6 +117,45 @@ function previewStatefulBindings(source, previewBindings) {
   return output
 }
 
+function previewRatelimits(source, identity, previewBindings) {
+  const provided = previewBindings?.ratelimits
+  if (Array.isArray(provided)) {
+    const sourceNames = new Set((source.ratelimits || []).map(binding => binding.binding || binding.name))
+    const providedNames = new Set(provided.map(binding => binding.binding || binding.name))
+    for (const name of sourceNames) {
+      if (!providedNames.has(name)) throw new Error(`Missing per-preview ratelimits binding: ${name}`)
+    }
+    for (const binding of provided) {
+      if (!/^\d+$/.test(binding.namespace_id) || (source.ratelimits || []).some(item => item.namespace_id === binding.namespace_id)) {
+        throw new Error('Preview ratelimits require isolated numeric namespace IDs')
+      }
+    }
+    return structuredClone(provided)
+  }
+  return (source.ratelimits || []).map(binding => ({
+    ...structuredClone(binding),
+    namespace_id: String(3000000000 + createHash('sha256').update(`${identity.workerName}-${binding.name}`).digest().readUInt32BE(0)),
+  }))
+}
+
+function previewSubscribeVars(source, previewBindings, pr) {
+  const testSegment = previewBindings?.vars?.RESEND_SEGMENT_ID
+    || source.vars?.RESEND_PREVIEW_SEGMENT_ID
+    || process.env.RESEND_PREVIEW_SEGMENT_ID
+  const vars = { ...source.vars }
+  if (source.ratelimits?.some(binding => binding.name === 'SUBSCRIBE')) {
+    if (!testSegment || testSegment === source.vars?.RESEND_SEGMENT_ID) throw new Error('Newsletter previews require an isolated test segment')
+    vars.RESEND_SEGMENT_ID = testSegment
+    vars.SUBSCRIBE_ENVIRONMENT = 'preview'
+    vars.SUBSCRIBE_PREVIEW_PR = String(pr)
+    const topic = previewBindings?.vars?.RESEND_PREVIEW_TOPIC_ID || source.vars?.RESEND_PREVIEW_TOPIC_ID
+    vars.RESEND_TOPIC_IDS = topic ? JSON.stringify(Object.fromEntries(['home', 'skills', 'garden', 'r3', 'ui'].map(key => [key, topic]))) : '{}'
+  }
+  delete vars.RESEND_PREVIEW_SEGMENT_ID
+  delete vars.RESEND_PREVIEW_TOPIC_ID
+  return Object.keys(vars).length > 0 ? vars : undefined
+}
+
 function previewServices(services, workerName) {
   if (!services) return undefined
   return services.map(service => {
@@ -142,6 +183,8 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)
   if (config.main) config.main = absolutePath(config.main, sourcePath)
   Object.assign(config, previewStatefulBindings(source, previewBindings))
+  if (config.ratelimits) config.ratelimits = previewRatelimits(source, identity, previewBindings)
+  if (app === 'portfolio') config.vars = previewSubscribeVars(source, previewBindings, pr)
   if (config.services) config.services = previewServices(config.services, identity.workerName)
   if (assetsDirectory) config.assets = { ...config.assets, directory: assetsDirectory }
   if (!STATIC_APPS.has(app)) {

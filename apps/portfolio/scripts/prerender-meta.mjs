@@ -33,7 +33,7 @@ const routes = [
     path: 'work',
     title: 'Work — Oliver Newth',
     description:
-      'Independent AI projects by Oliver Newth and product roles at Google, Covariant, Meta, and Microsoft.',
+      'Oliver Newth’s product experience at Google, Covariant, Meta, and Microsoft.',
     ogImage: '/og/work.png',
     body: `
       <h1>Work — Oliver Newth</h1>

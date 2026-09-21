@@ -51,9 +51,10 @@ jobs:
             '@n3wth/portfolio': 'portfolio',
             '@n3wth/garden': 'garden',
             '@n3wth/skills': 'skills',
-            '@n3wth/r3-web': 'r3-web',
           }
           const apps = infrastructure ? Object.values(previewApps) : workspaces.map(workspace => previewApps[workspace]).filter(Boolean)
+          // Every signup preview needs its matching isolated subscription API.
+          if (apps.length && !apps.includes('portfolio')) apps.push('portfolio')
           appendFileSync(process.env.GITHUB_OUTPUT, `apps=${apps.join(' ')}\n`)
           JS
           fi
@@ -65,6 +66,8 @@ jobs:
         if: steps.affected.outputs.apps != '' && github.event.action != 'closed'
         env:
           APPS: ${{ steps.affected.outputs.apps }}
+          VITE_SUBSCRIBE_ENDPOINT: https://portfolio-pr-${{ github.event.pull_request.number }}.preview.n3wth.com/api/subscribe
+          NEXT_PUBLIC_SUBSCRIBE_ENDPOINT: https://portfolio-pr-${{ github.event.pull_request.number }}.preview.n3wth.com/api/subscribe
         run: |
           targets=()
           for app in $APPS; do
@@ -97,6 +100,8 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ac23513945eb49f73a89faf1be12384e
           CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          RESEND_PREVIEW_SEGMENT_ID: ${{ secrets.RESEND_PREVIEW_SEGMENT_ID }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           APPS: ${{ steps.affected.outputs.apps }}
         run: |
@@ -110,6 +115,10 @@ jobs:
                 ;;
             esac
             node scripts/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER" "${BINDINGS_ARGS[@]}"
+            if [ "$app" = portfolio ]; then
+              test -n "$RESEND_API_KEY" || { echo 'RESEND_API_KEY repository secret is required'; exit 1; }
+              printf '%s' "$RESEND_API_KEY" | npm exec -- wrangler secret put RESEND_API_KEY --config ".cloudflare/portfolio-pr-$PR_NUMBER/wrangler.json"
+            fi
             echo "Preview $app: https://$app-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
           done
       - name: Delete closed preview

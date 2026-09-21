@@ -1,8 +1,34 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { captureEmailSignup, GA_MEASUREMENT_ID, googleAnalyticsScript, initializeSiteAnalytics, shouldExcludeTraffic, captureSiteEvent } from './analytics.js'
+import { readFile } from 'node:fs/promises'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import {
+  captureNewsletterSubscribed,
+  createSiteAnalyticsBeforeSend,
+  GA_MEASUREMENT_ID,
+  googleAnalyticsScript,
+  initializeSiteAnalytics,
+  NEWSLETTER_SOURCES,
+  NEWSLETTER_SUBSCRIBED_EVENT,
+  sanitizeAnalyticsEvent,
+  shouldExcludeTraffic,
+  captureSiteEvent,
+  withSiteAnalyticsPrivacy,
+} from './analytics.js'
 
 Object.defineProperty(globalThis, 'location', { configurable: true, value: { hostname: 'n3wth.com', search: '' } })
+
+const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
+const signupPaths = [
+  'packages/site-config/analytics.js',
+  'apps/portfolio/src/lib/analytics.ts',
+  'apps/portfolio/src/components/Footer.tsx',
+  'apps/skills/src/components/Footer.tsx',
+  'apps/garden/src/components/SiteFooter.tsx',
+  'apps/r3-web/components/FooterSignup.tsx',
+  'apps/ui-docs/demo/Signup.tsx',
+]
 
 test('shares one public GA4 measurement ID and filtered deferred bootstrap', () => {
   assert.equal(GA_MEASUREMENT_ID, 'G-4QRMSG5HXK')
@@ -22,6 +48,8 @@ test('initializes once per client and preserves app policy', () => {
   assert.equal(calls[0][1].api_host, options.api_host)
   assert.equal(calls[0][1].capture_pageview, false)
   assert.equal(calls[0][1].person_profiles, 'identified_only')
+  assert.equal(calls[0][1].session_recording.maskAllInputs, true)
+  assert.ok(calls[0][1].autocapture.css_selector_ignorelist.includes('input[type="email"]'))
 })
 
 test('failed initialization can retry', () => {
@@ -47,12 +75,77 @@ test('captureSiteEvent uses the shared event boundary', () => {
   assert.deepEqual(calls, [['install_started', { content_id: 'button' }]])
 })
 
-test('captureEmailSignup identifies the person before recording the event', () => {
+test('captureNewsletterSubscribed records source site only after a valid source', () => {
   const calls = []
   const client = {
     setPersonProperties: properties => calls.push(['set', properties]),
-    capture: event => calls.push(['capture', event]),
+    capture: (...args) => calls.push(['capture', ...args]),
   }
-  captureEmailSignup(client, 'reader@example.com')
-  assert.deepEqual(calls, [['set', { email: 'reader@example.com' }], ['capture', 'email_captured']])
+  captureNewsletterSubscribed(client, 'skills')
+  assert.deepEqual(calls, [['capture', NEWSLETTER_SUBSCRIBED_EVENT, { source: 'skills' }]])
+  assert.deepEqual([...NEWSLETTER_SOURCES], ['home', 'skills', 'garden', 'r3', 'ui'])
+})
+
+test('captureNewsletterSubscribed never writes a person profile or an address', () => {
+  const calls = []
+  const client = {
+    setPersonProperties: properties => calls.push(['set', properties]),
+    capture: (...args) => calls.push(args),
+  }
+  captureNewsletterSubscribed(client, 'reader@example.com')
+  captureNewsletterSubscribed(client, 'not-a-site')
+  assert.deepEqual(calls, [])
+})
+
+test('captureNewsletterSubscribed never fails a successful subscription', () => {
+  assert.doesNotThrow(() => captureNewsletterSubscribed(null, 'home'))
+  assert.doesNotThrow(() => captureNewsletterSubscribed({
+    capture() { throw new Error('posthog down') },
+  }, 'home'))
+})
+
+test('sanitizeAnalyticsEvent strips email profile writes and keeps unrelated events', () => {
+  const pageview = sanitizeAnalyticsEvent({
+    event: '$pageview',
+    properties: { $current_url: 'https://n3wth.com/', $set: { email: 'reader@example.com' }, path: '/' },
+    $set: { email: 'reader@example.com', theme: 'dark' },
+  })
+  assert.equal(pageview.event, '$pageview')
+  assert.equal(pageview.properties.path, '/')
+  assert.equal(pageview.properties.$set?.email, undefined)
+  assert.equal(pageview.$set.theme, 'dark')
+  assert.equal(pageview.$set.email, undefined)
+
+  const signup = sanitizeAnalyticsEvent({
+    event: NEWSLETTER_SUBSCRIBED_EVENT,
+    properties: { source: 'home', email: 'reader@example.com', $lib: 'web' },
+  })
+  assert.deepEqual(signup.properties, { $lib: 'web', source: 'home' })
+})
+
+test('before_send sanitizer and privacy defaults stay applied when apps pass options', () => {
+  const options = withSiteAnalyticsPrivacy({
+    api_host: 'https://example.com',
+    autocapture: { dom_event_allowlist: ['click'] },
+    session_recording: { recordCrossOriginIframes: false },
+    before_send: event => ({ ...event, tagged: true }),
+  })
+  assert.equal(options.session_recording.maskAllInputs, true)
+  assert.equal(options.session_recording.recordCrossOriginIframes, false)
+  assert.ok(options.autocapture.css_selector_ignorelist.includes('.n3wth-site-signup'))
+  assert.deepEqual(options.autocapture.dom_event_allowlist, ['click'])
+  const sent = options.before_send({ event: 'click', properties: { email: 'reader@example.com', href: '/' } })
+  assert.equal(sent.tagged, true)
+  assert.equal(sent.properties.email, undefined)
+  assert.equal(sent.properties.href, '/')
+  assert.equal(createSiteAnalyticsBeforeSend()({ event: 'x', properties: {} }).event, 'x')
+})
+
+test('signup paths do not write subscriber email to analytics', async () => {
+  for (const relative of signupPaths) {
+    const text = await readFile(resolve(workspaceRoot, relative), 'utf8')
+    assert.doesNotMatch(text, /setPersonProperties/, relative)
+    assert.doesNotMatch(text, /email_captured/, relative)
+    assert.doesNotMatch(text, /captureEmailSignup/, relative)
+  }
 })

@@ -204,10 +204,10 @@ export function SiteSignup({ onSubmit, label = 'Occasional notes on agent infras
   }
 
   return (
-    <form {...props} className={cn('n3wth-site-signup', className)} onSubmit={handleSubmit} noValidate={false}>
+    <form {...props} className={cn('n3wth-site-signup', 'ph-no-capture', 'ph-mask', className)} data-ph-no-capture onSubmit={handleSubmit} noValidate={false}>
       <label htmlFor={id} className="n3wth-site-signup-label">{label}</label>
       <div className="n3wth-site-signup-row">
-        <input id={id} name="email" type="email" required autoComplete="email" inputMode="email" placeholder="you@example.com" disabled={busy} />
+        <input id={id} name="email" type="email" required autoComplete="email" inputMode="email" placeholder="you@example.com" disabled={busy} className="ph-no-capture ph-mask" data-ph-no-capture />
         <button type="submit" disabled={busy}>{buttonLabel}</button>
       </div>
       {/* Established before it changes so assistive technology announces the update.

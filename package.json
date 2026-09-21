@@ -13,6 +13,7 @@
   "scripts": {
     "site:new": "node scripts/create-site.mjs",
     "check:design": "node scripts/check-site-design.mjs",
+    "test:newsletter": "node --test scripts/resend-newsletter-import.test.mjs && vitest run --config vitest.newsletter.config.ts",
     "check:invariants": "node scripts/check-invariants.mjs",
     "icons": "node scripts/site-icons.mjs",
     "social": "node scripts/social-card.mjs",
@@ -27,7 +28,7 @@
     "build:skills": "node scripts/build.mjs --workspace @n3wth/skills",
     "build:ui": "node scripts/build.mjs --workspace @n3wth/ui-docs",
     "build:ui-docs": "node scripts/build.mjs --workspace @n3wth/ui-docs",
-    "check": "node --test scripts/affected.test.mjs scripts/create-site.test.mjs scripts/check-invariants.test.mjs scripts/build.test.mjs scripts/check-built-metadata.test.mjs scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs scripts/deploy-apps.test.mjs && node scripts/check-invariants.mjs && node scripts/affected.mjs --all && npm run check:design && npm run check:metadata",
+    "check": "node --test scripts/affected.test.mjs scripts/create-site.test.mjs scripts/check-invariants.test.mjs scripts/build.test.mjs scripts/check-built-metadata.test.mjs scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs scripts/deploy-apps.test.mjs && node scripts/check-invariants.mjs && node scripts/affected.mjs --all && npm run test:newsletter && npm run check:design && npm run check:metadata",
     "check:metadata": "node scripts/check-built-metadata.mjs",
     "check:affected": "node scripts/affected.mjs",
     "check:browser": "playwright test",

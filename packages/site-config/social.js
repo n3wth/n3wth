@@ -10,7 +10,7 @@ export function socialCard(h, { site, title, subtitle = '', fontFamily = 'Geist'
   const fontSize = title.length > 100 ? 44 : title.length > 65 ? 52 : title.length > 35 ? 62 : 80
   return h('div', { style: { width: '100%', height: '100%', display: 'flex', flexDirection: 'column', padding: '64px 76px', backgroundColor: iconColors.background, color: iconColors.foreground, ...(fontFamily ? { fontFamily } : {}) } },
     h('div', { style: { display: 'flex', alignItems: 'center', gap: 20 } },
-      h('img', { src: `data:image/svg+xml,${encodeURIComponent(siteIconSvg(site))}`, width: 80, height: 80, alt: '' }),
+      h('img', { src: `data:image/svg+xml,${encodeURIComponent(siteIconSvg(site, { background: false, variant: 'white' }))}`, width: 80, height: 80, alt: '' }),
       h('div', { style: { fontSize: 26, color: '#9aa0a8' } }, label)),
     h('div', { style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, gap: 22 } },
       h('div', { style: { fontSize, fontWeight: 600, lineHeight: 1.08, letterSpacing: '-0.035em', overflowWrap: 'break-word' } }, title),
