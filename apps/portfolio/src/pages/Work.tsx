@@ -1,12 +1,9 @@
 import { Experience } from '../components/sections/Experience'
-import { Building } from '../components/sections/Building'
-import { VisualBand } from '@n3wth/ui/visuals'
-import { EmergenceField } from '../components/EmergenceField'
 import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Work — Oliver Newth'
-const DESCRIPTION = 'Independent AI projects by Oliver Newth and product roles at Google, Covariant, Meta, and Microsoft.'
+const DESCRIPTION = 'Oliver Newth’s product experience at Google, Covariant, Meta, and Microsoft.'
 
 export default function Work() {
   usePageMeta(TITLE, DESCRIPTION, {
@@ -27,7 +24,7 @@ export default function Work() {
       <SectionHeader
         as="h1"
         title="Work"
-        lede="I choose a problem, build an early version, and put it in front of people. What I learn shapes what comes next."
+        lede="I lead AI product development at Google. Previously at Covariant, Meta, and Microsoft."
         action={
           <a
             href="https://r2.n3wth.com/resume/oliver-newth-resume.pdf"
@@ -38,11 +35,6 @@ export default function Work() {
           </a>
         }
       />
-      <Building />
-      {/* The shared particle field separates independent projects from experience. */}
-      <VisualBand height="clamp(200px, 38svh, 380px)">
-        <EmergenceField />
-      </VisualBand>
       <Experience />
     </>
   )

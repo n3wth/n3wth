@@ -300,17 +300,17 @@ export function assertRasterMatchesLayout(label, layoutInk, rasterInk, tol = 3) 
   }
 }
 
-/** The n3wth mark, read from favicon.svg so there is one source of truth. */
+/** Exact supplied Newth mark, shared with the favicon and social generator. */
 export function dartPath() {
   return siteIcons.portfolio.paths
 }
 
 /**
- * Measure the mark's ink box inside its 32-unit viewBox by rasterising it,
+ * Measure the mark's ink box inside its original 561-unit viewBox by rasterising it,
  * so the placement maths does not depend on hand-parsing arc segments.
  */
 export async function measureDart(d, probe = 512) {
-  const svg = `<svg width="${probe}" height="${probe}" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">${d}</g></svg>`
+  const svg = `<svg width="${probe}" height="${probe}" viewBox="0 0 561 561" xmlns="http://www.w3.org/2000/svg">${d}</svg>`
   const { data, info } = await sharp(Buffer.from(svg)).greyscale().raw().toBuffer({ resolveWithObject: true })
   let x0 = Infinity
   let x1 = -Infinity
@@ -326,7 +326,7 @@ export async function measureDart(d, probe = 512) {
       }
     }
   }
-  const k = 64 / probe
+  const k = 561 / probe
   return { x0: x0 * k, y0: y0 * k, w: (x1 - x0 + 1) * k, h: (y1 - y0 + 1) * k }
 }
 
@@ -338,7 +338,7 @@ export function dartGroup(d, box, target, fill) {
   const s = target.h / box.h
   const tx = target.x - box.x0 * s
   const ty = target.y - box.y0 * s
-  return `<g transform="translate(${tx.toFixed(3)} ${ty.toFixed(3)}) scale(${s.toFixed(5)})" fill="none" stroke="${fill}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>`
+  return `<g transform="translate(${tx.toFixed(3)} ${ty.toFixed(3)}) scale(${s.toFixed(5)})" fill="${fill}">${d}</g>`
 }
 
 /**

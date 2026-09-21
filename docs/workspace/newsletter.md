@@ -31,6 +31,31 @@ The production workflow provisions the secret and deploys Portfolio before the
 other sites. Confirm a controlled signup and Resend read-back before importing
 historical data. See [historical import](resend-newsletter-import.md).
 
+r3 is now a retired site served by Cloudflare redirects. Its source form remains
+tested, and its topic/template are available for project updates, but it is not
+a separate live signup consumer. See [retired sites](retired-sites.md).
+
+## Draft newsletter templates
+
+Six editable drafts exist in Resend, one for each requested topic:
+
+| Newsletter | Template ID |
+| --- | --- |
+| Portfolio | b086e967-6929-40b6-b813-7bc787f7e010 |
+| Skills | acaceaca-9005-483e-a3d1-16e3008ab761 |
+| Garden | 690d112b-a1eb-4523-b316-b6eba4800365 |
+| r3 | 8b0bab4f-0371-4f37-a06e-40f75a052ed5 |
+| UI docs | e0618918-49f2-4868-8b66-31e3be4ff049 |
+| Plex | f96d94d4-bd94-405e-aed6-dccab77e5a7e |
+
+Sender: Oliver Newth `<hey@n3wth.com>`. Reply-to: `hey@n3wth.com`.
+The n3wth.com sending domain is verified. Drafts use the supplied mark as a PNG
+for email-client compatibility and the reserved Resend unsubscribe URL.
+Fill ISSUE_TITLE, INTRODUCTION, MAIN_UPDATE, UPDATE_URL and MAILING_ADDRESS
+before publishing or sending. LINK_LABEL defaults to Read more. Templates do
+not automatically select recipients: future broadcasts must select the matching
+topic and intended segment. No template is published and no campaign is sent.
+
 For rollback, prefer a fix that returns an honest unavailable error. Disable
 submission by removing the newsletter secret if necessary, then deploy the
 previous verified consumer versions. Do not roll back to analytics-only form

@@ -3,7 +3,8 @@ import { dirname, isAbsolute, join, resolve } from 'node:path'
 import { DEPLOY_APP_SLUGS } from './deploy-apps.mjs'
 import { createHash } from 'node:crypto'
 
-export const PREVIEW_APPS = new Set(DEPLOY_APP_SLUGS)
+// Retain identity support so old r3 previews can still be cleaned up.
+export const PREVIEW_APPS = new Set([...DEPLOY_APP_SLUGS, 'r3-web'])
 const STATIC_APPS = new Set(['ui-docs'])
 const PREVIEW_SUFFIX = 'preview.n3wth.com'
 const STATEFUL_BINDINGS = ['d1_databases', 'r2_buckets', 'kv_namespaces', 'durable_objects', 'hyperdrive', 'queues', 'vectorize', 'mtls_certificates']
