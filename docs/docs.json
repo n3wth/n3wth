@@ -106,7 +106,8 @@
             "pages": [
               "skills/authoring",
               "skills/interface",
-              "skills/cli"
+              "skills/cli",
+              "skills/preview-d1"
             ]
           }
         ]
