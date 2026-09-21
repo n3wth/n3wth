@@ -36,7 +36,7 @@ describe('CommandPalette smoke', () => {
 
     fireEvent.change(input, { target: { value: 'zzzznotathing' } })
     expect(screen.queryAllByRole('option').length).toBe(0)
-    expect(screen.getByText(/Nothing matches/)).toBeTruthy()
+    expect(screen.getByRole('status', { name: 'Searching' })).toBeTruthy()
 
     fireEvent.change(input, { target: { value: 'garden' } })
     expect(screen.getAllByRole('option').length).toBeGreaterThan(0)
@@ -79,7 +79,7 @@ describe('CommandPalette AI search', () => {
     expect(screen.queryByRole('button', { name: /Ask about/ })).toBeNull()
   })
 
-  it('requests an AI answer only after explicit activation', async () => {
+  it('requests an AI answer after typing pauses', async () => {
     const mockFetch = vi.fn().mockImplementation(() =>
       Promise.resolve({
         ok: true,
@@ -99,7 +99,6 @@ describe('CommandPalette AI search', () => {
     fireEvent.change(input, { target: { value: 'astryx' } })
 
     expect(mockFetch).not.toHaveBeenCalled()
-    fireEvent.click(screen.getByRole('button', { name: /Ask about/ }))
     await waitFor(
       () => {
         expect(mockFetch).toHaveBeenCalledWith(
@@ -121,7 +120,6 @@ describe('CommandPalette AI search', () => {
     const input = screen.getByRole('combobox')
     fireEvent.change(input, { target: { value: 'zzzznotathing' } })
     expect(globalThis.fetch).not.toHaveBeenCalled()
-    fireEvent.click(screen.getByRole('button', { name: /Ask about/ }))
     expect(screen.getByRole('status', { name: 'Searching' })).toBeTruthy()
     expect(screen.queryByText(/Nothing matches/)).toBeNull()
     await waitFor(() => expect(globalThis.fetch).toHaveBeenCalledOnce())
@@ -129,6 +127,20 @@ describe('CommandPalette AI search', () => {
     complete({ ok: true, body: null, json: async () => ({ answer: 'Stale answer' }) })
     await waitFor(() => expect(screen.queryByRole('status', { name: 'Searching' })).toBeNull())
     expect(screen.queryByText('Stale answer')).toBeNull()
+  })
+
+  it('cancels the pending automatic search when the dialog closes', async () => {
+    vi.useFakeTimers()
+    try {
+      globalThis.fetch = vi.fn()
+      const { rerender } = render(<MemoryRouter><CommandPalette open onClose={noop} /></MemoryRouter>)
+      fireEvent.change(screen.getByRole('combobox'), { target: { value: 'garden' } })
+      rerender(<MemoryRouter><CommandPalette open={false} onClose={noop} /></MemoryRouter>)
+      await vi.advanceTimersByTimeAsync(400)
+      expect(globalThis.fetch).not.toHaveBeenCalled()
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('aborts previous request when typing a new query', async () => {
@@ -159,9 +171,8 @@ describe('CommandPalette AI search', () => {
 
     // Type first query
     fireEvent.change(input, { target: { value: 'astryx' } })
-    fireEvent.click(screen.getByRole('button', { name: /Ask about/ }))
 
-    // Wait for the explicitly requested answer to start
+    // Wait for the automatic request to start
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledTimes(1)
     }, { timeout: 1000 })
@@ -179,7 +190,7 @@ describe('CommandPalette AI search', () => {
     globalThis.AbortController = OriginalAbortController
   })
 
-  it('offers a question action separately from page matches', () => {
+  it('shows only loading dots while waiting for an automatic answer', () => {
     render(
       <MemoryRouter>
         <CommandPalette open onClose={noop} />
@@ -189,7 +200,9 @@ describe('CommandPalette AI search', () => {
 
     fireEvent.change(input, { target: { value: 'astryx' } })
 
-    expect(screen.getByRole('button', { name: 'Ask about “astryx”' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /Ask about/ })).toBeNull()
+    expect(screen.queryByText('AI answer from this site and garden notes')).toBeNull()
+    expect(screen.getByRole('status', { name: 'Searching' })).toBeTruthy()
   })
 
   it('shows retry button only on error', async () => {
@@ -205,7 +218,6 @@ describe('CommandPalette AI search', () => {
 
     fireEvent.change(input, { target: { value: 'astryx' } })
 
-    fireEvent.click(screen.getByRole('button', { name: /Ask about/ }))
     // Use a function matcher since the apostrophe may be a curly quote
     await waitFor(
       () => {

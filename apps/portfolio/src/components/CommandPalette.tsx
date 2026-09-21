@@ -9,7 +9,7 @@ import { registeredPieces } from './thinking/registry'
 import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
 import { siteUrls } from '../data/sites'
 
-/** Minimum query length for an explicit AI question. */
+/** Minimum query length for automatic AI search. */
 const AI_MIN_CHARS = 2
 
 /**
@@ -66,7 +66,7 @@ const PAGES: SearchItem[] = [
   {
     id: 'page-library',
     title: 'Library',
-    subtitle: 'The essay kit, @n3wth/ui, the garden: what exists and how to start',
+    subtitle: 'Essays, components, and notes',
     href: '/library',
     group: 'Pages',
   },
@@ -220,6 +220,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const [reduceMotion, setReduceMotion] = useState(false)
   const [askState, setAskState] = useState<'idle' | 'loading' | 'answered' | 'error'>('idle')
   const [askAnswer, setAskAnswer] = useState('')
+  const sourcesAt = askAnswer.lastIndexOf(' Sources: ')
+  const answerText = sourcesAt < 0 ? askAnswer : askAnswer.slice(0, sourcesAt)
+  const answerSources = sourcesAt < 0 ? [] : renderAnswerLinks(askAnswer.slice(sourcesAt + 10))
+    .filter((part): part is { label: string; href: string } => typeof part !== 'string')
 
   const panelRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -455,13 +459,16 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
     aiAbortController.current = null
     aiRequestVersion.current += 1
     setAskAnswer('')
-    setAskState('idle')
+    const shouldSearch = open && trimmed.length >= AI_MIN_CHARS
+    setAskState(shouldSearch ? 'loading' : 'idle')
+    const timer = shouldSearch ? window.setTimeout(() => void askAi(), 300) : undefined
 
     return () => {
+      window.clearTimeout(timer)
       aiAbortController.current?.abort()
       aiRequestVersion.current += 1
     }
-  }, [trimmed, open])
+  }, [trimmed, open, askAi])
 
   useEffect(() => {
     if (safeIndex < 0) return
@@ -621,13 +628,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
           {trimmed.length >= AI_MIN_CHARS && (
             <div className="shrink-0 px-4 py-3">
-              {askState === 'idle' ? (
-                <button type="button" onClick={() => askAi(true)} className="inline-flex min-h-11 items-center font-sans text-sm underline underline-offset-4" style={{ color: 'var(--ink-dim)' }}>
-                  Ask about “{trimmed}”
-                </button>
-              ) : (
-                <p className="mb-2 font-sans text-sm" style={{ color: 'var(--ink-dim)' }}>AI answer from this site and garden notes</p>
-              )}
               {askState === 'loading' && (
                 <div className="command-palette-loading" role="status" aria-label="Searching">
                   <span /><span /><span />
@@ -649,12 +649,13 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 </p>
               )}
               {askState === 'answered' && (
+                <div>
                 <p
                   className="font-sans text-sm leading-relaxed"
                   style={{ color: 'var(--ink)' }}
                   aria-live="polite"
                 >
-                  {renderAnswerLinks(askAnswer).map((part, i) =>
+                  {renderAnswerLinks(answerText).map((part, i) =>
                     typeof part === 'string' ? (
                       <span key={i}>{part}</span>
                     ) : (
@@ -679,6 +680,16 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                     )
                   )}
                 </p>
+                {answerSources.length > 0 && (
+                  <nav aria-label="Answer sources" className="command-palette-sources">
+                    {answerSources.map((source, i) => (
+                      <a key={i} href={source.href} target="_blank" rel="noopener noreferrer" className="command-palette-source font-sans text-sm">
+                        {source.label}
+                      </a>
+                    ))}
+                  </nav>
+                )}
+                </div>
               )}
             </div>
           )}
