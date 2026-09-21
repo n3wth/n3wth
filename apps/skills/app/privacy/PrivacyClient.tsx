@@ -78,7 +78,7 @@ export default function PrivacyClient() {
                 className="text-base leading-relaxed"
                 style={{ color: 'var(--color-grey-200)' }}
               >
-                The footer form collects an email address for occasional notes on agent infrastructure. Resend stores the address and segment membership. Signup is immediate; there is no confirmation email. A subscription is recorded only after Resend confirms the contact and segment. You can unsubscribe from the link on any note or by emailing <a href="mailto:hey@n3wth.com" className="text-white hover:opacity-70 transition-opacity">hey@n3wth.com</a>. Resend keeps unsubscribe and suppression status. PostHog may record a newsletter_subscribed event with the source site only. The address is not sent to analytics.
+                The footer form collects an email address for notes and new work across design, technology, AI, and the things I’m exploring. Resend stores the address, segment membership, and selected topic subscription. Signup is immediate; no confirmation click is needed. New subscribers receive a welcome email. A subscription is recorded only after Resend confirms the contact, segment, and topic. You can unsubscribe from the link on any note or by emailing <a href="mailto:hey@n3wth.com" className="text-white hover:opacity-70 transition-opacity">hey@n3wth.com</a>. Resend keeps unsubscribe and suppression status. PostHog may record a newsletter_subscribed event with the source site only. The address is not sent to analytics.
               </p>
             </SiteSection>
 

@@ -49,11 +49,12 @@ export default function Privacy() {
 
         <SiteDocSection title="Newsletter">
           <SiteText>
-            Footer forms on n3wth.com, skills.n3wth.com, garden.n3wth.com, r3.n3wth.com, and
-            ui.n3wth.com collect an email address for occasional notes on agent infrastructure.
-            Resend stores the address and segment membership. Signup is immediate; there is no
-            confirmation email. A subscription is recorded only after Resend confirms the contact
-            and segment. You can unsubscribe from the link on any note or by emailing{' '}
+            Footer forms on n3wth.com, skills.n3wth.com, and garden.n3wth.com collect an email
+            address for notes and new work across design, technology, AI, and the things I’m exploring.
+            Resend stores the address, segment membership, and selected topic subscription.
+            Signup is immediate; no confirmation click is needed. New subscribers receive a welcome email.
+            A subscription is recorded only after Resend confirms the contact, segment, and topic.
+            You can unsubscribe from the link on any note or by emailing{' '}
             <a href="mailto:hey@n3wth.com" className="link-underline">hey@n3wth.com</a>. Resend
             keeps unsubscribe and suppression status.
           </SiteText>

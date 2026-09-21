@@ -7,6 +7,7 @@
  * CORS: exact allowed Origin only. Responses are Cache-Control: no-store.
  */
 import { siteUrls } from '@n3wth/site-config'
+import { createUnsubscribeUrl } from './unsubscribe'
 
 export const SUBSCRIBE_PATH = '/api/subscribe'
 export const SUBSCRIBE_MAX_BODY_BYTES = 2048
@@ -42,6 +43,9 @@ export interface SubscribeEnv {
   RESEND_API_KEY?: string
   RESEND_SEGMENT_ID?: string
   RESEND_TOPIC_IDS?: string
+  RESEND_WELCOME_TEMPLATE_ID?: string
+  RESEND_WELCOME_FROM?: string
+  RESEND_UNSUBSCRIBE_SECRET?: string
   SUBSCRIBE_ENVIRONMENT?: string
   SUBSCRIBE_PREVIEW_PR?: string
   SUBSCRIBE?: RateLimiter
@@ -49,13 +53,94 @@ export interface SubscribeEnv {
 
 type FetchImplementation = typeof fetch
 
-interface SubscribeOptions {
+export interface SubscribeOptions {
   timeoutMs?: number
+  waitUntil?: (task: Promise<unknown>) => void
 }
 
 interface ProviderBudget {
   requestMs: number
   deadline: number
+}
+
+interface WelcomeConfig {
+  templateId: string
+  from: string
+  source: NewsletterSource
+  unsubscribeSecret: string
+  waitUntil?: (task: Promise<unknown>) => void
+}
+
+// Resend keeps send idempotency keys for 24 hours. Stop uncertain automatic
+// retries earlier, so an expired key can never produce a second welcome.
+const WELCOME_RETRY_WINDOW_MS = 23 * 60 * 60 * 1000
+
+async function sendPendingWelcome(
+  fetchImpl: FetchImplementation,
+  apiKey: string,
+  contact: unknown,
+  address: string,
+  topicId: string,
+  budget: ProviderBudget,
+  welcome?: WelcomeConfig,
+): Promise<void> {
+  if (!welcome) return
+  const record = readObject(contact)
+  const properties = readObject(record?.properties)
+  const id = contactId(contact)
+  if (!id || properties?.website_welcome_status !== 'pending'
+    || properties.website_signup_source !== welcome.source) return
+  const started = typeof properties.website_welcome_started_at === 'string'
+    ? Date.parse(properties.website_welcome_started_at) : NaN
+  const age = Date.now() - started
+  if (!Number.isFinite(age) || age < 0 || age >= WELCOME_RETRY_WINDOW_MS) {
+    logSubscribe('subscribe_welcome_pending', { reason: 'retry_window_expired', source: welcome.source })
+    return
+  }
+
+  try {
+    const unsubscribeUrl = await createUnsubscribeUrl(id, topicId, welcome.unsubscribeSecret)
+    let emailId: string | undefined
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        const response = await resend(fetchImpl, apiKey, `${RESEND_API}/emails`, {
+          method: 'POST',
+          headers: { 'Idempotency-Key': `website-welcome-v1/${id}` },
+          body: JSON.stringify({
+            from: welcome.from,
+            reply_to: 'hey@n3wth.com',
+            to: [address],
+            template: { id: welcome.templateId, variables: { UNSUBSCRIBE_URL: unsubscribeUrl } },
+            topic_id: topicId,
+            headers: {
+              'List-Unsubscribe': `<${unsubscribeUrl}>`,
+              'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+            },
+          }),
+        }, budget)
+        if (response.ok) {
+          emailId = contactId(await readJson(response))
+          break
+        }
+        if (response.status < 500 || attempt === 1) break
+      } catch (error) {
+        if (!isTimeout(error) || attempt === 1) throw error
+      }
+    }
+    if (!emailId) {
+      logSubscribe('subscribe_welcome_pending', { reason: 'delivery_unconfirmed', source: welcome.source })
+      return
+    }
+    const marked = await resend(fetchImpl, apiKey, resendPath('contacts', id), {
+      method: 'PATCH',
+      body: JSON.stringify({ properties: { website_welcome_status: 'sent', website_welcome_email_id: emailId } }),
+    }, budget)
+    if (!marked.ok) logSubscribe('subscribe_welcome_pending', { reason: 'receipt_unrecorded', source: welcome.source })
+  } catch {
+    // Membership is already confirmed. A delivery outage must not turn a valid
+    // signup into a false failure; the durable marker permits a safe retry.
+    logSubscribe('subscribe_welcome_pending', { reason: 'provider', source: welcome.source })
+  }
 }
 
 type SubscribeError = 'invalid_request' | 'forbidden' | 'rate_limited' | 'subscription_unavailable' | 'service_unavailable'
@@ -224,6 +309,7 @@ async function confirmMembership(
   segmentId: string,
   topicId: string,
   budget: ProviderBudget,
+  welcome?: WelcomeConfig,
 ): Promise<ProviderResult> {
   const contactResponse = await resend(fetchImpl, apiKey, resendPath('contacts', address), { method: 'GET' }, budget)
   if (!contactResponse.ok) return 'partial'
@@ -235,7 +321,14 @@ async function confirmMembership(
   const segmentsResponse = await resend(fetchImpl, apiKey, resendPath('contacts', id, '/segments'), { method: 'GET' }, budget)
   if (!segmentsResponse.ok) return 'partial'
   if (!segmentIds(await readJson(segmentsResponse)).includes(segmentId)) return 'partial'
-  return confirmTopic(fetchImpl, apiKey, id, topicId, budget)
+  const topic = await confirmTopic(fetchImpl, apiKey, id, topicId, budget)
+  if (topic === 'ok' && welcome) {
+    const delivery = sendPendingWelcome(fetchImpl, apiKey, contact, address, topicId,
+      { requestMs: budget.requestMs, deadline: Date.now() + 15000 }, welcome)
+    if (welcome.waitUntil) welcome.waitUntil(delivery)
+    else await delivery
+  }
+  return topic
 }
 
 async function confirmTopic(fetchImpl: FetchImplementation, apiKey: string, identity: string, topicId: string, budget: ProviderBudget): Promise<ProviderResult> {
@@ -282,6 +375,7 @@ async function subscribeWithResend(
   segmentId: string,
   topicId: string,
   budget: ProviderBudget,
+  welcome?: WelcomeConfig,
 ): Promise<ProviderResult> {
   const suppression = await resend(fetchImpl, apiKey, resendPath('suppressions', address), { method: 'GET' }, budget)
   if (suppression.ok) return 'suppressed'
@@ -297,22 +391,32 @@ async function subscribeWithResend(
     if (topic !== 'ok') return topic
     const segmentsResponse = await resend(fetchImpl, apiKey, resendPath('contacts', id, '/segments'), { method: 'GET' }, budget)
     if (segmentsResponse.ok && segmentIds(await readJson(segmentsResponse)).includes(segmentId)) {
-      return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget)
+      return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
     }
     if (!await addToSegment(fetchImpl, apiKey, id, segmentId, budget)) return 'provider'
-    return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget)
+    return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
   }
   if (existing.status !== 404) return 'provider'
 
   const created = await resend(fetchImpl, apiKey, `${RESEND_API}/contacts`, {
     method: 'POST',
-    body: JSON.stringify({ email: address, unsubscribed: false, segments: [{ id: segmentId }], topics: [{ id: topicId, subscription: 'opt_in' }] }),
+    body: JSON.stringify({
+      email: address,
+      unsubscribed: false,
+      segments: [{ id: segmentId }],
+      topics: [{ id: topicId, subscription: 'opt_in' }],
+      ...(welcome ? { properties: {
+        website_signup_source: welcome.source,
+        website_welcome_status: 'pending',
+        website_welcome_started_at: new Date().toISOString(),
+      } } : {}),
+    }),
   }, budget)
   if (!created.ok && created.status !== 409) return 'provider'
-  const confirmed = await confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget)
+  const confirmed = await confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
   if (confirmed !== 'partial') return confirmed
   if (!await addToSegment(fetchImpl, apiKey, address, segmentId, budget)) return 'partial'
-  return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget)
+  return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
 }
 
 export async function handleSubscribe(
@@ -366,8 +470,13 @@ export async function handleSubscribe(
   }
 
   const budget = { requestMs: options.timeoutMs ?? SUBSCRIBE_TIMEOUT_MS, deadline: Date.now() + SUBSCRIBE_TOTAL_TIMEOUT_MS }
+  const templateId = env.RESEND_WELCOME_TEMPLATE_ID?.trim()
+  const from = env.RESEND_WELCOME_FROM?.trim()
+  const unsubscribeSecret = env.RESEND_UNSUBSCRIBE_SECRET?.trim()
+  const welcome = env.SUBSCRIBE_ENVIRONMENT === 'production' && templateId && from && unsubscribeSecret && unsubscribeSecret.length >= 32
+    ? { templateId, from, source, unsubscribeSecret, waitUntil: options.waitUntil } : undefined
   try {
-    const result = await subscribeWithResend(fetchImpl, apiKey, address, segmentId, topicIds[source] as string, budget)
+    const result = await subscribeWithResend(fetchImpl, apiKey, address, segmentId, topicIds[source] as string, budget, welcome)
     if (result === 'ok') return json(origin, { ok: true }, 200)
     if (result === 'suppressed') {
       logSubscribe('subscribe_rejected', { reason: 'suppressed', source })

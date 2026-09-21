@@ -1,6 +1,7 @@
 import { handlePortfolioApi } from './api/runtime'
+import type { SubscribeEnv } from './api/subscribe'
 
-interface Env {
+interface Env extends SubscribeEnv {
   ASSETS: { fetch(request: Request): Promise<Response> }
   GEMINI_API_KEY?: string
   OPENROUTER_API_KEY?: string
@@ -37,8 +38,10 @@ function withCacheHeaders(request: Request, response: Response): Response {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const apiResponse = await handlePortfolioApi(request, env)
+  async fetch(request: Request, env: Env, context?: { waitUntil(task: Promise<unknown>): void }): Promise<Response> {
+    const apiResponse = await handlePortfolioApi(request, env, fetch, {
+      waitUntil: context ? task => context.waitUntil(task) : undefined,
+    })
     if (apiResponse) return withSecurityHeaders(apiResponse)
     return withCacheHeaders(request, await env.ASSETS.fetch(request))
   },

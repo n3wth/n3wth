@@ -10,13 +10,18 @@ Production destinations are configured in `apps/portfolio/wrangler.jsonc`.
 `RESEND_API_KEY` is a Worker and GitHub Actions secret. Never put it in a public
 build variable. The newsletter segment is Agent infrastructure notes. Topics
 are Portfolio, Skills, Garden, r3, and UI docs. Plex uses a separate topic and
-segment through its Auth0 integration. No welcome email or broadcast is sent.
+segment through its Auth0 integration. New production website contacts receive
+one introductory welcome after their selected subscription is confirmed.
+Existing contacts and historical imports do not receive a welcome.
 
 All topics default to opt_out. New contacts opt into only the selected topic.
 Suppressions, global unsubscribe and existing topic opt_out are preserved.
 Resend returns inherited and explicit opt_out identically; existing contacts
 with either receive a neutral error and support contact rather than being
 silently resubscribed. Existing active subscribers are safe to submit again.
+
+The shared signup label is: “Notes and new work across design, technology, AI,
+and the things I’m exploring.” Topic choice still follows the source site.
 
 Preview builds use the matching portfolio PR endpoint via
 `VITE_SUBSCRIBE_ENDPOINT` for Portfolio/UI docs and
@@ -35,6 +40,50 @@ r3 and UI docs are retired sites served by Cloudflare redirects. Their source
 forms remain tested, and their topics are available for project updates, but
 they are not separate live signup consumers. Portfolio, Garden and Skills are
 the three active signup sites. See [retired sites](retired-sites.md).
+
+## New subscriber welcome
+
+The website welcome uses published template
+`68d8d7db-2025-41cf-94e0-31bd07537b19` (`website-welcome`), sent directly through
+Resend with the selected `topic_id`. This is deterministic application behavior;
+it does not use an LLM, campaign, or recurring automation. Only production
+signups can mark contacts for this delivery; previews never send welcomes.
+
+New contacts receive `website_signup_source`, `website_welcome_status=pending`,
+and `website_welcome_started_at` string properties during contact creation.
+Once active contact, segment, and topic membership are verified, Worker
+`waitUntil` gives delivery a separate 15-second budget without delaying signup
+success. Delivery makes at most two attempts, with bounded account-rate retries.
+The stable `website-welcome-v1/{contactId}` idempotency key prevents concurrent
+or uncertain retries from sending duplicate messages. Accepted deliveries store
+`website_welcome_status=sent` and `website_welcome_email_id`.
+
+Failed delivery leaves the pending marker for a later signup retry. Automatic
+retry stops 23 hours after the first marker, before Resend's 24-hour idempotency
+window expires. Do not clear or reset an old pending marker blindly: inspect
+Resend delivery records first. Signup success does not prove email delivery;
+verify the saved email ID and provider status separately. Operational warnings
+record source and failure category without addresses or signing tokens.
+
+`RESEND_WELCOME_TEMPLATE_ID` and `RESEND_WELCOME_FROM` are public Worker config.
+`RESEND_UNSUBSCRIBE_SECRET` is a Worker/GitHub secret, also saved as
+`Resend welcome unsubscribe signing` in the `Shared with Agents` vault.
+The production workflow provisions it alongside the Resend API key. Disabling
+the welcome template binding stops new welcome sends without stopping signups.
+
+## Signed unsubscribe links
+
+Resend's reserved `RESEND_UNSUBSCRIBE_URL` applies to broadcasts and automations,
+not direct template sends. Direct welcomes provide `UNSUBSCRIBE_URL` and
+RFC 8058 `List-Unsubscribe` / `List-Unsubscribe-Post` headers instead.
+The URL is `/api/unsubscribe?token=...`; its HMAC-SHA256 signature covers an
+opaque contact ID and one configured topic ID, never an email address.
+
+GET displays an inert confirmation so email scanners cannot unsubscribe users.
+POST verifies the signature and opts out only that topic. Other topics and
+global subscription state remain unchanged. The endpoint accepts the configured
+website topics and the Plex topic. Keep the signing secret stable so links in
+previous messages continue to work.
 
 ## Draft newsletter templates
 
@@ -58,7 +107,8 @@ The n3wth.com sending domain is verified. The black email mark is
 layouts link to `https://app.plex.tv/desktop` and `https://seerr.n3wth.com/`.
 The standard footer uses small, left-aligned text with no divider: `n3wth`,
 `1333 Minna St San Francisco CA 94103`, then `Unsubscribe` linked to the reserved
-recipient-specific URL. It remains inside the main content column. Saved
+recipient-specific URL for broadcasts/automations, or the signed
+`UNSUBSCRIBE_URL` for direct welcomes. It remains inside the main content column. Saved
 templates contain no preview notice above the mark. Plex grids use one Open
 Plex action below the grid and a secondary Request movies or TV link, rather
 than repeated links under each cover. Industry digests use editorial imagery.
@@ -67,10 +117,10 @@ remain unnamed, while Auth0 fills missing Plex contact names from authenticated
 given/family names and preserves existing names.
 
 Templates do not select recipients or schedule delivery. Future broadcasts must
-select the matching topic and intended segment. Drafts remain unpublished;
-owner-requested sample emails are separate from audience sends. No audience
-campaign or recurring digest has been enabled. Welcome messages must exclude
-existing contacts and historical imports if automatic sending is enabled later.
+select the matching topic and intended segment. Newsletter layouts remain drafts
+unless explicitly published; automatic welcomes use their published template.
+Owner-requested sample emails are separate from audience sends. No audience
+campaign or recurring digest is enabled by the website welcome integration.
 
 For rollback, prefer a fix that returns an honest unavailable error. Disable
 submission by removing the newsletter secret if necessary, then deploy the

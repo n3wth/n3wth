@@ -1,12 +1,15 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { webcrypto } from 'node:crypto'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { handlePortfolioApi } from './runtime'
 import { SUBSCRIBE_MAX_BODY_BYTES, allowedSubscribeOrigin, sourceForOrigin, type SubscribeEnv } from './subscribe'
+import { createUnsubscribeUrl } from './unsubscribe'
 
 const ADDRESS = 'reader@example.com'
 const SECRET = 're_test_secret'
 const SEGMENT = 'seg_test_preview'
 const ORIGIN = 'https://n3wth.com'
-const TOPIC = 'topic_home'
+const TOPIC = '00000000-0000-4000-8000-000000000001'
+const WELCOME_CONTACT = '00000000-0000-4000-8000-000000000002'
 
 const allow = { SUBSCRIBE: { limit: async () => ({ success: true }) } }
 const deny = { SUBSCRIBE: { limit: async () => ({ success: false }) } }
@@ -126,6 +129,164 @@ function newContactFake() {
   }
   return { fetchMock, calls }
 }
+
+function welcomeFake(options: {
+  existing?: boolean
+  properties?: Record<string, string>
+  emailFailures?: number
+  patchFails?: boolean
+  topicSubscription?: string
+  unsubscribed?: boolean
+  missingSegment?: boolean
+  emailGate?: Promise<void>
+} = {}) {
+  const calls: Array<{ method: string; url: string; body?: Record<string, unknown>; key: string | null }> = []
+  let exists = Boolean(options.existing)
+  let properties = options.properties ?? {}
+  let failures = options.emailFailures ?? 0
+  const delivered = new Map<string, string>()
+  const fetchMock: typeof fetch = async (input, init) => {
+    const request = new Request(input, init)
+    const url = request.url
+    const body = request.body ? await request.json() as Record<string, unknown> : undefined
+    const key = request.headers.get('Idempotency-Key')
+    calls.push({ method: request.method, url, body, key })
+    if (url.includes('/suppressions/')) return new Response('{}', { status: 404 })
+    if (url.endsWith('/contacts') && request.method === 'POST') {
+      exists = true
+      properties = { ...(body?.properties as Record<string, string> ?? {}) }
+      return Response.json({ id: WELCOME_CONTACT })
+    }
+    if (url.includes('/segments')) return Response.json({ data: options.missingSegment ? [] : [{ id: SEGMENT }] })
+    if (url.includes('/topics')) return Response.json({ data: [{ id: TOPIC, subscription: options.topicSubscription ?? 'opt_in' }] })
+    if (url.endsWith('/emails')) {
+      await options.emailGate
+      if (failures-- > 0) return new Response('{}', { status: 500 })
+      if (!key) throw new Error('Missing idempotency key')
+      if (!delivered.has(key)) delivered.set(key, 'email_welcome')
+      return Response.json({ id: delivered.get(key) })
+    }
+    if (url.includes('/contacts/') && request.method === 'PATCH') {
+      if (options.patchFails) return new Response('{}', { status: 503 })
+      Object.assign(properties, body?.properties)
+      return Response.json({ id: WELCOME_CONTACT })
+    }
+    if (url.includes('/contacts/')) return exists
+      ? Response.json({ id: WELCOME_CONTACT, unsubscribed: options.unsubscribed ?? false, properties })
+      : new Response('{}', { status: 404 })
+    throw new Error(`Unexpected endpoint: ${url}`)
+  }
+  return { fetchMock, calls, delivered }
+}
+
+describe('new website subscriber welcome', () => {
+  beforeEach(() => vi.stubGlobal('crypto', webcrypto))
+  afterEach(() => vi.unstubAllGlobals())
+  const welcomeEnv = {
+    ...configured,
+    RESEND_WELCOME_TEMPLATE_ID: 'website-template',
+    RESEND_WELCOME_FROM: 'Oliver Newth <hey@n3wth.com>',
+    RESEND_UNSUBSCRIBE_SECRET: 'test-unsubscribe-signing-key-only-32-characters',
+  }
+  const pending = () => ({
+    website_signup_source: 'home',
+    website_welcome_status: 'pending',
+    website_welcome_started_at: new Date().toISOString(),
+  })
+
+  it('sends the published template only after confirmed membership and records its receipt', async () => {
+    const fake = welcomeFake()
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
+    expect(response?.status).toBe(200)
+    const create = fake.calls.find(call => call.method === 'POST' && call.url.endsWith('/contacts'))!
+    expect(create.body?.properties).toMatchObject({ website_signup_source: 'home', website_welcome_status: 'pending' })
+    const send = fake.calls.find(call => call.url.endsWith('/emails'))!
+    expect(send.key).toBe(`website-welcome-v1/${WELCOME_CONTACT}`)
+    const unsubscribeUrl = await createUnsubscribeUrl(WELCOME_CONTACT, TOPIC, welcomeEnv.RESEND_UNSUBSCRIBE_SECRET)
+    expect(send.body).toEqual({
+      from: welcomeEnv.RESEND_WELCOME_FROM, reply_to: 'hey@n3wth.com', to: [ADDRESS],
+      template: { id: 'website-template', variables: { UNSUBSCRIBE_URL: unsubscribeUrl } }, topic_id: TOPIC,
+      headers: { 'List-Unsubscribe': `<${unsubscribeUrl}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' },
+    })
+    expect(fake.calls.indexOf(send)).toBeGreaterThan(fake.calls.findIndex(call => call.url.includes('/topics')))
+    expect(fake.calls.at(-1)?.body).toEqual({ properties: { website_welcome_status: 'sent', website_welcome_email_id: 'email_welcome' } })
+    await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
+    expect(fake.calls.filter(call => call.url.endsWith('/emails'))).toHaveLength(1)
+  })
+
+  it('never welcomes historical contacts, opted-out contacts, or partial memberships', async () => {
+    for (const options of [
+      { existing: true },
+      { existing: true, properties: pending(), unsubscribed: true },
+      { existing: true, properties: pending(), topicSubscription: 'opt_out' },
+      { existing: true, properties: pending(), missingSegment: true },
+      { existing: true, properties: { ...pending(), website_signup_source: 'garden' } },
+    ]) {
+      const fake = welcomeFake(options)
+      await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
+      expect(fake.calls.some(call => call.url.endsWith('/emails'))).toBe(false)
+    }
+  })
+
+  it('never marks or sends welcome messages from previews even with production template configuration', async () => {
+    const fake = welcomeFake()
+    const response = await handlePortfolioApi(subscribeRequest({
+      body: body(), origin: 'https://portfolio-pr-413.preview.n3wth.com',
+      url: 'https://portfolio-pr-413.preview.n3wth.com/api/subscribe',
+    }), { ...welcomeEnv, SUBSCRIBE_ENVIRONMENT: 'preview', SUBSCRIBE_PREVIEW_PR: '413' }, fake.fetchMock)
+    expect(response?.status).toBe(200)
+    expect(fake.calls.find(call => call.url.endsWith('/contacts'))?.body?.properties).toBeUndefined()
+    expect(fake.calls.some(call => call.url.endsWith('/emails'))).toBe(false)
+  })
+
+  it('retries transient delivery with the same key and keeps subscription success during an outage', async () => {
+    const fake = welcomeFake({ emailFailures: 2 })
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
+    expect(response?.status).toBe(200)
+    expect(fake.delivered.size).toBe(0)
+    await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
+    const sends = fake.calls.filter(call => call.url.endsWith('/emails'))
+    expect(sends).toHaveLength(3)
+    expect(new Set(sends.map(call => call.key)).size).toBe(1)
+    expect(fake.delivered.size).toBe(1)
+  })
+
+  it('deduplicates racing retries and a send accepted before its receipt could be saved', async () => {
+    const fake = welcomeFake({ existing: true, properties: pending(), patchFails: true })
+    await Promise.all([
+      handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock),
+      handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock),
+    ])
+    const sends = fake.calls.filter(call => call.url.endsWith('/emails'))
+    expect(sends).toHaveLength(2)
+    expect(sends[0].body).toEqual(sends[1].body)
+    expect(new Set(sends.map(call => call.key)).size).toBe(1)
+    expect(fake.delivered.size).toBe(1)
+  })
+
+  it('does not resend uncertain pending welcomes after the provider idempotency window', async () => {
+    for (const started of [new Date(Date.now() - 23 * 60 * 60 * 1000).toISOString(), 'invalid', new Date(Date.now() + 60000).toISOString()]) {
+      const fake = welcomeFake({ existing: true, properties: { ...pending(), website_welcome_started_at: started } })
+      expect((await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock))?.status).toBe(200)
+      expect(fake.calls.some(call => call.url.endsWith('/emails'))).toBe(false)
+    }
+  })
+
+  it('registers background delivery before returning success without waiting for the email provider', async () => {
+    let release!: () => void
+    const fake = welcomeFake({ emailGate: new Promise<void>(resolve => { release = resolve }) })
+    const tasks: Promise<unknown>[] = []
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock, {
+      waitUntil: task => tasks.push(task),
+    })
+    expect(response?.status).toBe(200)
+    expect(tasks).toHaveLength(1)
+    expect(fake.delivered.size).toBe(0)
+    release()
+    await Promise.all(tasks)
+    expect(fake.delivered.size).toBe(1)
+  })
+})
 
 describe('POST /api/subscribe', () => {
   const warnings: string[] = []

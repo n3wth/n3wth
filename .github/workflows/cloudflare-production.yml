@@ -134,6 +134,7 @@ jobs:
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_UNSUBSCRIBE_SECRET: ${{ secrets.RESEND_UNSUBSCRIBE_SECRET }}
         shell: bash
         run: |
           test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'CLOUDFLARE_ACCOUNT_ID repository secret is required'; exit 1; }
@@ -143,6 +144,8 @@ jobs:
           if [[ " $APPS " == *" portfolio "* ]]; then
             test -n "$RESEND_API_KEY" || { echo 'RESEND_API_KEY repository secret is required'; exit 1; }
             printf '%s' "$RESEND_API_KEY" | npm exec -- wrangler secret put RESEND_API_KEY --config apps/portfolio/wrangler.jsonc
+            test -n "$RESEND_UNSUBSCRIBE_SECRET" || { echo 'RESEND_UNSUBSCRIBE_SECRET repository secret is required'; exit 1; }
+            printf '%s' "$RESEND_UNSUBSCRIBE_SECRET" | npm exec -- wrangler secret put RESEND_UNSUBSCRIBE_SECRET --config apps/portfolio/wrangler.jsonc
             npm exec -- wrangler deploy --config apps/portfolio/wrangler.jsonc
           fi
           for app in $APPS; do
