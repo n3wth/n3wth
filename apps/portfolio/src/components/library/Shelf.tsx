@@ -1,38 +1,19 @@
 import type { ReactNode } from 'react'
 
-const SHELF_LABEL: Record<string, string> = {
-  kit: 'Essay kit',
-  ui: 'UI',
-  garden: 'Garden',
-  skills: 'Skills',
-}
-
-/**
- * One shelf of /library. Every shelf is the same three moves: a hairline
- * rail, a masthead line with a plain shelf label plus whatever count is
- * real for it, then the heading and a short intro before the content.
- * Section ids stay for command-palette deep links; the visible label is
- * plain text, not a hashtag.
- *
- * No boxes. Shelves are separated by rails and vertical space, which is
- * the same grammar the Thinking pieces use.
- */
+/** Library sections retain heading anchors for direct links and search. */
 export function Shelf({
   id,
   meta,
   title,
   intro,
   children,
-  label,
 }: {
   id: string
   meta?: ReactNode
   title: string
   intro: ReactNode
   children: ReactNode
-  label?: string
 }) {
-  const shelfLabel = label ?? SHELF_LABEL[id] ?? id
   return (
     <section
       id={id}
@@ -41,20 +22,14 @@ export function Shelf({
     >
       <div className="border-t pt-8 md:pt-11" style={{ borderColor: 'var(--rail)' }}>
         <div data-reveal>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-            <a href={`#${id}`} className="mono link-underline">
-              {shelfLabel}
-            </a>
-            {meta && <p className="mono">{meta}</p>}
-          </div>
-
           <h2
             id={`${id}-title`}
-            className="display mt-5 text-[clamp(1.55rem,2.9vw,2.35rem)]"
+            className="display text-[clamp(1.55rem,2.9vw,2.35rem)]"
             style={{ letterSpacing: '-0.03em', lineHeight: 1.02 }}
           >
-            {title}
+            <a href={`#${id}`} className="link-underline">{title}</a>
           </h2>
+          {meta && <p className="mt-3 text-sm" style={{ color: 'var(--ink-dim)' }}>{meta}</p>}
 
           <p
             className="mt-5 max-w-[64ch] text-base leading-relaxed md:text-lg"

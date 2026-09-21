@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
 import { ConvergeLight, VisualBand } from '@n3wth/ui/visuals'
@@ -9,21 +8,6 @@ import { track } from '../../lib/analytics'
 const contactEventProps = { source_page: '/contact' } as const
 
 export function Contact() {
-  const [copyStatus, setCopyStatus] = useState('')
-
-  const copyEmail = async () => {
-    setCopyStatus('')
-    track('contact_intent', { ...contactEventProps, method: 'copy' })
-    try {
-      await navigator.clipboard.writeText(siteConfig.email)
-      setCopyStatus('Email copied.')
-      track('contact_copy_succeeded', { ...contactEventProps, method: 'copy' })
-    } catch {
-      setCopyStatus(`Could not copy. Select the address above: ${siteConfig.email}`)
-      track('contact_copy_failed', { ...contactEventProps, method: 'copy' })
-    }
-  }
-
   return (
     <section id="contact" aria-label="Contact" className="min-h-[85vh] flex flex-col justify-center">
       {/* The bookend to /thinking's fork: two lines of light — one cool,
@@ -47,7 +31,6 @@ export function Contact() {
                 clickAction={() => track('contact_intent', { ...contactEventProps, method: 'email' })}
                 endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
               />
-              <Button label="Copy email" variant="secondary" size="md" clickAction={copyEmail} />
               <Button
                 label="LinkedIn"
                 variant="secondary"
@@ -59,15 +42,6 @@ export function Contact() {
             </>
           }
         />
-        <p
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-          className="site-content-gutter min-h-6 text-sm"
-          style={{ color: 'var(--ink-dim)' }}
-        >
-          {copyStatus}
-        </p>
       </div>
     </section>
   )

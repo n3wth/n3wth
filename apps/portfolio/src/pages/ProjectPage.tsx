@@ -2,12 +2,12 @@ import { Link, useParams } from 'react-router-dom'
 import { CodeBlock } from '@n3wth/ui'
 import { SiteSection, SiteHeading } from '@n3wth/ui/site'
 import { projects } from '../data/content'
+import { ProjectVisual } from '../components/ProjectVisual'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const details = {
   r3: {
     title: 'r3',
-    eyebrow: 'Personal agents',
     question: 'Useful context beyond a single conversation',
     description: 'A local memory service for AI assistants. r3 combines semantic search, vector embeddings, and a knowledge graph behind an MCP interface so context can survive between sessions and tools.',
     install: 'npx @n3wth/r3',
@@ -21,7 +21,6 @@ const details = {
   },
   ui: {
     title: '@n3wth/ui',
-    eyebrow: 'Shared foundation',
     question: 'A common visual system for individual sites',
     description: 'A React component library with theme tokens, typography, native controls, and page compositions shared across the n3wth sites. The package keeps the visual foundation in one place while each app owns its content and routes.',
     install: 'npm install @n3wth/ui',
@@ -35,7 +34,6 @@ const details = {
   },
   skills: {
     title: 'Agent Skills',
-    eyebrow: 'Reusable workflows',
     question: 'Turn a way of working into something others can use',
     description: 'A catalog of installable Markdown skills for coding agents. Each skill packages instructions for a specific task so a workflow can be inspected, shared, and run locally.',
     install: 'curl -fsSL https://skills.n3wth.com/install.sh | bash',
@@ -78,21 +76,29 @@ export default function ProjectPage() {
   }
 
   return <>
-    <header className="site-content-gutter pt-16 md:pt-24">
-      <p className="meta">{detail.eyebrow}</p>
-      <SiteHeading level={1} className="mt-4 max-w-3xl">{detail.title}</SiteHeading>
-      <p className="mt-5 max-w-2xl text-xl leading-relaxed">{detail.question}</p>
-      <p className="mt-6 max-w-2xl text-base leading-relaxed" style={{ color: 'var(--ink-dim)' }}>{detail.description}</p>
-      <div className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
-        <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={detail.docs}>Documentation</a>
-        <a className="inline-flex min-h-11 items-center underline underline-offset-4" href={detail.source} target="_blank" rel="noopener noreferrer">Source</a>
-        <Link className="inline-flex min-h-11 items-center underline underline-offset-4" to="/projects">All projects</Link>
+    <header className="site-content-gutter project-detail">
+      <div className="project-detail-hero">
+        <div>
+          <h1 className="project-detail-title">{detail.title}</h1>
+          <p className="project-detail-purpose">{detail.question}</p>
+          <p className="project-detail-description">{detail.description}</p>
+          <div className="project-actions">
+            <a href={detail.docs}>Documentation</a>
+            <a href={detail.source} target="_blank" rel="noopener noreferrer">Source</a>
+          </div>
+        </div>
+        <ProjectVisual slug={slug!} />
       </div>
     </header>
     <SiteSection className="site-content-gutter">
-      <CodeBlock code={detail.install} size="sm" className="max-w-2xl" />
-      <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-12">
-        {detail.sections.map(([heading, body]) => <article key={heading} className="border-t border-[var(--rail-strong)] pt-5"><SiteHeading variant="item" level={2}>{heading}</SiteHeading><p className="mt-3 leading-relaxed" style={{ color: 'var(--ink-dim)' }}>{body}</p></article>)}
+      <div className="project-detail-body">
+        <div className="project-install">
+          <SiteHeading level={2}>Install</SiteHeading>
+          <CodeBlock code={detail.install} language="bash" size="sm" isWrapped showCopyButton />
+        </div>
+        <div className="project-detail-notes">
+          {detail.sections.map(([heading, body]) => <article key={heading}><SiteHeading variant="item" level={2}>{heading}</SiteHeading><p>{body}</p></article>)}
+        </div>
       </div>
     </SiteSection>
   </>
