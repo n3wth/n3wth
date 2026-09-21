@@ -33,6 +33,6 @@ script. Each app's `wrangler.jsonc` targets production; preview configs are
 generated with isolated identities and bindings. Do not copy generated OpenNext
 output between build environments. See the deployment runbook before deploying.
 
-All six sites use Cloudflare. Keep `git.deploymentEnabled: false` in every app's vercel.json and the site generator. Keep the six Vercel projects disconnected from GitHub so pushes and pull requests do not create Vercel deployments or status checks. Preserve their deployment history for an explicit rollback; do not reconnect Git as part of normal work.
+All six sites use Cloudflare. Vercel is retired: there is no `vercel.json` in any app and the site generator creates none. The six Vercel projects stay disconnected from GitHub so pushes and pull requests do not create Vercel deployments or status checks. Their domains and deployment history are kept for reference only, with no path back without redoing the integration from scratch; do not reconnect Git as part of normal work.
 
 Keep GitHub CI and Cloudflare workflows enabled and wait for passing checks before merging. The current branch ruleset does not require CI or pull requests. Verify the target environment, successful deployment, and live behavior before reporting a release complete. Follow [the deployment runbook](docs/workspace/deployment.md), including its rollback guidance.
