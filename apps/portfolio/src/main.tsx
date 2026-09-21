@@ -63,7 +63,7 @@ deferCallback(() => {
       // Prevent /decide (flags) call from blocking - bootstrap with empty state
       advanced_disable_decide: true,
       bootstrap: { featureFlags: {} },
-    }))
+    }) as Parameters<typeof posthog.init>[1])
     flushAnalytics()
   })
 })

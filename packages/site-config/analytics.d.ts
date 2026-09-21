@@ -9,7 +9,12 @@ export function sanitizeAnalyticsEvent<Event extends object>(event: Event): Even
 export function createSiteAnalyticsBeforeSend(
   appBeforeSend?: (event: object) => object | null,
 ): (event: object) => object | null
-export function withSiteAnalyticsPrivacy<Options extends object>(options?: Options): Options
+export function withSiteAnalyticsPrivacy<Options extends object>(
+  options?: Options,
+): NoInfer<Options> & {
+  session_recording: { maskAllInputs: true }
+  before_send: (event: object) => object | null
+}
 export function initializeSiteAnalytics<Options extends object>(
   client: { init(key: string, options?: Partial<Options>): unknown },
   options: Partial<NoInfer<Options>> & { api_host: string },
