@@ -4,6 +4,16 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      app:
+        description: 'Single app to deploy (all deploys every production app)'
+        type: choice
+        default: all
+        options: [all, portfolio, garden, skills]
+      commit:
+        description: 'Exact commit SHA to deploy (defaults to the latest main)'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -26,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ inputs.commit || github.sha }}
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@v7
@@ -38,10 +48,15 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           BEFORE_SHA: ${{ github.event.before }}
+          DISPATCH_APP: ${{ inputs.app }}
         shell: bash
         run: |
           if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
-            apps="$(node scripts/deploy-apps.mjs --slugs)"
+            if [ "$DISPATCH_APP" = "all" ] || [ -z "$DISPATCH_APP" ]; then
+              apps="$(node scripts/deploy-apps.mjs --slugs)"
+            else
+              apps="$DISPATCH_APP"
+            fi
             echo "apps=$apps" >> "$GITHUB_OUTPUT"
             echo "Selected production apps: $apps"
           else
@@ -69,7 +84,7 @@ jobs:
           fi
       - name: Verify deployment SHA
         if: steps.affected.outputs.apps != ''
-        run: test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+        run: test "$(git rev-parse HEAD)" = "${{ inputs.commit || github.sha }}"
       - name: Install npm
         if: steps.affected.outputs.apps != ''
         run: npm install --global npm@${{ env.NPM_VERSION }}
@@ -104,7 +119,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ inputs.commit || github.sha }}
           fetch-depth: 1
           persist-credentials: false
       - uses: actions/setup-node@v7
@@ -112,7 +127,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - name: Verify deployment SHA
-        run: test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+        run: test "$(git rev-parse HEAD)" = "${{ inputs.commit || github.sha }}"
       - name: Install npm
         run: npm install --global npm@${{ env.NPM_VERSION }}
       - name: Install dependencies
@@ -137,6 +152,7 @@ jobs:
           RESEND_UNSUBSCRIBE_SECRET: ${{ secrets.RESEND_UNSUBSCRIBE_SECRET }}
         shell: bash
         run: |
+          set -o pipefail
           test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'CLOUDFLARE_ACCOUNT_ID repository secret is required'; exit 1; }
           test -n "$CLOUDFLARE_ZONE_ID" || { echo 'CLOUDFLARE_ZONE_ID repository secret is required'; exit 1; }
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
@@ -146,11 +162,11 @@ jobs:
             printf '%s' "$RESEND_API_KEY" | npm exec -- wrangler secret put RESEND_API_KEY --config apps/portfolio/wrangler.jsonc
             test -n "$RESEND_UNSUBSCRIBE_SECRET" || { echo 'RESEND_UNSUBSCRIBE_SECRET repository secret is required'; exit 1; }
             printf '%s' "$RESEND_UNSUBSCRIBE_SECRET" | npm exec -- wrangler secret put RESEND_UNSUBSCRIBE_SECRET --config apps/portfolio/wrangler.jsonc
-            npm exec -- wrangler deploy --config apps/portfolio/wrangler.jsonc
+            npm exec -- wrangler deploy --config apps/portfolio/wrangler.jsonc 2>&1 | tee /tmp/cf-deploy-portfolio.log
           fi
           for app in $APPS; do
             [ "$app" = portfolio ] && continue
-            npm exec -- wrangler deploy --config "apps/$app/wrangler.jsonc"
+            npm exec -- wrangler deploy --config "apps/$app/wrangler.jsonc" 2>&1 | tee "/tmp/cf-deploy-$app.log"
           done
       - name: Check production readiness
         env:
@@ -169,8 +185,40 @@ jobs:
             url="https://$host/"
             echo "Checking $url"
             if ! status="$(curl --retry 12 --retry-delay 5 --retry-all-errors --silent --show-error --location --connect-timeout 10 --max-time 30 --output /dev/null --write-out '%{http_code}' "$url")"; then
+              echo "fail (unreachable)" > "/tmp/cf-readiness-$app"
               echo "$url could not be reached"
               exit 1
             fi
-            test "$status" = 200 || { echo "$url returned HTTP $status"; exit 1; }
+            if [ "$status" != 200 ]; then
+              echo "fail (HTTP $status)" > "/tmp/cf-readiness-$app"
+              echo "$url returned HTTP $status"
+              exit 1
+            fi
+            echo "pass (HTTP $status)" > "/tmp/cf-readiness-$app"
           done
+      - name: Write release records
+        env:
+          APPS: ${{ needs.validate.outputs.apps }}
+          SHA: ${{ inputs.commit || github.sha }}
+        run: |
+          node --input-type=module <<'JS'
+          import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+          import { buildReleaseRecord, formatReleaseSummary } from './scripts/deploy-apps.mjs'
+          const apps = (process.env.APPS || '').split(/\s+/).filter(Boolean)
+          const records = apps.map(app => {
+            const logPath = `/tmp/cf-deploy-${app}.log`
+            const output = existsSync(logPath) ? readFileSync(logPath, 'utf8') : ''
+            const version = output.match(/(?:version id|version)[ :]+([0-9a-f-]{8,})/i)?.[1] || 'unknown'
+            const statusPath = `/tmp/cf-readiness-${app}`
+            const readiness = existsSync(statusPath) ? readFileSync(statusPath, 'utf8').trim() : 'unknown'
+            return buildReleaseRecord({ app, sha: process.env.SHA, version, readiness })
+          })
+          mkdirSync('/tmp/cf-release-records', { recursive: true })
+          writeFileSync('/tmp/cf-release-records/release-records.json', `${JSON.stringify(records, null, 2)}\n`)
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, `## Production release records\n${formatReleaseSummary(records)}\n`)
+          JS
+      - name: Upload release records
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-records-${{ inputs.commit || github.sha }}
+          path: /tmp/cf-release-records/release-records.json
