@@ -71,6 +71,29 @@ record source and failure category without addresses or signing tokens.
 The production workflow provisions it alongside the Resend API key. Disabling
 the welcome template binding stops new welcome sends without stopping signups.
 
+## Plex welcome and access provisioning
+
+Plex welcomes follow approved Plex access, independently of whether someone
+has signed into Seerr. The previous first-login welcome sender is disabled.
+The published Plex welcome template is
+`8b0bab4f-0371-4f37-a06e-40f75a052ed5`.
+
+The owner-authorized welcome broadcast to the seven current Plex contacts is
+complete. Broadcast `8aa26080-b564-4db9-a425-be8bf45ea405` reports seven delivered,
+zero bounced, and zero suppressed. The owner's received message was also
+verified, with subject “Welcome to the new Plex”. All seven contacts have
+terminal welcome receipts so later provisioning does not send another intro.
+Do not clear those receipts or repeat the broadcast to introduce the new worker.
+
+Future welcome provisioning is being implemented and is not yet deployed.
+The approved design is a deterministic local worker running every five minutes.
+It selects verified Auth0 accounts from the deployed Seerr approval list,
+provisions Plex access, preserves existing Resend names and opt-outs, and sends
+through the durable welcome-receipt helper after access is ready. It uses no
+LLM and does not depend on a Seerr login. Its Auth0 machine credential is scoped
+to `read:users` and `read:actions`; credential setup and deployment verification
+must finish before automatic future welcomes can be reported as active.
+
 ## Signed unsubscribe links
 
 Resend's reserved `RESEND_UNSUBSCRIBE_URL` applies to broadcasts and automations,
@@ -85,10 +108,10 @@ global subscription state remain unchanged. The endpoint accepts the configured
 website topics and the Plex topic. Keep the signing secret stable so links in
 previous messages continue to work.
 
-## Draft newsletter templates
+## Message templates
 
-The six subscription topics are separate from the message layouts. Six editable
-drafts share the black Newth mark and an unsubscribe footer inside the main
+The six subscription topics are separate from the message layouts. These editable
+templates share the black Newth mark and an unsubscribe footer inside the main
 content column:
 
 | Newsletter | Template ID |
@@ -103,7 +126,8 @@ content column:
 Sender: Oliver Newth `<hey@n3wth.com>`. Reply-to: `hey@n3wth.com`.
 The n3wth.com sending domain is verified. The black email mark is
 `https://r2.n3wth.com/mark-black.png`. Every list-triggered layout includes
-`RESEND_UNSUBSCRIBE_URL` in its footer, including Plex notifications. Plex
+`RESEND_UNSUBSCRIBE_URL` in its broadcast or automation footer. Direct welcomes
+use the signed `UNSUBSCRIBE_URL` instead. Plex
 layouts link to `https://app.plex.tv/desktop` and `https://seerr.n3wth.com/`.
 The standard footer uses small, left-aligned text with no divider: `n3wth`,
 `1333 Minna St San Francisco CA 94103`, then `Unsubscribe` linked to the reserved
