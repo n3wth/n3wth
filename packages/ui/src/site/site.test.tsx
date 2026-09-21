@@ -141,6 +141,8 @@ describe('shared site composition', () => {
     const { container } = render(<SiteFooter signup={<SiteSignup onSubmit={email => { received.push(email) }} />} />)
     const signup = container.querySelector('.n3wth-site-footer-signup')
     expect(signup?.nextElementSibling).toHaveClass('n3wth-site-footer-row')
+    expect(container.querySelector('form.n3wth-site-signup')).toHaveClass('ph-no-capture', 'ph-mask')
+    expect(container.querySelector('input[type="email"]')).toHaveClass('ph-no-capture', 'ph-mask')
     const input = screen.getByRole('textbox', { name: /Occasional notes/ })
     fireEvent.change(input, { target: { value: '  reader@example.com ' } })
     await act(async () => { fireEvent.submit(screen.getByRole('button', { name: 'Subscribe' }).closest('form')!) })

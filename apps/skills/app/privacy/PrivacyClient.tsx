@@ -22,7 +22,7 @@ export default function PrivacyClient() {
             <span>&larr;</span> Back to skills
           </Link>
 
-          <PageHeader title={<>Privacy Policy</>} description={<>Last updated: January 2026</>} />
+          <PageHeader title={<>Privacy Policy</>} description={<>Last updated: September 2026</>} />
 
           <div className="skills-content-sections">
             <SiteSection >
@@ -54,6 +54,7 @@ export default function PrivacyClient() {
                 <li>Anonymous usage analytics (page views, skill downloads)</li>
                 <li>Error logs for debugging purposes</li>
                 <li>Information you voluntarily provide (skill requests, contributions)</li>
+                <li>Email address if you subscribe to the newsletter</li>
               </ul>
             </SiteSection>
 
@@ -66,6 +67,18 @@ export default function PrivacyClient() {
                 style={{ color: 'var(--color-grey-200)' }}
               >
                 When you install a skill, the file downloads directly to your local machine. Skills are markdown files that run entirely within your AI assistant. We don't have access to your conversations, code, or any data your AI assistant processes.
+              </p>
+            </SiteSection>
+
+            <SiteSection >
+              <SiteHeading variant="section">
+                Newsletter
+              </SiteHeading>
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: 'var(--color-grey-200)' }}
+              >
+                The footer form collects an email address for occasional notes on agent infrastructure. Resend stores the address and segment membership. Signup is immediate; there is no confirmation email. A subscription is recorded only after Resend confirms the contact and segment. You can unsubscribe from the link on any note or by emailing <a href="mailto:hey@n3wth.com" className="text-white hover:opacity-70 transition-opacity">hey@n3wth.com</a>. Resend keeps unsubscribe and suppression status. PostHog may record a newsletter_subscribed event with the source site only. The address is not sent to analytics.
               </p>
             </SiteSection>
 
@@ -85,6 +98,8 @@ export default function PrivacyClient() {
               >
                 <li>Vercel for hosting and analytics</li>
                 <li>GitHub for skill file hosting and issue tracking</li>
+                <li>Resend for newsletter contacts and unsubscribe handling</li>
+                <li>PostHog for traffic analytics (no subscriber email)</li>
               </ul>
             </SiteSection>
 
@@ -120,7 +135,7 @@ export default function PrivacyClient() {
                 className="text-base leading-relaxed"
                 style={{ color: 'var(--color-grey-200)' }}
               >
-                You can request deletion of any data associated with you by contacting us through GitHub. As we collect minimal personal data, most users have no personal information stored on our servers.
+                You can request deletion of any data associated with you by contacting us through GitHub or hey@n3wth.com. Newsletter addresses live in Resend until you unsubscribe or ask us to delete them.
               </p>
             </SiteSection>
 

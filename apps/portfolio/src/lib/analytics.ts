@@ -2,7 +2,7 @@
    posthog-js is loaded lazily after first paint, so events fired before
    it lands queue here and flush once init completes. Never throws. */
 
-import { captureEmailSignup, captureSiteEvent } from '@n3wth/site-config/analytics'
+import { captureNewsletterSubscribed, captureSiteEvent } from '@n3wth/site-config/analytics'
 import type { PostHog } from 'posthog-js'
 
 type Props = Record<string, string | number | boolean | undefined>
@@ -16,7 +16,15 @@ function run(job: (posthog: PostHog) => void) {
       queue.push(job)
       return
     }
-    void import('posthog-js').then(({ default: posthog }) => job(posthog))
+    void import('posthog-js').then(({ default: posthog }) => {
+      try {
+        job(posthog)
+      } catch {
+        /* analytics must never break the page */
+      }
+    }).catch(() => {
+      /* analytics must never break the page */
+    })
   } catch {
     /* analytics must never break the page */
   }
@@ -26,8 +34,9 @@ export function track(event: string, props?: Props) {
   run(posthog => captureSiteEvent(posthog, event, props))
 }
 
-export function trackSignup(email: string) {
-  run(posthog => captureEmailSignup(posthog, email))
+/** Call only after the subscription API succeeds. Address is never sent to analytics. */
+export function trackSignup(_email?: string) {
+  run(posthog => captureNewsletterSubscribed(posthog, 'home'))
 }
 
 export function trackOutbound(url: string, source?: string) {
