@@ -9,6 +9,8 @@ const excludedHostnameSuffixes = ['.vercel.app', '.pages.dev', '.workers.dev']
 const agentUserAgent = /bot|crawler|spider|headless|lighthouse|playwright|puppeteer|agent/i
 const emailValue = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const emailKey = /email/i
+/** Stack-frame paths that belong to edge-injected third-party scripts, never to first-party code. */
+const thirdPartyFrameSources = ['/cdn-cgi/']
 const defaultAutocaptureIgnorelist = Object.freeze([
   '.ph-no-capture',
   '.ph-no-autocapture',
@@ -73,9 +75,32 @@ export function sanitizeAnalyticsEvent(event) {
   return sanitized
 }
 
+function frameLocations(frame) {
+  if (!frame || typeof frame !== 'object') return []
+  const raw = frame.junk_drawer?.raw_frame
+  return [frame.filename, frame.source, frame.abs_path, raw?.filename, raw?.source, raw?.abs_path]
+    .filter(value => typeof value === 'string')
+}
+
+function isThirdPartyFrame(frame) {
+  const locations = frameLocations(frame)
+  return locations.length > 0
+    && locations.some(location => thirdPartyFrameSources.some(source => location.includes(source)))
+}
+
+/** True when every stack frame of an exception comes from an edge-injected third-party script. */
+export function isThirdPartyException(event) {
+  if (!event || event.event !== '$exception') return false
+  const list = event.properties?.$exception_list
+  if (!Array.isArray(list)) return false
+  const frames = list.flatMap(item => (Array.isArray(item?.stacktrace?.frames) ? item.stacktrace.frames : []))
+  return frames.length > 0 && frames.every(isThirdPartyFrame)
+}
+
 export function createSiteAnalyticsBeforeSend(appBeforeSend) {
   return event => {
     if (shouldExcludeTraffic()) return null
+    if (isThirdPartyException(event)) return null
     const sanitized = sanitizeAnalyticsEvent(event)
     if (sanitized == null) return null
     return typeof appBeforeSend === 'function' ? appBeforeSend(sanitized) : sanitized

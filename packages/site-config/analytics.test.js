@@ -9,6 +9,7 @@ import {
   GA_MEASUREMENT_ID,
   googleAnalyticsScript,
   initializeSiteAnalytics,
+  isThirdPartyException,
   NEWSLETTER_SOURCES,
   NEWSLETTER_SUBSCRIBED_EVENT,
   sanitizeAnalyticsEvent,
@@ -139,6 +140,37 @@ test('before_send sanitizer and privacy defaults stay applied when apps pass opt
   assert.equal(sent.properties.email, undefined)
   assert.equal(sent.properties.href, '/')
   assert.equal(createSiteAnalyticsBeforeSend()({ event: 'x', properties: {} }).event, 'x')
+})
+
+test('before_send drops exceptions whose only frames are edge-injected third-party scripts', () => {
+  const beforeSend = createSiteAnalyticsBeforeSend()
+  const zarazFrame = {
+    in_app: true,
+    junk_drawer: { raw_frame: { filename: 'https://ui.n3wth.com/cdn-cgi/zaraz/s.js?z=abc' } },
+  }
+  const thirdParty = {
+    event: '$exception',
+    properties: { $exception_list: [{ type: 'TypeError', value: 'Failed to fetch', stacktrace: { frames: [zarazFrame] } }] },
+  }
+  assert.equal(isThirdPartyException(thirdParty), true)
+  assert.equal(beforeSend(thirdParty), null)
+
+  const appException = {
+    event: '$exception',
+    properties: { $exception_list: [{ stacktrace: { frames: [{ filename: 'https://ui.n3wth.com/_next/static/app.js' }] } }] },
+  }
+  assert.equal(isThirdPartyException(appException), false)
+  assert.equal(beforeSend(appException).event, '$exception')
+
+  const mixed = {
+    event: '$exception',
+    properties: { $exception_list: [{ stacktrace: { frames: [zarazFrame, { filename: 'https://ui.n3wth.com/_next/static/app.js' }] } }] },
+  }
+  assert.equal(isThirdPartyException(mixed), false)
+
+  const frameless = { event: '$exception', properties: { $exception_list: [{ type: 'TypeError', value: 'Failed to fetch' }] } }
+  assert.equal(isThirdPartyException(frameless), false)
+  assert.equal(beforeSend(frameless).event, '$exception')
 })
 
 test('signup paths do not write subscriber email to analytics', async () => {
