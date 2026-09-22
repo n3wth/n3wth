@@ -34,6 +34,17 @@ test('section openings fill the screen with distinct accessible stories', async 
     await expect(hero.locator('svg').first()).toHaveAttribute('aria-hidden', 'true')
     const copy = await page.locator('.portfolio-story-copy').boundingBox()
     expect(copy!.y + copy!.height).toBeLessThanOrEqual(bounds!.y + bounds!.height + 1)
+    if (page.viewportSize()!.width >= 1024) {
+      expect(Math.abs(copy!.y + copy!.height / 2 - (bounds!.y + bounds!.height / 2))).toBeLessThan(2)
+      const description = await page.locator('.portfolio-story-description').evaluate(element => {
+        const range = document.createRange()
+        range.selectNodeContents(element)
+        return { lines: range.getClientRects().length, right: range.getBoundingClientRect().right }
+      })
+      expect(description.lines).toBe(1)
+      expect(description.right).toBeLessThanOrEqual(page.viewportSize()!.width)
+    }
+    await expect(hero.locator('a, button')).toHaveCount(0)
     expect(await hero.evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length)).toBe(0)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-hero.png`) })

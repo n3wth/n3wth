@@ -37,17 +37,20 @@ export function SectionHeader({
       className={`site-content-gutter${Heading === 'h1' ? ' portfolio-section-hero' : ''}`}
       spacing={story ? 'compact' : 'default'}
       title={Heading === 'h1' ? <span className="portfolio-section-title">{title}</span> : title}
-      description={lede}
-      actions={action}
+      description={story ? <span className="portfolio-story-description">{lede}</span> : lede}
+      actions={story ? undefined : action}
       level={Heading === 'h1' ? 1 : 2}
     />
   )
 
   if (!story) return header
   return (
-    <div className="portfolio-story-hero" ref={scene} data-visible="false">
-      <SectionStory kind={story} />
-      <div className="portfolio-story-copy">{header}</div>
-    </div>
+    <>
+      <div className="portfolio-story-hero" ref={scene} data-visible="false">
+        <SectionStory kind={story} />
+        <div className="portfolio-story-copy">{header}</div>
+      </div>
+      {action && <div className="site-content-gutter portfolio-story-actions">{action}</div>}
+    </>
   )
 }
