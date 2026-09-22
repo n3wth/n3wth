@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import { ForkLight } from '@n3wth/ui/visuals'
 import { SectionHeader } from '../Frame'
 import {
   installations,
@@ -6,8 +7,8 @@ import {
   type Installation,
 } from '../../data/content'
 
-/** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
 function sentenceCase(type: string) {
+  if (type === 'burning-man') return 'Burning Man'
   const label = type.replace(/-/g, ' ')
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
@@ -82,7 +83,7 @@ function WorkCredit({ inst }: { inst: Installation }) {
 export function Creative() {
   return (
     <section aria-label="Art">
-      <SectionHeader as="h1" title="Art" lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." visual={<img src={opener.image} alt="" decoding="async" />} />
+      <SectionHeader as="h1" title="Art" lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." visual={<ForkLight />} />
 
       {/* Opening work */}
       <figure data-reveal className="m-0">

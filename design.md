@@ -45,7 +45,7 @@ Thinking uses one reading column with search, compact format and topic filters, 
 
 Thinking notes keep the reading outline in a collapsed Contents disclosure above the prose, without a sidebar or a repeated Thinking link above the title.
 
-Portfolio section heroes pair large, left-aligned titles with an existing site visual: light paths, an assembling field, or installation photography. Keep the title first, with no eyebrow text. Article and note reading columns are centered with equal outer margins; their dates sit below the title and description. Reading pages retain the quieter shared heading scale.
+Portfolio section heroes pair large, left-aligned titles with an existing animated line visual: light paths or an assembling field. Keep installation photographs with their work rather than repeating them in the hero. Keep the title first, with no eyebrow text. Article and note reading columns are centered with equal outer margins; their dates sit below the title and description. Reading pages retain the quieter shared heading scale.
 
 The portfolio homepage combines topic groves with its existing art and navigation landmarks in one canvas, camera and lighting system. Writing appears as trees without obscuring landmarks. A selected tree exposes its title, description and an explicit local reading link; only its connections are highlighted. Keep selection usable by touch and dismissible with Escape. Thinking remains a searchable, keyboard-accessible reading index independent of WebGL. Reduced motion keeps the world still.
 

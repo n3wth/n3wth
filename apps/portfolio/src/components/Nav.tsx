@@ -1,10 +1,8 @@
 import { type MouseEvent } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Search } from 'lucide-react'
-import { Icon } from '@n3wth/ui'
 import { SiteNavigation } from '@n3wth/ui/site'
 import { navigation } from '../data/content'
-import { trackOutbound } from '../lib/analytics'
 
 export interface NavProps { onOpenSearch?: () => void; searchOpen?: boolean }
 
@@ -24,7 +22,6 @@ export function Nav({ onOpenSearch, searchOpen = false }: NavProps) {
       brand={<Link to="/" aria-label="Oliver Newth — home" onClick={sameRouteClick('/')}>Oliver Newth</Link>}
       links={navigation.map((item) => <NavLink key={item.href} to={item.href} onClick={sameRouteClick(item.href)}>{item.name}</NavLink>)}
       actions={<>
-        <a href="https://github.com/n3wth/n3wth" rel="noopener me" aria-label="GitHub" onClick={() => trackOutbound('https://github.com/n3wth/n3wth', 'nav')}><Icon name="github" size="md" /></a>
         {onOpenSearch && (
           <button
             type="button"
