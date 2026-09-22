@@ -78,7 +78,7 @@ export function NotesIndex() {
       </div>
       <div className="writing-toolbar" id="writing-results">
         <nav aria-label="Writing format" className="writing-formats">
-          {[['', 'All writing'], ['articles', 'Articles'], ['notes', 'Notes']].map(([value, label]) => (
+          {[['', 'All'], ['articles', 'Articles'], ['notes', 'Notes']].map(([value, label]) => (
             <Link key={value} to={href({ kind: value, topic: '' })} state={{ preserveScroll: true }} aria-current={kind === value ? 'page' : undefined}>
               {label}
             </Link>

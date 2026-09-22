@@ -3,6 +3,9 @@
 .writing-search { min-width: 0; margin-bottom: .75rem; }
 .writing-control { min-height: 44px; }
 .writing-search .writing-control { padding-inline: 1rem; }
+.writing-toolbar .writing-control { background: transparent; border-color: transparent; box-shadow: none; font-size: var(--font-size-sm); color: var(--ink-dim); }
+.writing-toolbar .writing-control:hover { color: var(--ink); }
+.writing-toolbar .writing-control:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
 .writing-toolbar { display: flex; align-items: center; gap: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid var(--rail); scroll-margin-top: 7rem; }
 .writing-formats { display: flex; gap: 1.5rem; font-size: var(--font-size-sm); }
 .writing-formats a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-dim); white-space: nowrap; }
