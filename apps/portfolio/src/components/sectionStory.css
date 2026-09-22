@@ -21,25 +21,43 @@
 
 .section-story__quiet { opacity: .26; }
 .section-story__trace { stroke-width: 1.6; opacity: .85; }
+.section-story__terrain { opacity: .18; }
+.section-story__arch-light { stroke-width: 1.8; opacity: .8; }
+.section-story__growth { stroke-width: 1.8; opacity: .65; }
+.section-story__bud { opacity: .6; }
+.section-story__ripple { opacity: .18; }
 
 @media (prefers-reduced-motion: no-preference) {
+  .section-story__plane { animation: story-plane 18s ease-in-out infinite; animation-delay: calc(var(--story-phase) * -1.2s); }
+  .section-story__arch-light { stroke-dasharray: .24 .76; animation: story-arch 14s linear infinite; animation-delay: calc(var(--story-phase) * -1s); }
+  .section-story__growth { stroke-dasharray: .12 .88; animation: story-trace 16s linear infinite; animation-delay: calc(var(--story-phase) * -2s); }
+  .section-story__bud { transform-origin: 0 0; animation: story-bud 20s ease-in-out infinite; animation-delay: calc(var(--story-phase) * -4s); }
+  .section-story__page { transform-origin: 0 235px; animation: story-page 22s ease-in-out infinite alternate; animation-delay: calc(var(--story-phase) * -.8s); }
+  .section-story__orbit { transform-origin: 280px 280px; animation: story-orbit 90s linear infinite; }
+  .section-story__ripple { transform-origin: 924px 350px; animation: story-ripple 12s ease-out infinite; animation-delay: calc(var(--story-phase) * -4s); }
   .section-story__breath { animation: story-breath 18s ease-in-out infinite alternate; }
   .section-story__canopy { transform-origin: 863px 690px; animation: story-canopy 24s ease-in-out infinite alternate; }
   .section-story__trace { stroke-dasharray: .18 .82; animation: story-trace 22s linear infinite; }
-  .section-story__assemble { animation: story-assemble 20s ease-in-out infinite alternate; }
-  .section-story__assemble--one { --story-x: -40px; --story-y: -30px; }
-  .section-story__assemble--two { --story-x: 48px; --story-y: -48px; }
-  .section-story__assemble--three { --story-x: -56px; --story-y: 44px; }
-  .section-story__assemble--four { --story-x: 36px; --story-y: 56px; }
+  .section-story__assemble { animation: story-assemble 24s ease-in-out infinite; }
+  .section-story__assemble--one { --story-x: -65px; --story-y: -45px; }
+  .section-story__assemble--two { --story-x: 70px; --story-y: -60px; }
+  .section-story__assemble--three { --story-x: -75px; --story-y: 55px; }
+  .section-story__assemble--four { --story-x: 60px; --story-y: 75px; }
   .section-story__contact-left { animation: story-contact-left 16s ease-in-out infinite alternate; }
   .section-story__contact-right { animation: story-contact-right 16s ease-in-out infinite alternate; }
   [data-visible='false'] .section-story * { animation-play-state: paused; }
 }
 
 @keyframes story-breath { from { opacity: .65; } to { opacity: 1; } }
+@keyframes story-plane { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+@keyframes story-arch { to { stroke-dashoffset: -1; } }
+@keyframes story-bud { 0%, 100% { transform: scale(.7); opacity: .35; } 50% { transform: scale(1); opacity: .8; } }
+@keyframes story-page { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+@keyframes story-orbit { to { transform: rotate(360deg); } }
+@keyframes story-ripple { 0% { transform: scale(.3); opacity: 0; } 20% { opacity: .5; } 100% { transform: scale(2.4); opacity: 0; } }
 @keyframes story-canopy { from { transform: rotate(-.5deg); } to { transform: rotate(.6deg); } }
 @keyframes story-trace { to { stroke-dashoffset: -1; } }
-@keyframes story-assemble { from { transform: translate(var(--story-x), var(--story-y)); } to { transform: translate(0, 0); } }
+@keyframes story-assemble { 0%, 100% { transform: translate(var(--story-x), var(--story-y)); } 40%, 65% { transform: translate(0, 0); } }
 @keyframes story-contact-left { from { transform: translateX(-16px); } to { transform: translateX(0); } }
 @keyframes story-contact-right { from { transform: translateX(16px); } to { transform: translateX(0); } }
 
@@ -48,4 +66,6 @@
   .section-story { opacity: .6; }
   .section-story--work svg { right: -230px; }
   .section-story--thinking svg { right: -220px; height: 75%; }
+  .section-story--art svg { height: 82%; }
+  .section-story--contact .section-story__terrain { transform: translateY(-110px); }
 }
