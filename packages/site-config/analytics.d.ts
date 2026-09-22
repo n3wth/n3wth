@@ -6,6 +6,7 @@ export type NewsletterSource = (typeof NEWSLETTER_SOURCES)[number]
 export function shouldExcludeTraffic(location?: Location, userAgent?: string): boolean
 export function initializeGoogleAnalytics(): void
 export function sanitizeAnalyticsEvent<Event extends object>(event: Event): Event
+export function isThirdPartyException(event: unknown): boolean
 export function createSiteAnalyticsBeforeSend(
   appBeforeSend?: (event: object) => object | null,
 ): (event: object) => object | null
