@@ -20,14 +20,19 @@ export function SectionHeader({
   visual?: ReactNode
   as?: 'h1' | 'h2'
 }) {
-  return (
+  const header = (
     <PageHeader
       className={`site-content-gutter${Heading === 'h1' ? ' portfolio-section-hero' : ''}`}
       title={Heading === 'h1' ? <span className="portfolio-section-title">{title}</span> : title}
       description={lede}
       actions={action}
-      aside={visual && <div className="portfolio-section-visual" aria-hidden="true">{visual}</div>}
       level={Heading === 'h1' ? 1 : 2}
     />
   )
+  return visual ? (
+    <div className="portfolio-section-stage">
+      {header}
+      <div className="portfolio-section-visual" aria-hidden="true">{visual}</div>
+    </div>
+  ) : header
 }
