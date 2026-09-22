@@ -9,17 +9,10 @@ const contactEventProps = { source_page: '/contact' } as const
 
 export function Contact() {
   return (
-    <section id="contact" aria-label="Contact" className="min-h-[85vh] flex flex-col justify-center">
-      {/* The bookend to /thinking's fork: two lines of light — one cool,
-          one warm — converge and carry on as one. A conversation. */}
-      <VisualBand height="clamp(200px, 34svh, 380px)">
-        <ConvergeLight />
-      </VisualBand>
-
-      <div className="frame w-full">
+    <section id="contact" aria-label="Contact">
         <SectionHeader
           as="h1"
-          title="Let's talk"
+          title="Contact"
           lede="Product, AI safety, or LED art. Coffee if you're in San Francisco."
           action={
             <>
@@ -42,7 +35,9 @@ export function Contact() {
             </>
           }
         />
-      </div>
+      <VisualBand height="clamp(200px, 34svh, 380px)">
+        <ConvergeLight />
+      </VisualBand>
     </section>
   )
 }

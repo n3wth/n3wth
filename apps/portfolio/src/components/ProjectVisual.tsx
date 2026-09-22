@@ -7,7 +7,7 @@ import './project-pages.css'
 export function ProjectVisual({ slug }: { slug: string }) {
   const [checked, setChecked] = useState(true)
   const [enabled, setEnabled] = useState(true)
-  const [sample, setSample] = useState('Interface')
+  const [sample, setSample] = useState('Make it yours.')
   return <figure className={`project-visual project-visual--${slug}`}>
     {slug === 'r3' ? <>
       <div className="project-memory">
@@ -38,16 +38,16 @@ export function ProjectVisual({ slug }: { slug: string }) {
     </> : slug === 'ui' ? <>
       <div className="project-system-specimen" aria-label="Design system examples">
         <div className="project-type-specimen" aria-label="Type scale">
-          <span className="project-type-sample">{sample || 'Interface'}</span>
-          <span className="project-type-medium">{sample || 'Interface'}</span>
-          <span className="project-type-small">{sample || 'Interface'}</span>
+          <span className="project-type-sample">{sample || 'Make it yours.'}</span>
+          <span className="project-type-medium">Start with a few words. Give them room.</span>
+          <span className="project-type-small">A headline sets the pace. Supporting text carries the thought.</span>
         </div>
         <div className="project-swatches" aria-label="Neutral and semantic color tokens" role="img"><i /><i /><i /><i /><i /><i /></div>
         <div className="project-control-specimen">
           <Button label="Components" variant="primary" href="https://docs.n3wth.com/ui/primitives" />
-          <Button label="Reset" variant="secondary" clickAction={() => { setSample('Interface'); setChecked(true); setEnabled(true) }} />
+          <Button label="Reset" variant="secondary" clickAction={() => { setSample('Make it yours.'); setChecked(true); setEnabled(true) }} />
         </div>
-        <div className="project-input-specimen"><TextInput label="Type sample" isLabelHidden placeholder="Type something" value={sample} onChange={setSample} /></div>
+        <div className="project-input-specimen"><TextInput label="Edit the headline" placeholder="Type something" value={sample} onChange={setSample} /></div>
         <div className="project-selection-specimen">
           <CheckboxInput label="Selected" value={checked} onChange={setChecked} />
           <Switch label="Enabled" value={enabled} onChange={setEnabled} />

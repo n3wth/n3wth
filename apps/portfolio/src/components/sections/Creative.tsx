@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { ForkLight } from '@n3wth/ui/visuals'
 import { SectionHeader } from '../Frame'
+import './art.css'
 import {
   installations,
   type CreditLink,
@@ -34,7 +35,7 @@ function taglineParts(inst: Installation) {
 }
 
 /* Title, provenance, and credits form one caption beside the same edge. */
-const railClass = 'section-pad !py-5 md:!py-6'
+const railClass = 'art-caption'
 
 function WorkCredit({ inst }: { inst: Installation }) {
   return (
@@ -78,55 +79,38 @@ function WorkCredit({ inst }: { inst: Installation }) {
   )
 }
 
-/* Identify each work before its photograph; tall frames give the artwork
-   room while the opening photograph stays aligned to the installation. */
 export function Creative() {
   return (
-    <section aria-label="Art">
-      <SectionHeader as="h1" title="Art" lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." visual={<ForkLight />} />
-
-      {/* Opening work */}
-      <figure data-reveal className="m-0">
+    <section aria-label="Art" className="art-exhibition">
+      <SectionHeader as="h1" title="Art" lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." />
+      <figure id={opener.id} className="art-opening m-0">
+        <div className="art-opening-scene">
+          <div className="art-opening-image">
+            <img src={opener.image} alt={opener.imageAlt} loading="eager" fetchPriority="high" decoding="async" />
+          </div>
+        </div>
         <figcaption className={railClass}>
           <WorkCredit inst={opener} />
         </figcaption>
-        <div
-          className="site-content-gutter"
-        >
-          <img
-            src={opener.image}
-            alt={opener.imageAlt}
-            loading="eager"
-            decoding="async"
-            className="w-full object-cover object-bottom"
-            style={{ height: 'clamp(360px, 65svh, 800px)' }}
-          />
-        </div>
       </figure>
-
-      {/* The works */}
-      <div className="pt-5 pb-4 md:pt-8 md:pb-8">
+      <div className="site-content-gutter art-works">
         {works.map((inst) => (
-          <figure id={inst.id} key={inst.id} data-reveal className="mb-10 md:mb-16 last:mb-0 m-0 scroll-mt-20">
-            <figcaption className={railClass}>
-              <WorkCredit inst={inst} />
-            </figcaption>
-            <div
-              className="site-content-gutter"
-            >
+          <figure id={inst.id} key={inst.id} className="art-work m-0 scroll-mt-20">
+            <div className="art-light-passage" aria-hidden="true"><ForkLight /></div>
+            <div className="art-work-image">
               <img
                 src={inst.image}
                 alt={inst.imageAlt}
                 loading="lazy"
                 decoding="async"
-                className="w-full object-cover"
-                style={{ height: 'clamp(360px, 65svh, 800px)' }}
               />
             </div>
+            <figcaption className={railClass}>
+              <WorkCredit inst={inst} />
+            </figcaption>
           </figure>
         ))}
       </div>
-
     </section>
   )
 }

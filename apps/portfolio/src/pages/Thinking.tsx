@@ -1,4 +1,3 @@
-import { ForkLight } from '@n3wth/ui/visuals'
 import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { NotesIndex } from '../components/thinking/NotesIndex'
@@ -22,7 +21,7 @@ export default function ThinkingPage() {
 
   return (
     <>
-      <SectionHeader as="h1" title="Thinking" lede={DESCRIPTION} visual={<ForkLight />} />
+      <SectionHeader as="h1" title="Thinking" lede={DESCRIPTION} />
       <div className="thinking-page"><NotesIndex /></div>
     </>
   )
