@@ -20,6 +20,20 @@
   padding-block: 22rem 4rem;
 }
 
+@media (min-width: 1024px) {
+  .portfolio-story-hero { align-items: center; }
+  .portfolio-story-copy { padding-block: 4rem; }
+  .portfolio-story-description { white-space: nowrap; }
+  .portfolio-story-hero .section-story svg { transform: translateX(12%); }
+}
+
+.portfolio-story-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-block: 2rem 3rem;
+}
+
 @media (max-width: 767px) {
   .portfolio-story-copy { padding-block: 22rem 3rem; }
 }
