@@ -82,7 +82,7 @@ function WorkCredit({ inst }: { inst: Installation }) {
 export function Creative() {
   return (
     <section aria-label="Art" className="art-exhibition">
-      <SectionHeader as="h1" title="Art" lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." />
+      <SectionHeader as="h1" story="art" title="Art" lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." />
       <figure id={opener.id} className="art-opening m-0">
         <div className="art-opening-scene">
           <div className="art-opening-image">

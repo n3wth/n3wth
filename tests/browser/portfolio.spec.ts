@@ -20,14 +20,21 @@ test('reading pages center their columns and put dates below the title', async (
   }
 })
 
-test('section openings keep readable titles and purposeful visuals', async ({ page }, testInfo) => {
-  let opening: { x: number; y: number; size: string } | undefined
+test('section openings fill the screen with distinct accessible stories', async ({ page }, testInfo) => {
+  let opening: { x: number; size: string } | undefined
   for (const route of ['/art', '/thinking', '/work', '/library', '/projects', '/contact']) {
     await page.goto(route)
     await expect(page.locator('.portfolio-section-title')).toBeVisible()
-    const position = await page.locator('.portfolio-section-title').evaluate(element => ({ x: element.getBoundingClientRect().x, y: element.getBoundingClientRect().y, size: getComputedStyle(element).fontSize }))
+    const position = await page.locator('.portfolio-section-title').evaluate(element => ({ x: element.getBoundingClientRect().x, size: getComputedStyle(element).fontSize }))
     if (opening) expect(position).toEqual(opening)
     else opening = position
+    const hero = page.locator('.portfolio-story-hero')
+    const bounds = await hero.boundingBox()
+    expect(bounds!.y + bounds!.height).toBeGreaterThanOrEqual(page.viewportSize()!.height - 1)
+    await expect(hero.locator('svg').first()).toHaveAttribute('aria-hidden', 'true')
+    const copy = await page.locator('.portfolio-story-copy').boundingBox()
+    expect(copy!.y + copy!.height).toBeLessThanOrEqual(bounds!.y + bounds!.height + 1)
+    expect(await hero.evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length)).toBe(0)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-hero.png`) })
   }
@@ -80,6 +87,7 @@ test('Thinking loads more writing on scroll and restores its collection and filt
   await page.goto('/thinking')
   await expect(page.getByRole('heading', { level: 1, name: 'Thinking', exact: true })).toBeVisible()
   await expect(page.locator('.writing-results > li')).toHaveCount(24)
+  await page.getByLabel('Search writing', { exact: true }).scrollIntoViewIfNeeded()
   const scrollBeforeSearch = await page.evaluate(() => scrollY)
   await page.getByLabel('Search writing', { exact: true }).fill('agents')
   await expect(page).toHaveURL(/q=agents#notes$/)
@@ -250,7 +258,7 @@ test('diagrams are immediately visible with normal motion', async ({ page }) => 
 for (const reducedMotion of ['no-preference', 'reduce'] as const) {
   test(`shared visual bands remain visible with ${reducedMotion} motion`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion })
-    for (const route of ['/library', '/contact']) {
+    for (const route of ['/library']) {
       await page.goto(route)
       const band = page.locator('.n3wth-visual-band').first()
       await expect(band).toBeAttached()
@@ -269,11 +277,29 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
     }
   })
+
+  test(`hero stories remain visible and respect ${reducedMotion} motion`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion })
+    for (const route of ['/art', '/work', '/thinking', '/projects', '/library', '/contact']) {
+      await page.goto(route)
+      const hero = page.locator('.portfolio-story-hero')
+      await expect(hero).toHaveAttribute('data-visible', 'true')
+      await expect(hero.locator('.section-story svg')).toBeVisible()
+      const running = () => hero.evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length)
+      if (reducedMotion === 'reduce') expect(await running()).toBe(0)
+      else await expect.poll(running).toBeGreaterThan(0)
+      if (route !== '/contact') {
+        await page.locator('footer').scrollIntoViewIfNeeded()
+        await expect(hero).toHaveAttribute('data-visible', 'false')
+        await expect.poll(running).toBe(0)
+      }
+    }
+  })
 }
 
 test('work uses the shared theme and a usable resume action', async ({ page }) => {
   await page.goto('/work')
-  await expectSiteFoundation(page, { sectionTopPadding: '0px' })
+  await expectSiteFoundation(page, { sectionTopPadding: '0px', headerPadding: '0px' })
   await expect(page.locator('#building')).toHaveCount(0)
   await expect(page.getByRole('link', { name: 'Open resume', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
 })

@@ -25,7 +25,7 @@ export default function Projects() {
   })
 
   return <>
-    <SectionHeader as="h1" title="Projects" lede="Tools for AI agents, a shared component library, and other experiments." />
+    <SectionHeader as="h1" story="projects" title="Projects" lede="Tools for AI agents, a shared component library, and other experiments." />
     <div className="site-content-gutter project-index">
       {['ui', 'r3', 'skills'].map(slug => {
         const project = projects.find(item => item.id === slug)!
