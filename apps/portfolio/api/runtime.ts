@@ -16,6 +16,7 @@ const NO_SEARCH_ANSWER = "No relevant information found. Try another search."
 const SYSTEM_PROMPT = `You answer questions about n3wth.com and its related properties (the garden, @n3wth/ui) using ONLY the retrieved context. Never use outside knowledge about Oliver Newth or these projects.
 
 Rules:
+- This is search on Oliver Newth's personal website. Unqualified career and work experience queries refer to Oliver Newth, not the visitor. Do not infer facts about the visitor.
 - Ground every claim in the retrieved context. If it doesn't answer the question, or the query is unintelligible, reply exactly: ${NO_SEARCH_ANSWER}
 - Two to four sentences. No preamble, no "Based on the provided context".
 - No marketing language, no emoji, no exclamation marks.
@@ -155,6 +156,7 @@ function streamSearch(upstream: Response, responseHeaders: Headers): Response {
       let currentEvent = ''
       let chunks: SearchChunk[] = []
       let content = ''
+      let model: string | undefined
       const emit = (value: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(value)}\n\n`))
       const emitDone = () => controller.enqueue(encoder.encode('data: [DONE]\n\n'))
       const processLine = (line: string) => {
@@ -174,7 +176,12 @@ function streamSearch(upstream: Response, responseHeaders: Headers): Response {
           if (currentEvent === 'chunks') {
             chunks = JSON.parse(data) as SearchChunk[]
           } else {
-            const delta = (JSON.parse(data) as { choices?: Array<{ delta?: { content?: string } }> }).choices?.[0]?.delta?.content
+            const completion = JSON.parse(data) as { model?: string; choices?: Array<{ delta?: { content?: string } }> }
+            if (completion.model && completion.model !== model) {
+              model = completion.model
+              emit({ model })
+            }
+            const delta = completion.choices?.[0]?.delta?.content
             if (delta) {
               content += delta
               emit({ delta })
@@ -265,13 +272,15 @@ async function search(request: Request, fetchImpl: FetchImplementation): Promise
   if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405, true)
   const body = await request.json().catch(() => ({})) as { query?: string; stream?: boolean }
   if (!body.query || typeof body.query !== 'string' || body.query.length > 300) return json({ error: 'Invalid query' }, 400, true)
+  // Resolve portfolio shorthand before retrieval, not just during generation.
+  const query = body.query.trim().replace(/^(?:(?:my|your)\s+)?(work experience|career|professional background|resume|cv)[?.!]?$/i, 'Oliver Newth $1')
   try {
-    const upstream = await fetchImpl(AI_SEARCH_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: body.query }], max_tokens: 180, temperature: 0.3, stream: Boolean(body.stream) }) })
+    const upstream = await fetchImpl(AI_SEARCH_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: query }], max_tokens: 180, temperature: 0.3, stream: Boolean(body.stream) }), signal: request.signal })
     if (!upstream.ok) return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
     if (body.stream && upstream.body) return streamSearch(upstream, cors)
-    const data = await upstream.json() as { choices?: Array<{ message?: { content?: string } }>; chunks?: SearchChunk[] }
+    const data = await upstream.json() as { model?: string; choices?: Array<{ message?: { content?: string } }>; chunks?: SearchChunk[] }
     const content = data.choices?.[0]?.message?.content
-    return content ? json({ answer: hasNoSearchAnswer(content) ? NO_SEARCH_ANSWER : content.trim() + citations(data.chunks ?? [], content) }, 200, true) : json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
+    return content ? json({ answer: hasNoSearchAnswer(content) ? NO_SEARCH_ANSWER : content.trim() + citations(data.chunks ?? [], content), ...(data.model && { model: data.model }) }, 200, true) : json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
   } catch {
     return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
   }
