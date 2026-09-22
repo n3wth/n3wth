@@ -11,7 +11,7 @@ const EMPTY_WORLD: WritingWorld = { nodes: [], edges: [] }
 export default function WritingGroves({ onEnter }: { onEnter: (href: string) => void }) {
   const [world, setWorld] = useState<WritingWorld>(EMPTY_WORLD)
   const [selected, setSelected] = useState<string | null>(null)
-  const [hovered, setHovered] = useState(false)
+  const [hovered, setHovered] = useState<string | null>(null)
   const panel = useRef<HTMLDivElement>(null)
   const focusPanel = useCallback((element: HTMLDivElement | null) => {
     panel.current = element
@@ -22,7 +22,7 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
   const hits = useRef<THREE.InstancedMesh>(null)
   const aspect = useThree(({ size }) => size.width / size.height)
   const invalidate = useThree(({ invalidate }) => invalidate)
-  useCursor(hovered)
+  useCursor(hovered !== null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -50,9 +50,10 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
   const spread = compact ? Math.max(1, Math.min(1.35, aspect) / 0.5) : 1
   const trees = useMemo(() => layoutWritingGroves(world.nodes, compact, spread), [world.nodes, compact, spread])
   const segments = useMemo(() => trees.flatMap((tree) => plantSegments(tree)), [trees])
-  const foliage = useMemo(() => segments.filter((segment, i) => segment.detail && i % 2 === 0), [segments])
+  const foliage = useMemo(() => segments.filter((segment) => segment.leaf), [segments])
   const treeById = useMemo(() => new Map(trees.map((tree) => [tree.id, tree])), [trees])
   const current = selected ? treeById.get(selected) : undefined
+  const preview = hovered ? treeById.get(hovered) : undefined
   const connections = useMemo(() => world.edges.filter((edge) => edge.source === selected || edge.target === selected).flatMap((edge) => {
     const a = treeById.get(edge.source)
     const b = treeById.get(edge.target)
@@ -70,7 +71,7 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
       const b = new THREE.Vector3(...segment.b)
       direction.subVectors(b, a)
       dummy.position.copy(a).add(b).multiplyScalar(0.5)
-      const radius = segment.detail ? 0.026 : 0.06
+      const radius = segment.detail ? 0.014 : 0.035
       dummy.scale.set(radius, direction.length(), radius)
       dummy.quaternion.setFromUnitVectors(up, direction.normalize())
       dummy.updateMatrix()
@@ -79,7 +80,7 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
     foliage.forEach((segment, index) => {
       dummy.position.set(...segment.b)
       dummy.rotation.set(0.4, index * 2.4, -0.6)
-      dummy.scale.set(0.19, 0.055, 0.35)
+      dummy.scale.set(0.12, 0.04, 0.24)
       dummy.updateMatrix()
       leaves.current?.setMatrixAt(index, dummy.matrix)
     })
@@ -107,20 +108,24 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
   return <>
     <instancedMesh ref={stems} args={[undefined, undefined, segments.length]} raycast={() => null}>
       <cylinderGeometry args={[0.65, 1, 1, 5, 1, true]} />
-      <meshStandardMaterial color="#b9c9a8" roughness={0.9} emissive="#b9c9a8" emissiveIntensity={0.12} />
+      <meshStandardMaterial color="#8a7a68" roughness={0.9} emissive="#8a7a68" emissiveIntensity={0.06} />
     </instancedMesh>
     <instancedMesh ref={leaves} args={[undefined, undefined, foliage.length]} raycast={() => null}>
       <sphereGeometry args={[1, 6, 4]} />
-      <meshStandardMaterial color="#b9c9a8" roughness={0.85} emissive="#b9c9a8" emissiveIntensity={0.16} />
+      <meshStandardMaterial color="#b9c9a8" roughness={0.85} emissive="#b9c9a8" emissiveIntensity={0.08} />
     </instancedMesh>
-    <instancedMesh ref={hits} args={[undefined, undefined, trees.length]} onClick={selectTree} onPointerOver={() => setHovered(true)} onPointerOut={() => setHovered(false)}>
+    <instancedMesh ref={hits} args={[undefined, undefined, trees.length]} onClick={selectTree} onPointerMove={(event) => {
+      if (event.instanceId === undefined) return
+      event.stopPropagation()
+      setHovered(trees[event.instanceId].id)
+    }} onPointerOut={() => setHovered(null)}>
       <sphereGeometry args={[1, 6, 4]} />
       <meshBasicMaterial colorWrite={false} depthWrite={false} />
     </instancedMesh>
     {connections.map((connection) => <Line key={connection.id} points={connection.points} color="#b9c9a8" transparent opacity={0.45} lineWidth={1} />)}
     {!current && trees.length > 0 && <Html fullscreen calculatePosition={(_, __, size) => [size.width / 2, size.height / 2]} zIndexRange={[25, 20]} style={{ pointerEvents: 'none' }}>
       <div className="writing-grove-hint">
-        <span>{hovered ? 'Select a tree to read' : 'Each tree is a piece of writing'}</span>
+        <span>{preview ? `${preview.title}${preview.tags[0] ? ` · ${preview.tags[0]}` : ''}` : 'Each tree is a piece of writing'}</span>
         <a href="/thinking">Explore writing</a>
       </div>
     </Html>}

@@ -30,7 +30,9 @@ const index = []
 for (const note of notes) {
   const published = note.date && Number.isFinite(Date.parse(note.date)) ? new Date(note.date).toISOString().slice(0, 10) : undefined
   const date = published || (history[note.filePath]?.c ? new Date(history[note.filePath].c).toISOString().slice(0, 10) : undefined)
-  const meta = { slug: note.slug, href: notePath(note.slug), title: note.title, description: note.description || '', tags: note.tags, stage: note.stage, readingTime: note.readingTime, ...(date ? { date } : {}) }
+  const modified = history[note.filePath]?.m ? new Date(history[note.filePath].m).toISOString().slice(0, 10) : undefined
+  const updated = [date, modified].filter(Boolean).sort().at(-1)
+  const meta = { slug: note.slug, href: notePath(note.slug), title: note.title, description: note.description || '', tags: note.tags, stage: note.stage, readingTime: note.readingTime, ...(date ? { date } : {}), ...(updated ? { updated } : {}) }
   let html = await markdownToHtml(note.content)
   // Existing absolute Garden links and root-relative links share the redirect map.
   // Keep external links, fragment-only links, and unknown references unchanged.

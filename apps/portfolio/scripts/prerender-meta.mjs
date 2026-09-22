@@ -309,13 +309,13 @@ routes.push({
   path: 'thinking',
   title: 'Thinking — Oliver Newth',
   description:
-    'Positions on production AI and agents as an org design problem, plus interactive walk-throughs of real AI safety trade-offs.',
+    'Essays and notes on AI, design, and everyday life.',
   ogImage: '/og/thinking.png',
   body: `
       <h1>Thinking — Oliver Newth</h1>
       <section>
-        <h2>What I believe about production AI</h2>
-        <p>Positions from shipping AI at scale and running an agent team in production, plus interactive walk-throughs of real AI safety dilemmas.</p>
+        <h2>Articles</h2>
+        <p>Essays and notes on AI, design, and everyday life.</p>
         <ul>
 ${pieceMetas
   .map(

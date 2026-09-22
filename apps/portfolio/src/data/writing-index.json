@@ -11,7 +11,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/5-year-health-and-wellness-plan",
@@ -27,7 +28,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "9 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/aarm",
@@ -41,7 +43,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "about",
@@ -54,7 +57,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-07-13"
   },
   {
     "slug": "vault",
@@ -68,7 +72,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/acne-prevention",
@@ -82,7 +87,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "active-learning",
@@ -96,7 +102,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "actual-gardening-costs",
@@ -106,7 +113,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/aging-well",
@@ -120,7 +128,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "alaska-subscriptions",
@@ -135,7 +144,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/an-unquiet-mind",
@@ -149,7 +159,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "anki/anki",
@@ -164,7 +175,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/annual-physical",
@@ -178,7 +190,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "application-tracking-system",
@@ -192,7 +205,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "tomatoes-self-pollinate",
@@ -206,7 +220,8 @@
     ],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "astryx-vs-shadcn-vs-angular-material",
@@ -221,7 +236,8 @@
     ],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-07-14"
+    "date": "2026-07-14",
+    "updated": "2026-07-14"
   },
   {
     "slug": "frameworks/atomic-habits",
@@ -235,7 +251,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/atomic-habits",
@@ -249,7 +266,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "atomic-notes",
@@ -263,7 +281,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "ats-optimization",
@@ -277,7 +296,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "audit-retrieval-before-trusting-an-answer",
@@ -291,7 +311,8 @@
     ],
     "stage": "budding",
     "readingTime": "5 min read",
-    "date": "2026-09-18"
+    "date": "2026-09-18",
+    "updated": "2026-09-18"
   },
   {
     "slug": "autism",
@@ -301,7 +322,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "award-flight-hacking",
@@ -330,7 +352,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "behavior-change",
@@ -340,7 +363,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "behavioral-interviews",
@@ -354,7 +378,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "benefits-analysis",
@@ -368,7 +393,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "board-games",
@@ -383,7 +409,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "book-learning-synthesis",
@@ -398,7 +425,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "6 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "book-reviews",
@@ -412,7 +440,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/books",
@@ -428,7 +457,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/boy-parts",
@@ -442,7 +472,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "bullet-journal",
@@ -456,7 +487,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "business-acumen",
@@ -470,7 +502,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-achievements",
@@ -484,7 +517,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-development",
@@ -498,7 +532,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-direction-framework",
@@ -512,7 +547,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-frameworks",
@@ -526,7 +562,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-goals-framework",
@@ -536,7 +573,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-journey",
@@ -546,7 +584,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "mocs/career-map",
@@ -560,7 +599,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-milestones-tracker",
@@ -575,7 +615,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-planning",
@@ -589,7 +630,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-roadmap",
@@ -603,7 +645,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-transition-guide",
@@ -619,7 +662,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "7 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "career-transitions",
@@ -633,7 +677,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "case-interviews",
@@ -647,7 +692,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "change-management",
@@ -661,7 +707,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "choose-ui-component-ownership",
@@ -676,7 +723,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-09-16"
+    "date": "2026-09-16",
+    "updated": "2026-09-16"
   },
   {
     "slug": "health/circadian-rhythm",
@@ -690,7 +738,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/circles",
@@ -704,7 +753,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "communication-skills",
@@ -718,7 +768,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "companies",
@@ -733,7 +784,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "company-research-template",
@@ -747,7 +799,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "content-strategy",
@@ -761,7 +814,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "recipes",
@@ -775,7 +829,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "cooking-methods",
@@ -789,7 +844,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/cosmetic-ingredients",
@@ -803,7 +859,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "course-reviews",
@@ -817,7 +874,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "cover-letter-templates",
@@ -831,7 +889,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/cracking-the-pm-career",
@@ -845,7 +904,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/creation-lake",
@@ -859,7 +919,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/cue-routine-reward",
@@ -873,7 +934,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/cultish",
@@ -887,7 +949,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/daring-greatly",
@@ -901,7 +964,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/dark-matter",
@@ -915,7 +979,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/deep-learning",
@@ -929,7 +994,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "delegation-skills",
@@ -943,7 +1009,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "deliberate-practice",
@@ -957,7 +1024,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "digital-garden",
@@ -971,7 +1039,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "digital-gardening",
@@ -985,7 +1054,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/eisenhower",
@@ -999,7 +1069,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "energy",
@@ -1014,7 +1085,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/environmental-design",
@@ -1028,7 +1100,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "events",
@@ -1043,7 +1116,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/exercise",
@@ -1057,7 +1131,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "favorite-blogs",
@@ -1067,7 +1142,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/feel-good-productivity",
@@ -1081,7 +1157,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/first-lie-wins",
@@ -1095,7 +1172,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/fitt",
@@ -1109,7 +1187,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "fleeting-notes",
@@ -1123,7 +1202,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "flow",
@@ -1138,7 +1218,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "food-preservation",
@@ -1152,7 +1233,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/frameworks-map",
@@ -1167,7 +1249,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/frameworks",
@@ -1181,7 +1264,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/funny-story",
@@ -1195,7 +1279,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/game",
@@ -1209,7 +1294,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "garden-planning",
@@ -1223,7 +1309,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "gardening",
@@ -1239,7 +1326,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "mocs/gardening",
@@ -1253,7 +1341,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "gardening-tasks",
@@ -1267,7 +1356,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "gardening-tips",
@@ -1281,7 +1371,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/good-material",
@@ -1295,7 +1386,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/grit",
@@ -1309,7 +1401,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/grow",
@@ -1323,7 +1416,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "growth-gates-before-growth-work",
@@ -1338,7 +1432,8 @@
     ],
     "stage": "seedling",
     "readingTime": "3 min read",
-    "date": "2026-09-18"
+    "date": "2026-09-18",
+    "updated": "2026-09-18"
   },
   {
     "slug": "frameworks/gtd",
@@ -1352,7 +1447,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/habit-tracking",
@@ -1366,7 +1462,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/happy",
@@ -1380,7 +1477,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/health-map",
@@ -1394,7 +1492,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/health",
@@ -1407,7 +1506,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health",
@@ -1421,7 +1521,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/health-metrics",
@@ -1435,7 +1536,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/heart",
@@ -1449,7 +1551,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/hello-beautiful",
@@ -1463,7 +1566,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "helvetica",
@@ -1478,7 +1582,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/him",
@@ -1492,7 +1597,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "hobby",
@@ -1507,7 +1613,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "olivers-garden",
@@ -1517,7 +1624,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-07-13"
   },
   {
     "slug": "frameworks/hook-model",
@@ -1531,7 +1639,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "hotel-loyalty-optimization",
@@ -1561,7 +1670,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "10 min read",
-    "date": "2026-06-10"
+    "date": "2026-06-10",
+    "updated": "2026-06-18"
   },
   {
     "slug": "references/books/how-to-end-a-love-story",
@@ -1575,7 +1685,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "how-to-use-mocs",
@@ -1590,7 +1701,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/ill-be-gone-in-the-dark",
@@ -1604,7 +1716,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/im-starting-to-worry-about-this-black-box-of-doom",
@@ -1618,7 +1731,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/ice",
@@ -1632,7 +1746,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/immunization",
@@ -1646,7 +1761,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "plants/indoor-soil-mix",
@@ -1661,7 +1777,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "interview-prep-checklist",
@@ -1676,7 +1793,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "interview-preparation",
@@ -1690,7 +1808,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "interview-preparation-hub",
@@ -1705,7 +1824,8 @@
     ],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "interview-presence",
@@ -1719,7 +1839,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "types-of-interviews",
@@ -1733,7 +1854,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "job-search-strategy",
@@ -1747,7 +1869,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "journal",
@@ -1762,7 +1885,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/jtbd",
@@ -1776,7 +1900,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/kano",
@@ -1790,7 +1915,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "kazuo-ishiguro",
@@ -1803,7 +1929,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "keep-your-notes-in-the-repo",
@@ -1817,7 +1944,8 @@
     ],
     "stage": "seedling",
     "readingTime": "3 min read",
-    "date": "2026-09-18"
+    "date": "2026-09-18",
+    "updated": "2026-09-18"
   },
   {
     "slug": "references/books/kill-for-me-kill-for-you",
@@ -1831,7 +1959,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/klara-and-the-sun",
@@ -1845,7 +1974,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "knowledge-graph-linking-strategy",
@@ -1855,7 +1985,8 @@
     "tags": [],
     "stage": "evergreen",
     "readingTime": "10 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "knowledge-graph-visual-maps",
@@ -1869,7 +2000,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "knowledge-management-personal-growth-synthesis",
@@ -1885,7 +2017,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "7 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "knowledge-management-systems",
@@ -1899,7 +2032,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "mocs/knowledge-map",
@@ -1913,7 +2047,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "knowledge-organization",
@@ -1927,7 +2062,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "leadership-communication-synthesis",
@@ -1943,7 +2079,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "7 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "leadership-development",
@@ -1957,7 +2094,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "leadership-skills",
@@ -1967,7 +2105,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "learning-career-development-synthesis",
@@ -1983,7 +2122,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "learning-atlas",
@@ -1993,7 +2133,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "learninglog",
@@ -2007,7 +2148,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "learning-plan",
@@ -2021,7 +2163,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/lets-explore-diabetes-with-owls",
@@ -2035,7 +2178,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "living-documents",
@@ -2049,7 +2193,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "lunch-money",
@@ -2076,7 +2221,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "mocs/mocs",
@@ -2090,7 +2236,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/mece",
@@ -2104,7 +2251,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/mental-health",
@@ -2119,7 +2267,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/mindset",
@@ -2133,7 +2282,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/mobility",
@@ -2147,7 +2297,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "moc-best-practices",
@@ -2161,7 +2312,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "plants/monsterra",
@@ -2175,7 +2327,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "motivation-techniques",
@@ -2185,7 +2338,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "networking",
@@ -2199,7 +2353,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "never-let-me-go",
@@ -2215,7 +2370,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/never-let-me-go",
@@ -2229,7 +2385,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "nobody-is-watching",
@@ -2244,7 +2401,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/non-comedogenic",
@@ -2258,7 +2416,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "none-of-this-is-true",
@@ -2273,7 +2432,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/none-of-this-is-true",
@@ -2287,7 +2447,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "note-linking",
@@ -2297,7 +2458,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "note-status-guide",
@@ -2311,7 +2473,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "now",
@@ -2324,7 +2487,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/nutrition",
@@ -2338,7 +2502,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "one-live-region-per-page",
@@ -2353,7 +2518,8 @@
     ],
     "stage": "seedling",
     "readingTime": "2 min read",
-    "date": "2026-09-18"
+    "date": "2026-09-18",
+    "updated": "2026-09-18"
   },
   {
     "slug": "questions",
@@ -2368,7 +2534,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "people",
@@ -2383,7 +2550,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/people-we-meet-on-vacation",
@@ -2397,7 +2565,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "personal-brand",
@@ -2411,7 +2580,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "personal-development",
@@ -2421,7 +2591,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/pestle",
@@ -2435,7 +2606,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "plants",
@@ -2450,7 +2622,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "podcasts",
@@ -2465,7 +2638,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "posts",
@@ -2480,7 +2654,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "presence",
@@ -2490,7 +2665,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/presence",
@@ -2504,7 +2680,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/preventive-care",
@@ -2518,7 +2695,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "product-management",
@@ -2532,7 +2710,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "productive-laziness-in-engineering",
@@ -2561,7 +2740,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "6 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "productivity-systems-hub",
@@ -2576,7 +2756,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "professional-development",
@@ -2590,7 +2771,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "professional-writing-hub",
@@ -2605,7 +2787,8 @@
     ],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/progressive-overload",
@@ -2620,7 +2803,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "progressive-summarization",
@@ -2634,7 +2818,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "projects",
@@ -2649,7 +2834,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "raised-beds",
@@ -2663,7 +2849,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/rpe",
@@ -2677,7 +2864,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "reading-goals-2024",
@@ -2693,7 +2881,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "reading-list",
@@ -2707,7 +2896,8 @@
     ],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/references",
@@ -2723,7 +2913,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references",
@@ -2739,7 +2930,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "remote-work",
@@ -2753,7 +2945,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "remote-work-excellence-guide",
@@ -2769,7 +2962,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "6 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "resume-building",
@@ -2783,7 +2977,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/rice",
@@ -2793,7 +2988,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "rice-with-instapot",
@@ -2808,7 +3004,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "running-five-agents-at-once",
@@ -2836,7 +3033,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "setting-up-my-smart-home",
@@ -2846,7 +3044,8 @@
     "tags": [],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "sf-terraced-garden-transformation-guide",
@@ -2856,7 +3055,8 @@
     "tags": [],
     "stage": "evergreen",
     "readingTime": "6 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "short-term-disability",
@@ -2866,7 +3066,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "short-haul-flight-hacks",
@@ -2896,7 +3097,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/sing-unburied-sing",
@@ -2910,7 +3112,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "skills-map",
@@ -2924,7 +3127,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "skills-development",
@@ -2938,7 +3142,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "skills-development-hub",
@@ -2953,7 +3158,8 @@
     ],
     "stage": "budding",
     "readingTime": "3 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "skills-matrix",
@@ -2967,7 +3173,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/skin-cleanse",
@@ -2981,7 +3188,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/skincare",
@@ -2991,7 +3199,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/sleep",
@@ -3005,7 +3214,8 @@
     ],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/smart-brevity",
@@ -3019,7 +3229,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/smart-goals",
@@ -3034,7 +3245,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/someday-is-today",
@@ -3048,7 +3260,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/something-in-the-water",
@@ -3062,7 +3275,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "something-in-the-water",
@@ -3078,7 +3292,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "spaced-repetition",
@@ -3092,7 +3307,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "spending",
@@ -3107,7 +3323,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/star",
@@ -3121,7 +3338,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "static-routes-on-serverless-workers",
@@ -3136,7 +3354,8 @@
     ],
     "stage": "seedling",
     "readingTime": "2 min read",
-    "date": "2026-09-18"
+    "date": "2026-09-18",
+    "updated": "2026-09-18"
   },
   {
     "slug": "references/books/storyworthy",
@@ -3150,7 +3369,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "health/stress",
@@ -3166,7 +3386,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "frameworks/swot",
@@ -3176,7 +3397,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "system-design",
@@ -3186,7 +3408,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "technical-skills",
@@ -3196,7 +3419,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "technical-skills-roadmap-2025",
@@ -3212,7 +3436,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "6 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "technology-trends",
@@ -3226,7 +3451,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "anki/test-cards",
@@ -3236,7 +3462,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "12 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-body-keeps-the-score",
@@ -3250,7 +3477,8 @@
     ],
     "stage": "evergreen",
     "readingTime": "5 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-courage-to-be-disliked",
@@ -3264,7 +3492,8 @@
     ],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/eight",
@@ -3278,7 +3507,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-guest-list",
@@ -3292,7 +3522,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "the-hidden-economics-of-grocery-delivery",
@@ -3302,7 +3533,8 @@
     "tags": [],
     "stage": "budding",
     "readingTime": "4 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-housemaid",
@@ -3316,7 +3548,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-housemaids-secret",
@@ -3330,7 +3563,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "the-housemaids-secret",
@@ -3346,7 +3580,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-paris-apartment",
@@ -3360,7 +3595,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-perfect-couple",
@@ -3374,7 +3610,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-remains-of-the-day",
@@ -3388,7 +3625,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "the-remains-of-the-day",
@@ -3403,7 +3641,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-seven-husbands-of-evelyn-hugo",
@@ -3417,7 +3656,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-surrender-experiment",
@@ -3431,7 +3671,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-winner",
@@ -3445,7 +3686,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "the-winner",
@@ -3460,7 +3702,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/the-winner-effect",
@@ -3474,7 +3717,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/thinking-fast-and-slow",
@@ -3488,7 +3732,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/this-book-is-full-of-spiders",
@@ -3502,7 +3747,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "tools",
@@ -3517,7 +3763,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "travel",
@@ -3561,7 +3808,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/what-the-hell-did-i-just-read",
@@ -3575,7 +3823,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/what-we-owe-the-future",
@@ -3589,7 +3838,8 @@
     ],
     "stage": "seedling",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "write-like-no-ones-watching",
@@ -3604,7 +3854,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "references/books/yellowface",
@@ -3618,7 +3869,8 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "yellowface",
@@ -3633,7 +3885,8 @@
     ],
     "stage": "budding",
     "readingTime": "1 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   },
   {
     "slug": "zettelkasten-method",
@@ -3647,6 +3900,7 @@
     ],
     "stage": "budding",
     "readingTime": "2 min read",
-    "date": "2026-02-15"
+    "date": "2026-02-15",
+    "updated": "2026-02-15"
   }
 ]

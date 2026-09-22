@@ -41,6 +41,8 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 
 ## Interaction
 
+Thinking uses one reading column with search, compact format and topic filters, and a continuously loaded list of articles and notes. Keep search, filters, sort and loaded batches in the URL so returning from a piece preserves the list. Provide a keyboard-accessible load-more control. Place format and reading time together beneath each description, leaving the right margin clear. Avoid tag clouds, sidebars, featured blocks and repeated counts on this index. Groves keep clear ground around landmarks; show writing details on interaction rather than covering the scene with labels.
+
 The portfolio homepage combines topic groves with its existing art and navigation landmarks in one canvas, camera and lighting system. Writing appears as trees without obscuring landmarks. A selected tree exposes its title, description and an explicit local reading link; only its connections are highlighted. Keep selection usable by touch and dismissible with Escape. Thinking remains a searchable, keyboard-accessible reading index independent of WebGL. Reduced motion keeps the world still.
 
 Article graphics explain the adjacent argument. Keep each figure with a descriptive caption, visible source links and useful alt text. Distinguish original conceptual diagrams from measured charts and reproduced images. Use a single supporting text style for captions, reserve the image dimensions, and let readers open detailed graphics at full size. Record reuse rights for third-party assets; a citation alone is not permission.

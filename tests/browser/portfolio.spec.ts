@@ -28,6 +28,39 @@ test('Thinking notes keep local links, topics, anchors and browser Back', async 
   expect(html).toContain('href="/thinking/frameworks/frameworks-map"')
 })
 
+test('Thinking loads more writing on scroll and restores its collection and filters', async ({ page }) => {
+  await page.goto('/thinking')
+  await expect(page.getByRole('heading', { level: 1, name: 'Thinking', exact: true })).toBeVisible()
+  await expect(page.locator('.writing-results > li')).toHaveCount(24)
+  const scrollBeforeSearch = await page.evaluate(() => scrollY)
+  await page.getByLabel('Search writing', { exact: true }).fill('agents')
+  await expect(page).toHaveURL(/q=agents#notes$/)
+  expect(await page.evaluate(() => scrollY)).toBe(scrollBeforeSearch)
+  await page.getByLabel('Search writing', { exact: true }).fill('')
+  await page.getByRole('navigation', { name: 'Writing format' }).getByRole('link', { name: 'Articles', exact: true }).click()
+  await expect(page.getByRole('status')).toHaveText('21 results')
+  await page.getByRole('navigation', { name: 'Writing format' }).getByRole('link', { name: 'Notes', exact: true }).click()
+  await expect(page).toHaveURL(/kind=notes#notes$/)
+  await expect(page.locator('.writing-results > li')).toHaveCount(24)
+  await page.locator('.writing-results > li').last().scrollIntoViewIfNeeded()
+  await expect(page).toHaveURL(/kind=notes&page=2$/)
+  await expect(page.locator('.writing-results > li')).toHaveCount(48)
+  const first = page.locator('.writing-results a').nth(23)
+  const title = await first.innerText()
+  await first.scrollIntoViewIfNeeded()
+  const readingPosition = await page.evaluate(() => scrollY)
+  await first.click()
+  await expect(page.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible()
+  await page.goBack()
+  await expect(page).toHaveURL(/kind=notes&page=2$/)
+  await expect(page.locator('.writing-results > li')).toHaveCount(48)
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeCloseTo(readingPosition, -1)
+  await page.getByLabel('Search writing', { exact: true }).fill('5 Whys')
+  await expect(page.getByRole('status')).toHaveText('1 result')
+  await expect(page.locator('.writing-results a')).toHaveText('5 Whys')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+})
+
 test('projects index connects navigation, product pages and documentation', async ({ page, request }) => {
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.goto('/projects/')
@@ -169,7 +202,7 @@ test('diagrams are immediately visible with normal motion', async ({ page }) => 
 for (const reducedMotion of ['no-preference', 'reduce'] as const) {
   test(`shared visual bands remain visible with ${reducedMotion} motion`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion })
-    for (const route of ['/library', '/thinking', '/contact']) {
+    for (const route of ['/library', '/contact']) {
       await page.goto(route)
       const band = page.locator('.n3wth-visual-band').first()
       await expect(band).toBeAttached()

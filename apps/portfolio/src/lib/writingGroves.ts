@@ -13,6 +13,7 @@ export interface WritingWorld {
 }
 
 export interface GroveTree extends WritingNode {
+  grove: string
   x: number
   z: number
   height: number
@@ -22,6 +23,7 @@ export interface PlantSegment {
   a: [number, number, number]
   b: [number, number, number]
   detail: boolean
+  leaf?: boolean
 }
 
 // Garden's seeded generator keeps each note's silhouette stable across visits.
@@ -45,42 +47,57 @@ function mulberry32(seed: number) {
   }
 }
 
-/** Bounded topic bands leave the centre and landmark sightlines clear.
- * Sorting and seeded spacing replace Garden's quadratic simulation.
- */
+// Clearings follow the existing landscape, with open ground between them.
+// The remaining topics share a rear woodland; their individual tags stay intact.
+const WRITING_GROVES = [
+  { topic: 'articles', angle: 0.11, z: -32, compactZ: -23, side: 1 },
+  { topic: 'books', angle: 0.10, z: -92, compactZ: -90, side: 1 },
+  { topic: 'health', angle: -0.66, z: -68, compactZ: -35, side: -1 },
+  { topic: 'career', angle: -0.66, z: -28, compactZ: -55, side: -1 },
+  { topic: 'learning', angle: -0.66, z: -118, compactZ: -112, side: 1 },
+  { topic: 'product', angle: 0.67, z: -40, compactZ: -50, side: 1 },
+  { topic: 'gardening', angle: 0.67, z: -100, compactZ: -45, side: -1 },
+  { topic: '', angle: 0.08, z: -115, compactZ: -115, side: 1 },
+] as const
+
 export function layoutWritingGroves(nodes: WritingNode[], compact: boolean, spread = 1): GroveTree[] {
-  const topics = new Map<string, WritingNode[]>()
+  const landmarks = compact
+    ? [[-4.2 * spread, -13, 6, 5], [3.2 * spread, -35, 11, 8], [-14 * spread, -85, 14, 14]]
+    : [[-6, -16, 5, 5], [27, -46, 11, 8], [-52, -100, 14, 14]]
+  const groups = WRITING_GROVES.map(() => [] as WritingNode[])
   for (const node of nodes) {
-    const topic = node.tags[0] ?? 'notes'
-    const members = topics.get(topic) ?? []
-    members.push(node)
-    topics.set(topic, members)
+    const index = WRITING_GROVES.findIndex((grove) => node.tags.includes(grove.topic))
+    groups[index < 0 ? groups.length - 1 : index].push(node)
   }
-  const result: GroveTree[] = []
-  const groups = [...topics.entries()].sort(([a], [b]) => a.localeCompare(b))
-  const rows = Math.max(1, Math.ceil(nodes.length / 8) - 1)
-  groups.forEach(([, members]) => {
-    members.sort((a, b) => a.id.localeCompare(b.id)).forEach((node) => {
-      const index = result.length
-      const side = index % 2 === 0 ? -1 : 1
-      const row = Math.floor(index / 8)
-      const column = Math.floor(index / 2) % 4
+  return groups.flatMap((members, groupIndex) => {
+    const grove = WRITING_GROVES[groupIndex]
+    return members.sort((a, b) => a.id.localeCompare(b.id)).map((node, index) => {
       const random = mulberry32(hashString(node.id))
-      const depth = row / rows * 40
-      const z = -6 - depth + (random() - 0.5) * 0.6
-      // Perspective bands widen toward the back without extending to infinity.
-      // Leave gaps along the art, Work, Notes and near-field portal sightlines.
-      const angle = compact ? 0.135 + column * 0.021 : 0.23 + column * 0.023
-      const x = side * ((compact ? 26 : 22) - z) * angle * (compact ? spread : 1)
-      result.push({
+      // A golden-angle spiral gives each tree room without visible planting rows.
+      // A small central clearing makes a grove read as a place, not a thicket.
+      const radius = 2 + Math.sqrt(index) * 1.55
+      const angle = index * 2.3999632297 + groupIndex
+      const z = (compact ? grove.compactZ : grove.z) + Math.sin(angle) * radius
+      // Keep the compact forest at the landscape edges, on the visible side
+      // of the horizon. Central desktop groves have room for distinct crowns.
+      const lane = compact ? grove.side * 0.24 * spread : grove.angle
+      const width = compact ? 0.045 * spread : Math.abs(grove.angle) < 0.2 ? 0.065 : 0.045
+      let x = ((compact ? 26 : 22) - z) * (lane + Math.cos(angle) * width * Math.sqrt((index + 1) / members.length))
+      const height = ({ seedling: 0.65, budding: 1.5, evergreen: 2.7 })[node.stage] * (0.8 + random() * 0.4)
+      for (const [lx, lz, halfWidth, halfDepth] of landmarks) {
+        if (Math.abs(z - lz) < halfDepth + 2 && Math.abs(x - lx) < halfWidth + height * 0.4) {
+          x = lx + Math.sign(x - lx || 1) * (halfWidth + height * 0.4 + 1)
+        }
+      }
+      return {
         ...node,
+        grove: grove.topic,
         x,
         z,
-        height: ({ seedling: 1, budding: 2.4, evergreen: 4.2 })[node.stage],
-      })
+        height,
+      }
     })
   })
-  return result
 }
 
 /** Garden's bowed trunks, link-count branches and evergreen leaf ticks. */
@@ -105,7 +122,7 @@ export function plantSegments(node: GroveTree): PlantSegment[] {
     if (node.stage === 'evergreen') {
       const leafAngle = angle + Math.PI / 2 + random() - 0.5
       const leafLength = (4 + random() * 6) * node.height / 175
-      segments.push({ a: tip, b: [tip[0] + Math.cos(leafAngle) * leafLength, tip[1] + leafLength * 0.5, tip[2] + Math.sin(leafAngle) * leafLength], detail: true })
+      segments.push({ a: tip, b: [tip[0] + Math.cos(leafAngle) * leafLength, tip[1] + leafLength * 0.5, tip[2] + Math.sin(leafAngle) * leafLength], detail: true, leaf: true })
     }
   }
   return segments

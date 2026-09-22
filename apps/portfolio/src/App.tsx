@@ -16,12 +16,13 @@ function ScrollToTop() {
   // location.key changes on every navigation, including same-path replaces
   // (re-clicking the active nav tab) — pathname alone misses those, leaving
   // the click a silent no-op.
-  const { key, hash } = useLocation()
+  const { key, hash, state } = useLocation()
   const navigationType = useNavigationType()
   useEffect(() => {
     // POP = back/forward: let the browser restore the previous position
     // instead of clobbering it with the top of the page.
     if (navigationType === 'POP' && key !== 'default') return
+    if (navigationType !== 'POP' && state?.preserveScroll) return
 
     /* A hash is a request for one place on the page, and router navigations
        don't honour it on their own — the command palette deep-links into
@@ -44,7 +45,7 @@ function ScrollToTop() {
     }
 
     window.scrollTo(0, 0)
-  }, [key, hash, navigationType])
+  }, [key, hash, navigationType, state])
   return null
 }
 
