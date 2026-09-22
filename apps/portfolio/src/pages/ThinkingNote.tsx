@@ -29,7 +29,6 @@ export default function ThinkingNote() {
 
   return (
     <article className="site-content-gutter thinking-note">
-      <RouterLink href="/thinking#notes" className="link-underline inline-flex min-h-11 items-center">Thinking</RouterLink>
       <PageHeader title={note.title} description={note.description} spacing="compact" />
       <p className="text-sm mt-6" style={{ color: 'var(--ink-dim)' }}>
         {note.date && <><time dateTime={note.date}>{new Date(note.date.length === 10 ? `${note.date}T00:00:00` : note.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>{' · '}</>}
@@ -39,7 +38,7 @@ export default function ThinkingNote() {
         {note.tags.map(tag => <RouterLink className="link-underline inline-flex min-h-11 items-center text-sm" key={tag} href={`/thinking?topic=${encodeURIComponent(tag)}#notes`}>{tag}</RouterLink>)}
       </nav>
       <div className="thinking-note-layout">
-        {headings.length > 0 && <aside className="thinking-note-outline"><ReadingOutline items={headings.map(heading => ({ id: heading.id, label: heading.text, level: heading.level }))} /></aside>}
+        {headings.length > 0 && <aside className="thinking-note-outline"><ReadingOutline label="Contents" collapsible items={headings.map(heading => ({ id: heading.id, label: heading.text, level: heading.level }))} /></aside>}
         <div className="min-w-0">
           {/* HTML comes from the repository's trusted Markdown build pipeline. */}
           <div className="n3wth-site-prose thinking-note-prose" dangerouslySetInnerHTML={{ __html: note.html }} />

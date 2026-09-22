@@ -12,20 +12,20 @@ const articles = registeredPieces.map(({ meta }) => ({
   description: meta.dek, tags: ['articles'], date: meta.date,
   readingTime: '', kind: 'articles', updated: undefined,
 }))
-const entries = [...articles, ...notes.map((note: typeof notes[number] & { updated?: string }) => ({ ...note, kind: 'notes' }))]
+const entries = [...articles, ...notes.map(note => ({ ...note, kind: 'notes' }))]
 const topics = [...new Set(notes.flatMap(note => note.tags))].sort()
 const topicLabel = (tag: string) => tag.replace(/-/g, ' ')
 const topicOptions = [{ value: '', label: 'All topics' }, ...topics.map(tag => ({ value: tag, label: topicLabel(tag) }))]
 const relativeDate = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
 
-function TendedDate({ value }: { value?: string }) {
+function WritingDate({ value, label }: { value?: string; label: string }) {
   if (!value) return null
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return null
   const now = new Date()
   const days = Math.round((Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 86_400_000)
   const exactDate = date.toLocaleDateString('en', { dateStyle: 'long', timeZone: 'UTC' })
-  return <><time dateTime={value} title={exactDate} aria-label={`Tended ${exactDate}`}>Tended {relativeDate.format(days, 'day')}</time>{' · '}</>
+  return <><time dateTime={value} title={exactDate} aria-label={`${label} ${exactDate}`}>{label} {relativeDate.format(days, 'day')}</time>{' · '}</>
 }
 
 export function NotesIndex() {
@@ -99,7 +99,7 @@ export function NotesIndex() {
           <div>
             <h2><RouterLink href={entry.href}>{entry.title}</RouterLink></h2>
             {entry.description && <p>{entry.description}</p>}
-            <span className="writing-entry-meta">{entry.kind === 'notes' && <TendedDate value={entry.updated ?? entry.date} />}{[entry.kind === 'articles' ? 'Article' : 'Note', entry.readingTime].filter(Boolean).join(' · ')}</span>
+            <span className="writing-entry-meta"><WritingDate value={entry.updated ?? entry.date} label={entry.kind === 'notes' ? 'Tended' : 'Published'} />{[entry.kind === 'articles' ? 'Article' : 'Note', entry.readingTime].filter(Boolean).join(' · ')}</span>
           </div>
         </li>)}
       </ul>

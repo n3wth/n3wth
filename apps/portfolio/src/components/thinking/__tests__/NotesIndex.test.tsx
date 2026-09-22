@@ -24,7 +24,9 @@ it('makes the articles grove filter resolve to existing articles', () => {
   render(<MemoryRouter initialEntries={['/thinking?topic=articles#notes']}><NotesIndex /></MemoryRouter>)
   const { meta } = registeredPieces[0]
   expect(screen.getByRole('link', { name: meta.title })).toHaveAttribute('href', `/thinking/${meta.id}`)
-  expect(document.querySelector('time')).toBeNull()
+  const row = screen.getByRole('link', { name: meta.title }).closest('li')!
+  expect(row.querySelector('time')).toHaveAttribute('datetime', meta.date)
+  expect(row.querySelector('time')).toHaveTextContent('Published')
 })
 
 it('shows when a note was tended with an exact accessible date', () => {

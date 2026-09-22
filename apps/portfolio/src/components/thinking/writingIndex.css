@@ -10,8 +10,7 @@
 .writing-formats { display: flex; gap: 1.5rem; font-size: var(--font-size-sm); }
 .writing-formats a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-dim); white-space: nowrap; }
 .writing-formats a[aria-current] { color: var(--ink); text-decoration: underline; text-underline-offset: .4em; }
-.writing-topic-picker { width: 10rem; min-width: 0; }
-.writing-sort { width: 10rem; min-width: 0; }
+.writing-topic-picker, .writing-sort { width: max-content; max-width: 14rem; min-width: 0; }
 .writing-toolbar p, .writing-entry-meta, .writing-filter-summary { font-size: var(--font-size-sm); color: var(--ink-dim); }
 .writing-toolbar p { white-space: nowrap; margin-left: auto; }
 .writing-filter-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem; padding-bottom: 1rem; }
@@ -31,9 +30,9 @@
 @media (max-width: 760px) {
   .writing-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem .75rem; }
   .writing-formats { gap: 1rem; }
-  .writing-topic-picker { grid-row: 2; width: 100%; }
+  .writing-topic-picker { grid-row: 2; max-width: 100%; }
   .writing-toolbar p { grid-column: 2; grid-row: 1; margin-left: 0; text-align: right; }
-  .writing-sort { grid-row: 2; width: 9rem; }
+  .writing-sort { grid-row: 2; justify-self: end; }
 }
 @media (max-width: 360px) {
   .writing-formats { gap: .75rem; }
