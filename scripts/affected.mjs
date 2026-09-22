@@ -92,6 +92,16 @@ export function affectedWorkspaces(workspaces, files, all = false, lockfile, dep
   return orderSelectedWorkspaces(workspaces, selected, lockfile)
 }
 
+// App source changes require building UI, but do not change its published package.
+// Unknown root/configuration inputs remain conservative.
+export function affectsUiPackage(files, all = false) {
+  return all || files.some(file => {
+    if (file.endsWith('/package.json') || file === 'package.json' || file === 'package-lock.json') return true
+    if (/^(packages\/|scripts\/|\.github\/)/.test(file)) return true
+    return !/^(apps\/|docs\/|tests\/browser\/)/.test(file) && !/\.(md|mdx)$/.test(file)
+  })
+}
+
 export function readWorkspaces(root) {
   const manifest = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
   const patterns = Array.isArray(manifest.workspaces) ? manifest.workspaces : manifest.workspaces?.packages
@@ -120,6 +130,10 @@ function main() {
       console.warn('Unable to resolve comparison base; checking every workspace.')
       all = true
     } else files = diff.stdout.split('\0').filter(Boolean)
+  }
+  if (args.includes('--ui-package')) {
+    console.log(affectsUiPackage(files, all))
+    return
   }
   let lockfile
   try {
