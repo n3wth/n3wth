@@ -1,4 +1,4 @@
-.thinking-note-layout { display: grid; gap: 2rem; margin-block: 3rem; }
+.thinking-note-layout { display: grid; gap: 2rem; max-width: 72ch; margin-block: 3rem; }
 .thinking-note-prose { max-width: 72ch; line-height: 1.75; overflow-wrap: anywhere; }
 .thinking-note-prose :is(h2, h3, h4) { scroll-margin-top: 7rem; margin-block: 2em 0.75em; font-weight: 600; }
 .thinking-note-prose h2 { font-size: var(--font-size-xl); }
@@ -13,8 +13,3 @@
 .thinking-note-prose .callout { padding: 1rem; margin-block: 1.5rem; background: var(--color-background-muted); }
 .thinking-note-prose .callout-title { font-weight: 600; }
 .thinking-note-prose .contains-task-list { list-style: none; }
-@media (min-width: 64rem) {
-  .thinking-note-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 3rem; }
-  .thinking-note-outline { align-self: start; position: sticky; top: 7rem; max-height: calc(100svh - 9rem); overflow-y: auto; }
-  .thinking-note-layout > .min-w-0 { grid-column: 2; }
-}

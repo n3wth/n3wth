@@ -1,10 +1,9 @@
-import { Thinking as Positions } from '../components/sections/Thinking'
-import { ForkLight, VisualBand } from '@n3wth/ui/visuals'
+import { PageHeader } from '@n3wth/ui/site'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { NotesIndex } from '../components/thinking/NotesIndex'
 
 const TITLE = 'Thinking — Oliver Newth'
-const DESCRIPTION = 'Positions on production AI and agents as an org design problem, plus interactive walk-throughs of real AI safety trade-offs.'
+const DESCRIPTION = 'Essays and notes on AI, design, and everyday life.'
 
 export default function ThinkingPage() {
   usePageMeta(TITLE, DESCRIPTION, {
@@ -22,11 +21,8 @@ export default function ThinkingPage() {
 
   return (
     <>
-      <Positions />
-      <VisualBand height="clamp(220px, 42svh, 420px)">
-        <ForkLight />
-      </VisualBand>
-      <NotesIndex />
+      <PageHeader className="site-content-gutter" title="Thinking" description={DESCRIPTION} />
+      <div className="thinking-page"><NotesIndex /></div>
     </>
   )
 }
