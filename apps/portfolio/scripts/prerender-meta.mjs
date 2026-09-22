@@ -55,7 +55,7 @@ const routes = [
           <li><a href="/projects/r3">r3</a>: memory for AI apps using vector search and knowledge graphs.</li>
           <li><a href="https://skills.n3wth.com" rel="noopener">Agent Skills</a>: reusable instructions for coding agents.</li>
           <li><a href="https://github.com/n3wth/markup" rel="noopener">markup</a>: an independent prototype exploring personal AI agents in shared documents and chat.</li>
-          <li><a href="https://garden.n3wth.com" rel="noopener">garden</a> — a digital garden of working notes.</li>
+          <li><a href="/thinking#notes">Notes</a> — working notes, connected by topic and links.</li>
         </ul>
       </section>`,
   },
@@ -114,7 +114,7 @@ const routes = [
       </section>
       <section>
         <h2>The garden</h2>
-        <p>Working notes at <a href="https://garden.n3wth.com" rel="noopener">garden.n3wth.com</a>, sorted by growth stage (seedling, budding, evergreen) and gathered into groves.</p>
+        <p>Working notes in <a href="/thinking#notes">Thinking</a>, marked by growth stage (seedling, budding, evergreen) and gathered into groves.</p>
       </section>
       <section>
         <h2>Agent skills</h2>
@@ -283,18 +283,8 @@ const registrySrc = readFileSync(
   join(here, '../src/components/thinking/registry.tsx'),
   'utf8'
 )
-const metaRe =
-  /meta:\s*\{\s*id:\s*'([^']+)',\s*title:\s*(['"])((?:(?!\2)[\s\S])*?)\2,\s*dek:\s*(['"])((?:(?!\4)[\s\S])*?)\4,\s*date:\s*'([^']+)'/g
-const pieceMetas = []
-let pieceMatch
-while ((pieceMatch = metaRe.exec(registrySrc))) {
-  pieceMetas.push({
-    id: pieceMatch[1],
-    title: pieceMatch[3],
-    dek: pieceMatch[5],
-    date: pieceMatch[6],
-  })
-}
+const { parseThinkingMeta } = await import('./lib/thinking-meta.mjs')
+const pieceMetas = parseThinkingMeta(registrySrc)
 const registeredCount = (registrySrc.match(/meta:\s*\{/g) ?? []).length
 if (pieceMetas.length === 0 || pieceMetas.length !== registeredCount) {
   throw new Error(
@@ -470,6 +460,21 @@ const renderRoute = (r, outPath) => {
   writeFileSync(outPath, html)
 }
 
+const noteIndex = JSON.parse(readFileSync(join(here, '../src/data/writing-index.json'), 'utf8'))
+for (const meta of noteIndex) {
+  const note = JSON.parse(readFileSync(join(dist, 'writing/notes', `${meta.slug}.json`), 'utf8'))
+  routes.push({
+    path: meta.href.slice(1),
+    title: `${meta.title} — Oliver Newth`,
+    description: meta.description || `${meta.title}. A working note by Oliver Newth.`,
+    ogImage: '/og/thinking.png',
+    stripSeoLead: true,
+    ...(meta.date ? { article: { published: meta.date } } : {}),
+    jsonLd: { '@context': 'https://schema.org', '@type': 'Article', headline: meta.title, url: `${ORIGIN}${meta.href}`, ...(meta.date ? { datePublished: meta.date } : {}), author: { '@type': 'Person', name: 'Oliver Newth' } },
+    body: `<h1>${escText(meta.title)}</h1>${note.html}<nav aria-label="Backlinks">${note.backlinks.map(link => `<a href="${esc(link.href)}">${escText(link.title)}</a>`).join(' ')}</nav><a href="/thinking#notes">All notes</a>`,
+  })
+}
+routes.find(route => route.path === 'thinking').body += `<section id="notes"><h2>Notes</h2><ul>${noteIndex.map(note => `<li><a href="${esc(note.href)}">${escText(note.title)}</a></li>`).join('')}</ul></section>`
 for (const r of routes) {
   renderRoute(r, join(dist, r.path, 'index.html'))
   console.log(`[prerender-meta] dist/${r.path}/index.html`)
@@ -504,7 +509,8 @@ console.log('[prerender-meta] dist/404.html')
 /* dist/sitemap.xml — generated from the same route list so it can't
    drift when a piece is added. lastmod only; Google ignores
    changefreq/priority. */
-const latestPieceDate = pieceMetas.map((p) => p.date).sort().at(-1)
+const feedPieces = [...pieceMetas, ...noteIndex.filter(note => note.date).map(note => ({ id: note.slug, title: note.title, dek: note.description, date: note.date }))]
+const latestPieceDate = feedPieces.map((p) => p.date).sort().at(-1)
 const sitemapEntries = [
   { loc: `${ORIGIN}/` },
   ...routes
@@ -524,7 +530,7 @@ console.log(`[prerender-meta] dist/sitemap.xml (${sitemapEntries.length} urls)`)
 
 /* dist/feed.xml — Atom feed of the thinking pieces: a freshness signal
    and a discovery channel the sitemap alone doesn't provide. */
-const feedEntries = [...pieceMetas]
+const feedEntries = [...feedPieces]
   .sort((a, b) => (a.date < b.date ? 1 : -1))
   .map(
     (p) => `  <entry>
@@ -557,7 +563,8 @@ const llmsBase = readFileSync(join(here, '../public/llms.txt'), 'utf8').trimEnd(
 const thinkingSection = `\n\n## Thinking\n\n${pieceMetas
   .map((p) => `- [${p.title}](${ORIGIN}/thinking/${p.id}): ${p.dek}`)
   .join('\n')}\n`
-writeFileSync(join(dist, 'llms.txt'), llmsBase + thinkingSection)
+const notesSection = `\n## Notes\n\n${noteIndex.map(note => `- [${note.title}](${ORIGIN}${note.href}): ${note.description}`).join('\n')}\n`
+writeFileSync(join(dist, 'llms.txt'), llmsBase + thinkingSection + notesSection)
 console.log('[prerender-meta] dist/llms.txt')
 
 /* llms-full.txt is referenced by robots.txt, so it must always exist.
@@ -579,6 +586,6 @@ const llmsFull = pieceMetas
   .join('\n\n---\n\n')
 writeFileSync(
   join(dist, 'llms-full.txt'),
-  `${llmsFullBase}${llmsFull ? `\n\n${llmsFull}` : ''}\n`
+  `${llmsFullBase}${llmsFull ? `\n\n${llmsFull}` : ''}${notesSection}\n`
 )
 console.log('[prerender-meta] dist/llms-full.txt')

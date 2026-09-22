@@ -18,7 +18,7 @@ export default function DemoBeat() {
         prose="The main column holds the text. A related note sits alongside it on wider screens and below it on phones."
         margin={
           <MarginNote
-            href="https://garden.n3wth.com/frameworks/5-whys"
+            href="/thinking/frameworks/5-whys"
             title="5 Whys"
             description="A framework for identifying root causes of problems through iterative questioning"
           />

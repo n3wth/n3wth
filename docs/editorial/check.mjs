@@ -182,7 +182,7 @@ async function main() {
   const sources = await readJson('docs/editorial/sources.json')
   if (command === 'backlog') {
     const errors = validateBacklog(backlog, sources)
-    const mdFiles = await readdir(resolve(root, 'apps/garden/content'), { recursive: true })
+    const mdFiles = await readdir(resolve(root, 'apps/portfolio/content'), { recursive: true })
     const registry = await readFile(resolve(root, 'apps/portfolio/src/components/thinking/registry.tsx'), 'utf8')
     for (const item of backlog.items) {
       const path = item.site === 'garden' ? mdFiles.find(path => path.endsWith('.md') && path.slice(0, -3).toLowerCase().replace(/['']/g, '').replace(/[^a-z0-9/]+/g, '-').replace(/^-|-$/g, '') === item.slug) : null

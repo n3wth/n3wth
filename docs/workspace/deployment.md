@@ -20,8 +20,24 @@ npm exec -- wrangler deploy --config apps/garden/wrangler.jsonc --dry-run
 ```
 
 The command uses the same workspace graph as `npm run build`. Portfolio and
-UI docs use their existing static builds. Garden, Kit, Skills and r3 use their
-pinned OpenNext adapter. Do not run a separate shared-package prebuild.
+UI docs use their existing static builds. Garden builds a redirect Worker from
+portfolio's local published-note data. Kit, Skills and r3 use their pinned
+OpenNext adapter. Do not run a separate shared-package prebuild.
+
+### Garden consolidation cutover
+
+Published Garden content now belongs to `apps/portfolio/content` and uses
+`/thinking/<slug>`, including nested slugs. Build portfolio before Garden so its
+redirect map reflects the same published content. Validate previews for both
+Workers: note pages, assets, topic filters, aliases, and genuine unknown-path 404s.
+Garden's homepage and world routes redirect to the portfolio homepage.
+
+Record both production Worker version IDs before cutover. Deploy portfolio
+first and verify the live reading pages and homepage groves. Then deploy Garden's
+redirect Worker and verify permanent redirects on the existing domain. A local
+build or preview alone is not a completed cutover. Roll back Garden to its prior
+Worker version first if redirects fail; roll back portfolio only after restoring
+the standalone reader. Retain the prior Worker versions and domain bindings.
 
 Each `apps/<app>/wrangler.jsonc` is the production configuration: Worker name,
 custom domain, assets and resource bindings. There are no separate production

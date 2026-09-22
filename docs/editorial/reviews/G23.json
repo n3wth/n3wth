@@ -1,6 +1,6 @@
 {
   "id": "G23",
-  "contentPath": "apps/garden/content/One live region per page.md",
+  "contentPath": "apps/portfolio/content/One live region per page.md",
   "contentSha256": "ec55acd0aa904bd67bf10d8c6724afcbda8ab4b4bd5eaabd1267fc1e788b9fb0",
   "reviewedAt": "2026-09-18",
   "reviewer": "Author's editorial pass, 2026-09-18: research subagents fetched and quoted each source; every quoted passage was re-fetched independently and matched verbatim before scoring. First-person incident notes; external sources ground the mechanisms named, not the incidents themselves.",

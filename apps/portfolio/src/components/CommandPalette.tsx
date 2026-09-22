@@ -259,7 +259,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 .filter((part): part is string => Boolean(part && part.length > 0))
                 .join(' · ') || undefined,
             href: note.href,
-            external: true,
+            external: false,
             group: 'Garden' as ResultGroup,
           }))
         )
@@ -364,7 +364,12 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
       setAskState('loading')
       setAskAnswer('')
-      track('ai_search_asked', { query_length: trimmed.length, immediate })
+      const traceId = crypto.randomUUID()
+      const startedAt = performance.now()
+      let firstTextAt: number | undefined
+      let model: string | undefined
+      let outcome = 'success'
+      track('ai_search_asked', { query_length: trimmed.length, immediate, $ai_trace_id: traceId })
 
       try {
         const response = await fetch('/api/search', {
@@ -409,8 +414,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 if (data === '[DONE]') continue
 
                 try {
-                  const parsed = JSON.parse(data) as { delta?: string }
+                  const parsed = JSON.parse(data) as { delta?: string; model?: string }
+                  if (parsed.model) model = parsed.model
                   if (parsed.delta) {
+                    firstTextAt ??= performance.now()
                     accumulated += parsed.delta
                     // Update answer progressively
                     if (version === aiRequestVersion.current) {
@@ -428,6 +435,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           }
 
           if (version === aiRequestVersion.current && accumulated) {
+            if (accumulated.startsWith('No relevant information found.')) outcome = 'no_answer'
             setAskAnswer(accumulated)
             setAskState('answered')
           } else if (version === aiRequestVersion.current && !accumulated) {
@@ -435,19 +443,40 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           }
         } else {
           // Fallback for non-streaming response
-          const data = (await response.json()) as { answer?: string }
+          const data = (await response.json()) as { answer?: string; model?: string; fallback?: boolean }
           if (version !== aiRequestVersion.current) return
           if (!data.answer) throw new Error('empty answer')
+          firstTextAt = performance.now()
+          model = data.model
+          outcome = data.fallback ? 'unavailable' : data.answer.startsWith('No relevant information found.') ? 'no_answer' : 'success'
           setAskAnswer(data.answer)
           setAskState('answered')
         }
       } catch (err) {
+        outcome = controller.signal.aborted ? 'cancelled' : 'error'
         // Ignore abort errors (they're intentional)
         if (err instanceof Error && err.name === 'AbortError') return
         // Only update state if this is still the current request
         if (version === aiRequestVersion.current) {
           setAskState('error')
         }
+      } finally {
+        if (controller.signal.aborted || version !== aiRequestVersion.current) outcome = 'cancelled'
+        // Reuse the site's PostHog identity and privacy filters. No typed text or answers.
+        track('$ai_generation', {
+          $ai_trace_id: traceId,
+          $ai_span_id: crypto.randomUUID(),
+          $ai_span_name: 'portfolio_search',
+          $ai_provider: 'cloudflare',
+          $ai_model: model,
+          $ai_latency: (performance.now() - startedAt) / 1000,
+          $ai_time_to_first_token: firstTextAt === undefined ? undefined : (firstTextAt - startedAt) / 1000,
+          $ai_is_error: outcome === 'error' || outcome === 'unavailable',
+          source: 'portfolio_search',
+          outcome,
+          query_length: trimmed.length,
+          measurement: 'browser_request',
+        })
       }
     },
     [trimmed]

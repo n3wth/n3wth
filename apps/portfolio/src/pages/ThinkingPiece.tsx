@@ -12,7 +12,8 @@ const SITE_URL = 'https://n3wth.com'
    /thinking collapses to one stop now lives here, on its own route, so
    there's nothing beside it on the page to divide from with a rule. */
 export default function ThinkingPiece() {
-  const { slug } = useParams()
+  const params = useParams()
+  const slug = params.slug ?? params['*']
   const piece = registeredPieces.find((p) => p.meta.id === slug)
 
   const title = piece ? `${piece.meta.title} — Oliver Newth` : 'Not found — Oliver Newth'

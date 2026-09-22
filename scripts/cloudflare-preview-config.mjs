@@ -179,6 +179,7 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   // Production-only environment sections must never survive a preview override.
   delete config.env
   if (app === 'skills') config.vars = { ...config.vars, BETTER_AUTH_URL: `https://${identity.host}` }
+  if (app === 'garden') config.vars = { ...config.vars, TARGET_ORIGIN: `https://${previewIdentity('portfolio', pr).host}` }
   if (config.assets?.directory) config.assets = { ...config.assets, directory: absolutePath(config.assets.directory, sourcePath) }
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)
   if (config.main) config.main = absolutePath(config.main, sourcePath)

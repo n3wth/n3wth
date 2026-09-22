@@ -6,6 +6,9 @@
         "-y",
         "cssstudio"
       ]
+    },
+    "Mintlify": {
+      "url": "https://mcp.mintlify.com"
     }
   }
 }

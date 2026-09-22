@@ -13,7 +13,7 @@ const affected: string[] = process.env.AFFECTED_WORKSPACES
 const apps = [
   { name: 'portfolio', workspace: '@n3wth/portfolio', port: 4281, testMatch: 'browser/portfolio.spec.ts', command: 'vite' },
   { name: 'ui-docs', workspace: '@n3wth/ui-docs', port: 4282, testMatch: 'browser/ui-docs.spec.ts', command: 'vite' },
-  { name: 'garden', workspace: '@n3wth/garden', port: 4284, testMatch: 'garden/routes.spec.ts', command: 'next' },
+  { name: 'garden', workspace: '@n3wth/garden', port: 4284, testMatch: 'garden/routes.spec.ts', command: 'worker' },
   { name: 'kit', workspace: '@n3wth/kit', port: 4285, testMatch: 'browser/kit.spec.ts', command: 'next' },
   { name: 'r3-web', workspace: '@n3wth/r3-web', port: 4286, testMatch: 'browser/r3-web.spec.ts', command: 'next' },
 ].filter(app => affected.includes(app.workspace))
@@ -35,9 +35,11 @@ export default defineConfig({
   webServer: apps.map(app => ({
     command: app.command === 'next'
       ? `npm run start --workspace ${app.workspace} -- --hostname 127.0.0.1 --port ${app.port}`
-      : `npm exec --workspace ${app.workspace} -- vite preview --host 127.0.0.1 --port ${app.port} --strictPort`,
+      : app.command === 'worker'
+        ? `npm run start --workspace ${app.workspace} -- --ip 127.0.0.1 --port ${app.port}`
+        : `npm exec --workspace ${app.workspace} -- vite preview --host 127.0.0.1 --port ${app.port} --strictPort`,
     // r3's root redirects to production, which must not control local readiness.
-    ...(app.name === 'r3-web' ? { port: app.port } : { url: `http://127.0.0.1:${app.port}` }),
+    ...(app.name === 'r3-web' ? { port: app.port } : { url: `http://127.0.0.1:${app.port}${app.name === 'garden' ? '/__health' : ''}` }),
     reuseExistingServer: false,
     timeout: 30_000,
   })),

@@ -21,7 +21,7 @@ function ScrollToTop() {
   useEffect(() => {
     // POP = back/forward: let the browser restore the previous position
     // instead of clobbering it with the top of the page.
-    if (navigationType === 'POP') return
+    if (navigationType === 'POP' && key !== 'default') return
 
     /* A hash is a request for one place on the page, and router navigations
        don't honour it on their own — the command palette deep-links into

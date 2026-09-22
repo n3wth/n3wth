@@ -7,6 +7,20 @@
     "dark": "#08090b"
   },
   "favicon": "/favicon.svg",
+  "fonts": {
+    "heading": {
+      "family": "Suisse Intl",
+      "weight": 600,
+      "source": "https://cdn.n3wth.com/fonts/SuisseIntl-Semibold.woff2",
+      "format": "woff2"
+    },
+    "body": {
+      "family": "Suisse Intl",
+      "weight": 400,
+      "source": "https://cdn.n3wth.com/fonts/SuisseIntl-Book.woff2",
+      "format": "woff2"
+    }
+  },
   "seo": {
     "indexing": "navigable",
     "trailingSlash": false,
@@ -155,16 +169,6 @@
   "appearance": {
     "default": "dark",
     "strict": true
-  },
-  "fonts": {
-    "heading": {
-      "family": "Suisse",
-      "weight": 600
-    },
-    "body": {
-      "family": "Suisse",
-      "weight": 400
-    }
   },
   "integrations": {
     "ga4": {

@@ -2,6 +2,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { CommandPalette } from '../CommandPalette'
+import { track } from '../../lib/analytics'
+
+vi.mock('../../lib/analytics', () => ({ track: vi.fn() }))
 
 const noop = () => {}
 
@@ -56,6 +59,7 @@ describe('CommandPalette AI search', () => {
   let originalFetch: typeof fetch
 
   beforeEach(() => {
+    vi.mocked(track).mockClear()
     originalFetch = globalThis.fetch
   })
 
@@ -84,7 +88,7 @@ describe('CommandPalette AI search', () => {
       Promise.resolve({
         ok: true,
         body: null,
-        json: () => Promise.resolve({ answer: 'Test answer with [citation](https://example.com)' }),
+        json: () => Promise.resolve({ answer: 'Test answer with [citation](https://example.com)', model: 'test-model' }),
       })
     )
     globalThis.fetch = mockFetch
@@ -111,6 +115,18 @@ describe('CommandPalette AI search', () => {
       },
       { timeout: 1000 }
     )
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({
+      $ai_model: 'test-model',
+      $ai_provider: 'cloudflare',
+      $ai_latency: expect.any(Number),
+      $ai_time_to_first_token: expect.any(Number),
+      outcome: 'success',
+    })))
+    const generation = vi.mocked(track).mock.calls.find(([event]) => event === '$ai_generation')?.[1]
+    const asked = vi.mocked(track).mock.calls.find(([event]) => event === 'ai_search_asked')?.[1]
+    expect(generation?.$ai_trace_id).toBe(asked?.$ai_trace_id)
+    expect(JSON.stringify(generation)).not.toContain('astryx')
+    expect(JSON.stringify(generation)).not.toContain('Test answer')
   })
 
   it('shows pending feedback immediately and ignores an answer after the query is cleared', async () => {
@@ -127,6 +143,20 @@ describe('CommandPalette AI search', () => {
     complete({ ok: true, body: null, json: async () => ({ answer: 'Stale answer' }) })
     await waitFor(() => expect(screen.queryByRole('status', { name: 'Searching' })).toBeNull())
     expect(screen.queryByText('Stale answer')).toBeNull()
+    expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'cancelled' }))
+  })
+
+  it('records the model and no-answer outcome from a streamed response', async () => {
+    const events = 'data: {"model":"stream-model"}\n\ndata: {"delta":"No relevant information found. Try another search."}\n\ndata: [DONE]\n\n'
+    globalThis.fetch = vi.fn(async () => new Response(events, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<MemoryRouter><CommandPalette open onClose={noop} /></MemoryRouter>)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'fgh' } })
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({
+      $ai_model: 'stream-model',
+      $ai_is_error: false,
+      outcome: 'no_answer',
+    })))
+    expect(vi.mocked(track).mock.calls.filter(([event]) => event === '$ai_generation')).toHaveLength(1)
   })
 
   it('cancels the pending automatic search when the dialog closes', async () => {
@@ -227,6 +257,7 @@ describe('CommandPalette AI search', () => {
     )
 
     expect(screen.getByRole('button', { name: /Retry/i })).toBeTruthy()
+    expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'error', $ai_is_error: true }))
   })
 
   it('Enter on a page match does not request an AI answer', async () => {

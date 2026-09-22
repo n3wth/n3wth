@@ -34,6 +34,29 @@ describe('portfolio Worker API runtime', () => {
     expect(response?.headers.get('access-control-allow-methods')).toBe('POST, OPTIONS')
   })
 
+  it.each([
+    ['My work experience', 'Oliver Newth work experience'],
+    ['work experience', 'Oliver Newth work experience'],
+    ['your career', 'Oliver Newth career'],
+    ['fgh', 'fgh'],
+    ['Ada Lovelace work experience', 'Ada Lovelace work experience'],
+    ['Career of Ada Lovelace', 'Career of Ada Lovelace'],
+  ])('grounds portfolio shorthand before retrieval: %s', async (query, expected) => {
+    let sent: { messages: Array<{ content: string }> } | undefined
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query }) }), {}, async (_input, init) => {
+      sent = JSON.parse(String(init?.body))
+      return Response.json({ model: 'provider-model', choices: [{ message: { content: 'A supported answer.' } }] })
+    })
+    expect(sent?.messages[1].content).toBe(expected)
+    expect(await response?.json()).toEqual({ answer: 'A supported answer.', model: 'provider-model' })
+  })
+
+  it('forwards the observed model once during streaming', async () => {
+    const event = `data: ${JSON.stringify({ model: 'provider-model', choices: [{ delta: { content: 'hello' } }] })}\n\n`
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'r3', stream: true }) }), {}, async () => new Response(event + event + 'data: [DONE]\n\n'))
+    expect((await response?.text())?.match(/"model":"provider-model"/g)).toHaveLength(1)
+  })
+
   it('preserves search SSE deltas and terminal event', async () => {
     const upstream = ['event: chunks\n', 'data: [{"item":{"key":"https://n3wth.com/work"}}]\n\n', 'data: {"choices":[{"delta":{"content":"hello"}}]}\n\n', 'data: [DONE]\n\n'].join('')
     const fetchMock: typeof fetch = async () => new Response(upstream)
