@@ -1,0 +1,67 @@
+.art-opening-scene {
+  position: relative;
+  min-height: min(72svh, 800px);
+  isolation: isolate;
+}
+
+.art-opening-scene .art-opening-image {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  margin: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.art-opening-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+.art-opening > .art-caption {
+  padding-inline: var(--gutter);
+}
+
+.art-caption {
+  padding-block: 1.5rem 2rem;
+}
+
+.art-caption h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+}
+
+.art-works {
+  padding-bottom: 3rem;
+}
+
+.art-work-image img {
+  display: block;
+  width: 100%;
+  height: clamp(320px, 65svh, 850px);
+  object-fit: cover;
+}
+
+.art-work:last-child {
+  width: 80%;
+  margin-left: auto;
+}
+
+.art-light-passage {
+  height: clamp(6rem, 13vw, 12rem);
+  overflow: hidden;
+  opacity: .6;
+}
+
+.art-light-passage svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 767px) {
+  .art-opening-scene { min-height: 68svh; }
+  .art-work:last-child { width: 100%; }
+  .art-work-image img { height: auto; aspect-ratio: 4 / 3; }
+}

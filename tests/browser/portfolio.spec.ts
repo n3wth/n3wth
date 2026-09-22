@@ -20,14 +20,25 @@ test('reading pages center their columns and put dates below the title', async (
   }
 })
 
-test('section heroes retain readable titles and site visuals', async ({ page }, testInfo) => {
-  for (const route of ['/art', '/thinking', '/work', '/library', '/projects']) {
+test('section openings keep readable titles and purposeful visuals', async ({ page }, testInfo) => {
+  let opening: { x: number; y: number; size: string } | undefined
+  for (const route of ['/art', '/thinking', '/work', '/library', '/projects', '/contact']) {
     await page.goto(route)
     await expect(page.locator('.portfolio-section-title')).toBeVisible()
-    await expect(page.locator('.portfolio-section-visual')).toBeVisible()
+    const position = await page.locator('.portfolio-section-title').evaluate(element => ({ x: element.getBoundingClientRect().x, y: element.getBoundingClientRect().y, size: getComputedStyle(element).fontSize }))
+    if (opening) expect(position).toEqual(opening)
+    else opening = position
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-    if (route === '/art' || route === '/thinking') await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-hero.png`) })
+    await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-hero.png`) })
   }
+})
+
+test('Art uses each installation image once', async ({ page }) => {
+  await page.goto('/art')
+  await expect(page.getByRole('heading', { name: 'Art', exact: true })).toBeVisible()
+  const images = await page.locator('main img').evaluateAll(elements => elements.map(element => element.getAttribute('src')))
+  expect(images).toHaveLength(3)
+  expect(new Set(images).size).toBe(3)
 })
 import { expectSiteFoundation } from './site-foundation'
 
@@ -107,7 +118,7 @@ test('projects index connects navigation, product pages and documentation', asyn
   await expect(navigation.locator('a').nth(0)).toHaveText('Projects')
   await expect(navigation.locator('a').nth(1)).toHaveText('Work')
   for (const [slug, title] of [['r3', 'r3'], ['ui', '@n3wth/ui'], ['skills', 'Agent Skills']]) {
-    await expect(page.locator('main').locator(`a[href="/projects/${slug}"]`)).toBeVisible()
+    await expect(page.getByRole('heading', { level: 2, name: title, exact: true }).getByRole('link')).toBeVisible()
     // Vite preview serves clean URLs through its SPA fallback; inspect the
     // prerendered file that Cloudflare resolves for the production route.
     const response = await request.get(`/projects/${slug}/index.html`)

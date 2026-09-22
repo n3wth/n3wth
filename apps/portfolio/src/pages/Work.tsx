@@ -1,7 +1,7 @@
 import { Button } from '@n3wth/ui/primitives'
-import { ConvergeLight } from '@n3wth/ui/visuals'
-import { Experience } from '../components/sections/Experience'
 import { SectionHeader } from '../components/Frame'
+import { Experience } from '../components/sections/Experience'
+import './work.css'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Work — Oliver Newth'
@@ -26,7 +26,6 @@ export default function Work() {
       <SectionHeader
         as="h1"
         title="Work"
-        visual={<ConvergeLight />}
         lede="I lead AI product development at Google. Previously at Covariant, Meta, and Microsoft."
         action={
           <Button

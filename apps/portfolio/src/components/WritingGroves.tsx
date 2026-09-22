@@ -49,7 +49,7 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
   const compact = aspect < 1.35
   const spread = compact ? Math.max(1, Math.min(1.35, aspect) / 0.5) : 1
   const trees = useMemo(() => layoutWritingGroves(world.nodes, compact, spread), [world.nodes, compact, spread])
-  const segments = useMemo(() => trees.flatMap((tree) => plantSegments(tree)), [trees])
+  const segments = useMemo(() => trees.flatMap((tree) => plantSegments(tree).map((segment) => ({ ...segment, treeId: tree.id }))), [trees])
   const foliage = useMemo(() => segments.filter((segment) => segment.leaf), [segments])
   const treeById = useMemo(() => new Map(trees.map((tree) => [tree.id, tree])), [trees])
   const current = selected ? treeById.get(selected) : undefined
@@ -99,6 +99,19 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
     invalidate()
   }, [segments, foliage, trees, invalidate])
 
+  useLayoutEffect(() => {
+    const bark = new THREE.Color('#8a7a68')
+    const leaf = new THREE.Color('#b9c9a8')
+    const active = new THREE.Color('#ffce8a')
+    const isActive = (id: string) => id === selected || id === hovered
+    segments.forEach((segment, index) => stems.current?.setColorAt(index, isActive(segment.treeId) ? active : bark))
+    foliage.forEach((segment, index) => leaves.current?.setColorAt(index, isActive(segment.treeId) ? active : leaf))
+    for (const mesh of [stems.current, leaves.current]) {
+      if (mesh?.instanceColor) mesh.instanceColor.needsUpdate = true
+    }
+    invalidate()
+  }, [selected, hovered, segments, foliage, invalidate])
+
   const selectTree = (event: ThreeEvent<MouseEvent>) => {
     if (event.instanceId === undefined) return
     event.stopPropagation()
@@ -108,11 +121,11 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
   return <>
     <instancedMesh ref={stems} args={[undefined, undefined, segments.length]} raycast={() => null}>
       <cylinderGeometry args={[0.65, 1, 1, 5, 1, true]} />
-      <meshStandardMaterial color="#8a7a68" roughness={0.9} emissive="#8a7a68" emissiveIntensity={0.06} />
+      <meshStandardMaterial color="#ffffff" roughness={0.9} emissive="#8a7a68" emissiveIntensity={0.06} />
     </instancedMesh>
     <instancedMesh ref={leaves} args={[undefined, undefined, foliage.length]} raycast={() => null}>
       <sphereGeometry args={[1, 6, 4]} />
-      <meshStandardMaterial color="#b9c9a8" roughness={0.85} emissive="#b9c9a8" emissiveIntensity={0.08} />
+      <meshStandardMaterial color="#ffffff" roughness={0.85} emissive="#b9c9a8" emissiveIntensity={0.08} />
     </instancedMesh>
     <instancedMesh ref={hits} args={[undefined, undefined, trees.length]} onClick={selectTree} onPointerMove={(event) => {
       if (event.instanceId === undefined) return

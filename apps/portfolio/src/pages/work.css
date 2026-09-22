@@ -1,0 +1,9 @@
+.work-chapters { list-style: none; padding: 0; margin: 0; }
+.work-chapter { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; padding-block: clamp(3rem, 8vw, 7rem); border-top: 1px solid var(--rail); scroll-margin-top: 6rem; }
+.work-company { display: block; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 1.1; letter-spacing: -.045em; font-weight: 500; margin-bottom: 1.25rem; }
+.work-chapter-story > p:first-child { font-size: clamp(1.25rem, 2.3vw, 2rem); line-height: 1.4; text-wrap: pretty; max-width: 30ch; }
+.work-detail, .work-recognition { font-size: var(--font-size-base); color: var(--ink-dim); }
+.work-recognition { margin-top: 1.5rem; }
+@media (max-width: 767px) {
+  .work-chapter { grid-template-columns: 1fr; gap: 1.5rem; }
+}

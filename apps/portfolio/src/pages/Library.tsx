@@ -1,5 +1,4 @@
 import { SectionHeader } from '../components/Frame'
-import { AssembleField } from '@n3wth/ui/visuals'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { KitShelf } from '../components/library/KitShelf'
 import { AssembleBand } from '../components/library/AssembleBand'
@@ -45,7 +44,6 @@ export default function Library() {
       <SectionHeader
         as="h1"
         title="Library"
-        visual={<AssembleField seed={4} cols={18} rows={8} width={700} height={300} clusters={[[430, 90], [570, 210]]} />}
         lede="The essay kit, UI components, garden notes, and agent skills behind this site."
       />
 
