@@ -1,0 +1,8 @@
+.portfolio-section-hero { align-items: center; }
+.portfolio-section-title { display: block; font-size: clamp(3.5rem, 7vw, 6rem); line-height: 1; letter-spacing: -.04em; font-weight: 500; }
+.portfolio-section-visual { height: clamp(10rem, 20vw, 17rem); overflow: hidden; }
+.portfolio-section-visual > img { width: 100%; height: 100%; object-fit: cover; object-position: center 80%; }
+.portfolio-section-visual > svg { width: 100%; height: 100%; }
+@media (max-width: 767px) {
+  .portfolio-section-visual { height: 9rem; }
+}

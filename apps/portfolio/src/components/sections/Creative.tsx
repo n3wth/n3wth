@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { PageHeader } from '@n3wth/ui/site'
+import { SectionHeader } from '../Frame'
 import {
   installations,
   type CreditLink,
@@ -82,7 +82,7 @@ function WorkCredit({ inst }: { inst: Installation }) {
 export function Creative() {
   return (
     <section aria-label="Art">
-      <PageHeader data-reveal className="site-content-gutter" title="Art" description="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." />
+      <SectionHeader as="h1" title="Art" lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." visual={<img src={opener.image} alt="" decoding="async" />} />
 
       {/* Opening work */}
       <figure data-reveal className="m-0">

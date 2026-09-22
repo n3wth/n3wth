@@ -4,6 +4,7 @@ import { SiteHeading } from '@n3wth/ui/site'
 import { projects } from '../data/content'
 import { ProjectVisual } from '../components/ProjectVisual'
 import { SectionHeader } from '../components/Frame'
+import { AssembleField } from '@n3wth/ui/visuals'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Projects — Oliver Newth'
@@ -25,7 +26,7 @@ export default function Projects() {
   })
 
   return <>
-    <SectionHeader as="h1" title="Projects" lede="Tools for AI agents, a shared component library, and other experiments." />
+    <SectionHeader as="h1" title="Projects" lede="Tools for AI agents, a shared component library, and other experiments." visual={<AssembleField seed={2} cols={18} rows={8} width={700} height={300} clusters={[[450, 75], [550, 150], [450, 230]]} />} />
     <div className="site-content-gutter project-index">
       {['r3', 'ui', 'skills'].map(slug => {
         const project = projects.find(item => item.id === slug)!

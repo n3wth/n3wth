@@ -1,4 +1,29 @@
 import { test, expect } from '@playwright/test'
+
+test('reading pages center their columns and put dates below the title', async ({ page }, testInfo) => {
+  for (const slug of ['personal-knowledge-graph', 'audit-retrieval-before-trusting-an-answer']) {
+    await page.goto(`/thinking/${slug}`)
+    const title = page.getByRole('heading', { level: 1 })
+    await expect(title).toBeVisible()
+    const bounds = await page.locator('.thinking-reading-page').boundingBox()
+    expect(Math.abs(bounds!.x - (page.viewportSize()!.width - bounds!.x - bounds!.width))).toBeLessThan(2)
+    const heading = await title.boundingBox()
+    const date = await page.locator('main time').first().boundingBox()
+    expect(date!.y).toBeGreaterThan(heading!.y + heading!.height)
+    await expect(page.locator('main a', { hasText: 'Oliver Newth' })).toHaveCount(0)
+    await page.screenshot({ path: testInfo.outputPath(`${slug}.png`) })
+  }
+})
+
+test('section heroes retain readable titles and site visuals', async ({ page }, testInfo) => {
+  for (const route of ['/art', '/thinking', '/work', '/library', '/projects']) {
+    await page.goto(route)
+    await expect(page.locator('.portfolio-section-title')).toBeVisible()
+    await expect(page.locator('.portfolio-section-visual')).toBeVisible()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    if (route === '/art' || route === '/thinking') await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-hero.png`) })
+  }
+})
 import { expectSiteFoundation } from './site-foundation'
 
 test.beforeEach(async ({ page }) => {
