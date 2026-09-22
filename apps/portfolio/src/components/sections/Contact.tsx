@@ -2,7 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
 import { ConvergeLight, VisualBand } from '@n3wth/ui/visuals'
 import { siteConfig } from '../../data/content'
-import { PageHeader } from '@n3wth/ui/site'
+import { SectionHeader } from '../Frame'
 import { track } from '../../lib/analytics'
 
 const contactEventProps = { source_page: '/contact' } as const
@@ -17,11 +17,11 @@ export function Contact() {
       </VisualBand>
 
       <div className="frame w-full">
-        <PageHeader
-          className="site-content-gutter"
+        <SectionHeader
+          as="h1"
           title="Let's talk"
-          description="Product, AI safety, or LED art. Coffee if you're in San Francisco."
-          actions={
+          lede="Product, AI safety, or LED art. Coffee if you're in San Francisco."
+          action={
             <>
               <Button
                 label={siteConfig.email}

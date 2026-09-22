@@ -1,4 +1,5 @@
-import { PageHeader } from '@n3wth/ui/site'
+import { ForkLight } from '@n3wth/ui/visuals'
+import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { NotesIndex } from '../components/thinking/NotesIndex'
 
@@ -21,7 +22,7 @@ export default function ThinkingPage() {
 
   return (
     <>
-      <PageHeader className="site-content-gutter" title="Thinking" description={DESCRIPTION} />
+      <SectionHeader as="h1" title="Thinking" lede={DESCRIPTION} visual={<ForkLight />} />
       <div className="thinking-page"><NotesIndex /></div>
     </>
   )

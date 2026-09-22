@@ -28,7 +28,7 @@ export default function ThinkingNote() {
   const headings = note.headings.filter(heading => heading.level <= 3)
 
   return (
-    <article className="site-content-gutter thinking-note">
+    <article className="site-content-gutter thinking-note thinking-reading-page">
       <PageHeader title={note.title} description={note.description} />
       <p className="text-sm mt-6" style={{ color: 'var(--ink-dim)' }}>
         {note.date && <><time dateTime={note.date}>{new Date(note.date.length === 10 ? `${note.date}T00:00:00` : note.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>{' · '}</>}

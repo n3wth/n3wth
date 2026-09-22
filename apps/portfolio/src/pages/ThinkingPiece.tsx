@@ -1,10 +1,10 @@
 import { Suspense, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { RouterLink } from '../components/RouterLink'
 import { registeredPieces } from '../components/thinking/registry'
 import { usePageMeta, buildWebPageSchema, buildArticleSchema } from '../hooks/usePageMeta'
 import NotFound from './NotFound'
 import { PageHeader, SiteSection } from '@n3wth/ui/site'
+import '../notes.css'
 
 const SITE_URL = 'https://n3wth.com'
 
@@ -57,24 +57,15 @@ export default function ThinkingPiece() {
   const { meta, Body } = piece
 
   return (
-    <section aria-label={meta.title}>
+    <section aria-label={meta.title} className="thinking-reading-page">
       <div className="site-content-gutter">
-        {/* Date sits on its own line above the title/dek row instead of
-            stacked inside the title's column — the row below starts flush
-            at the top on both sides, so the dek's first line lands level
-            with the title's first line instead of with the date. */}
-        <div className="mb-10" data-reveal>
-          <p className="text-xs tracking-wide" style={{ color: 'var(--ink-dim)' }}>
-            <RouterLink href="/" className="link-underline" style={{ color: 'var(--ink)' }}>
-              Oliver Newth
-            </RouterLink>
-            {' · '}
+        <PageHeader title={meta.title} description={meta.dek} actions={
+          <p className="text-sm" style={{ color: 'var(--ink-dim)' }}>
             {/* Parse as local time: bare YYYY-MM-DD parses as UTC midnight
                 and renders a day early in every US timezone. */}
-            {new Date(`${meta.date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            <time dateTime={meta.date}>{new Date(`${meta.date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
           </p>
-          <PageHeader title={meta.title} description={meta.dek} />
-        </div>
+        } />
 
         {/* Tall fallback keeps the footer out of the initially tappable
             region while the piece chunk loads — a 160px placeholder put
