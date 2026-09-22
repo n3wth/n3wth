@@ -1,6 +1,5 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
-import { ConvergeLight, VisualBand } from '@n3wth/ui/visuals'
 import { siteConfig } from '../../data/content'
 import { SectionHeader } from '../Frame'
 import { track } from '../../lib/analytics'
@@ -12,6 +11,7 @@ export function Contact() {
     <section id="contact" aria-label="Contact">
         <SectionHeader
           as="h1"
+          story="contact"
           title="Contact"
           lede="Product, AI safety, or LED art. Coffee if you're in San Francisco."
           action={
@@ -35,9 +35,6 @@ export function Contact() {
             </>
           }
         />
-      <VisualBand height="clamp(200px, 34svh, 380px)">
-        <ConvergeLight />
-      </VisualBand>
     </section>
   )
 }

@@ -25,6 +25,7 @@ export default function Work() {
     <>
       <SectionHeader
         as="h1"
+        story="work"
         title="Work"
         lede="I lead AI product development at Google. Previously at Covariant, Meta, and Microsoft."
         action={

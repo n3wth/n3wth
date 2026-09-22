@@ -1,0 +1,51 @@
+.section-story {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--color-text-primary);
+  opacity: .76;
+}
+
+.section-story svg {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  width: max(100%, 1050px);
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.section-story__quiet { opacity: .26; }
+.section-story__trace { stroke-width: 1.6; opacity: .85; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .section-story__breath { animation: story-breath 18s ease-in-out infinite alternate; }
+  .section-story__canopy { transform-origin: 863px 690px; animation: story-canopy 24s ease-in-out infinite alternate; }
+  .section-story__trace { stroke-dasharray: .18 .82; animation: story-trace 22s linear infinite; }
+  .section-story__assemble { animation: story-assemble 20s ease-in-out infinite alternate; }
+  .section-story__assemble--one { --story-x: -40px; --story-y: -30px; }
+  .section-story__assemble--two { --story-x: 48px; --story-y: -48px; }
+  .section-story__assemble--three { --story-x: -56px; --story-y: 44px; }
+  .section-story__assemble--four { --story-x: 36px; --story-y: 56px; }
+  .section-story__contact-left { animation: story-contact-left 16s ease-in-out infinite alternate; }
+  .section-story__contact-right { animation: story-contact-right 16s ease-in-out infinite alternate; }
+  [data-visible='false'] .section-story * { animation-play-state: paused; }
+}
+
+@keyframes story-breath { from { opacity: .65; } to { opacity: 1; } }
+@keyframes story-canopy { from { transform: rotate(-.5deg); } to { transform: rotate(.6deg); } }
+@keyframes story-trace { to { stroke-dashoffset: -1; } }
+@keyframes story-assemble { from { transform: translate(var(--story-x), var(--story-y)); } to { transform: translate(0, 0); } }
+@keyframes story-contact-left { from { transform: translateX(-16px); } to { transform: translateX(0); } }
+@keyframes story-contact-right { from { transform: translateX(16px); } to { transform: translateX(0); } }
+
+@media (max-width: 640px) {
+  .section-story svg { right: -165px; }
+  .section-story { opacity: .6; }
+  .section-story--work svg { right: -230px; }
+  .section-story--thinking svg { right: -220px; height: 75%; }
+}

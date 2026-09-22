@@ -21,7 +21,7 @@ export default function ThinkingPage() {
 
   return (
     <>
-      <SectionHeader as="h1" title="Thinking" lede={DESCRIPTION} />
+      <SectionHeader as="h1" story="thinking" title="Thinking" lede={DESCRIPTION} />
       <div className="thinking-page"><NotesIndex /></div>
     </>
   )

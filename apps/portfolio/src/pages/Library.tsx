@@ -16,11 +16,6 @@ const DESCRIPTION = 'Installable pieces from across the n3wth properties: the es
  * click through to the real thing, and one of them (the essay kit) has no
  * other home on the internet.
  *
- * No hero. The page opens the way /work does: a heading, a lede, and then
- * straight into the material. The decorative band lands after the kit
- * shelf instead of at the top, where it would read as exactly the hero
- * this page is refusing to have.
- *
  * Every shelf and every kit primitive carries a stable id with
  * scroll-mt-24 on it, so the command palette can deep-link into any of
  * them and clear the fixed nav on the way.
@@ -43,6 +38,7 @@ export default function Library() {
     <>
       <SectionHeader
         as="h1"
+        story="library"
         title="Library"
         lede="The essay kit, UI components, garden notes, and agent skills behind this site."
       />
