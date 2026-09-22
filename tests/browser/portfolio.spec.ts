@@ -6,8 +6,12 @@ test('reading pages center their columns and put dates below the title', async (
     const title = page.getByRole('heading', { level: 1 })
     await expect(title).toBeVisible()
     const bounds = await page.locator('.thinking-reading-page').boundingBox()
-    const contentWidth = await page.evaluate(() => document.documentElement.clientWidth)
-    expect(Math.abs(bounds!.x - (contentWidth - bounds!.x - bounds!.width))).toBeLessThan(2)
+    // The root reserves a stable scrollbar gutter even before content overflows.
+    // Measure the rendered body rather than viewport/clientWidth, which include it.
+    const body = await page.locator('body').boundingBox()
+    const left = bounds!.x - body!.x
+    const right = body!.x + body!.width - bounds!.x - bounds!.width
+    expect(Math.abs(left - right), JSON.stringify({ bounds, body })).toBeLessThan(2)
     const heading = await title.boundingBox()
     const date = await page.locator('main time').first().boundingBox()
     expect(date!.y).toBeGreaterThan(heading!.y + heading!.height)
