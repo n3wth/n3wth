@@ -20,9 +20,9 @@ export default function ThinkingPage() {
   })
 
   return (
-    <div className="thinking-page">
-      <PageHeader className="site-content-gutter" title="Thinking" description={DESCRIPTION} spacing="compact" />
-      <NotesIndex />
-    </div>
+    <>
+      <PageHeader className="site-content-gutter" title="Thinking" description={DESCRIPTION} />
+      <div className="thinking-page"><NotesIndex /></div>
+    </>
   )
 }
