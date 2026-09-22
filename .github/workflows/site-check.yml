@@ -36,7 +36,9 @@ jobs:
         id: affected
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
-        run: echo "workspaces=$(node scripts/affected.mjs --base "$BASE_SHA" --list)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "workspaces=$(node scripts/affected.mjs --base "$BASE_SHA" --list)" >> "$GITHUB_OUTPUT"
+          echo "ui_package=$(node scripts/affected.mjs --base "$BASE_SHA" --ui-package)" >> "$GITHUB_OUTPUT"
       - run: npm install --global npm@11.19.1
         if: steps.affected.outputs.workspaces != '[]'
       - run: npm ci
@@ -67,7 +69,7 @@ jobs:
         if: contains(steps.affected.outputs.workspaces, '@n3wth/ui') || contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web') || contains(steps.affected.outputs.workspaces, '@n3wth/skills')
         run: npx playwright install --with-deps chromium
       - name: Check standalone UI package
-        if: contains(steps.affected.outputs.workspaces, '@n3wth/ui')
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/ui') && steps.affected.outputs.ui_package == 'true'
         run: npm run check:package
       - name: Check site browsers
         if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
