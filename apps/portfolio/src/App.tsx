@@ -33,7 +33,13 @@ function ScrollToTop() {
        reset down with it. The rAF retry covers a target that mounts a frame
        late, which happens when the hash arrives from another route. */
     if (hash.length > 1) {
-      const id = decodeURIComponent(hash.slice(1))
+      let id = hash.slice(1)
+      try {
+        id = decodeURIComponent(id)
+      } catch {
+        // Malformed URL fragments must not take down the route. A literal
+        // percent sign can also be part of an element's ID.
+      }
       const land = () => {
         const target = document.getElementById(id)
         if (target) target.scrollIntoView({ block: 'start' })

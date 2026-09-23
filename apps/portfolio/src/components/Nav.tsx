@@ -9,7 +9,8 @@ export interface NavProps { onOpenSearch?: () => void; searchOpen?: boolean }
 export function Nav({ onOpenSearch, searchOpen = false }: NavProps) {
   const { pathname } = useLocation()
   const sameRouteClick = (href: string) => (event: MouseEvent<HTMLAnchorElement>) => {
-    if (href !== pathname) return
+    if (href !== pathname || event.defaultPrevented || event.button !== 0
+      || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
     event.preventDefault()
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })

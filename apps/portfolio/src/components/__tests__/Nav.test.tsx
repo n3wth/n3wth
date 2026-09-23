@@ -19,6 +19,17 @@ function renderNav(path = '/') {
 }
 
 describe('Navigation disclosure', () => {
+  it.each(['metaKey', 'ctrlKey', 'shiftKey', 'altKey'])(
+    'preserves native %s clicks on the current page', (modifier) => {
+      const scroll = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+      renderNav('/work')
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true, [modifier]: true })
+      fireEvent(screen.getByRole('link', { name: 'Work' }), event)
+      expect(event.defaultPrevented).toBe(false)
+      expect(scroll).not.toHaveBeenCalled()
+    },
+  )
+
   it('places Projects before Work and keeps it active on product pages', () => {
     renderNav('/projects/r3')
     const links = screen.getByRole('navigation', { name: 'Primary' }).querySelectorAll('a')
