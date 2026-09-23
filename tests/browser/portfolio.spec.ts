@@ -1,5 +1,22 @@
 import { test, expect } from '@playwright/test'
 
+test('malformed fragments keep public pages usable', async ({ page }) => {
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  for (const route of ['/work#%', '/thinking/frameworks/5-whys#%E0%A4%A', '/projects#%ZZ']) {
+    await page.goto(route)
+    await expect(page.locator('main h1')).toBeVisible()
+    await expect(page.locator('header').first()).toBeVisible()
+    await expect(page.getByText('Unexpected Application Error!')).toHaveCount(0)
+  }
+  expect(errors).toEqual([])
+})
+
+test('encoded fragments still reach their headings', async ({ page }) => {
+  await page.goto('/thinking/frameworks/5-whys#%75sage')
+  await expect(page.locator('#usage')).toBeInViewport()
+})
+
 test('reading pages center their columns and put dates below the title', async ({ page }, testInfo) => {
   for (const slug of ['personal-knowledge-graph', 'audit-retrieval-before-trusting-an-answer']) {
     await page.goto(`/thinking/${slug}`)
