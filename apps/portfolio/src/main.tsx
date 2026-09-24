@@ -23,6 +23,7 @@ const Login = lazy(() => import('./pages/Login'))
 const Logout = lazy(() => import('./pages/Logout'))
 const Support = lazy(() => import('./pages/Support'))
 const Elsa = lazy(() => import('./pages/Elsa'))
+const Billy = lazy(() => import('./pages/Billy'))
 const ProjectPage = lazy(() => import('./pages/ProjectPage'))
 const Privacy = lazy(() => import('./pages/Privacy'))
 const Terms = lazy(() => import('./pages/Terms'))
@@ -109,6 +110,7 @@ const router = createBrowserRouter([
       { path: 'logout', element: <Logout /> },
       { path: 'support', element: <Support /> },
       { path: 'elsa', element: <Elsa /> },
+      { path: 'billy', element: <Billy /> },
       { path: 'privacy', element: <Privacy /> },
       { path: 'terms', element: <Terms /> },
       { path: 'consent', element: <Consent /> },

@@ -113,8 +113,11 @@ export default function Consent() {
             more information.
           </SiteText>
           <SiteText>
-            For the Elsa personal assistant SMS line (+1 463 258-8004), see{' '}
-            <RouterLink href="/elsa" className="link-underline">/elsa</RouterLink>.
+            For the personal assistant SMS lines, see{' '}
+            <RouterLink href="/elsa" className="link-underline">/elsa</RouterLink> (Elsa, +1 415
+            718-0992) and{' '}
+            <RouterLink href="/billy" className="link-underline">/billy</RouterLink> (Billy, +1 463
+            258-8004).
           </SiteText>
         </SiteDocSection>
 
