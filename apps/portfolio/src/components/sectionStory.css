@@ -63,6 +63,7 @@
 
 @media (max-width: 640px) {
   .section-story svg { right: -165px; }
+  .section-story--projects svg { right: auto; left: 50%; transform: translateX(-50%); width: max(100%, 1050px); }
   .section-story { opacity: .6; }
   .section-story--work svg { right: -230px; }
   .section-story--thinking svg { right: -220px; height: 75%; }

@@ -80,7 +80,7 @@ function ThinkingStory() {
 }
 
 function ProjectsStory() {
-  return <g transform="translate(675 110) scale(.8)">
+  return <g transform="translate(476 110) scale(.8)">
     <g className="section-story__quiet">
       <path d="M -100 280 H 660 M 280 -100 V 660" />
       <g className="section-story__orbit">
