@@ -2,34 +2,23 @@
 title: Are Tomatoes Self-Pollinating?
 description: "Yes. Tomato plants are self-pollinating: each flower has male and female parts. How tomatoes pollinate, why fruit still fails, and when to help."
 tags: [gardening, tomatoes, pollination]
+updated: 2026-09-25
 ---
 
 # Are Tomatoes Self-Pollinating?
 
-Yes. Tomatoes are self-pollinating plants. Each flower has both male parts (stamens that shed pollen) and a female part (the stigma and ovary that become the fruit). A single plant can set fruit without another variety nearby.
+Yes. Tomatoes are self-pollinating plants. Each flower has both male parts (stamens that shed pollen) and female parts, including the stigma and ovary. After fertilization, the ovary develops into the fruit. A single plant can set fruit without another variety nearby.
 
 Pollen still has to move a short distance from the anthers onto the stigma. A self-fertile flower may need help moving that pollen.
-
-## Are tomato plants self pollinating?
-
-Yes. A tomato plant does not need a second plant or a different variety to set fruit. Pollen from the same flower is enough. Isolation, containers, and indoor grow lights do not change that; they only change whether the flower gets shaken enough for pollen to land.
-
-## Do tomatoes self pollinate?
-
-They do. Tomato flowers are perfect flowers: pollen from the same flower can fertilize that flower's ovary. You do not need a second plant, and you do not need bees, for fruit to form.
-
-They are not wind-pollinated in the way corn is. The pollen is heavier and sticky. Outdoors, a breeze, a passing bee, or the plant shaking is usually enough. Indoors and in still greenhouses, flowers often open and drop without ever receiving pollen.
 
 ## How do tomatoes pollinate?
 
 1. A flower opens. The anthers form a cone around the stigma.
 2. Ripe pollen sheds inside that cone.
 3. Vibration or a light knock sends pollen onto the stigma.
-4. If the stigma is receptive, pollen tubes grow and the ovary starts to swell into a tomato.
+4. Pollen tubes grow toward the ovules, allowing fertilization. The ovary can then develop into a tomato.
 
-Wind and insect visits help by shaking the flower. Buzz-pollinating bees (bumblebees especially) are good at this, but they are a bonus, not a requirement. The plant is doing most of the work; the shake is what finishes the job.
-
-Best window: mid-morning, once the flower is fully open and humidity is not so high that pollen clumps.
+Tomato pollen is sticky and relatively heavy. Wind and insect visits help by shaking it loose. Bumblebees vibrate flowers through buzz pollination. Bees are not required, but indoor plants and enclosed greenhouses may lack both insect visits and a breeze.
 
 <figure class="research-figure">
 <a class="research-figure-image" href="/figures/wellbeing/tomato-pollination.svg" aria-label="Open full-size graphic: Tomatoes self pollinate"><img src="/figures/wellbeing/tomato-pollination.svg" alt="Simplified section of a tomato flower: anthers surround the stigma above the ovary. Vibration moves pollen to the stigma; fertilization then occurs through pollen-tube growth." width="960" height="650" loading="lazy" decoding="async" /></a>
@@ -40,25 +29,20 @@ Best window: mid-morning, once the flower is fully open and humidity is not so h
 
 Self-pollinating does not mean every blossom becomes a tomato.
 
-- **No vibration.** Indoor plants and sealed greenhouses often need a daily shake.
-- **Heat.** Pollen often fails above about 85–90°F (29–32°C) in the day, or when nights stay very hot.
-- **Cold.** Cool nights can slow pollen-tube growth.
-- **Humidity.** Very dry air dries pollen; very wet air makes it clump.
-- **Stress.** Irregular water, low light, or a nitrogen-heavy plant with few flowers.
+- **Little movement.** Pollen may remain in the anthers instead of reaching the stigma.
+- **Heat.** The University of Maryland Extension source above reports that temperatures above 90°F (32°C) harm the viability of pollen and ovules.
+- **Temperature during fertilization.** The same source gives 70°F (21°C) as the optimum for pollen-tube growth; temperatures above or below it reduce germination and growth.
+- **Wet conditions.** Pollen can clump and become less available for pollination.
 
-Blossom drop with a dry stem scar usually means the flower was never fertilized. A tiny fruit that yellows and falls is a different problem (often calcium or water).
+Blossom drop alone does not tell you whether pollination or fertilization failed. Moving more pollen will not resolve every cause of poor fruit set.
 
 ## When to help pollination
 
 Help when plants are flowering and you are not seeing fruit, especially indoors, on a patio with no breeze, or under glass.
 
-- **Gentle shake:** tap the stake or the flower cluster once a day.
-- **Electric toothbrush:** touch the stem behind an open flower for a second so the cone vibrates.
-- **Small brush:** if you want to move pollen between flowers on the same plant, though that is rarely needed for ordinary slicing tomatoes.
+Gently tap the stake or flower cluster to shake open flowers. There is no need to transfer pollen from a second plant. Avoid prolonged or forceful vibration.
 
-Pollinate newly opened flowers every two or three days. Do not grind the blossom; over-vibrating bruises it.
-
-Cherry types usually set more easily than large beefsteaks. Heirlooms can be fussier in heat. None of that changes the basic fact: tomato plants are self-pollinating.
+Gerald Brust's high-tunnel study tested mechanical vibration and found that its duration and frequency affected yield. Heirloom cultivars responded less consistently than hybrids. Those results come from specific high-tunnel treatments; they do not establish a universal schedule for hand-pollinating a patio plant.
 
 ## Related Notes
 

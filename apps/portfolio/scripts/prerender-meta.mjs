@@ -5,9 +5,9 @@
  * and home-page fallback content — for every route, so search engines and
  * social unfurlers saw one page instead of five. This emits
  * dist/<route>/index.html with route-specific head tags and a static
- * content summary; Vercel serves real files before its SPA rewrite, so
- * each route now has its own crawlable document. The app itself is
- * unchanged — the same bundle hydrates on top.
+ * content, including the authored React article bodies. Cloudflare serves
+ * these files before the SPA fallback. The client app replaces the static
+ * content when it mounts; interactive behavior is unchanged.
  *
  * It also emits the discovery surface derived from the same route list:
  * dist/sitemap.xml (with lastmod), dist/feed.xml (Atom, thinking pieces),
@@ -16,6 +16,8 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { renderThinkingBodies } from './lib/render-thinking.mjs'
+import { feedDate } from './notes/lib/dates.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const dist = join(here, '../dist')
@@ -292,9 +294,8 @@ if (pieceMetas.length === 0 || pieceMetas.length !== registeredCount) {
   )
 }
 
-/* Optional per-piece prose summaries (src/data/piece-summaries.json).
-   When present they give no-JS crawlers — including the AI ones, none of
-   which execute JS — real text to quote instead of a one-line dek. */
+/* Optional abstracts for structured data and discovery feeds. Article HTML
+   below comes directly from the authored components, never these summaries. */
 const summariesPath = join(here, '../src/data/piece-summaries.json')
 const summaries = existsSync(summariesPath)
   ? JSON.parse(readFileSync(summariesPath, 'utf8'))
@@ -327,10 +328,14 @@ ${pieceMetas
       </section>`,
 })
 
+const pieceBodies = await renderThinkingBodies()
 for (const p of pieceMetas) {
   const summary = summaries[p.id]
+  const body = pieceBodies.get(p.id)
+  if (!body?.trim()) throw new Error(`prerender-meta: missing authored body for ${p.id}`)
   routes.push({
     path: `thinking/${p.id}`,
+    stripSeoLead: true,
     title: `${p.title} — Oliver Newth`,
     description: p.dek,
     ogImage: `/og/thinking/${p.id}.png`,
@@ -351,14 +356,7 @@ for (const p of pieceMetas) {
     body: `
       <h1>${escText(p.title)}</h1>
       <p>${escText(p.dek)}</p>
-${
-  summary
-    ? summary
-        .split(/\n\n+/)
-        .map((para) => `      <p>${escText(para)}</p>`)
-        .join('\n')
-    : ''
-}
+      ${body}
       <p><a href="/thinking">All Thinking pieces</a></p>`,
   })
 }
@@ -454,7 +452,7 @@ const renderRoute = (r, outPath) => {
   }
   html = html.replace(
     /<main id="main" class="seo-fallback">[\s\S]*?<\/main>/,
-    `<main id="main" class="seo-fallback">${r.body}\n      </main>`
+    () => `<main id="main" class="seo-fallback">${r.body}\n      <nav aria-label="Site"><a href="/">Home</a> <a href="/thinking">Thinking</a> <a href="/work">Work</a> <a href="/support">Support</a> <a href="/privacy">Privacy</a> <a href="/terms">Terms</a> <a href="/consent">SMS consent</a></nav></main>`
   )
   mkdirSync(dirname(outPath), { recursive: true })
   writeFileSync(outPath, html)
@@ -469,8 +467,8 @@ for (const meta of noteIndex) {
     description: meta.description || `${meta.title}. A working note by Oliver Newth.`,
     ogImage: '/og/thinking.png',
     stripSeoLead: true,
-    ...(meta.date ? { article: { published: meta.date } } : {}),
-    jsonLd: { '@context': 'https://schema.org', '@type': 'Article', headline: meta.title, url: `${ORIGIN}${meta.href}`, ...(meta.date ? { datePublished: meta.date } : {}), author: { '@type': 'Person', name: 'Oliver Newth' } },
+    ...(meta.date ? { article: { published: meta.date, modified: meta.updated || meta.date } } : {}),
+    jsonLd: { '@context': 'https://schema.org', '@type': 'Article', headline: meta.title, url: `${ORIGIN}${meta.href}`, ...(meta.date ? { datePublished: meta.date } : {}), ...(meta.updated || meta.date ? { dateModified: meta.updated || meta.date } : {}), author: { '@type': 'Person', name: 'Oliver Newth' } },
     body: `<h1>${escText(meta.title)}</h1>${note.html}<nav aria-label="Backlinks">${note.backlinks.map(link => `<a href="${esc(link.href)}">${escText(link.title)}</a>`).join(' ')}</nav><a href="/thinking#notes">All notes</a>`,
   })
 }
@@ -509,15 +507,15 @@ console.log('[prerender-meta] dist/404.html')
 /* dist/sitemap.xml — generated from the same route list so it can't
    drift when a piece is added. lastmod only; Google ignores
    changefreq/priority. */
-const feedPieces = [...pieceMetas, ...noteIndex.filter(note => note.date).map(note => ({ id: note.slug, title: note.title, dek: note.description, date: note.date }))]
-const latestPieceDate = feedPieces.map((p) => p.date).sort().at(-1)
+const feedPieces = [...pieceMetas, ...noteIndex.filter(note => note.date).map(note => ({ id: note.slug, title: note.title, dek: note.description, date: note.date, updated: note.updated }))]
+const latestPieceDate = feedPieces.map((p) => feedDate(p.updated || p.date)).sort().at(-1)
 const sitemapEntries = [
   { loc: `${ORIGIN}/` },
   ...routes
     .filter((r) => !r.noindex)
     .map((r) => ({
       loc: `${ORIGIN}/${r.path}`,
-      lastmod: r.article?.published,
+      lastmod: r.article?.modified || r.article?.published,
     })),
 ]
 writeFileSync(
@@ -531,13 +529,14 @@ console.log(`[prerender-meta] dist/sitemap.xml (${sitemapEntries.length} urls)`)
 /* dist/feed.xml — Atom feed of the thinking pieces: a freshness signal
    and a discovery channel the sitemap alone doesn't provide. */
 const feedEntries = [...feedPieces]
-  .sort((a, b) => (a.date < b.date ? 1 : -1))
+  .sort((a, b) => feedDate(b.updated || b.date).localeCompare(feedDate(a.updated || a.date)))
   .map(
     (p) => `  <entry>
     <title>${escText(p.title)}</title>
     <link href="${ORIGIN}/thinking/${p.id}" />
     <id>${ORIGIN}/thinking/${p.id}</id>
-    <updated>${p.date}T00:00:00Z</updated>
+    <published>${feedDate(p.date)}</published>
+    <updated>${feedDate(p.updated || p.date)}</updated>
     <summary>${escText(summaries[p.id] ?? p.dek)}</summary>
   </entry>`
   )
@@ -549,7 +548,7 @@ writeFileSync(
   <link href="${ORIGIN}/thinking" />
   <link rel="self" href="${ORIGIN}/feed.xml" />
   <id>${ORIGIN}/feed.xml</id>
-  <updated>${latestPieceDate}T00:00:00Z</updated>
+  <updated>${latestPieceDate}</updated>
   <author><name>Oliver Newth</name></author>
 ${feedEntries.join('\n')}
 </feed>\n`

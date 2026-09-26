@@ -16,7 +16,7 @@
     "og:cards": "node scripts/generate-og-images.mjs",
     "og:plates": "node scripts/extract-og-plates.mjs",
     "lint": "eslint .",
-    "check": "node scripts/build-notes.mjs && node --test scripts/notes.check.mjs && npm run lint && npm test -- --run && npm run build",
+    "check": "node scripts/build-notes.mjs && node --test scripts/notes.check.mjs scripts/notes/dates.check.mjs scripts/render-thinking.check.mjs && npm run lint && npm test -- --run && npm run build && node --test scripts/prerender.check.mjs",
     "test": "vitest",
     "preview": "vite preview"
   },

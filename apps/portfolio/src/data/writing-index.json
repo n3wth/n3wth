@@ -219,25 +219,25 @@
       "pollination"
     ],
     "stage": "budding",
-    "readingTime": "4 min read",
+    "readingTime": "3 min read",
     "date": "2026-02-15",
-    "updated": "2026-02-15"
+    "updated": "2026-09-25"
   },
   {
     "slug": "astryx-vs-shadcn-vs-angular-material",
     "href": "/thinking/astryx-vs-shadcn-vs-angular-material",
     "title": "Astryx vs shadcn: which design system for LLM-written UI",
-    "description": "Field notes from this garden: Astryx, shadcn and component ownership, with a reproducible table of contents example and the limits of type-level accessibility checks.",
+    "description": "Compare Astryx, shadcn and Angular Material by component ownership, with a working React outline example and the limits of type-level accessibility checks.",
     "tags": [
       "technology",
       "engineering",
       "design",
       "development"
     ],
-    "stage": "budding",
-    "readingTime": "4 min read",
+    "stage": "evergreen",
+    "readingTime": "5 min read",
     "date": "2026-07-14",
-    "updated": "2026-07-14"
+    "updated": "2026-09-25"
   },
   {
     "slug": "frameworks/atomic-habits",
