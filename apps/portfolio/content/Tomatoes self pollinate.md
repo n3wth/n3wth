@@ -8,11 +8,11 @@ tags: [gardening, tomatoes, pollination]
 
 Yes. Tomatoes are self-pollinating plants. Each flower has both male parts (stamens that shed pollen) and a female part (the stigma and ovary that become the fruit). A single plant can set fruit without another variety nearby.
 
-That is the short answer to "are tomatoes self pollinating" and "are tomato plants self pollinating." The longer answer is that self-fertile is not the same as "pollination happens by itself with no help." Pollen still has to move a short distance from the anthers onto the stigma.
+Pollen still has to move a short distance from the anthers onto the stigma. A self-fertile flower may need help moving that pollen.
 
 ## Are tomato plants self pollinating?
 
-Yes. A tomato plant does not need a second plant or a different variety in order to set fruit. Pollen from the same flower is enough. Isolation, containers, and indoor grow lights do not change that; they only change whether the flower gets shaken enough for pollen to land.
+Yes. A tomato plant does not need a second plant or a different variety to set fruit. Pollen from the same flower is enough. Isolation, containers, and indoor grow lights do not change that; they only change whether the flower gets shaken enough for pollen to land.
 
 ## Do tomatoes self pollinate?
 

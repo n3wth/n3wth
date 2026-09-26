@@ -148,10 +148,10 @@ export default function TrustProduction() {
       <Beat
         prose={
           <>
-            I built a small demo to make this tradeoff concrete. A slider. Drag it left and the
-            classifier finishes at 30ms, comfortably inside the chat window, flagged content goes
+            I built a small demo to make this tradeoff concrete. Drag the slider left and the
+            classifier finishes at 30ms, comfortably inside the chat window. Flagged content goes
             to synchronous review before anything surfaces. Drag it right and latency climbs past
-            50ms, the classifier misses its window, async review kicks in. Content that should
+            50ms. The classifier misses its window, and async review kicks in. Content that should
             have been held gets shown, or held content creates a noticeable delay. The policy you
             thought you had – the one that says harmful content never surfaces without review –
             isn't violated by a bad actor. It's violated by a slow P99.
