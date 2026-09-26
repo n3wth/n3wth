@@ -67,11 +67,16 @@ export default function Terms() {
           </SiteText>
         </SiteDocSection>
 
-        <SiteDocSection title="Elsa assistant SMS">
+        <SiteDocSection title="Elsa and Billy assistant SMS">
           <SiteText>
-            By texting START, HELLO, or a first message to <strong style={{ color: 'var(--ink)' }}>+1 (463) 258-8004</strong>
-            after reading the disclosures on /elsa, you agree to the messaging terms on{' '}
-            <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>.
+            By texting START, HELLO, or a first message to Elsa at{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> after reading the
+            disclosures on{' '}
+            <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>,
+            or to Billy at <strong style={{ color: 'var(--ink)' }}>+1 (463) 258-8004</strong> after
+            reading the disclosures on{' '}
+            <RouterLink href="/billy" className="link-underline">https://n3wth.com/billy</RouterLink>,
+            you agree to the messaging terms on that page.
             Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe.
             Reply HELP for help. SMS is optional and is not required to use n3wth.com or other site
             services. Privacy, retention, and California privacy rights for SMS are

@@ -73,17 +73,20 @@ export default function Privacy() {
           </SiteText>
         </SiteDocSection>
 
-        <SiteDocSection title="Elsa assistant SMS">
+        <SiteDocSection title="Elsa and Billy assistant SMS">
           <SiteText>
             When you opt in to Elsa by texting START, HELLO, or a first message to{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong>, or to Billy at{' '}
             <strong style={{ color: 'var(--ink)' }}>+1 (463) 258-8004</strong>, your phone number
             and related SMS content/metadata may be collected to send and receive assistant-related
             SMS (conversations, verification codes, transactional notices). Your phone number is not
             sold or shared with third parties or affiliates for their marketing, and is not used for
-            cross-context behavioral advertising. A messaging service provider processes SMS for +1 463 258-8004 on our behalf. Reply STOP to
+            cross-context behavioral advertising. Messaging service providers process SMS for +1 415 718-0992 and +1 463 258-8004 on our behalf. Reply STOP to
             opt out. See{' '}
             <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>{' '}
-            for full SMS consent details. Message frequency varies. Message and data rates may apply. Consent is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other site services. The messaging program is operated by Oliver Grosvenor-Newth (sole proprietor); Elsa is the AI assistant service name.
+            and{' '}
+            <RouterLink href="/billy" className="link-underline">https://n3wth.com/billy</RouterLink>{' '}
+            for full SMS consent details. Message frequency varies. Message and data rates may apply. Consent is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other site services. The messaging program is operated by Oliver Grosvenor-Newth (sole proprietor); Elsa and Billy are AI assistant service names.
           </SiteText>
         </SiteDocSection>
 
@@ -122,8 +125,9 @@ export default function Privacy() {
             .
           </SiteText>
           <SiteText>
-            Messaging service providers process SMS for the Elsa assistant line at +1 463 258-8004
-            as service providers / processors on our behalf.
+            Messaging service providers process SMS for the Elsa assistant line at +1 415 718-0992
+            and the Billy assistant line at +1 463 258-8004 as service providers / processors on
+            our behalf.
           </SiteText>
           <SiteText>
             Twilio processes SMS for the They Won&apos;t Shut Up hotline (+1 855 580-0508) as a
@@ -150,8 +154,8 @@ export default function Privacy() {
 
         <SiteDocSection title="SMS data retention">
           <SiteText>
-            Phone numbers and SMS conversation content or metadata related to Elsa (+1 463 258-8004)
-            and the They Won&apos;t Shut Up hotline (+1 855 580-0508) are retained for up to 24
+            Phone numbers and SMS conversation content or metadata related to Elsa (+1 415 718-0992),
+            Billy (+1 463 258-8004), and the They Won&apos;t Shut Up hotline (+1 855 580-0508) are retained for up to 24
             months, unless a longer period is needed for security, disputes, or legal obligations.
             On a verified STOP or deletion request, we delete or anonymize that data sooner when
             feasible. Messaging providers may retain copies under their own processor policies.
@@ -169,7 +173,8 @@ export default function Privacy() {
             discriminate against you for exercising your privacy rights. See also{' '}
             <RouterLink href="/terms" className="link-underline">Terms of Service</RouterLink> and
             the SMS consent pages at{' '}
-            <RouterLink href="/elsa" className="link-underline">/elsa</RouterLink> and{' '}
+            <RouterLink href="/elsa" className="link-underline">/elsa</RouterLink>,{' '}
+            <RouterLink href="/billy" className="link-underline">/billy</RouterLink>, and{' '}
             <RouterLink href="/consent" className="link-underline">/consent</RouterLink>.
           </SiteText>
         </SiteDocSection>

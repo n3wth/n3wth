@@ -613,11 +613,11 @@ body {
 }
 
 
-/* ---------- Elsa landing (/elsa) ----------
-   Mark + eye/slash motion only. Page rhythm comes from @n3wth/ui site
+/* ---------- Assistant SMS landings (/elsa, /billy) ----------
+   Mark + glyph motion only. Page rhythm comes from @n3wth/ui site
    page-header / section padding (48px / 64px md). No padding crushers. */
 
-.elsa-hero-mark {
+.assistant-hero-mark {
   display: block;
   width: 10rem;
   height: 10rem;
@@ -631,8 +631,13 @@ body {
   animation: elsa-slash 6s ease-in-out infinite;
 }
 
-/* Elsa-only hero copy stack (avoid shared .n3wth-site-* selectors in app CSS) */
-.elsa-hero-mark + .elsa-hero-copy {
+.billy-dot {
+  transform-origin: 256px 256px;
+  animation: billy-dot 6s ease-in-out infinite;
+}
+
+/* Assistant-only hero copy stack (avoid shared .n3wth-site-* selectors in app CSS) */
+.assistant-hero-mark + .assistant-hero-copy {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -640,18 +645,13 @@ body {
   width: 100%;
 }
 
-.elsa-hero-copy .elsa-hero-description {
+.assistant-hero-copy .assistant-hero-description {
   margin-top: 0;
 }
 
-.elsa-hero-actions {
+.assistant-hero-actions {
   justify-content: center;
   margin-top: 0;
-}
-
-.elsa-number-label {
-  color: var(--ink-label);
-  letter-spacing: 0.02em;
 }
 
 @keyframes elsa-slash {
@@ -667,8 +667,21 @@ body {
   }
 }
 
+@keyframes billy-dot {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+}
+
 @media (min-width: 768px) {
-  .elsa-hero-mark {
+  .assistant-hero-mark {
     width: 11.5rem;
     height: 11.5rem;
     max-width: 11.5rem;
