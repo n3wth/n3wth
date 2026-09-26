@@ -1,5 +1,35 @@
 import { test, expect } from '@playwright/test'
 
+test('projects motif sits beside desktop copy and above mobile copy', async ({ page }) => {
+  for (const width of [390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/projects')
+    const artwork = page.locator('.section-story--projects svg')
+    await expect(artwork).toBeVisible()
+    const geometry = await artwork.evaluate(svg => {
+      const orbit = svg.querySelector('circle') as SVGCircleElement
+      const center = new DOMPoint(280, 280).matrixTransform(orbit.getScreenCTM()!)
+      const bounds = svg.getBoundingClientRect()
+      const nav = document.querySelector('header')!.getBoundingClientRect()
+      const copy = document.querySelector('main h1')!.getBoundingClientRect()
+      const titleRange = document.createRange()
+      titleRange.selectNodeContents(document.querySelector('.portfolio-section-title')!)
+      const title = titleRange.getBoundingClientRect()
+      return { center: center.x, navCenter: nav.x + nav.width / 2, left: bounds.left, right: bounds.right, bottom: bounds.bottom, copyTop: copy.top, titleRight: title.right, width: document.documentElement.clientWidth }
+    })
+    expect(geometry.left).toBeGreaterThanOrEqual(0)
+    expect(geometry.right).toBeLessThanOrEqual(geometry.width)
+    if (width >= 1024) {
+      expect(geometry.center).toBeGreaterThan(geometry.width * .7)
+      expect(geometry.center).toBeLessThan(geometry.width * .8)
+      expect(geometry.left).toBeGreaterThan(geometry.titleRight)
+    } else {
+      expect(Math.abs(geometry.center - geometry.navCenter)).toBeLessThanOrEqual(1)
+      expect(geometry.bottom).toBeLessThan(geometry.copyTop)
+    }
+  }
+})
+
 test('malformed fragments keep public pages usable', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
