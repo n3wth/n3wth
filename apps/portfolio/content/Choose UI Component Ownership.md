@@ -16,7 +16,7 @@ Start by choosing where the source and fixes will live. Then ask how many produc
 - The package can expose a small, stable API instead of leaking application details.
 - The package owner can test the component in its own package and in the affected applications.
 
-This is the pattern in this workspace. Garden depends on `@n3wth/ui` in `apps/garden/package.json`. The UI package exposes native controls through `@n3wth/ui/primitives` and site compositions through `@n3wth/ui/site`. Garden's `TableOfContents` imports `ReadingOutline` from the site entry point. It does not import the underlying library directly.
+This is the pattern in this workspace. The UI package exposes native controls through `@n3wth/ui/primitives` and site compositions through `@n3wth/ui/site`. The reading pages now live in the portfolio app. The page at `apps/portfolio/src/pages/ThinkingNote.tsx` imports `ReadingOutline` from the site entry point. It does not import the underlying library directly. Garden serves redirects to those pages.
 
 ## Keep the source local when
 
@@ -43,7 +43,7 @@ Do not treat a required prop or a type check as proof that the finished interfac
 
 ## Name the maintenance constraint
 
-Every ownership choice has a boundary. Here, `@n3wth/ui` owns the underlying component dependency in `packages/ui/package.json`. Garden does not own that dependency directly. Updating it is a UI-package change. It needs a package build and checks in consumers such as Garden. This gives the upgrade a clear owner.
+Every ownership choice has a boundary. Here, `@n3wth/ui` owns the underlying component dependency in `packages/ui/package.json`. The portfolio app does not own that dependency directly. Updating it is a UI-package change. It needs a package build and checks in consumers such as the portfolio. This gives the upgrade a clear owner.
 
 ## Assign fixes and checks
 
@@ -51,6 +51,6 @@ Every ownership choice has a boundary. Here, `@n3wth/ui` owns the underlying com
 - Application owner: checks composition, content, layout, and route behavior where the component is used.
 - Both owners: verify keyboard and screen-reader paths, visible focus, labels, contrast, and responsive behavior before release.
 
-For this workspace, keep reusable behavior in `@n3wth/ui`. Keep Garden-specific headings, links, and placement in Garden. The [existing Kit component examples](https://kit.n3wth.com/components) show the public surface. The [current comparison](https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material) records the concrete reading-outline case.
+For this workspace, keep reusable behavior in `@n3wth/ui`. Keep page-specific headings, links, and placement in the portfolio app. The [existing Kit component examples](https://kit.n3wth.com/components) show the public surface. The [original comparison](https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material) records the concrete reading-outline case before the migration.
 
 The short rule is simple. Share behavior when fixes should be shared. Keep source local when the context is local. Use an existing framework when its ownership and checks fit the application.
