@@ -19,6 +19,9 @@
   stroke-linejoin: round;
 }
 
+/* Below 1024px the hero copy sits at the bottom, so the art sits above center. */
+.section-story--projects svg { left: 50%; transform: translate(-50%, -13%); }
+
 .section-story__quiet { opacity: .26; }
 .section-story__trace { stroke-width: 1.6; opacity: .85; }
 .section-story__terrain { opacity: .18; }
@@ -63,7 +66,6 @@
 
 @media (max-width: 640px) {
   .section-story svg { right: -165px; }
-  .section-story--projects svg { right: auto; left: 50%; transform: translateX(-50%); width: max(100%, 1050px); }
   .section-story { opacity: .6; }
   .section-story--work svg { right: -230px; }
   .section-story--thinking svg { right: -220px; height: 75%; }

@@ -68,6 +68,17 @@ test('section openings fill the screen with distinct accessible stories', async 
   }
 })
 
+test('projects story art sits under the center of the island nav', async ({ page }) => {
+  await page.goto('/projects')
+  await expect(page.locator('.section-story--projects svg')).toBeVisible()
+  const island = await page.locator('.n3wth-site-navigation-island').boundingBox()
+  const petals = await page.locator('.section-story--projects .section-story__assemble path').evaluateAll(paths => {
+    const boxes = paths.map(path => path.getBoundingClientRect())
+    return { left: Math.min(...boxes.map(box => box.left)), right: Math.max(...boxes.map(box => box.right)) }
+  })
+  expect(Math.abs((petals.left + petals.right) / 2 - (island!.x + island!.width / 2))).toBeLessThan(2)
+})
+
 test('Art uses each installation image once', async ({ page }) => {
   await page.goto('/art')
   await expect(page.getByRole('heading', { name: 'Art', exact: true })).toBeVisible()
