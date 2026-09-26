@@ -5,7 +5,6 @@
     "@n3wth/site-config": "*",
     "@n3wth/ui": "*",
     "@neondatabase/serverless": "1.1.0",
-    "@next/third-parties": "16.3.5",
     "@sentry/react": "10.75.0",
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.116.0",
