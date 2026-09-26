@@ -25,11 +25,7 @@
   .portfolio-story-copy { padding-block: 4rem; }
   .portfolio-story-description { white-space: nowrap; }
   .portfolio-story-hero .section-story svg { transform: translateX(12%); }
-  .portfolio-story-hero .section-story--projects svg {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-  }
+  .portfolio-story-hero .section-story--projects svg { transform: translateX(-50%); }
 }
 
 .portfolio-story-actions {

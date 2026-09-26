@@ -80,13 +80,14 @@ function ThinkingStory() {
 }
 
 function ProjectsStory() {
-  return <g transform="translate(476 110) scale(.8)">
+  return <g transform="translate(700 450) scale(.8) translate(-280 -280)">
     <g className="section-story__quiet">
       <path d="M -100 280 H 660 M 280 -100 V 660" />
       <g className="section-story__orbit">
         <circle cx="280" cy="280" r="360" strokeDasharray="2 12" />
-        <path d="M 280 -80 A 360 360 0 0 1 640 280" />
+        <path d="M 280 -80 A 360 360 0 0 1 640 280 M 280 640 A 360 360 0 0 1 -80 280" />
         <circle cx="640" cy="280" r="5" />
+        <circle cx="-80" cy="280" r="5" />
       </g>
     </g>
     <g className="section-story__assemble section-story__assemble--one">
