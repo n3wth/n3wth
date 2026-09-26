@@ -9,7 +9,11 @@ const ELSA: AssistantSmsLine = {
   object: 'her',
   glyph: (
     <g className="elsa-slash">
-      <rect x="236" y="96" width="40" height="320" rx="20" fill="#fff" transform="rotate(28 256 256)" />
+      <g transform="rotate(28 256 256)">
+        <rect x="204" y="96" width="104" height="320" rx="52" fill="#fff" />
+        <rect className="assistant-eye" x="230" y="146" width="16" height="42" rx="8" fill="#000" />
+        <rect className="assistant-eye" x="266" y="146" width="16" height="42" rx="8" fill="#000" />
+      </g>
     </g>
   ),
 }

@@ -9,7 +9,9 @@ const BILLY: AssistantSmsLine = {
   object: 'Billy',
   glyph: (
     <g className="billy-dot">
-      <circle cx="256" cy="256" r="72" fill="#fff" />
+      <circle cx="256" cy="256" r="124" fill="#fff" />
+      <rect className="assistant-eye" x="252" y="200" width="18" height="48" rx="9" fill="#000" transform="rotate(12 261 224)" />
+      <rect className="assistant-eye" x="296" y="200" width="18" height="48" rx="9" fill="#000" transform="rotate(12 305 224)" />
     </g>
   ),
 }

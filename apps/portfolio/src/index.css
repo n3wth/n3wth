@@ -636,6 +636,13 @@ body {
   animation: billy-dot 6s ease-in-out infinite;
 }
 
+/* Eyes blink together; fill-box keeps each blink centred on its own eye. */
+.assistant-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: assistant-blink 5s ease-in-out infinite;
+}
+
 /* Assistant-only hero copy stack (avoid shared .n3wth-site-* selectors in app CSS) */
 .assistant-hero-mark + .assistant-hero-copy {
   display: flex;
@@ -664,6 +671,17 @@ body {
   }
   70% {
     transform: rotate(-3deg);
+  }
+}
+
+@keyframes assistant-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
   }
 }
 

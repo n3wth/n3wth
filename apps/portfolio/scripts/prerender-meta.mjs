@@ -187,8 +187,8 @@ const routes = [
         <li><a href="https://theywontshutup.com" rel="noopener">theywontshutup.com</a> — AI voice hotline. support@n3wth.com</li>
       </ul>`,
   },
-  assistantSmsRoute({ name: 'Elsa', slug: 'elsa', number: '+14157180992', display: '+1 (415) 718-0992', subject: 'She', object: 'her', glyph: '<g class="elsa-slash"><rect x="236" y="96" width="40" height="320" rx="20" fill="#fff" transform="rotate(28 256 256)"></rect></g>' }),
-  assistantSmsRoute({ name: 'Billy', slug: 'billy', number: '+14632588004', display: '+1 (463) 258-8004', subject: 'Billy', object: 'Billy', glyph: '<g class="billy-dot"><circle cx="256" cy="256" r="72" fill="#fff"></circle></g>' }),
+  assistantSmsRoute({ name: 'Elsa', slug: 'elsa', number: '+14157180992', display: '+1 (415) 718-0992', subject: 'She', object: 'her', glyph: '<g class="elsa-slash"><g transform="rotate(28 256 256)"><rect x="204" y="96" width="104" height="320" rx="52" fill="#fff"></rect><rect class="assistant-eye" x="230" y="146" width="16" height="42" rx="8" fill="#000"></rect><rect class="assistant-eye" x="266" y="146" width="16" height="42" rx="8" fill="#000"></rect></g></g>' }),
+  assistantSmsRoute({ name: 'Billy', slug: 'billy', number: '+14632588004', display: '+1 (463) 258-8004', subject: 'Billy', object: 'Billy', glyph: '<g class="billy-dot"><circle cx="256" cy="256" r="124" fill="#fff"></circle><rect class="assistant-eye" x="252" y="200" width="18" height="48" rx="9" fill="#000" transform="rotate(12 261 224)"></rect><rect class="assistant-eye" x="296" y="200" width="18" height="48" rx="9" fill="#000" transform="rotate(12 305 224)"></rect></g>' }),
   {
     path: 'privacy',
     title: 'Privacy Policy — Oliver Newth',
