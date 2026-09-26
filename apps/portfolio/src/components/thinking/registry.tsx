@@ -6,9 +6,7 @@ import type { ComponentType } from 'react'
  * pattern (registered in docs/thinking-pieces-tracker.md), lazy-loaded
  * so a piece using e.g. react-three-fiber doesn't add weight to pieces
  * that don't need it. Each piece renders in full on its own route
- * (/thinking/:slug, src/pages/ThinkingPiece.tsx) and collapses to a
- * stop in the index at the top of src/components/sections/Thinking.tsx
- * (src/components/thinking/kit/ThinkingIndex.tsx).
+ * (/thinking/:slug, src/pages/ThinkingPiece.tsx).
  */
 
 export interface ThinkingPieceMeta {
