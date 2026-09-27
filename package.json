@@ -35,13 +35,15 @@
     "check:affected": "node scripts/affected.mjs",
     "check:browser": "playwright test",
     "preview": "npm run preview -w @n3wth/portfolio",
-    "check:package": "node scripts/check-ui-package.mjs"
+    "check:package": "node scripts/check-ui-package.mjs",
+    "knip": "knip"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
     "@resvg/resvg-js": "2.6.2",
     "@types/react": "19.3.0",
     "jsdom": "27.4.0",
+    "knip": "^6.38.0",
     "opentype.js": "^2.0.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
