@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { ForkLight } from '@n3wth/ui/visuals'
 import { SectionHeader } from '../Frame'
 import './art.css'
 import {
@@ -48,7 +47,7 @@ function WorkCredit({ inst }: { inst: Installation }) {
           {inst.title}
         </h2>
         <p className="meta m-0 mb-3">
-          <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
+          <span>{inst.year}</span>
           <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
           {inst.location}
           <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
@@ -82,7 +81,7 @@ function WorkCredit({ inst }: { inst: Installation }) {
 export function Creative() {
   return (
     <section aria-label="Art" className="art-exhibition">
-      <SectionHeader as="h1" story="art" title="Art" lede="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." />
+      <SectionHeader as="h1" story="art" title="Art" lede="Large-scale light installations." />
       <figure id={opener.id} className="art-opening m-0">
         <div className="art-opening-scene">
           <div className="art-opening-image">
@@ -93,10 +92,9 @@ export function Creative() {
           <WorkCredit inst={opener} />
         </figcaption>
       </figure>
-      <div className="site-content-gutter art-works">
+      <div className="art-works">
         {works.map((inst) => (
           <figure id={inst.id} key={inst.id} className="art-work m-0 scroll-mt-20">
-            <div className="art-light-passage" aria-hidden="true"><ForkLight /></div>
             <div className="art-work-image">
               <img
                 src={inst.image}

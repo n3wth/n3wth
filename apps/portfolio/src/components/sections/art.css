@@ -20,7 +20,8 @@
   object-position: center bottom;
 }
 
-.art-opening > .art-caption {
+.art-opening > .art-caption,
+.art-work > .art-caption {
   padding-inline: var(--gutter);
 }
 
@@ -44,24 +45,7 @@
   object-fit: cover;
 }
 
-.art-work:last-child {
-  width: 80%;
-  margin-left: auto;
-}
-
-.art-light-passage {
-  height: clamp(6rem, 13vw, 12rem);
-  overflow: hidden;
-  opacity: .6;
-}
-
-.art-light-passage svg {
-  width: 100%;
-  height: 100%;
-}
-
 @media (max-width: 767px) {
   .art-opening-scene { min-height: 68svh; }
-  .art-work:last-child { width: 100%; }
   .art-work-image img { height: auto; aspect-ratio: 4 / 3; }
 }

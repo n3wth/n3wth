@@ -40,7 +40,7 @@ export default function Library() {
         as="h1"
         story="library"
         title="Library"
-        lede="The essay kit, UI components, garden notes, and agent skills behind this site."
+        lede="Notes, components, and skills."
       />
 
       <KitShelf />

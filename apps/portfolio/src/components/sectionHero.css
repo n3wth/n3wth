@@ -5,9 +5,12 @@
   isolation: isolate;
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-  min-height: max(640px, calc(100svh - 96px));
+  /* Extend artwork behind the fixed navigation; keep copy below its clearance. */
+  margin-block-start: -96px;
+  padding-block-start: 96px;
+  min-height: 100svh;
   display: grid;
-  align-items: end;
+  align-content: end;
   overflow: hidden;
 }
 
@@ -17,14 +20,17 @@
   width: 100%;
   max-width: var(--frame-max);
   margin-inline: auto;
-  padding-block: 22rem 4rem;
+  padding-block: 0 clamp(2rem, 5svh, 4rem);
+}
+
+.portfolio-story-copy .portfolio-section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -.03em;
 }
 
 @media (min-width: 1024px) {
-  .portfolio-story-hero { align-items: center; }
-  .portfolio-story-copy { padding-block: 4rem; }
+  .portfolio-story-hero { min-height: max(640px, 100svh); }
   .portfolio-story-description { white-space: nowrap; }
-  .portfolio-story-hero .section-story:not(.section-story--projects) svg { transform: translateX(12%); }
 }
 
 .portfolio-story-actions {
@@ -32,8 +38,4 @@
   flex-wrap: wrap;
   gap: 1rem;
   padding-block: 2rem 3rem;
-}
-
-@media (max-width: 767px) {
-  .portfolio-story-copy { padding-block: 22rem 3rem; }
 }

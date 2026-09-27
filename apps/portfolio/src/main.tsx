@@ -39,12 +39,6 @@ function ThinkingError() {
   return isRouteErrorResponse(error) && error.status === 404 ? <NotFound /> : <ErrorPage />
 }
 
-// CSS Studio — dev-only visual CSS editor. Dynamic import so it is NEVER bundled
-// into the production build. Removed entirely when import.meta.env.DEV is false.
-if (import.meta.env.DEV) {
-  import('cssstudio').then(({ startStudio }) => startStudio())
-}
-
 initializeGoogleAnalytics()
 
 // Defer PostHog init to after first paint - not needed for FCP/LCP.
