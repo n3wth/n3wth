@@ -1,4 +1,4 @@
-.thinking-page { max-width: 56rem; margin-inline: auto; }
+.thinking-page { max-width: 56rem; margin-inline: auto; padding-block-start: clamp(3rem, 8svh, 6rem); }
 .writing-index { padding-block: 1.5rem var(--n3wth-section-space, 4rem); scroll-margin-top: 7rem; }
 .writing-search { min-width: 0; margin-bottom: .75rem; }
 .writing-control { min-height: 44px; }

@@ -13,7 +13,7 @@ export function Contact() {
           as="h1"
           story="contact"
           title="Contact"
-          lede="Product, AI safety, or LED art. Coffee if you're in San Francisco."
+          lede="Product, AI, art, or coffee."
           action={
             <>
               <Button

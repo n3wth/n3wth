@@ -27,7 +27,7 @@ export default function Work() {
         as="h1"
         story="work"
         title="Work"
-        lede="I lead AI product development at Google. Previously at Covariant, Meta, and Microsoft."
+        lede="Building AI products."
         action={
           <Button
             label="Open resume"
