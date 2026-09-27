@@ -47,7 +47,7 @@ function WorkCredit({ inst }: { inst: Installation }) {
           {inst.title}
         </h2>
         <p className="meta m-0 mb-3">
-          <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
+          <span>{inst.year}</span>
           <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
           {inst.location}
           <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
