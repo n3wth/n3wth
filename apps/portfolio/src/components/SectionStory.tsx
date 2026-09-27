@@ -80,7 +80,7 @@ function ThinkingStory() {
 }
 
 function ProjectsStory() {
-  return <g transform="translate(476 110) scale(.8)">
+  return <g>
     <g className="section-story__quiet">
       <path d="M -100 280 H 660 M 280 -100 V 660" />
       <g className="section-story__orbit">
@@ -136,7 +136,7 @@ const stories = { work: WorkStory, art: ArtStory, thinking: ThinkingStory, proje
 export function SectionStory({ kind }: { kind: SectionStoryKind }) {
   const Story = stories[kind]
   return <div className={`section-story section-story--${kind}`} aria-hidden="true">
-    <svg viewBox="0 0 1400 900" fill="none" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true">
+    <svg viewBox={kind === 'projects' ? '-100 -100 760 760' : '0 0 1400 900'} fill="none" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true">
       <Story />
     </svg>
   </div>
