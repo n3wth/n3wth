@@ -397,8 +397,11 @@ for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact'])
       for (const name of ['Art', 'Work', 'Thinking', 'Contact', 'Notes', 'Pink Triangle']) {
         const label = page.locator(`.world-portal-link[aria-label="${name}"]`)
         await expect(label).toBeVisible()
+        await expect(label).toHaveCSS('opacity', '0')
       }
       const work = page.locator('.world-portal-link[aria-label="Work"]')
+      await work.focus()
+      await expect(work).toHaveCSS('opacity', '1')
       await work.click({ trial: true })
       const screenshot = testInfo.outputPath('portfolio-home.png')
       await page.screenshot({ path: screenshot })

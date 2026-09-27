@@ -136,9 +136,9 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
       <meshBasicMaterial colorWrite={false} depthWrite={false} />
     </instancedMesh>
     {connections.map((connection) => <Line key={connection.id} points={connection.points} color="#b9c9a8" transparent opacity={0.45} lineWidth={1} />)}
-    {!current && trees.length > 0 && <Html fullscreen calculatePosition={(_, __, size) => [size.width / 2, size.height / 2]} zIndexRange={[25, 20]} style={{ pointerEvents: 'none' }}>
+    {!current && preview && <Html fullscreen calculatePosition={(_, __, size) => [size.width / 2, size.height / 2]} zIndexRange={[25, 20]} style={{ pointerEvents: 'none' }}>
       <div className="writing-grove-hint">
-        <span>{preview ? `${preview.title}${preview.tags[0] ? ` · ${preview.tags[0]}` : ''}` : 'Each tree is a piece of writing'}</span>
+        {preview && <span>{preview.title}</span>}
         <a href="/thinking">Explore writing</a>
       </div>
     </Html>}

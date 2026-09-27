@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree, type ThreeElements, type ThreeEvent } from '@react-three/fiber'
-import { Html, Line, Stars, useCursor, useProgress, useTexture } from '@react-three/drei'
+import { Environment, Html, Line, Stars, useCursor, useProgress, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { useOptionalTexture } from '../lib/optionalTexture'
@@ -186,12 +186,6 @@ function configureTiledTexture(tex: THREE.Texture) {
   tex.needsUpdate = true
 }
 
-function configurePanoTexture(tex: THREE.Texture) {
-  tex.colorSpace = THREE.SRGBColorSpace
-  tex.anisotropy = 8
-  tex.needsUpdate = true
-}
-
 /* Pull mesh geometries out of a GLB scene, keyed by lowercase node name */
 function useGLBGeometries(url: string): Record<string, THREE.BufferGeometry> {
   const scene = useOptionalGLTF(url)?.scene
@@ -214,9 +208,10 @@ function useGLBGeometry(url: string): THREE.BufferGeometry | null {
 /* A whole GLB with its own PBR materials (Rodin-generated heroes) */
 function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): THREE.Group | null {
   const scene = useOptionalGLTF(url)?.scene
-  return useMemo(() => {
+  const instance = useMemo(() => {
     if (!scene) return null
-    scene.traverse((o) => {
+    const instance = scene.clone(true)
+    instance.traverse((o) => {
       const m = o as THREE.Mesh
       if (m.isMesh) {
         /* rebuild the material from scratch: generated GLBs ship exotic
@@ -225,17 +220,29 @@ function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): TH
         const old = (Array.isArray(m.material) ? m.material[0] : m.material) as THREE.MeshStandardMaterial
         m.material = new THREE.MeshStandardMaterial({
           map: old.map ?? null,
+          normalMap: old.normalMap ?? null,
+          roughnessMap: old.roughnessMap ?? null,
+          metalnessMap: old.metalnessMap ?? null,
+          aoMap: old.aoMap ?? null,
           color: old.map ? new THREE.Color(tint) : (old.color ?? new THREE.Color(0x888888)),
-          roughness: 0.7,
-          metalness: 0.15,
+          roughness: old.roughness ?? 0.7,
+          metalness: Math.min(old.metalness ?? 0.15, 0.65),
           fog: !fogOff,
           side: THREE.DoubleSide,
         })
         m.frustumCulled = false
       }
     })
-    return scene
+    return instance
   }, [scene, fogOff, tint])
+  useEffect(() => () => instance?.traverse(object => {
+    const mesh = object as THREE.Mesh
+    if (mesh.isMesh) {
+      const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+      materials.forEach(material => material.dispose())
+    }
+  }), [instance])
+  return instance
 }
 
 /* A sculpture the way the real ones are built: a solid body wearing a
@@ -326,12 +333,12 @@ function SteelAndWire({
         <meshStandardMaterial
           map={configured}
           bumpMap={configured}
-          bumpScale={0.12}
+          bumpScale={0.035}
           color={bodyColor}
           emissive="#b99567"
-          emissiveIntensity={0.2}
-          roughness={0.72}
-          metalness={0.35}
+          emissiveIntensity={0.035}
+          roughness={0.46}
+          metalness={0.65}
           fog={bodyFog}
           side={THREE.DoubleSide}
         />
@@ -426,7 +433,7 @@ function Thylacine({
 
   return (
     <group ref={walker} scale={scale}>
-      <group ref={bodyGroup}>
+      <group ref={bodyGroup} scale-z={1.4}>
         {body && (
           <SteelAndWire
             geometry={body}
@@ -437,7 +444,7 @@ function Thylacine({
             phase={phase}
             reducedMotion={reducedMotion}
             mapUrl="/textures/steel-tile.webp"
-            bodyColor="#cbb896"
+            bodyColor="#a7a29a"
             bodyFog={false}
           />
         )}
@@ -467,7 +474,7 @@ function Thylacine({
                 phase={phase + 2}
                 reducedMotion={reducedMotion}
                 mapUrl="/textures/steel-tile.webp"
-                bodyColor="#cbb896"
+                bodyColor="#a7a29a"
                 bodyFog={false}
               />
             </group>
@@ -518,7 +525,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
   const spread = useCompactSpread()
-  const telescope = useGLBScene(portrait ? '/models/dish.glb' : '/models/telescope.glb?v=2', { fogOff: true, tint: '#7e848c' })
+  const telescope = useGLBScene('/models/telescope.glb?v=2', { fogOff: true, tint: '#a5adb8' })
   const azimuth = useRef<THREE.Group>(null)
 
   useFrame(({ clock }) => {
@@ -532,7 +539,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
     <group
       position={portrait ? [-14 * spread, 0, -85] : [-52, 0, -100]}
       rotation-y={0.35}
-      scale={portrait ? 2.45 : 2.2}
+      scale={portrait ? 2.15 : 2.2}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -563,7 +570,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
   const spread = useCompactSpread()
-  const signpost = useGLBScene(portrait ? '/models/signpost.glb' : '/models/signpost-hd.glb')
+  const signpost = useGLBScene('/models/signpost-hd.glb')
   const rocks = useRocks()
 
   /* two rows of dim marker stones diverging where the paths split */
@@ -581,7 +588,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
     <group
       position={portrait ? [3.6 * spread, 0, 3] : [6.5, 0, 4]}
       rotation-y={0.45}
-      scale={portrait ? 0.85 : 0.42}
+      scale={portrait ? 0.48 : 0.42}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -821,7 +828,7 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
       {/* teepee of real logs, each one different, lit by their own fire */}
       {logs.map((l, i) => (
         <mesh key={i} position={l.pos} quaternion={l.quat} rotation-order="YXZ">
-          <cylinderGeometry args={[l.r1, l.r2, l.len, 5]} />
+          <cylinderGeometry args={[l.r1, l.r2, l.len, 12]} />
           <meshStandardMaterial
             map={wood}
             color={new THREE.Color('#8a7f70').multiplyScalar(l.tone)}
@@ -842,7 +849,7 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
       ))}
       {/* embers glowing low in the pit */}
       <mesh ref={core} position={[0, 0.18, 0]} scale={[1.2, 0.5, 1.2]}>
-        <sphereGeometry args={[0.32, 10, 10]} />
+        <sphereGeometry args={[0.32, 24, 16]} />
         <meshBasicMaterial color={new THREE.Color('#ff7b2d').multiplyScalar(2.8)} toneMapped={false} />
       </mesh>
       {/* the flames themselves */}
@@ -1198,60 +1205,27 @@ function Ground() {
   )
 }
 
-/* Ambient sky base: the World Labs Marble 360 pano of this exact
-   scene, multiplied way down — it gives every azimuth a coherent sky
-   tone and far-off camp lights, while the crisp star/ridge layers
-   above carry the detail */
-function PanoSky() {
-  const configured = useTexture('/textures/marble-pano.webp', configurePanoTexture)
+/* One subdued panorama keeps the landscape's atmosphere without stacking
+   photographs with competing horizons and star fields. */
+function NightSky() {
+  const texture = useTexture('/textures/marble-pano.webp', tex => {
+    tex.colorSpace = THREE.SRGBColorSpace
+    tex.anisotropy = 8
+  })
+  const environment = useMemo(() => {
+    const map = texture.clone()
+    map.mapping = THREE.EquirectangularReflectionMapping
+    return map
+  }, [texture])
+  useEffect(() => () => environment.dispose(), [environment])
   return (
+    <>
+    <Environment map={environment} environmentIntensity={0.25} />
     <mesh position={[0, -4, 0]} rotation-y={2.2} renderOrder={-1}>
-      <sphereGeometry args={[430, 48, 32]} />
-      <meshBasicMaterial
-        map={configured}
-        color="#565c66"
-        side={THREE.BackSide}
-        fog={false}
-        toneMapped={false}
-        depthWrite={false}
-      />
+      <sphereGeometry args={[430, 64, 32]} />
+      <meshBasicMaterial map={texture} color="#343b46" side={THREE.BackSide} fog={false} toneMapped={false} depthWrite={false} />
     </mesh>
-  )
-}
-
-/* The horizon itself is a photograph (FLORA): a real ridge silhouette
-   with a far-off light dome — the glow of somewhere else out there.
-   Alpha-faded on every edge so it dissolves into the scene's night. */
-function Horizon() {
-  const tex = useTexture('/textures/horizon.webp')
-  return (
-    <mesh position={[8, 20, -150]}>
-      <planeGeometry args={[420, 224]} />
-      <meshBasicMaterial map={tex} transparent depthWrite={false} fog={false} toneMapped={false} />
-    </mesh>
-  )
-}
-
-/* The Milky Way (FLORA astrophotography) wrapped on a far cylinder —
-   additive, so its black sky dissolves into ours and only the stars
-   and the galactic band remain */
-function MilkyWay() {
-  const tex = useTexture('/textures/sky-pano.webp')
-  return (
-    // bottom rim dropped below the ground plane so no hard seam arcs across the sky
-    <mesh position={[0, 70, 0]} rotation-y={0.4}>
-      <cylinderGeometry args={[210, 210, 180, 48, 1, true]} />
-      <meshBasicMaterial
-        map={tex}
-        side={THREE.BackSide}
-        transparent
-        opacity={0.48}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-        fog={false}
-        toneMapped={false}
-      />
-    </mesh>
+    </>
   )
 }
 
@@ -1352,106 +1326,27 @@ function SurveyLight({ reducedMotion }: { reducedMotion: boolean }) {
   )
 }
 
-/* One draw call of near-ground dust gives the camera real parallax. The
-   points sit below the stars and disappear into the same scene fog. */
-function PlayaDust({ reducedMotion }: { reducedMotion: boolean }) {
-  const ref = useRef<THREE.Points>(null)
-  const positions = useMemo(() => {
-    const out = new Float32Array(150 * 3)
-    const rnd = (i: number, salt: number) => {
-      const n = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453
-      return n - Math.floor(n)
-    }
-    for (let i = 0; i < 150; i++) {
-      out[i * 3] = (rnd(i, 1) - 0.5) * 150
-      out[i * 3 + 1] = 0.2 + Math.pow(rnd(i, 2), 2) * 4.2
-      out[i * 3 + 2] = 14 - rnd(i, 3) * 122
-    }
-    return out
-  }, [])
-
-  useFrame(({ clock }) => {
-    if (!ref.current || reducedMotion) return
-    ref.current.position.x = Math.sin(clock.elapsedTime * 0.035) * 1.2
-    ref.current.rotation.y = Math.sin(clock.elapsedTime * 0.018) * 0.003
-  })
-
-  return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
-        color="#c8c0b2"
-        size={0.075}
-        sizeAttenuation
-        transparent
-        opacity={0.32}
-        depthWrite={false}
-        fog
-      />
-    </points>
-  )
-}
-
-function Rig({ ready, reducedMotion, onSettled }: { ready: boolean; reducedMotion: boolean; onSettled: () => void }) {
-  const introStarted = useRef<number | null>(null)
+function Rig({ ready, onSettled }: { ready: boolean; onSettled: () => void }) {
   const settled = useRef(false)
-
-  useFrame(({ camera, clock, size }) => {
+  useFrame(({ camera, size }) => {
     const aspect = size.width / size.height
     const portrait = aspect < COMPACT_ASPECT
-    // Looking down across the near field separates the installations in
-    // depth on a phone, instead of squeezing them onto one horizon line.
     const baseZ = portrait ? 26 : 22 + Math.max(0, 1.8 - aspect) * 14
     const baseY = portrait ? 14 : 3.2
     const gazeY = portrait ? 1 : 4.5
-    // A minimum horizontal angle protects the outer artwork and label
-    // bounds on tall phones and narrower desktop windows. A vertical
-    // floor retains the ground/sky composition on wide landscape screens.
     const fittedFov = Math.max(
       portrait ? 54 : 48,
       THREE.MathUtils.radToDeg(2 * Math.atan((portrait ? 0.25 : 0.68) / aspect))
     )
-    if (ready && introStarted.current === null) {
-      introStarted.current = clock.elapsedTime
-      camera.position.y = baseY - (portrait ? 1 : 1.05)
-      camera.position.z = baseZ + (portrait ? 3 : 11)
+    camera.position.set(0, baseY, baseZ)
+    camera.lookAt(0, gazeY, -30)
+    if (camera instanceof THREE.PerspectiveCamera && camera.fov !== fittedFov) {
+      camera.fov = fittedFov
+      camera.updateProjectionMatrix()
     }
-
-    if (reducedMotion) {
-      camera.position.set(0, baseY, baseZ)
-      camera.lookAt(0, gazeY, -30)
-      if (camera instanceof THREE.PerspectiveCamera && camera.fov !== fittedFov) {
-        camera.fov = fittedFov
-        camera.updateProjectionMatrix()
-      }
-      if (ready && !settled.current) {
-        settled.current = true
-        onSettled()
-      }
-      return
-    }
-
-    const t = clock.elapsedTime
-    const introElapsed = introStarted.current === null ? 0 : t - introStarted.current
-    const intro = ready ? THREE.MathUtils.smoothstep(introElapsed, 0, 2.8) : 0
-    const introOffset = (1 - intro) * (portrait ? 3 : 11)
-    if (intro === 1 && !settled.current) {
+    if (ready && !settled.current) {
       settled.current = true
       onSettled()
-    }
-    // The introduction settles into an exact, stable composition. Art
-    // continues moving, but pointer movement and hover never move targets.
-    camera.position.set(0, baseY - (1 - intro) * 0.75, baseZ + introOffset)
-    camera.lookAt(0, gazeY, -30)
-
-    if (camera instanceof THREE.PerspectiveCamera) {
-      const targetFov = fittedFov + (1 - intro) * 4
-      if (camera.fov !== targetFov) {
-        camera.fov = targetFov
-        camera.updateProjectionMatrix()
-      }
     }
   })
   return null
@@ -1463,16 +1358,9 @@ function Rig({ ready, reducedMotion, onSettled }: { ready: boolean; reducedMotio
 preloadOptionalGLTF('/models/them.glb')
 preloadOptionalGLTF('/models/terrain.glb')
 preloadOptionalGLTF('/models/rocks.glb')
-const portraitAtLoad = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < COMPACT_ASPECT
-if (portraitAtLoad) {
-  preloadOptionalGLTF('/models/dish.glb')
-  preloadOptionalGLTF('/models/signpost.glb')
-} else {
-  preloadOptionalGLTF('/models/telescope.glb?v=2')
-  preloadOptionalGLTF('/models/signpost-hd.glb')
-}
+preloadOptionalGLTF('/models/telescope.glb?v=2')
+preloadOptionalGLTF('/models/signpost-hd.glb')
 useTexture.preload('/textures/playa-tile.webp')
-useTexture.preload('/textures/horizon.webp')
 useTexture.preload('/textures/steel-tile.webp')
 useTexture.preload('/textures/wood-tile.webp')
 useTexture.preload('/textures/marble-pano.webp')
@@ -1576,7 +1464,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
     <>
     <Canvas
       className={labelsReady ? 'night-field-stage is-settled' : 'night-field-stage'}
-      dpr={portraitAtLoad ? [1, 1.25] : [1, 1.5]}
+      dpr={2}
       camera={{ position: [0, 3.2, 22], fov: 48 }}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       frameloop={reducedMotion ? 'demand' : 'always'}
@@ -1598,15 +1486,13 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
         <planeGeometry args={[600, 400]} />
         <meshStandardMaterial color="#14161a" roughness={0.95} metalness={0} />
       </mesh>
-      <Stars radius={220} depth={40} count={900} factor={3} saturation={0} fade speed={reducedMotion ? 0 : 0.4} />
+      <Stars radius={150} depth={25} count={2400} factor={10} saturation={0} fade speed={0} />
 
       {/* The sky and terrain reveal first. Landmarks suspend separately,
           so a slow model never holds the entire field behind black. */}
       <Suspense fallback={null}>
         <Ground />
-        <PanoSky />
-        <Horizon />
-        <MilkyWay />
+        <NightSky />
         <SceneReady onReady={() => setReady(true)} />
       </Suspense>
       <Suspense fallback={null}>
@@ -1632,12 +1518,11 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       </Suspense>}
 
       <Meteors reducedMotion={reducedMotion} />
-      <PlayaDust reducedMotion={reducedMotion} />
       <SurveyLight reducedMotion={reducedMotion} />
-      <Rig ready={ready} reducedMotion={reducedMotion} onSettled={() => setLabelsReady(true)} />
+      <Rig ready={ready} onSettled={() => setLabelsReady(true)} />
 
       <EffectComposer multisampling={0}>
-        <Bloom intensity={0.65} luminanceThreshold={1.15} mipmapBlur radius={0.75} />
+        <Bloom intensity={0.35} luminanceThreshold={1.4} mipmapBlur radius={0.5} />
         <SMAA />
       </EffectComposer>
     </Canvas>
