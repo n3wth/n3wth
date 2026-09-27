@@ -24,7 +24,7 @@ export async function expectSiteFoundation(page: Page, options: { sectionTopPadd
   expect(canvas).not.toBe('rgba(0, 0, 0, 0)')
   const island = page.locator('.n3wth-site-navigation-island')
   await expect(island).toHaveAttribute('data-nosnippet', 'true')
-  await expect(island).toHaveCSS('height', '48px')
+  await expect(island).toHaveCSS('height', '56px')
   await expect(island).toHaveCSS('border-top-width', '1px')
   await expect(island).toHaveCSS('backdrop-filter', 'none')
   await expect(page.locator('.n3wth-site-footer')).toHaveCount(1)
