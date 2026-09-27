@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree, type ThreeElements, type ThreeEvent } from '@react-three/fiber'
-import { Html, Line, Stars, useCursor, useProgress, useTexture } from '@react-three/drei'
+import { Environment, Html, Line, useCursor, useProgress, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { useOptionalTexture } from '../lib/optionalTexture'
@@ -186,12 +186,6 @@ function configureTiledTexture(tex: THREE.Texture) {
   tex.needsUpdate = true
 }
 
-function configurePanoTexture(tex: THREE.Texture) {
-  tex.colorSpace = THREE.SRGBColorSpace
-  tex.anisotropy = 8
-  tex.needsUpdate = true
-}
-
 /* Pull mesh geometries out of a GLB scene, keyed by lowercase node name */
 function useGLBGeometries(url: string): Record<string, THREE.BufferGeometry> {
   const scene = useOptionalGLTF(url)?.scene
@@ -214,9 +208,10 @@ function useGLBGeometry(url: string): THREE.BufferGeometry | null {
 /* A whole GLB with its own PBR materials (Rodin-generated heroes) */
 function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): THREE.Group | null {
   const scene = useOptionalGLTF(url)?.scene
-  return useMemo(() => {
+  const instance = useMemo(() => {
     if (!scene) return null
-    scene.traverse((o) => {
+    const instance = scene.clone(true)
+    instance.traverse((o) => {
       const m = o as THREE.Mesh
       if (m.isMesh) {
         /* rebuild the material from scratch: generated GLBs ship exotic
@@ -225,17 +220,31 @@ function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): TH
         const old = (Array.isArray(m.material) ? m.material[0] : m.material) as THREE.MeshStandardMaterial
         m.material = new THREE.MeshStandardMaterial({
           map: old.map ?? null,
+          normalMap: old.normalMap ?? null,
+          roughnessMap: old.roughnessMap ?? null,
+          metalnessMap: old.metalnessMap ?? null,
+          aoMap: old.aoMap ?? null,
           color: old.map ? new THREE.Color(tint) : (old.color ?? new THREE.Color(0x888888)),
-          roughness: 0.7,
-          metalness: 0.15,
+          roughness: old.roughness ?? 0.7,
+          metalness: Math.min(old.metalness ?? 0.15, 0.65),
           fog: !fogOff,
           side: THREE.DoubleSide,
         })
         m.frustumCulled = false
+        m.castShadow = true
+        m.receiveShadow = true
       }
     })
-    return scene
+    return instance
   }, [scene, fogOff, tint])
+  useEffect(() => () => instance?.traverse(object => {
+    const mesh = object as THREE.Mesh
+    if (mesh.isMesh) {
+      const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+      materials.forEach(material => material.dispose())
+    }
+  }), [instance])
+  return instance
 }
 
 /* A sculpture the way the real ones are built: a solid body wearing a
@@ -322,18 +331,21 @@ function SteelAndWire({
 
   return (
     <>
-      <mesh geometry={smoothGeometry}>
+      <mesh geometry={smoothGeometry} castShadow receiveShadow>
         <meshStandardMaterial
           map={configured}
           bumpMap={configured}
-          bumpScale={0.12}
+          bumpScale={0.035}
           color={bodyColor}
           emissive="#b99567"
-          emissiveIntensity={0.2}
-          roughness={0.72}
-          metalness={0.35}
+          emissiveIntensity={0.035}
+          roughness={0.46}
+          metalness={0.65}
           fog={bodyFog}
           side={THREE.DoubleSide}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
         />
       </mesh>
       <lineSegments geometry={edges}>
@@ -355,8 +367,65 @@ const LEG_PIVOTS: Record<string, [number, number, number]> = {
   leg_bl: [-1.6, 3.0, -0.5],
   leg_br: [-1.6, 3.0, 0.5],
 }
-/* trot: diagonal pairs move together */
-const LEG_PHASE: Record<string, number> = { leg_fl: 0, leg_br: 0, leg_fr: Math.PI, leg_bl: Math.PI }
+/* Four-beat walk: stagger each footfall instead of hopping in pairs. */
+const LEG_PHASE: Record<string, number> = { leg_fl: 0, leg_br: Math.PI / 2, leg_fr: Math.PI, leg_bl: Math.PI * 1.5 }
+
+function WalkingLeg({ geometry, pivot, phase, stride, reducedMotion }: {
+  geometry: THREE.BufferGeometry
+  pivot: [number, number, number]
+  phase: number
+  stride: { current: number }
+  reducedMotion: boolean
+}) {
+  const texture = useTexture('/textures/steel-tile.webp', configureTiledTexture)
+  const rig = useMemo(() => {
+    const geo = geometry.clone()
+    const position = geo.getAttribute('position')
+    const indices = new Uint16Array(position.count * 4)
+    const weights = new Float32Array(position.count * 4)
+    const length = pivot[1] / 2
+    for (let i = 0; i < position.count; i++) {
+      const lower = 1 - THREE.MathUtils.smoothstep(position.getY(i), length - 0.25, length + 0.25)
+      indices[i * 4 + 1] = 1
+      weights[i * 4] = 1 - lower
+      weights[i * 4 + 1] = lower
+    }
+    geo.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(indices, 4))
+    geo.setAttribute('skinWeight', new THREE.Float32BufferAttribute(weights, 4))
+    const hip = new THREE.Bone()
+    hip.position.set(...pivot)
+    const knee = new THREE.Bone()
+    knee.position.y = -length
+    hip.add(knee)
+    const skeleton = new THREE.Skeleton([hip, knee])
+    const material = new THREE.MeshStandardMaterial({ map: texture, color: '#a7a29a', roughness: 0.46, metalness: 0.65 })
+    const mesh = new THREE.SkinnedMesh(geo, material)
+    mesh.add(hip)
+    mesh.bind(skeleton)
+    mesh.castShadow = true
+    mesh.receiveShadow = true
+    mesh.frustumCulled = false
+    return { mesh, hip, knee, length, skeleton }
+  }, [geometry, pivot, texture])
+  useEffect(() => () => {
+    rig.mesh.geometry.dispose()
+    ;(rig.mesh.material as THREE.Material).dispose()
+    rig.skeleton.dispose()
+  }, [rig])
+  useFrame(() => {
+    const cycle = ((stride.current + phase) / (Math.PI * 2)) % 1
+    const swing = Math.max(0, (cycle - 0.6) / 0.4)
+    const x = reducedMotion ? 0 : cycle < 0.6 ? 0.6 - cycle * 2 : -0.6 * Math.cos(swing * Math.PI)
+    const lift = reducedMotion ? 0 : Math.sin(swing * Math.PI) * 0.35
+    const down = pivot[1] - 0.14 - lift
+    const reach = Math.min(Math.hypot(x, down), rig.length * 2 - 0.001)
+    const bend = Math.acos(reach / (rig.length * 2))
+    const direction = pivot[0] > 0 ? 1 : -1
+    rig.hip.rotation.set(0, 0, Math.atan2(x, down) - bend * direction)
+    rig.knee.rotation.set(0, 0, bend * 2 * direction)
+  })
+  return <primitive object={rig.mesh} />
+}
 
 function Thylacine({
   parts,
@@ -377,44 +446,36 @@ function Thylacine({
 }) {
   const walker = useRef<THREE.Group>(null)
   const bodyGroup = useRef<THREE.Group>(null)
-  const legRefs = useRef<Record<string, THREE.Group | null>>({})
   const stripesMat = useRef<THREE.MeshBasicMaterial>(null)
+  const stride = useRef(phase)
+  const travel = useRef(0)
   const h = useEased01(hovered)
   // concentric, non-intersecting ellipses per animal, derived from phase
-  const RX = 7.5 - phase * 0.5
-  const RZ = 5.5 - phase * 0.35
+  const RX = portrait ? 4.5 : 7.5 - phase * 0.5
+  const RZ = portrait ? 2.5 : 5.5 - phase * 0.35
   const OMEGA = (2 * Math.PI) / (46 + phase * 5) // laps of ~46-62s; pack drifts apart and regroups
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     const g = walker.current
     if (!g) return
     const t = reducedMotion ? 0 : clock.elapsedTime
-    const th = theta0 - t * OMEGA
-    g.position.set(Math.cos(th) * RX, 0, Math.sin(th) * RZ)
+    // Each animal slows to a brief rest on its own schedule. Integrating
+    // travel and stride with the same pace avoids sliding feet on stops.
+    const restCycle = (t + phase * 9) % (24 + phase * 3)
+    const pace = reducedMotion ? 0 : THREE.MathUtils.smoothstep(restCycle, 1.5, 4)
+      * (1 - THREE.MathUtils.smoothstep(restCycle, 20 + phase * 3, 23 + phase * 3))
+    if (!reducedMotion) travel.current += Math.min(delta, 0.1) * pace
+    const th = theta0 - travel.current * OMEGA
+    const depth = portrait ? (phase === 0 ? 7 : phase < 2 ? -5 : -18) : 0
+    g.position.set(Math.cos(th) * RX, 0, depth + Math.sin(th) * RZ)
     // face along the direction of travel (ellipse tangent)
     g.rotation.y = Math.atan2(Math.cos(th) * RZ, Math.sin(th) * RX)
-    if (portrait) {
-      // Three staggered profiles read as a pack in a narrow frame. The
-      // distant animal faces back into the group; none vanishes end-on.
-      const lead = phase === 0
-      const middle = phase > 0 && phase < 2
-      g.position.set(lead ? -4.8 : middle ? 4.4 : -3.2, 0, lead ? 9 : middle ? -4 : -20)
-      g.rotation.y = lead ? -0.22 : middle ? 0.22 : Math.PI - 0.2
-    }
-    const w = 2.3 / Math.sqrt(scale) // stride cadence tuned so feet plant instead of skate
-    for (const [name, pivot] of Object.entries(LEG_PIVOTS)) {
-      const leg = legRefs.current[name]
-      if (leg) {
-        // asymmetric gait: quick swing, slow stance
-        const a = t * w + LEG_PHASE[name] + phase
-        leg.rotation.z = reducedMotion ? 0 : (Math.sin(a) * 0.115 + Math.sin(2 * a + 0.6) * 0.022) * (portrait ? 0.18 : 1)
-      }
-      void pivot
-    }
+    // Derive cadence from path speed so narrower phone paths don't skate.
+    const speed = OMEGA * Math.hypot(Math.sin(th) * RX, Math.cos(th) * RZ)
+    if (!reducedMotion) stride.current += speed * Math.min(delta, 0.1) * pace * Math.PI * 2 / (2 * scale)
     if (bodyGroup.current) {
-      // body vaults highest at mid-stance (legs vertical), not at touchdown
-      bodyGroup.current.position.y = reducedMotion ? 0 : Math.abs(Math.cos(t * w + phase)) * 0.05
-      bodyGroup.current.rotation.x = reducedMotion ? 0 : Math.sin(t * w + phase + 0.9) * 0.02
+      bodyGroup.current.position.y = reducedMotion ? 0 : Math.sin(stride.current * 4) * 0.012
+      bodyGroup.current.rotation.x = 0
     }
     if (stripesMat.current) {
       stripesMat.current.color.set('#ffdda8').multiplyScalar(1.35 + h.current * 0.65)
@@ -426,7 +487,7 @@ function Thylacine({
 
   return (
     <group ref={walker} scale={scale}>
-      <group ref={bodyGroup}>
+      <group ref={bodyGroup} scale-z={1.4}>
         {body && (
           <SteelAndWire
             geometry={body}
@@ -437,7 +498,7 @@ function Thylacine({
             phase={phase}
             reducedMotion={reducedMotion}
             mapUrl="/textures/steel-tile.webp"
-            bodyColor="#cbb896"
+            bodyColor="#a7a29a"
             bodyFog={false}
           />
         )}
@@ -450,28 +511,7 @@ function Thylacine({
         const geo = parts[name]
         if (!geo) return null
         return (
-          <group
-            key={name}
-            position={pivot}
-            ref={(el) => {
-              legRefs.current[name] = el
-            }}
-          >
-            <group position={[-pivot[0], -pivot[1], -pivot[2]]}>
-              <SteelAndWire
-                geometry={geo}
-                edgeColor="#ffdda8"
-                edgeThreshold={48}
-                glow={hovered ? 1.3 : 0.75}
-                breathe={1.1}
-                phase={phase + 2}
-                reducedMotion={reducedMotion}
-                mapUrl="/textures/steel-tile.webp"
-                bodyColor="#cbb896"
-                bodyFog={false}
-              />
-            </group>
-          </group>
+          <WalkingLeg key={name} geometry={geo} pivot={pivot} phase={LEG_PHASE[name]} stride={stride} reducedMotion={reducedMotion} />
         )
       })}
       </group>
@@ -505,7 +545,7 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
       <mesh position={[0, 3, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[19, 7, 13]} />
       </mesh>
-      <EasedLight hovered={hovered} on={65} off={45} position={[0, 1.6, 0]} color="#ffce8a" distance={16} decay={2} />
+      <EasedLight hovered={hovered} on={190} off={145} position={[-6, 10, 6]} color="#ffce8a" distance={36} decay={2} />
     </group>
   )
 }
@@ -518,7 +558,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
   const spread = useCompactSpread()
-  const telescope = useGLBScene(portrait ? '/models/dish.glb' : '/models/telescope.glb?v=2', { fogOff: true, tint: '#7e848c' })
+  const telescope = useGLBScene('/models/telescope.glb?v=2', { fogOff: true, tint: '#a5adb8' })
   const azimuth = useRef<THREE.Group>(null)
 
   useFrame(({ clock }) => {
@@ -532,7 +572,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
     <group
       position={portrait ? [-14 * spread, 0, -85] : [-52, 0, -100]}
       rotation-y={0.35}
-      scale={portrait ? 2.45 : 2.2}
+      scale={portrait ? 2.15 : 2.2}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -540,7 +580,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
       }}
     >
       <PortalLabel def={def} onEnter={onEnter} hovered={hovered} />
-      <group ref={azimuth}>{telescope && <primitive object={telescope} />}</group>
+      <group ref={azimuth} position-y={-0.16}>{telescope && <primitive object={telescope} />}</group>
       {/* hit volume covering the full dish sweep so hover stays stable;
           hover hysteresis keeps it under the cursor through the camera pan */}
       <mesh position={[0, 5, 0]} scale={hovered ? 1.5 : 1} visible={false}>
@@ -551,7 +591,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
           pedestal legible. No frontal floodlight — that flattens the
           bowl into a white disc. */}
       <EasedLight hovered={hovered} on={700} off={430} position={[-7, 9, -6]} color="#b8c4d8" distance={70} decay={2} />
-      <EasedLight hovered={hovered} on={300} off={170} position={[0, 1.2, -2]} color="#8fa8d8" distance={50} decay={2} />
+      <EasedLight hovered={hovered} on={150} off={85} position={[0, 3.5, 2]} color="#8fa8d8" distance={50} decay={2} />
     </group>
   )
 }
@@ -563,7 +603,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
   const spread = useCompactSpread()
-  const signpost = useGLBScene(portrait ? '/models/signpost.glb' : '/models/signpost-hd.glb')
+  const signpost = useGLBScene('/models/signpost-hd.glb')
   const rocks = useRocks()
 
   /* two rows of dim marker stones diverging where the paths split */
@@ -581,7 +621,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
     <group
       position={portrait ? [3.6 * spread, 0, 3] : [6.5, 0, 4]}
       rotation-y={0.45}
-      scale={portrait ? 0.85 : 0.42}
+      scale={portrait ? 0.48 : 0.42}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -615,7 +655,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
   )
 }
 
-/* Procedural fire: fbm noise scrolling up two crossed planes, shaped
+/* Procedural fire: fbm noise scrolling up crossed planes, shaped
    into a flame silhouette — the way fire actually flickers, not a cone */
 const FLAME_VERT = /* glsl */ `
 varying vec2 vUv;
@@ -640,14 +680,16 @@ float fbm(vec2 p) {
 void main() {
   vec2 uv = vUv;
   float n = fbm(vec2(uv.x * 3.0 + uTime * 0.3, uv.y * 3.6 - uTime * 2.4));
-  float shape = 1.0 - uv.y;
-  float flame = shape * (0.85 + 0.5 * n) - abs(uv.x - 0.5) * (1.6 + 2.2 * uv.y);
-  float f = smoothstep(0.02, 0.4, flame);
-  float hot = smoothstep(0.25, 0.75, flame);
+  float bend = (n - 0.5) * 0.3 * uv.y;
+  float width = 0.32 * pow(1.0 - uv.y, 0.7);
+  float flame = 1.0 - abs(uv.x - 0.5 + bend) / max(0.015, width);
+  float tongues = fbm(vec2(uv.x * 7.0, uv.y * 5.0 - uTime * 1.8));
+  float f = smoothstep(0.05, 0.8, flame) * smoothstep(0.2, 0.65, tongues + (1.0 - uv.y) * 0.35);
+  float hot = smoothstep(0.35, 0.95, flame) * (1.0 - uv.y);
   vec3 col = mix(vec3(1.0, 0.32, 0.04), vec3(1.0, 0.85, 0.45), hot);
-  float alpha = f * (0.55 + 0.45 * n);
+  float alpha = f * smoothstep(0.0, 0.14, uv.y) * (1.0 - smoothstep(0.75, 1.0, uv.y)) * 0.72;
   if (alpha < 0.02) discard;
-  gl_FragColor = vec4(col * 2.2, alpha);
+  gl_FragColor = vec4(col * 1.8, alpha);
 }`
 
 function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: boolean }) {
@@ -655,7 +697,7 @@ function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: bo
   const grp = useRef<THREE.Group>(null)
   useFrame(({ clock }, delta) => {
     const t = reducedMotion ? 8 : clock.elapsedTime
-    // offset each plane's clock so the two sheets never flicker in lockstep
+    // Offset each plane's clock so the sheets never flicker in lockstep.
     mats.current.forEach((m, i) => {
       if (m) m.uniforms.uTime.value = t + i * 4.7
     })
@@ -663,10 +705,10 @@ function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: bo
       grp.current.scale.setScalar(THREE.MathUtils.damp(grp.current.scale.x, hovered ? 1.15 : 1, 6, delta))
     }
   })
-  const uniforms = useMemo(() => [{ uTime: { value: 0 } }, { uTime: { value: 0 } }], [])
+  const uniforms = useMemo(() => Array.from({ length: 3 }, () => ({ uTime: { value: 0 } })), [])
   return (
     <group ref={grp} position={[0, 0.28, 0]}>
-      {[0, Math.PI / 2].map((ry, i) => (
+      {[0, Math.PI / 3, Math.PI * 2 / 3].map((ry, i) => (
         <mesh key={i} rotation-y={ry} position={[0, 0.85, 0]}>
           <planeGeometry args={[1.5, 1.9]} />
           <shaderMaterial
@@ -728,7 +770,7 @@ function CampArtifacts() {
   )
 }
 
-/* Contact — a real campfire: a teepee of wooden logs (FLORA wood, lit
+/* Contact — a campfire: a low pile of wooden logs (FLORA wood, lit
    by its own flame), a ring of playa stones, embers rising */
 function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel?: HoverLabel }) {
   const [hovered, handlers] = usePortalHover(def, onLabel)
@@ -746,7 +788,10 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
     // three incommensurate frequencies + an amplitude-modulated term for occasional deep dips
     const flicker = 1 + Math.sin(t * 7.3) * 0.06 + Math.sin(t * 11.9 + 1.7) * 0.05 + Math.sin(t * 0.7) * Math.sin(t * 23.1) * 0.045
     if (light.current) light.current.intensity = (60 + hEased.current * 40) * flicker
-    if (core.current) core.current.scale.setScalar(1 + Math.sin(t * 2.1) * 0.06)
+    if (core.current) {
+      const pulse = 1 + Math.sin(t * 2.1) * 0.06
+      core.current.scale.set(1.2 * pulse, 0.35 * pulse, 1.2 * pulse)
+    }
   })
 
   const { logs, stones } = useMemo(() => {
@@ -755,25 +800,30 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
       return x - Math.floor(x)
     }
     const up = new THREE.Vector3(0, 1, 0)
-    /* nothing about a real woodpile is regular: every log gets its own
-       length, thickness, lean, and one lies fallen outside the teepee */
-    const logs = Array.from({ length: 7 }, (_, i) => {
-      const a = (i / 7) * Math.PI * 2 + 0.4 + (rnd(i, 1) - 0.5) * 0.5
-      const rBase = 1.0 + rnd(i, 2) * 0.35
-      const base = new THREE.Vector3(Math.cos(a) * rBase, 0.08, Math.sin(a) * rBase)
+    // Low crossed layers leave room for flames above the wood instead
+    // of hiding them inside a tall cone of poles.
+    const logs = Array.from({ length: 6 }, (_, i) => {
+      const layer = Math.floor(i / 2)
+      const a = layer * 1.35 + 0.3 + (rnd(i, 1) - 0.5) * 0.25
+      const offset = i % 2 === 0 ? -0.34 : 0.34
+      const halfLength = 0.8 + rnd(i, 2) * 0.3
+      const y = 0.15 + layer * 0.22
+      const base = new THREE.Vector3(
+        -Math.cos(a) * halfLength - Math.sin(a) * offset, y,
+        -Math.sin(a) * halfLength + Math.cos(a) * offset
+      )
       const tip = new THREE.Vector3(
-        Math.cos(a + Math.PI) * (0.05 + rnd(i, 3) * 0.3),
-        1.25 + rnd(i, 4) * 0.45,
-        Math.sin(a + Math.PI) * (0.05 + rnd(i, 3) * 0.3)
+        Math.cos(a) * halfLength - Math.sin(a) * offset, y + (rnd(i, 4) - 0.5) * 0.12,
+        Math.sin(a) * halfLength + Math.cos(a) * offset
       )
       const dir = tip.clone().sub(base)
       const quat = new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize())
       return {
         pos: base.clone().add(tip).multiplyScalar(0.5),
         quat,
-        len: dir.length() + 0.15 + rnd(i, 5) * 0.35,
-        r1: 0.045 + rnd(i, 6) * 0.03,
-        r2: 0.06 + rnd(i, 7) * 0.035,
+        len: dir.length(),
+        r1: 0.1 + rnd(i, 6) * 0.04,
+        r2: 0.14 + rnd(i, 7) * 0.05,
         tone: 0.75 + rnd(i, 8) * 0.5,
         twist: rnd(i, 9) * Math.PI,
       }
@@ -783,8 +833,8 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
       pos: new THREE.Vector3(-1.9, 0.09, 1.4),
       quat: new THREE.Quaternion().setFromUnitVectors(up, new THREE.Vector3(0.96, 0.05, 0.28).normalize()),
       len: 1.7,
-      r1: 0.06,
-      r2: 0.08,
+      r1: 0.12,
+      r2: 0.16,
       tone: 0.9,
       twist: 1.2,
     })
@@ -818,10 +868,10 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
           <CampArtifacts />
         </Suspense>
       )}
-      {/* teepee of real logs, each one different, lit by their own fire */}
+      {/* Crossed logs lit by their own fire. */}
       {logs.map((l, i) => (
-        <mesh key={i} position={l.pos} quaternion={l.quat} rotation-order="YXZ">
-          <cylinderGeometry args={[l.r1, l.r2, l.len, 5]} />
+        <mesh key={i} position={l.pos} quaternion={l.quat} rotation-order="YXZ" castShadow receiveShadow>
+          <cylinderGeometry args={[l.r1, l.r2, l.len, 12]} />
           <meshStandardMaterial
             map={wood}
             color={new THREE.Color('#8a7f70').multiplyScalar(l.tone)}
@@ -841,8 +891,8 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
         />
       ))}
       {/* embers glowing low in the pit */}
-      <mesh ref={core} position={[0, 0.18, 0]} scale={[1.2, 0.5, 1.2]}>
-        <sphereGeometry args={[0.32, 10, 10]} />
+      <mesh ref={core} position={[0, 0.1, 0]} scale={[1.2, 0.35, 1.2]}>
+        <sphereGeometry args={[0.32, 24, 16]} />
         <meshBasicMaterial color={new THREE.Color('#ff7b2d').multiplyScalar(2.8)} toneMapped={false} />
       </mesh>
       {/* the flames themselves */}
@@ -1185,7 +1235,7 @@ function Ground() {
   const terrain = useGLBGeometry('/models/terrain.glb')
   if (!terrain) return null
   return (
-    <mesh geometry={terrain}>
+    <mesh geometry={terrain} receiveShadow>
       <meshStandardMaterial
         map={configured}
         bumpMap={configured}
@@ -1198,60 +1248,63 @@ function Ground() {
   )
 }
 
-/* Ambient sky base: the World Labs Marble 360 pano of this exact
-   scene, multiplied way down — it gives every azimuth a coherent sky
-   tone and far-off camp lights, while the crisp star/ridge layers
-   above carry the detail */
-function PanoSky() {
-  const configured = useTexture('/textures/marble-pano.webp', configurePanoTexture)
+/* One subdued panorama keeps the landscape's atmosphere without stacking
+   photographs with competing horizons and star fields. */
+function NightSky() {
+  const texture = useTexture('/textures/marble-pano.webp', tex => {
+    tex.colorSpace = THREE.SRGBColorSpace
+    tex.anisotropy = 8
+  })
+  const environment = useMemo(() => {
+    const map = texture.clone()
+    map.mapping = THREE.EquirectangularReflectionMapping
+    return map
+  }, [texture])
+  useEffect(() => () => environment.dispose(), [environment])
+  const uniforms = useMemo(() => ({
+    panorama: { value: texture },
+    horizon: { value: new THREE.Color('#0e1113') },
+    tint: { value: new THREE.Color('#596779') },
+  }), [texture])
   return (
+    <>
+    <Environment map={environment} environmentIntensity={0.4} />
     <mesh position={[0, -4, 0]} rotation-y={2.2} renderOrder={-1}>
-      <sphereGeometry args={[430, 48, 32]} />
-      <meshBasicMaterial
-        map={configured}
-        color="#565c66"
-        side={THREE.BackSide}
-        fog={false}
-        toneMapped={false}
-        depthWrite={false}
+      <sphereGeometry args={[430, 64, 32]} />
+      <shaderMaterial
+        uniforms={uniforms}
+        vertexShader={`varying vec2 vUv; varying float elevation;
+          void main() { vUv = uv; elevation = normalize(position).y;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`}
+        fragmentShader={`uniform sampler2D panorama; uniform vec3 horizon; uniform vec3 tint;
+          varying vec2 vUv; varying float elevation;
+          float starHash(vec2 p) {
+            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+          }
+          void main() {
+            vec3 landscape = texture2D(panorama, vUv).rgb;
+            vec3 sky = landscape * tint;
+            // The panorama's dark ridge is the occlusion mask. Keep stars
+            // on this same sphere so camera motion cannot slide them over it.
+            float skyMask = smoothstep(0.018, 0.04, dot(landscape, vec3(0.2126, 0.7152, 0.0722)))
+              * smoothstep(0.505, 0.52, vUv.y);
+            vec2 grid = vUv * vec2(900.0, 450.0);
+            vec2 cell = floor(grid);
+            float seed = starHash(cell);
+            vec2 center = vec2(starHash(cell + 17.3), starHash(cell + 41.8)) * 0.7 + 0.15;
+            float distanceToStar = length(fract(grid) - center);
+            float radius = mix(0.055, 0.12, starHash(cell + 8.2));
+            float aa = fwidth(distanceToStar);
+            float star = (1.0 - smoothstep(radius - aa, radius + aa, distanceToStar))
+              * step(0.986, seed) * skyMask;
+            sky += vec3(0.82, 0.88, 1.0) * star * mix(0.65, 1.6, starHash(cell + 3.4));
+            gl_FragColor = vec4(mix(horizon, sky, smoothstep(-0.015, 0.15, elevation)), 1.0);
+            #include <colorspace_fragment>
+          }`}
+        side={THREE.BackSide} toneMapped={false} depthWrite={false}
       />
     </mesh>
-  )
-}
-
-/* The horizon itself is a photograph (FLORA): a real ridge silhouette
-   with a far-off light dome — the glow of somewhere else out there.
-   Alpha-faded on every edge so it dissolves into the scene's night. */
-function Horizon() {
-  const tex = useTexture('/textures/horizon.webp')
-  return (
-    <mesh position={[8, 20, -150]}>
-      <planeGeometry args={[420, 224]} />
-      <meshBasicMaterial map={tex} transparent depthWrite={false} fog={false} toneMapped={false} />
-    </mesh>
-  )
-}
-
-/* The Milky Way (FLORA astrophotography) wrapped on a far cylinder —
-   additive, so its black sky dissolves into ours and only the stars
-   and the galactic band remain */
-function MilkyWay() {
-  const tex = useTexture('/textures/sky-pano.webp')
-  return (
-    // bottom rim dropped below the ground plane so no hard seam arcs across the sky
-    <mesh position={[0, 70, 0]} rotation-y={0.4}>
-      <cylinderGeometry args={[210, 210, 180, 48, 1, true]} />
-      <meshBasicMaterial
-        map={tex}
-        side={THREE.BackSide}
-        transparent
-        opacity={0.48}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-        fog={false}
-        toneMapped={false}
-      />
-    </mesh>
+    </>
   )
 }
 
@@ -1352,106 +1405,27 @@ function SurveyLight({ reducedMotion }: { reducedMotion: boolean }) {
   )
 }
 
-/* One draw call of near-ground dust gives the camera real parallax. The
-   points sit below the stars and disappear into the same scene fog. */
-function PlayaDust({ reducedMotion }: { reducedMotion: boolean }) {
-  const ref = useRef<THREE.Points>(null)
-  const positions = useMemo(() => {
-    const out = new Float32Array(150 * 3)
-    const rnd = (i: number, salt: number) => {
-      const n = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453
-      return n - Math.floor(n)
-    }
-    for (let i = 0; i < 150; i++) {
-      out[i * 3] = (rnd(i, 1) - 0.5) * 150
-      out[i * 3 + 1] = 0.2 + Math.pow(rnd(i, 2), 2) * 4.2
-      out[i * 3 + 2] = 14 - rnd(i, 3) * 122
-    }
-    return out
-  }, [])
-
-  useFrame(({ clock }) => {
-    if (!ref.current || reducedMotion) return
-    ref.current.position.x = Math.sin(clock.elapsedTime * 0.035) * 1.2
-    ref.current.rotation.y = Math.sin(clock.elapsedTime * 0.018) * 0.003
-  })
-
-  return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
-        color="#c8c0b2"
-        size={0.075}
-        sizeAttenuation
-        transparent
-        opacity={0.32}
-        depthWrite={false}
-        fog
-      />
-    </points>
-  )
-}
-
-function Rig({ ready, reducedMotion, onSettled }: { ready: boolean; reducedMotion: boolean; onSettled: () => void }) {
-  const introStarted = useRef<number | null>(null)
+function Rig({ ready, onSettled }: { ready: boolean; onSettled: () => void }) {
   const settled = useRef(false)
-
-  useFrame(({ camera, clock, size }) => {
+  useFrame(({ camera, size }) => {
     const aspect = size.width / size.height
     const portrait = aspect < COMPACT_ASPECT
-    // Looking down across the near field separates the installations in
-    // depth on a phone, instead of squeezing them onto one horizon line.
     const baseZ = portrait ? 26 : 22 + Math.max(0, 1.8 - aspect) * 14
     const baseY = portrait ? 14 : 3.2
     const gazeY = portrait ? 1 : 4.5
-    // A minimum horizontal angle protects the outer artwork and label
-    // bounds on tall phones and narrower desktop windows. A vertical
-    // floor retains the ground/sky composition on wide landscape screens.
     const fittedFov = Math.max(
       portrait ? 54 : 48,
       THREE.MathUtils.radToDeg(2 * Math.atan((portrait ? 0.25 : 0.68) / aspect))
     )
-    if (ready && introStarted.current === null) {
-      introStarted.current = clock.elapsedTime
-      camera.position.y = baseY - (portrait ? 1 : 1.05)
-      camera.position.z = baseZ + (portrait ? 3 : 11)
+    camera.position.set(0, baseY, baseZ)
+    camera.lookAt(0, gazeY, -30)
+    if (camera instanceof THREE.PerspectiveCamera && camera.fov !== fittedFov) {
+      camera.fov = fittedFov
+      camera.updateProjectionMatrix()
     }
-
-    if (reducedMotion) {
-      camera.position.set(0, baseY, baseZ)
-      camera.lookAt(0, gazeY, -30)
-      if (camera instanceof THREE.PerspectiveCamera && camera.fov !== fittedFov) {
-        camera.fov = fittedFov
-        camera.updateProjectionMatrix()
-      }
-      if (ready && !settled.current) {
-        settled.current = true
-        onSettled()
-      }
-      return
-    }
-
-    const t = clock.elapsedTime
-    const introElapsed = introStarted.current === null ? 0 : t - introStarted.current
-    const intro = ready ? THREE.MathUtils.smoothstep(introElapsed, 0, 2.8) : 0
-    const introOffset = (1 - intro) * (portrait ? 3 : 11)
-    if (intro === 1 && !settled.current) {
+    if (ready && !settled.current) {
       settled.current = true
       onSettled()
-    }
-    // The introduction settles into an exact, stable composition. Art
-    // continues moving, but pointer movement and hover never move targets.
-    camera.position.set(0, baseY - (1 - intro) * 0.75, baseZ + introOffset)
-    camera.lookAt(0, gazeY, -30)
-
-    if (camera instanceof THREE.PerspectiveCamera) {
-      const targetFov = fittedFov + (1 - intro) * 4
-      if (camera.fov !== targetFov) {
-        camera.fov = targetFov
-        camera.updateProjectionMatrix()
-      }
     }
   })
   return null
@@ -1463,16 +1437,9 @@ function Rig({ ready, reducedMotion, onSettled }: { ready: boolean; reducedMotio
 preloadOptionalGLTF('/models/them.glb')
 preloadOptionalGLTF('/models/terrain.glb')
 preloadOptionalGLTF('/models/rocks.glb')
-const portraitAtLoad = typeof window !== 'undefined' && window.innerWidth / window.innerHeight < COMPACT_ASPECT
-if (portraitAtLoad) {
-  preloadOptionalGLTF('/models/dish.glb')
-  preloadOptionalGLTF('/models/signpost.glb')
-} else {
-  preloadOptionalGLTF('/models/telescope.glb?v=2')
-  preloadOptionalGLTF('/models/signpost-hd.glb')
-}
+preloadOptionalGLTF('/models/telescope.glb?v=2')
+preloadOptionalGLTF('/models/signpost-hd.glb')
 useTexture.preload('/textures/playa-tile.webp')
-useTexture.preload('/textures/horizon.webp')
 useTexture.preload('/textures/steel-tile.webp')
 useTexture.preload('/textures/wood-tile.webp')
 useTexture.preload('/textures/marble-pano.webp')
@@ -1575,8 +1542,9 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
   return (
     <>
     <Canvas
+      shadows
       className={labelsReady ? 'night-field-stage is-settled' : 'night-field-stage'}
-      dpr={portraitAtLoad ? [1, 1.25] : [1, 1.5]}
+      dpr={2}
       camera={{ position: [0, 3.2, 22], fov: 48 }}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       frameloop={reducedMotion ? 'demand' : 'always'}
@@ -1584,29 +1552,29 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
     >
       <color attach="background" args={['#0e1113']} />
       <fog attach="fog" args={['#0e1113', 30, 145]} />
-      <ambientLight intensity={0.05} />
-      <hemisphereLight args={['#161c28', '#0a0908']} intensity={0.18} />
+      <ambientLight intensity={0.1} />
+      <hemisphereLight args={['#161c28', '#0a0908']} intensity={0.3} />
       {/* one consistent moon: cool, high, from the Milky Way side — it
           shades the terrain undulation so the ground reads as ground */}
-      <directionalLight position={[40, 60, -25]} color="#a8b8d0" intensity={0.22} />
+      <directionalLight position={[40, 60, -25]} color="#a8b8d0" intensity={0.42}
+        castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-90} shadow-camera-right={90}
+        shadow-camera-top={90} shadow-camera-bottom={-90} shadow-camera-far={220}
+        shadow-normalBias={0.035} shadow-bias={-0.0001} />
       {/* the far glow behind the ridge, barely */}
       <directionalLight position={[-6, 18, -120]} color="#8a7a68" intensity={0.14} />
 
       {/* flat base under the terrain so nothing shows through while the
           terrain mesh suspends in */}
-      <mesh rotation-x={-Math.PI / 2} position={[0, -0.55, -40]}>
+      <mesh rotation-x={-Math.PI / 2} position={[0, -0.55, -40]} receiveShadow>
         <planeGeometry args={[600, 400]} />
         <meshStandardMaterial color="#14161a" roughness={0.95} metalness={0} />
       </mesh>
-      <Stars radius={220} depth={40} count={900} factor={3} saturation={0} fade speed={reducedMotion ? 0 : 0.4} />
 
       {/* The sky and terrain reveal first. Landmarks suspend separately,
           so a slow model never holds the entire field behind black. */}
       <Suspense fallback={null}>
         <Ground />
-        <PanoSky />
-        <Horizon />
-        <MilkyWay />
+        <NightSky />
         <SceneReady onReady={() => setReady(true)} />
       </Suspense>
       <Suspense fallback={null}>
@@ -1632,12 +1600,11 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       </Suspense>}
 
       <Meteors reducedMotion={reducedMotion} />
-      <PlayaDust reducedMotion={reducedMotion} />
       <SurveyLight reducedMotion={reducedMotion} />
-      <Rig ready={ready} reducedMotion={reducedMotion} onSettled={() => setLabelsReady(true)} />
+      <Rig ready={ready} onSettled={() => setLabelsReady(true)} />
 
-      <EffectComposer multisampling={0}>
-        <Bloom intensity={0.65} luminanceThreshold={1.15} mipmapBlur radius={0.75} />
+      <EffectComposer multisampling={4}>
+        <Bloom intensity={0.35} luminanceThreshold={1.4} mipmapBlur radius={0.5} />
         <SMAA />
       </EffectComposer>
     </Canvas>
