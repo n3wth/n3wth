@@ -350,7 +350,7 @@ html[data-astryx-theme='n3wth'] {
   .n3wth-site-signup { max-width: none; width: 100%; }
 }
 @media (max-width: 1023px) {
-  .n3wth-site-footer-inline-signup { flex-basis: 100%; }
+  .n3wth-site-footer-inline-signup { flex-basis: 100%; order: -1; }
 }
 @media (min-width: 768px) {
   .n3wth-site-footer { padding-block: 32px; }

@@ -93,7 +93,7 @@ export function Creative() {
           <WorkCredit inst={opener} />
         </figcaption>
       </figure>
-      <div className="site-content-gutter art-works">
+      <div className="art-works">
         {works.map((inst) => (
           <figure id={inst.id} key={inst.id} className="art-work m-0 scroll-mt-20">
             <div className="art-light-passage" aria-hidden="true"><ForkLight /></div>
