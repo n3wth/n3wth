@@ -23,6 +23,7 @@ export interface NoteMeta {
   description?: string
   tags: string[]
   date?: string
+  updated?: string
   readingTime: string
   filePath: string
   draft?: boolean
@@ -120,6 +121,7 @@ export function getAllNotes(): NoteData[] {
       description: data.description || '',
       tags,
       date: data.date ? String(data.date) : undefined,
+      updated: data.updated ? String(data.updated) : undefined,
       readingTime: rt.text,
       filePath,
       draft: data.draft === true,

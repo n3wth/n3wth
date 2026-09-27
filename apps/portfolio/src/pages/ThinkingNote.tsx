@@ -13,6 +13,7 @@ interface Note {
   stage: 'seedling' | 'budding' | 'evergreen'
   readingTime: string
   date?: string
+  updated?: string
   html: string
   headings: { id: string; text: string; level: number }[]
   backlinks: { slug: string; title: string; href: string; context: { before: string; mention: string; after: string } | null }[]
@@ -23,7 +24,7 @@ export default function ThinkingNote() {
   usePageMeta(`${note.title} — Oliver Newth`, note.description, {
     canonical: note.href,
     publishedTime: note.date,
-    jsonLd: note.date ? buildArticleSchema({ url: `https://n3wth.com${note.href}`, title: note.title, description: note.description, datePublished: note.date }) : undefined,
+    jsonLd: note.date ? buildArticleSchema({ url: `https://n3wth.com${note.href}`, title: note.title, description: note.description, datePublished: note.date, dateModified: note.updated }) : undefined,
   })
   const headings = note.headings.filter(heading => heading.level <= 3)
 

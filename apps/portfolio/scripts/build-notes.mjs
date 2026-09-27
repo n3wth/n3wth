@@ -7,6 +7,7 @@ import { getBacklinksForSlug } from './notes/lib/backlinks.ts'
 import { extractWikilinks } from './notes/lib/note-links.mjs'
 import { createRedirects, notePath, topicPath } from './notes/routes.mjs'
 import { parseThinkingMeta } from './lib/thinking-meta.mjs'
+import { noteDates } from './notes/lib/dates.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const output = resolve(root, 'public/writing')
@@ -28,10 +29,7 @@ rmSync(output, { recursive: true, force: true })
 const edges = []
 const index = []
 for (const note of notes) {
-  const published = note.date && Number.isFinite(Date.parse(note.date)) ? new Date(note.date).toISOString().slice(0, 10) : undefined
-  const date = published || (history[note.filePath]?.c ? new Date(history[note.filePath].c).toISOString().slice(0, 10) : undefined)
-  const modified = history[note.filePath]?.m ? new Date(history[note.filePath].m).toISOString().slice(0, 10) : undefined
-  const updated = [date, modified].filter(Boolean).sort().at(-1)
+  const { date, updated } = noteDates(note, history[note.filePath])
   const meta = { slug: note.slug, href: notePath(note.slug), title: note.title, description: note.description || '', tags: note.tags, stage: note.stage, readingTime: note.readingTime, ...(date ? { date } : {}), ...(updated ? { updated } : {}) }
   let html = await markdownToHtml(note.content)
   // Existing absolute Garden links and root-relative links share the redirect map.

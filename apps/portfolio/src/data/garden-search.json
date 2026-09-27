@@ -93,7 +93,7 @@
     {
       "title": "Astryx vs shadcn: which design system for LLM-written UI",
       "href": "/thinking/astryx-vs-shadcn-vs-angular-material",
-      "description": "Field notes from this garden: Astryx, shadcn and component ownership, with a reproducible table of contents example and the limits of type-level accessibility checks.",
+      "description": "Compare Astryx, shadcn and Angular Material by component ownership, with a working React outline example and the limits of type-level accessibility checks.",
       "section": null
     },
     {

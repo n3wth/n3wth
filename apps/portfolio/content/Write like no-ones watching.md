@@ -12,9 +12,9 @@ Capturing thoughts without self-censorship. Write for yourself; publish to force
 
 When we write for ourselves, we're honest. When we write for an audience, we perform. The [[Digital Garden]] philosophy resolves this tension:
 
-**Private capture** → Think freely, without polish
-**Public publishing** → Forces organization and connection
-**Imperfection accepted** → [[Living documents]] remove the pressure for final drafts
+- **Private capture** → Think freely, without polish
+- **Public publishing** → Forces organization and connection
+- **Imperfection accepted** → [[Living documents]] remove the pressure for final drafts
 
 ## Why This Works
 
