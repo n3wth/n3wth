@@ -45,17 +45,6 @@
   object-fit: cover;
 }
 
-.art-light-passage {
-  height: clamp(6rem, 13vw, 12rem);
-  overflow: hidden;
-  opacity: .6;
-}
-
-.art-light-passage svg {
-  width: 100%;
-  height: 100%;
-}
-
 @media (max-width: 767px) {
   .art-opening-scene { min-height: 68svh; }
   .art-work-image img { height: auto; aspect-ratio: 4 / 3; }

@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { ForkLight } from '@n3wth/ui/visuals'
 import { SectionHeader } from '../Frame'
 import './art.css'
 import {
@@ -96,7 +95,6 @@ export function Creative() {
       <div className="art-works">
         {works.map((inst) => (
           <figure id={inst.id} key={inst.id} className="art-work m-0 scroll-mt-20">
-            <div className="art-light-passage" aria-hidden="true"><ForkLight /></div>
             <div className="art-work-image">
               <img
                 src={inst.image}
