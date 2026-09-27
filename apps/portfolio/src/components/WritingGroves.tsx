@@ -71,7 +71,8 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
       const b = new THREE.Vector3(...segment.b)
       direction.subVectors(b, a)
       dummy.position.copy(a).add(b).multiplyScalar(0.5)
-      const radius = segment.detail ? 0.014 : 0.035
+      const height = treeById.get(segment.treeId)?.height ?? 1
+      const radius = segment.detail ? 0.018 : 0.025 + height * 0.012
       dummy.scale.set(radius, direction.length(), radius)
       dummy.quaternion.setFromUnitVectors(up, direction.normalize())
       dummy.updateMatrix()
@@ -80,7 +81,7 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
     foliage.forEach((segment, index) => {
       dummy.position.set(...segment.b)
       dummy.rotation.set(0.4, index * 2.4, -0.6)
-      dummy.scale.set(0.12, 0.04, 0.24)
+      dummy.scale.set(0.2, 0.055, 0.34)
       dummy.updateMatrix()
       leaves.current?.setMatrixAt(index, dummy.matrix)
     })
@@ -97,7 +98,7 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
       mesh.computeBoundingSphere()
     }
     invalidate()
-  }, [segments, foliage, trees, invalidate])
+  }, [segments, foliage, trees, treeById, invalidate])
 
   useLayoutEffect(() => {
     const bark = new THREE.Color('#8a7a68')
@@ -120,11 +121,11 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
 
   return <>
     <instancedMesh ref={stems} args={[undefined, undefined, segments.length]} raycast={() => null}>
-      <cylinderGeometry args={[0.65, 1, 1, 5, 1, true]} />
+      <cylinderGeometry args={[0.65, 1, 1, 8, 1, true]} />
       <meshStandardMaterial color="#ffffff" roughness={0.9} emissive="#8a7a68" emissiveIntensity={0.06} />
     </instancedMesh>
     <instancedMesh ref={leaves} args={[undefined, undefined, foliage.length]} raycast={() => null}>
-      <sphereGeometry args={[1, 6, 4]} />
+      <sphereGeometry args={[1, 10, 6]} />
       <meshStandardMaterial color="#ffffff" roughness={0.85} emissive="#b9c9a8" emissiveIntensity={0.08} />
     </instancedMesh>
     <instancedMesh ref={hits} args={[undefined, undefined, trees.length]} onClick={selectTree} onPointerMove={(event) => {

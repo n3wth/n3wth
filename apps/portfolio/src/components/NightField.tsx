@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree, type ThreeElements, type ThreeEvent } from '@react-three/fiber'
-import { Environment, Html, Line, Stars, useCursor, useProgress, useTexture } from '@react-three/drei'
+import { Environment, Html, Line, useCursor, useProgress, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { useOptionalTexture } from '../lib/optionalTexture'
@@ -343,6 +343,9 @@ function SteelAndWire({
           metalness={0.65}
           fog={bodyFog}
           side={THREE.DoubleSide}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
         />
       </mesh>
       <lineSegments geometry={edges}>
@@ -364,8 +367,65 @@ const LEG_PIVOTS: Record<string, [number, number, number]> = {
   leg_bl: [-1.6, 3.0, -0.5],
   leg_br: [-1.6, 3.0, 0.5],
 }
-/* trot: diagonal pairs move together */
-const LEG_PHASE: Record<string, number> = { leg_fl: 0, leg_br: 0, leg_fr: Math.PI, leg_bl: Math.PI }
+/* Four-beat walk: stagger each footfall instead of hopping in pairs. */
+const LEG_PHASE: Record<string, number> = { leg_fl: 0, leg_br: Math.PI / 2, leg_fr: Math.PI, leg_bl: Math.PI * 1.5 }
+
+function WalkingLeg({ geometry, pivot, phase, stride, reducedMotion }: {
+  geometry: THREE.BufferGeometry
+  pivot: [number, number, number]
+  phase: number
+  stride: { current: number }
+  reducedMotion: boolean
+}) {
+  const texture = useTexture('/textures/steel-tile.webp', configureTiledTexture)
+  const rig = useMemo(() => {
+    const geo = geometry.clone()
+    const position = geo.getAttribute('position')
+    const indices = new Uint16Array(position.count * 4)
+    const weights = new Float32Array(position.count * 4)
+    const length = pivot[1] / 2
+    for (let i = 0; i < position.count; i++) {
+      const lower = 1 - THREE.MathUtils.smoothstep(position.getY(i), length - 0.25, length + 0.25)
+      indices[i * 4 + 1] = 1
+      weights[i * 4] = 1 - lower
+      weights[i * 4 + 1] = lower
+    }
+    geo.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(indices, 4))
+    geo.setAttribute('skinWeight', new THREE.Float32BufferAttribute(weights, 4))
+    const hip = new THREE.Bone()
+    hip.position.set(...pivot)
+    const knee = new THREE.Bone()
+    knee.position.y = -length
+    hip.add(knee)
+    const skeleton = new THREE.Skeleton([hip, knee])
+    const material = new THREE.MeshStandardMaterial({ map: texture, color: '#a7a29a', roughness: 0.46, metalness: 0.65 })
+    const mesh = new THREE.SkinnedMesh(geo, material)
+    mesh.add(hip)
+    mesh.bind(skeleton)
+    mesh.castShadow = true
+    mesh.receiveShadow = true
+    mesh.frustumCulled = false
+    return { mesh, hip, knee, length, skeleton }
+  }, [geometry, pivot, texture])
+  useEffect(() => () => {
+    rig.mesh.geometry.dispose()
+    ;(rig.mesh.material as THREE.Material).dispose()
+    rig.skeleton.dispose()
+  }, [rig])
+  useFrame(() => {
+    const cycle = ((stride.current + phase) / (Math.PI * 2)) % 1
+    const swing = Math.max(0, (cycle - 0.6) / 0.4)
+    const x = reducedMotion ? 0 : cycle < 0.6 ? 0.6 - cycle * 2 : -0.6 * Math.cos(swing * Math.PI)
+    const lift = reducedMotion ? 0 : Math.sin(swing * Math.PI) * 0.35
+    const down = pivot[1] - 0.14 - lift
+    const reach = Math.min(Math.hypot(x, down), rig.length * 2 - 0.001)
+    const bend = Math.acos(reach / (rig.length * 2))
+    const direction = pivot[0] > 0 ? 1 : -1
+    rig.hip.rotation.set(0, 0, Math.atan2(x, down) - bend * direction)
+    rig.knee.rotation.set(0, 0, bend * 2 * direction)
+  })
+  return <primitive object={rig.mesh} />
+}
 
 function Thylacine({
   parts,
@@ -386,44 +446,36 @@ function Thylacine({
 }) {
   const walker = useRef<THREE.Group>(null)
   const bodyGroup = useRef<THREE.Group>(null)
-  const legRefs = useRef<Record<string, THREE.Group | null>>({})
   const stripesMat = useRef<THREE.MeshBasicMaterial>(null)
+  const stride = useRef(phase)
+  const travel = useRef(0)
   const h = useEased01(hovered)
   // concentric, non-intersecting ellipses per animal, derived from phase
-  const RX = 7.5 - phase * 0.5
-  const RZ = 5.5 - phase * 0.35
+  const RX = portrait ? 4.5 : 7.5 - phase * 0.5
+  const RZ = portrait ? 2.5 : 5.5 - phase * 0.35
   const OMEGA = (2 * Math.PI) / (46 + phase * 5) // laps of ~46-62s; pack drifts apart and regroups
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     const g = walker.current
     if (!g) return
     const t = reducedMotion ? 0 : clock.elapsedTime
-    const th = theta0 - t * OMEGA
-    g.position.set(Math.cos(th) * RX, 0, Math.sin(th) * RZ)
+    // Each animal slows to a brief rest on its own schedule. Integrating
+    // travel and stride with the same pace avoids sliding feet on stops.
+    const restCycle = (t + phase * 9) % (24 + phase * 3)
+    const pace = reducedMotion ? 0 : THREE.MathUtils.smoothstep(restCycle, 1.5, 4)
+      * (1 - THREE.MathUtils.smoothstep(restCycle, 20 + phase * 3, 23 + phase * 3))
+    if (!reducedMotion) travel.current += Math.min(delta, 0.1) * pace
+    const th = theta0 - travel.current * OMEGA
+    const depth = portrait ? (phase === 0 ? 7 : phase < 2 ? -5 : -18) : 0
+    g.position.set(Math.cos(th) * RX, 0, depth + Math.sin(th) * RZ)
     // face along the direction of travel (ellipse tangent)
     g.rotation.y = Math.atan2(Math.cos(th) * RZ, Math.sin(th) * RX)
-    if (portrait) {
-      // Three staggered profiles read as a pack in a narrow frame. The
-      // distant animal faces back into the group; none vanishes end-on.
-      const lead = phase === 0
-      const middle = phase > 0 && phase < 2
-      g.position.set(lead ? -4.8 : middle ? 4.4 : -3.2, 0, lead ? 9 : middle ? -4 : -20)
-      g.rotation.y = lead ? -0.22 : middle ? 0.22 : Math.PI - 0.2
-    }
-    const w = 2.3 / Math.sqrt(scale) // stride cadence tuned so feet plant instead of skate
-    for (const [name, pivot] of Object.entries(LEG_PIVOTS)) {
-      const leg = legRefs.current[name]
-      if (leg) {
-        // asymmetric gait: quick swing, slow stance
-        const a = t * w + LEG_PHASE[name] + phase
-        leg.rotation.z = reducedMotion ? 0 : (Math.sin(a) * 0.115 + Math.sin(2 * a + 0.6) * 0.022) * (portrait ? 0.18 : 1)
-      }
-      void pivot
-    }
+    // Derive cadence from path speed so narrower phone paths don't skate.
+    const speed = OMEGA * Math.hypot(Math.sin(th) * RX, Math.cos(th) * RZ)
+    if (!reducedMotion) stride.current += speed * Math.min(delta, 0.1) * pace * Math.PI * 2 / (2 * scale)
     if (bodyGroup.current) {
-      // body vaults highest at mid-stance (legs vertical), not at touchdown
-      bodyGroup.current.position.y = reducedMotion ? 0 : Math.abs(Math.cos(t * w + phase)) * 0.05
-      bodyGroup.current.rotation.x = reducedMotion ? 0 : Math.sin(t * w + phase + 0.9) * 0.02
+      bodyGroup.current.position.y = reducedMotion ? 0 : Math.sin(stride.current * 4) * 0.012
+      bodyGroup.current.rotation.x = 0
     }
     if (stripesMat.current) {
       stripesMat.current.color.set('#ffdda8').multiplyScalar(1.35 + h.current * 0.65)
@@ -459,28 +511,7 @@ function Thylacine({
         const geo = parts[name]
         if (!geo) return null
         return (
-          <group
-            key={name}
-            position={pivot}
-            ref={(el) => {
-              legRefs.current[name] = el
-            }}
-          >
-            <group position={[-pivot[0], -pivot[1], -pivot[2]]}>
-              <SteelAndWire
-                geometry={geo}
-                edgeColor="#ffdda8"
-                edgeThreshold={48}
-                glow={hovered ? 1.3 : 0.75}
-                breathe={1.1}
-                phase={phase + 2}
-                reducedMotion={reducedMotion}
-                mapUrl="/textures/steel-tile.webp"
-                bodyColor="#a7a29a"
-                bodyFog={false}
-              />
-            </group>
-          </group>
+          <WalkingLeg key={name} geometry={geo} pivot={pivot} phase={LEG_PHASE[name]} stride={stride} reducedMotion={reducedMotion} />
         )
       })}
       </group>
@@ -549,7 +580,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
       }}
     >
       <PortalLabel def={def} onEnter={onEnter} hovered={hovered} />
-      <group ref={azimuth}>{telescope && <primitive object={telescope} />}</group>
+      <group ref={azimuth} position-y={-0.16}>{telescope && <primitive object={telescope} />}</group>
       {/* hit volume covering the full dish sweep so hover stays stable;
           hover hysteresis keeps it under the cursor through the camera pan */}
       <mesh position={[0, 5, 0]} scale={hovered ? 1.5 : 1} visible={false}>
@@ -560,7 +591,7 @@ function Constellation({ def, onEnter, reducedMotion, onLabel }: { def: PortalDe
           pedestal legible. No frontal floodlight — that flattens the
           bowl into a white disc. */}
       <EasedLight hovered={hovered} on={700} off={430} position={[-7, 9, -6]} color="#b8c4d8" distance={70} decay={2} />
-      <EasedLight hovered={hovered} on={300} off={170} position={[0, 1.2, -2]} color="#8fa8d8" distance={50} decay={2} />
+      <EasedLight hovered={hovered} on={150} off={85} position={[0, 3.5, 2]} color="#8fa8d8" distance={50} decay={2} />
     </group>
   )
 }
@@ -1247,8 +1278,26 @@ function NightSky() {
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`}
         fragmentShader={`uniform sampler2D panorama; uniform vec3 horizon; uniform vec3 tint;
           varying vec2 vUv; varying float elevation;
+          float starHash(vec2 p) {
+            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+          }
           void main() {
-            vec3 sky = texture2D(panorama, vUv).rgb * tint;
+            vec3 landscape = texture2D(panorama, vUv).rgb;
+            vec3 sky = landscape * tint;
+            // The panorama's dark ridge is the occlusion mask. Keep stars
+            // on this same sphere so camera motion cannot slide them over it.
+            float skyMask = smoothstep(0.018, 0.04, dot(landscape, vec3(0.2126, 0.7152, 0.0722)))
+              * smoothstep(0.505, 0.52, vUv.y);
+            vec2 grid = vUv * vec2(900.0, 450.0);
+            vec2 cell = floor(grid);
+            float seed = starHash(cell);
+            vec2 center = vec2(starHash(cell + 17.3), starHash(cell + 41.8)) * 0.7 + 0.15;
+            float distanceToStar = length(fract(grid) - center);
+            float radius = mix(0.055, 0.12, starHash(cell + 8.2));
+            float aa = fwidth(distanceToStar);
+            float star = (1.0 - smoothstep(radius - aa, radius + aa, distanceToStar))
+              * step(0.986, seed) * skyMask;
+            sky += vec3(0.82, 0.88, 1.0) * star * mix(0.65, 1.6, starHash(cell + 3.4));
             gl_FragColor = vec4(mix(horizon, sky, smoothstep(-0.015, 0.15, elevation)), 1.0);
             #include <colorspace_fragment>
           }`}
@@ -1520,7 +1569,6 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
         <planeGeometry args={[600, 400]} />
         <meshStandardMaterial color="#14161a" roughness={0.95} metalness={0} />
       </mesh>
-      <Stars radius={150} depth={25} count={2400} factor={10} saturation={0} fade speed={0} />
 
       {/* The sky and terrain reveal first. Landmarks suspend separately,
           so a slow model never holds the entire field behind black. */}
@@ -1555,7 +1603,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       <SurveyLight reducedMotion={reducedMotion} />
       <Rig ready={ready} onSettled={() => setLabelsReady(true)} />
 
-      <EffectComposer multisampling={0}>
+      <EffectComposer multisampling={4}>
         <Bloom intensity={0.35} luminanceThreshold={1.4} mipmapBlur radius={0.5} />
         <SMAA />
       </EffectComposer>

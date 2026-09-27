@@ -60,10 +60,10 @@ describe('homepage writing groves', () => {
     for (const tree of layoutWritingGroves(nodes, false)) {
       const segments = plantSegments(tree)
       expect(segments).toEqual(plantSegments(tree))
-      expect(segments.length).toBeLessThanOrEqual(15)
+      expect(segments.length).toBeLessThanOrEqual(27)
       expect(segments[0].a[1]).toBe(0)
       expect(segments[2].b[1]).toBe(tree.height)
-      const base = tree.stage === 'seedling' ? 0.65 : 2.7
+      const base = tree.stage === 'seedling' ? 0.65 : 3.8
       expect(tree.height).toBeGreaterThanOrEqual(base * 0.8)
       expect(tree.height).toBeLessThanOrEqual(base * 1.2)
       expect(segments.flatMap((segment) => [...segment.a, ...segment.b]).every(Number.isFinite)).toBe(true)

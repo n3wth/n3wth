@@ -89,7 +89,7 @@ export function layoutWritingGroves(nodes: WritingNode[], compact: boolean, spre
       const bank = Math.cos(angle)
       const offset = Math.sign(bank) * (0.25 + Math.abs(bank) * 0.75)
       let x = ((compact ? 26 : 22) - z) * (lane + offset * width * Math.sqrt((index + 1) / members.length))
-      const height = ({ seedling: 0.65, budding: 1.5, evergreen: 2.7 })[node.stage] * (0.8 + random() * 0.4)
+      const height = ({ seedling: 0.65, budding: 1.8, evergreen: 3.8 })[node.stage] * (0.8 + random() * 0.4)
       for (const [lx, lz, halfWidth, halfDepth] of landmarks) {
         if (Math.abs(z - lz) < halfDepth + 2 && Math.abs(x - lx) < halfWidth + height * 0.4) {
           x = lx + Math.sign(x - lx || 1) * (halfWidth + height * 0.4 + 1)
@@ -122,13 +122,16 @@ export function plantSegments(node: GroveTree): PlantSegment[] {
   for (let i = 0; i < branches; i++) {
     const base = trunk(0.35 + random() * 0.55)
     const angle = random() * Math.PI * 2
-    const length = node.height * (0.12 + random() * 0.16)
+    const length = node.height * (0.2 + random() * 0.18)
     const tip: [number, number, number] = [base[0] + Math.cos(angle) * length, base[1] + length * (node.stage === 'evergreen' ? 0.55 : 0.3), base[2] + Math.sin(angle) * length]
     segments.push({ a: base, b: tip, detail: true })
     if (node.stage === 'evergreen') {
-      const leafAngle = angle + Math.PI / 2 + random() - 0.5
-      const leafLength = (4 + random() * 6) * node.height / 175
-      segments.push({ a: tip, b: [tip[0] + Math.cos(leafAngle) * leafLength, tip[1] + leafLength * 0.5, tip[2] + Math.sin(leafAngle) * leafLength], detail: true, leaf: true })
+      // Mature notes have a branching crown, not a single leaf per twig.
+      for (let fork = 0; fork < 3; fork++) {
+        const leafAngle = angle + (fork - 1) * 0.9 + (random() - 0.5) * 0.3
+        const leafLength = node.height * (0.1 + random() * 0.08)
+        segments.push({ a: tip, b: [tip[0] + Math.cos(leafAngle) * leafLength, tip[1] + leafLength * 0.6, tip[2] + Math.sin(leafAngle) * leafLength], detail: true, leaf: true })
+      }
     }
   }
   return segments
