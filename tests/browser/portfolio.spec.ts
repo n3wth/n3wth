@@ -1,32 +1,24 @@
 import { test, expect } from '@playwright/test'
 
-test('projects motif sits beside desktop copy and above mobile copy', async ({ page }) => {
+test('projects artwork fills the viewport behind lower copy', async ({ page }) => {
   for (const width of [390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/projects')
     const artwork = page.locator('.section-story--projects svg')
     await expect(artwork).toBeVisible()
     const geometry = await artwork.evaluate(svg => {
-      const orbit = svg.querySelector('circle') as SVGCircleElement
-      const center = new DOMPoint(280, 280).matrixTransform(orbit.getScreenCTM()!)
       const bounds = svg.getBoundingClientRect()
-      const nav = document.querySelector('header')!.getBoundingClientRect()
+      const hero = document.querySelector('.portfolio-story-hero')!.getBoundingClientRect()
       const copy = document.querySelector('main h1')!.getBoundingClientRect()
-      const titleRange = document.createRange()
-      titleRange.selectNodeContents(document.querySelector('.portfolio-section-title')!)
-      const title = titleRange.getBoundingClientRect()
-      return { center: center.x, navCenter: nav.x + nav.width / 2, left: bounds.left, right: bounds.right, bottom: bounds.bottom, copyTop: copy.top, titleRight: title.right, width: document.documentElement.clientWidth }
+      return { center: bounds.x + bounds.width / 2, heroLeft: hero.x, heroWidth: hero.width, width: bounds.width, height: bounds.height, heroHeight: hero.height, heroBottom: hero.bottom, copyTop: copy.top, copyBottom: copy.bottom }
     })
-    expect(geometry.left).toBeGreaterThanOrEqual(0)
-    expect(geometry.right).toBeLessThanOrEqual(geometry.width)
-    if (width >= 1024) {
-      expect(geometry.center).toBeGreaterThan(geometry.width * .7)
-      expect(geometry.center).toBeLessThan(geometry.width * .8)
-      expect(geometry.left).toBeGreaterThan(geometry.titleRight)
-    } else {
-      expect(Math.abs(geometry.center - geometry.navCenter)).toBeLessThanOrEqual(1)
-      expect(geometry.bottom).toBeLessThan(geometry.copyTop)
-    }
+    const center = geometry.heroLeft + geometry.heroWidth * (width >= 1024 ? .7 : .5)
+    expect(Math.abs(geometry.center - center)).toBeLessThanOrEqual(1)
+    expect(geometry.width).toBeGreaterThan(width * .6)
+    expect(geometry.height).toBeGreaterThan(Math.min(width, geometry.heroHeight) * .8)
+    expect(geometry.copyTop).toBeGreaterThan(geometry.heroHeight * .7)
+    expect(geometry.copyBottom).toBeLessThan(geometry.heroBottom)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   }
 })
 
@@ -82,7 +74,7 @@ test('section openings fill the screen with distinct accessible stories', async 
     const copy = await page.locator('.portfolio-story-copy').boundingBox()
     expect(copy!.y + copy!.height).toBeLessThanOrEqual(bounds!.y + bounds!.height + 1)
     if (page.viewportSize()!.width >= 1024) {
-      expect(Math.abs(copy!.y + copy!.height / 2 - (bounds!.y + bounds!.height / 2))).toBeLessThan(2)
+      expect(copy!.y).toBeGreaterThan(bounds!.y + bounds!.height * .7)
       const description = await page.locator('.portfolio-story-description').evaluate(element => {
         const range = document.createRange()
         range.selectNodeContents(element)
@@ -343,13 +335,22 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
       const hero = page.locator('.portfolio-story-hero')
       await expect(hero).toHaveAttribute('data-visible', 'true')
       await expect(hero.locator('.section-story svg')).toBeVisible()
-      const running = () => hero.evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length)
-      if (reducedMotion === 'reduce') expect(await running()).toBe(0)
-      else await expect.poll(running).toBeGreaterThan(0)
+      const artwork = hero.locator('.section-story svg')
+      if (reducedMotion === 'reduce') {
+        await expect(artwork).toHaveAttribute('data-story-paused', '')
+        await expect(hero.locator('.section-story__transfer')).toHaveCount(0)
+      } else {
+        await expect(artwork).not.toHaveAttribute('data-story-paused', '')
+        const initial = await artwork.innerHTML()
+        await expect.poll(() => artwork.innerHTML()).not.toBe(initial)
+      }
       if (route !== '/contact') {
         await page.locator('footer').scrollIntoViewIfNeeded()
         await expect(hero).toHaveAttribute('data-visible', 'false')
-        await expect.poll(running).toBe(0)
+        await expect(artwork).toHaveAttribute('data-story-paused', '')
+        const paused = await artwork.innerHTML()
+        await page.waitForTimeout(150)
+        expect(await artwork.innerHTML()).toBe(paused)
       }
     }
   })
