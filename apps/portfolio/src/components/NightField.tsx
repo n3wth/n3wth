@@ -231,6 +231,8 @@ function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): TH
           side: THREE.DoubleSide,
         })
         m.frustumCulled = false
+        m.castShadow = true
+        m.receiveShadow = true
       }
     })
     return instance
@@ -329,7 +331,7 @@ function SteelAndWire({
 
   return (
     <>
-      <mesh geometry={smoothGeometry}>
+      <mesh geometry={smoothGeometry} castShadow receiveShadow>
         <meshStandardMaterial
           map={configured}
           bumpMap={configured}
@@ -512,7 +514,7 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
       <mesh position={[0, 3, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[19, 7, 13]} />
       </mesh>
-      <EasedLight hovered={hovered} on={65} off={45} position={[0, 1.6, 0]} color="#ffce8a" distance={16} decay={2} />
+      <EasedLight hovered={hovered} on={190} off={145} position={[-6, 10, 6]} color="#ffce8a" distance={36} decay={2} />
     </group>
   )
 }
@@ -622,7 +624,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
   )
 }
 
-/* Procedural fire: fbm noise scrolling up two crossed planes, shaped
+/* Procedural fire: fbm noise scrolling up crossed planes, shaped
    into a flame silhouette — the way fire actually flickers, not a cone */
 const FLAME_VERT = /* glsl */ `
 varying vec2 vUv;
@@ -647,14 +649,16 @@ float fbm(vec2 p) {
 void main() {
   vec2 uv = vUv;
   float n = fbm(vec2(uv.x * 3.0 + uTime * 0.3, uv.y * 3.6 - uTime * 2.4));
-  float shape = 1.0 - uv.y;
-  float flame = shape * (0.85 + 0.5 * n) - abs(uv.x - 0.5) * (1.6 + 2.2 * uv.y);
-  float f = smoothstep(0.02, 0.4, flame);
-  float hot = smoothstep(0.25, 0.75, flame);
+  float bend = (n - 0.5) * 0.3 * uv.y;
+  float width = 0.32 * pow(1.0 - uv.y, 0.7);
+  float flame = 1.0 - abs(uv.x - 0.5 + bend) / max(0.015, width);
+  float tongues = fbm(vec2(uv.x * 7.0, uv.y * 5.0 - uTime * 1.8));
+  float f = smoothstep(0.05, 0.8, flame) * smoothstep(0.2, 0.65, tongues + (1.0 - uv.y) * 0.35);
+  float hot = smoothstep(0.35, 0.95, flame) * (1.0 - uv.y);
   vec3 col = mix(vec3(1.0, 0.32, 0.04), vec3(1.0, 0.85, 0.45), hot);
-  float alpha = f * (0.55 + 0.45 * n);
+  float alpha = f * smoothstep(0.0, 0.14, uv.y) * (1.0 - smoothstep(0.75, 1.0, uv.y)) * 0.72;
   if (alpha < 0.02) discard;
-  gl_FragColor = vec4(col * 2.2, alpha);
+  gl_FragColor = vec4(col * 1.8, alpha);
 }`
 
 function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: boolean }) {
@@ -662,7 +666,7 @@ function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: bo
   const grp = useRef<THREE.Group>(null)
   useFrame(({ clock }, delta) => {
     const t = reducedMotion ? 8 : clock.elapsedTime
-    // offset each plane's clock so the two sheets never flicker in lockstep
+    // Offset each plane's clock so the sheets never flicker in lockstep.
     mats.current.forEach((m, i) => {
       if (m) m.uniforms.uTime.value = t + i * 4.7
     })
@@ -670,10 +674,10 @@ function Flame({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: bo
       grp.current.scale.setScalar(THREE.MathUtils.damp(grp.current.scale.x, hovered ? 1.15 : 1, 6, delta))
     }
   })
-  const uniforms = useMemo(() => [{ uTime: { value: 0 } }, { uTime: { value: 0 } }], [])
+  const uniforms = useMemo(() => Array.from({ length: 3 }, () => ({ uTime: { value: 0 } })), [])
   return (
     <group ref={grp} position={[0, 0.28, 0]}>
-      {[0, Math.PI / 2].map((ry, i) => (
+      {[0, Math.PI / 3, Math.PI * 2 / 3].map((ry, i) => (
         <mesh key={i} rotation-y={ry} position={[0, 0.85, 0]}>
           <planeGeometry args={[1.5, 1.9]} />
           <shaderMaterial
@@ -735,7 +739,7 @@ function CampArtifacts() {
   )
 }
 
-/* Contact — a real campfire: a teepee of wooden logs (FLORA wood, lit
+/* Contact — a campfire: a low pile of wooden logs (FLORA wood, lit
    by its own flame), a ring of playa stones, embers rising */
 function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel?: HoverLabel }) {
   const [hovered, handlers] = usePortalHover(def, onLabel)
@@ -753,7 +757,10 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
     // three incommensurate frequencies + an amplitude-modulated term for occasional deep dips
     const flicker = 1 + Math.sin(t * 7.3) * 0.06 + Math.sin(t * 11.9 + 1.7) * 0.05 + Math.sin(t * 0.7) * Math.sin(t * 23.1) * 0.045
     if (light.current) light.current.intensity = (60 + hEased.current * 40) * flicker
-    if (core.current) core.current.scale.setScalar(1 + Math.sin(t * 2.1) * 0.06)
+    if (core.current) {
+      const pulse = 1 + Math.sin(t * 2.1) * 0.06
+      core.current.scale.set(1.2 * pulse, 0.35 * pulse, 1.2 * pulse)
+    }
   })
 
   const { logs, stones } = useMemo(() => {
@@ -762,25 +769,30 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
       return x - Math.floor(x)
     }
     const up = new THREE.Vector3(0, 1, 0)
-    /* nothing about a real woodpile is regular: every log gets its own
-       length, thickness, lean, and one lies fallen outside the teepee */
-    const logs = Array.from({ length: 7 }, (_, i) => {
-      const a = (i / 7) * Math.PI * 2 + 0.4 + (rnd(i, 1) - 0.5) * 0.5
-      const rBase = 1.0 + rnd(i, 2) * 0.35
-      const base = new THREE.Vector3(Math.cos(a) * rBase, 0.08, Math.sin(a) * rBase)
+    // Low crossed layers leave room for flames above the wood instead
+    // of hiding them inside a tall cone of poles.
+    const logs = Array.from({ length: 6 }, (_, i) => {
+      const layer = Math.floor(i / 2)
+      const a = layer * 1.35 + 0.3 + (rnd(i, 1) - 0.5) * 0.25
+      const offset = i % 2 === 0 ? -0.34 : 0.34
+      const halfLength = 0.8 + rnd(i, 2) * 0.3
+      const y = 0.15 + layer * 0.22
+      const base = new THREE.Vector3(
+        -Math.cos(a) * halfLength - Math.sin(a) * offset, y,
+        -Math.sin(a) * halfLength + Math.cos(a) * offset
+      )
       const tip = new THREE.Vector3(
-        Math.cos(a + Math.PI) * (0.05 + rnd(i, 3) * 0.3),
-        1.25 + rnd(i, 4) * 0.45,
-        Math.sin(a + Math.PI) * (0.05 + rnd(i, 3) * 0.3)
+        Math.cos(a) * halfLength - Math.sin(a) * offset, y + (rnd(i, 4) - 0.5) * 0.12,
+        Math.sin(a) * halfLength + Math.cos(a) * offset
       )
       const dir = tip.clone().sub(base)
       const quat = new THREE.Quaternion().setFromUnitVectors(up, dir.clone().normalize())
       return {
         pos: base.clone().add(tip).multiplyScalar(0.5),
         quat,
-        len: dir.length() + 0.15 + rnd(i, 5) * 0.35,
-        r1: 0.045 + rnd(i, 6) * 0.03,
-        r2: 0.06 + rnd(i, 7) * 0.035,
+        len: dir.length(),
+        r1: 0.1 + rnd(i, 6) * 0.04,
+        r2: 0.14 + rnd(i, 7) * 0.05,
         tone: 0.75 + rnd(i, 8) * 0.5,
         twist: rnd(i, 9) * Math.PI,
       }
@@ -790,8 +802,8 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
       pos: new THREE.Vector3(-1.9, 0.09, 1.4),
       quat: new THREE.Quaternion().setFromUnitVectors(up, new THREE.Vector3(0.96, 0.05, 0.28).normalize()),
       len: 1.7,
-      r1: 0.06,
-      r2: 0.08,
+      r1: 0.12,
+      r2: 0.16,
       tone: 0.9,
       twist: 1.2,
     })
@@ -825,9 +837,9 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
           <CampArtifacts />
         </Suspense>
       )}
-      {/* teepee of real logs, each one different, lit by their own fire */}
+      {/* Crossed logs lit by their own fire. */}
       {logs.map((l, i) => (
-        <mesh key={i} position={l.pos} quaternion={l.quat} rotation-order="YXZ">
+        <mesh key={i} position={l.pos} quaternion={l.quat} rotation-order="YXZ" castShadow receiveShadow>
           <cylinderGeometry args={[l.r1, l.r2, l.len, 12]} />
           <meshStandardMaterial
             map={wood}
@@ -848,7 +860,7 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
         />
       ))}
       {/* embers glowing low in the pit */}
-      <mesh ref={core} position={[0, 0.18, 0]} scale={[1.2, 0.5, 1.2]}>
+      <mesh ref={core} position={[0, 0.1, 0]} scale={[1.2, 0.35, 1.2]}>
         <sphereGeometry args={[0.32, 24, 16]} />
         <meshBasicMaterial color={new THREE.Color('#ff7b2d').multiplyScalar(2.8)} toneMapped={false} />
       </mesh>
@@ -1192,7 +1204,7 @@ function Ground() {
   const terrain = useGLBGeometry('/models/terrain.glb')
   if (!terrain) return null
   return (
-    <mesh geometry={terrain}>
+    <mesh geometry={terrain} receiveShadow>
       <meshStandardMaterial
         map={configured}
         bumpMap={configured}
@@ -1218,12 +1230,30 @@ function NightSky() {
     return map
   }, [texture])
   useEffect(() => () => environment.dispose(), [environment])
+  const uniforms = useMemo(() => ({
+    panorama: { value: texture },
+    horizon: { value: new THREE.Color('#0e1113') },
+    tint: { value: new THREE.Color('#596779') },
+  }), [texture])
   return (
     <>
-    <Environment map={environment} environmentIntensity={0.25} />
+    <Environment map={environment} environmentIntensity={0.4} />
     <mesh position={[0, -4, 0]} rotation-y={2.2} renderOrder={-1}>
       <sphereGeometry args={[430, 64, 32]} />
-      <meshBasicMaterial map={texture} color="#343b46" side={THREE.BackSide} fog={false} toneMapped={false} depthWrite={false} />
+      <shaderMaterial
+        uniforms={uniforms}
+        vertexShader={`varying vec2 vUv; varying float elevation;
+          void main() { vUv = uv; elevation = normalize(position).y;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`}
+        fragmentShader={`uniform sampler2D panorama; uniform vec3 horizon; uniform vec3 tint;
+          varying vec2 vUv; varying float elevation;
+          void main() {
+            vec3 sky = texture2D(panorama, vUv).rgb * tint;
+            gl_FragColor = vec4(mix(horizon, sky, smoothstep(-0.015, 0.15, elevation)), 1.0);
+            #include <colorspace_fragment>
+          }`}
+        side={THREE.BackSide} toneMapped={false} depthWrite={false}
+      />
     </mesh>
     </>
   )
@@ -1463,6 +1493,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
   return (
     <>
     <Canvas
+      shadows
       className={labelsReady ? 'night-field-stage is-settled' : 'night-field-stage'}
       dpr={2}
       camera={{ position: [0, 3.2, 22], fov: 48 }}
@@ -1472,17 +1503,20 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
     >
       <color attach="background" args={['#0e1113']} />
       <fog attach="fog" args={['#0e1113', 30, 145]} />
-      <ambientLight intensity={0.05} />
-      <hemisphereLight args={['#161c28', '#0a0908']} intensity={0.18} />
+      <ambientLight intensity={0.1} />
+      <hemisphereLight args={['#161c28', '#0a0908']} intensity={0.3} />
       {/* one consistent moon: cool, high, from the Milky Way side — it
           shades the terrain undulation so the ground reads as ground */}
-      <directionalLight position={[40, 60, -25]} color="#a8b8d0" intensity={0.22} />
+      <directionalLight position={[40, 60, -25]} color="#a8b8d0" intensity={0.42}
+        castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-90} shadow-camera-right={90}
+        shadow-camera-top={90} shadow-camera-bottom={-90} shadow-camera-far={220}
+        shadow-normalBias={0.035} shadow-bias={-0.0001} />
       {/* the far glow behind the ridge, barely */}
       <directionalLight position={[-6, 18, -120]} color="#8a7a68" intensity={0.14} />
 
       {/* flat base under the terrain so nothing shows through while the
           terrain mesh suspends in */}
-      <mesh rotation-x={-Math.PI / 2} position={[0, -0.55, -40]}>
+      <mesh rotation-x={-Math.PI / 2} position={[0, -0.55, -40]} receiveShadow>
         <planeGeometry args={[600, 400]} />
         <meshStandardMaterial color="#14161a" roughness={0.95} metalness={0} />
       </mesh>
