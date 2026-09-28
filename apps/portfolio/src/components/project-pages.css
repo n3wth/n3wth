@@ -64,6 +64,11 @@
 .project-other-list a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 5px; }
 .project-other-list p { line-height: 1.65; margin-top: .5rem; }
 .project-detail { padding-top: 3rem; }
+.project-visual--elephant-goldfish { justify-content: center; align-items: center; }
+.project-plugin-icon { width: min(100%, 256px); height: auto; }
+.project-attribution { max-width: 65ch; }
+.project-attribution p a { text-decoration: underline; text-underline-offset: 4px; }
+.project-attribution p, .project-install > p { margin-block: 1rem; line-height: 1.7; }
 .project-detail-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 4rem; align-items: center; }
 .project-detail-title { font-size: var(--font-size-5xl); letter-spacing: -.04em; line-height: 1.1; font-weight: 600; overflow-wrap: anywhere; }
 .project-detail-purpose { font-size: var(--font-size-2xl); line-height: 1.35; max-width: 25ch; margin-top: 1.5rem; text-wrap: balance; }
