@@ -67,13 +67,12 @@ const routes = [
   {
     path: 'projects/elephant-goldfish',
     title: 'Elephant-Goldfish — Oliver Newth',
-    description: 'A Codex plugin for independent design checks, bug diagnosis, and code review with fresh-context reviewers.',
+    description: 'Check assumptions before you ship. Fresh reviewers question designs, investigate bugs, and inspect changes in Codex.',
     ogImage: '/og/work.png',
-    body: `<h1>Elephant-Goldfish</h1><p>A Codex plugin for independent design checks, bug diagnosis, and code review. The Elephant keeps project context. A fresh Goldfish examines bounded evidence without inheriting the working conversation.</p>
+    body: `<h1>Elephant-Goldfish</h1><p>Check your assumptions before you ship. A fresh reviewer questions a design, investigates a bug, or inspects a change in Codex. It reviews the evidence without inheriting the working conversation.</p>
       <h2>Five workflows</h2><p>Brainstorming, PRDs, feature design, bug diagnosis, and precommit review. Independent checks require fresh subagents. Reviews stay read-only unless changes are requested.</p>
-      <p><a href="/downloads/elephant-goldfish-0.1.0.zip">Download 0.1.0 source</a>. <a href="/downloads/elephant-goldfish/README.md">Documentation</a>. A public directory listing is not yet available.</p>
-      <h2>Sources and attribution</h2><p><a href="https://drensin.medium.com/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874">Dave Rensin</a> introduced the model. <a href="https://github.com/vshvedov/elephant-goldfish/tree/b8ebb3d6b00e39fbb6c619faa27f5bb994091d78">Vladyslav Shvedov</a> published the upstream workflows under the MIT license. Oliver Newth created this independent adaptation and SVG artwork. The bundle preserves the upstream <a href="/downloads/elephant-goldfish/LICENSE">MIT license</a>.</p>
-      <p><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/support">Support</a> · <a href="/projects">All projects</a></p>`,
+      <p><a href="/downloads/elephant-goldfish-0.1.0.zip">Download 0.1.0 source</a>. <a href="https://docs.n3wth.com/elephant-goldfish/quickstart">Documentation</a>.</p>
+      <h2>Sources and attribution</h2><p><a href="https://drensin.medium.com/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874">Dave Rensin</a> introduced the model. <a href="https://github.com/vshvedov/elephant-goldfish/tree/b8ebb3d6b00e39fbb6c619faa27f5bb994091d78">Vladyslav Shvedov</a> published the upstream workflows under the MIT license. Oliver Newth created this independent adaptation. The bundle preserves the upstream <a href="/downloads/elephant-goldfish/LICENSE">MIT license</a>.</p>`,
   },
   {
     path: 'projects',
@@ -182,17 +181,19 @@ const routes = [
     ogImage: '/og/contact.png',
     body: `
       <h1>Contact Oliver Newth</h1>
-      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: hey@n3wth.com</p>`,
+      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: hey@n3wth.com</p>
+      <section id="support"><h2>Support</h2><p>For help with a project, include its name, what you expected, and what happened. Leave out passwords and private data.</p><p><a href="mailto:support@n3wth.com">support@n3wth.com</a> handles n3wth.com, Elephant-Goldfish, lunchmoney.sh, and theywontshutup.com. For hop.flights, email <a href="mailto:support@hop.flights">support@hop.flights</a>.</p></section>`,
   },
   {
     path: 'support',
+    noindex: true,
     title: 'Support — Oliver Newth',
     description:
       'Support for n3wth projects — n3wth.com, hop.flights, lunchmoney.sh, and theywontshutup.com. Email support@n3wth.com.',
     ogImage: '/og-image.png',
     body: `
       <h1>Support</h1>
-      <p>One inbox covers every n3wth project: <a href="mailto:support@n3wth.com">support@n3wth.com</a>.</p>
+      <p>Support is now part of <a href="/contact#support">Contact</a>. Email <a href="mailto:support@n3wth.com">support@n3wth.com</a>.</p>
       <ul>
         <li><a href="https://n3wth.com">n3wth.com</a> — portfolio, writing, and experiments. support@n3wth.com</li>
         <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — flight search and booking tools. support@hop.flights</li>

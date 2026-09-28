@@ -4,6 +4,8 @@ An instruction-only plugin for independent design checks, diagnosis, and code re
 
 ## Use
 
+Read the [quickstart](https://docs.n3wth.com/elephant-goldfish/quickstart) and [workflow reference](https://docs.n3wth.com/elephant-goldfish/workflows).
+
 Select Elephant-Goldfish in a new Codex chat and describe the task, or select a focused bundled skill:
 
 | Skill | Result |
@@ -37,8 +39,6 @@ For local development updates, use the plugin-creator reinstall workflow. Do not
 The plugin has no publisher-operated backend or telemetry. Codex and selected tools still process task data under their own settings and policies. See [privacy](https://n3wth.com/privacy) and [terms](https://n3wth.com/terms). Support: support@n3wth.com.
 
 ## Sources and validation
-
-The plugin includes [12 native SVG assets](assets/README.md): its square master mark and five workflow icons in light and dark palettes. Plugin and skill metadata reference the vector files directly.
 
 See [research and adaptation decisions](references/research.md), [acceptance scenarios](references/acceptance.md), and [upstream license](LICENSE).
 

@@ -1,11 +1,16 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
-import { usePageMeta } from '../hooks/usePageMeta'
-import { track } from '../lib/analytics'
-import { PageHeader, SiteSection, SiteHeading } from '@n3wth/ui/site'
-import { RouterLink } from '../components/RouterLink'
+import { track } from '../../lib/analytics'
+import { SiteSection, SiteHeading } from '@n3wth/ui/site'
+import { RouterLink } from '../RouterLink'
 
 const projects = [
+  {
+    name: 'Elephant-Goldfish',
+    href: '/projects/elephant-goldfish',
+    purpose: 'Design checks, bug diagnosis, and code review in Codex.',
+    contact: 'support@n3wth.com',
+  },
   {
     name: 'n3wth.com',
     href: '/',
@@ -33,18 +38,11 @@ const projects = [
 ]
 
 export default function Support() {
-  usePageMeta(
-    'Support — Oliver Newth',
-    'Support for n3wth projects — n3wth.com, hop.flights, lunchmoney.sh, and theywontshutup.com. Email support@n3wth.com.',
-    { noindex: false }
-  )
-
   return (
-    <section aria-label="Support">
-      <PageHeader data-reveal align="center" className="site-content-gutter" title="Need a hand with something I built?" description={<>
-          One inbox covers everything. Include the product name and what you
-          were doing when things went sideways; screenshots help.
-        </>} actions={
+    <section id="support" aria-label="Support" className="scroll-mt-24">
+      <SiteSection className="site-content-gutter">
+        <SiteHeading level={2}>Support</SiteHeading>
+        <p className="mt-4 mb-6 max-w-2xl">For help with a project, include its name, what you expected, and what happened. Screenshots and steps to reproduce the problem help. Leave out passwords and private data.</p>
           <Button
             label="support@n3wth.com"
             variant="primary"
@@ -52,17 +50,14 @@ export default function Support() {
             clickAction={() => track('support_contact_clicked', { project: 'all', channel: 'email' })}
             endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
           />
-        } />
-
-      <SiteSection data-reveal className="site-content-gutter">
-        <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-10 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <li
               key={project.name}
               className="border-t pt-5"
               style={{ borderColor: 'var(--rail-strong)' }}
             >
-              <SiteHeading variant="item" level={2}>
+              <SiteHeading variant="item" level={3}>
                 <RouterLink href={project.href} className="link-underline">
                   {project.name}
                 </RouterLink>

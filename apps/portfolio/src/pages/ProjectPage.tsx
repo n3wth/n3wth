@@ -3,19 +3,21 @@ import { CodeBlock } from '@n3wth/ui'
 import { SiteSection, SiteHeading } from '@n3wth/ui/site'
 import { projects } from '../data/content'
 import { ProjectVisual } from '../components/ProjectVisual'
+import { ElephantGoldfishExplanation } from '../components/ElephantGoldfishExplanation'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const details = {
   'elephant-goldfish': {
     title: 'Elephant-Goldfish',
-    question: 'Keep context. Bring in fresh eyes.',
-    description: 'A Codex plugin for independent design checks, bug diagnosis, and code review. The Elephant keeps the project context. A fresh Goldfish examines a bounded artifact without inheriting the working conversation.',
-    install: 'Use $eg-precommit-review to review only my staged changes. Do not edit files.',
+    question: 'Check your assumptions before you ship.',
+    description: 'An assistant reviewing its own work already knows why each choice seemed right. Elephant-Goldfish brings a fresh reviewer into Codex to question a design, investigate a bug, or inspect a change. It reviews the evidence without inheriting the working conversation.',
+    install: 'Review my staged changes with Elephant-Goldfish.\nReport findings without editing files.',
     sections: [
-      ['Five workflows', 'Brainstorm alternatives, draft a PRD, check a feature design, diagnose a bug, or review pending changes. Each workflow gives the reviewer a specific question and evidence to inspect.'],
-      ['Bounded review', 'Independent checks require fresh subagents. Reviews stay read-only unless you request changes. The default is one initial pass and at most two revision rounds. Fresh context is not a security sandbox.'],
+      ['Before you build', 'Challenge an idea, clarify the requirements, and find unanswered questions in a design before committing to an approach.'],
+      ['When a bug resists a fix', 'Give a fresh reviewer the symptoms and reproduction. Compare its diagnosis with yours before making another change.'],
+      ['Before you commit', 'Review the exact change you intend to ship. Get findings tied to evidence, with a clear account of what was checked.'],
     ],
-    docs: '/downloads/elephant-goldfish/README.md',
+    docs: 'https://docs.n3wth.com/elephant-goldfish/quickstart',
     source: '/downloads/elephant-goldfish-0.1.0.zip',
   },
   r3: {
@@ -104,20 +106,23 @@ export default function ProjectPage() {
     </header>
     <SiteSection className="site-content-gutter">
       <div className="project-detail-body">
+        {slug === 'elephant-goldfish' && <div className="project-detail-notes">
+          {detail.sections.map(([heading, body]) => <article key={heading}><SiteHeading variant="item" level={2}>{heading}</SiteHeading><p>{body}</p></article>)}
+        </div>}
+        {slug === 'elephant-goldfish' && <ElephantGoldfishExplanation />}
         <div className="project-install">
-          <SiteHeading level={2}>{slug === 'elephant-goldfish' ? 'Use in Codex' : 'Install'}</SiteHeading>
-          {slug === 'elephant-goldfish' && <p>Download the source bundle and add it through your Codex plugin development or marketplace setup. Then select Elephant-Goldfish in a new chat. A public directory listing is not yet available.</p>}
+          <SiteHeading level={2}>{slug === 'elephant-goldfish' ? 'Try it on your next change' : 'Install'}</SiteHeading>
+          {slug === 'elephant-goldfish' && <p>After <a className="link-underline" href={detail.docs}>installing the plugin</a>, open your repository in Codex and ask:</p>}
           <CodeBlock code={detail.install} language={slug === 'elephant-goldfish' ? 'text' : 'bash'} size="sm" isWrapped showCopyButton />
         </div>
         {slug === 'elephant-goldfish' && <section className="project-attribution n3wth-site-prose">
           <SiteHeading level={2}>Sources and attribution</SiteHeading>
-          <p><a href="https://drensin.medium.com/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874">Dave Rensin</a> introduced the Elephant-Goldfish model. <a href="https://github.com/vshvedov/elephant-goldfish/tree/b8ebb3d6b00e39fbb6c619faa27f5bb994091d78">Vladyslav Shvedov</a> published the five upstream workflows under the MIT license. Oliver Newth adapted them for this Codex plugin and created its SVG artwork.</p>
+          <p><a href="https://drensin.medium.com/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874">Dave Rensin</a> introduced the Elephant-Goldfish model. <a href="https://github.com/vshvedov/elephant-goldfish/tree/b8ebb3d6b00e39fbb6c619faa27f5bb994091d78">Vladyslav Shvedov</a> published the five upstream workflows under the MIT license. Oliver Newth adapted them for this Codex plugin.</p>
           <p>This is an independent adaptation. The bundle preserves the upstream <a href="/downloads/elephant-goldfish/LICENSE">MIT license and copyright notice</a>. Its research notes document the adaptation.</p>
-          <div className="project-actions"><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link><Link to="/support">Support</Link></div>
         </section>}
-        <div className="project-detail-notes">
+        {slug !== 'elephant-goldfish' && <div className="project-detail-notes">
           {detail.sections.map(([heading, body]) => <article key={heading}><SiteHeading variant="item" level={2}>{heading}</SiteHeading><p>{body}</p></article>)}
-        </div>
+        </div>}
       </div>
     </SiteSection>
   </>
