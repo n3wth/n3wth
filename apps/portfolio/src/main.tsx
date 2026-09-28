@@ -1,6 +1,6 @@
 import { StrictMode, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider, useLoaderData, useRouteError, isRouteErrorResponse } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate, useLoaderData, useRouteError, isRouteErrorResponse } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { flushAnalytics } from './lib/analytics'
@@ -21,7 +21,6 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 const ErrorPage = lazy(() => import('./pages/ErrorPage'))
 const Login = lazy(() => import('./pages/Login'))
 const Logout = lazy(() => import('./pages/Logout'))
-const Support = lazy(() => import('./pages/Support'))
 const Elsa = lazy(() => import('./pages/Elsa'))
 const Billy = lazy(() => import('./pages/Billy'))
 const ProjectPage = lazy(() => import('./pages/ProjectPage'))
@@ -102,7 +101,7 @@ const router = createBrowserRouter([
       { path: 'error', element: <ErrorPage /> },
       { path: 'login', element: <Login /> },
       { path: 'logout', element: <Logout /> },
-      { path: 'support', element: <Support /> },
+      { path: 'support', element: <Navigate to="/contact#support" replace /> },
       { path: 'elsa', element: <Elsa /> },
       { path: 'billy', element: <Billy /> },
       { path: 'privacy', element: <Privacy /> },

@@ -180,6 +180,13 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'elephant-goldfish',
+    name: 'Elephant-Goldfish',
+    description: 'A Codex plugin for design checks, bug diagnosis, and code review. Fresh reviewers examine bounded evidence without inheriting the working conversation.',
+    tech: ['Codex', 'Agent Skills'],
+    url: '/projects/elephant-goldfish',
+  },
+  {
     id: 'markup',
     name: 'markup',
     description: 'An independent prototype I built to explore personal AI agents working alongside people in shared documents and chat. Visible cursors and edits make agent activity easier to follow.',
