@@ -1,7 +1,7 @@
 ---
-title: "Quickstart"
+title: "Connect r3 to your MCP client"
 sidebarTitle: "Quickstart"
-description: "Connect r3 to an MCP client and verify memory persistence across conversations. No accounts or API keys required."
+description: "Connect r3 to an MCP client, store a test memory, and check that a new conversation can retrieve it."
 keywords:
   - "r3"
   - "MCP"
@@ -13,7 +13,7 @@ keywords:
 ---
 
 r3 is a local-first memory server for MCP clients. It stores facts and
-conversation context through tools over standard input and output. This page shows you how to connect r3 to your MCP client, write a memory, and read it back after a restart.
+conversation context through tools over standard input and output. This guide connects your client, writes a test memory, and reads it back in a new conversation.
 
 ## How it works
 
@@ -82,7 +82,7 @@ Your MCP client launches r3 over stdio. r3 stores memory locally in three layers
     Remember that I prefer TypeScript and dark mode.
     ```
 
-    The client calls `add_memory` with your message. You should see a confirmation like `Saved`.
+    Confirm that the client calls `add_memory` with your message. A `Saved` response acknowledges the request; the next step checks retrieval.
   </Step>
   <Step title="Read it back in a new conversation">
     Start a new conversation and ask:
@@ -91,9 +91,13 @@ Your MCP client launches r3 over stdio. r3 stores memory locally in three layers
     What are my preferences?
     ```
 
-    The client calls `search_memory` and should return `You prefer TypeScript and dark mode.`
+    Confirm that the client calls `search_memory` and returns the preference you stored. An answer drawn from the current conversation does not verify retrieval. If the result is missing, see [Troubleshooting](/r3/troubleshooting).
   </Step>
 </Steps>
+
+## Check persistence separately
+
+A new conversation and a server restart are different checks. Restart r3 from the same working directory, then retrieve your test memory again. Review the [storage limitations](/r3/configuration#storage-backends) before relying on restart persistence. Keep an independent copy of data you cannot lose.
 
 <Note>
   Some macOS installations need a newer GNU Make to build the embedded Redis dependency. If installation fails, see [Troubleshooting](/r3/troubleshooting).
