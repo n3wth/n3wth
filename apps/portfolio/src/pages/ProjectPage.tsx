@@ -14,7 +14,6 @@ const details = {
     sections: [
       ['Five workflows', 'Brainstorm alternatives, draft a PRD, check a feature design, diagnose a bug, or review pending changes. Each workflow gives the reviewer a specific question and evidence to inspect.'],
       ['Bounded review', 'Independent checks require fresh subagents. Reviews stay read-only unless you request changes. The default is one initial pass and at most two revision rounds. Fresh context is not a security sandbox.'],
-      ['Version 0.1.0', 'An instruction-only package with six skills and original SVG icons. No server, credentials, hooks, or plugin telemetry. Normal Codex model and tool use still applies.'],
     ],
     docs: '/downloads/elephant-goldfish/README.md',
     source: '/downloads/elephant-goldfish-0.1.0.zip',
