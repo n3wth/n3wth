@@ -1,4 +1,5 @@
-.thinking-page { margin-inline: auto; padding-block-start: clamp(2rem, 5svh, 4rem); }
+/* Appending results must not anchor the viewport to the artwork below them. */
+.thinking-page { overflow-anchor: none; margin-inline: auto; padding-block-start: clamp(2rem, 5svh, 4rem); }
 .writing-index { padding-block: 1.5rem var(--n3wth-section-space, 4rem); scroll-margin-top: 7rem; }
 .writing-search { min-width: 0; margin-bottom: .75rem; }
 .writing-control { min-height: 44px; }
