@@ -67,6 +67,7 @@ Use selective Further reading previews after an article: publisher, linked title
 - Clicking to a different page starts at the top. Explicit anchor links go to their targets. Preserve browser Back scroll restoration.
 - Give controls visible keyboard focus and usable touch targets. Expose selected state for real controls, not decorative navigation that scrolls away.
 - Use functional motion sparingly and respect reduced motion. Demonstrations must use the actual documented API.
+- Software WebGL keeps the portfolio scene's models, textures and navigation at native pixel resolution, without shadow maps, environment reflections or postprocessing. Hardware rendering retains the full effects. Test navigation during a deliberately held scene load separately from scene readiness.
 
 ## Review
 

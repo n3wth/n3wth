@@ -6,6 +6,7 @@ import { siteConfig } from '../data/content'
 import { PageHeader, SiteText } from '@n3wth/ui/site'
 import { Button } from '@n3wth/ui/primitives'
 import { track } from '../lib/analytics'
+import { getSceneGraphics } from '../lib/sceneGraphics'
 
 /* The front door is a field at night (three.js, lazy so the rest of the
    site never pays for it): every glowing structure is one of Oliver's
@@ -26,15 +27,6 @@ function StaticNight() {
       className="absolute inset-0 h-full w-full object-cover"
     />
   )
-}
-
-function webglSupported(): boolean {
-  try {
-    const c = document.createElement('canvas')
-    return !!(c.getContext('webgl2') || c.getContext('webgl'))
-  } catch {
-    return false
-  }
 }
 
 /* Catches three.js/context crashes at runtime and swaps in the still. */
@@ -60,7 +52,7 @@ export default function Home() {
     () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     []
   )
-  const webglOk = useMemo(() => webglSupported(), [])
+  const graphics = useMemo(() => getSceneGraphics(), [])
 
   const onEnter = useCallback(
     (href: string, external?: boolean) => {
@@ -76,7 +68,7 @@ export default function Home() {
   return (
     <>
     <section aria-label="Explore the night scene" className="bleed relative -mt-24" style={{ height: '100svh' }}>
-      {webglOk ? (
+      {graphics !== 'unavailable' ? (
         <SceneBoundary>
           <Suspense
             fallback={(
@@ -93,7 +85,7 @@ export default function Home() {
               </div>
             )}
           >
-            <NightField onEnter={onEnter} reducedMotion={reducedMotion} />
+            <NightField onEnter={onEnter} reducedMotion={reducedMotion} softwareRendering={graphics === 'software'} />
           </Suspense>
         </SceneBoundary>
       ) : (

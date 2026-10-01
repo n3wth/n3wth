@@ -501,21 +501,36 @@ test('home keeps ordinary writing navigation when WebGL is unavailable', async (
 })
 
 test('home primary navigation works before the scene settles', async ({ page }) => {
-  await page.goto('/')
-  await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
-  const navigation = page.locator('#primary-navigation')
-  if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {
-    await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+  // Hold the lazy scene module so navigation is tested during loading,
+  // independently of the runner's graphics speed. Full scene coverage stays above.
+  let releaseScene!: () => void
+  let sceneRequested = false
+  const sceneReady = new Promise<void>(resolve => { releaseScene = resolve })
+  await page.route('**/assets/NightField-*.js', async route => {
+    sceneRequested = true
+    await sceneReady
+    await route.continue().catch(() => {}) // The page may have closed after a failed assertion.
+  })
+  try {
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
+    await expect.poll(() => sceneRequested).toBe(true)
+    await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
+    const navigation = page.locator('#primary-navigation')
+    if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {
+      await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+    }
+    for (const name of ['Work', 'Art', 'Thinking', 'Library']) {
+      const link = navigation.getByRole('link', { name, exact: true })
+      await expect(link).toBeVisible()
+      const box = await link.boundingBox()
+      expect(box?.height).toBeGreaterThanOrEqual(44)
+    }
+    await expect(page.locator('h1')).toHaveCount(1)
+    await navigation.getByRole('link', { name: 'Work', exact: true }).click()
+    await expect(page).toHaveURL(/\/work$/)
+  } finally {
+    releaseScene()
   }
-  for (const name of ['Work', 'Art', 'Thinking', 'Library']) {
-    const link = navigation.getByRole('link', { name, exact: true })
-    await expect(link).toBeVisible()
-    const box = await link.boundingBox()
-    expect(box?.height).toBeGreaterThanOrEqual(44)
-  }
-  await expect(page.locator('h1')).toHaveCount(1)
-  await navigation.getByRole('link', { name: 'Work', exact: true }).click()
-  await expect(page).toHaveURL(/\/work$/)
 })
 
 test('primary navigation opens Work', async ({ page }) => {
