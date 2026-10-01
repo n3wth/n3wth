@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import { StoryScene } from '../StoryScene'
+import './shelf.css'
 
 /** Library sections retain heading anchors for direct links and search. */
 export function Shelf({
@@ -18,25 +20,28 @@ export function Shelf({
     <section
       id={id}
       aria-labelledby={`${id}-title`}
-      className="section-pad !py-0 mt-16 scroll-mt-24 md:mt-24"
+      className="section-pad library-shelf scroll-mt-24"
     >
-      <div className="border-t pt-8 md:pt-11" style={{ borderColor: 'var(--rail)' }}>
-        <div data-reveal>
-          <h2
-            id={`${id}-title`}
-            className="display text-[clamp(1.55rem,2.9vw,2.35rem)]"
-            style={{ letterSpacing: '-0.03em', lineHeight: 1.02 }}
-          >
-            <a href={`#${id}`} className="link-underline">{title}</a>
-          </h2>
-          {meta && <p className="mt-3 text-sm" style={{ color: 'var(--ink-dim)' }}>{meta}</p>}
+      <div>
+        <div className="library-shelf-opening">
+          <div>
+            <h2
+              id={`${id}-title`}
+              className="display library-shelf-title"
+              style={{ letterSpacing: '-0.03em', lineHeight: 1.02 }}
+            >
+              <a href={`#${id}`} className="link-underline">{title}</a>
+            </h2>
+            {meta && <p className="mt-3 text-sm" style={{ color: 'var(--ink-dim)' }}>{meta}</p>}
 
-          <p
-            className="mt-5 max-w-[64ch] text-base leading-relaxed md:text-lg"
-            style={{ color: 'var(--ink-dim)' }}
-          >
-            {intro}
-          </p>
+            <p
+              className="mt-5 max-w-[64ch] text-base leading-relaxed md:text-lg"
+              style={{ color: 'var(--ink-dim)' }}
+            >
+              {intro}
+            </p>
+          </div>
+          <StoryScene kind="library" />
         </div>
 
         {children}

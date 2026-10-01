@@ -1,0 +1,15 @@
+.library-shelf { padding-block: 0; margin-top: clamp(3rem, 8svh, 6rem); }
+.library-shelf-opening {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 3rem;
+  min-height: 60svh;
+  padding-block: 2rem;
+}
+.library-shelf-title { font-size: clamp(2rem, 4vw, 3.5rem); }
+.library-shelf-title a { display: inline-block; padding-block: .25rem; }
+@media (max-width: 767px) {
+  .library-shelf-opening { grid-template-columns: minmax(0, 1fr); gap: 0; min-height: auto; }
+  .library-shelf-opening > .story-scene { grid-row: 1; height: 18rem; }
+}

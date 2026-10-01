@@ -50,7 +50,7 @@ export default function Support() {
             clickAction={() => track('support_contact_clicked', { project: 'all', channel: 'email' })}
             endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
           />
-        <ul className="mt-10 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="contact-support-list">
           {projects.map((project) => (
             <li
               key={project.name}

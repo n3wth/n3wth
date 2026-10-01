@@ -97,6 +97,33 @@ test('Art uses each installation image once', async ({ page }) => {
   expect(images).toHaveLength(3)
   expect(new Set(images).size).toBe(3)
 })
+
+test('content scenes stay separate from text and pause independently', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  for (const route of ['/work', '/thinking', '/library', '/contact']) {
+    await page.goto(route)
+    const scene = page.locator('.story-scene').first()
+    const artwork = scene.locator('svg')
+    await expect(artwork).toHaveAttribute('data-story-paused', '')
+    await scene.scrollIntoViewIfNeeded()
+    await expect(artwork).not.toHaveAttribute('data-story-paused', '')
+    await expect(scene).toHaveAttribute('aria-hidden', 'true')
+    expect(await scene.locator('a, button, input').count()).toBe(0)
+    if (page.viewportSize()!.width >= 1024 && ['/work', '/thinking'].includes(route)) {
+      const content = await page.locator('.story-layout-content').boundingBox()
+      const bounds = await scene.boundingBox()
+      expect(content!.x + content!.width).toBeLessThanOrEqual(bounds!.x)
+      await page.evaluate(() => scrollBy(0, 250))
+      expect((await scene.boundingBox())!.y).toBeGreaterThanOrEqual(95)
+    }
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await expect(artwork).toHaveAttribute('data-story-paused', '')
+    await expect.poll(() => artwork.evaluate(svg => svg.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length)).toBe(0)
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.evaluate(() => scrollTo(0, 0))
+    await expect(artwork).toHaveAttribute('data-story-paused', '')
+  }
+})
 import { expectSiteFoundation } from './site-foundation'
 
 test.beforeEach(async ({ page }) => {
@@ -333,7 +360,6 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
     for (const route of ['/art', '/work', '/thinking', '/projects', '/library', '/contact']) {
       await page.goto(route)
       const hero = page.locator('.portfolio-story-hero')
-      await expect(hero).toHaveAttribute('data-visible', 'true')
       await expect(hero.locator('.section-story svg')).toBeVisible()
       const artwork = hero.locator('.section-story svg')
       if (reducedMotion === 'reduce') {
@@ -346,7 +372,6 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
       }
       if (route !== '/contact') {
         await page.locator('footer').scrollIntoViewIfNeeded()
-        await expect(hero).toHaveAttribute('data-visible', 'false')
         await expect(artwork).toHaveAttribute('data-story-paused', '')
         const paused = await artwork.innerHTML()
         await page.waitForTimeout(150)
