@@ -95,11 +95,11 @@ export default function Terms() {
 
         <SiteDocSection title="Elsa and Billy assistant SMS">
           <SiteText>
-            By texting START, HELLO, or a first message to Elsa at{' '}
-            <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> after reading the
+            By texting START to Elsa at{' '}
+            <strong style={{ color: 'var(--ink)' }}>+1 (463) 258-8004</strong> after reading the
             disclosures on{' '}
             <RouterLink href="/elsa" className="link-underline">https://n3wth.com/elsa</RouterLink>,
-            or to Billy at <strong style={{ color: 'var(--ink)' }}>+1 (463) 258-8004</strong> after
+            or to Billy at <strong style={{ color: 'var(--ink)' }}>+1 (415) 718-0992</strong> after
             reading the disclosures on{' '}
             <RouterLink href="/billy" className="link-underline">https://n3wth.com/billy</RouterLink>,
             you agree to the messaging terms on that page.

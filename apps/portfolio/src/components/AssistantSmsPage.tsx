@@ -115,8 +115,8 @@ export default function AssistantSmsPage({ line }: { line: AssistantSmsLine }) {
         <SiteDocSection title={`How to text ${line.object}`}>
           <SiteText>
             There is no website signup form, phone number field, or SMS consent checkbox on
-            n3wth.com. Consumers opt in only by voluntarily texting {strong('START')},{' '}
-            {strong('HELLO')}, or a first message to {strong(display)} after reading this page.
+            n3wth.com. Consumers opt in only by voluntarily texting {strong('START')} to{' '}
+            {strong(display)} after reading this page.
             SMS is optional and is not required to use n3wth.com.
           </SiteText>
           <div className="flex flex-col gap-3">
@@ -126,7 +126,7 @@ export default function AssistantSmsPage({ line }: { line: AssistantSmsLine }) {
               </a>
             </SiteHeading>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-              Tap to open Messages and send START, HELLO, or any first message.
+              Tap to open Messages and send START.
             </p>
             <Button label={`Text ${name}`} variant="primary" size="md" href={sms} />
           </div>
@@ -161,7 +161,7 @@ export default function AssistantSmsPage({ line }: { line: AssistantSmsLine }) {
               <SiteDocList
                 items={[
                   <>
-                    Text {strong('START')}, {strong('HELLO')}, or a first message to{' '}
+                    Text {strong('START')} to{' '}
                     <a href={sms} className="link-underline">
                       {display}
                     </a>{' '}
@@ -201,7 +201,7 @@ export default function AssistantSmsPage({ line }: { line: AssistantSmsLine }) {
             required to browse the site, contact Oliver, or use other n3wth.com services.
           </SiteText>
           <SiteText>
-            By texting START, HELLO, or a first message to {display} after reading this page, you
+            By texting START to {display} after reading this page, you
             agree to receive automated assistant and transactional SMS messages from {name}{' '}
             (n3wth.com / Oliver Grosvenor-Newth, sole proprietor). Message frequency varies. Message
             and data rates may apply. Reply STOP to opt out. Consent is not a condition of purchase.
