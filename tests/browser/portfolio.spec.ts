@@ -1,5 +1,42 @@
 import { test, expect } from '@playwright/test'
 
+test('section exits continue in the app and start the next page at the top', async ({ page }, testInfo) => {
+  await page.goto('/work')
+  const continuation = page.getByRole('navigation', { name: 'Continue exploring' })
+  await continuation.scrollIntoViewIfNeeded()
+  await expect(continuation.getByRole('link')).toHaveCount(2)
+  await page.screenshot({ path: testInfo.outputPath('work-continuation.png') })
+  await page.evaluate(() => { document.documentElement.dataset.flowCheck = 'same-document' })
+  await continuation.getByRole('link', { name: 'Projects Tools and experiments.' }).click()
+  await expect(page).toHaveURL(/\/projects$/)
+  await expect(page.locator('main h1')).toHaveText('Projects')
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+  await expect(page.locator('html')).toHaveAttribute('data-flow-check', 'same-document')
+  await page.locator('footer').getByRole('link', { name: 'Contact', exact: true }).click()
+  await expect(page.locator('main h1')).toHaveText('Contact')
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+  await expect(page.locator('html')).toHaveAttribute('data-flow-check', 'same-document')
+  await page.goto('/thinking/frameworks/5-whys')
+  await expect(page.getByRole('navigation', { name: 'Continue exploring' })).toHaveCount(0)
+})
+
+test('compact section content follows the hero before secondary artwork', async ({ page }, testInfo) => {
+  test.skip(page.viewportSize()!.width >= 1024, 'Compact layout only')
+  for (const route of ['/work', '/thinking']) {
+    await page.goto(route)
+    const content = page.locator('.story-layout-content')
+    await expect(content).toBeVisible()
+    const hero = await page.locator('.portfolio-story-hero').boundingBox()
+    const bounds = await content.boundingBox()
+    const scene = await page.locator('.story-layout > .story-scene').boundingBox()
+    expect(bounds!.y - (hero!.y + hero!.height)).toBeLessThan(180)
+    expect(scene!.y).toBeGreaterThanOrEqual(bounds!.y + bounds!.height - 1)
+    await content.locator('h2, input').first().scrollIntoViewIfNeeded()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-content.png`) })
+  }
+})
+
 test('projects artwork fills the viewport behind lower copy', async ({ page }) => {
   for (const width of [390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 })
@@ -164,12 +201,16 @@ test('Thinking loads more writing on scroll and restores its collection and filt
   await page.goto('/thinking')
   await expect(page.getByRole('heading', { level: 1, name: 'Thinking', exact: true })).toBeVisible()
   await expect(page.locator('.writing-results > li')).toHaveCount(24)
+  const unfilteredResults = await page.getByRole('status').innerText()
   await page.getByLabel('Search writing', { exact: true }).scrollIntoViewIfNeeded()
   const scrollBeforeSearch = await page.evaluate(() => scrollY)
   await page.getByLabel('Search writing', { exact: true }).fill('agents')
   await expect(page).toHaveURL(/q=agents#notes$/)
+  await expect(page.getByLabel('Search writing', { exact: true })).toHaveValue('agents')
   expect(await page.evaluate(() => scrollY)).toBe(scrollBeforeSearch)
   await page.getByLabel('Search writing', { exact: true }).fill('')
+  await expect(page).toHaveURL(/\/thinking#notes$/)
+  await expect(page.getByRole('status')).toHaveText(unfilteredResults)
   await page.getByRole('navigation', { name: 'Writing format' }).getByRole('link', { name: 'Articles', exact: true }).click()
   await expect(page.getByRole('status')).toHaveText('21 results')
   await page.getByRole('navigation', { name: 'Writing format' }).getByRole('link', { name: 'Notes', exact: true }).click()
@@ -460,21 +501,36 @@ test('home keeps ordinary writing navigation when WebGL is unavailable', async (
 })
 
 test('home primary navigation works before the scene settles', async ({ page }) => {
-  await page.goto('/')
-  await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
-  const navigation = page.locator('#primary-navigation')
-  if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {
-    await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+  // Hold the lazy scene module so navigation is tested during loading,
+  // independently of the runner's graphics speed. Full scene coverage stays above.
+  let releaseScene!: () => void
+  let sceneRequested = false
+  const sceneReady = new Promise<void>(resolve => { releaseScene = resolve })
+  await page.route('**/assets/NightField-*.js', async route => {
+    sceneRequested = true
+    await sceneReady
+    await route.continue().catch(() => {}) // The page may have closed after a failed assertion.
+  })
+  try {
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
+    await expect.poll(() => sceneRequested).toBe(true)
+    await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
+    const navigation = page.locator('#primary-navigation')
+    if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {
+      await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+    }
+    for (const name of ['Work', 'Art', 'Thinking', 'Library']) {
+      const link = navigation.getByRole('link', { name, exact: true })
+      await expect(link).toBeVisible()
+      const box = await link.boundingBox()
+      expect(box?.height).toBeGreaterThanOrEqual(44)
+    }
+    await expect(page.locator('h1')).toHaveCount(1)
+    await navigation.getByRole('link', { name: 'Work', exact: true }).click()
+    await expect(page).toHaveURL(/\/work$/)
+  } finally {
+    releaseScene()
   }
-  for (const name of ['Work', 'Art', 'Thinking', 'Library']) {
-    const link = navigation.getByRole('link', { name, exact: true })
-    await expect(link).toBeVisible()
-    const box = await link.boundingBox()
-    expect(box?.height).toBeGreaterThanOrEqual(44)
-  }
-  await expect(page.locator('h1')).toHaveCount(1)
-  await navigation.getByRole('link', { name: 'Work', exact: true }).click()
-  await expect(page).toHaveURL(/\/work$/)
 })
 
 test('primary navigation opens Work', async ({ page }) => {

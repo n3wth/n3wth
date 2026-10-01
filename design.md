@@ -61,11 +61,13 @@ Original diagrams stay in SVG format and follow the surrounding page's color sch
 
 Use selective Further reading previews after an article: publisher, linked title and a short explanation of its value. Keep them flat and within the reading column, using existing type and spacing. Do not turn every citation into a card or load remote thumbnails without verified reuse rights.
 
+- Portfolio section indexes end with two relevant section links before the footer. Keep these flat, with destination names and short descriptions. Reading pages retain their own related-content navigation. On compact screens, Work and Thinking put content before their secondary artwork; experience entries use content-driven heights.
 - Pages appear immediately. No default entry fades, sliding page transitions, staggered text or reveal observers hiding content.
 - Establish canvas, theme and navigation colors before first paint. Server output and client theme state must agree; test both saved preferences and system preference where supported.
 - Clicking to a different page starts at the top. Explicit anchor links go to their targets. Preserve browser Back scroll restoration.
 - Give controls visible keyboard focus and usable touch targets. Expose selected state for real controls, not decorative navigation that scrolls away.
 - Use functional motion sparingly and respect reduced motion. Demonstrations must use the actual documented API.
+- Software WebGL keeps the portfolio scene's models, textures and navigation at native pixel resolution, without shadow maps, environment reflections or postprocessing. Hardware rendering retains the full effects. Test navigation during a deliberately held scene load separately from scene readiness.
 
 ## Review
 

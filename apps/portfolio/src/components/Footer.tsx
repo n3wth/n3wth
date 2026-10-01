@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { submitNewsletter, newsletterErrorMessage } from '@n3wth/site-config/newsletter'
 import { SiteFooter, SiteSignup } from '@n3wth/ui/site'
 import { siteConfig } from '../data/content'
@@ -16,9 +17,9 @@ export function Footer() {
     trackSignup()
   }
   return <SiteFooter brand={null} inlineSignup data-nosnippet signup={<SiteSignup compact onSubmit={subscribe} errorMessage={errorMessage} />} links={<>
-    <a href="/contact">Contact</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/terms">Terms</a>
+    <Link to="/contact">Contact</Link>
+    <Link to="/privacy">Privacy</Link>
+    <Link to="/terms">Terms</Link>
     <a href={siteConfig.social.github} onClick={() => trackOutbound(siteConfig.social.github, 'footer')}>GitHub</a>
   </>} />
 }

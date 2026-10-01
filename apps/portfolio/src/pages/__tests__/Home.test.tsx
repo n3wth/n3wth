@@ -17,7 +17,7 @@ afterEach(() => {
 describe('Homepage without a ready scene', () => {
   it.each([false, true])('keeps identity available (WebGL: %s)', (webgl) => {
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(
-      webgl ? {} as WebGLRenderingContext : null
+      webgl ? { getExtension: () => null, getParameter: () => 'hardware' } as unknown as WebGLRenderingContext : null
     )
 
     render(<MemoryRouter><Nav /><Home /></MemoryRouter>)
