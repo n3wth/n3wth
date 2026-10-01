@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Github } from 'lucide-react'
 import { SiteHeading } from '@n3wth/ui/site'
-import { projects } from '../data/content'
+import { projects, sections } from '../data/content'
 import { ProjectVisual } from '../components/ProjectVisual'
 import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
@@ -25,7 +25,7 @@ export default function Projects() {
   })
 
   return <>
-    <SectionHeader as="h1" story="projects" title="Projects" lede="Tools and experiments." />
+    <SectionHeader as="h1" story="projects" title={sections.projects.name} lede={sections.projects.description} />
     <div className="site-content-gutter project-index">
       {['ui', 'r3', 'skills'].map(slug => {
         const project = projects.find(item => item.id === slug)!

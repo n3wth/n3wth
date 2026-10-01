@@ -3,6 +3,7 @@ import { SectionHeader } from '../Frame'
 import './art.css'
 import {
   installations,
+  sections,
   type CreditLink,
   type Installation,
 } from '../../data/content'
@@ -81,7 +82,7 @@ function WorkCredit({ inst }: { inst: Installation }) {
 export function Creative() {
   return (
     <section aria-label="Art" className="art-exhibition">
-      <SectionHeader as="h1" story="art" title="Art" lede="Large-scale light installations." />
+      <SectionHeader as="h1" story="art" title={sections.art.name} lede={sections.art.description} />
       <figure id={opener.id} className="art-opening m-0">
         <div className="art-opening-scene">
           <div className="art-opening-image">

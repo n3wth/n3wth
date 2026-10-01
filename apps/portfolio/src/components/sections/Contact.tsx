@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
-import { siteConfig } from '../../data/content'
+import { siteConfig, sections } from '../../data/content'
 import { SectionHeader } from '../Frame'
 import { StoryScene } from '../StoryScene'
 import './contact.css'
@@ -14,8 +14,8 @@ export function Contact() {
       <SectionHeader
         as="h1"
         story="contact"
-        title="Contact"
-        lede="Product, AI, art, or coffee."
+        title={sections.contact.name}
+        lede={sections.contact.description}
       />
       <div className="site-content-gutter contact-invitation">
         <div className="contact-invitation-actions">

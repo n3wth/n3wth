@@ -1,19 +1,9 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
+import { sections } from '../data/content'
 import './pageContinuation.css'
 
-const destinations = {
-  work: { title: 'Work', description: 'Building AI products.' },
-  projects: { title: 'Projects', description: 'Tools and experiments.' },
-  thinking: { title: 'Thinking', description: 'AI, design, and everyday life.' },
-  art: { title: 'Art', description: 'Large-scale light installations.' },
-  library: { title: 'Library', description: 'Notes, components, and skills.' },
-  contact: { title: 'Contact', description: 'Product, AI, art, or coffee.' },
-} as const
-
-type Destination = keyof typeof destinations
-
-const connections: Record<string, readonly Destination[]> = {
+const connections: Record<string, readonly (keyof typeof sections)[]> = {
   '/work': ['projects', 'contact'],
   '/projects': ['library', 'thinking'],
   '/thinking': ['projects', 'art'],
@@ -31,10 +21,10 @@ export function PageContinuation({ pathname }: { pathname: string }) {
     <nav className="site-content-gutter page-continuation" aria-label="Continue exploring">
       <div className="page-continuation-links">
         {next.map(slug => (
-          <Link key={slug} to={`/${slug}`}>
-            <span className="page-continuation-title">{destinations[slug].title}</span>
+          <Link key={slug} to={sections[slug].href}>
+            <span className="page-continuation-title">{sections[slug].name}</span>
             <ArrowRight size={20} aria-hidden="true" />
-            <span className="page-continuation-description">{destinations[slug].description}</span>
+            <span className="page-continuation-description">{sections[slug].description}</span>
           </Link>
         ))}
       </div>
