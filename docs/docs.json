@@ -10,8 +10,8 @@
   "fonts": {
     "heading": {
       "family": "Suisse Intl",
-      "weight": 600,
-      "source": "https://cdn.n3wth.com/fonts/SuisseIntl-Semibold.woff2",
+      "weight": 500,
+      "source": "https://cdn.n3wth.com/fonts/SuisseIntl-Medium.woff2",
       "format": "woff2"
     },
     "body": {

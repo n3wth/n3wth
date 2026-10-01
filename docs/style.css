@@ -18,7 +18,7 @@
   margin-left: 0;
 }
 
-/* Keep article headings semibold across all heading levels. */
+/* Use the lighter heading face consistently across article heading levels. */
 #content-area :is(h1, h2, h3, h4, h5, h6) {
-  font-weight: 600;
+  font-weight: 500;
 }
