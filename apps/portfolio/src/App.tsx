@@ -5,6 +5,7 @@ import { LinkProvider } from '@n3wth/ui/primitives'
 import { RouterLink } from './components/RouterLink'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
+import { PageContinuation } from './components/PageContinuation'
 import { CommandPalette } from './components/CommandPalette'
 import { useCommandPalette } from './hooks/useCommandPalette'
 import { useKonamiCode } from './hooks/useKonamiCode'
@@ -94,6 +95,7 @@ function App() {
             <div className="frame">
               <main id="main" tabIndex={-1}>
                 <Outlet />
+                <PageContinuation pathname={pathname} />
               </main>
             </div>
           </div>

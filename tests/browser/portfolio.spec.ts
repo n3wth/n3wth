@@ -1,5 +1,42 @@
 import { test, expect } from '@playwright/test'
 
+test('section exits continue in the app and start the next page at the top', async ({ page }, testInfo) => {
+  await page.goto('/work')
+  const continuation = page.getByRole('navigation', { name: 'Continue exploring' })
+  await continuation.scrollIntoViewIfNeeded()
+  await expect(continuation.getByRole('link')).toHaveCount(2)
+  await page.screenshot({ path: testInfo.outputPath('work-continuation.png') })
+  await page.evaluate(() => { document.documentElement.dataset.flowCheck = 'same-document' })
+  await continuation.getByRole('link', { name: 'Projects Tools and experiments.' }).click()
+  await expect(page).toHaveURL(/\/projects$/)
+  await expect(page.locator('main h1')).toHaveText('Projects')
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+  await expect(page.locator('html')).toHaveAttribute('data-flow-check', 'same-document')
+  await page.locator('footer').getByRole('link', { name: 'Contact', exact: true }).click()
+  await expect(page.locator('main h1')).toHaveText('Contact')
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+  await expect(page.locator('html')).toHaveAttribute('data-flow-check', 'same-document')
+  await page.goto('/thinking/frameworks/5-whys')
+  await expect(page.getByRole('navigation', { name: 'Continue exploring' })).toHaveCount(0)
+})
+
+test('compact section content follows the hero before secondary artwork', async ({ page }, testInfo) => {
+  test.skip(page.viewportSize()!.width >= 1024, 'Compact layout only')
+  for (const route of ['/work', '/thinking']) {
+    await page.goto(route)
+    const content = page.locator('.story-layout-content')
+    await expect(content).toBeVisible()
+    const hero = await page.locator('.portfolio-story-hero').boundingBox()
+    const bounds = await content.boundingBox()
+    const scene = await page.locator('.story-layout > .story-scene').boundingBox()
+    expect(bounds!.y - (hero!.y + hero!.height)).toBeLessThan(180)
+    expect(scene!.y).toBeGreaterThanOrEqual(bounds!.y + bounds!.height - 1)
+    await content.locator('h2, input').first().scrollIntoViewIfNeeded()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-content.png`) })
+  }
+})
+
 test('projects artwork fills the viewport behind lower copy', async ({ page }) => {
   for (const width of [390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 })

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { Footer as PortfolioFooter } from '../apps/portfolio/src/components/Footer'
 import { Footer as SkillsFooter } from '../apps/skills/src/components/Footer'
 import { FooterSignup as R3Footer } from '../apps/r3-web/components/FooterSignup'
@@ -26,7 +27,7 @@ for (const [source, Form] of [
       let complete!: (value: Response) => void
       const request = vi.fn<typeof fetch>(() => new Promise<Response>(resolve => { complete = resolve }))
       vi.stubGlobal('fetch', request)
-      render(<Form />)
+      render(<MemoryRouter><Form /></MemoryRouter>)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: 'reader@example.com' } })
       fireEvent.submit(screen.getByRole('button', { name: 'Subscribe' }).closest('form')!)
       expect(screen.getByRole('button', { name: 'Subscribe' })).toBeDisabled()
@@ -45,7 +46,7 @@ for (const [source, Form] of [
         .mockResolvedValueOnce(Response.json({ ok: false, code: 'subscription_unavailable' }, { status: 409 }))
         .mockResolvedValueOnce(Response.json({ ok: true }))
       vi.stubGlobal('fetch', request)
-      render(<Form />)
+      render(<MemoryRouter><Form /></MemoryRouter>)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: 'reader@example.com' } })
       await act(async () => { fireEvent.submit(screen.getByRole('button', { name: 'Subscribe' }).closest('form')!) })
       expect(screen.getByText('We could not subscribe this address. Contact hey@n3wth.com for help.')).toBeInTheDocument()
