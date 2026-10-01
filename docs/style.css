@@ -7,3 +7,18 @@
   letter-spacing: -0.01em;
   line-height: 1.15;
 }
+
+/* Give titles the full reading column, independent of the selected action. */
+#header div:has(> #page-title) {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#header #page-context-menu {
+  margin-left: 0;
+}
+
+/* Use the lighter heading face consistently across article heading levels. */
+#content-area :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 500;
+}
