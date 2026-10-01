@@ -50,13 +50,13 @@ function assistantSmsRoute({ name, slug, number, display, subject, object, glyph
         <li><strong>Tasks</strong>: Anything else Oliver greenlights for ${name}.</li>
       </ul>
       <h2>How to text ${object}</h2>
-      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>START</strong>, <strong>HELLO</strong>, or a first message to <strong>${display}</strong> after reading this page. SMS is optional and is not required to use n3wth.com.</p>
+      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>START</strong> to <strong>${display}</strong> after reading this page. SMS is optional and is not required to use n3wth.com.</p>
       <ul>
-        <li><a href="${sms}">${display}</a>. Send START, HELLO, or any first message.</li>
+        <li><a href="${sms}">${display}</a>. Send START.</li>
       </ul>
       <h2>What you will get</h2>
       <p>By opting in, you consent to receive automated assistant and transactional SMS (and MMS when needed) from ${display}, including two-way assistant conversations, account and verification codes when ${name} is completing a task for Oliver that requires SMS OTP, transactional notices about tasks ${name} is running, and occasional service notices about the ${name} / n3wth assistant line. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
-      <p>Opt in only by texting START, HELLO, or a first message to ${display} after reading this page. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+      <p>Opt in only by texting START to ${display} after reading this page. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <h2>Privacy</h2>
       <p>Your phone number is used only to deliver ${name} / n3wth assistant-related SMS and to operate conversations you start. We do not sell or share mobile numbers with third parties or affiliates for their marketing. See the full <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
       <p>Last updated September 2026</p>`,
@@ -201,8 +201,8 @@ const routes = [
         <li><a href="https://theywontshutup.com" rel="noopener">theywontshutup.com</a> — AI voice hotline. support@n3wth.com</li>
       </ul>`,
   },
-  assistantSmsRoute({ name: 'Elsa', slug: 'elsa', number: '+14157180992', display: '+1 (415) 718-0992', subject: 'She', object: 'her', glyph: '<g class="elsa-slash"><rect x="236" y="96" width="40" height="320" rx="20" fill="#fff" transform="rotate(28 256 256)"></rect></g>' }),
-  assistantSmsRoute({ name: 'Billy', slug: 'billy', number: '+14632588004', display: '+1 (463) 258-8004', subject: 'Billy', object: 'Billy', glyph: '<g class="billy-dot"><circle cx="256" cy="256" r="72" fill="#fff"></circle></g>' }),
+  assistantSmsRoute({ name: 'Elsa', slug: 'elsa', number: '+14632588004', display: '+1 (463) 258-8004', subject: 'She', object: 'her', glyph: '<g class="elsa-slash"><rect x="236" y="96" width="40" height="320" rx="20" fill="#fff" transform="rotate(28 256 256)"></rect></g>' }),
+  assistantSmsRoute({ name: 'Billy', slug: 'billy', number: '+14157180992', display: '+1 (415) 718-0992', subject: 'Billy', object: 'Billy', glyph: '<g class="billy-dot"><circle cx="256" cy="256" r="72" fill="#fff"></circle></g>' }),
   {
     path: 'privacy',
     title: 'Privacy Policy — Oliver Newth',
@@ -220,13 +220,13 @@ const routes = [
       <h2>They Won't Shut Up Hotline</h2>
       <p>Calls to +1 (855) 580-0508 may collect your number for follow-up SMS. Numbers are not sold or shared for third-party marketing. Reply STOP to opt out. See <a href="/consent">SMS Consent</a>.</p>
       <h2>Elsa and Billy assistant SMS</h2>
-      <p>Opting in by texting START, HELLO, or a first message to Elsa at +1 (415) 718-0992 or Billy at +1 (463) 258-8004 collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Messaging service providers process SMS for both lines. Reply STOP. Consent is not a condition of purchase. SMS is optional and is not required to use n3wth.com. See <a href="/elsa">/elsa</a> and <a href="/billy">/billy</a>.</p>
+      <p>Opting in by texting START to Elsa at +1 (463) 258-8004 or Billy at +1 (415) 718-0992 collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Messaging service providers process SMS for both lines. Reply STOP. Consent is not a condition of purchase. SMS is optional and is not required to use n3wth.com. See <a href="/elsa">/elsa</a> and <a href="/billy">/billy</a>.</p>
       <h2>SMS data retention</h2>
       <p>SMS data retained up to 24 months unless needed longer for security, disputes, or law; deleted/anonymized sooner on verified STOP/deletion when feasible.</p>
       <h2>California privacy rights (CCPA/CPRA)</h2>
       <p>California residents may know/access, delete, and correct personal information. n3wth.com does not sell or share for cross-context behavioral advertising. Email hey@n3wth.com.</p>
       <h2>Third-Party Services</h2>
-      <p>Hosted by Cloudflare, which may process standard server logs including IP addresses for security and performance. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's Privacy Policy</a>. Messaging providers process SMS for Elsa (+1 415 718-0992) and Billy (+1 463 258-8004). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
+      <p>Hosted by Cloudflare, which may process standard server logs including IP addresses for security and performance. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's Privacy Policy</a>. Messaging providers process SMS for Elsa (+1 463 258-8004) and Billy (+1 415 718-0992). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
   },
   {
     path: 'terms',
@@ -246,7 +246,7 @@ const routes = [
       <h2>4. SMS Messaging</h2>
       <p>Hotline callers may opt in to SMS. See <a href="/consent">SMS Consent</a>. Message and data rates may apply. Reply STOP. Privacy in the <a href="/privacy">Privacy Policy</a>.</p>
       <h2>Elsa and Billy assistant SMS</h2>
-      <p>By texting START, HELLO, or a first message to Elsa at +1 (415) 718-0992 after reading <a href="/elsa">/elsa</a>, or Billy at +1 (463) 258-8004 after reading <a href="/billy">/billy</a>, you agree to that page's messaging terms. Frequency varies. Message and data rates may apply. Reply STOP / HELP. SMS is optional and is not required to use n3wth.com. See <a href="/privacy">Privacy Policy</a>.</p>
+      <p>By texting START to Elsa at +1 (463) 258-8004 after reading <a href="/elsa">/elsa</a>, or Billy at +1 (415) 718-0992 after reading <a href="/billy">/billy</a>, you agree to that page's messaging terms. Frequency varies. Message and data rates may apply. Reply STOP / HELP. SMS is optional and is not required to use n3wth.com. See <a href="/privacy">Privacy Policy</a>.</p>
       <h2>3. AI Disclosure</h2>
       <p>Hotline voices are AI-generated; not professional advice.</p>`,
   },
@@ -265,7 +265,7 @@ const routes = [
       <p>Call follow-ups and service notifications, up to 5 messages per month. Message and data rates may apply.</p>
       <h2>Opt in / opt out</h2>
       <p>Opt in by calling the hotline. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. See <a href="/privacy">Privacy Policy</a>.</p>
-      <p>For the personal assistant SMS lines, see <a href="/elsa">/elsa</a> (Elsa, +1 415 718-0992) and <a href="/billy">/billy</a> (Billy, +1 463 258-8004).</p>`,
+      <p>For the personal assistant SMS lines, see <a href="/elsa">/elsa</a> (Elsa, +1 463 258-8004) and <a href="/billy">/billy</a> (Billy, +1 415 718-0992).</p>`,
   },
   /* Auth utility routes: prerendered so their noindex is in the static
      head (crawlers may never run the client-side usePageMeta noindex). */

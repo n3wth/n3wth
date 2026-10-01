@@ -3,8 +3,8 @@ import AssistantSmsPage, { type AssistantSmsLine } from '../components/Assistant
 const BILLY: AssistantSmsLine = {
   name: 'Billy',
   slug: 'billy',
-  number: '+14632588004',
-  display: '+1 (463) 258-8004',
+  number: '+14157180992',
+  display: '+1 (415) 718-0992',
   subject: 'Billy',
   object: 'Billy',
   glyph: (
