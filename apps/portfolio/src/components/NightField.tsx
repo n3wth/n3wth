@@ -21,6 +21,7 @@ const WritingGroves = lazy(() => import('./WritingGroves'))
 export interface NightFieldProps {
   onEnter: (href: string, external?: boolean) => void
   reducedMotion: boolean
+  softwareRendering?: boolean
 }
 
 interface PortalDef {
@@ -1250,7 +1251,7 @@ function Ground() {
 
 /* One subdued panorama keeps the landscape's atmosphere without stacking
    photographs with competing horizons and star fields. */
-function NightSky() {
+function NightSky({ reflections = true }: { reflections?: boolean }) {
   const texture = useTexture('/textures/marble-pano.webp', tex => {
     tex.colorSpace = THREE.SRGBColorSpace
     tex.anisotropy = 8
@@ -1268,7 +1269,7 @@ function NightSky() {
   }), [texture])
   return (
     <>
-    <Environment map={environment} environmentIntensity={0.4} />
+    {reflections && <Environment map={environment} environmentIntensity={0.4} />}
     <mesh position={[0, -4, 0]} rotation-y={2.2} renderOrder={-1}>
       <sphereGeometry args={[430, 64, 32]} />
       <shaderMaterial
@@ -1502,7 +1503,7 @@ function WorldInterface({
   )
 }
 
-export default function NightField({ onEnter, reducedMotion }: NightFieldProps) {
+export default function NightField({ onEnter, reducedMotion, softwareRendering = false }: NightFieldProps) {
   const hoverQuery = useHoverQuery()
   const [labelsReady, setLabelsReady] = useState(false)
   const [ready, setReady] = useState(false)
@@ -1542,11 +1543,11 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
   return (
     <>
     <Canvas
-      shadows
+      shadows={!softwareRendering}
       className={labelsReady ? 'night-field-stage is-settled' : 'night-field-stage'}
-      dpr={2}
+      dpr={softwareRendering ? 1 : 2}
       camera={{ position: [0, 3.2, 22], fov: 48 }}
-      gl={{ antialias: true, powerPreference: 'high-performance' }}
+      gl={{ antialias: !softwareRendering, powerPreference: 'high-performance' }}
       frameloop={reducedMotion ? 'demand' : 'always'}
       style={{ position: 'absolute', inset: 0 }}
     >
@@ -1574,7 +1575,7 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
           so a slow model never holds the entire field behind black. */}
       <Suspense fallback={null}>
         <Ground />
-        <NightSky />
+        <NightSky reflections={!softwareRendering} />
         <SceneReady onReady={() => setReady(true)} />
       </Suspense>
       <Suspense fallback={null}>
@@ -1603,10 +1604,10 @@ export default function NightField({ onEnter, reducedMotion }: NightFieldProps) 
       <SurveyLight reducedMotion={reducedMotion} />
       <Rig ready={ready} onSettled={() => setLabelsReady(true)} />
 
-      <EffectComposer multisampling={4}>
+      {!softwareRendering && <EffectComposer multisampling={4}>
         <Bloom intensity={0.35} luminanceThreshold={1.4} mipmapBlur radius={0.5} />
         <SMAA />
-      </EffectComposer>
+      </EffectComposer>}
     </Canvas>
     <WorldInterface
       progress={progress}
