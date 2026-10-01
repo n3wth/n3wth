@@ -65,11 +65,21 @@ function assistantSmsRoute({ name, slug, number, display, subject, object, glyph
 
 const routes = [
   {
+    path: 'projects/elephant-goldfish',
+    title: 'Elephant-Goldfish — Oliver Newth',
+    description: 'Check assumptions before you ship. Fresh reviewers question designs, investigate bugs, and inspect changes in Codex.',
+    ogImage: '/og/work.png',
+    body: `<h1>Elephant-Goldfish</h1><p>Check your assumptions before you ship. A fresh reviewer questions a design, investigates a bug, or inspects a change in Codex. It reviews the evidence without inheriting the working conversation.</p>
+      <h2>Five workflows</h2><p>Brainstorming, PRDs, feature design, bug diagnosis, and precommit review. Independent checks require fresh subagents. Reviews stay read-only unless changes are requested.</p>
+      <p><a href="/downloads/elephant-goldfish-0.1.0.zip">Download 0.1.0 source</a>. <a href="https://docs.n3wth.com/elephant-goldfish/quickstart">Documentation</a>.</p>
+      <h2>Sources and attribution</h2><p><a href="https://drensin.medium.com/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874">Dave Rensin</a> introduced the model. <a href="https://github.com/vshvedov/elephant-goldfish/tree/b8ebb3d6b00e39fbb6c619faa27f5bb994091d78">Vladyslav Shvedov</a> published the upstream workflows under the MIT license. Oliver Newth created this independent adaptation. The bundle preserves the upstream <a href="/downloads/elephant-goldfish/LICENSE">MIT license</a>.</p>`,
+  },
+  {
     path: 'projects',
     title: 'Projects — Oliver Newth',
     description: 'Independent projects by Oliver Newth: tools for AI agents, a shared component library, and other experiments.',
     ogImage: '/og/work.png',
-    body: '<h1>Projects</h1><p>Tools for AI agents, a shared component library, and other experiments.</p><ul><li><a href="/projects/r3">r3</a> — persistent memory for AI assistants.</li><li><a href="/projects/ui">@n3wth/ui</a> — shared React components.</li><li><a href="/projects/skills">Agent Skills</a> — installable workflows for coding agents.</li></ul>',
+    body: '<h1>Projects</h1><p>Tools for AI agents, a shared component library, and other experiments.</p><ul><li><a href="/projects/r3">r3</a> — persistent memory for AI assistants.</li><li><a href="/projects/ui">@n3wth/ui</a> — shared React components.</li><li><a href="/projects/skills">Agent Skills</a> — installable workflows for coding agents.</li><li><a href="/projects/elephant-goldfish">Elephant-Goldfish</a> — fresh-context design checks, diagnosis, and code review.</li></ul>',
   },
   {
     path: 'work',
@@ -171,17 +181,19 @@ const routes = [
     ogImage: '/og/contact.png',
     body: `
       <h1>Contact Oliver Newth</h1>
-      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: hey@n3wth.com</p>`,
+      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: hey@n3wth.com</p>
+      <section id="support"><h2>Support</h2><p>For help with a project, include its name, what you expected, and what happened. Leave out passwords and private data.</p><p><a href="mailto:support@n3wth.com">support@n3wth.com</a> handles n3wth.com, Elephant-Goldfish, lunchmoney.sh, and theywontshutup.com. For hop.flights, email <a href="mailto:support@hop.flights">support@hop.flights</a>.</p></section>`,
   },
   {
     path: 'support',
+    noindex: true,
     title: 'Support — Oliver Newth',
     description:
       'Support for n3wth projects — n3wth.com, hop.flights, lunchmoney.sh, and theywontshutup.com. Email support@n3wth.com.',
     ogImage: '/og-image.png',
     body: `
       <h1>Support</h1>
-      <p>One inbox covers every n3wth project: <a href="mailto:support@n3wth.com">support@n3wth.com</a>.</p>
+      <p>Support is now part of <a href="/contact#support">Contact</a>. Email <a href="mailto:support@n3wth.com">support@n3wth.com</a>.</p>
       <ul>
         <li><a href="https://n3wth.com">n3wth.com</a> — portfolio, writing, and experiments. support@n3wth.com</li>
         <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — flight search and booking tools. support@hop.flights</li>
@@ -200,6 +212,9 @@ const routes = [
     body: `
       <h1>Privacy Policy</h1>
       <p>Last updated: September 2026</p>
+      <h2>Elephant-Goldfish plugin</h2>
+      <p>Elephant-Goldfish 0.1.0 bundles instructions and icons for Codex. It has no publisher-operated backend, telemetry, account system, or credential collection. Installation does not send prompts, code, or files to Oliver Newth. Codex processes conversations, selected files, tool results, and review context under your account settings and OpenAI's applicable privacy terms. Selected integrations have their own policies. Fresh context is not a security sandbox.</p>
+      <p>Emailing support@n3wth.com sends us your address and the information you include. We use it to resolve the request and retain it only as needed for support or legal obligations. Do not send secrets or private source code. Request access, correction, or deletion at that address. Direct requests about OpenAI-held data to OpenAI.</p>
       <h2>Information Collection</h2>
       <p>Portfolio pages do not require accounts or tracking cookies. SMS/voice lines collect phone numbers and message content needed to operate those services.</p>
       <h2>They Won't Shut Up Hotline</h2>
@@ -211,17 +226,21 @@ const routes = [
       <h2>California privacy rights (CCPA/CPRA)</h2>
       <p>California residents may know/access, delete, and correct personal information. n3wth.com does not sell or share for cross-context behavioral advertising. Email hey@n3wth.com.</p>
       <h2>Third-Party Services</h2>
-      <p>Hosted by Vercel. Messaging providers process SMS for Elsa (+1 415 718-0992) and Billy (+1 463 258-8004). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
+      <p>Hosted by Cloudflare, which may process standard server logs including IP addresses for security and performance. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's Privacy Policy</a>. Messaging providers process SMS for Elsa (+1 415 718-0992) and Billy (+1 463 258-8004). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
   },
   {
     path: 'terms',
     title: 'Terms of Service — n3wth',
     description:
-      "Terms of service for n3wth.com and They Won't Shut Up AI voice hotline.",
+      "Terms for n3wth.com, the Elephant-Goldfish plugin, and the They Won't Shut Up AI voice hotline.",
     ogImage: '/og-image.png',
     body: `
       <h1>Terms of Service</h1>
       <p>Last updated: September 2026</p>
+      <h2>Elephant-Goldfish plugin</h2>
+      <p>Elephant-Goldfish 0.1.0 is an independent adaptation by Oliver Newth, based on Dave Rensin's model and Vladyslav Shvedov's workflows. It is not an official release from those authors or OpenAI. The bundled MIT license governs use, copying, modification, and distribution. Preserve copyright and license notices. These site terms do not restrict MIT rights.</p>
+      <p>Independent checks require fresh subagents. AI output can be incomplete or wrong. Review changes and run appropriate checks. Use only authorized data and repositories. Codex and selected integrations have their own terms, permissions, availability, and charges. The plugin is provided as is without warranty under MIT. Review does not guarantee correctness or security.</p>
+      <p><a href="/projects/elephant-goldfish">Project and attribution</a>. <a href="/privacy">Privacy</a>. Support: support@n3wth.com.</p>
       <h2>1. Acceptance</h2>
       <p>By using n3wth.com or calling +1 (855) 580-0508, you agree to these terms.</p>
       <h2>4. SMS Messaging</h2>

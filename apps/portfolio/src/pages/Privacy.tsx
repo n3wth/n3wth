@@ -34,7 +34,7 @@ export default function Privacy() {
         <SiteDocSection title="Overview">
           <SiteText>
             n3wth.com is Oliver Newth&apos;s personal portfolio website. The following policy
-            describes how the site collects and uses information.
+            describes how the site and Oliver Newth&apos;s Elephant-Goldfish plugin handle information.
           </SiteText>
         </SiteDocSection>
 
@@ -44,6 +44,28 @@ export default function Privacy() {
             SMS or voice lines described below, we collect the personal information needed to operate
             those services (for example your phone number and message content). Newsletter signup,
             hosting, and analytics may also process limited data as described in this policy.
+          </SiteText>
+        </SiteDocSection>
+
+        <SiteDocSection title="Elephant-Goldfish plugin">
+          <SiteText>
+            Elephant-Goldfish 0.1.0 is a bundle of instructions and icons for Codex. It has no
+            publisher-operated backend, telemetry, account system, or credential collection.
+            Installing it does not send your prompts, code, or files to Oliver Newth.
+          </SiteText>
+          <SiteText>
+            When you use the plugin, Codex processes the conversation, selected files, tool results,
+            and review context under your account settings and OpenAI&apos;s applicable privacy terms.
+            Fresh reviewers receive task context through Codex. Fresh context is not a security
+            sandbox. Tools and integrations you choose may process data under their own policies.
+            Share only information you are authorized to use.
+          </SiteText>
+          <SiteText>
+            If you email support@n3wth.com, we receive your email address and the information you
+            include. We use it to respond and resolve the request, and retain it only as needed
+            for support or legal obligations. Do not include secrets or private source code.
+            You can request access, correction, or deletion by emailing the same address.
+            Requests concerning data held by OpenAI must be directed to OpenAI.
           </SiteText>
         </SiteDocSection>
 
@@ -100,15 +122,15 @@ export default function Privacy() {
 
         <SiteDocSection title="Third-Party Services">
           <SiteText>
-            Vercel hosts n3wth.com. Vercel may collect standard server logs, including IP addresses,
+            Cloudflare hosts n3wth.com. Cloudflare may collect standard server logs, including IP addresses,
             for security and performance purposes. Refer to{' '}
             <a
-              href="https://vercel.com/legal/privacy-policy"
+              href="https://www.cloudflare.com/privacypolicy/"
               target="_blank"
               rel="noopener noreferrer"
               className="link-underline"
             >
-              Vercel&apos;s Privacy Policy
+              Cloudflare&apos;s Privacy Policy
             </a>{' '}
             for more information.
           </SiteText>

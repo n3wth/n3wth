@@ -126,6 +126,18 @@
         ]
       },
       {
+        "tab": "Elephant-Goldfish",
+        "groups": [
+          {
+            "group": "Use the plugin",
+            "pages": [
+              "elephant-goldfish/quickstart",
+              "elephant-goldfish/workflows"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "r3",
         "groups": [
           {

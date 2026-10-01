@@ -17,3 +17,8 @@
 #header #page-context-menu {
   margin-left: 0;
 }
+
+/* Keep article headings semibold across all heading levels. */
+#content-area :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 600;
+}

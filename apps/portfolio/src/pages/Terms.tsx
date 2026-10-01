@@ -4,7 +4,7 @@ import { RouterLink } from '../components/RouterLink'
 
 const TITLE = 'Terms of Service — n3wth'
 const DESCRIPTION =
-  "Terms of service for n3wth.com and They Won't Shut Up AI voice hotline."
+  "Terms for n3wth.com, the Elephant-Goldfish plugin, and the They Won't Shut Up AI voice hotline."
 
 export default function Terms() {
   usePageMeta(TITLE, DESCRIPTION, {
@@ -36,6 +36,32 @@ export default function Terms() {
             By using n3wth.com or calling the They Won&apos;t Shut Up hotline at{' '}
             <strong style={{ color: 'var(--ink)' }}>+1 (855) 580-0508</strong>, you agree to these
             terms. If you do not agree, do not use the service.
+          </SiteText>
+        </SiteDocSection>
+
+        <SiteDocSection title="Elephant-Goldfish plugin">
+          <SiteText>
+            Elephant-Goldfish 0.1.0 is an independent Codex plugin adaptation by Oliver Newth.
+            It is based on Dave Rensin&apos;s Elephant-Goldfish model and Vladyslav Shvedov&apos;s
+            workflows. It is not an official release from those authors or OpenAI.
+            The bundled MIT license governs use, copying, modification, and distribution of the
+            plugin. Preserve its copyright and license notices. These site terms do not restrict
+            the rights granted by that license.
+          </SiteText>
+          <SiteText>
+            The plugin supplies instructions for brainstorming, requirements, feature design,
+            bug diagnosis, and code review. Independent checks require fresh subagent support.
+            AI output may be incomplete or wrong. Review proposed changes and run appropriate
+            checks before relying on them. Use only repositories and data you are authorized to
+            access. Codex and any selected integrations remain subject to their own terms,
+            permissions, availability, and charges.
+          </SiteText>
+          <SiteText>
+            The plugin is provided as is under the MIT license, without warranty. A review does
+            not guarantee correctness or security. For support, email{' '}
+            <a href="mailto:support@n3wth.com" className="link-underline">support@n3wth.com</a>.
+            See the <RouterLink href="/privacy" className="link-underline">Privacy Policy</RouterLink>{' '}
+            and <RouterLink href="/projects/elephant-goldfish" className="link-underline">project page</RouterLink>.
           </SiteText>
         </SiteDocSection>
 
