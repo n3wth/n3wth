@@ -38,7 +38,11 @@ test('compact section content follows the hero before secondary artwork', async 
 })
 
 test('projects artwork fills the viewport behind lower copy', async ({ page }) => {
-  for (const width of [390, 768, 1024, 1440]) {
+  const widths = [page.viewportSize()!.width]
+  // The project matrix covers mobile, tablet and desktop; check the two
+  // artwork breakpoints once, rather than repeating every width per project.
+  if (widths[0] === 1440) widths.push(768, 1024)
+  for (const width of widths) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/projects')
     const artwork = page.locator('.section-story--projects svg')

@@ -12,20 +12,16 @@ export const siteConfig = {
   gardenSite: '/thinking',
 }
 
-export interface NavItem {
-  name: string
-  href: string
-  external?: boolean
-}
+export const sections = {
+  projects: { name: 'Projects', href: '/projects', description: 'Tools and experiments.' },
+  work: { name: 'Work', href: '/work', description: 'Building AI products.' },
+  art: { name: 'Art', href: '/art', description: 'Large-scale light installations.' },
+  thinking: { name: 'Thinking', href: '/thinking', description: 'AI, design, and everyday life.' },
+  library: { name: 'Library', href: '/library', description: 'Notes, components, and skills.' },
+  contact: { name: 'Contact', href: '/contact', description: 'Product, AI, art, or coffee.' },
+} as const
 
-export const navigation: NavItem[] = [
-  { name: 'Projects', href: '/projects' },
-  { name: 'Work', href: '/work' },
-  { name: 'Art', href: '/art' },
-  { name: 'Thinking', href: '/thinking' },
-  { name: 'Library', href: '/library' },
-  { name: 'Contact', href: '/contact' },
-]
+export const navigation = Object.values(sections)
 
 /** Family sites for quiet access in the scene or keyboard nav */
 export const familySites = [

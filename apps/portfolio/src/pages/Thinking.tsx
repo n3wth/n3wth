@@ -1,3 +1,4 @@
+import { sections } from '../data/content'
 import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { NotesIndex } from '../components/thinking/NotesIndex'
@@ -22,7 +23,7 @@ export default function ThinkingPage() {
 
   return (
     <>
-      <SectionHeader as="h1" story="thinking" title="Thinking" lede="AI, design, and everyday life." />
+      <SectionHeader as="h1" story="thinking" title={sections.thinking.name} lede={sections.thinking.description} />
       <div className="thinking-page story-layout">
         <StoryScene kind="thinking" />
         <div className="story-layout-content"><NotesIndex /></div>

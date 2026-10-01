@@ -1,3 +1,4 @@
+import { sections } from '../data/content'
 import { Button } from '@n3wth/ui/primitives'
 import { SectionHeader } from '../components/Frame'
 import { Experience } from '../components/sections/Experience'
@@ -26,8 +27,8 @@ export default function Work() {
       <SectionHeader
         as="h1"
         story="work"
-        title="Work"
-        lede="Building AI products."
+        title={sections.work.name}
+        lede={sections.work.description}
         action={
           <Button
             label="Open resume"

@@ -1,3 +1,4 @@
+import { sections } from '../data/content'
 import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { KitShelf } from '../components/library/KitShelf'
@@ -39,8 +40,8 @@ export default function Library() {
       <SectionHeader
         as="h1"
         story="library"
-        title="Library"
-        lede="Notes, components, and skills."
+        title={sections.library.name}
+        lede={sections.library.description}
       />
 
       <KitShelf />
