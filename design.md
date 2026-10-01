@@ -53,6 +53,8 @@ The portfolio homepage combines topic groves with its existing art and navigatio
 
 On desktop, main section hero descriptions stay on one line. Keep useful actions such as the resume and contact links in the content immediately after the hero, rather than within the opening scene. Descriptions wrap naturally on mobile and tablet.
 
+Continue the section stories below their heroes. Work and Thinking keep a separate, sticky artwork column beside their content on desktop; compact layouts put the artwork in normal flow. Library shelves pair their introductions with page-edge scenes. Contact gives its actions a joined-path scene. Projects give functional specimens generous exhibition space, and Art photographs extend to the viewport edges with captions aligned to the shared content gutters. Artwork never sits behind readable text or controls. Each scene pauses independently when offscreen, and reduced motion retains the still composition.
+
 Article graphics explain the adjacent argument. Keep each figure with a descriptive caption, visible source links and useful alt text. Distinguish original conceptual diagrams from measured charts and reproduced images. Use a single supporting text style for captions, reserve the image dimensions, and let readers open detailed graphics at full size. Record reuse rights for third-party assets; a citation alone is not permission.
 
 Original diagrams stay in SVG format and follow the surrounding page's color scheme. Generate embedded light/dark palettes from the shared theme; an SVG loaded as an image cannot inherit page custom properties. Keep photographs in their original colors.

@@ -1,6 +1,12 @@
+.art-opening,
+.art-work {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}
+
 .art-opening-scene {
   position: relative;
-  min-height: min(72svh, 800px);
+  min-height: 85svh;
   isolation: isolate;
 }
 
@@ -26,7 +32,9 @@
 }
 
 .art-caption {
-  padding-block: 1.5rem 2rem;
+  max-width: var(--frame-max);
+  margin-inline: auto;
+  padding-block: 2.5rem clamp(4rem, 10svh, 8rem);
 }
 
 .art-caption h2 {
@@ -41,7 +49,7 @@
 .art-work-image img {
   display: block;
   width: 100%;
-  height: clamp(320px, 65svh, 850px);
+  height: max(480px, 85svh);
   object-fit: cover;
 }
 

@@ -29,7 +29,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
   useEffect(() => {
     const svg = ref.current
     if (!svg || typeof SVGPathElement === 'undefined' || !SVGPathElement.prototype.getTotalLength) return
-    const hero = svg.closest<HTMLElement>('.portfolio-story-hero')
+    let visible = typeof IntersectionObserver === 'undefined'
     const media = matchMedia('(prefers-reduced-motion: reduce)')
     const sources = [...svg.querySelectorAll<SVGPathElement>(pulseSelector)]
     const sourceTiming = sources.map((path, index) => {
@@ -182,7 +182,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     function sync() {
       cancelAnimationFrame(frame)
       lastTime = 0
-      const paused = media.matches || document.hidden || hero?.dataset.visible === 'false'
+      const paused = media.matches || document.hidden || !visible
       svg!.toggleAttribute('data-story-paused', paused)
       if (media.matches) {
         clearTransfers()
@@ -190,14 +190,18 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       }
       if (!paused) frame = requestAnimationFrame(tick)
     }
-    const observer = new MutationObserver(sync)
-    if (hero) observer.observe(hero, { attributes: true, attributeFilter: ['data-visible'] })
+    const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+      sync()
+    })
+    // Observe the clipped scene, not overflowing SVG paths or the whole page.
+    observer?.observe(svg.parentElement ?? svg)
     media.addEventListener('change', sync)
     document.addEventListener('visibilitychange', sync)
     sync()
     return () => {
       cancelAnimationFrame(frame)
-      observer.disconnect()
+      observer?.disconnect()
       media.removeEventListener('change', sync)
       document.removeEventListener('visibilitychange', sync)
       clearTransfers()
