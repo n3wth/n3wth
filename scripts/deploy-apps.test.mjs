@@ -2,18 +2,18 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { DEPLOY_APPS, DEPLOY_APP_SLUGS, deployAppForWorkspace } from './deploy-apps.mjs'
+import { DEPLOY_APPS, DEPLOY_APP_SLUGS, SITES_APPS, deployAppForWorkspace } from './deploy-apps.mjs'
 import { readWorkspaces } from './affected.mjs'
 import { PREVIEW_APPS } from './cloudflare-preview-config.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const scriptPath = fileURLToPath(new URL('./deploy-apps.mjs', import.meta.url))
 
-test('the deploy list excludes the retired r3 and UI sites', () => {
+test('direct deployment excludes retired and Sites-hosted applications', () => {
   const apps = readWorkspaces(root)
     .filter(workspace => workspace.path.startsWith('apps/') && !workspace.path.includes('/', 5))
     .map(workspace => workspace.name)
-    .filter(name => !['@n3wth/r3-web', '@n3wth/ui-docs'].includes(name))
+    .filter(name => !['@n3wth/r3-web', '@n3wth/ui-docs', ...SITES_APPS.map(app => app.workspace)].includes(name))
     .sort()
   assert.deepEqual(DEPLOY_APPS.map(entry => entry.workspace).sort(), apps)
 })
@@ -31,6 +31,7 @@ test('preview apps read the same source list', () => {
 test('deployAppForWorkspace maps known workspaces and ignores others', () => {
   assert.equal(deployAppForWorkspace('@n3wth/garden'), 'garden')
   assert.equal(deployAppForWorkspace('@n3wth/ui'), undefined)
+  assert.equal(deployAppForWorkspace('@n3wth/labs'), undefined)
   assert.equal(deployAppForWorkspace('@n3wth/r3-web'), undefined)
   assert.equal(deployAppForWorkspace('@n3wth/ui-docs'), undefined)
 })

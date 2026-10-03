@@ -11,6 +11,11 @@ export const DEPLOY_APPS = [
   { workspace: '@n3wth/skills', app: 'skills' },
 ]
 
+// Published with the Sites connector, outside the direct Wrangler workflows.
+export const SITES_APPS = [
+  { workspace: '@n3wth/labs', app: 'labs' },
+]
+
 export const DEPLOY_APP_SLUGS = DEPLOY_APPS.map(entry => entry.app)
 
 export function deployAppForWorkspace(workspace) {

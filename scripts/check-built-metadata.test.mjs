@@ -167,5 +167,5 @@ test('checkPublicDocument rejects missing canonical or mismatched social URL', (
 
 test('current repository still lists every site application', () => {
   const names = listApplications(repo).map(app => app.directory).toSorted()
-  assert.deepEqual(names, ['garden', 'portfolio', 'r3-web', 'skills', 'ui-docs'])
+  assert.deepEqual(names, ['garden', 'labs', 'portfolio', 'r3-web', 'skills', 'ui-docs'])
 })
