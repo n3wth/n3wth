@@ -1,8 +1,242 @@
 import { test, expect } from '@playwright/test'
+
+test('section exits continue in the app and start the next page at the top', async ({ page }, testInfo) => {
+  await page.goto('/work')
+  const continuation = page.getByRole('navigation', { name: 'Continue exploring' })
+  await continuation.scrollIntoViewIfNeeded()
+  await expect(continuation.getByRole('link')).toHaveCount(2)
+  await page.screenshot({ path: testInfo.outputPath('work-continuation.png') })
+  await page.evaluate(() => { document.documentElement.dataset.flowCheck = 'same-document' })
+  await continuation.getByRole('link', { name: 'Projects Tools and experiments.' }).click()
+  await expect(page).toHaveURL(/\/projects$/)
+  await expect(page.locator('main h1')).toHaveText('Projects')
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+  await expect(page.locator('html')).toHaveAttribute('data-flow-check', 'same-document')
+  await page.locator('footer').getByRole('link', { name: 'Contact', exact: true }).click()
+  await expect(page.locator('main h1')).toHaveText('Contact')
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+  await expect(page.locator('html')).toHaveAttribute('data-flow-check', 'same-document')
+  await page.goto('/thinking/frameworks/5-whys')
+  await expect(page.getByRole('navigation', { name: 'Continue exploring' })).toHaveCount(0)
+})
+
+test('compact section content follows the hero before secondary artwork', async ({ page }, testInfo) => {
+  test.skip(page.viewportSize()!.width >= 1024, 'Compact layout only')
+  for (const route of ['/work', '/thinking']) {
+    await page.goto(route)
+    const content = page.locator('.story-layout-content')
+    await expect(content).toBeVisible()
+    const hero = await page.locator('.portfolio-story-hero').boundingBox()
+    const bounds = await content.boundingBox()
+    const scene = await page.locator('.story-layout > .story-scene').boundingBox()
+    expect(bounds!.y - (hero!.y + hero!.height)).toBeLessThan(180)
+    expect(scene!.y).toBeGreaterThanOrEqual(bounds!.y + bounds!.height - 1)
+    await content.locator('h2, input').first().scrollIntoViewIfNeeded()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-content.png`) })
+  }
+})
+
+test('projects artwork fills the viewport behind lower copy', async ({ page }) => {
+  const widths = [page.viewportSize()!.width]
+  // The project matrix covers mobile, tablet and desktop; check the two
+  // artwork breakpoints once, rather than repeating every width per project.
+  if (widths[0] === 1440) widths.push(768, 1024)
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/projects')
+    const artwork = page.locator('.section-story--projects svg')
+    await expect(artwork).toBeVisible()
+    const geometry = await artwork.evaluate(svg => {
+      const bounds = svg.getBoundingClientRect()
+      const hero = document.querySelector('.portfolio-story-hero')!.getBoundingClientRect()
+      const copy = document.querySelector('main h1')!.getBoundingClientRect()
+      return { center: bounds.x + bounds.width / 2, heroLeft: hero.x, heroWidth: hero.width, width: bounds.width, height: bounds.height, heroHeight: hero.height, heroBottom: hero.bottom, copyTop: copy.top, copyBottom: copy.bottom }
+    })
+    const center = geometry.heroLeft + geometry.heroWidth * (width >= 1024 ? .7 : .5)
+    expect(Math.abs(geometry.center - center)).toBeLessThanOrEqual(1)
+    expect(geometry.width).toBeGreaterThan(width * .6)
+    expect(geometry.height).toBeGreaterThan(Math.min(width, geometry.heroHeight) * .8)
+    expect(geometry.copyTop).toBeGreaterThan(geometry.heroHeight * .7)
+    expect(geometry.copyBottom).toBeLessThan(geometry.heroBottom)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  }
+})
+
+test('malformed fragments keep public pages usable', async ({ page }) => {
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  for (const route of ['/work#%', '/thinking/frameworks/5-whys#%E0%A4%A', '/projects#%ZZ']) {
+    await page.goto(route)
+    await expect(page.locator('main h1')).toBeVisible()
+    await expect(page.locator('header').first()).toBeVisible()
+    await expect(page.getByText('Unexpected Application Error!')).toHaveCount(0)
+  }
+  expect(errors).toEqual([])
+})
+
+test('encoded fragments still reach their headings', async ({ page }) => {
+  await page.goto('/thinking/frameworks/5-whys#%75sage')
+  await expect(page.locator('#usage')).toBeInViewport()
+})
+
+test('reading pages center their columns and put dates below the title', async ({ page }, testInfo) => {
+  for (const slug of ['personal-knowledge-graph', 'audit-retrieval-before-trusting-an-answer']) {
+    await page.goto(`/thinking/${slug}`)
+    const title = page.getByRole('heading', { level: 1 })
+    await expect(title).toBeVisible()
+    const bounds = await page.locator('.thinking-reading-page').boundingBox()
+    // The root reserves a stable scrollbar gutter even before content overflows.
+    // Measure the rendered body rather than viewport/clientWidth, which include it.
+    const body = await page.locator('body').boundingBox()
+    const left = bounds!.x - body!.x
+    const right = body!.x + body!.width - bounds!.x - bounds!.width
+    expect(Math.abs(left - right), JSON.stringify({ bounds, body })).toBeLessThan(2)
+    const heading = await title.boundingBox()
+    const date = await page.locator('main time').first().boundingBox()
+    expect(date!.y).toBeGreaterThan(heading!.y + heading!.height)
+    await expect(page.locator('main a', { hasText: 'Oliver Newth' })).toHaveCount(0)
+    await page.screenshot({ path: testInfo.outputPath(`${slug}.png`) })
+  }
+})
+
+test('section openings fill the screen with distinct accessible stories', async ({ page }, testInfo) => {
+  let opening: { x: number; size: string } | undefined
+  for (const route of ['/art', '/thinking', '/work', '/library', '/projects', '/contact']) {
+    await page.goto(route)
+    await expect(page.locator('.portfolio-section-title')).toBeVisible()
+    const position = await page.locator('.portfolio-section-title').evaluate(element => ({ x: element.getBoundingClientRect().x, size: getComputedStyle(element).fontSize }))
+    if (opening) expect(position).toEqual(opening)
+    else opening = position
+    const hero = page.locator('.portfolio-story-hero')
+    const bounds = await hero.boundingBox()
+    expect(bounds!.y + bounds!.height).toBeGreaterThanOrEqual(page.viewportSize()!.height - 1)
+    await expect(hero.locator('svg').first()).toHaveAttribute('aria-hidden', 'true')
+    const copy = await page.locator('.portfolio-story-copy').boundingBox()
+    expect(copy!.y + copy!.height).toBeLessThanOrEqual(bounds!.y + bounds!.height + 1)
+    if (page.viewportSize()!.width >= 1024) {
+      expect(copy!.y).toBeGreaterThan(bounds!.y + bounds!.height * .7)
+      const description = await page.locator('.portfolio-story-description').evaluate(element => {
+        const range = document.createRange()
+        range.selectNodeContents(element)
+        return { lines: range.getClientRects().length, right: range.getBoundingClientRect().right }
+      })
+      expect(description.lines).toBe(1)
+      expect(description.right).toBeLessThanOrEqual(page.viewportSize()!.width)
+    }
+    await expect(hero.locator('a, button')).toHaveCount(0)
+    expect(await hero.evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length)).toBe(0)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-hero.png`) })
+  }
+})
+
+test('Art uses each installation image once', async ({ page }) => {
+  await page.goto('/art')
+  await expect(page.getByRole('heading', { name: 'Art', exact: true })).toBeVisible()
+  const images = await page.locator('main img').evaluateAll(elements => elements.map(element => element.getAttribute('src')))
+  expect(images).toHaveLength(3)
+  expect(new Set(images).size).toBe(3)
+})
+
+test('content scenes stay separate from text and pause independently', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  for (const route of ['/work', '/thinking', '/library', '/contact']) {
+    await page.goto(route)
+    const scene = page.locator('.story-scene').first()
+    const artwork = scene.locator('svg')
+    await expect(artwork).toHaveAttribute('data-story-paused', '')
+    await scene.scrollIntoViewIfNeeded()
+    await expect(artwork).not.toHaveAttribute('data-story-paused', '')
+    await expect(scene).toHaveAttribute('aria-hidden', 'true')
+    expect(await scene.locator('a, button, input').count()).toBe(0)
+    if (page.viewportSize()!.width >= 1024 && ['/work', '/thinking'].includes(route)) {
+      const content = await page.locator('.story-layout-content').boundingBox()
+      const bounds = await scene.boundingBox()
+      expect(content!.x + content!.width).toBeLessThanOrEqual(bounds!.x)
+      await page.evaluate(() => scrollBy(0, 250))
+      expect((await scene.boundingBox())!.y).toBeGreaterThanOrEqual(95)
+    }
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await expect(artwork).toHaveAttribute('data-story-paused', '')
+    await expect.poll(() => artwork.evaluate(svg => svg.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length)).toBe(0)
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.evaluate(() => scrollTo(0, 0))
+    await expect(artwork).toHaveAttribute('data-story-paused', '')
+  }
+})
 import { expectSiteFoundation } from './site-foundation'
 
 test.beforeEach(async ({ page }) => {
   await page.route(/https:\/\/(elephant\.n3wth\.com|[^/]*posthog\.(com|net))\//, route => route.abort())
+})
+
+test('Thinking notes keep local links, topics, anchors and browser Back', async ({ page, request }) => {
+  await page.goto('/thinking/frameworks/5-whys#usage')
+  await expect(page.getByRole('heading', { level: 1, name: '5 Whys', exact: true })).toBeVisible()
+  await expect(page.locator('#usage')).toBeInViewport()
+  const contents = page.getByRole('button', { name: 'Contents', exact: true })
+  await expect(contents).toHaveAttribute('aria-expanded', 'false')
+  await contents.click()
+  await expect(contents).toHaveAttribute('aria-expanded', 'true')
+  await expect(page.locator('.thinking-note-outline a[href="#usage"]')).toBeVisible()
+  await contents.click()
+  await expect(contents).toHaveAttribute('aria-expanded', 'false')
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://n3wth.com/thinking/frameworks/5-whys')
+  await expect(page.locator('.thinking-note-prose img').first()).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.getByRole('navigation', { name: 'Note topics' }).getByRole('link', { name: 'strategy', exact: true }).click()
+  await expect(page).toHaveURL(/\/thinking\?topic=strategy#notes$/)
+  await expect(page.getByLabel('Search writing', { exact: true })).toBeVisible()
+  await page.getByLabel('Search writing', { exact: true }).fill('5 Whys')
+  await expect(page.getByRole('status')).toContainText('1 result')
+  await page.locator('#notes').getByRole('link', { name: '5 Whys', exact: true }).click()
+  await expect(page).toHaveURL(/\/thinking\/frameworks\/5-whys$/)
+  await expect(page.getByRole('heading', { name: 'Linked from', exact: true })).toBeVisible()
+  await page.goBack()
+  await expect(page.getByLabel('Search writing', { exact: true })).toHaveValue('5 Whys')
+  const html = await (await request.get('/thinking/frameworks/5-whys/index.html')).text()
+  expect(html).toContain('<h1>5 Whys</h1>')
+  expect(html).toContain('https://n3wth.com/thinking/frameworks/5-whys')
+  expect(html).toContain('href="/thinking/frameworks/frameworks-map"')
+})
+
+test('Thinking loads more writing on scroll and restores its collection and filters', async ({ page }) => {
+  await page.goto('/thinking')
+  await expect(page.getByRole('heading', { level: 1, name: 'Thinking', exact: true })).toBeVisible()
+  await expect(page.locator('.writing-results > li')).toHaveCount(24)
+  const unfilteredResults = await page.getByRole('status').innerText()
+  await page.getByLabel('Search writing', { exact: true }).scrollIntoViewIfNeeded()
+  const scrollBeforeSearch = await page.evaluate(() => scrollY)
+  await page.getByLabel('Search writing', { exact: true }).fill('agents')
+  await expect(page).toHaveURL(/q=agents#notes$/)
+  await expect(page.getByLabel('Search writing', { exact: true })).toHaveValue('agents')
+  expect(await page.evaluate(() => scrollY)).toBe(scrollBeforeSearch)
+  await page.getByLabel('Search writing', { exact: true }).fill('')
+  await expect(page).toHaveURL(/\/thinking#notes$/)
+  await expect(page.getByRole('status')).toHaveText(unfilteredResults)
+  await page.getByRole('navigation', { name: 'Writing format' }).getByRole('link', { name: 'Articles', exact: true }).click()
+  await expect(page.getByRole('status')).toHaveText('21 results')
+  await page.getByRole('navigation', { name: 'Writing format' }).getByRole('link', { name: 'Notes', exact: true }).click()
+  await expect(page).toHaveURL(/kind=notes#notes$/)
+  await expect(page.locator('.writing-results > li')).toHaveCount(24)
+  await page.locator('.writing-results > li').last().scrollIntoViewIfNeeded()
+  await expect(page).toHaveURL(/kind=notes&page=2$/)
+  await expect(page.locator('.writing-results > li')).toHaveCount(48)
+  const first = page.locator('.writing-results a').nth(23)
+  const title = await first.innerText()
+  await first.scrollIntoViewIfNeeded()
+  const readingPosition = await page.evaluate(() => scrollY)
+  await first.click()
+  await expect(page.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible()
+  await page.goBack()
+  await expect(page).toHaveURL(/kind=notes&page=2$/)
+  await expect(page.locator('.writing-results > li')).toHaveCount(48)
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeCloseTo(readingPosition, -1)
+  await page.getByLabel('Search writing', { exact: true }).fill('5 Whys')
+  await expect(page.getByRole('status')).toHaveText('1 result')
+  await expect(page.locator('.writing-results a')).toHaveText('5 Whys')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 })
 
 test('projects index connects navigation, product pages and documentation', async ({ page, request }) => {
@@ -14,7 +248,7 @@ test('projects index connects navigation, product pages and documentation', asyn
   await expect(navigation.locator('a').nth(0)).toHaveText('Projects')
   await expect(navigation.locator('a').nth(1)).toHaveText('Work')
   for (const [slug, title] of [['r3', 'r3'], ['ui', '@n3wth/ui'], ['skills', 'Agent Skills']]) {
-    await expect(page.locator('main').locator(`a[href="/projects/${slug}"]`)).toBeVisible()
+    await expect(page.getByRole('heading', { level: 2, name: title, exact: true }).getByRole('link')).toBeVisible()
     // Vite preview serves clean URLs through its SPA fallback; inspect the
     // prerendered file that Cloudflare resolves for the production route.
     const response = await request.get(`/projects/${slug}/index.html`)
@@ -146,7 +380,7 @@ test('diagrams are immediately visible with normal motion', async ({ page }) => 
 for (const reducedMotion of ['no-preference', 'reduce'] as const) {
   test(`shared visual bands remain visible with ${reducedMotion} motion`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion })
-    for (const route of ['/library', '/thinking', '/contact']) {
+    for (const route of ['/library']) {
       await page.goto(route)
       const band = page.locator('.n3wth-visual-band').first()
       await expect(band).toBeAttached()
@@ -165,13 +399,56 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
     }
   })
+
+  test(`hero stories remain visible and respect ${reducedMotion} motion`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion })
+    for (const route of ['/art', '/work', '/thinking', '/projects', '/library', '/contact']) {
+      await page.goto(route)
+      const hero = page.locator('.portfolio-story-hero')
+      await expect(hero.locator('.section-story svg')).toBeVisible()
+      const artwork = hero.locator('.section-story svg')
+      if (reducedMotion === 'reduce') {
+        await expect(artwork).toHaveAttribute('data-story-paused', '')
+        await expect(hero.locator('.section-story__transfer')).toHaveCount(0)
+      } else {
+        await expect(artwork).not.toHaveAttribute('data-story-paused', '')
+        const initial = await artwork.innerHTML()
+        await expect.poll(() => artwork.innerHTML()).not.toBe(initial)
+      }
+      if (route !== '/contact') {
+        await page.locator('footer').scrollIntoViewIfNeeded()
+        await expect(artwork).toHaveAttribute('data-story-paused', '')
+        const paused = await artwork.innerHTML()
+        await page.waitForTimeout(150)
+        expect(await artwork.innerHTML()).toBe(paused)
+      }
+    }
+  })
 }
 
 test('work uses the shared theme and a usable resume action', async ({ page }) => {
   await page.goto('/work')
-  await expectSiteFoundation(page)
+  await expectSiteFoundation(page, { sectionTopPadding: '0px', headerPadding: '0px' })
   await expect(page.locator('#building')).toHaveCount(0)
-  await expect(page.getByRole('link', { name: 'Resume (PDF)', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
+  await expect(page.getByRole('link', { name: 'Open resume', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
+})
+
+test('AI answers start automatically after typing pauses', async ({ page }) => {
+  let requests = 0
+  await page.route('**/api/search', async route => {
+    requests += 1
+    await route.fulfill({ json: { answer: 'An answer from the site. Sources: [UI](https://ui.n3wth.com/), [Agent Skills](https://n3wth.com/projects/skills).' } })
+  })
+  await page.goto('/work')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page.getByRole('combobox').fill('garden')
+  await expect(page.getByRole('option').first()).toBeVisible()
+  await expect(page.getByRole('status', { name: 'Searching', exact: true })).toBeVisible()
+  await expect(page.getByText('An answer from the site.')).toBeVisible()
+  await expect(page.getByText('AI answer from this site and garden notes')).toHaveCount(0)
+  await expect(page.getByRole('navigation', { name: 'Answer sources' }).getByRole('link')).toHaveCount(2)
+  expect(requests).toBe(1)
+  await expect(page).toHaveURL(/\/work$/)
 })
 
 for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact']) {
@@ -187,11 +464,14 @@ for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact'])
       test.setTimeout(60_000)
       await expect(page.locator('.night-field-stage.is-settled')).toBeVisible({ timeout: 45_000 })
       await expect(page.locator('.night-field-loader')).toHaveAttribute('data-ready', 'true')
-      for (const name of ['Art', 'Work', 'Thinking', 'Contact', 'Garden', 'Pink Triangle']) {
+      for (const name of ['Art', 'Work', 'Thinking', 'Contact', 'Notes', 'Pink Triangle']) {
         const label = page.locator(`.world-portal-link[aria-label="${name}"]`)
         await expect(label).toBeVisible()
+        await expect(label).toHaveCSS('opacity', '0')
       }
       const work = page.locator('.world-portal-link[aria-label="Work"]')
+      await work.focus()
+      await expect(work).toHaveCSS('opacity', '1')
       await work.click({ trial: true })
       const screenshot = testInfo.outputPath('portfolio-home.png')
       await page.screenshot({ path: screenshot })
@@ -202,22 +482,59 @@ for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact'])
   })
 }
 
-test('home primary navigation works before the scene settles', async ({ page }) => {
+test('home keeps ordinary writing navigation when WebGL is unavailable', async ({ page }) => {
+  await page.addInitScript(() => {
+    const getContext = HTMLCanvasElement.prototype.getContext
+    HTMLCanvasElement.prototype.getContext = function (...args) {
+      return String(args[0]).includes('webgl') ? null : getContext.apply(this, args)
+    } as typeof getContext
+  })
   await page.goto('/')
-  await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
-  const navigation = page.locator('#primary-navigation')
-  if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {
-    await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+  await expect(page.locator('section[aria-label="Explore the night scene"] img')).toBeVisible()
+  await expect(page.locator('canvas')).toHaveCount(0)
+  const thinking = page.locator('#primary-navigation').getByRole('link', { name: 'Thinking', exact: true })
+  if (!await thinking.isVisible()) await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+  await thinking.focus()
+  await page.keyboard.press('Enter')
+  await expect(page).toHaveURL(/\/thinking$/)
+  await expect(page.getByLabel('Search writing', { exact: true })).toBeVisible()
+  await page.getByLabel('Search writing', { exact: true }).fill('5 Whys')
+  await page.locator('#notes').getByRole('link', { name: '5 Whys', exact: true }).click()
+  await expect(page).toHaveURL(/\/thinking\/frameworks\/5-whys$/)
+  await expect(page.getByRole('heading', { level: 1, name: '5 Whys', exact: true })).toBeVisible()
+})
+
+test('home primary navigation works before the scene settles', async ({ page }) => {
+  // Hold the lazy scene module so navigation is tested during loading,
+  // independently of the runner's graphics speed. Full scene coverage stays above.
+  let releaseScene!: () => void
+  let sceneRequested = false
+  const sceneReady = new Promise<void>(resolve => { releaseScene = resolve })
+  await page.route('**/assets/NightField-*.js', async route => {
+    sceneRequested = true
+    await sceneReady
+    await route.continue().catch(() => {}) // The page may have closed after a failed assertion.
+  })
+  try {
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
+    await expect.poll(() => sceneRequested).toBe(true)
+    await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
+    const navigation = page.locator('#primary-navigation')
+    if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {
+      await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+    }
+    for (const name of ['Work', 'Art', 'Thinking', 'Library']) {
+      const link = navigation.getByRole('link', { name, exact: true })
+      await expect(link).toBeVisible()
+      const box = await link.boundingBox()
+      expect(box?.height).toBeGreaterThanOrEqual(44)
+    }
+    await expect(page.locator('h1')).toHaveCount(1)
+    await navigation.getByRole('link', { name: 'Work', exact: true }).click()
+    await expect(page).toHaveURL(/\/work$/)
+  } finally {
+    releaseScene()
   }
-  for (const name of ['Work', 'Art', 'Thinking', 'Library']) {
-    const link = navigation.getByRole('link', { name, exact: true })
-    await expect(link).toBeVisible()
-    const box = await link.boundingBox()
-    expect(box?.height).toBeGreaterThanOrEqual(44)
-  }
-  await expect(page.locator('h1')).toHaveCount(1)
-  await navigation.getByRole('link', { name: 'Work', exact: true }).click()
-  await expect(page).toHaveURL(/\/work$/)
 })
 
 test('primary navigation opens Work', async ({ page }) => {

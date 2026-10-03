@@ -184,6 +184,7 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
     // fail loud without a real sender instead of silently dropping logins.
     delete config.vars.MAGIC_LINK_OUTBOX
   }
+  if (app === 'garden') config.vars = { ...config.vars, TARGET_ORIGIN: `https://${previewIdentity('portfolio', pr).host}` }
   if (config.assets?.directory) config.assets = { ...config.assets, directory: absolutePath(config.assets.directory, sourcePath) }
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)
   if (config.main) config.main = absolutePath(config.main, sourcePath)

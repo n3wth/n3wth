@@ -1,0 +1,41 @@
+.portfolio-section-title { display: block; font-size: clamp(3.5rem, 7vw, 6rem); line-height: 1; letter-spacing: -.04em; font-weight: 500; }
+
+.portfolio-story-hero {
+  position: relative;
+  isolation: isolate;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  /* Extend artwork behind the fixed navigation; keep copy below its clearance. */
+  margin-block-start: -96px;
+  padding-block-start: 96px;
+  min-height: 100svh;
+  display: grid;
+  align-content: end;
+  overflow: hidden;
+}
+
+.portfolio-story-copy {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--frame-max);
+  margin-inline: auto;
+  padding-block: 0 clamp(2rem, 5svh, 4rem);
+}
+
+.portfolio-story-copy .portfolio-section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -.03em;
+}
+
+@media (min-width: 1024px) {
+  .portfolio-story-hero { min-height: max(640px, 100svh); }
+  .portfolio-story-description { white-space: nowrap; }
+}
+
+.portfolio-story-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-block: 2rem 3rem;
+}

@@ -2,7 +2,7 @@ import { RouterLink } from '../RouterLink'
 import { ecosystem } from '../../data/library'
 
 /**
- * The closing strip: four properties and what each is for.
+ * The closing strip: current projects and what each is for.
  *
  * A rail above each column, nothing around them. Four bordered cards here
  * would undo everything the rest of the page argues for.
@@ -20,10 +20,10 @@ export function EcosystemStrip() {
           className="display text-[clamp(1.35rem,2.3vw,1.95rem)]"
           style={{ letterSpacing: '-0.03em', lineHeight: 1.05 }}
         >
-          Related sites
+          Related projects
         </h2>
 
-        <ul className="mt-10 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 grid list-none p-0 gap-x-10 gap-y-10 sm:grid-cols-3">
           {ecosystem.map((property) => {
             return (
               <li

@@ -1,5 +1,8 @@
-import { Experience } from '../components/sections/Experience'
+import { sections } from '../data/content'
+import { Button } from '@n3wth/ui/primitives'
 import { SectionHeader } from '../components/Frame'
+import { Experience } from '../components/sections/Experience'
+import './work.css'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Work — Oliver Newth'
@@ -23,16 +26,16 @@ export default function Work() {
     <>
       <SectionHeader
         as="h1"
-        title="Work"
-        lede="I lead AI product development at Google. Previously at Covariant, Meta, and Microsoft."
+        story="work"
+        title={sections.work.name}
+        lede={sections.work.description}
         action={
-          <a
+          <Button
+            label="Open resume"
+            variant="primary"
+            size="md"
             href="https://r2.n3wth.com/resume/oliver-newth-resume.pdf"
-            className="inline-flex min-h-11 w-fit shrink-0 items-center gap-2 underline underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
-            aria-label="Resume (PDF)"
-          >
-            Resume (PDF)
-          </a>
+          />
         }
       />
       <Experience />

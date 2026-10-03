@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 import { PageHeader } from '@n3wth/ui/site'
+import { SectionStory, type SectionStoryKind } from './SectionStory'
+import './sectionHero.css'
 
 /**
  * Section header: a large display headline and an optional lede.
@@ -10,14 +12,34 @@ export function SectionHeader({
   title,
   lede,
   action,
+  story,
   as: Heading = 'h2',
 }: {
   title: ReactNode
   lede?: ReactNode
   action?: ReactNode
+  story?: SectionStoryKind
   as?: 'h1' | 'h2'
 }) {
+  const header = (
+    <PageHeader
+      className={`site-content-gutter${Heading === 'h1' ? ' portfolio-section-hero' : ''}`}
+      spacing={story ? 'compact' : 'default'}
+      title={Heading === 'h1' ? <span className="portfolio-section-title">{title}</span> : title}
+      description={story ? <span className="portfolio-story-description">{lede}</span> : lede}
+      actions={story ? undefined : action}
+      level={Heading === 'h1' ? 1 : 2}
+    />
+  )
+
+  if (!story) return header
   return (
-    <PageHeader data-reveal className="site-content-gutter" title={title} description={lede} actions={action} level={Heading === 'h1' ? 1 : 2} />
+    <>
+      <div className="portfolio-story-hero">
+        <SectionStory kind={story} />
+        <div className="portfolio-story-copy">{header}</div>
+      </div>
+      {action && <div className="site-content-gutter portfolio-story-actions">{action}</div>}
+    </>
   )
 }

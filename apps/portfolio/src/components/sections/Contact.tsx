@@ -1,47 +1,42 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
-import { ConvergeLight, VisualBand } from '@n3wth/ui/visuals'
-import { siteConfig } from '../../data/content'
-import { PageHeader } from '@n3wth/ui/site'
+import { siteConfig, sections } from '../../data/content'
+import { SectionHeader } from '../Frame'
+import { StoryScene } from '../StoryScene'
+import './contact.css'
 import { track } from '../../lib/analytics'
 
 const contactEventProps = { source_page: '/contact' } as const
 
 export function Contact() {
   return (
-    <section id="contact" aria-label="Contact" className="min-h-[85vh] flex flex-col justify-center">
-      {/* The bookend to /thinking's fork: two lines of light — one cool,
-          one warm — converge and carry on as one. A conversation. */}
-      <VisualBand height="clamp(200px, 34svh, 380px)">
-        <ConvergeLight />
-      </VisualBand>
-
-      <div className="frame w-full">
-        <PageHeader
-          className="site-content-gutter"
-          title="Let's talk"
-          description="Product, AI safety, or LED art. Coffee if you're in San Francisco."
-          actions={
-            <>
-              <Button
-                label={siteConfig.email}
-                variant="primary"
-                size="md"
-                href={`mailto:${siteConfig.email}`}
-                clickAction={() => track('contact_intent', { ...contactEventProps, method: 'email' })}
-                endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
-              />
-              <Button
-                label="LinkedIn"
-                variant="secondary"
-                size="md"
-                href={siteConfig.social.linkedin}
-                rel="me noopener"
-                clickAction={() => track('contact_intent', { ...contactEventProps, method: 'linkedin' })}
-              />
-            </>
-          }
-        />
+    <section id="contact" aria-label="Contact">
+      <SectionHeader
+        as="h1"
+        story="contact"
+        title={sections.contact.name}
+        lede={sections.contact.description}
+      />
+      <div className="site-content-gutter contact-invitation">
+        <div className="contact-invitation-actions">
+          <Button
+            label={siteConfig.email}
+            variant="primary"
+            size="md"
+            href={`mailto:${siteConfig.email}`}
+            clickAction={() => track('contact_intent', { ...contactEventProps, method: 'email' })}
+            endContent={<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />}
+          />
+          <Button
+            label="LinkedIn"
+            variant="secondary"
+            size="md"
+            href={siteConfig.social.linkedin}
+            rel="me noopener"
+            clickAction={() => track('contact_intent', { ...contactEventProps, method: 'linkedin' })}
+          />
+        </div>
+        <StoryScene kind="contact" />
       </div>
     </section>
   )

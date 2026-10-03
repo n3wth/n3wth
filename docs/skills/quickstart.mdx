@@ -1,14 +1,14 @@
 ---
-title: "Quickstart"
+title: "Install your first skill"
 sidebarTitle: "Quickstart"
-description: "Install your first AI coding skill for Antigravity CLI in under a minute using the shell installer at skills.n3wth.com."
+description: "Inspect and install a skill for Antigravity CLI, then verify the instruction file on disk."
 ---
 
 Skills are Markdown instructions for coding agents. Installing a skill copies instructions from the catalog into your assistant's skills directory so the agent can follow them during your sessions. It does not install the tools the instructions mention.
 
 <Steps>
   <Step title="Check prerequisites">
-    You need Bash, curl, and an assistant that reads a skills directory. The current supported target is `gemini` (Antigravity CLI), which reads skills from `~/.gemini/skills`.
+    You need Bash, curl, Git, and Antigravity CLI. The installer target is `gemini`, which installs skills into `~/.gemini/skills`.
   </Step>
   <Step title="Browse the catalog">
     Visit [skills.n3wth.com](https://skills.n3wth.com) to browse available skills. The catalog is organized into categories: Development, Documents, Creative, Productivity, and Business.
@@ -21,7 +21,7 @@ Skills are Markdown instructions for coding agents. Installing a skill copies in
     ```
 
     <Warning>
-      Always review shell scripts before piping them into bash. The installer clones the public [n3wth/n3wth](https://github.com/n3wth/n3wth) repository and copies files into your assistant's skills directory.
+      Open `/tmp/install.sh` in your editor before running it. The installer clones the public [n3wth/n3wth](https://github.com/n3wth/n3wth) repository and copies files into your assistant's skills directory.
     </Warning>
   </Step>
   <Step title="Install a skill">
@@ -37,6 +37,10 @@ Skills are Markdown instructions for coding agents. Installing a skill copies in
     ```bash
     ls ~/.gemini/skills/pdf.md
     ```
+
+    The command should print the file path. Open the file to inspect the instructions. This verifies the copy; whether the assistant uses the skill must be checked in an assistant session.
+
+    If the installer reports that the file already exists, it has kept your existing copy. See [overwrite protection](/skills/installation#overwrite-protection).
   </Step>
 </Steps>
 
@@ -50,7 +54,7 @@ Skills are Markdown instructions for coding agents. Installing a skill copies in
 
 ## Next steps
 
-<Columns cols={3}>
+<Columns cols={2}>
   <Card title="Installation options" href="/skills/installation">
     Learn about staging directories, folder skills, and overwrite protection.
   </Card>

@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { verifyContent } from '../verify-content.mjs'
-import { SOURCES } from '../lib/content-sources.mjs'
+import { SNAPSHOTS } from '../lib/content-sources.mjs'
 
 const REAL_DATA_DIR = join(dirname(fileURLToPath(import.meta.url)), '../../src/data')
 
@@ -16,7 +16,7 @@ afterEach(() => {
 })
 
 function copyRealSnapshots(dir) {
-  for (const source of SOURCES) {
+  for (const source of SNAPSHOTS) {
     for (const file of source.files) {
       copyFileSync(join(REAL_DATA_DIR, file), join(dir, file))
     }

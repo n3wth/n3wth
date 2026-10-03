@@ -204,7 +204,7 @@ export default function NightField() {
         }
         margin={
           <MarginNote
-            href="https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material"
+            href="/thinking/astryx-vs-shadcn-vs-angular-material"
             title="Astryx vs shadcn vs Angular Material for LLM Development"
             description="Which design system makes accessible design easiest when an LLM is the one writing the UI — the same question, one layer down."
           />

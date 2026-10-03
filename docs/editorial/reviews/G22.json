@@ -1,6 +1,6 @@
 {
   "id": "G22",
-  "contentPath": "apps/garden/content/Static routes on serverless workers.md",
+  "contentPath": "apps/portfolio/content/Static routes on serverless workers.md",
   "contentSha256": "766011d5c6c4a490003d25cb744b7ac538fd884ef95cb008b910463420c6c3f5",
   "reviewedAt": "2026-09-18",
   "reviewer": "Author's editorial pass, 2026-09-18: research subagents fetched and quoted each source; every quoted passage was re-fetched independently and matched verbatim before scoring. First-person incident notes; external sources ground the mechanisms named, not the incidents themselves.",

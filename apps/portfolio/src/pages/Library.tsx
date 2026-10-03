@@ -1,3 +1,4 @@
+import { sections } from '../data/content'
 import { SectionHeader } from '../components/Frame'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 import { KitShelf } from '../components/library/KitShelf'
@@ -15,11 +16,6 @@ const DESCRIPTION = 'Installable pieces from across the n3wth properties: the es
  * read. Four shelves, each ending somewhere you can install, copy, or
  * click through to the real thing, and one of them (the essay kit) has no
  * other home on the internet.
- *
- * No hero. The page opens the way /work does: a heading, a lede, and then
- * straight into the material. The decorative band lands after the kit
- * shelf instead of at the top, where it would read as exactly the hero
- * this page is refusing to have.
  *
  * Every shelf and every kit primitive carries a stable id with
  * scroll-mt-24 on it, so the command palette can deep-link into any of
@@ -43,8 +39,9 @@ export default function Library() {
     <>
       <SectionHeader
         as="h1"
-        title="Library"
-        lede="The essay kit, UI components, garden notes, and agent skills behind this site."
+        story="library"
+        title={sections.library.name}
+        lede={sections.library.description}
       />
 
       <KitShelf />

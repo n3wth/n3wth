@@ -9,30 +9,26 @@ export const siteConfig = {
     github: 'https://github.com/n3wth',
     linkedin: 'https://www.linkedin.com/in/n3wth',
   },
-  gardenSite: siteUrls.garden,
+  gardenSite: '/thinking',
 }
 
-export interface NavItem {
-  name: string
-  href: string
-  external?: boolean
-}
+export const sections = {
+  projects: { name: 'Projects', href: '/projects', description: 'Tools and experiments.' },
+  work: { name: 'Work', href: '/work', description: 'Building AI products.' },
+  art: { name: 'Art', href: '/art', description: 'Large-scale light installations.' },
+  thinking: { name: 'Thinking', href: '/thinking', description: 'AI, design, and everyday life.' },
+  library: { name: 'Library', href: '/library', description: 'Notes, components, and skills.' },
+  contact: { name: 'Contact', href: '/contact', description: 'Product, AI, art, or coffee.' },
+} as const
 
-export const navigation: NavItem[] = [
-  { name: 'Projects', href: '/projects' },
-  { name: 'Work', href: '/work' },
-  { name: 'Art', href: '/art' },
-  { name: 'Thinking', href: '/thinking' },
-  { name: 'Library', href: '/library' },
-  { name: 'Contact', href: '/contact' },
-]
+export const navigation = Object.values(sections)
 
 /** Family sites for quiet access in the scene or keyboard nav */
 export const familySites = [
   { name: 'hop.flights', href: siteUrls.hop },
   { name: 'lunchmoney.sh', href: siteUrls.lunch },
   { name: 'r3', href: siteUrls.r3 },
-  { name: 'garden', href: siteUrls.garden },
+  { name: 'garden', href: '/thinking' },
   { name: 'Agent Skills', href: siteUrls.skills },
   { name: 'ui', href: siteUrls.ui },
 ]
@@ -180,6 +176,13 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'elephant-goldfish',
+    name: 'Elephant-Goldfish',
+    description: 'A Codex plugin for design checks, bug diagnosis, and code review. Fresh reviewers examine bounded evidence without inheriting the working conversation.',
+    tech: ['Codex', 'Agent Skills'],
+    url: '/projects/elephant-goldfish',
+  },
+  {
     id: 'markup',
     name: 'markup',
     description: 'An independent prototype I built to explore personal AI agents working alongside people in shared documents and chat. Visible cursors and edits make agent activity easier to follow.',
@@ -237,6 +240,6 @@ export const projects: Project[] = [
     name: 'garden',
     description: 'A digital garden: Obsidian-flavored markdown rendered as a wiki, every note linked.',
     tech: ['Next.js', 'Astryx', 'Wikilinks'],
-    url: siteUrls.garden,
+    url: '/thinking',
   },
 ]

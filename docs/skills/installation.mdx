@@ -6,12 +6,22 @@ description: "Copy skill files into your assistant's skills directory with the s
 
 The shell installer at [skills.n3wth.com/install.sh](https://skills.n3wth.com/install.sh) copies committed skill files from the [n3wth/n3wth](https://github.com/n3wth/n3wth) repository into your assistant's skills directory. It supports both flat files (`foo.md`) and folder skills (`bar/SKILL.md`).
 
+## Before you begin
+
+You need Bash, curl, and Git. Download the installer, then open it in your editor before running it:
+
+```bash
+curl -fsSL https://skills.n3wth.com/install.sh -o /tmp/install.sh
+```
+
+The examples below reuse this downloaded file. The installer supports `gemini` (Antigravity CLI); it has no general `claude` target.
+
 ## Install a single skill
 
 Pass the target assistant and the skill ID:
 
 ```bash
-curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini pdf
+bash /tmp/install.sh gemini pdf
 ```
 
 This downloads the `pdf` skill and copies it to `~/.gemini/skills/pdf.md`.
@@ -21,7 +31,7 @@ This downloads the `pdf` skill and copies it to `~/.gemini/skills/pdf.md`.
 Omit the skill ID to install the entire catalog:
 
 ```bash
-curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini
+bash /tmp/install.sh gemini
 ```
 
 ## Install into a staging directory
@@ -53,7 +63,7 @@ The installer skips existing files by default. If a skill is already installed, 
 gemini/pdf.md already exists, skipping
 ```
 
-To force an update, remove the existing file first or use the experimental CLI with the `--force` flag.
+To update a skill, first back up any local edits. Move the existing file or folder out of the skills directory, then rerun the installer. The [experimental CLI](/skills/cli) uses a separate catalog, so it is not a drop-in updater for this installer.
 
 ## Available targets
 
@@ -76,6 +86,6 @@ Only `gemini` is supported today. Passing an unrecognized target prints `Support
   </Accordion>
 
   <Accordion title="Skill already installed">
-    The installer skips files that already exist. Remove the existing file or directory under `~/.gemini/skills/` if you want to reinstall.
+    The installer skips files that already exist. Follow [overwrite protection](/skills/installation#overwrite-protection) to preserve local edits before reinstalling.
   </Accordion>
 </AccordionGroup>

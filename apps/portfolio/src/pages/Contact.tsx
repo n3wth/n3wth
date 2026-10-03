@@ -1,4 +1,5 @@
 import { Contact } from '../components/sections/Contact'
+import Support from '../components/sections/Support'
 import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
 
 const TITLE = 'Contact — Oliver Newth'
@@ -18,5 +19,5 @@ export default function ContactPage() {
     }),
   })
 
-  return <Contact />
+  return <><Contact /><Support /></>
 }

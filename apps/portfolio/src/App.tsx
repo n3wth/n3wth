@@ -5,6 +5,7 @@ import { LinkProvider } from '@n3wth/ui/primitives'
 import { RouterLink } from './components/RouterLink'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
+import { PageContinuation } from './components/PageContinuation'
 import { CommandPalette } from './components/CommandPalette'
 import { useCommandPalette } from './hooks/useCommandPalette'
 import { useKonamiCode } from './hooks/useKonamiCode'
@@ -16,12 +17,13 @@ function ScrollToTop() {
   // location.key changes on every navigation, including same-path replaces
   // (re-clicking the active nav tab) — pathname alone misses those, leaving
   // the click a silent no-op.
-  const { key, hash } = useLocation()
+  const { key, hash, state } = useLocation()
   const navigationType = useNavigationType()
   useEffect(() => {
     // POP = back/forward: let the browser restore the previous position
     // instead of clobbering it with the top of the page.
-    if (navigationType === 'POP') return
+    if (navigationType === 'POP' && key !== 'default') return
+    if (navigationType !== 'POP' && state?.preserveScroll) return
 
     /* A hash is a request for one place on the page, and router navigations
        don't honour it on their own — the command palette deep-links into
@@ -32,7 +34,13 @@ function ScrollToTop() {
        reset down with it. The rAF retry covers a target that mounts a frame
        late, which happens when the hash arrives from another route. */
     if (hash.length > 1) {
-      const id = decodeURIComponent(hash.slice(1))
+      let id = hash.slice(1)
+      try {
+        id = decodeURIComponent(id)
+      } catch {
+        // Malformed URL fragments must not take down the route. A literal
+        // percent sign can also be part of an element's ID.
+      }
       const land = () => {
         const target = document.getElementById(id)
         if (target) target.scrollIntoView({ block: 'start' })
@@ -44,7 +52,7 @@ function ScrollToTop() {
     }
 
     window.scrollTo(0, 0)
-  }, [key, hash, navigationType])
+  }, [key, hash, navigationType, state])
   return null
 }
 
@@ -87,6 +95,7 @@ function App() {
             <div className="frame">
               <main id="main" tabIndex={-1}>
                 <Outlet />
+                <PageContinuation pathname={pathname} />
               </main>
             </div>
           </div>

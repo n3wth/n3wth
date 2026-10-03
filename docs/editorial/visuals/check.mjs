@@ -2,12 +2,12 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
-import { themeFigure } from '../../../apps/garden/scripts/theme-figures.mjs'
+import { themeFigure } from '../../../apps/portfolio/scripts/theme-figures.mjs'
 
 const directory = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(directory, '../../..')
-const content = path.join(root, 'apps/garden/content')
-const assets = path.join(root, 'apps/garden/public')
+const content = path.join(root, 'apps/portfolio/content')
+const assets = path.join(root, 'apps/portfolio/public')
 const records = (await Promise.all((await fs.readdir(directory))
   .filter(name => name.endsWith('.json'))
   .map(async name => JSON.parse(await fs.readFile(path.join(directory, name), 'utf8'))))).flat()
@@ -65,7 +65,7 @@ for (const record of records) {
     require(Math.abs(ratio - metadata.width / metadata.height) < 0.01, `${label}: image aspect ratio is incorrect`)
     if (record.asset.endsWith('.svg')) {
       const svg = buffer.toString('utf8')
-      require(svg === themeFigure(svg), `${label}: figure palette is stale; run npm run figures:theme -w @n3wth/garden`)
+      require(svg === themeFigure(svg), `${label}: figure palette is stale; run node apps/portfolio/scripts/theme-figures.mjs`)
       require(!/<(?:script|foreignObject|image)\b|\bon\w+\s*=|(?:href|url)\s*[=(]\s*["']?https?:/i.test(svg), `${label}: unsafe or externally dependent SVG`)
       require(/<title[\s>]/.test(svg) && /<desc[\s>]/.test(svg), `${label}: SVG title/description missing`)
       require(!/font-weight\s*[:=]\s*["']?(?:[7-9]00|bold)/i.test(svg), `${label}: figure exceeds the site's semibold weight limit`)
@@ -81,7 +81,7 @@ const siteIndex = process.argv.indexOf('--site')
 if (siteIndex !== -1) {
   const origin = process.argv[siteIndex + 1]
   if (!origin) throw new Error('--site requires an origin')
-  const resourceSelections = JSON.parse(await fs.readFile(path.join(root, 'apps/garden/src/lib/resource-preview-data.json'), 'utf8'))
+  const resourceSelections = JSON.parse(await fs.readFile(path.join(root, 'apps/portfolio/scripts/notes/lib/resource-preview-data.json'), 'utf8'))
   const queue = [...pageChecks]
   await Promise.all(Array.from({ length: 5 }, async () => {
     while (queue.length) {
@@ -89,7 +89,7 @@ if (siteIndex !== -1) {
       const slug = record.file.replace(/\.md$/, '').split('/')
         .map(part => part.toLowerCase().replace(/['']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')).join('/')
       try {
-        const response = await fetch(new URL(slug, origin.endsWith('/') ? origin : origin + '/'), { signal: AbortSignal.timeout(25_000) })
+        const response = await fetch(new URL(`thinking/${slug}`, origin.endsWith('/') ? origin : origin + '/'), { signal: AbortSignal.timeout(25_000) })
         const html = await response.text()
         const figure = html.match(/<figure\b[^>]*class="research-figure"[^>]*>[\s\S]*?<\/figure>/)?.[0] || ''
         require(response.ok && figure.includes(record.asset) && /<figcaption/.test(figure), `${slug}: deployed figure missing`)

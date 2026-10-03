@@ -9,10 +9,8 @@ import { registeredPieces } from './thinking/registry'
 import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
 import { siteUrls } from '../data/sites'
 
-/** Minimum query length before auto-triggering AI search */
+/** Minimum query length for automatic AI search. */
 const AI_MIN_CHARS = 2
-/** Debounce delay for auto-triggering AI search (ms) */
-const AI_DEBOUNCE_MS = 300
 
 /**
  * One input over four properties: this site's routes, every Thinking piece,
@@ -68,7 +66,7 @@ const PAGES: SearchItem[] = [
   {
     id: 'page-library',
     title: 'Library',
-    subtitle: 'The essay kit, @n3wth/ui, the garden: what exists and how to start',
+    subtitle: 'Essays, components, and notes',
     href: '/library',
     group: 'Pages',
   },
@@ -222,6 +220,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const [reduceMotion, setReduceMotion] = useState(false)
   const [askState, setAskState] = useState<'idle' | 'loading' | 'answered' | 'error'>('idle')
   const [askAnswer, setAskAnswer] = useState('')
+  const sourcesAt = askAnswer.lastIndexOf(' Sources: ')
+  const answerText = sourcesAt < 0 ? askAnswer : askAnswer.slice(0, sourcesAt)
+  const answerSources = sourcesAt < 0 ? [] : renderAnswerLinks(askAnswer.slice(sourcesAt + 10))
+    .filter((part): part is { label: string; href: string } => typeof part !== 'string')
 
   const panelRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -257,7 +259,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 .filter((part): part is string => Boolean(part && part.length > 0))
                 .join(' · ') || undefined,
             href: note.href,
-            external: true,
+            external: false,
             group: 'Garden' as ResultGroup,
           }))
         )
@@ -362,7 +364,12 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
       setAskState('loading')
       setAskAnswer('')
-      track('ai_search_asked', { query_length: trimmed.length, immediate })
+      const traceId = crypto.randomUUID()
+      const startedAt = performance.now()
+      let firstTextAt: number | undefined
+      let model: string | undefined
+      let outcome = 'success'
+      track('ai_search_asked', { query_length: trimmed.length, immediate, $ai_trace_id: traceId })
 
       try {
         const response = await fetch('/api/search', {
@@ -380,7 +387,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         }
 
         // Handle streaming response
-        if (response.body) {
+        if (response.body && response.headers?.get('content-type')?.includes('text/event-stream')) {
           const reader = response.body.getReader()
           const decoder = new TextDecoder()
           let buffer = ''
@@ -407,13 +414,15 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 if (data === '[DONE]') continue
 
                 try {
-                  const parsed = JSON.parse(data) as { delta?: string }
+                  const parsed = JSON.parse(data) as { delta?: string; model?: string }
+                  if (parsed.model) model = parsed.model
                   if (parsed.delta) {
+                    firstTextAt ??= performance.now()
                     accumulated += parsed.delta
                     // Update answer progressively
                     if (version === aiRequestVersion.current) {
                       setAskAnswer(accumulated)
-                      if (askState !== 'answered') setAskState('answered')
+                      setAskState('answered')
                     }
                   }
                 } catch {
@@ -426,6 +435,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           }
 
           if (version === aiRequestVersion.current && accumulated) {
+            if (accumulated.startsWith('No relevant information found.')) outcome = 'no_answer'
             setAskAnswer(accumulated)
             setAskState('answered')
           } else if (version === aiRequestVersion.current && !accumulated) {
@@ -433,47 +443,61 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           }
         } else {
           // Fallback for non-streaming response
-          const data = (await response.json()) as { answer?: string }
+          const data = (await response.json()) as { answer?: string; model?: string; fallback?: boolean }
           if (version !== aiRequestVersion.current) return
           if (!data.answer) throw new Error('empty answer')
+          firstTextAt = performance.now()
+          model = data.model
+          outcome = data.fallback ? 'unavailable' : data.answer.startsWith('No relevant information found.') ? 'no_answer' : 'success'
           setAskAnswer(data.answer)
           setAskState('answered')
         }
       } catch (err) {
+        outcome = controller.signal.aborted ? 'cancelled' : 'error'
         // Ignore abort errors (they're intentional)
         if (err instanceof Error && err.name === 'AbortError') return
         // Only update state if this is still the current request
         if (version === aiRequestVersion.current) {
           setAskState('error')
         }
+      } finally {
+        if (controller.signal.aborted || version !== aiRequestVersion.current) outcome = 'cancelled'
+        // Reuse the site's PostHog identity and privacy filters. No typed text or answers.
+        track('$ai_generation', {
+          $ai_trace_id: traceId,
+          $ai_span_id: crypto.randomUUID(),
+          $ai_span_name: 'portfolio_search',
+          $ai_provider: 'cloudflare',
+          $ai_model: model,
+          $ai_latency: (performance.now() - startedAt) / 1000,
+          $ai_time_to_first_token: firstTextAt === undefined ? undefined : (firstTextAt - startedAt) / 1000,
+          $ai_is_error: outcome === 'error' || outcome === 'unavailable',
+          source: 'portfolio_search',
+          outcome,
+          query_length: trimmed.length,
+          measurement: 'browser_request',
+        })
       }
     },
-    [trimmed, askState]
+    [trimmed]
   )
 
-  /**
-   * Auto-trigger AI search when the query changes, with debouncing.
-   * Fires immediately on Enter via the separate keyboard handler.
-   */
+  /** Editing or closing search invalidates the previous AI answer. */
   useEffect(() => {
-    // Reset AI state when query becomes too short or empty
-    if (trimmed.length < AI_MIN_CHARS) {
-      if (aiAbortController.current) {
-        aiAbortController.current.abort()
-        aiAbortController.current = null
-      }
-      setAskState('idle')
-      setAskAnswer('')
-      return
+    aiAbortController.current?.abort()
+    aiAbortController.current = null
+    aiRequestVersion.current += 1
+    setAskAnswer('')
+    const shouldSearch = open && trimmed.length >= AI_MIN_CHARS
+    setAskState(shouldSearch ? 'loading' : 'idle')
+    const timer = shouldSearch ? window.setTimeout(() => void askAi(), 300) : undefined
+
+    return () => {
+      window.clearTimeout(timer)
+      aiAbortController.current?.abort()
+      aiRequestVersion.current += 1
     }
-
-    // Debounce the AI request
-    const timeout = setTimeout(() => {
-      askAi(false)
-    }, AI_DEBOUNCE_MS)
-
-    return () => clearTimeout(timeout)
-  }, [trimmed]) // eslint-disable-line react-hooks/exhaustive-deps -- askAi is intentionally excluded to avoid re-triggering
+  }, [trimmed, open, askAi])
 
   useEffect(() => {
     if (safeIndex < 0) return
@@ -518,7 +542,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       return
     }
 
-    if (flat.length === 0) return
+    if (event.target !== inputRef.current || flat.length === 0) return
 
     if (event.key === 'ArrowDown') {
       event.preventDefault()
@@ -534,10 +558,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       setActiveIndex(flat.length - 1)
     } else if (event.key === 'Enter') {
       event.preventDefault()
-      // If AI is loading or hasn't started yet and we have a valid query, fire immediately
-      if (trimmed.length >= AI_MIN_CHARS && askState !== 'answered') {
-        askAi(true)
-      }
       const item = flat[safeIndex]
       if (item) activate(item)
     }
@@ -636,11 +656,11 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           </div>
 
           {trimmed.length >= AI_MIN_CHARS && (
-            <div className="shrink-0 px-4 py-2.5" style={{ borderBottom: '1px solid var(--rail)' }}>
+            <div className="shrink-0 px-4 py-3">
               {askState === 'loading' && (
-                <p className="font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
-                  Thinking…
-                </p>
+                <div className="command-palette-loading" role="status" aria-label="Searching">
+                  <span /><span /><span />
+                </div>
               )}
               {askState === 'error' && (
                 <p className="flex items-center gap-2 font-sans text-sm" style={{ color: 'var(--ink-dim)' }} aria-live="polite">
@@ -658,12 +678,13 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 </p>
               )}
               {askState === 'answered' && (
+                <div>
                 <p
                   className="font-sans text-sm leading-relaxed"
                   style={{ color: 'var(--ink)' }}
                   aria-live="polite"
                 >
-                  {renderAnswerLinks(askAnswer).map((part, i) =>
+                  {renderAnswerLinks(answerText).map((part, i) =>
                     typeof part === 'string' ? (
                       <span key={i}>{part}</span>
                     ) : (
@@ -688,12 +709,22 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                     )
                   )}
                 </p>
+                {answerSources.length > 0 && (
+                  <nav aria-label="Answer sources" className="command-palette-sources">
+                    {answerSources.map((source, i) => (
+                      <a key={i} href={source.href} target="_blank" rel="noopener noreferrer" className="command-palette-source font-sans text-sm">
+                        {source.label}
+                      </a>
+                    ))}
+                  </nav>
+                )}
+                </div>
               )}
             </div>
           )}
 
           <p role="status" aria-live="polite" className="sr-only">
-            {flat.length === 0
+            {askState === 'loading' ? 'Searching' : flat.length === 0
               ? 'No results'
               : `${matches.length} result${matches.length === 1 ? '' : 's'}`}
           </p>
@@ -704,15 +735,15 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             id={LIST_ID}
             role="listbox"
             aria-label="Search results"
-            className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"
+            className={`min-h-0 flex-1 overflow-y-auto overscroll-contain${flat.length === 0 && (askState === 'loading' || askState === 'answered') ? '' : ' py-2'}`}
           >
-            {flat.length === 0 ? (
+            {flat.length === 0 ? (askState === 'loading' || askState === 'answered' ? null : (
               <p className="px-4 py-6 font-sans text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                 {gardenReady
                   ? `Nothing matches “${trimmed}”. Try one word instead of a phrase.`
                   : `Nothing matches “${trimmed}” yet; the garden notes are still loading.`}
               </p>
-            ) : (
+            )) : (
               rendered.map((group) => {
                 const labelId = `command-palette-group-${group.group.toLowerCase()}`
                 return (

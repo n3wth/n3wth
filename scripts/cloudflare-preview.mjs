@@ -258,7 +258,7 @@ export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = pro
     ? { expectStatus: 301, expectLocation: 'https://n3wth.com/projects/ui', requireNoindex: false }
     : app === 'r3-web'
       ? { expectStatus: 308, expectLocation: 'https://n3wth.com/projects/r3' }
-      : {}
+      : app === 'garden' ? { path: '/__health' } : {}
   if (verifyDeployment) await verifyDeployment({ host: generated.identity.host, fetchFn, log, ...redirectCheck })
   log(`Deployed ${generated.identity.workerName} at https://${generated.identity.host}`)
   return {

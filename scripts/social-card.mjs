@@ -8,8 +8,8 @@ import { socialCard, socialSize } from '../packages/site-config/social.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const fonts = [
-  { name: 'Geist', data: readFileSync(resolve(root, 'apps/garden/src/lib/og-fonts/Geist-Regular.ttf')), weight: 400, style: 'normal' },
-  { name: 'Geist', data: readFileSync(resolve(root, 'apps/garden/src/lib/og-fonts/Geist-SemiBold.ttf')), weight: 600, style: 'normal' },
+  { name: 'Geist', data: readFileSync(resolve(root, 'scripts/fonts/Geist-Regular.ttf')), weight: 400, style: 'normal' },
+  { name: 'Geist', data: readFileSync(resolve(root, 'scripts/fonts/Geist-SemiBold.ttf')), weight: 600, style: 'normal' },
 ]
 const cards = [
   ['portfolio', 'Oliver Newth', '', 'apps/portfolio/public/og-image.png'],

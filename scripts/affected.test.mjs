@@ -1,6 +1,25 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { affectedWorkspaces } from './affected.mjs'
+import { affectedWorkspaces, affectsUiPackage } from './affected.mjs'
+
+test('UI package validation skips app-only edits without skipping its build prerequisite', () => {
+  for (const file of ['apps/portfolio/src/pages/Thinking.tsx', 'apps/portfolio/src/notes.css', 'tests/browser/portfolio.spec.ts', 'docs/workspace/deployment.md', 'design.md']) {
+    assert.equal(affectsUiPackage([file]), false, file)
+  }
+  assert.equal(affectsUiPackage([]), false)
+  assert.deepEqual(affectedWorkspaces([
+    { name: '@n3wth/ui', path: 'packages/ui' },
+    { name: '@n3wth/portfolio', path: 'apps/portfolio', dependencies: { '@n3wth/ui': '*' } },
+  ], ['apps/portfolio/src/pages/Thinking.tsx']), ['@n3wth/ui', '@n3wth/portfolio'])
+})
+
+test('UI package validation keeps package, fixture, manifest and uncertain changes', () => {
+  for (const file of ['packages/ui/src/index.ts', 'packages/ui/README.md', 'packages/site-config/src/index.ts', 'scripts/package-check/next/app/page.tsx', 'scripts/check-ui-package.mjs', 'scripts/build.mjs', 'package.json', 'package-lock.json', 'apps/portfolio/package.json', '.github/workflows/site-check.yml', 'tsconfig.json', 'unknown-config.toml']) {
+    assert.equal(affectsUiPackage([file]), true, file)
+  }
+  assert.equal(affectsUiPackage(['apps/portfolio/src/pages/Thinking.tsx'], true), true)
+  assert.equal(affectsUiPackage([], true), true)
+})
 
 const graph = [
   { name: '@n3wth/portfolio', path: 'apps/portfolio', dependencies: { '@n3wth/site-config': '*' } },

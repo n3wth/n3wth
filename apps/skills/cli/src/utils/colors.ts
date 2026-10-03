@@ -40,22 +40,6 @@ export function formatHeader(text: string): string {
   return chalk.bold.white(text)
 }
 
-export function formatSuccess(text: string): string {
-  return colors.success(text)
-}
-
-export function formatError(text: string): string {
-  return colors.error(text)
-}
-
-export function formatWarning(text: string): string {
-  return colors.warning(text)
-}
-
-export function formatInfo(text: string): string {
-  return colors.info(text)
-}
-
 export function box(content: string, title?: string): string {
   const lines = content.split('\n')
   // eslint-disable-next-line no-control-regex

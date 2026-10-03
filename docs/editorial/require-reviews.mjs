@@ -10,7 +10,7 @@ const reviewed = new Set(reviews.map(review => review.contentPath))
 const base = process.argv[2]
 if (!base || /^0+$/.test(base)) throw new Error('A valid comparison base is required')
 const added = execFileSync('git', ['diff', '--name-only', '--diff-filter=A', '-z', base, 'HEAD', '--'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean)
-const manuscripts = added.filter(path => /^apps\/garden\/content\/(?!Attachments\/|Tags\/).*\.md$/.test(path) || /^apps\/portfolio\/src\/components\/thinking\/pieces\/[^/]+\.tsx$/.test(path))
+const manuscripts = added.filter(path => /^apps\/portfolio\/content\/(?!Attachments\/|Tags\/).*\.md$/.test(path) || /^apps\/portfolio\/src\/components\/thinking\/pieces\/[^/]+\.tsx$/.test(path))
 const missing = manuscripts.filter(path => !reviewed.has(path))
 if (missing.length) throw new Error(`New public manuscripts require a hashed editorial review: ${missing.join(', ')}`)
 console.log(`Review coverage verified for ${manuscripts.length} new public manuscripts`)
