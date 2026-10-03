@@ -5,9 +5,9 @@
  * and home-page fallback content — for every route, so search engines and
  * social unfurlers saw one page instead of five. This emits
  * dist/<route>/index.html with route-specific head tags and a static
- * content summary; Vercel serves real files before its SPA rewrite, so
- * each route now has its own crawlable document. The app itself is
- * unchanged — the same bundle hydrates on top.
+ * content, including the authored React article bodies. Cloudflare serves
+ * these files before the SPA fallback. The client app replaces the static
+ * content when it mounts; interactive behavior is unchanged.
  *
  * It also emits the discovery surface derived from the same route list:
  * dist/sitemap.xml (with lastmod), dist/feed.xml (Atom, thinking pieces),
@@ -16,18 +16,70 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { renderThinkingBodies } from './lib/render-thinking.mjs'
+import { feedDate } from './notes/lib/dates.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const dist = join(here, '../dist')
 const ORIGIN = 'https://n3wth.com'
 
+/* Assistant SMS consent pages (/elsa, /billy) share one disclosure; keep in
+   sync with src/components/AssistantSmsPage.tsx. */
+function assistantSmsRoute({ name, slug, number, display, subject, object, glyph }) {
+  const sms = `sms:${number}`
+  return {
+    path: slug,
+    title: `${name} · SMS Messaging Consent`,
+    description: `SMS messaging consent for ${name}, Oliver Grosvenor-Newth's personal AI assistant on n3wth.com at ${display}.`,
+    ogImage: '/og-image.png',
+    body: `
+      <div class="assistant-hero">
+        <svg class="assistant-hero-mark" viewBox="0 0 512 512" width="160" height="160" role="img" aria-label="${name}" focusable="false" style="display:block;margin:0 auto 1.5rem">
+          <rect width="512" height="512" rx="96" fill="#000"></rect>
+          ${glyph}
+        </svg>
+        <h1>${name}</h1>
+        <p>A personal AI assistant in your texts.</p>
+        <p><a href="${sms}">${display}</a></p>
+      </div>
+      <p>${name} is the AI assistant service name for messaging operated by Oliver Grosvenor-Newth (sole proprietor) on n3wth.com. ${subject} helps with email, scheduling, purchases, and other tasks Oliver authorizes, over a simple text thread.</p>
+      <ul>
+        <li><strong>Email</strong>: Draft, triage, and follow up when Oliver asks.</li>
+        <li><strong>Scheduling</strong>: Coordinate times and reminders over SMS.</li>
+        <li><strong>Purchases</strong>: Run authorized buys and status updates.</li>
+        <li><strong>Tasks</strong>: Anything else Oliver greenlights for ${name}.</li>
+      </ul>
+      <h2>How to text ${object}</h2>
+      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>START</strong> to <strong>${display}</strong> after reading this page. SMS is optional and is not required to use n3wth.com.</p>
+      <ul>
+        <li><a href="${sms}">${display}</a>. Send START.</li>
+      </ul>
+      <h2>What you will get</h2>
+      <p>By opting in, you consent to receive automated assistant and transactional SMS (and MMS when needed) from ${display}, including two-way assistant conversations, account and verification codes when ${name} is completing a task for Oliver that requires SMS OTP, transactional notices about tasks ${name} is running, and occasional service notices about the ${name} / n3wth assistant line. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
+      <p>Opt in only by texting START to ${display} after reading this page. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+      <h2>Privacy</h2>
+      <p>Your phone number is used only to deliver ${name} / n3wth assistant-related SMS and to operate conversations you start. We do not sell or share mobile numbers with third parties or affiliates for their marketing. See the full <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
+      <p>Last updated September 2026</p>`,
+  }
+}
+
 const routes = [
+  {
+    path: 'projects/elephant-goldfish',
+    title: 'Elephant-Goldfish — Oliver Newth',
+    description: 'Check assumptions before you ship. Fresh reviewers question designs, investigate bugs, and inspect changes in Codex.',
+    ogImage: '/og/work.png',
+    body: `<h1>Elephant-Goldfish</h1><p>Check your assumptions before you ship. A fresh reviewer questions a design, investigates a bug, or inspects a change in Codex. It reviews the evidence without inheriting the working conversation.</p>
+      <h2>Five workflows</h2><p>Brainstorming, PRDs, feature design, bug diagnosis, and precommit review. Independent checks require fresh subagents. Reviews stay read-only unless changes are requested.</p>
+      <p><a href="/downloads/elephant-goldfish-0.1.0.zip">Download 0.1.0 source</a>. <a href="https://docs.n3wth.com/elephant-goldfish/quickstart">Documentation</a>.</p>
+      <h2>Sources and attribution</h2><p><a href="https://drensin.medium.com/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874">Dave Rensin</a> introduced the model. <a href="https://github.com/vshvedov/elephant-goldfish/tree/b8ebb3d6b00e39fbb6c619faa27f5bb994091d78">Vladyslav Shvedov</a> published the upstream workflows under the MIT license. Oliver Newth created this independent adaptation. The bundle preserves the upstream <a href="/downloads/elephant-goldfish/LICENSE">MIT license</a>.</p>`,
+  },
   {
     path: 'projects',
     title: 'Projects — Oliver Newth',
     description: 'Independent projects by Oliver Newth: tools for AI agents, a shared component library, and other experiments.',
     ogImage: '/og/work.png',
-    body: '<h1>Projects</h1><p>Tools for AI agents, a shared component library, and other experiments.</p><ul><li><a href="/projects/r3">r3</a> — persistent memory for AI assistants.</li><li><a href="/projects/ui">@n3wth/ui</a> — shared React components.</li><li><a href="/projects/skills">Agent Skills</a> — installable workflows for coding agents.</li></ul>',
+    body: '<h1>Projects</h1><p>Tools for AI agents, a shared component library, and other experiments.</p><ul><li><a href="/projects/r3">r3</a> — persistent memory for AI assistants.</li><li><a href="/projects/ui">@n3wth/ui</a> — shared React components.</li><li><a href="/projects/skills">Agent Skills</a> — installable workflows for coding agents.</li><li><a href="/projects/elephant-goldfish">Elephant-Goldfish</a> — fresh-context design checks, diagnosis, and code review.</li></ul>',
   },
   {
     path: 'work',
@@ -55,7 +107,7 @@ const routes = [
           <li><a href="/projects/r3">r3</a>: memory for AI apps using vector search and knowledge graphs.</li>
           <li><a href="https://skills.n3wth.com" rel="noopener">Agent Skills</a>: reusable instructions for coding agents.</li>
           <li><a href="https://github.com/n3wth/markup" rel="noopener">markup</a>: an independent prototype exploring personal AI agents in shared documents and chat.</li>
-          <li><a href="https://garden.n3wth.com" rel="noopener">garden</a> — a digital garden of working notes.</li>
+          <li><a href="/thinking#notes">Notes</a> — working notes, connected by topic and links.</li>
         </ul>
       </section>`,
   },
@@ -114,7 +166,7 @@ const routes = [
       </section>
       <section>
         <h2>The garden</h2>
-        <p>Working notes at <a href="https://garden.n3wth.com" rel="noopener">garden.n3wth.com</a>, sorted by growth stage (seedling, budding, evergreen) and gathered into groves.</p>
+        <p>Working notes in <a href="/thinking#notes">Thinking</a>, marked by growth stage (seedling, budding, evergreen) and gathered into groves.</p>
       </section>
       <section>
         <h2>Agent skills</h2>
@@ -129,17 +181,19 @@ const routes = [
     ogImage: '/og/contact.png',
     body: `
       <h1>Contact Oliver Newth</h1>
-      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: hey@n3wth.com</p>`,
+      <p>Happy to talk about product work, AI safety, or LED art. Coffee if you're in San Francisco. Email: hey@n3wth.com</p>
+      <section id="support"><h2>Support</h2><p>For help with a project, include its name, what you expected, and what happened. Leave out passwords and private data.</p><p><a href="mailto:support@n3wth.com">support@n3wth.com</a> handles n3wth.com, Elephant-Goldfish, lunchmoney.sh, and theywontshutup.com. For hop.flights, email <a href="mailto:support@hop.flights">support@hop.flights</a>.</p></section>`,
   },
   {
     path: 'support',
+    noindex: true,
     title: 'Support — Oliver Newth',
     description:
       'Support for n3wth projects — n3wth.com, hop.flights, lunchmoney.sh, and theywontshutup.com. Email support@n3wth.com.',
     ogImage: '/og-image.png',
     body: `
       <h1>Support</h1>
-      <p>One inbox covers every n3wth project: <a href="mailto:support@n3wth.com">support@n3wth.com</a>.</p>
+      <p>Support is now part of <a href="/contact#support">Contact</a>. Email <a href="mailto:support@n3wth.com">support@n3wth.com</a>.</p>
       <ul>
         <li><a href="https://n3wth.com">n3wth.com</a> — portfolio, writing, and experiments. support@n3wth.com</li>
         <li><a href="https://hop.flights" rel="noopener">hop.flights</a> — flight search and booking tools. support@hop.flights</li>
@@ -147,43 +201,8 @@ const routes = [
         <li><a href="https://theywontshutup.com" rel="noopener">theywontshutup.com</a> — AI voice hotline. support@n3wth.com</li>
       </ul>`,
   },
-  {
-    path: 'elsa',
-    title: 'Elsa · SMS Messaging Consent',
-    description:
-      "SMS messaging consent for Elsa, Oliver Grosvenor-Newth's personal AI assistant on n3wth.com at +1 (463) 258-8004.",
-    ogImage: '/og-image.png',
-    body: `
-      <div class="elsa-hero">
-        <svg class="elsa-hero-mark" viewBox="0 0 512 512" width="160" height="160" role="img" aria-label="Elsa" focusable="false" style="display:block;margin:0 auto 1.5rem">
-          <rect width="512" height="512" rx="96" fill="#000"></rect>
-          <g class="elsa-slash">
-            <rect x="236" y="96" width="40" height="320" rx="20" fill="#fff" transform="rotate(28 256 256)"></rect>
-          </g>
-        </svg>
-        <h1>Elsa</h1>
-        <p>A personal AI assistant in your texts.</p>
-        <p><a href="sms:+14632588004">+1 (463) 258-8004</a></p>
-      </div>
-      <p>Elsa is the AI assistant service name for messaging operated by Oliver Grosvenor-Newth (sole proprietor) on n3wth.com. She helps with email, scheduling, purchases, and other tasks Oliver authorizes, over a simple text thread.</p>
-      <ul>
-        <li><strong>Email</strong>: Draft, triage, and follow up when Oliver asks.</li>
-        <li><strong>Scheduling</strong>: Coordinate times and reminders over SMS.</li>
-        <li><strong>Purchases</strong>: Run authorized buys and status updates.</li>
-        <li><strong>Tasks</strong>: Anything else Oliver greenlights for Elsa.</li>
-      </ul>
-      <h2>How to text her</h2>
-      <p>There is no website signup form, phone number field, or SMS consent checkbox on n3wth.com. Consumers opt in only by voluntarily texting <strong>START</strong>, <strong>HELLO</strong>, or a first message to <strong>+1 (463) 258-8004</strong> after reading this page. SMS is optional and is not required to use n3wth.com.</p>
-      <ul>
-        <li><a href="sms:+14632588004">+1 (463) 258-8004</a>. Send START, HELLO, or any first message.</li>
-      </ul>
-      <h2>What you will get</h2>
-      <p>By opting in, you consent to receive automated assistant and transactional SMS (and MMS when needed) from +1 (463) 258-8004, including two-way assistant conversations, account and verification codes when Elsa is completing a task for Oliver that requires SMS OTP, transactional notices about tasks Elsa is running, and occasional service notices about the Elsa / n3wth assistant line. Message frequency varies (typically under 50/month). <strong>Message and data rates may apply.</strong></p>
-      <p>Opt in only by texting START, HELLO, or a first message to +1 (463) 258-8004 after reading this page. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. Consent is voluntary and is not a condition of purchase. SMS is optional and is not required to browse n3wth.com, contact Oliver, or use other n3wth.com services. After opting out you will receive a one-time confirmation and no further messages will be sent unless you opt in again (for example reply START). See <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
-      <h2>Privacy</h2>
-      <p>Your phone number is used only to deliver Elsa / n3wth assistant-related SMS and to operate conversations you start. We do not sell or share mobile numbers with third parties or affiliates for their marketing. See the full <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</p>
-      <p>Last updated September 2026</p>`,
-  },
+  assistantSmsRoute({ name: 'Elsa', slug: 'elsa', number: '+14632588004', display: '+1 (463) 258-8004', subject: 'She', object: 'her', glyph: '<g class="elsa-slash"><rect x="236" y="96" width="40" height="320" rx="20" fill="#fff" transform="rotate(28 256 256)"></rect></g>' }),
+  assistantSmsRoute({ name: 'Billy', slug: 'billy', number: '+14157180992', display: '+1 (415) 718-0992', subject: 'Billy', object: 'Billy', glyph: '<g class="billy-dot"><circle cx="256" cy="256" r="72" fill="#fff"></circle></g>' }),
   {
     path: 'privacy',
     title: 'Privacy Policy — Oliver Newth',
@@ -193,34 +212,41 @@ const routes = [
     body: `
       <h1>Privacy Policy</h1>
       <p>Last updated: September 2026</p>
+      <h2>Elephant-Goldfish plugin</h2>
+      <p>Elephant-Goldfish 0.1.0 bundles instructions and icons for Codex. It has no publisher-operated backend, telemetry, account system, or credential collection. Installation does not send prompts, code, or files to Oliver Newth. Codex processes conversations, selected files, tool results, and review context under your account settings and OpenAI's applicable privacy terms. Selected integrations have their own policies. Fresh context is not a security sandbox.</p>
+      <p>Emailing support@n3wth.com sends us your address and the information you include. We use it to resolve the request and retain it only as needed for support or legal obligations. Do not send secrets or private source code. Request access, correction, or deletion at that address. Direct requests about OpenAI-held data to OpenAI.</p>
       <h2>Information Collection</h2>
       <p>Portfolio pages do not require accounts or tracking cookies. SMS/voice lines collect phone numbers and message content needed to operate those services.</p>
       <h2>They Won't Shut Up Hotline</h2>
       <p>Calls to +1 (855) 580-0508 may collect your number for follow-up SMS. Numbers are not sold or shared for third-party marketing. Reply STOP to opt out. See <a href="/consent">SMS Consent</a>.</p>
-      <h2>Elsa assistant SMS</h2>
-      <p>Opting in by texting START, HELLO, or a first message to +1 (463) 258-8004 collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. A messaging service provider processes SMS for +1 463 258-8004. Reply STOP. Consent is not a condition of purchase. SMS is optional and is not required to use n3wth.com. See <a href="/elsa">/elsa</a>.</p>
+      <h2>Elsa and Billy assistant SMS</h2>
+      <p>Opting in by texting START to Elsa at +1 (463) 258-8004 or Billy at +1 (415) 718-0992 collects your number and SMS content/metadata for assistant messages. Not sold or shared for marketing. Messaging service providers process SMS for both lines. Reply STOP. Consent is not a condition of purchase. SMS is optional and is not required to use n3wth.com. See <a href="/elsa">/elsa</a> and <a href="/billy">/billy</a>.</p>
       <h2>SMS data retention</h2>
       <p>SMS data retained up to 24 months unless needed longer for security, disputes, or law; deleted/anonymized sooner on verified STOP/deletion when feasible.</p>
       <h2>California privacy rights (CCPA/CPRA)</h2>
       <p>California residents may know/access, delete, and correct personal information. n3wth.com does not sell or share for cross-context behavioral advertising. Email hey@n3wth.com.</p>
       <h2>Third-Party Services</h2>
-      <p>Hosted by Vercel. Messaging providers process SMS for Elsa (+1 463 258-8004). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
+      <p>Hosted by Cloudflare, which may process standard server logs including IP addresses for security and performance. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's Privacy Policy</a>. Messaging providers process SMS for Elsa (+1 463 258-8004) and Billy (+1 415 718-0992). Twilio processes SMS for the hotline (+1 855 580-0508).</p>`,
   },
   {
     path: 'terms',
     title: 'Terms of Service — n3wth',
     description:
-      "Terms of service for n3wth.com and They Won't Shut Up AI voice hotline.",
+      "Terms for n3wth.com, the Elephant-Goldfish plugin, and the They Won't Shut Up AI voice hotline.",
     ogImage: '/og-image.png',
     body: `
       <h1>Terms of Service</h1>
       <p>Last updated: September 2026</p>
+      <h2>Elephant-Goldfish plugin</h2>
+      <p>Elephant-Goldfish 0.1.0 is an independent adaptation by Oliver Newth, based on Dave Rensin's model and Vladyslav Shvedov's workflows. It is not an official release from those authors or OpenAI. The bundled MIT license governs use, copying, modification, and distribution. Preserve copyright and license notices. These site terms do not restrict MIT rights.</p>
+      <p>Independent checks require fresh subagents. AI output can be incomplete or wrong. Review changes and run appropriate checks. Use only authorized data and repositories. Codex and selected integrations have their own terms, permissions, availability, and charges. The plugin is provided as is without warranty under MIT. Review does not guarantee correctness or security.</p>
+      <p><a href="/projects/elephant-goldfish">Project and attribution</a>. <a href="/privacy">Privacy</a>. Support: support@n3wth.com.</p>
       <h2>1. Acceptance</h2>
       <p>By using n3wth.com or calling +1 (855) 580-0508, you agree to these terms.</p>
       <h2>4. SMS Messaging</h2>
       <p>Hotline callers may opt in to SMS. See <a href="/consent">SMS Consent</a>. Message and data rates may apply. Reply STOP. Privacy in the <a href="/privacy">Privacy Policy</a>.</p>
-      <h2>Elsa assistant SMS</h2>
-      <p>By texting START, HELLO, or a first message to +1 (463) 258-8004 after reading <a href="/elsa">/elsa</a>, you agree to those messaging terms. Frequency varies. Message and data rates may apply. Reply STOP / HELP. SMS is optional and is not required to use n3wth.com. See <a href="/privacy">Privacy Policy</a>.</p>
+      <h2>Elsa and Billy assistant SMS</h2>
+      <p>By texting START to Elsa at +1 (463) 258-8004 after reading <a href="/elsa">/elsa</a>, or Billy at +1 (415) 718-0992 after reading <a href="/billy">/billy</a>, you agree to that page's messaging terms. Frequency varies. Message and data rates may apply. Reply STOP / HELP. SMS is optional and is not required to use n3wth.com. See <a href="/privacy">Privacy Policy</a>.</p>
       <h2>3. AI Disclosure</h2>
       <p>Hotline voices are AI-generated; not professional advice.</p>`,
   },
@@ -239,7 +265,7 @@ const routes = [
       <p>Call follow-ups and service notifications, up to 5 messages per month. Message and data rates may apply.</p>
       <h2>Opt in / opt out</h2>
       <p>Opt in by calling the hotline. Reply <strong>STOP</strong> to opt out. Reply <strong>HELP</strong> for help. See <a href="/privacy">Privacy Policy</a>.</p>
-      <p>For the Elsa personal assistant SMS line (+1 463 258-8004), see <a href="/elsa">/elsa</a>.</p>`,
+      <p>For the personal assistant SMS lines, see <a href="/elsa">/elsa</a> (Elsa, +1 463 258-8004) and <a href="/billy">/billy</a> (Billy, +1 415 718-0992).</p>`,
   },
   /* Auth utility routes: prerendered so their noindex is in the static
      head (crawlers may never run the client-side usePageMeta noindex). */
@@ -283,18 +309,8 @@ const registrySrc = readFileSync(
   join(here, '../src/components/thinking/registry.tsx'),
   'utf8'
 )
-const metaRe =
-  /meta:\s*\{\s*id:\s*'([^']+)',\s*title:\s*(['"])((?:(?!\2)[\s\S])*?)\2,\s*dek:\s*(['"])((?:(?!\4)[\s\S])*?)\4,\s*date:\s*'([^']+)'/g
-const pieceMetas = []
-let pieceMatch
-while ((pieceMatch = metaRe.exec(registrySrc))) {
-  pieceMetas.push({
-    id: pieceMatch[1],
-    title: pieceMatch[3],
-    dek: pieceMatch[5],
-    date: pieceMatch[6],
-  })
-}
+const { parseThinkingMeta } = await import('./lib/thinking-meta.mjs')
+const pieceMetas = parseThinkingMeta(registrySrc)
 const registeredCount = (registrySrc.match(/meta:\s*\{/g) ?? []).length
 if (pieceMetas.length === 0 || pieceMetas.length !== registeredCount) {
   throw new Error(
@@ -302,9 +318,8 @@ if (pieceMetas.length === 0 || pieceMetas.length !== registeredCount) {
   )
 }
 
-/* Optional per-piece prose summaries (src/data/piece-summaries.json).
-   When present they give no-JS crawlers — including the AI ones, none of
-   which execute JS — real text to quote instead of a one-line dek. */
+/* Optional abstracts for structured data and discovery feeds. Article HTML
+   below comes directly from the authored components, never these summaries. */
 const summariesPath = join(here, '../src/data/piece-summaries.json')
 const summaries = existsSync(summariesPath)
   ? JSON.parse(readFileSync(summariesPath, 'utf8'))
@@ -319,13 +334,13 @@ routes.push({
   path: 'thinking',
   title: 'Thinking — Oliver Newth',
   description:
-    'Positions on production AI and agents as an org design problem, plus interactive walk-throughs of real AI safety trade-offs.',
+    'Essays and notes on AI, design, and everyday life.',
   ogImage: '/og/thinking.png',
   body: `
       <h1>Thinking — Oliver Newth</h1>
       <section>
-        <h2>What I believe about production AI</h2>
-        <p>Positions from shipping AI at scale and running an agent team in production, plus interactive walk-throughs of real AI safety dilemmas.</p>
+        <h2>Articles</h2>
+        <p>Essays and notes on AI, design, and everyday life.</p>
         <ul>
 ${pieceMetas
   .map(
@@ -337,10 +352,14 @@ ${pieceMetas
       </section>`,
 })
 
+const pieceBodies = await renderThinkingBodies()
 for (const p of pieceMetas) {
   const summary = summaries[p.id]
+  const body = pieceBodies.get(p.id)
+  if (!body?.trim()) throw new Error(`prerender-meta: missing authored body for ${p.id}`)
   routes.push({
     path: `thinking/${p.id}`,
+    stripSeoLead: true,
     title: `${p.title} — Oliver Newth`,
     description: p.dek,
     ogImage: `/og/thinking/${p.id}.png`,
@@ -361,14 +380,7 @@ for (const p of pieceMetas) {
     body: `
       <h1>${escText(p.title)}</h1>
       <p>${escText(p.dek)}</p>
-${
-  summary
-    ? summary
-        .split(/\n\n+/)
-        .map((para) => `      <p>${escText(para)}</p>`)
-        .join('\n')
-    : ''
-}
+      ${body}
       <p><a href="/thinking">All Thinking pieces</a></p>`,
   })
 }
@@ -464,12 +476,27 @@ const renderRoute = (r, outPath) => {
   }
   html = html.replace(
     /<main id="main" class="seo-fallback">[\s\S]*?<\/main>/,
-    `<main id="main" class="seo-fallback">${r.body}\n      </main>`
+    () => `<main id="main" class="seo-fallback">${r.body}\n      <nav aria-label="Site"><a href="/">Home</a> <a href="/thinking">Thinking</a> <a href="/work">Work</a> <a href="/support">Support</a> <a href="/privacy">Privacy</a> <a href="/terms">Terms</a> <a href="/consent">SMS consent</a></nav></main>`
   )
   mkdirSync(dirname(outPath), { recursive: true })
   writeFileSync(outPath, html)
 }
 
+const noteIndex = JSON.parse(readFileSync(join(here, '../src/data/writing-index.json'), 'utf8'))
+for (const meta of noteIndex) {
+  const note = JSON.parse(readFileSync(join(dist, 'writing/notes', `${meta.slug}.json`), 'utf8'))
+  routes.push({
+    path: meta.href.slice(1),
+    title: `${meta.title} — Oliver Newth`,
+    description: meta.description || `${meta.title}. A working note by Oliver Newth.`,
+    ogImage: '/og/thinking.png',
+    stripSeoLead: true,
+    ...(meta.date ? { article: { published: meta.date, modified: meta.updated || meta.date } } : {}),
+    jsonLd: { '@context': 'https://schema.org', '@type': 'Article', headline: meta.title, url: `${ORIGIN}${meta.href}`, ...(meta.date ? { datePublished: meta.date } : {}), ...(meta.updated || meta.date ? { dateModified: meta.updated || meta.date } : {}), author: { '@type': 'Person', name: 'Oliver Newth' } },
+    body: `<h1>${escText(meta.title)}</h1>${note.html}<nav aria-label="Backlinks">${note.backlinks.map(link => `<a href="${esc(link.href)}">${escText(link.title)}</a>`).join(' ')}</nav><a href="/thinking#notes">All notes</a>`,
+  })
+}
+routes.find(route => route.path === 'thinking').body += `<section id="notes"><h2>Notes</h2><ul>${noteIndex.map(note => `<li><a href="${esc(note.href)}">${escText(note.title)}</a></li>`).join('')}</ul></section>`
 for (const r of routes) {
   renderRoute(r, join(dist, r.path, 'index.html'))
   console.log(`[prerender-meta] dist/${r.path}/index.html`)
@@ -504,14 +531,15 @@ console.log('[prerender-meta] dist/404.html')
 /* dist/sitemap.xml — generated from the same route list so it can't
    drift when a piece is added. lastmod only; Google ignores
    changefreq/priority. */
-const latestPieceDate = pieceMetas.map((p) => p.date).sort().at(-1)
+const feedPieces = [...pieceMetas, ...noteIndex.filter(note => note.date).map(note => ({ id: note.slug, title: note.title, dek: note.description, date: note.date, updated: note.updated }))]
+const latestPieceDate = feedPieces.map((p) => feedDate(p.updated || p.date)).sort().at(-1)
 const sitemapEntries = [
   { loc: `${ORIGIN}/` },
   ...routes
     .filter((r) => !r.noindex)
     .map((r) => ({
       loc: `${ORIGIN}/${r.path}`,
-      lastmod: r.article?.published,
+      lastmod: r.article?.modified || r.article?.published,
     })),
 ]
 writeFileSync(
@@ -524,14 +552,15 @@ console.log(`[prerender-meta] dist/sitemap.xml (${sitemapEntries.length} urls)`)
 
 /* dist/feed.xml — Atom feed of the thinking pieces: a freshness signal
    and a discovery channel the sitemap alone doesn't provide. */
-const feedEntries = [...pieceMetas]
-  .sort((a, b) => (a.date < b.date ? 1 : -1))
+const feedEntries = [...feedPieces]
+  .sort((a, b) => feedDate(b.updated || b.date).localeCompare(feedDate(a.updated || a.date)))
   .map(
     (p) => `  <entry>
     <title>${escText(p.title)}</title>
     <link href="${ORIGIN}/thinking/${p.id}" />
     <id>${ORIGIN}/thinking/${p.id}</id>
-    <updated>${p.date}T00:00:00Z</updated>
+    <published>${feedDate(p.date)}</published>
+    <updated>${feedDate(p.updated || p.date)}</updated>
     <summary>${escText(summaries[p.id] ?? p.dek)}</summary>
   </entry>`
   )
@@ -543,7 +572,7 @@ writeFileSync(
   <link href="${ORIGIN}/thinking" />
   <link rel="self" href="${ORIGIN}/feed.xml" />
   <id>${ORIGIN}/feed.xml</id>
-  <updated>${latestPieceDate}T00:00:00Z</updated>
+  <updated>${latestPieceDate}</updated>
   <author><name>Oliver Newth</name></author>
 ${feedEntries.join('\n')}
 </feed>\n`
@@ -557,7 +586,8 @@ const llmsBase = readFileSync(join(here, '../public/llms.txt'), 'utf8').trimEnd(
 const thinkingSection = `\n\n## Thinking\n\n${pieceMetas
   .map((p) => `- [${p.title}](${ORIGIN}/thinking/${p.id}): ${p.dek}`)
   .join('\n')}\n`
-writeFileSync(join(dist, 'llms.txt'), llmsBase + thinkingSection)
+const notesSection = `\n## Notes\n\n${noteIndex.map(note => `- [${note.title}](${ORIGIN}${note.href}): ${note.description}`).join('\n')}\n`
+writeFileSync(join(dist, 'llms.txt'), llmsBase + thinkingSection + notesSection)
 console.log('[prerender-meta] dist/llms.txt')
 
 /* llms-full.txt is referenced by robots.txt, so it must always exist.
@@ -579,6 +609,6 @@ const llmsFull = pieceMetas
   .join('\n\n---\n\n')
 writeFileSync(
   join(dist, 'llms-full.txt'),
-  `${llmsFullBase}${llmsFull ? `\n\n${llmsFull}` : ''}\n`
+  `${llmsFullBase}${llmsFull ? `\n\n${llmsFull}` : ''}${notesSection}\n`
 )
 console.log('[prerender-meta] dist/llms-full.txt')

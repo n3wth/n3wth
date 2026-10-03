@@ -1,7 +1,7 @@
 ---
-title: "Quickstart"
+title: "Build your first UI page"
 sidebarTitle: "Quickstart"
-description: "Install the React design system and build a page with shared components, native controls, and the Newth theme in under five minutes."
+description: "Install @n3wth/ui, apply the Newth theme, and render an interactive counter in a React app."
 keywords:
   - "@n3wth/ui"
   - "React"
@@ -28,7 +28,7 @@ HTML element with `id="root"`. For Next.js, put interactive components in
 a client module and import the CSS through your application's global
 stylesheet entry.
 
-## Steps
+## Install and render
 
 <Steps>
   <Step title="Install the package">
@@ -50,7 +50,7 @@ stylesheet entry.
 
     </CodeGroup>
 
-    In this monorepo, use the root lockfile and keep workspace UI dependency versions aligned rather than installing a second registry copy.
+    If you are contributing to this repository, follow [Workspace setup](/workspace) instead of installing a second registry copy.
   </Step>
   <Step title="Render a page">
     Replace `src/main.tsx` with this example. It mounts a provider, imports the shared stylesheet, and renders a counter with a native Astryx button.
@@ -94,10 +94,14 @@ stylesheet entry.
     createRoot(root).render(<App />)
     ```
   </Step>
-  <Step title="Start the dev server">
-    Start the app with its existing development command, such as `npm run dev` in a Vite app. The page should display a heading and counter. Selecting **Increment** increases the count.
+  <Step title="Run and verify the page">
+    Start the app with its existing development command, such as `npm run dev` in a Vite app. Open the local URL printed by the server.
+
+    You should see **Component sandbox** and **Count: 0**. Select **Increment** and confirm the output changes to **Count: 1**.
 
     `N3wthProvider` supplies the theme context. `site.css` supplies the generated theme and component CSS. You need both. This example does not require Tailwind utility generation.
+
+    If the page is unstyled or an import fails, see [Troubleshooting](/ui/troubleshooting).
   </Step>
 </Steps>
 

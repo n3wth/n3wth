@@ -7,7 +7,7 @@ description: "Preview docs locally with the Mintlify CLI, check for broken links
 This documentation site is built with Mintlify. The source lives in [docs/](https://github.com/n3wth/n3wth/tree/HEAD/docs) inside the [n3wth/n3wth](https://github.com/n3wth/n3wth) repository, and `docs.json` controls the hosted site. Deployment is driven by the Mintlify GitHub App: pushes to `main` publish to [docs.n3wth.com](https://docs.n3wth.com).
 
 <Note>
-  Preview every change locally before merging. Mintlify's hosting connection is separate from the Vercel deployments used by the other apps in this repository.
+  Preview every change locally before merging. Mintlify's hosting connection is separate from the Cloudflare deployments used by the applications in this repository.
 </Note>
 
 ## Preview locally
@@ -24,14 +24,31 @@ Open [http://localhost:3000](http://localhost:3000). The dev server hot-reloads 
 
 ## Check for broken links
 
-Before opening a PR, verify internal links resolve:
+From the repository root, validate MDX, page metadata, navigation, and local links after installing workspace dependencies:
+
+```bash
+node docs/check.mjs
+```
+
+Then validate the Mintlify build and check links:
 
 ```bash
 cd docs
+mint validate
 mint broken-links
 ```
 
-Mintlify validates MDX and `docs.json` on save; a `mint dev` server that starts clean is a good signal. Preview representative pages across products, check navigation, code blocks, tables, mobile overflow, and both themes. A syntax check does not prove an example's API is correct, so verify code against the implementation too.
+Preview representative pages at desktop, tablet, and mobile widths. Check titles, navigation, page actions, code blocks, tables, and horizontal overflow. This site is configured for dark mode only. A successful build does not prove an example's API is correct; verify changed examples against the implementation too.
+
+## Write a useful page
+
+- Give the page a specific title and a short description of what the reader will accomplish. Use `sidebarTitle` for a shorter navigation label.
+- Put prerequisites before commands. Identify the working directory and files to edit.
+- Keep a quickstart focused on one working result. Put optional configuration and detailed reference material on linked pages.
+- Follow commands with an observable result and a link to help when that result is missing.
+- Use language-tagged, copyable code blocks. Explain placeholders and keep secrets out of examples.
+- Use headings for tasks and questions. Reserve callouts for information that changes the reader's next action.
+- Check claims about compatibility, defaults, versions, and persistence against the source. Avoid completion-time promises without evidence.
 
 ## Publish
 
@@ -53,7 +70,7 @@ Every page must be listed in `docs.json`. Use root-relative paths for links insi
 ## Maintain accuracy
 
 - Update examples when exports, command flags, or installation sources change.
-- Keep internal plans and operational records outside `docs/`.
+- Keep internal plans and operational records out of public navigation and links. The validation script excludes `docs/editorial`, `docs/plans`, and `docs/workspace`; do not add their files to `docs.json`.
 - Link separate runtime repositories (like [n3wth/r3](https://github.com/n3wth/r3)) instead of copying their release workflows here.
 - Revert a broken documentation commit and verify the replacement deployment.
   Do not change application hosting settings to roll back a docs-only change.

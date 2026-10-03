@@ -52,10 +52,10 @@ is the production Worker config — name, custom domain, assets, and bindings.
 Pull requests get an isolated Cloudflare preview build; commits on `main` deploy
 to production for affected projects.
 
-Vercel is a disconnected manual fallback: the Vercel projects retain their
-domains and deployment history but no longer receive Git deployments. See the
-[deployment runbook](docs/workspace/deployment.md) for the full Cloudflare build
-process, the Vercel fallback procedure, and project mappings.
+Vercel is retired: the Vercel projects retain their domains and deployment
+history for reference but are disconnected from GitHub and are not a deployment
+target. See the [deployment runbook](docs/workspace/deployment.md) for the full
+Cloudflare build process and project mappings.
 
 Wait for GitHub CI and the Cloudflare preview checks to pass before merging.
 After merging, verify each affected production Worker is live and check routes,

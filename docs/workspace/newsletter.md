@@ -86,7 +86,7 @@ terminal welcome receipts so later provisioning does not send another intro.
 Do not clear those receipts or repeat the broadcast to introduce the new worker.
 
 Automatic provisioning is deployed in image
-`seerr-n3wth:oidc-provision-welcome-20260921`. The deterministic worker starts
+`seerr-n3wth:oidc-newsletter-20260921`. The deterministic worker starts
 10 seconds after startup and runs every five minutes. It selects existing,
 verified Auth0 accounts from the deployed Seerr Action's canonical approval
 list. The parser rejects unsupported list syntax without evaluating code.
@@ -110,10 +110,66 @@ two provisioned accounts, zero welcomes, and zero failures. All seven campaign
 recipients retained terminal receipts; no duplicate welcome was sent. The
 container was healthy and the public settings endpoint returned HTTP 200.
 
+## Plex weekly additions and request notifications
+
+The approved weekly schedule is Friday at 17:00 in `America/Los_Angeles`,
+starting September 25, 2026. Use that time zone so daylight saving changes do
+not shift the local send time. The weekly message summarizes actual Plex
+additions. Episodes are grouped by show, and empty categories are omitted.
+At most six cards feature a balanced selection of movies and TV shows, with
+accurate totals, dates, factual summaries, and genres. The poster grid has one
+Open Plex action and a secondary request link.
+
+Request notifications go to the requester when their requested content is
+ready on Plex. The message has one Watch on Plex action that opens the item;
+the poster is optional. Both messages use the Plex topic and signed unsubscribe
+links for direct delivery.
+
+Both templates and the notification runtime are active. A read-only
+dry run found 14 episodes grouped into 12 shows,
+four eligible contacts out of seven, and no historical request notifications.
+This is validation evidence, not a delivery count.
+Owner-only previews for both messages were delivered: weekly email
+`01a0c24b-71e5-747a-8d11-137902fb53b9` and ready email
+`01a0c24b-791c-7214-b6f6-cfed634dbc38`.
+
+The weekly template requires `DATE_RANGE`, `INTRODUCTION`, `CONTENT_HTML`, and
+`UNSUBSCRIBE_URL`. The ready notification requires `STATUS_TITLE`,
+`CONTENT_TITLE`, `STATUS_MESSAGE`, `WATCH_URL`, and `UNSUBSCRIBE_URL`.
+Its optional `POSTER_HTML` defaults to empty. Required values have no defaults;
+populate them from the verified Plex data before sending.
+
+Resend template variables are limited to 2,000 characters. The mailer fetches
+the published template and deterministically renders the complete HTML and
+subject before sending. Text is escaped; only the generated grid and poster
+HTML are inserted as trusted markup. The durable receipt freezes the complete
+HTML, headers, and topic so retries preserve the original message.
+
+The deployed image is `seerr-n3wth:oidc-newsletter-20260921`, SHA
+`b1800e0055e8eadf34e1e62af01af9f83d4d92ec26a3be8f4ba977c37ad9fec8`.
+Configuration is `/home/onewth/docker/seerr/config/plex-newsletter.json`.
+It polls every five minutes. The first weekly send is due September 25 at
+17:00 Los Angeles time (September 26 at 00:00 UTC). Activation established a
+fresh baseline while the service was stopped: zero completed requests, with
+`enabledAt=1789966234859`. Historical completed requests are not announced.
+The first scheduled tick found the weekly digest not due and zero ready
+candidates; it sent no mail and created no receipts or weekly batches.
+The container was healthy and the public settings endpoint returned HTTP 200.
+
+Runtime sources and tests are preserved on the Docker host in
+`/home/onewth/docker/seerr/automation-releases/newsletter-20260921`.
+The rollback snapshot is `before-newsletter-20260921` in the same
+`automation-releases` directory. Deployment validation passed 24 newsletter,
+nine welcome, eight provisioning, and four approval-list parser checks.
+To roll back, set the newsletter configuration's `enabled` field to `false`,
+restore the prior Compose configuration, and recreate the service. Retain
+newsletter receipts and `/config/plex-newsletter/request-baseline.json`.
+The prior access-provisioning worker remains enabled.
+
 ## Signed unsubscribe links
 
 Resend's reserved `RESEND_UNSUBSCRIBE_URL` applies to broadcasts and automations,
-not direct template sends. Direct welcomes provide `UNSUBSCRIBE_URL` and
+not direct template sends. Direct messages provide `UNSUBSCRIBE_URL` and
 RFC 8058 `List-Unsubscribe` / `List-Unsubscribe-Post` headers instead.
 The URL is `/api/unsubscribe?token=...`; its HMAC-SHA256 signature covers an
 opaque contact ID and one configured topic ID, never an email address.
@@ -137,20 +193,21 @@ content column:
 | Industry news digest | 690d112b-a1eb-4523-b316-b6eba4800365 |
 | Plex welcome | 8b0bab4f-0371-4f37-a06e-40f75a052ed5 |
 | Plex weekly additions | e0618918-49f2-4868-8b66-31e3be4ff049 |
-| Seerr notification | f96d94d4-bd94-405e-aed6-dccab77e5a7e |
+| Ready on Plex | f96d94d4-bd94-405e-aed6-dccab77e5a7e |
 
 Sender: Oliver Newth `<hey@n3wth.com>`. Reply-to: `hey@n3wth.com`.
 The n3wth.com sending domain is verified. The black email mark is
 `https://r2.n3wth.com/mark-black.png`. Every list-triggered layout includes
-`RESEND_UNSUBSCRIBE_URL` in its broadcast or automation footer. Direct welcomes
+`RESEND_UNSUBSCRIBE_URL` in its broadcast or automation footer. Direct messages
 use the signed `UNSUBSCRIBE_URL` instead. Plex
 layouts link to `https://app.plex.tv/desktop` and `https://seerr.n3wth.com/`.
-The standard footer uses small, left-aligned text with no divider: `n3wth`,
-`1333 Minna St San Francisco CA 94103`, then `Unsubscribe` linked to the reserved
+The standard footer uses one line of small gray text with dot separators and
+no underline: `n3wth`, `1333 Minna St San Francisco CA 94103`, then
+`Unsubscribe` linked to the reserved
 recipient-specific URL for broadcasts/automations, or the signed
-`UNSUBSCRIBE_URL` for direct welcomes. It remains inside the main content column. Saved
-templates contain no preview notice above the mark. Both published welcome
-templates contain no empty paragraphs and use 16px of bottom spacing. Plex grids use one Open
+`UNSUBSCRIBE_URL` for direct messages. It remains inside the main content column. Saved
+templates contain no preview notice above the mark. The published templates
+contain no empty paragraphs and use 16px of bottom spacing. Plex grids use one Open
 Plex action below the grid and a secondary Request movies or TV link, rather
 than repeated links under each cover. Industry digests use editorial imagery.
 Complete each template's content variables before sending. Names are optional: public email-only signups
@@ -158,8 +215,9 @@ remain unnamed, while Auth0 fills missing Plex contact names from authenticated
 given/family names and preserves existing names.
 
 Templates do not select recipients or schedule delivery. Future broadcasts must
-select the matching topic and intended segment. Five newsletter layouts remain
-drafts; the website and Plex welcome templates are published.
+select the matching topic and intended segment. Three newsletter layouts remain
+drafts; the website welcome, Plex welcome, weekly additions, and ready-on-Plex
+templates are published.
 Owner-requested sample emails are separate from audience sends. No audience
 campaign or recurring digest is enabled by the website welcome integration.
 

@@ -22,7 +22,7 @@ Products designed by Oliver, kept shipping by an autonomous agent team:
 - [r3](https://r3.n3wth.com/): Memory for AI apps using vector search and knowledge graphs.
 - [kit](https://kit.n3wth.com/): 49 components with AI context packs. Ships your design system straight to your editor and coding agents.
 - [Agent Skills](https://skills.n3wth.com/): A registry of markdown skills for coding agents. Install with one command, run locally, work offline.
-- [garden](https://garden.n3wth.com/): A digital garden of interconnected working notes. Notes carry growth stages (seedling, budding, evergreen) and are gathered into groves. Has its own llms.txt.
+- [garden](https://n3wth.com/thinking): A digital garden of interconnected working notes. Notes carry growth stages (seedling, budding, evergreen) and are gathered into groves. Read notes in Thinking.
 
 ## Ecosystem
 

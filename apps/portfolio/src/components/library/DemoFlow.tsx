@@ -2,8 +2,7 @@ import { FlowDiagram } from '../thinking/kit/FlowDiagram'
 import type { FlowEdge, FlowNode } from '../thinking/kit/FlowDiagram'
 
 /**
- * FlowDiagram, running, on a pipeline that actually exists: the build-time
- * fetch that puts the grove counts further down this page. The component's
+ * FlowDiagram, running, on a pipeline that actually exists: the local build pipeline that puts the grove counts further down this page. The component's
  * own docs say to use it only when the content is genuinely sequential, so
  * the demo had to be a real four-step chain rather than four nouns in a
  * row. Node x positions are hand-set to keep the labels from colliding at
@@ -11,8 +10,8 @@ import type { FlowEdge, FlowNode } from '../thinking/kit/FlowDiagram'
  */
 
 const NODES: FlowNode[] = [
-  { id: 'garden', label: 'garden.n3wth.com', x: 100, y: 76 },
-  { id: 'script', label: 'fetch script', x: 300, y: 76 },
+  { id: 'garden', label: 'Markdown notes', x: 100, y: 76 },
+  { id: 'script', label: 'build script', x: 300, y: 76 },
   { id: 'json', label: 'garden-index.json', x: 500, y: 76 },
   { id: 'page', label: '/library', x: 660, y: 76, active: true },
 ]
@@ -30,7 +29,7 @@ export default function DemoFlow() {
         <FlowDiagram nodes={NODES} edges={EDGES} width={720} height={120} />
       </div>
       <figcaption className="mt-2 max-w-[62ch] text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
-        The build script fetches garden data, saves it as JSON, and supplies the{' '}
+        The build script reads local notes, saves it as JSON, and supplies the{' '}
         <a href="#garden" className="link-underline">topic counts below</a>.
       </figcaption>
     </figure>

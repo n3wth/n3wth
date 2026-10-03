@@ -1,6 +1,6 @@
 {
   "id": "G24",
-  "contentPath": "apps/garden/content/Keep your notes in the repo.md",
+  "contentPath": "apps/portfolio/content/Keep your notes in the repo.md",
   "contentSha256": "d91d1cf8121082536dc0d691ff68ee39d86efd5cfa7bdd602318c7aa621d4ef8",
   "reviewedAt": "2026-09-18",
   "reviewer": "Author's editorial pass, 2026-09-18: research subagents fetched and quoted each source; every quoted passage was re-fetched independently and matched verbatim before scoring. First-person incident notes; external sources ground the mechanisms named, not the incidents themselves.",

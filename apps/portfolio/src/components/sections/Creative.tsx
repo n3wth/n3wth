@@ -1,13 +1,15 @@
 import { Fragment } from 'react'
-import { PageHeader } from '@n3wth/ui/site'
+import { SectionHeader } from '../Frame'
+import './art.css'
 import {
   installations,
+  sections,
   type CreditLink,
   type Installation,
 } from '../../data/content'
 
-/** "burning-man" -> "Burning man" (sentence case, hyphens to spaces). */
 function sentenceCase(type: string) {
+  if (type === 'burning-man') return 'Burning Man'
   const label = type.replace(/-/g, ' ')
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
@@ -33,7 +35,7 @@ function taglineParts(inst: Installation) {
 }
 
 /* Title, provenance, and credits form one caption beside the same edge. */
-const railClass = 'section-pad !py-5 md:!py-6'
+const railClass = 'art-caption'
 
 function WorkCredit({ inst }: { inst: Installation }) {
   return (
@@ -46,7 +48,7 @@ function WorkCredit({ inst }: { inst: Installation }) {
           {inst.title}
         </h2>
         <p className="meta m-0 mb-3">
-          <span style={{ color: 'var(--ink)' }}>{inst.year}</span>
+          <span>{inst.year}</span>
           <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
           {inst.location}
           <span className="mx-2" style={{ color: 'var(--ink-faint)' }}>·</span>
@@ -77,55 +79,37 @@ function WorkCredit({ inst }: { inst: Installation }) {
   )
 }
 
-/* Identify each work before its photograph; tall frames give the artwork
-   room while the opening photograph stays aligned to the installation. */
 export function Creative() {
   return (
-    <section aria-label="Art">
-      <PageHeader data-reveal className="site-content-gutter" title="Art" description="Large-scale light for the desert and the city. Burning Man sculpture, San Francisco memorials." />
-
-      {/* Opening work */}
-      <figure data-reveal className="m-0">
+    <section aria-label="Art" className="art-exhibition">
+      <SectionHeader as="h1" story="art" title={sections.art.name} lede={sections.art.description} />
+      <figure id={opener.id} className="art-opening m-0">
+        <div className="art-opening-scene">
+          <div className="art-opening-image">
+            <img src={opener.image} alt={opener.imageAlt} loading="eager" fetchPriority="high" decoding="async" />
+          </div>
+        </div>
         <figcaption className={railClass}>
           <WorkCredit inst={opener} />
         </figcaption>
-        <div
-          className="relative overflow-hidden bleed"
-          style={{ height: 'clamp(360px, 65svh, 800px)' }}
-        >
-          <img
-            src={opener.image}
-            alt={opener.imageAlt}
-            loading="eager"
-            decoding="async"
-            className="h-full w-full object-cover object-bottom"
-          />
-        </div>
       </figure>
-
-      {/* The works */}
-      <div className="pt-5 pb-4 md:pt-8 md:pb-8">
+      <div className="art-works">
         {works.map((inst) => (
-          <figure id={inst.id} key={inst.id} data-reveal className="mb-10 md:mb-16 last:mb-0 m-0 scroll-mt-20">
-            <figcaption className={railClass}>
-              <WorkCredit inst={inst} />
-            </figcaption>
-            <div
-              className="relative overflow-hidden bleed"
-              style={{ height: 'clamp(360px, 65svh, 800px)' }}
-            >
+          <figure id={inst.id} key={inst.id} className="art-work m-0 scroll-mt-20">
+            <div className="art-work-image">
               <img
                 src={inst.image}
                 alt={inst.imageAlt}
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-cover"
               />
             </div>
+            <figcaption className={railClass}>
+              <WorkCredit inst={inst} />
+            </figcaption>
           </figure>
         ))}
       </div>
-
     </section>
   )
 }

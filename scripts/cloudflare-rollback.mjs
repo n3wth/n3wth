@@ -4,18 +4,19 @@
 //
 // Usage:
 //   node scripts/cloudflare-rollback.mjs --app garden --version <version-id> \
-//     --sha <source-commit> --acknowledge-d1 [--url https://...] [--out record.json]
+//     --sha <source-commit> --acknowledge-d1 [--pr <number>] [--out record.json]
 //   node scripts/cloudflare-rollback.mjs --app garden --version <version-id> --dry-run
 //
 // Code rollback does not restore D1 data. The command refuses to run against a
 // live target unless --acknowledge-d1 confirms schema compatibility was checked.
 // Demonstrate the procedure in a non-production (preview) environment first by
-// passing --url for the preview host; see docs/workspace/deployment.md.
+// passing --pr to select its isolated Worker; see docs/workspace/deployment.md.
 import { execFileSync } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { DEPLOY_APP_SLUGS, productionUrlForApp } from './deploy-apps.mjs'
+import { previewIdentity } from './cloudflare-preview-config.mjs'
 
 export function parseRollbackArgs(argv) {
   const args = {}
@@ -36,19 +37,24 @@ export function parseRollbackArgs(argv) {
 }
 
 // Pure plan construction so tests cover validation without touching wrangler.
-export function buildRollbackPlan({ app, version, sha = 'unknown', url, env = 'production', out } = {}) {
+export function buildRollbackPlan({ app, version, sha = 'unknown', url, env, out, pr } = {}) {
   if (!DEPLOY_APP_SLUGS.includes(app)) {
     throw new Error(`Unknown production app: ${app}. Expected one of: ${DEPLOY_APP_SLUGS.join(', ')}.`)
   }
   if (!version) throw new Error('buildRollbackPlan requires a Worker --version id from the release record.')
-  const config = `apps/${app}/wrangler.jsonc`
+  const preview = pr === undefined ? undefined : previewIdentity(app, Number(pr))
+  const config = preview ? `.cloudflare/${app}-pr-${Number(pr)}/wrangler.json` : `apps/${app}/wrangler.jsonc`
+  const targetUrl = preview ? `https://${preview.host}/` : productionUrlForApp(app)
+  const targetEnv = preview ? 'preview' : 'production'
+  if (url !== undefined && new URL(url).href !== targetUrl) throw new Error(`Readiness URL does not match rollback target ${targetUrl}. Use --pr to select a preview Worker.`)
+  if (env !== undefined && env !== targetEnv) throw new Error(`Environment does not match rollback target ${targetEnv}. Use --pr to select a preview Worker.`)
   return {
     app,
     version,
     sha,
-    env,
+    env: targetEnv,
     config,
-    url: url || productionUrlForApp(app),
+    url: targetUrl,
     commands: [
       ['wrangler', 'versions', 'view', version, '--config', config],
       ['wrangler', 'rollback', version, '--config', config],
@@ -102,7 +108,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     console.error('Refusing to roll back: code rollback does not restore D1 data. Re-run with --acknowledge-d1 after checking database/schema compatibility.')
     process.exit(1)
   }
-  const plan = buildRollbackPlan({ app: args.app, version: args.version, sha: args.sha, url: args.url, env: args.env, out: args.out })
+  const plan = buildRollbackPlan({ app: args.app, version: args.version, sha: args.sha, url: args.url, env: args.env, out: args.out, pr: args.pr })
   console.error('Code rollback does not restore D1 data; only the Worker bundle is restored. Other apps, domains and bindings are untouched.')
   await runRollback(plan, { dryRun })
 }

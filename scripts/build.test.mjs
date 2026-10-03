@@ -40,15 +40,15 @@ test('Cloudflare uses the same dependency graph and builds each package only onc
     return { status: 0 }
   }, repo, { cloudflare: true })
   // Each OpenNext app builds, then populates its static-assets cache; everything else builds once.
-  assert.equal(calls.length, 9)
+  assert.equal(calls.length, 8)
   assert.deepEqual(calls[0].args, ['run', 'build', '--workspace', '@n3wth/ui'])
-  for (const app of ['garden', 'skills', 'r3-web']) {
+  for (const app of ['skills', 'r3-web']) {
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'build'])
     assert.deepEqual(workspacePopulateCacheArgs(`@n3wth/${app}`, true), ['exec', '--workspace', `@n3wth/${app}`, '--', 'opennextjs-cloudflare', 'populateCache', 'local'])
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`), ['run', 'build', '--workspace', `@n3wth/${app}`])
     assert.equal(workspacePopulateCacheArgs(`@n3wth/${app}`), undefined)
   }
-  for (const app of ['portfolio', 'ui-docs']) {
+  for (const app of ['garden', 'portfolio', 'ui-docs']) {
     assert.deepEqual(workspaceBuildArgs(`@n3wth/${app}`, true), ['run', 'build', '--workspace', `@n3wth/${app}`])
     assert.equal(workspacePopulateCacheArgs(`@n3wth/${app}`, true), undefined)
   }
@@ -108,7 +108,7 @@ test('repository root build lists every site after UI and omits site-config', ()
   assert.equal(order.filter(name => name === '@n3wth/ui').length, 1)
   for (const app of apps) {
     assert.ok(order.includes(app), `root build omits ${app}`)
-    assert.ok(order.indexOf('@n3wth/ui') < order.indexOf(app))
+    if (app !== '@n3wth/garden') assert.ok(order.indexOf('@n3wth/ui') < order.indexOf(app))
   }
   assert.ok(!order.includes('@n3wth/site-config'))
 })
@@ -121,15 +121,12 @@ test('root build scripts use the orchestrator', () => {
   }
 })
 
-test('CLI list mode reports garden plus UI without siblings', () => {
+test('CLI list mode builds the redirect Worker without UI or siblings', () => {
   const result = spawnSync(process.execPath, [fileURLToPath(new URL('./build.mjs', import.meta.url)), '--workspace', '@n3wth/garden', '--list'], {
     cwd: repo,
     encoding: 'utf8',
   })
   assert.equal(result.status, 0, result.stderr)
   const order = JSON.parse(result.stdout)
-  assert.ok(order.includes('@n3wth/ui'))
-  assert.ok(order.includes('@n3wth/garden'))
-  assert.ok(!order.includes('@n3wth/portfolio'))
-  assert.equal(order.filter(name => name === '@n3wth/ui').length, 1)
+  assert.deepEqual(order, ['@n3wth/garden'])
 })

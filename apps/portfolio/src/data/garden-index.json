@@ -1,81 +1,1196 @@
 {
-  "noteCount": 254,
-  "indexedCount": 251,
+  "noteCount": 262,
+  "indexedCount": 262,
   "topics": [
     {
+      "name": "hub",
+      "href": "/thinking?topic=hub#notes",
+      "count": 2
+    },
+    {
+      "name": "about",
+      "href": "/thinking?topic=about#notes",
+      "count": 1
+    },
+    {
+      "name": "learning",
+      "href": "/thinking?topic=learning#notes",
+      "count": 27
+    },
+    {
+      "name": "education",
+      "href": "/thinking?topic=education#notes",
+      "count": 2
+    },
+    {
+      "name": "skills",
+      "href": "/thinking?topic=skills#notes",
+      "count": 9
+    },
+    {
+      "name": "travel",
+      "href": "/thinking?topic=travel#notes",
+      "count": 5
+    },
+    {
+      "name": "flights",
+      "href": "/thinking?topic=flights#notes",
+      "count": 4
+    },
+    {
+      "name": "deals",
+      "href": "/thinking?topic=deals#notes",
+      "count": 1
+    },
+    {
+      "name": "planning",
+      "href": "/thinking?topic=planning#notes",
+      "count": 8
+    },
+    {
+      "name": "memory",
+      "href": "/thinking?topic=memory#notes",
+      "count": 2
+    },
+    {
+      "name": "tools",
+      "href": "/thinking?topic=tools#notes",
+      "count": 3
+    },
+    {
+      "name": "spaced-repetition",
+      "href": "/thinking?topic=spaced-repetition#notes",
+      "count": 1
+    },
+    {
+      "name": "recruitment",
+      "href": "/thinking?topic=recruitment#notes",
+      "count": 2
+    },
+    {
+      "name": "hr",
+      "href": "/thinking?topic=hr#notes",
+      "count": 4
+    },
+    {
+      "name": "technology",
+      "href": "/thinking?topic=technology#notes",
+      "count": 5
+    },
+    {
+      "name": "engineering",
+      "href": "/thinking?topic=engineering#notes",
+      "count": 5
+    },
+    {
+      "name": "design",
+      "href": "/thinking?topic=design#notes",
+      "count": 5
+    },
+    {
+      "name": "development",
+      "href": "/thinking?topic=development#notes",
+      "count": 18
+    },
+    {
+      "name": "knowledge-management",
+      "href": "/thinking?topic=knowledge-management#notes",
+      "count": 15
+    },
+    {
+      "name": "note-taking",
+      "href": "/thinking?topic=note-taking#notes",
+      "count": 4
+    },
+    {
+      "name": "zettelkasten",
+      "href": "/thinking?topic=zettelkasten#notes",
+      "count": 1
+    },
+    {
+      "name": "research",
+      "href": "/thinking?topic=research#notes",
+      "count": 3
+    },
+    {
+      "name": "award-travel",
+      "href": "/thinking?topic=award-travel#notes",
+      "count": 2
+    },
+    {
+      "name": "points",
+      "href": "/thinking?topic=points#notes",
+      "count": 3
+    },
+    {
+      "name": "sweet-spots",
+      "href": "/thinking?topic=sweet-spots#notes",
+      "count": 1
+    },
+    {
+      "name": "interviews",
+      "href": "/thinking?topic=interviews#notes",
+      "count": 7
+    },
+    {
+      "name": "career",
+      "href": "/thinking?topic=career#notes",
+      "count": 31
+    },
+    {
+      "name": "compensation",
+      "href": "/thinking?topic=compensation#notes",
+      "count": 1
+    },
+    {
+      "name": "strategy",
+      "href": "/thinking?topic=strategy#notes",
+      "count": 16
+    },
+    {
+      "name": "hobbies",
+      "href": "/thinking?topic=hobbies#notes",
+      "count": 3
+    },
+    {
+      "name": "games",
+      "href": "/thinking?topic=games#notes",
+      "count": 1
+    },
+    {
+      "name": "social",
+      "href": "/thinking?topic=social#notes",
+      "count": 1
+    },
+    {
+      "name": "entertainment",
+      "href": "/thinking?topic=entertainment#notes",
+      "count": 2
+    },
+    {
+      "name": "synthesis",
+      "href": "/thinking?topic=synthesis#notes",
+      "count": 5
+    },
+    {
       "name": "books",
-      "href": "https://garden.n3wth.com/tags/books",
+      "href": "/thinking?topic=books#notes",
       "count": 67
     },
     {
+      "name": "personal-development",
+      "href": "/thinking?topic=personal-development#notes",
+      "count": 3
+    },
+    {
+      "name": "reviews",
+      "href": "/thinking?topic=reviews#notes",
+      "count": 2
+    },
+    {
+      "name": "reading-list",
+      "href": "/thinking?topic=reading-list#notes",
+      "count": 1
+    },
+    {
+      "name": "productivity",
+      "href": "/thinking?topic=productivity#notes",
+      "count": 18
+    },
+    {
+      "name": "organization",
+      "href": "/thinking?topic=organization#notes",
+      "count": 8
+    },
+    {
+      "name": "journaling",
+      "href": "/thinking?topic=journaling#notes",
+      "count": 2
+    },
+    {
+      "name": "business",
+      "href": "/thinking?topic=business#notes",
+      "count": 2
+    },
+    {
+      "name": "achievements",
+      "href": "/thinking?topic=achievements#notes",
+      "count": 2
+    },
+    {
+      "name": "professional-development",
+      "href": "/thinking?topic=professional-development#notes",
+      "count": 4
+    },
+    {
+      "name": "growth",
+      "href": "/thinking?topic=growth#notes",
+      "count": 5
+    },
+    {
+      "name": "frameworks",
+      "href": "/thinking?topic=frameworks#notes",
+      "count": 3
+    },
+    {
+      "name": "tracking",
+      "href": "/thinking?topic=tracking#notes",
+      "count": 3
+    },
+    {
+      "name": "milestones",
+      "href": "/thinking?topic=milestones#notes",
+      "count": 1
+    },
+    {
+      "name": "goals",
+      "href": "/thinking?topic=goals#notes",
+      "count": 4
+    },
+    {
+      "name": "career-transition",
+      "href": "/thinking?topic=career-transition#notes",
+      "count": 1
+    },
+    {
+      "name": "career-change",
+      "href": "/thinking?topic=career-change#notes",
+      "count": 1
+    },
+    {
+      "name": "job-search",
+      "href": "/thinking?topic=job-search#notes",
+      "count": 6
+    },
+    {
+      "name": "career-planning",
+      "href": "/thinking?topic=career-planning#notes",
+      "count": 1
+    },
+    {
+      "name": "transitions",
+      "href": "/thinking?topic=transitions#notes",
+      "count": 1
+    },
+    {
+      "name": "consulting",
+      "href": "/thinking?topic=consulting#notes",
+      "count": 1
+    },
+    {
+      "name": "management",
+      "href": "/thinking?topic=management#notes",
+      "count": 2
+    },
+    {
+      "name": "leadership",
+      "href": "/thinking?topic=leadership#notes",
+      "count": 6
+    },
+    {
+      "name": "communication",
+      "href": "/thinking?topic=communication#notes",
+      "count": 7
+    },
+    {
+      "name": "industry",
+      "href": "/thinking?topic=industry#notes",
+      "count": 1
+    },
+    {
+      "name": "organizations",
+      "href": "/thinking?topic=organizations#notes",
+      "count": 1
+    },
+    {
+      "name": "marketing",
+      "href": "/thinking?topic=marketing#notes",
+      "count": 1
+    },
+    {
+      "name": "content",
+      "href": "/thinking?topic=content#notes",
+      "count": 3
+    },
+    {
+      "name": "cooking",
+      "href": "/thinking?topic=cooking#notes",
+      "count": 4
+    },
+    {
+      "name": "food",
+      "href": "/thinking?topic=food#notes",
+      "count": 3
+    },
+    {
+      "name": "techniques",
+      "href": "/thinking?topic=techniques#notes",
+      "count": 2
+    },
+    {
+      "name": "writing",
+      "href": "/thinking?topic=writing#notes",
+      "count": 6
+    },
+    {
+      "name": "digital-gardening",
+      "href": "/thinking?topic=digital-gardening#notes",
+      "count": 1
+    },
+    {
+      "name": "energy",
+      "href": "/thinking?topic=energy#notes",
+      "count": 1
+    },
+    {
+      "name": "wellness",
+      "href": "/thinking?topic=wellness#notes",
+      "count": 18
+    },
+    {
+      "name": "self-care",
+      "href": "/thinking?topic=self-care#notes",
+      "count": 1
+    },
+    {
+      "name": "networking",
+      "href": "/thinking?topic=networking#notes",
+      "count": 2
+    },
+    {
+      "name": "community",
+      "href": "/thinking?topic=community#notes",
+      "count": 1
+    },
+    {
+      "name": "focus",
+      "href": "/thinking?topic=focus#notes",
+      "count": 1
+    },
+    {
+      "name": "psychology",
+      "href": "/thinking?topic=psychology#notes",
+      "count": 2
+    },
+    {
+      "name": "performance",
+      "href": "/thinking?topic=performance#notes",
+      "count": 2
+    },
+    {
+      "name": "preservation",
+      "href": "/thinking?topic=preservation#notes",
+      "count": 1
+    },
+    {
+      "name": "problem-solving",
+      "href": "/thinking?topic=problem-solving#notes",
+      "count": 2
+    },
+    {
+      "name": "analysis",
+      "href": "/thinking?topic=analysis#notes",
+      "count": 3
+    },
+    {
+      "name": "product",
+      "href": "/thinking?topic=product#notes",
+      "count": 9
+    },
+    {
+      "name": "habits",
+      "href": "/thinking?topic=habits#notes",
+      "count": 4
+    },
+    {
+      "name": "time-management",
+      "href": "/thinking?topic=time-management#notes",
+      "count": 1
+    },
+    {
+      "name": "prioritization",
+      "href": "/thinking?topic=prioritization#notes",
+      "count": 3
+    },
+    {
+      "name": "mental-models",
+      "href": "/thinking?topic=mental-models#notes",
+      "count": 2
+    },
+    {
+      "name": "thinking",
+      "href": "/thinking?topic=thinking#notes",
+      "count": 1
+    },
+    {
+      "name": "metrics",
+      "href": "/thinking?topic=metrics#notes",
+      "count": 2
+    },
+    {
+      "name": "experimentation",
+      "href": "/thinking?topic=experimentation#notes",
+      "count": 1
+    },
+    {
+      "name": "coaching",
+      "href": "/thinking?topic=coaching#notes",
+      "count": 1
+    },
+    {
+      "name": "task-management",
+      "href": "/thinking?topic=task-management#notes",
+      "count": 1
+    },
+    {
+      "name": "user-experience",
+      "href": "/thinking?topic=user-experience#notes",
+      "count": 1
+    },
+    {
+      "name": "engagement",
+      "href": "/thinking?topic=engagement#notes",
+      "count": 1
+    },
+    {
+      "name": "behavior",
+      "href": "/thinking?topic=behavior#notes",
+      "count": 1
+    },
+    {
+      "name": "user-research",
+      "href": "/thinking?topic=user-research#notes",
+      "count": 2
+    },
+    {
+      "name": "presentation",
+      "href": "/thinking?topic=presentation#notes",
+      "count": 1
+    },
+    {
+      "name": "interview",
+      "href": "/thinking?topic=interview#notes",
+      "count": 1
+    },
+    {
+      "name": "gardening",
+      "href": "/thinking?topic=gardening#notes",
+      "count": 9
+    },
+    {
+      "name": "outdoors",
+      "href": "/thinking?topic=outdoors#notes",
+      "count": 2
+    },
+    {
+      "name": "tasks",
+      "href": "/thinking?topic=tasks#notes",
+      "count": 1
+    },
+    {
+      "name": "projects",
+      "href": "/thinking?topic=projects#notes",
+      "count": 2
+    },
+    {
+      "name": "tips",
+      "href": "/thinking?topic=tips#notes",
+      "count": 1
+    },
+    {
+      "name": "nature",
+      "href": "/thinking?topic=nature#notes",
+      "count": 3
+    },
+    {
+      "name": "plants",
+      "href": "/thinking?topic=plants#notes",
+      "count": 4
+    },
+    {
+      "name": "sustainability",
+      "href": "/thinking?topic=sustainability#notes",
+      "count": 2
+    },
+    {
+      "name": "indie",
+      "href": "/thinking?topic=indie#notes",
+      "count": 1
+    },
+    {
+      "name": "health",
+      "href": "/thinking?topic=health#notes",
+      "count": 28
+    },
+    {
+      "name": "long-term",
+      "href": "/thinking?topic=long-term#notes",
+      "count": 1
+    },
+    {
+      "name": "skincare",
+      "href": "/thinking?topic=skincare#notes",
+      "count": 3
+    },
+    {
+      "name": "aging",
+      "href": "/thinking?topic=aging#notes",
+      "count": 1
+    },
+    {
+      "name": "prevention",
+      "href": "/thinking?topic=prevention#notes",
+      "count": 3
+    },
+    {
+      "name": "check-up",
+      "href": "/thinking?topic=check-up#notes",
+      "count": 1
+    },
+    {
+      "name": "sleep",
+      "href": "/thinking?topic=sleep#notes",
+      "count": 3
+    },
+    {
+      "name": "beauty",
+      "href": "/thinking?topic=beauty#notes",
+      "count": 1
+    },
+    {
+      "name": "behavior-change",
+      "href": "/thinking?topic=behavior-change#notes",
+      "count": 1
+    },
+    {
+      "name": "fitness",
+      "href": "/thinking?topic=fitness#notes",
+      "count": 6
+    },
+    {
+      "name": "exercise",
+      "href": "/thinking?topic=exercise#notes",
+      "count": 3
+    },
+    {
+      "name": "vaccines",
+      "href": "/thinking?topic=vaccines#notes",
+      "count": 1
+    },
+    {
+      "name": "index",
+      "href": "/thinking?topic=index#notes",
+      "count": 6
+    },
+    {
+      "name": "mental-health",
+      "href": "/thinking?topic=mental-health#notes",
+      "count": 2
+    },
+    {
+      "name": "emotional-health",
+      "href": "/thinking?topic=emotional-health#notes",
+      "count": 1
+    },
+    {
+      "name": "mobility",
+      "href": "/thinking?topic=mobility#notes",
+      "count": 1
+    },
+    {
+      "name": "cosmetics",
+      "href": "/thinking?topic=cosmetics#notes",
+      "count": 1
+    },
+    {
+      "name": "nutrition",
+      "href": "/thinking?topic=nutrition#notes",
+      "count": 1
+    },
+    {
+      "name": "training",
+      "href": "/thinking?topic=training#notes",
+      "count": 1
+    },
+    {
+      "name": "stress-management",
+      "href": "/thinking?topic=stress-management#notes",
+      "count": 1
+    },
+    {
+      "name": "personal",
+      "href": "/thinking?topic=personal#notes",
+      "count": 2
+    },
+    {
+      "name": "self-reflection",
+      "href": "/thinking?topic=self-reflection#notes",
+      "count": 1
+    },
+    {
+      "name": "typography",
+      "href": "/thinking?topic=typography#notes",
+      "count": 1
+    },
+    {
+      "name": "aesthetics",
+      "href": "/thinking?topic=aesthetics#notes",
+      "count": 1
+    },
+    {
+      "name": "culture",
+      "href": "/thinking?topic=culture#notes",
+      "count": 2
+    },
+    {
+      "name": "interests",
+      "href": "/thinking?topic=interests#notes",
+      "count": 1
+    },
+    {
+      "name": "lifestyle",
+      "href": "/thinking?topic=lifestyle#notes",
+      "count": 1
+    },
+    {
+      "name": "hotels",
+      "href": "/thinking?topic=hotels#notes",
+      "count": 1
+    },
+    {
+      "name": "hyatt",
+      "href": "/thinking?topic=hyatt#notes",
+      "count": 1
+    },
+    {
+      "name": "loyalty",
+      "href": "/thinking?topic=loyalty#notes",
+      "count": 2
+    },
+    {
+      "name": "openclaw",
+      "href": "/thinking?topic=openclaw#notes",
+      "count": 1
+    },
+    {
+      "name": "artificial-intelligence",
+      "href": "/thinking?topic=artificial-intelligence#notes",
+      "count": 1
+    },
+    {
+      "name": "memory-consolidation",
+      "href": "/thinking?topic=memory-consolidation#notes",
+      "count": 1
+    },
+    {
+      "name": "moc",
+      "href": "/thinking?topic=moc#notes",
+      "count": 3
+    },
+    {
+      "name": "guide",
+      "href": "/thinking?topic=guide#notes",
+      "count": 2
+    },
+    {
+      "name": "navigation",
+      "href": "/thinking?topic=navigation#notes",
+      "count": 3
+    },
+    {
+      "name": "preparation",
+      "href": "/thinking?topic=preparation#notes",
+      "count": 4
+    },
+    {
+      "name": "product-management",
+      "href": "/thinking?topic=product-management#notes",
+      "count": 2
+    },
+    {
+      "name": "soft-skills",
+      "href": "/thinking?topic=soft-skills#notes",
+      "count": 1
+    },
+    {
+      "name": "journal",
+      "href": "/thinking?topic=journal#notes",
+      "count": 1
+    },
+    {
+      "name": "reflection",
+      "href": "/thinking?topic=reflection#notes",
+      "count": 2
+    },
+    {
+      "name": "personal-growth",
+      "href": "/thinking?topic=personal-growth#notes",
+      "count": 3
+    },
+    {
+      "name": "people",
+      "href": "/thinking?topic=people#notes",
+      "count": 2
+    },
+    {
+      "name": "authors",
+      "href": "/thinking?topic=authors#notes",
+      "count": 1
+    },
+    {
+      "name": "digital-garden",
+      "href": "/thinking?topic=digital-garden#notes",
+      "count": 3
+    },
+    {
+      "name": "architecture",
+      "href": "/thinking?topic=architecture#notes",
+      "count": 1
+    },
+    {
+      "name": "visualization",
+      "href": "/thinking?topic=visualization#notes",
+      "count": 1
+    },
+    {
+      "name": "knowledge-graph",
+      "href": "/thinking?topic=knowledge-graph#notes",
+      "count": 1
+    },
+    {
+      "name": "maps",
+      "href": "/thinking?topic=maps#notes",
+      "count": 1
+    },
+    {
+      "name": "influence",
+      "href": "/thinking?topic=influence#notes",
+      "count": 1
+    },
+    {
+      "name": "impact",
+      "href": "/thinking?topic=impact#notes",
+      "count": 1
+    },
+    {
+      "name": "progress",
+      "href": "/thinking?topic=progress#notes",
+      "count": 1
+    },
+    {
+      "name": "finance",
+      "href": "/thinking?topic=finance#notes",
+      "count": 2
+    },
+    {
+      "name": "money",
+      "href": "/thinking?topic=money#notes",
+      "count": 2
+    },
+    {
+      "name": "best-practices",
+      "href": "/thinking?topic=best-practices#notes",
+      "count": 1
+    },
+    {
+      "name": "map-of-content",
+      "href": "/thinking?topic=map-of-content#notes",
+      "count": 1
+    },
+    {
+      "name": "maps-of-content",
+      "href": "/thinking?topic=maps-of-content#notes",
+      "count": 1
+    },
+    {
+      "name": "relationships",
+      "href": "/thinking?topic=relationships#notes",
+      "count": 2
+    },
+    {
+      "name": "fiction",
+      "href": "/thinking?topic=fiction#notes",
+      "count": 7
+    },
+    {
+      "name": "literary-fiction",
+      "href": "/thinking?topic=literary-fiction#notes",
+      "count": 3
+    },
+    {
+      "name": "dystopian",
+      "href": "/thinking?topic=dystopian#notes",
+      "count": 1
+    },
+    {
+      "name": "currently-reading",
+      "href": "/thinking?topic=currently-reading#notes",
+      "count": 3
+    },
+    {
+      "name": "mindset",
+      "href": "/thinking?topic=mindset#notes",
+      "count": 2
+    },
+    {
+      "name": "creativity",
+      "href": "/thinking?topic=creativity#notes",
+      "count": 2
+    },
+    {
+      "name": "psychological-thriller",
+      "href": "/thinking?topic=psychological-thriller#notes",
+      "count": 3
+    },
+    {
+      "name": "read",
+      "href": "/thinking?topic=read#notes",
+      "count": 15
+    },
+    {
+      "name": "meta",
+      "href": "/thinking?topic=meta#notes",
+      "count": 2
+    },
+    {
+      "name": "now",
+      "href": "/thinking?topic=now#notes",
+      "count": 1
+    },
+    {
+      "name": "accessibility",
+      "href": "/thinking?topic=accessibility#notes",
+      "count": 1
+    },
+    {
+      "name": "frontend",
+      "href": "/thinking?topic=frontend#notes",
+      "count": 1
+    },
+    {
+      "name": "design-systems",
+      "href": "/thinking?topic=design-systems#notes",
+      "count": 1
+    },
+    {
+      "name": "testing",
+      "href": "/thinking?topic=testing#notes",
+      "count": 1
+    },
+    {
+      "name": "mentors",
+      "href": "/thinking?topic=mentors#notes",
+      "count": 1
+    },
+    {
+      "name": "influences",
+      "href": "/thinking?topic=influences#notes",
+      "count": 1
+    },
+    {
+      "name": "personal-brand",
+      "href": "/thinking?topic=personal-brand#notes",
+      "count": 1
+    },
+    {
+      "name": "growing",
+      "href": "/thinking?topic=growing#notes",
+      "count": 1
+    },
+    {
+      "name": "soil",
+      "href": "/thinking?topic=soil#notes",
+      "count": 1
+    },
+    {
+      "name": "indoor-plants",
+      "href": "/thinking?topic=indoor-plants#notes",
+      "count": 1
+    },
+    {
+      "name": "media",
+      "href": "/thinking?topic=media#notes",
+      "count": 2
+    },
+    {
+      "name": "podcasts",
+      "href": "/thinking?topic=podcasts#notes",
+      "count": 1
+    },
+    {
+      "name": "audio",
+      "href": "/thinking?topic=audio#notes",
+      "count": 1
+    },
+    {
+      "name": "publishing",
+      "href": "/thinking?topic=publishing#notes",
+      "count": 1
+    },
+    {
+      "name": "sharing",
+      "href": "/thinking?topic=sharing#notes",
+      "count": 1
+    },
+    {
+      "name": "software-engineering",
+      "href": "/thinking?topic=software-engineering#notes",
+      "count": 2
+    },
+    {
+      "name": "yagni",
+      "href": "/thinking?topic=yagni#notes",
+      "count": 1
+    },
+    {
+      "name": "simplicity",
+      "href": "/thinking?topic=simplicity#notes",
+      "count": 1
+    },
+    {
+      "name": "systems",
+      "href": "/thinking?topic=systems#notes",
+      "count": 1
+    },
+    {
+      "name": "efficiency",
+      "href": "/thinking?topic=efficiency#notes",
+      "count": 1
+    },
+    {
+      "name": "documentation",
+      "href": "/thinking?topic=documentation#notes",
+      "count": 1
+    },
+    {
+      "name": "work",
+      "href": "/thinking?topic=work#notes",
+      "count": 1
+    },
+    {
+      "name": "building",
+      "href": "/thinking?topic=building#notes",
+      "count": 1
+    },
+    {
+      "name": "questions",
+      "href": "/thinking?topic=questions#notes",
+      "count": 1
+    },
+    {
+      "name": "curiosity",
+      "href": "/thinking?topic=curiosity#notes",
+      "count": 1
+    },
+    {
+      "name": "exploration",
+      "href": "/thinking?topic=exploration#notes",
+      "count": 1
+    },
+    {
+      "name": "raised-beds",
+      "href": "/thinking?topic=raised-beds#notes",
+      "count": 1
+    },
+    {
+      "name": "infrastructure",
+      "href": "/thinking?topic=infrastructure#notes",
+      "count": 1
+    },
+    {
+      "name": "reading",
+      "href": "/thinking?topic=reading#notes",
+      "count": 3
+    },
+    {
+      "name": "recipes",
+      "href": "/thinking?topic=recipes#notes",
+      "count": 2
+    },
+    {
       "name": "references",
-      "href": "https://garden.n3wth.com/tags/references",
+      "href": "/thinking?topic=references#notes",
       "count": 56
     },
     {
       "name": "to-read",
-      "href": "https://garden.n3wth.com/tags/to-read",
+      "href": "/thinking?topic=to-read#notes",
       "count": 42
     },
     {
-      "name": "career",
-      "href": "https://garden.n3wth.com/tags/career",
-      "count": 31
+      "name": "literature",
+      "href": "/thinking?topic=literature#notes",
+      "count": 1
     },
     {
-      "name": "health",
-      "href": "https://garden.n3wth.com/tags/health",
-      "count": 28
+      "name": "articles",
+      "href": "/thinking?topic=articles#notes",
+      "count": 2
     },
     {
-      "name": "learning",
-      "href": "https://garden.n3wth.com/tags/learning",
-      "count": 27
+      "name": "resources",
+      "href": "/thinking?topic=resources#notes",
+      "count": 1
     },
     {
-      "name": "development",
-      "href": "https://garden.n3wth.com/tags/development",
-      "count": 18
+      "name": "remote-work",
+      "href": "/thinking?topic=remote-work#notes",
+      "count": 2
     },
     {
-      "name": "productivity",
-      "href": "https://garden.n3wth.com/tags/productivity",
-      "count": 18
+      "name": "distributed-teams",
+      "href": "/thinking?topic=distributed-teams#notes",
+      "count": 1
     },
     {
-      "name": "wellness",
-      "href": "https://garden.n3wth.com/tags/wellness",
-      "count": 18
+      "name": "resume",
+      "href": "/thinking?topic=resume#notes",
+      "count": 1
     },
     {
-      "name": "strategy",
-      "href": "https://garden.n3wth.com/tags/strategy",
-      "count": 15
+      "name": "instapot",
+      "href": "/thinking?topic=instapot#notes",
+      "count": 1
     },
     {
-      "name": "read",
-      "href": "https://garden.n3wth.com/tags/read",
-      "count": 15
+      "name": "basics",
+      "href": "/thinking?topic=basics#notes",
+      "count": 1
     },
     {
-      "name": "knowledge-management",
-      "href": "https://garden.n3wth.com/tags/knowledge-management",
-      "count": 12
+      "name": "agents",
+      "href": "/thinking?topic=agents#notes",
+      "count": 1
     },
     {
-      "name": "skills",
-      "href": "https://garden.n3wth.com/tags/skills",
-      "count": 9
+      "name": "ai-tools",
+      "href": "/thinking?topic=ai-tools#notes",
+      "count": 1
     },
     {
-      "name": "gardening",
-      "href": "https://garden.n3wth.com/tags/gardening",
-      "count": 9
+      "name": "automation",
+      "href": "/thinking?topic=automation#notes",
+      "count": 1
     },
     {
-      "name": "planning",
-      "href": "https://garden.n3wth.com/tags/planning",
-      "count": 8
+      "name": "short-haul",
+      "href": "/thinking?topic=short-haul#notes",
+      "count": 1
+    },
+    {
+      "name": "hacks",
+      "href": "/thinking?topic=hacks#notes",
+      "count": 1
+    },
+    {
+      "name": "avios",
+      "href": "/thinking?topic=avios#notes",
+      "count": 1
+    },
+    {
+      "name": "storytelling",
+      "href": "/thinking?topic=storytelling#notes",
+      "count": 1
+    },
+    {
+      "name": "assessment",
+      "href": "/thinking?topic=assessment#notes",
+      "count": 1
+    },
+    {
+      "name": "thriller",
+      "href": "/thinking?topic=thriller#notes",
+      "count": 3
+    },
+    {
+      "name": "study-techniques",
+      "href": "/thinking?topic=study-techniques#notes",
+      "count": 1
+    },
+    {
+      "name": "budgeting",
+      "href": "/thinking?topic=budgeting#notes",
+      "count": 1
+    },
+    {
+      "name": "nextjs",
+      "href": "/thinking?topic=nextjs#notes",
+      "count": 1
+    },
+    {
+      "name": "cloudflare",
+      "href": "/thinking?topic=cloudflare#notes",
+      "count": 1
+    },
+    {
+      "name": "seo",
+      "href": "/thinking?topic=seo#notes",
+      "count": 1
+    },
+    {
+      "name": "technical-skills",
+      "href": "/thinking?topic=technical-skills#notes",
+      "count": 1
+    },
+    {
+      "name": "roadmap",
+      "href": "/thinking?topic=roadmap#notes",
+      "count": 1
+    },
+    {
+      "name": "career-development",
+      "href": "/thinking?topic=career-development#notes",
+      "count": 1
+    },
+    {
+      "name": "trends",
+      "href": "/thinking?topic=trends#notes",
+      "count": 1
+    },
+    {
+      "name": "innovation",
+      "href": "/thinking?topic=innovation#notes",
+      "count": 1
+    },
+    {
+      "name": "tomatoes",
+      "href": "/thinking?topic=tomatoes#notes",
+      "count": 1
+    },
+    {
+      "name": "pollination",
+      "href": "/thinking?topic=pollination#notes",
+      "count": 1
+    },
+    {
+      "name": "software",
+      "href": "/thinking?topic=software#notes",
+      "count": 1
+    },
+    {
+      "name": "monorepo",
+      "href": "/thinking?topic=monorepo#notes",
+      "count": 1
+    },
+    {
+      "name": "changesets",
+      "href": "/thinking?topic=changesets#notes",
+      "count": 1
+    },
+    {
+      "name": "n3wth",
+      "href": "/thinking?topic=n3wth#notes",
+      "count": 1
+    },
+    {
+      "name": "dependency-management",
+      "href": "/thinking?topic=dependency-management#notes",
+      "count": 1
+    },
+    {
+      "name": "obsidian",
+      "href": "/thinking?topic=obsidian#notes",
+      "count": 1
     }
   ]
 }

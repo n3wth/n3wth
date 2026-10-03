@@ -30,7 +30,7 @@ export function Beat({
 }) {
   return (
     <div className="py-10" data-reveal>
-      <div className="md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12">
+      <div className={margin ? 'md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] md:gap-12' : 'mx-auto max-w-[62ch]'}>
         <div>
           {stage && (
             /* h2 so heading nav works inside long pieces; font-sans keeps

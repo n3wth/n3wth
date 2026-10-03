@@ -128,8 +128,9 @@ This is a **React + TypeScript SPA** (personal portfolio site) built with Vite 7
 ### Notes
 
 - Tests run on **Vitest** with jsdom (`src/test/setup.ts`); test files live under `src/**/__tests__`. `npm test` starts watch mode, so use `npm test -- --run` for a single non-interactive pass.
-- `npm run build` never fetches over the network. The garden notes, garden index/search, and `@n3wth/ui` version snapshots in `src/data/*.json` are committed source. `prebuild` (`scripts/verify-content.mjs`) only validates their shape offline. It fails the build if a snapshot is missing or malformed.
-- Run `npm run content:refresh` (`scripts/refresh-content.mjs`) to pull fresh data from the live sources and rewrite those snapshots. It always contacts every source. It is never cached. It exits 1 if any source fails, and leaves that source's files untouched. Commit the result.
+- `npm run build` never fetches over the network. `content/` owns the migrated Garden Markdown. `scripts/build-notes.mjs` generates local note pages, search data and compatibility snapshots before `scripts/verify-content.mjs` validates them offline. Missing or malformed snapshots fail the build.
+- Published notes and existing articles share `/thinking/<slug>`; preserve nested note slugs and existing article URLs. The homepage groves use the same local writing data. Garden's domain is a redirect Worker, not a content source.
+- Run `npm run content:refresh` (`scripts/refresh-content.mjs`) to refresh only the `@n3wth/ui` registry snapshot. It exits 1 on failure and leaves the prior file untouched. Commit the result.
 - See `scripts/lib/content-sources.mjs` for the source registry.
 - Do not add `npm run content:refresh` to `build`, `prebuild`, or `check`. It must stay a separate, manually-run command so its network calls cannot be skipped by task caching.
 - The `@n3wth/ui` package is a custom component library fetched from the npm registry; no special auth is needed.

@@ -7,6 +7,20 @@
     "dark": "#08090b"
   },
   "favicon": "/favicon.svg",
+  "fonts": {
+    "heading": {
+      "family": "Suisse Intl",
+      "weight": 500,
+      "source": "https://cdn.n3wth.com/fonts/SuisseIntl-Medium.woff2",
+      "format": "woff2"
+    },
+    "body": {
+      "family": "Suisse Intl",
+      "weight": 400,
+      "source": "https://cdn.n3wth.com/fonts/SuisseIntl-Book.woff2",
+      "format": "woff2"
+    }
+  },
   "seo": {
     "indexing": "navigable",
     "trailingSlash": false,
@@ -112,6 +126,18 @@
         ]
       },
       {
+        "tab": "Elephant-Goldfish",
+        "groups": [
+          {
+            "group": "Use the plugin",
+            "pages": [
+              "elephant-goldfish/quickstart",
+              "elephant-goldfish/workflows"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "r3",
         "groups": [
           {
@@ -156,16 +182,6 @@
     "default": "dark",
     "strict": true
   },
-  "fonts": {
-    "heading": {
-      "family": "Suisse",
-      "weight": 600
-    },
-    "body": {
-      "family": "Suisse",
-      "weight": 400
-    }
-  },
   "integrations": {
     "ga4": {
       "measurementId": "G-4QRMSG5HXK"
@@ -177,13 +193,13 @@
   },
   "contextual": {
     "options": [
+      "copy",
+      "view",
       "aistudio",
       "chatgpt",
       "claude",
       "perplexity",
-      "view",
-      "assistant",
-      "copy"
+      "assistant"
     ],
     "display": "header"
   },

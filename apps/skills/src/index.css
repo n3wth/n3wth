@@ -101,56 +101,6 @@
 
 
 
-/* Hover Preview - project specific */
-.hover-preview {
-  width: 320px;
-  pointer-events: auto;
-}
-
-.hover-preview-content {
-  background: rgba(20, 20, 22, 0.97);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 16px;
-  animation: hoverPreviewEnter 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes hoverPreviewEnter {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.hover-preview[data-placement="left"] .hover-preview-content {
-  transform-origin: right center;
-}
-
-.hover-preview[data-placement="right"] .hover-preview-content {
-  transform-origin: left center;
-}
-
-.hover-preview[data-placement="top"] .hover-preview-content {
-  transform-origin: bottom center;
-}
-
-.hover-preview[data-placement="bottom"] .hover-preview-content {
-  transform-origin: top center;
-}
-
-.hover-preview button:hover {
-  background: var(--glass-highlight) !important;
-  border-color: var(--glass-highlight) !important;
-}
-
-.hover-preview button:active {
-  transform: scale(0.98);
-}
-
 /* Line clamp utility */
 .line-clamp-1 {
   display: -webkit-box;
@@ -311,7 +261,6 @@ button:not(:disabled):hover,
 .glass-card:hover,
 .skill-card:hover,
 .interactive-tag:hover,
-.hover-preview button:hover,
 .command-box:hover,
 .category-filter-btn:hover,
 nav a:hover,
@@ -369,7 +318,6 @@ select {
 
   .page-enter,
   .page-exit,
-  .hover-preview-content,
   .workflow-node-enter {
     animation: none !important;
     opacity: 1 !important;
@@ -379,11 +327,6 @@ select {
 
 /* Mobile touch improvements */
 @media (hover: none) and (pointer: coarse) {
-  /* Disable hover preview on touch devices */
-  .hover-preview {
-    display: none !important;
-  }
-
   /* Improve tap targets */
   .glass-pill {
     min-height: 44px;

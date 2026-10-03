@@ -25,10 +25,13 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - For a grouped documentation hierarchy on compact screens, put the pages in the top navigation menu and show the documentation context in its brand path. Include every page, mark the current page and close after navigation; do not add a second navigation row.
 - Use a clear title and short description in a hero. Omit actions that repeat navigation or merely jump to the content immediately below. Keep useful product actions such as installation or a resume download.
 - Do not place small category labels or eyebrow text above titles. Let the title stand on its own.
+- Experience dates belong beneath the role within the company group, rather than in a separate grid column.
+- Portfolio art photographs fill the available page width; their captions share the page content gutters.
 - Documentation articles use `PageHeader spacing="compact"` with parent-owned margins. Keep the title, description and useful start links together; avoid hero-sized gaps and cards for simple navigation.
 - Documentation brand paths link each segment to its own home. Keep page-copy and Markdown actions compact below the title. Use one search dialog for content results and explicitly requested, cited AI answers; keep results available when AI fails.
+- Portfolio search starts AI answers after typing pauses, with loading dots while waiting. Sources appear as wrapping link chips below the answer, without a separate AI introduction label.
 - Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color.
-- The portfolio omits the repeated footer identity. Signup forms fill the available content width on mobile.
+- The portfolio footer keeps links and a compact email signup on one desktop row, without repeating the identity. On smaller screens, the signup fills the content width above the links. The signup has an inset arrow submit button. Empty signup status messages take no layout space.
 - Keep the footer identity and links on one row when their content fits; wrap naturally on narrow screens instead of stacking at a fixed breakpoint.
 - Keep heading order semantic: one primary page heading, section headings below it, then item headings. Visual size does not determine heading level.
 - Paragraph copy uses regular weight (400) across all six sites, including article prose and lead paragraphs. Preserve heading, emphasis and control weights.
@@ -38,17 +41,33 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 
 ## Interaction
 
+Thinking uses one reading column with search, compact format and topic filters, and a continuously loaded list of articles and notes. Keep search, filters, sort and loaded batches in the URL so returning from a piece preserves the list. Provide a keyboard-accessible load-more control. Place format and reading time together beneath each description, leaving the right margin clear. Avoid tag clouds, sidebars, featured blocks and repeated counts on this index. Groves keep clear ground around landmarks; show writing details on interaction rather than covering the scene with labels.
+
+Thinking notes keep the reading outline in a collapsed Contents disclosure above the prose, without a sidebar or a repeated Thinking link above the title.
+
+Portfolio main section pages open with full-screen abstract line-art stories. Work gathers independent paths into a system; Art creates monumental light forms; Thinking branches; Projects layers structures; Library layers pages; Contact brings two paths together. Choreography runs autonomously; never respond to cursor, hover or scroll position. Center the large artwork vertically and place quiet 32–48px titles with descriptions at the lower left. Share title scale, gutters and action placement across all six pages. Keep copy readable, with no eyebrow text, invented slogans or repeated navigation. Start with currents already moving, then use irregular quiet intervals. Pause motion offscreen for efficiency and show the complete still composition under reduced motion. Keep installation photographs unique in the content below. Article and note reading columns remain centered and use compact headings, with dates beneath the title and description.
+
+Hero light follows each page's structure: Work carries signals through planes, Art illuminates arches and reflections, Thinking spreads through a connected canopy, Projects passes light through offset layers, and Library traces page edges. Each current gets a fresh travel time and quiet interval rather than replaying a synchronized loop. Keep travel steady and ease the fade separately. Crossings pass light to other strands, with fading, bounded chains of reactions. Contact's two forms stay joined without a center marker. Preserve large artwork, shared viewport sizing and copy alignment; frame each motif for equal visual presence. Every base line uses the same 1px non-scaling stroke and 40% opacity, without per-page or nested opacity changes. Color currents share a 1.5px non-scaling stroke.
+
+The portfolio homepage combines topic groves with its existing art and navigation landmarks in one canvas, camera and lighting system. Keep the opening predominantly visual, with a subdued landscape and crisp stars; place the introduction below the scene. Landmark labels appear on hover or keyboard focus. Keep the main navigation available on touch. Use detailed models across screen sizes and retain their material maps. Writing appears as trees without obscuring landmarks. A selected tree exposes its title, description and an explicit local reading link; only its connections are highlighted. Keep selection usable by touch and dismissible with Escape. Thinking remains a searchable, keyboard-accessible reading index independent of WebGL. Reduced motion keeps the world still.
+
+On desktop, main section hero descriptions stay on one line. Keep useful actions such as the resume and contact links in the content immediately after the hero, rather than within the opening scene. Descriptions wrap naturally on mobile and tablet.
+
+Continue the section stories below their heroes. Work and Thinking keep a separate, sticky artwork column beside their content on desktop; compact layouts put the artwork in normal flow. Library shelves pair their introductions with page-edge scenes. Contact gives its actions a joined-path scene. Projects give functional specimens generous exhibition space, and Art photographs extend to the viewport edges with captions aligned to the shared content gutters. Artwork never sits behind readable text or controls. Each scene pauses independently when offscreen, and reduced motion retains the still composition.
+
 Article graphics explain the adjacent argument. Keep each figure with a descriptive caption, visible source links and useful alt text. Distinguish original conceptual diagrams from measured charts and reproduced images. Use a single supporting text style for captions, reserve the image dimensions, and let readers open detailed graphics at full size. Record reuse rights for third-party assets; a citation alone is not permission.
 
 Original diagrams stay in SVG format and follow the surrounding page's color scheme. Generate embedded light/dark palettes from the shared theme; an SVG loaded as an image cannot inherit page custom properties. Keep photographs in their original colors.
 
 Use selective Further reading previews after an article: publisher, linked title and a short explanation of its value. Keep them flat and within the reading column, using existing type and spacing. Do not turn every citation into a card or load remote thumbnails without verified reuse rights.
 
+- Portfolio section indexes end with two relevant section links before the footer. Keep these flat, with destination names and short descriptions. Reading pages retain their own related-content navigation. On compact screens, Work and Thinking put content before their secondary artwork; experience entries use content-driven heights.
 - Pages appear immediately. No default entry fades, sliding page transitions, staggered text or reveal observers hiding content.
 - Establish canvas, theme and navigation colors before first paint. Server output and client theme state must agree; test both saved preferences and system preference where supported.
 - Clicking to a different page starts at the top. Explicit anchor links go to their targets. Preserve browser Back scroll restoration.
 - Give controls visible keyboard focus and usable touch targets. Expose selected state for real controls, not decorative navigation that scrolls away.
 - Use functional motion sparingly and respect reduced motion. Demonstrations must use the actual documented API.
+- Software WebGL keeps the portfolio scene's models, textures and navigation at native pixel resolution, without shadow maps, environment reflections or postprocessing. Hardware rendering retains the full effects. Test navigation during a deliberately held scene load separately from scene readiness.
 
 ## Review
 

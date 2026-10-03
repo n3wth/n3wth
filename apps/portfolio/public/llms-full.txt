@@ -110,10 +110,9 @@ A registry of markdown skills for coding agents. Install with one command, run l
 - Tech: Next.js, React, Supabase
 - GitHub: https://github.com/n3wth/skills
 
-### garden (https://garden.n3wth.com/)
+### garden (https://n3wth.com/thinking)
 A digital garden of interconnected working notes. Notes carry growth stages (seedling, budding, evergreen) and are gathered into groves.
-- Tech: Next.js, Astryx, Wikilinks
-- Has its own llms.txt
+- Published within Thinking on n3wth.com
 
 ## Ecosystem
 
@@ -146,5 +145,5 @@ Oliver builds and operates independent projects with coding agents. These projec
 - Sitemap: https://n3wth.com/sitemap.xml
 - RSS/Atom: https://n3wth.com/feed.xml
 - Sister sites:
-  - https://garden.n3wth.com/sitemap.xml
+  - https://n3wth.com/sitemap.xml
   - https://skills.n3wth.com/sitemap.xml

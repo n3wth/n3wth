@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { readFileSync } from 'node:fs'
 import {
   buildRollbackPlan,
   checkReadinessOnce,
@@ -36,6 +37,32 @@ test('buildRollbackPlan requires a version and resolves config and URL', () => {
 test('checkReadinessOnce passes on HTTP 200 and fails otherwise', async () => {
   assert.deepEqual(await checkReadinessOnce('https://x/', async () => ({ status: 200 })), { ok: true, status: 200 })
   assert.deepEqual(await checkReadinessOnce('https://x/', async () => ({ status: 500 })), { ok: false, status: 500 })
+})
+
+test('preview rollbacks select the matching Worker config and readiness URL', () => {
+  const plan = buildRollbackPlan({ app: 'garden', version: 'v1', pr: 422 })
+  assert.equal(plan.config, '.cloudflare/garden-pr-422/wrangler.json')
+  assert.equal(plan.env, 'preview')
+  assert.equal(plan.url, 'https://garden-pr-422.preview.n3wth.com/')
+  assert.ok(plan.commands.every(command => command.at(-1) === plan.config))
+  assert.throws(() => buildRollbackPlan({ app: 'garden', version: 'v1', pr: 0 }), /positive safe integer/)
+})
+
+test('a readiness URL or environment cannot disguise the rollback target', () => {
+  assert.throws(() => buildRollbackPlan({
+    app: 'garden', version: 'v1', url: 'https://garden-pr-422.preview.n3wth.com/',
+  }), /does not match/)
+  assert.throws(() => buildRollbackPlan({ app: 'garden', version: 'v1', env: 'preview' }), /does not match/)
+  assert.throws(() => buildRollbackPlan({ app: 'garden', version: 'v1', pr: 422, env: 'production' }), /does not match/)
+})
+
+test('release evidence is preserved after deployment or readiness failure', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/cloudflare-production.yml', import.meta.url), 'utf8')
+  for (const name of ['Write release records', 'Upload release records']) {
+    const step = workflow.split(`      - name: ${name}\n`)[1]?.split('\n      - name:')[0]
+    assert.ok(step, `${name} step exists`)
+    assert.match(step, /^        if: always\(\)$/m, `${name} must run after an earlier step fails`)
+  }
 })
 
 test('runRollback dry-run logs commands without executing', async () => {

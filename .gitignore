@@ -58,6 +58,7 @@ test-results/
 .cloudflare/
 .wrangler/
 .open-next/
+apps/portfolio/public/writing/
 
 # This is source code, not the macOS custom-folder Icon file.
 !/packages/ui/src/atoms/Icon/

@@ -282,30 +282,13 @@ body {
 
 /* ---------- Links ---------- */
 .link-underline {
-  position: relative;
   color: var(--ink);
+  text-decoration: none;
+  text-underline-offset: .2em;
+  text-decoration-thickness: 1px;
 }
-.link-underline::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.7;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.35s cubic-bezier(0.16, 0, 0.1, 1);
-}
-.link-underline:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-@media (prefers-reduced-motion: reduce) {
-  .link-underline::after {
-    transition: none;
-  }
+.link-underline:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
 }
 
 /* ---------- Surface card (soft, borderless) ---------- */
@@ -400,6 +383,18 @@ body {
   outline: none;
 }
 
+.command-palette-sources { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.command-palette-source { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; padding: 6px 12px; border: 1px solid var(--color-border); border-radius: 999px; color: var(--ink-dim); overflow-wrap: anywhere; }
+.command-palette-source:hover, .command-palette-source:focus-visible { color: var(--ink); border-color: currentColor; }
+.command-palette-loading { display: flex; align-items: center; gap: 5px; height: 24px; color: var(--ink-dim); }
+.command-palette-loading span { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: search-pulse 1s ease-in-out infinite; }
+.command-palette-loading span:nth-child(2) { animation-delay: 120ms; }
+.command-palette-loading span:nth-child(3) { animation-delay: 240ms; }
+@keyframes search-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .command-palette-loading span { animation: none; }
+}
+
 /* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -491,13 +486,16 @@ body {
   padding: 0 10px;
   color: var(--ink-dim);
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-weight: 400;
   white-space: nowrap;
   text-decoration: none;
-  opacity: 1;
-  transition: opacity 0.7s var(--ease);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease), color 0.2s var(--ease);
 }
+.world-portal-link[data-hovered='true'],
+.world-portal-link:hover,
+.world-portal-link:focus-visible { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .world-portal-link {
     transition: none;
@@ -522,8 +520,6 @@ body {
   color: var(--ink);
 }
 @media (hover: hover) and (pointer: fine) {
-  .world-portal-link[data-hovered='true'] .world-portal-description,
-  .world-portal-link:hover .world-portal-description,
   .world-portal-link:focus-visible .world-portal-description {
     display: block;
   }
@@ -618,11 +614,11 @@ body {
 }
 
 
-/* ---------- Elsa landing (/elsa) ----------
-   Mark + eye/slash motion only. Page rhythm comes from @n3wth/ui site
+/* ---------- Assistant SMS landings (/elsa, /billy) ----------
+   Mark + glyph motion only. Page rhythm comes from @n3wth/ui site
    page-header / section padding (48px / 64px md). No padding crushers. */
 
-.elsa-hero-mark {
+.assistant-hero-mark {
   display: block;
   width: 10rem;
   height: 10rem;
@@ -636,8 +632,13 @@ body {
   animation: elsa-slash 6s ease-in-out infinite;
 }
 
-/* Elsa-only hero copy stack (avoid shared .n3wth-site-* selectors in app CSS) */
-.elsa-hero-mark + .elsa-hero-copy {
+.billy-dot {
+  transform-origin: 256px 256px;
+  animation: billy-dot 6s ease-in-out infinite;
+}
+
+/* Assistant-only hero copy stack (avoid shared .n3wth-site-* selectors in app CSS) */
+.assistant-hero-mark + .assistant-hero-copy {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -645,18 +646,13 @@ body {
   width: 100%;
 }
 
-.elsa-hero-copy .elsa-hero-description {
+.assistant-hero-copy .assistant-hero-description {
   margin-top: 0;
 }
 
-.elsa-hero-actions {
+.assistant-hero-actions {
   justify-content: center;
   margin-top: 0;
-}
-
-.elsa-number-label {
-  color: var(--ink-label);
-  letter-spacing: 0.02em;
 }
 
 @keyframes elsa-slash {
@@ -672,8 +668,21 @@ body {
   }
 }
 
+@keyframes billy-dot {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+}
+
 @media (min-width: 768px) {
-  .elsa-hero-mark {
+  .assistant-hero-mark {
     width: 11.5rem;
     height: 11.5rem;
     max-width: 11.5rem;

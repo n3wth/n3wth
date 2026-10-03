@@ -1,6 +1,6 @@
 {
   "id": "G01",
-  "contentPath": "apps/garden/content/Audit Retrieval Before Trusting an Answer.md",
+  "contentPath": "apps/portfolio/content/Audit Retrieval Before Trusting an Answer.md",
   "contentSha256": "1c4215609f11a7dacb73166ac21989166812f2bdbd6e6bd688dbab8df97c13c0",
   "reviewedAt": "2026-09-18",
   "reviewer": "Codex editorial pass after Spiral drafting; checked against original source abstracts, W3C overview and the original information retrieval textbook page; figure reviewed separately",

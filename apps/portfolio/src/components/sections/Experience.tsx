@@ -1,51 +1,43 @@
 import { education, experiences } from '../../data/content'
 import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
+import { StoryScene } from '../StoryScene'
 
-/* Ship log: a decade of work as a dense, confident index — one line per
-   chapter, no résumé prose. Density here earns the breathing room the
-   art chapter gets below. */
 export function Experience() {
   return (
-    <SiteSection id="work" aria-label="Experience" className="site-content-gutter">
-      <header data-reveal className="mb-8 flex flex-col gap-5">
-        <SiteHeading>Experience</SiteHeading>
-        <SiteText className="max-w-xl">
-          From Azure Cognitive Services in 2014 to Google model platforms today, by way of Meta and Covariant.
-        </SiteText>
-      </header>
-
-      <div>
-        <ol className="space-y-2">
-          {experiences.map((exp) => (
-            <li
-              key={exp.id}
-              data-reveal
-              className="grid gap-x-8 gap-y-2 border-t border-[var(--rail-strong)] py-6 md:py-7 md:grid-cols-[6.5rem_13rem_minmax(0,1fr)] md:items-baseline"
-            >
-              <span className="meta" style={{ color: 'var(--ink-dim)' }}>
-                {exp.period}
-              </span>
-
-              <div>
-                <SiteHeading variant="item">
-                  {exp.company}
-                </SiteHeading>
-                <p className="meta mt-1">{exp.role}</p>
-              </div>
-
-              <p
-                className="text-base leading-relaxed max-w-xl"
-                style={{ color: 'var(--ink)' }}
+    <SiteSection id="work" aria-label="Experience" className="site-content-gutter" style={{ paddingTop: 0 }}>
+      <div className="story-layout">
+        <StoryScene kind="work" />
+        <div className="story-layout-content">
+          <ol className="work-chapters">
+            {experiences.map((exp) => (
+              <li
+                key={exp.id}
+                id={exp.id}
+                className="work-chapter"
               >
-                {exp.summary}
-              </p>
+                <div>
+                  <SiteHeading variant="item" level={2}>
+                    <span className="work-company">{exp.company}</span>
+                  </SiteHeading>
+                  <div className="mt-1 flex flex-col gap-1">
+                    <SiteText className="work-detail">{exp.role}</SiteText>
+                    <SiteText className="work-detail">{exp.period}</SiteText>
+                  </div>
+                </div>
 
-            </li>
-          ))}
-        </ol>
-        <p className="meta mt-8" style={{ color: 'var(--ink-dim)' }}>
-          {education}
-        </p>
+                <div className="work-chapter-story"><p>
+                  {exp.summary}
+                </p>
+                {exp.metric && <p className="work-recognition">{exp.metric.label}, {exp.metric.value}</p>}
+                </div>
+
+              </li>
+            ))}
+          </ol>
+          <div className="mt-8">
+            <SiteText className="work-detail">{education}</SiteText>
+          </div>
+        </div>
       </div>
     </SiteSection>
   )

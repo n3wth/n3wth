@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { submitNewsletter, newsletterErrorMessage } from '@n3wth/site-config/newsletter'
 import { SiteFooter, SiteSignup } from '@n3wth/ui/site'
 import { siteConfig } from '../data/content'
@@ -15,15 +16,10 @@ export function Footer() {
     }
     trackSignup()
   }
-  return <SiteFooter brand={null} data-nosnippet signup={<SiteSignup onSubmit={subscribe} errorMessage={errorMessage} />} links={<>
-    <a href="https://skills.n3wth.com" onClick={() => trackOutbound('https://skills.n3wth.com', 'footer')}>Skills</a>
-    <a href="/projects/r3">r3</a>
-    <a href="https://docs.n3wth.com" onClick={() => trackOutbound('https://docs.n3wth.com', 'footer')}>Docs</a>
-    <a href="/library">Library</a>
-    <a href="/contact">Contact</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/terms">Terms</a>
+  return <SiteFooter brand={null} inlineSignup data-nosnippet signup={<SiteSignup compact onSubmit={subscribe} errorMessage={errorMessage} />} links={<>
+    <Link to="/contact">Contact</Link>
+    <Link to="/privacy">Privacy</Link>
+    <Link to="/terms">Terms</Link>
     <a href={siteConfig.social.github} onClick={() => trackOutbound(siteConfig.social.github, 'footer')}>GitHub</a>
-    <a href={siteConfig.social.linkedin} onClick={() => trackOutbound(siteConfig.social.linkedin, 'footer')}>LinkedIn</a>
   </>} />
 }

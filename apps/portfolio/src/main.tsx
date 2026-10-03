@@ -1,6 +1,6 @@
 import { StrictMode, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate, useLoaderData, useRouteError, isRouteErrorResponse } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { flushAnalytics } from './lib/analytics'
@@ -14,23 +14,28 @@ const Projects = lazy(() => import('./pages/Projects'))
 const Art = lazy(() => import('./pages/Art'))
 const Thinking = lazy(() => import('./pages/Thinking'))
 const ThinkingPiece = lazy(() => import('./pages/ThinkingPiece'))
+const ThinkingNote = lazy(() => import('./pages/ThinkingNote'))
 const Library = lazy(() => import('./pages/Library'))
 const Contact = lazy(() => import('./pages/Contact'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const ErrorPage = lazy(() => import('./pages/ErrorPage'))
 const Login = lazy(() => import('./pages/Login'))
 const Logout = lazy(() => import('./pages/Logout'))
-const Support = lazy(() => import('./pages/Support'))
 const Elsa = lazy(() => import('./pages/Elsa'))
+const Billy = lazy(() => import('./pages/Billy'))
 const ProjectPage = lazy(() => import('./pages/ProjectPage'))
 const Privacy = lazy(() => import('./pages/Privacy'))
 const Terms = lazy(() => import('./pages/Terms'))
 const Consent = lazy(() => import('./pages/Consent'))
 
-// CSS Studio — dev-only visual CSS editor. Dynamic import so it is NEVER bundled
-// into the production build. Removed entirely when import.meta.env.DEV is false.
-if (import.meta.env.DEV) {
-  import('cssstudio').then(({ startStudio }) => startStudio())
+function ThinkingRoute() {
+  const note = useLoaderData()
+  return note ? <ThinkingNote /> : <ThinkingPiece />
+}
+
+function ThinkingError() {
+  const error = useRouteError()
+  return isRouteErrorResponse(error) && error.status === 404 ? <NotFound /> : <ErrorPage />
 }
 
 initializeGoogleAnalytics()
@@ -78,14 +83,27 @@ const router = createBrowserRouter([
       { path: 'work', element: <Work /> },
       { path: 'art', element: <Art /> },
       { path: 'thinking', element: <Thinking /> },
-      { path: 'thinking/:slug', element: <ThinkingPiece /> },
+      {
+        path: 'thinking/*',
+        loader: async ({ params, request }) => {
+          const { registeredPieces } = await import('./components/thinking/registry')
+          if (registeredPieces.some(piece => piece.meta.id === params['*'])) return null
+          const slug = (params['*'] || '').split('/').map(encodeURIComponent).join('/')
+          const response = await fetch(`/writing/notes/${slug}.json`, { signal: request.signal })
+          if (!response.ok) throw new Response('Note unavailable', { status: response.status })
+          return response.json()
+        },
+        element: <ThinkingRoute />,
+        errorElement: <ThinkingError />,
+      },
       { path: 'library', element: <Library /> },
       { path: 'contact', element: <Contact /> },
       { path: 'error', element: <ErrorPage /> },
       { path: 'login', element: <Login /> },
       { path: 'logout', element: <Logout /> },
-      { path: 'support', element: <Support /> },
+      { path: 'support', element: <Navigate to="/contact#support" replace /> },
       { path: 'elsa', element: <Elsa /> },
+      { path: 'billy', element: <Billy /> },
       { path: 'privacy', element: <Privacy /> },
       { path: 'terms', element: <Terms /> },
       { path: 'consent', element: <Consent /> },

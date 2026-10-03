@@ -1,32 +1,32 @@
 [
   {
-    "title": "Astryx vs shadcn: which design system for LLM-written UI",
-    "href": "https://garden.n3wth.com/astryx-vs-shadcn-vs-angular-material",
-    "description": "Field notes from this garden: Astryx, shadcn and component ownership, with a reproducible table of contents example and the limits of type-level accessibility checks.",
-    "date": "Tue, 14 Jul 2026 17:31:07 GMT"
+    "title": "Audit retrieval before trusting an answer",
+    "href": "/thinking/audit-retrieval-before-trusting-an-answer",
+    "description": "A practical protocol for checking corpus coverage, retrieval quality, and whether source records support an answer.",
+    "date": "2026-09-18"
   },
   {
-    "title": "How OpenClaw Dreaming Works",
-    "href": "https://garden.n3wth.com/how-openclaw-dreaming-works",
-    "description": "A detailed research report exploring the inner workings of OpenClaw's autonomous background memory consolidation sweeps, sleep-inspired phases, scoring logic, and operational tuning.",
-    "date": "Thu, 18 Jun 2026 00:28:23 GMT"
+    "title": "Growth gates before growth work",
+    "href": "/thinking/growth-gates-before-growth-work",
+    "description": "Sequence growth on a side project by gates you can pass, not dates you can miss: measure, get indexed, check demand, take one real payment, then build.",
+    "date": "2026-09-18"
   },
   {
-    "title": "ATS Optimization",
-    "href": "https://garden.n3wth.com/ats-optimization",
-    "description": "Strategies for enhancing the effectiveness of an Application Tracking System",
-    "date": "Sun, 15 Feb 2026 07:47:48 GMT"
+    "title": "Keep your notes in the repo",
+    "href": "/thinking/keep-your-notes-in-the-repo",
+    "description": "For a personal digital garden, markdown in git beats a database. The vault is the source of truth, git is the history, and static output is the fastest thing you can serve.",
+    "date": "2026-09-18"
   },
   {
-    "title": "Active Learning",
-    "href": "https://garden.n3wth.com/active-learning",
-    "description": "Techniques for engaging and effective learning",
-    "date": "Sun, 15 Feb 2026 07:47:48 GMT"
+    "title": "One live region per page",
+    "href": "/thinking/one-live-region-per-page",
+    "description": "A status message in a shared footer turned every page into a page with two live regions. Render live regions only when they have something to say.",
+    "date": "2026-09-18"
   },
   {
-    "title": "Actual Gardening Costs",
-    "href": "https://garden.n3wth.com/actual-gardening-costs",
-    "description": "A line-item breakdown of what a San Francisco garden actually cost: irrigation, beds, soil, tools",
-    "date": "Sun, 15 Feb 2026 07:47:48 GMT"
+    "title": "Static routes on serverless workers",
+    "href": "/thinking/static-routes-on-serverless-workers",
+    "description": "A route handler that reads the filesystem at request time will build fine and fail in production on edge workers. Prerender it.",
+    "date": "2026-09-18"
   }
 ]

@@ -22,6 +22,7 @@ test('each production config has its canonical domain and preview replaces its i
     })
     assert.equal(config.name, `n3wth-${app}-pr-23`)
     assert.notDeepEqual(config.routes, source.routes)
+    if (app === 'garden') assert.equal(config.vars.TARGET_ORIGIN, 'https://portfolio-pr-23.preview.n3wth.com')
     if (app === 'skills') {
       assert.equal(config.vars.BETTER_AUTH_URL, 'https://skills-pr-23.preview.n3wth.com')
       assert.equal(config.d1_databases[0].database_id, 'preview-only')

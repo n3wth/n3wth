@@ -1,17 +1,17 @@
 import { expect, type Page } from '@playwright/test'
 
-export async function expectSiteFoundation(page: Page) {
+export async function expectSiteFoundation(page: Page, options: { sectionTopPadding?: string; headerPadding?: string } = {}) {
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
   await expect(page.locator('html')).toHaveAttribute('data-astryx-theme', 'n3wth')
   const heading = page.locator('.n3wth-site-heading--page').first()
   await expect(heading).toBeVisible()
   await expect(heading).toHaveCSS('font-family', /Suisse Intl/)
   const sectionSpacing = (page.viewportSize()?.width ?? 1440) >= 768 ? '64px' : '48px'
-  await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-top', sectionSpacing)
-  await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-bottom', sectionSpacing)
+  await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-top', options.headerPadding ?? sectionSpacing)
+  await expect(page.locator('.n3wth-site-page-header').first()).toHaveCSS('padding-bottom', options.headerPadding ?? sectionSpacing)
   const section = page.locator('.n3wth-site-section').first()
   if (await section.count()) {
-    await expect(section).toHaveCSS('padding-top', sectionSpacing)
+    await expect(section).toHaveCSS('padding-top', options.sectionTopPadding ?? sectionSpacing)
     await expect(section).toHaveCSS('padding-bottom', sectionSpacing)
   }
   const fonts = await page.evaluate(async () => {
@@ -24,7 +24,7 @@ export async function expectSiteFoundation(page: Page) {
   expect(canvas).not.toBe('rgba(0, 0, 0, 0)')
   const island = page.locator('.n3wth-site-navigation-island')
   await expect(island).toHaveAttribute('data-nosnippet', 'true')
-  await expect(island).toHaveCSS('height', '48px')
+  await expect(island).toHaveCSS('height', '56px')
   await expect(island).toHaveCSS('border-top-width', '1px')
   await expect(island).toHaveCSS('backdrop-filter', 'none')
   await expect(page.locator('.n3wth-site-footer')).toHaveCount(1)
