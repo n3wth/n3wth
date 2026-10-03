@@ -173,6 +173,24 @@ Covered:
 Result: 8 passed / 8 (both files). `npm run typecheck`, `npm run lint`,
 `npm run test:unit` (315 tests, 29 files), `npm run build` — all green.
 
+## Preview D1 (per-PR isolation)
+
+Each Skills PR preview gets its own D1 database `n3wth-skills-pr-<N>`
+(managed by `scripts/cloudflare-preview-skills-d1.mjs` from
+`.github/workflows/cloudflare-preview.yml`; runbook: `docs/skills/preview-d1.mdx`):
+
+- Setup runs before deploy: account/permission/binding preflight, idempotent
+  `migrations apply --remote` from `apps/skills/migrations/`, dynamic `DB`
+  binding for the preview Worker. Production database name/ID is refused
+  before any mutation.
+- Post-deploy check verifies the `BETTER_AUTH_SECRET` secret name exists
+  (values never read or overwritten; rotation is manual) and that
+  `BETTER_AUTH_URL` is exactly the preview host.
+- Preview configs strip `MAGIC_LINK_OUTBOX`; the dev outbox stays local-only.
+- PR close deletes the preview Worker, domain, DNS record, and per-PR database.
+- Recovery never deletes data: rerun setup to resume the journal; pre-apply
+  backups are captured automatically.
+
 ## Go / No-Go checklist
 
 Before production cutover:

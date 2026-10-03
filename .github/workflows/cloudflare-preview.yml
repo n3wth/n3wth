@@ -84,7 +84,7 @@ jobs:
           done
       - name: Check preview lifecycle
         if: steps.affected.outputs.apps != ''
-        run: node --test scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs
+        run: node --test scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs scripts/cloudflare-preview-skills-d1.test.mjs
       - name: Verify current PR state
         if: steps.affected.outputs.apps != '' && github.event.action != 'closed'
         id: current
@@ -93,6 +93,19 @@ jobs:
           script: |
             const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: context.issue.number })
             core.setOutput('deploy', pr.state === 'open' && pr.head.sha === context.payload.pull_request.head.sha && pr.head.repo.full_name === `${context.repo.owner}/${context.repo.repo}`)
+      - name: Setup Skills preview D1
+        if: steps.affected.outputs.apps != '' && steps.current.outputs.deploy == 'true' && contains(steps.affected.outputs.apps, 'skills')
+        id: skills-d1
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ac23513945eb49f73a89faf1be12384e
+          CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
+          # Preflight (account, permissions, binding) plus idempotent migration
+          # apply against a per-PR database. Emits skills-bindings for deploy.
+          node scripts/cloudflare-preview-skills-d1.mjs setup --pr "$PR_NUMBER"
       - name: Deploy preview
         if: steps.affected.outputs.apps != '' && steps.current.outputs.deploy == 'true'
         env:
@@ -103,14 +116,16 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           APPS: ${{ steps.affected.outputs.apps }}
+          SKILLS_D1_BINDINGS: ${{ steps.skills-d1.outputs.skills-bindings }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
           for app in $APPS; do
             BINDINGS_ARGS=()
             case "$app" in
               skills)
-                # Preview workers never inherit production stateful bindings; skills gets the isolated preview D1.
-                BINDINGS_ARGS=(--bindings-json '{"d1_databases":[{"binding":"DB","database_name":"n3wth-skills-preview","database_id":"d839bbda-6d85-47d0-ae18-946bf45d5321"}]}')
+                # Preview workers never inherit production stateful bindings; skills gets its per-PR preview D1 from setup.
+                test -n "$SKILLS_D1_BINDINGS" || { echo 'Skills preview D1 setup did not produce bindings'; exit 1; }
+                BINDINGS_ARGS=(--bindings-json "$SKILLS_D1_BINDINGS")
                 ;;
             esac
             node scripts/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER" "${BINDINGS_ARGS[@]}"
@@ -120,6 +135,17 @@ jobs:
             fi
             echo "Preview $app: https://$app-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
           done
+      - name: Check Skills preview auth config
+        if: steps.affected.outputs.apps != '' && steps.current.outputs.deploy == 'true' && contains(steps.affected.outputs.apps, 'skills')
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ac23513945eb49f73a89faf1be12384e
+          CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
+          # Names-only secret check plus auth-origin check; never prints values.
+          node scripts/cloudflare-preview-skills-d1.mjs check --pr "$PR_NUMBER"
       - name: Delete closed preview
         if: steps.affected.outputs.apps != '' && github.event.action == 'closed'
         env:
@@ -133,5 +159,9 @@ jobs:
           status=0
           for app in $APPS; do
             node scripts/cloudflare-preview.mjs delete --app "$app" --pr "$PR_NUMBER" || status=1
+            if [ "$app" = skills ]; then
+              # Drop the per-PR database; only this PR ever used it.
+              node scripts/cloudflare-preview-skills-d1.mjs delete-db --pr "$PR_NUMBER" || status=1
+            fi
           done
           exit $status
