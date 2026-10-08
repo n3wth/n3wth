@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test'
 
-export async function expectSiteFoundation(page: Page, options: { sectionTopPadding?: string; headerPadding?: string } = {}) {
+export async function expectSiteFoundation(page: Page, options: { sectionTopPadding?: string; headerPadding?: string; navigationBorder?: string } = {}) {
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
   await expect(page.locator('html')).toHaveAttribute('data-astryx-theme', 'n3wth')
   const heading = page.locator('.n3wth-site-heading--page').first()
@@ -25,7 +25,7 @@ export async function expectSiteFoundation(page: Page, options: { sectionTopPadd
   const island = page.locator('.n3wth-site-navigation-island')
   await expect(island).toHaveAttribute('data-nosnippet', 'true')
   await expect(island).toHaveCSS('height', '56px')
-  await expect(island).toHaveCSS('border-top-width', '1px')
+  await expect(island).toHaveCSS('border-top-width', options.navigationBorder ?? '1px')
   await expect(island).toHaveCSS('backdrop-filter', 'none')
   await expect(page.locator('.n3wth-site-footer')).toHaveCount(1)
   const toggle = page.locator('.n3wth-site-navigation-toggle')
