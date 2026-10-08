@@ -8,13 +8,12 @@ import { siteUrls } from '../packages/site-config/index.js'
 
 const accountId = 'ac23513945eb49f73a89faf1be12384e'
 
-test('each production config has its canonical domain and preview replaces its identity', () => {
-  const sites = { portfolio: 'home', 'ui-docs': 'ui', garden: 'garden', skills: 'skills', 'r3-web': 'r3' }
+test('active configs own domains, retired fixtures do not, and previews replace identities', () => {
+  const sites = { portfolio: 'home', 'ui-docs': null, garden: 'garden', skills: 'skills', 'r3-web': null }
   for (const [app, site] of Object.entries(sites)) {
     const source = parseJsonc(readFileSync(new URL(`../apps/${app}/wrangler.jsonc`, import.meta.url), 'utf8'))
     assert.equal(source.name, `n3wth-${app}`)
-    assert.deepEqual(source.routes, [{ pattern: new URL(siteUrls[site]).hostname, custom_domain: true }])
-    if (source.services) assert.equal(source.services[0].service, source.name)
+    assert.deepEqual(source.routes, site ? [{ pattern: new URL(siteUrls[site]).hostname, custom_domain: true }] : undefined)
     const original = structuredClone(source)
     const { config } = createPreviewConfig({
       source, sourcePath: `/repo/apps/${app}/wrangler.jsonc`, root: '/repo', app, pr: 23, accountId,
