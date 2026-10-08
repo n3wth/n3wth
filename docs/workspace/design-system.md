@@ -20,11 +20,11 @@ import { Button } from '@n3wth/ui/primitives'
 <Button label="Save" onClick={save} />
 ```
 
-The six workspace sites use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain app-owned. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.
+Portfolio and Skills use one Astryx foundation from `packages/ui`. Their content, routes and specialized interactions remain app-owned. New design decisions belong in the shared package; applications should not copy its theme definition or generated CSS.
 
 Navigation and footers also come from `SiteNavigation` and `SiteFooter`. Apps pass router-aware home links, primary links and relevant actions as ReactNode slots. The shared navigation owns its 48px height, subtle 1px theme border, spacing, mobile disclosure and Escape focus restoration. Do not add local island styles, separators, blur or alternate mobile breakpoints. Do not use sparkle icons.
 
-Keep footers minimal: use `SiteFooter` defaults for the Oliver Newth home link, Contact and GitHub; pass `sourceHref` for the app source and `legalLinks` only where needed. Every site passes `signup={<SiteSignup onSubmit={...} />}`; the app owns delivery, and today that is `captureEmailSignup` from `@n3wth/site-config/analytics`. Avoid repeated site directories, product descriptions or separate copyright rows. Navigation should feel instant: do not add route-entry fades, slides, staggered content reveals or delayed page content. Keep functional feedback and specialized interactive demos.
+Keep footers minimal: use `SiteFooter` defaults for the Oliver Newth home link, Contact and GitHub; pass `sourceHref` for the app source and `legalLinks` only where needed. Newsletter forms use the `signup` slot; delivery and success-only analytics follow the [newsletter guide](newsletter.md). Avoid repeated site directories, product descriptions or separate copyright rows. Navigation should feel instant: do not add route-entry fades, slides, staggered content reveals or delayed page content. Keep functional feedback and specialized interactive demos.
 
 Use `n3wth-site-main` for the standard 96px fixed-navigation offset. `PageHeader` owns hero typography and vertical spacing; its optional `aside` accepts demonstrations in a shared responsive split layout. Use `SiteSection` and semantic heading/text roles for page sections. Immersive scenes and long-form reading layouts can retain their content-specific structure.
 
@@ -76,4 +76,4 @@ The generator creates a small Vite/React application using the shared provider, 
 
 Run `npm run check` with Node 24 and npm 11.19.1. It builds shared packages before consumers, checks the generator and runs the existing app suites. Check rendered mobile/desktop pages and keyboard navigation; typechecking alone cannot detect a missing font or theme scope. Verify production Next routes after any Astryx upgrade. Avoid upgrading the pre-1.0 component API solely to align versions: the current patch is pinned and tested as a unit.
 
-The UI docs checks compile the exact TypeScript examples in Getting Started, the primitives and themes developer guide, and the package README. Keep these recipes valid through public package exports. Reuse the packaged starter for standalone adoption checks; do not create another example framework.
+Published UI documentation lives in [docs/ui](../ui). Run `node docs/check.mjs` to validate its navigation, links, and MDX. Run `npm run check:package` to verify public exports in standalone consumers. Reuse the packaged starter for adoption checks; do not create another example framework.

@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
   parseUiRegistry,
-  validateGardenNotes,
   validateGardenIndex,
   validateGardenSearch,
   validateUiMeta,
@@ -25,20 +24,6 @@ describe('parseUiRegistry', () => {
 })
 
 describe('validators reject empty/placeholder shapes', () => {
-  it('validateGardenNotes rejects an empty array', () => {
-    expect(validateGardenNotes([])).not.toEqual([])
-  })
-
-  it('validateGardenNotes rejects a non-array', () => {
-    expect(validateGardenNotes({})).not.toEqual([])
-  })
-
-  it('validateGardenNotes accepts a well-formed array', () => {
-    expect(
-      validateGardenNotes([{ title: 'A', href: 'https://x', description: '', date: '' }])
-    ).toEqual([])
-  })
-
   it('validateGardenIndex rejects empty topics', () => {
     expect(validateGardenIndex({ noteCount: 1, indexedCount: 1, topics: [] })).not.toEqual([])
   })

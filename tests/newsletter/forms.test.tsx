@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { Footer as PortfolioFooter } from '../apps/portfolio/src/components/Footer'
-import { Footer as SkillsFooter } from '../apps/skills/src/components/Footer'
+import { Footer as PortfolioFooter } from '../../apps/portfolio/src/components/Footer'
+import { Footer as SkillsFooter } from '../../apps/skills/src/components/Footer'
 
 const { capture, trackSignup } = vi.hoisted(() => ({ capture: vi.fn(), trackSignup: vi.fn() }))
 vi.mock('@n3wth/site-config/analytics', () => ({ captureNewsletterSubscribed: capture }))
-vi.mock('../apps/portfolio/src/lib/analytics', () => ({ trackSignup, trackOutbound: vi.fn() }))
+vi.mock('../../apps/portfolio/src/lib/analytics', () => ({ trackSignup, trackOutbound: vi.fn() }))
 vi.mock('next/navigation', () => ({ usePathname: () => '/notes' }))
 vi.mock('posthog-js', () => ({ default: {} }))
 

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { skills } from '@/src/data/skills'
 import { IslandNav, Footer, CategoryShape } from '@/src/components'
 import { categoryConfig } from '@/src/config/categories'
+import { executeAI, FreeLimitReachedError, InvalidApiKeyError } from '@/src/lib/aiProvider'
 
 const STORAGE_KEY_RUNS = 'newth-playground-runs'
 const STORAGE_KEY_API = 'newth-playground-api-key'
@@ -172,44 +173,18 @@ export function PlaygroundClient() {
     setLoading(true)
 
     try {
-      const response = await fetch('/api/playground', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: userMessage,
+      const data = await executeAI(userMessage, {
+        apiKey,
+        playground: {
+          fingerprint: getFingerprint(),
           skillContext: {
             name: selectedSkill.name,
             description: selectedSkill.description,
             features: selectedSkill.features,
             useCases: selectedSkill.useCases,
           },
-          userApiKey: apiKey || undefined,
-          fingerprint: getFingerprint(),
-        }),
+        },
       })
-
-      if (!response.ok) {
-        const data = await response.json()
-
-        if (response.status === 402) {
-          setRunsUsed(FREE_RUN_LIMIT)
-          localStorage.setItem(STORAGE_KEY_RUNS, String(FREE_RUN_LIMIT))
-          setShowApiKeyInput(true)
-          setError('Free runs exhausted. Add your API key to continue.')
-          setLoading(false)
-          return
-        }
-
-        if (response.status === 401) {
-          setError('Invalid API key. Check your key and try again.')
-          setLoading(false)
-          return
-        }
-
-        throw new Error(data.error || 'Request failed')
-      }
-
-      const data = await response.json()
       setMessages(prev => [...prev, { role: 'ai', content: data.result }])
 
       if (data.remaining !== undefined) {
@@ -221,8 +196,16 @@ export function PlaygroundClient() {
         setRunsUsed(prev => prev + 1)
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Something went wrong'
-      setError(msg)
+      if (err instanceof FreeLimitReachedError) {
+        setRunsUsed(FREE_RUN_LIMIT)
+        localStorage.setItem(STORAGE_KEY_RUNS, String(FREE_RUN_LIMIT))
+        setShowApiKeyInput(true)
+        setError('Free runs exhausted. Add your API key to continue.')
+      } else if (err instanceof InvalidApiKeyError) {
+        setError('Invalid API key. Check your key and try again.')
+      } else {
+        setError(err instanceof Error ? err.message : 'Something went wrong')
+      }
     } finally {
       setLoading(false)
     }

@@ -1,9 +1,37 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { readFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { getPublishedNotes } from './notes/lib/content.ts'
 import { markdownToHtml, extractHeadings } from './notes/lib/markdown.ts'
 import { getBacklinksForSlug } from './notes/lib/backlinks.ts'
+
+test('clean generation recreates identical local indexes without committed outputs', t => {
+  const source = fileURLToPath(new URL('../', import.meta.url))
+  const root = mkdtempSync(join(tmpdir(), 'portfolio-notes-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const app = join(root, 'portfolio')
+  mkdirSync(join(app, 'src/components/thinking'), { recursive: true })
+  mkdirSync(join(app, 'public'), { recursive: true })
+  cpSync(join(source, 'scripts'), join(app, 'scripts'), { recursive: true })
+  cpSync(join(source, 'package.json'), join(app, 'package.json'))
+  cpSync(join(source, 'src/components/thinking/registry.tsx'), join(app, 'src/components/thinking/registry.tsx'))
+  symlinkSync(join(source, 'content'), join(app, 'content'))
+  symlinkSync(join(source, 'public/figures'), join(app, 'public/figures'))
+  symlinkSync(fileURLToPath(new URL('../../../node_modules', import.meta.url)), join(app, 'node_modules'))
+  const files = ['garden-index.json', 'garden-search.json', 'writing-index.json']
+  const generate = () => execFileSync(process.execPath, ['scripts/build-notes.mjs'], { cwd: app })
+  generate()
+  const first = files.map(file => readFileSync(join(app, 'src/data', file), 'utf8'))
+  assert.ok(JSON.parse(first[2]).length > 0)
+  assert.equal(existsSync(join(app, 'src/data/garden-notes.json')), false)
+  rmSync(join(app, 'src/data'), { recursive: true })
+  generate()
+  assert.deepEqual(files.map(file => readFileSync(join(app, 'src/data', file), 'utf8')), first)
+})
 
 test('published notes, local search, trees, redirects and bodies share one route set', () => {
   const read = file => JSON.parse(readFileSync(new URL(file, import.meta.url), 'utf8'))

@@ -15,7 +15,7 @@
     "test:content-audit": "node --test scripts/content/article-audit.test.mjs",
     "site:new": "node scripts/workspace/create-site.mjs",
     "check:design": "node scripts/workspace/check-site-design.mjs",
-    "test:newsletter": "node --test scripts/migrations/resend-newsletter-import.test.mjs && vitest run --config vitest.newsletter.config.ts",
+    "test:newsletter": "node --test scripts/migrations/resend-newsletter-import.test.mjs && vitest run --config tests/newsletter/vitest.config.ts",
     "check:invariants": "node scripts/workspace/check-invariants.mjs",
     "icons": "node scripts/assets/site-icons.mjs",
     "social": "node scripts/assets/social-card.mjs",

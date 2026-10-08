@@ -4,4 +4,4 @@ Cloudflare zone redirect rules own the live UI domain. `worker.mjs` is a local c
 
 Run `npm run check -w @n3wth/ui-docs` from the repository root. `npm run dev -w @n3wth/ui-docs` starts the contract fixture locally. Do not deploy it over the live zone rules.
 
-Canonical published documentation lives in `docs/ui`. The local `docs/` directory retains source notes and prior documentation for reference. The public UI package remains in `packages/ui`; use root `npm run dev:ui` to watch it alongside the portfolio consumer.
+Published documentation lives in [docs/ui](../../docs/ui), and workspace setup lives in the [shared design-system guide](../../docs/workspace/design-system.md). The public UI package remains in `packages/ui`; use root `npm run dev:ui` to watch it alongside the portfolio consumer.

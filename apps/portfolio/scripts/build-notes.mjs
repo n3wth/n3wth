@@ -69,7 +69,6 @@ write(resolve(root, '../garden/redirects.json'), redirects)
 // Preserve the existing palette's data interface while making it entirely local.
 write(resolve(root, 'src/data/garden-search.json'), { notes: index.map(note => ({ title: note.title, href: note.href, description: note.description, section: note.slug.includes('/') ? note.slug.split('/')[0] : null })) })
 write(resolve(root, 'src/data/garden-index.json'), { noteCount: index.length, indexedCount: index.length, topics: [...getAllTags()].map(([name, notes]) => ({ name, href: topicPath(name), count: notes.length })) })
-write(resolve(root, 'src/data/garden-notes.json'), index.filter(note => note.date).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5).map(({ title, href, description, date }) => ({ title, href, description, date })))
 // Read literal article metadata without importing React or article bodies into Node.
 const registry = readFileSync(resolve(root, 'src/components/thinking/registry.tsx'), 'utf8')
 const articles = parseThinkingMeta(registry).map(meta => ({ id: `/thinking/${meta.id}`, title: meta.title, description: meta.dek, stage: 'evergreen', tags: ['articles'], linkCount: 0 }))

@@ -59,6 +59,9 @@ test-results/
 .open-next/
 .vinext/
 apps/portfolio/public/writing/
+apps/portfolio/src/data/garden-index.json
+apps/portfolio/src/data/garden-search.json
+apps/portfolio/src/data/writing-index.json
 
 # This is source code, not the macOS custom-folder Icon file.
 !/packages/ui/src/atoms/Icon/

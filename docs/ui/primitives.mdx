@@ -43,6 +43,16 @@ description: "Choose between native Astryx primitives from @n3wth/ui/primitives 
 
 ## Component catalog
 
+### Compatibility boundaries
+
+Root adapters preserve existing callers, but do not reproduce every historical visual option:
+
+- Switch refs target a native input; Modal refs target its inner content div.
+- Input and Textarea retain native controls for labels, input types, uncontrolled values, and form reset.
+- Avatar retains native image attributes and callbacks. Button `asChild` retains the supplied element.
+- Tooltip arrows, dropdown portals, and `menuClassName` do not customize Astryx presentation. Use native primitives for new work.
+- Toast variants use the information surface except for errors. Legacy Hero gradient and entry-animation options are not applied.
+
 ### Atoms
 
 - `Button`

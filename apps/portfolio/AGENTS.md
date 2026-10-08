@@ -1,145 +1,34 @@
-# AGENTS.md
+# Portfolio
 
-Oliver Newth's personal site (n3wth.com).
+Oliver Newth's personal site, n3wth.com. Follow the root [AGENTS.md](../../AGENTS.md), [DESIGN.md](../../DESIGN.md), and [STYLE.md](../../STYLE.md) for shared setup, UI ownership, typography, and validation.
 
-## Directory map
+## Source and validation
 
-```
-src/
-├── main.tsx              # Router setup (createBrowserRouter)
-├── App.tsx               # Layout shell: Nav, Footer, Suspense outlet
-├── pages/                # Route components (one per public path)
-│   ├── Home.tsx          # /
-│   ├── Work.tsx          # /work
-│   ├── Art.tsx           # /art         (renders Creative section)
-│   ├── Thinking.tsx      # /thinking
-│   ├── ThinkingPiece.tsx # /thinking/:slug
-│   ├── Library.tsx       # /library
-│   ├── Contact.tsx       # /contact
-│   └── ...               # Support, Login, Logout, NotFound, ErrorPage
-├── components/
-│   ├── Nav.tsx           # Top nav bar (uses navigation from data/content.ts)
-│   ├── Footer.tsx        # Site footer (uses siteConfig from data/content.ts)
-│   ├── sections/         # Page sections (Experience, Building, Thinking, Creative, Contact)
-│   └── thinking/         # Thinking pieces + kit components
-├── data/
-│   ├── content.ts        # siteConfig, navigation[], experiences[], installations[]
-│   └── library.ts        # Library shelf data
-├── hooks/                # usePageMeta, useReveal, useCommandPalette, etc.
-└── lib/
-    ├── gsap.ts           # GSAP plugin registration (always import from here)
-    └── scroll.ts         # Scroll-driven GSAP (ScrollTrigger, SplitText)
-```
+- Routes live in `src/pages`; `src/App.tsx` owns the layout and loading boundary.
+- `src/data/content.ts` owns navigation, experience, installations, and `siteConfig`. Canonical origins come from `@n3wth/site-config`.
+- From the repository root, run `npm run dev -w @n3wth/portfolio`, `npm run build:portfolio`, and `npm run check -w @n3wth/portfolio`. Build shared packages before app checks.
+- Run `AFFECTED_WORKSPACES='["@n3wth/portfolio"]' npm run check:browser` for route, layout, or packaging changes. See [portfolio quality checks](../../docs/workspace/portfolio-quality.md) for action events and release validation.
 
-## Quick reference
+## Content invariants
 
-- **Contact:** hey@n3wth.com
-- **Nav links:** `src/data/content.ts` → `navigation[]`
-- **Footer links:** `src/components/Footer.tsx` (hardcoded `links[]`)
-- **Art credits:** Do not edit — installations data lives in `src/data/content.ts` → `installations[]`
+- Do not reword, trim, or alter installation credits or credit links in `src/data/content.ts`, rendered by `src/components/sections/Creative.tsx`.
+- Keep existing `og:*`, `twitter:*`, and `og-image.png` references in `index.html` unless the user explicitly requests a change. Preserve its crawler fallback and Person structured data.
+- Use `siteConfig.email` for `hey@n3wth.com`. The separate `support@n3wth.com` address on Support is intentional.
+- `content/` owns the migrated Garden Markdown. `scripts/build-notes.mjs` generates pages, search data, and compatibility snapshots; `scripts/verify-content.mjs` validates them offline. Builds must not fetch content.
+- Preserve nested note slugs and existing article URLs under `/thinking/<slug>`. Homepage groves use the same local writing data. Garden is a redirect Worker, not a content source.
+- `npm run content:refresh -w @n3wth/portfolio` refreshes only the UI registry snapshot. A failed refresh exits nonzero and preserves the prior file. Commit successful changes. Keep this network command separate from `build`, `prebuild`, and `check`; sources live in `scripts/lib/content-sources.mjs`.
 
-## Quick Start
+## Motion and diagrams
 
-Use Node 24 (`nvm use`) and `npm ci` for reproducible installs. Run `npm run check`
-before submitting changes; it runs lint, tests and the production build. Site CI
-uses the shared workflow in `n3wth/ui`, pinned to a reviewed commit. Dependabot
-opens weekly grouped dependency and workflow updates; merge only after checks pass.
-Canonical origins used by navigation and projects live in `src/data/sites.ts`.
-The ecosystem repository/domain map is maintained in `n3wth/ui/docs/ecosystem.json`.
+- Import GSAP through `src/lib/gsap.ts`; scroll-driven pieces use `src/lib/scroll.ts`. Do not register plugins again. Read the relevant root `.agents/skills/gsap-*` skill before animation changes.
+- Respect reduced motion. Keep PostHog deferred and Creative background images lazy.
+- NightField garnish models share the scene Suspense boundary. Deferring them requires a nested boundary.
+- Use the shared curve in `src/components/thinking/kit/edgePath.ts` for node/edge diagrams.
+- Do not stretch multi-segment curves with `preserveAspectRatio="none"`. Use a fixed-aspect motif such as `MarginNote.tsx`, or a plain CSS border.
 
-```bash
-npm install
-npm run dev      # Vite dev server
-npm run build    # tsc + vite build (verify before committing)
-```
+## Copy
 
-## Stack
-
-- **Framework:** React 19 + TypeScript + Vite 8
-- **Styling:** Tailwind CSS v4 (`@import "tailwindcss"`, `@theme` in CSS, `@source` directive)
-- **Animation:** GSAP 3 (ScrollTrigger, SplitText) - always import from `src/lib/gsap.ts`
-- **UI Library:** `@n3wth/ui` (shared component library - Nav, Footer, NoiseOverlay)
-- **Analytics:** PostHog (deferred load via `requestIdleCallback`)
-- **Fonts:** Satoshi (display), Geist Sans (body), Geist Mono (code)
-- **Deploy:** Cloudflare Worker (`worker.ts`, `wrangler.jsonc`)
-
-## Architecture
-
-- `src/App.tsx` - Layout shell, lazy loads all sections except Hero
-- `src/components/sections/` - Page sections (Experience, Building, Thinking, Creative, Contact)
-- `src/components/NightField.tsx` - Homepage 3D night field (three.js portals; identity layer paints above the loader)
-- `src/components/thinking/` - Thinking piece registry, kit, and pieces (one route per piece)
-- `src/data/content.ts` - All site content (experiences, frameworks, installations)
-- `src/lib/gsap.ts` - Centralized GSAP plugin registration (always import from here)
-
-## Design
-
-- Before any visual/design work, load `.agents/skills/frontend-design/SKILL.md` and `.agents/skills/hallmark/SKILL.md` (anti-AI-slop design) and design against both.
-- Before writing or editing any user-facing copy, load `.agents/skills/anti-ai-slop-writing/SKILL.md` and follow its constraints (banned vocabulary, no detectable AI patterns).
-- Weights: this site's heaviest font weight is semibold (600) - never use bold/700.
-
-## Voice
-
-- The homepage, /work, and /thinking share one quiet voice: plain declarative sentences, lowercase-calm, no hype, no exclamation points, no marketing adjectives ("innovative", "cutting-edge", "passionate"). Facts stated once, then left alone. When editing copy on these pages, match what's already there rather than raising the temperature.
-- Contact email is `hey@n3wth.com` everywhere (already in `src/data/content.ts` as `siteConfig.email` — use that, never hardcode a different address). `support@n3wth.com` on /support is intentional and separate.
-- **Do not change art credits.** The credit lines and credit links on installations (`src/data/content.ts` installations, rendered by `src/components/sections/Creative.tsx`) are factual attributions — never reword, trim, or "improve" them.
-- **Do not change OG/social meta.** The `og:*` and `twitter:*` tags and `og-image.png` in `index.html` stay as-is unless the user explicitly asks.
-
-## Key Conventions
-
-- **GSAP imports:** Always use `import { gsap, useGSAP } from '../../lib/gsap'` - never import gsap directly or re-register plugins. Scroll-driven pieces import `{ gsap, useGSAP, ScrollTrigger, SplitText }` from `src/lib/scroll.ts` instead (registers scroll plugins once, ships in a lazy `gsap-scroll` chunk). Official GSAP skills are vendored in `.agents/skills/gsap-*` - load the relevant ones before writing animation code
-- **Reduced motion:** Every animation block must check `prefers-reduced-motion` and bail early
-- **Lazy loading:** Below-fold sections use `React.lazy()` + `Suspense`
-- **CSS variables:** Use `var(--color-grey-400)` etc. from index.css, not hardcoded colors
-- **Font classes:** `font-display` (Satoshi), `font-sans` (Geist Sans), `font-mono` (Geist Mono)
-- **Mobile:** All interactive elements have min 44px touch targets. Use responsive classes (sm/md/lg breakpoints)
-- **SEO:** Static HTML fallback in index.html for crawlers. Structured data (JSON-LD Person schema)
-
-## Performance Notes
-
-- PostHog deferred via `requestIdleCallback` - not in critical path
-- Creative section background images only mount when section approaches viewport (IntersectionObserver)
-- NightField garnish models (teapot, bike, suzanne) share the scene Suspense boundary; deferring them needs a nested boundary
-- Animated fixed elements use `will-change: transform` for GPU compositing
-- Font preloads in index.html head for Geist Sans (Regular + SemiBold)
-
-## File Naming
-
-- Components: PascalCase (`NightField.tsx`)
-- Data files: camelCase (`content.ts`)
-- Section components live in `src/components/sections/`
-
-## Development environment
-
-This is a **React + TypeScript SPA** (personal portfolio site) built with Vite 7, Tailwind CSS 4, and GSAP for scroll-driven animations. No backend, no database.
-
-### Commands
-
-| Task | Command |
-|------|---------|
-| Dev server | `npm run dev` (Vite, default port 5173) |
-| Lint | `npm run lint` (ESLint 9, flat config) |
-| Test | `npm test -- --run` (Vitest + jsdom; drop `--run` for watch mode) |
-| Build | `npm run build` (runs `tsc -b && vite build`) |
-| Preview prod build | `npm run preview` |
-
-### Notes
-
-- Tests run on **Vitest** with jsdom (`src/test/setup.ts`); test files live under `src/**/__tests__`. `npm test` starts watch mode, so use `npm test -- --run` for a single non-interactive pass.
-- `npm run build` never fetches over the network. `content/` owns the migrated Garden Markdown. `scripts/build-notes.mjs` generates local note pages, search data and compatibility snapshots before `scripts/verify-content.mjs` validates them offline. Missing or malformed snapshots fail the build.
-- Published notes and existing articles share `/thinking/<slug>`; preserve nested note slugs and existing article URLs. The homepage groves use the same local writing data. Garden's domain is a redirect Worker, not a content source.
-- Run `npm run content:refresh` (`scripts/refresh-content.mjs`) to refresh only the `@n3wth/ui` registry snapshot. It exits 1 on failure and leaves the prior file untouched. Commit the result.
-- See `scripts/lib/content-sources.mjs` for the source registry.
-- Do not add `npm run content:refresh` to `build`, `prebuild`, or `check`. It must stay a separate, manually-run command so its network calls cannot be skipped by task caching.
-- The `@n3wth/ui` package is a custom component library fetched from the npm registry; no special auth is needed.
-- GSAP animations are scroll-driven; manual browser testing is needed to verify animation behavior.
-- When running the dev server in a headless/cloud environment, use `--host 0.0.0.0` to bind to all interfaces: `npm run dev -- --host 0.0.0.0`.
-
-### Copy and diagram taste (Thinking pieces, learned from direct user feedback)
-
-- Never end a sentence on a mirrored "X, not Y" aphorism ("it's a memory problem, not a compute one"). Reads as generated. State the fact plainly instead.
-- Don't put `font-mono` on plain metadata (dates, labels) that isn't code, a timestamp log, or terminal output — it's a borrowed technical costume, not a real constraint.
-- No "The test:" callout lines, no big display numerals as an index device — both were tried on the /thinking index and explicitly rejected by the user ("i hate these bits", "i dislike the big numbers").
-- SVG `preserveAspectRatio="none"` on a multi-segment bezier curve stretched into an arbitrary tall box distorts it into a kinked, broken-looking line. Use a fixed-aspect motif (see `MarginNote.tsx`) or a plain CSS border instead.
-- For node/edge diagrams, use the shared organic bezier curve (`src/components/thinking/kit/edgePath.ts`, consumed by `FlowDiagram.tsx`) rather than straight `<line>` elements — straight grey lines read as a static wiring diagram, not something flowing.
-- Keep personal-site copy free of model and assistant brands.
+- Use plain, quiet declarative sentences. Avoid hype, exclamation points, and mirrored “X, not Y” conclusions. Keep personal-site copy free of model and assistant brands.
+- Do not introduce “The test:” callouts or large display numerals on the Thinking index.
+- Reserve `font-mono` for code, timestamp logs, or terminal output; dates and labels use shared text styles.
+- Keep portfolio heading and control weights at semibold (600) or below.

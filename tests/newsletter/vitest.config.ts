@@ -7,6 +7,6 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./apps/portfolio/src/test/setup.ts'],
-    include: ['tests/newsletter-forms.test.tsx'],
+    include: ['tests/newsletter/forms.test.tsx'],
   },
 })
