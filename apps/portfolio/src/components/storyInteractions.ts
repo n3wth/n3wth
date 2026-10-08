@@ -18,7 +18,7 @@ export function segmentContact(a: Point, b: Point, c: Point, d: Point, radius = 
 }
 
 type Line = { path: SVGPathElement; points: DOMPoint[]; length: number; cooldown: number }
-type Trail = { previous?: Point; position: number; width: number; visited: Set<Line>; depth: number; spawned: boolean }
+type Trail = { previous?: Point; position: number; direction: number; width: number; visited: Set<Line>; depth: number; spawned: boolean }
 type Transfer = Trail & { path: SVGPathElement; line: Line; start: number; end: number; born: number; duration: number }
 
 const pulseSelector = '.section-story__pulse, .section-story__contact-spectrum'
@@ -34,11 +34,9 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     const sources = [...svg.querySelectorAll<SVGPathElement>(pulseSelector)]
     const sourceTiming = sources.map((path, index) => {
       const duration = 3500 + Math.random() * 3500
-      const active = index === Math.floor(sources.length / 2) || index === sources.length - 1
-      const elapsed = duration * (.2 + Math.random() * .2)
       return {
-        path, duration, born: active ? -elapsed : null,
-        next: active ? duration - elapsed + 18000 + Math.random() * 32000 : Math.random() * 22000,
+        path, duration, born: null as number | null, direction: 1,
+        next: index === 0 ? 0 : 2000 + Math.random() * 22000,
       }
     })
     const lines: Line[] = [...svg.querySelectorAll<SVGPathElement>('path')]
@@ -73,7 +71,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       svg!.appendChild(path)
       const end = position < .5 ? 1 : 0
       transfers.push({
-        path, line, start: position, end, position, width: 0, born: time,
+        path, line, start: position, end, position, direction: end > position ? 1 : -1, width: 0, born: time,
         duration: 2500 + Math.abs(end - position) * 2500,
         depth: parent.depth + 1, visited: new Set([...parent.visited, line]), spawned: false,
       })
@@ -85,16 +83,21 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     function tick(now: number) {
       time += lastTime ? Math.min(now - lastTime, 100) : 0
       lastTime = now
+      let activeCount = sourceTiming.filter(source => source.born !== null && time - source.born < source.duration).length
       for (const pulse of sourceTiming) {
-        if (time >= pulse.next) {
+        if (time >= pulse.next && activeCount < 2) {
+          activeCount++
           pulse.born = time
+          pulse.direction = Math.random() < .5 ? 1 : -1
+          trails.delete(pulse.path)
           pulse.duration = 3500 + Math.random() * 3500
           pulse.next = time + pulse.duration + 18000 + Math.random() * 32000
           pulse.path.style.setProperty('--pulse-length', String(.05 + Math.random() * .08))
         }
         const progress = pulse.born === null ? 1 : Math.min(1, (time - pulse.born) / pulse.duration)
         const width = parseFloat(pulse.path.style.getPropertyValue('--pulse-length'))
-        pulse.path.style.strokeDashoffset = String(width - progress * (1 + width))
+        pulse.path.style.strokeDashoffset = String(pulse.direction === 1
+          ? width - progress * (1 + width) : -1 + progress * (1 + width))
         pulse.path.style.opacity = String(smooth(progress / .12) * (1 - smooth((progress - .8) / .2)))
       }
       transfers = transfers.filter(pulse => {
@@ -121,16 +124,16 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         lastCollision = time
         // Existing reactions get the first chance to continue before new sources start chains.
         const active: { path: SVGPathElement; trail: Trail }[] = transfers.map(pulse => ({ path: pulse.path, trail: pulse }))
-        for (const path of sources) {
+        for (const { path, direction } of sourceTiming) {
           const style = getComputedStyle(path)
-          const head = -parseFloat(style.strokeDashoffset) + parseFloat(style.getPropertyValue('--pulse-length'))
+          const head = -parseFloat(style.strokeDashoffset) + (direction === 1 ? parseFloat(style.getPropertyValue('--pulse-length')) : 0)
           if (parseFloat(style.opacity) < .04 || !Number.isFinite(head) || head < 0 || head > 1) {
             trails.delete(path)
             continue
           }
           let trail = trails.get(path)
-          if (!trail || head < trail.position) {
-            trail = { position: head, width: 0, visited: new Set(), depth: 0, spawned: false }
+          if (!trail) {
+            trail = { position: head, direction, width: 0, visited: new Set(), depth: 0, spawned: false }
             trails.set(path, trail)
           }
           trail.position = head
@@ -150,9 +153,8 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           const head = { x: matrix.a * local.x + matrix.c * local.y + matrix.e, y: matrix.b * local.x + matrix.d * local.y + matrix.f }
           const previous = trail.previous || head
           trail.previous = head
-          if (trail.spawned || trail.depth >= 5 || transfers.length >= (trail.depth === 0 ? 3 : 8)) continue
-          const direction = 'end' in trail && (trail as Transfer).end === 0 ? -1 : 1
-          const tailPosition = Math.max(0, Math.min(1, trail.position - direction * trail.width))
+          if (trail.spawned || trail.depth >= 2 || transfers.length >= 2) continue
+          const tailPosition = Math.max(0, Math.min(1, trail.position - trail.direction * trail.width))
           const litPoints = Array.from({ length: 5 }, (_, i) => {
             const p = path.getPointAtLength(path.getTotalLength() * (tailPosition + (trail.position - tailPosition) * i / 4))
             return { x: matrix.a * p.x + matrix.c * p.y + matrix.e, y: matrix.b * p.x + matrix.d * p.y + matrix.f }

@@ -26,7 +26,7 @@ export function SectionHeader({
       className={`site-content-gutter${Heading === 'h1' ? ' portfolio-section-hero' : ''}`}
       spacing={story ? 'compact' : 'default'}
       title={Heading === 'h1' ? <span className="portfolio-section-title">{title}</span> : title}
-      description={story ? <span className="portfolio-story-description">{lede}</span> : lede}
+      description={story && lede ? <span className="portfolio-story-description">{lede}</span> : lede}
       actions={story ? undefined : action}
       level={Heading === 'h1' ? 1 : 2}
     />

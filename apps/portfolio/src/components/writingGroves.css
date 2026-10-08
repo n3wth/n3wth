@@ -5,24 +5,26 @@
   bottom: max(24px, env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
-  width: min(440px, calc(100% - 32px));
+  width: min(calc(var(--spacing-12) * 8), calc(100% - var(--spacing-8)));
   max-height: 45svh;
   overflow-y: auto;
-  padding: 20px;
-  background: var(--color-background-popover);
+  padding: var(--spacing-4);
+  background: var(--color-background-body);
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
+  border-radius: var(--radius-element);
   font-size: var(--font-size-sm);
 }
 .writing-grove-heading {
   display: flex;
   align-items: start;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--spacing-3);
 }
-.writing-grove-heading h2 { font-size: var(--font-size-lg); font-weight: 500; }
-.writing-grove-panel p { margin-top: 12px; }
-.writing-grove-links { display: flex; flex-wrap: wrap; column-gap: 16px; margin-top: 12px; }
+.writing-grove-heading h2 { font-size: var(--font-size-base); font-weight: 500; line-height: 1.4; }
+.writing-grove-close { flex-shrink: 0; min-width: var(--spacing-12); min-height: var(--spacing-12); margin: calc(-1 * var(--spacing-2)); }
+.writing-grove-panel p { margin-top: var(--spacing-3); color: var(--color-text-secondary); line-height: 1.5; }
+.writing-grove-links { display: flex; margin-top: var(--spacing-2); }
 .writing-grove-links a { min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; text-underline-offset: 4px; }
 .writing-grove-panel:focus-visible, .writing-grove-links a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 .writing-grove-hint {

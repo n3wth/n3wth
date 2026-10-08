@@ -14,7 +14,6 @@ export function Contact() {
         as="h1"
         story="contact"
         title={sections.contact.name}
-        lede={sections.contact.description}
       />
       <div className="site-content-gutter contact-invitation">
         <div className="contact-invitation-actions">
