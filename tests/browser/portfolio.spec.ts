@@ -491,10 +491,13 @@ test('hybrid planting remains navigable with motion', async ({ page }, testInfo)
     window.scrollTo(0, document.body.scrollHeight)
   })
   await expect.poll(() => page.locator('.night-field-stage').evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThanOrEqual(0)
-  await page.waitForTimeout(500)
+  // Late model uploads can request one final frame; continuous drawing must stop.
+  await expect.poll(async () => {
+    const before = await draws()
+    await page.waitForTimeout(500)
+    return await draws() - before
+  }).toBe(0)
   const paused = await draws()
-  await page.waitForTimeout(500)
-  expect(await draws()).toBe(paused)
   await page.evaluate(() => {
     document.getElementById('test-scroll-room')?.remove()
     window.scrollTo(0, 0)

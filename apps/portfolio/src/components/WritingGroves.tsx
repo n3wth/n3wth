@@ -3,13 +3,26 @@ import { Html, Line, useCursor } from '@react-three/drei'
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { Button } from '@n3wth/ui/primitives'
 import * as THREE from 'three'
-import { hashString, layoutWritingGroves, plantSegments, type WritingWorld } from '../lib/writingGroves'
+import { hashString, layoutWritingGroves, plantSegments, type GroveTree, type WritingWorld } from '../lib/writingGroves'
 import './writingGroves.css'
 
 const EMPTY_WORLD: WritingWorld = { nodes: [], edges: [] }
 const PULSE_START = 1
 const PULSE_TRAVEL = 2.2
 const PULSE_ARRIVAL = PULSE_START + PULSE_TRAVEL
+const GROVE_COLORS = { bark: '#8a7a68', leaf: '#b9c9a8', active: '#ffce8a', signal: '#e2e8d8' }
+
+function connectionCurve(a: GroveTree, b: GroveTree) {
+  return new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(a.x, a.height, a.z),
+    new THREE.Vector3((a.x + b.x) / 2, Math.max(a.height, b.height) + 2, (a.z + b.z) / 2),
+    new THREE.Vector3(b.x, b.height, b.z),
+  )
+}
+
+function pulseStrength(age: number, arrival: number) {
+  return Math.max(0, 1 - Math.abs(age - arrival) / .65)
+}
 
 export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (href: string) => void; reducedMotion: boolean }) {
   const [world, setWorld] = useState<WritingWorld>(EMPTY_WORLD)
@@ -28,7 +41,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
   const blooms = useRef<THREE.InstancedMesh>(null)
   const light = useRef({ from: '', targets: new Set<string>(), started: -10, next: 0 })
   const wind = useRef({ plants: new Map<string, { seed: number; delta: THREE.Matrix4 }>(), instances: [] as { mesh: THREE.InstancedMesh; index: number; base: THREE.Matrix4; delta: THREE.Matrix4 }[], matrix: new THREE.Matrix4() })
-  const palette = useRef({ bark: new THREE.Color('#8a7a68'), leaf: new THREE.Color('#b9c9a8'), active: new THREE.Color('#ffce8a'), pulse: new THREE.Color('#b9c9a8').multiplyScalar(3), mixed: new THREE.Color() })
+  const palette = useRef({ bark: new THREE.Color(GROVE_COLORS.bark), leaf: new THREE.Color(GROVE_COLORS.leaf), active: new THREE.Color(GROVE_COLORS.active), pulse: new THREE.Color(GROVE_COLORS.leaf).multiplyScalar(3), mixed: new THREE.Color() })
   const aspect = useThree(({ size }) => size.width / size.height)
   const invalidate = useThree(({ invalidate }) => invalidate)
   useCursor(hovered !== null)
@@ -69,7 +82,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
     const a = treeById.get(edge.source)
     const b = treeById.get(edge.target)
     if (!a || !b) return []
-    const curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(a.x, a.height, a.z), new THREE.Vector3((a.x + b.x) / 2, Math.max(a.height, b.height) + 2, (a.z + b.z) / 2), new THREE.Vector3(b.x, b.height, b.z))
+    const curve = connectionCurve(a, b)
     return [{ id: `${edge.source}:${edge.target}`, points: curve.getPoints(16) }]
   }), [world.edges, selected, treeById])
 
@@ -134,9 +147,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
   }, [segments, foliage, flowers, trees, treeById, invalidate])
 
   useLayoutEffect(() => {
-    const bark = new THREE.Color('#8a7a68')
-    const leaf = new THREE.Color('#b9c9a8')
-    const active = new THREE.Color('#ffce8a')
+    const { bark, leaf, active } = palette.current
     const isActive = (id: string) => id === selected || id === hovered
     segments.forEach((segment, index) => stems.current?.setColorAt(index, isActive(segment.treeId) ? active : bark))
     foliage.forEach((segment, index) => leaves.current?.setColorAt(index, isActive(segment.treeId) ? active : leaf))
@@ -185,7 +196,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
       state.targets = new Set(neighbors.slice(0, Math.random() < .5 ? 2 : 3))
       setAmbient([...state.targets].map(id => {
         const b = treeById.get(id)!
-        const curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(a.x, a.height, a.z), new THREE.Vector3((a.x + b.x) / 2, Math.max(a.height, b.height) + 2, (a.z + b.z) / 2), new THREE.Vector3(b.x, b.height, b.z))
+        const curve = connectionCurve(a, b)
         return { id, points: curve.getPoints(32), length: curve.getLength() }
       }))
       state.started = time
@@ -206,7 +217,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
       const height = treeById.get(treeId)?.height ?? 1
       const arrival = treeId === state.from ? y / height
         : state.targets.has(treeId) ? PULSE_ARRIVAL + 1 - y / height : -10
-      const amount = Math.max(0, 1 - Math.abs(age - arrival) / .65)
+      const amount = pulseStrength(age, arrival)
       mesh.setColorAt(index, treeId === selected || treeId === hovered
         ? colors.active : colors.mixed.copy(base).lerp(colors.pulse, amount))
     }
@@ -216,7 +227,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
     if (leaves.current?.instanceColor) leaves.current.instanceColor.needsUpdate = true
     flowers.forEach((tree, index) => {
       const arrival = tree.id === state.from ? PULSE_START : state.targets.has(tree.id) ? PULSE_ARRIVAL : -10
-      const amount = Math.max(0, 1 - Math.abs(age - arrival) / .65)
+      const amount = pulseStrength(age, arrival)
       blooms.current?.setColorAt(index, colors.mixed.copy(colors.leaf).multiplyScalar(.8 + amount * 2))
     })
     if (blooms.current?.instanceColor) blooms.current.instanceColor.needsUpdate = true
@@ -226,7 +237,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
     {!reducedMotion && ambient.map(connection => <Line key={connection.id} ref={line => {
       if (line) trails.current.set(connection.id, line)
       else trails.current.delete(connection.id)
-    }} points={connection.points} color="#e2e8d8" dashed dashSize={.9} gapSize={1000} transparent opacity={0} toneMapped={false} lineWidth={1.5} raycast={() => null} />)}
+    }} points={connection.points} color={GROVE_COLORS.signal} dashed dashSize={.9} gapSize={1000} transparent opacity={0} toneMapped={false} lineWidth={1.5} raycast={() => null} />)}
     <Html center position={[compact ? -4.2 * spread : -6, -.8, -13]} zIndexRange={[20, 10]}>
       <a className="world-portal-link" href="/thinking#notes" aria-label="Notes" onClick={(event) => {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
@@ -236,15 +247,15 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
     </Html>
     <instancedMesh ref={blooms} args={[undefined, undefined, flowers.length]} raycast={() => null}>
       <icosahedronGeometry args={[1, 1]} />
-      <meshBasicMaterial color="#e2e8d8" wireframe toneMapped={false} />
+      <meshBasicMaterial color={GROVE_COLORS.signal} wireframe toneMapped={false} />
     </instancedMesh>
     <instancedMesh ref={stems} args={[undefined, undefined, segments.length]} raycast={() => null}>
       <cylinderGeometry args={[0.65, 1, 1, 8, 1, true]} />
-      <meshStandardMaterial color="#ffffff" roughness={0.9} emissive="#8a7a68" emissiveIntensity={0.06} />
+      <meshStandardMaterial color="#ffffff" roughness={0.9} emissive={GROVE_COLORS.bark} emissiveIntensity={0.06} />
     </instancedMesh>
     <instancedMesh ref={leaves} args={[undefined, undefined, foliage.length]} raycast={() => null}>
       <sphereGeometry args={[1, 10, 6]} />
-      <meshStandardMaterial color="#ffffff" roughness={0.85} emissive="#b9c9a8" emissiveIntensity={0.08} />
+      <meshStandardMaterial color="#ffffff" roughness={0.85} emissive={GROVE_COLORS.leaf} emissiveIntensity={0.08} />
     </instancedMesh>
     <instancedMesh ref={hits} args={[undefined, undefined, trees.length]} onClick={selectTree} onPointerMove={(event) => {
       if (event.instanceId === undefined) return
@@ -254,7 +265,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
       <sphereGeometry args={[1, 6, 4]} />
       <meshBasicMaterial colorWrite={false} depthWrite={false} />
     </instancedMesh>
-    {connections.map((connection) => <Line key={connection.id} points={connection.points} color="#b9c9a8" transparent opacity={0.45} lineWidth={1} />)}
+    {connections.map((connection) => <Line key={connection.id} points={connection.points} color={GROVE_COLORS.leaf} transparent opacity={0.45} lineWidth={1} />)}
     {!current && preview && <Html fullscreen calculatePosition={(_, __, size) => [size.width / 2, size.height / 2]} zIndexRange={[25, 20]} style={{ pointerEvents: 'none' }}>
       <div className="writing-grove-hint">
         {preview && <span>{preview.title}</span>}

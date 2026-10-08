@@ -1226,7 +1226,6 @@ const PORTALS: Record<string, PortalDef> = {
   work: { id: 'work', label: 'Work', sub: 'A decade of AI in production', href: '/work' },
   thinking: { id: 'thinking', label: 'Thinking', sub: 'Trade-offs, not clean answers', href: '/thinking' },
   contact: { id: 'contact', label: "Let's talk", sub: 'hey@n3wth.com', href: '/contact' },
-  garden: { id: 'garden', label: 'Notes', sub: 'Notes and connections', href: '/thinking#notes' },
   triangle: { id: 'triangle', label: 'Pink Triangle', sub: 'View this artwork', href: '/art#pink-triangle' },
 }
 
