@@ -7,8 +7,8 @@
     "node": "24.x"
   },
   "scripts": {
-    "dev": "wrangler dev",
-    "start": "wrangler dev",
+    "dev": "wrangler dev --config wrangler.jsonc",
+    "start": "wrangler dev --config wrangler.jsonc",
     "build": "node --check worker.mjs",
     "check": "node --test worker.test.mjs && npm run build",
     "typecheck": "node --check worker.mjs",

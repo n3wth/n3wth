@@ -22,8 +22,8 @@
     "search:types": "wrangler types --config worker/wrangler.jsonc worker/env.d.ts",
     "build": "node --check worker.mjs",
     "check": "node --test worker.test.mjs scripts/docs-manifest.test.mjs && npm run test:docs && npm run search:check && npm run build",
-    "dev": "wrangler dev",
-    "start": "wrangler dev",
+    "dev": "wrangler dev --config wrangler.jsonc",
+    "start": "wrangler dev --config wrangler.jsonc",
     "typecheck": "node --check worker.mjs",
     "test:docs": "node --experimental-strip-types --test lib/docs-content.test.ts lib/docs-search.test.ts"
   },
