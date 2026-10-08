@@ -13,8 +13,8 @@ npm run test:content-audit
 Reports go to `.release/article-audit/articles.json` and `.release/article-audit/summary.md`. The directory is ignored by Git. To keep separate before/after results:
 
 ```sh
-node scripts/article-audit.mjs --output .release/article-audit-before
-node scripts/article-audit.mjs --dist apps/portfolio/dist --output .release/article-audit-after
+node scripts/content/article-audit.mjs --output .release/article-audit-before
+node scripts/content/article-audit.mjs --dist apps/portfolio/dist --output .release/article-audit-after
 ```
 
 Rebuild before auditing edited articles. The audit does not read unbuilt source edits.
@@ -25,7 +25,7 @@ runs in the audit process and is not imported into the public site bundle.
 ## What it checks
 
 - Coverage: every unique article URL in the sitemap appears in the JSON report, including failed reads. Missing sitemap or zero matching articles fails the command. Individual failures are retained in the report and produce a nonzero exit code.
-- Metadata: reuse `checkPublicDocument` from `scripts/check-built-metadata.mjs`. This reports the first metadata violation per article; the full metadata check remains part of repository validation.
+- Metadata: reuse `checkPublicDocument` from `scripts/content/check-built-metadata.mjs`. This reports the first metadata violation per article; the full metadata check remains part of repository validation.
 - Structure: canonical URL matches the sitemap URL, one article H1, and images have an `alt` attribute. Empty alt text is allowed for decorative images.
 - Readability: Yoast's English content assessor evaluates text inside `main`, excluding navigation, footers, scripts, templates and explicitly hidden elements. Scripts and remote resources never execute.
 - Internal links: same-origin destinations must exist in the local build. Missing destinations are review candidates. Runtime routes and redirects can work without a local file. Fragments are listed as unchecked; their presence is not proof that the anchor exists.

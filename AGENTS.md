@@ -1,14 +1,14 @@
 # Personal sites workspace
 
-Before UI changes, read [design.md](design.md) and [style.md](style.md). They define the shared design and implementation rules across all apps. Update these documents when an accepted pattern changes; do not maintain competing app-specific versions.
+Before UI changes, read [DESIGN.md](DESIGN.md) and [STYLE.md](STYLE.md). They define the shared design and implementation rules across all apps. Update these documents when an accepted pattern changes; do not maintain competing app-specific versions.
 
 Use Node 24 and npm 11.19.1, then run npm ci at the repository root. npm 10 has a peer-resolution failure on this workspace. The root package-lock.json is the only application/library lockfile. Use feature branches.
 
 - apps/portfolio: n3wth.com. Read its AGENTS.md before editing.
-- apps/ui-docs: local redirect fixture for the retired UI site; production uses Cloudflare zone rules.
+- apps/ui: local redirect fixture for the retired UI site; production uses Cloudflare zone rules.
 - apps/skills: skills.n3wth.com. Read its AGENTS.md before editing. It consumes the workspace UI package alongside the other sites.
 - apps/garden: production redirect Worker. Read its AGENTS.md before editing.
-- apps/r3-web: local redirect fixture and independent search service. Read its AGENTS.md before editing. Production site redirects use Cloudflare zone rules.
+- apps/r3: local redirect fixture and independent search service. Read its AGENTS.md before editing. Production site redirects use Cloudflare zone rules.
 - packages/ui: public @n3wth/ui library. Read its AGENTS.md before editing.
 - packages/site-config: canonical public origins, with no framework dependency or secrets.
 
@@ -18,7 +18,7 @@ All site foundations come from `@n3wth/ui/site` and `@n3wth/ui/site.css`. Apps d
 
 Sites must import native controls through `@n3wth/ui/primitives` and Tailwind tokens through `@n3wth/ui/tailwind-theme.css`. Only packages/ui may depend on or import Astryx. Keep dependency upgrades and runtime integration in UI; do not add application JSX-runtime shims. `check:design` enforces the import/dependency boundary.
 
-Commands: npm run dev, npm run dev:ui, npm run build, npm run build:portfolio and npm run check. Root and app-targeted builds use scripts/build.mjs so shared packages build before consumers and only once per run. CI uses scripts/affected.mjs to check changed workspaces and their consumers in dependency order. Build packages before their apps. Run browser checks when changing routes, layout or packaging.
+Commands: npm run dev, npm run dev:ui, npm run build, npm run build:portfolio and npm run check. Root and app-targeted builds use scripts/workspace/build.mjs so shared packages build before consumers and only once per run. CI uses scripts/workspace/affected.mjs to check changed workspaces and their consumers in dependency order. Build packages before their apps. Run browser checks when changing routes, layout or packaging.
 
 For shared changes, identify affected consumers and verify them at mobile and desktop widths. Check both themes where supported, initial theme paint, scroll reset on page navigation, anchor links, browser Back, code overflow and footer consistency. Preserve useful product actions; remove redundant navigation only where appropriate. Keep public metadata and sitemaps correct. Never report production complete from a local build alone.
 

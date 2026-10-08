@@ -1,6 +1,6 @@
 # Shared site design system
 
-The root [design.md](../../design.md) and [style.md](../../style.md) define current visual and implementation rules. This document covers architecture, package usage and setup.
+The root [DESIGN.md](../../DESIGN.md) and [STYLE.md](../../STYLE.md) define current visual and implementation rules. This document covers architecture, package usage and setup.
 
 ## Dependency direction
 

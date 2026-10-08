@@ -2,7 +2,7 @@
 
 ## Workspace pilot override
 
-This package was imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf274. Starting with 2.0.0, this monorepo is the publishing authority. Push a `ui-v<version>` tag on main to run .github/workflows/publish-ui.yml; never publish locally. See ../../docs/workspace/npm-release.md. UI docs lives in apps/ui-docs; use root workspace commands and the root lockfile. Validate with npm run check --workspace @n3wth/ui and npm run check:package. See SOURCE.md for historical provenance.
+This package was imported from n3wth/ui at 62839d33ae0a439901b9515339e6259ce6dcf274. Starting with 2.0.0, this monorepo is the publishing authority. Push a `ui-v<version>` tag on main to run .github/workflows/publish-ui.yml; never publish locally. See ../../docs/workspace/npm-release.md. UI docs lives in apps/ui; use root workspace commands and the root lockfile. Validate with npm run check --workspace @n3wth/ui and npm run check:package. See SOURCE.md for historical provenance.
 
 ## Overview
 
@@ -160,7 +160,7 @@ tarball through npm trusted publishing.
 ### Documentation
 
 Documentation lives at https://docs.n3wth.com/ui. The retired ui.n3wth.com
-site is a redirect Worker in apps/ui-docs. Package releases do not deploy sites.
+site is a redirect Worker in apps/ui. Package releases do not deploy sites.
 
 ### Downstream Consumers
 

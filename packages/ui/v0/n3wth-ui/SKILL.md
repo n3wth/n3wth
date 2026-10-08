@@ -33,7 +33,7 @@ Next.js consumers must retain the package's client boundaries. Preserve
 keyboard focus, heading order, mobile navigation and anchor behavior.
 
 Source: `packages/ui` in the reference repository; real consumers:
-`docs/` and `packages/ui`. Read `design.md`, `style.md` and
+`docs/` and `packages/ui`. Read `DESIGN.md`, `STYLE.md` and
 `docs/workspace/design-system.md` for detailed conventions. Verify exports
 against the installed version before adopting newer main-branch APIs.
 

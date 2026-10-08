@@ -69,7 +69,7 @@ Portfolio alone used the filtered install and the UI artifact cache. The other f
 
 - `scripts/vercel-install.mjs` takes the workspace name. It resolves the app and the workspace packages it builds from through `orderSelectedWorkspaces`, the same graph the affected checker uses, so a new internal dependency is picked up without editing the install script. All six apps now install this way, and the lockfile-drift guard is unchanged.
 - All six apps pass `--cache-ui`, so a deployment whose UI inputs are unchanged restores the verified artifact instead of rebuilding the library.
-- `scripts/create-site.mjs` generates both settings, so a new site does not start on the full-install path.
+- `scripts/workspace/create-site.mjs` generates both settings, so a new site does not start on the full-install path.
 - Garden builds with Turbopack. Its webpack configuration existed to alias `@` and to redirect the `./@n3wth/ui/fonts` request that webpack's CSS loader produces. Turbopack reads the `@/*` path from tsconfig and resolves the font URL through the UI package's `./fonts/*` export, which is why kit, skills and r3 already build with Turbopack and declare no font alias.
 - Garden no longer sets `productionBrowserSourceMaps`. It wraps `withAxiom` only, so nothing consumed the published maps.
 
@@ -125,4 +125,4 @@ Portfolio, which has been on the filtered install longest, writes a cache a quar
 
 ### The UI artifact cache has not yet been observed to hit
 
-`--cache-ui` missed on all six projects before and after the change. Each miss is correct: `packages/ui` changed in every commit deployed during this window, so the content key changed each time. There is no fault in `scripts/affected.mjs` or in the cache itself. A hit saves roughly 46 seconds. Do not claim a saving for this until a deployment whose UI inputs are unchanged is observed to restore the artifact.
+`--cache-ui` missed on all six projects before and after the change. Each miss is correct: `packages/ui` changed in every commit deployed during this window, so the content key changed each time. There is no fault in `scripts/workspace/affected.mjs` or in the cache itself. A hit saves roughly 46 seconds. Do not claim a saving for this until a deployment whose UI inputs are unchanged is observed to restore the artifact.

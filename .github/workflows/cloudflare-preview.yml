@@ -42,11 +42,11 @@ jobs:
             node --input-type=module <<'JS'
           import { appendFileSync } from 'node:fs'
           import { execFileSync } from 'node:child_process'
-          import { DEPLOY_APP_SLUGS, deployAppForWorkspace } from './scripts/deploy-apps.mjs'
+          import { DEPLOY_APP_SLUGS, deployAppForWorkspace } from './scripts/cloudflare/deploy-apps.mjs'
           const base = process.env.BASE_SHA
-          const workspaces = JSON.parse(execFileSync(process.execPath, ['scripts/affected.mjs', '--base', base, '--list', '--deployment'], { encoding: 'utf8' }))
+          const workspaces = JSON.parse(execFileSync(process.execPath, ['scripts/workspace/affected.mjs', '--base', base, '--list', '--deployment'], { encoding: 'utf8' }))
           const files = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`, '--'], { encoding: 'utf8' }).split('\n')
-          const infrastructure = files.some(file => file === '.github/workflows/cloudflare-preview.yml' || file.startsWith('scripts/cloudflare-preview'))
+          const infrastructure = files.some(file => file === '.github/workflows/cloudflare-preview.yml' || file.startsWith('scripts/cloudflare/cloudflare-preview'))
           const apps = infrastructure ? [...DEPLOY_APP_SLUGS] : workspaces.map(deployAppForWorkspace).filter(Boolean)
           // Every signup preview needs its matching isolated subscription API.
           if (apps.length && !apps.includes('portfolio')) apps.push('portfolio')
@@ -71,7 +71,7 @@ jobs:
           npm run build:cloudflare -- "${targets[@]}"
       - name: Check preview lifecycle
         if: steps.affected.outputs.apps != ''
-        run: node --test scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs
+        run: node --test scripts/cloudflare/cloudflare-preview.test.mjs scripts/cloudflare/cloudflare-preview-config.test.mjs
       - name: Verify current PR state
         if: steps.affected.outputs.apps != '' && github.event.action != 'closed'
         id: current
@@ -100,7 +100,7 @@ jobs:
                 BINDINGS_ARGS=(--bindings-json '{"d1_databases":[{"binding":"DB","database_name":"n3wth-skills-preview","database_id":"d839bbda-6d85-47d0-ae18-946bf45d5321"}]}')
                 ;;
             esac
-            node scripts/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER" "${BINDINGS_ARGS[@]}"
+            node scripts/cloudflare/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER" "${BINDINGS_ARGS[@]}"
             if [ "$app" = portfolio ]; then
               test -n "$RESEND_API_KEY" || { echo 'RESEND_API_KEY repository secret is required'; exit 1; }
               printf '%s' "$RESEND_API_KEY" | npm exec -- wrangler secret put RESEND_API_KEY --config ".cloudflare/portfolio-pr-$PR_NUMBER/wrangler.json"
@@ -119,6 +119,6 @@ jobs:
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
           status=0
           for app in $APPS; do
-            node scripts/cloudflare-preview.mjs delete --app "$app" --pr "$PR_NUMBER" || status=1
+            node scripts/cloudflare/cloudflare-preview.mjs delete --app "$app" --pr "$PR_NUMBER" || status=1
           done
           exit $status

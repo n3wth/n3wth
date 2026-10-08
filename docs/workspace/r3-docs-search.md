@@ -2,7 +2,7 @@
 
 The r3 frontend stays on Vercel. The public `r3-docs-search` Worker in the n3wth Cloudflare account answers documentation questions through Workers AI. It has no credentials, memory access, command execution, or write tools.
 
-`apps/r3-web/lib/docs-content.ts` converts local MDX into Markdown without changing fenced examples. It produces page exports, `llms-full.txt`, and `docs-index.json` from the same content. Search ranks sections with a shared keyword ranker. AI answers use six retrieved sections, a 500-character question limit, and a 700-token output limit. Citation URLs come from the index, never model output.
+`apps/r3/lib/docs-content.ts` converts local MDX into Markdown without changing fenced examples. It produces page exports, `llms-full.txt`, and `docs-index.json` from the same content. Search ranks sections with a shared keyword ranker. AI answers use six retrieved sections, a 500-character question limit, and a 700-token output limit. Citation URLs come from the index, never model output.
 
 The Worker fetches the production index with a five-minute edge cache. Each Vercel production release therefore updates search without a separate indexing job. If that fetch fails, it uses the documentation snapshot bundled at Worker deployment. Its response includes the corpus revision. Logs record fallback and error events without questions or excerpt text.
 

@@ -28,7 +28,7 @@ after the first verified monorepo release. Do not publish from both repositories
    packed consumer, and publishes that exact tarball with provenance.
 4. Verify the registry version and a clean consumer install.
 
-`npm run check:package` stages npm's allowlisted files with `scripts/pack-ui.mjs`.
+`npm run check:package` stages npm's allowlisted files with `scripts/ui/pack-ui.mjs`.
 The staged CSS omits excluded commercial font rules and uses package-relative
 URLs for shipped fonts. Workspace CSS and licensed site assets stay unchanged.
 The publish step uses this exact tested tarball, not a direct pack of workspace output.

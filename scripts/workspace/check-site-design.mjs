@@ -1,0 +1,65 @@
+import { readFileSync, realpathSync, readdirSync } from 'node:fs'
+import { createRequire } from 'node:module'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+export const DEPENDENCY_GROUPS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
+
+export function hasDirectAstryxDependency(manifest) {
+  return DEPENDENCY_GROUPS.some(group => Object.keys(manifest[group] || {}).some(name => name.startsWith('@astryxdesign/')))
+}
+
+function checkImports(directory, shared = new Set()) {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    if (['node_modules', 'dist', 'dist-demo', '.next', '.open-next', '.wrangler', '.cloudflare', '.git', 'content', 'public'].includes(entry.name)) continue
+    const path = resolve(directory, entry.name)
+    if (entry.isDirectory()) checkImports(path, shared)
+    else if (/\.(?:[cm]?[jt]sx?|css|scss|mdx)$/.test(entry.name)) {
+      const source = readFileSync(path, 'utf8')
+      if (/\.(?:css|scss)$/.test(entry.name) && /\.n3wth-(?:site|visual)-[\w-]+/.test(source.replace(/\/\*[\s\S]*?\*\//g, ''))) {
+        throw new Error(`${path}: shared UI selectors belong in packages/ui, not app overrides`)
+      }
+      if (!/\.(test|spec)\./.test(entry.name)) {
+        for (const match of source.matchAll(/import\s*\{([^}]+)\}\s*from\s*['"]@n3wth\/ui\/site['"]/g)) {
+          for (const symbol of match[1].split(',')) shared.add(symbol.trim().split(/\s+/)[0])
+        }
+        if (source.includes('@n3wth/ui/site.css') || source.includes('@n3wth/ui/styles')) shared.add('site.css')
+      }
+      if (/(?:from\s*|import\s*|require\s*\(|import\s*\(|@import\s*)['"]@astryxdesign\//.test(source)) {
+        throw new Error(`${path}: import primitives and styles through @n3wth/ui`)
+      }
+    }
+  }
+  return shared
+}
+
+export function checkSiteDesign(root = fileURLToPath(new URL('../../', import.meta.url))) {
+  const version = JSON.parse(readFileSync(resolve(root, 'packages/ui/package.json'), 'utf8')).version
+  const canonical = realpathSync(resolve(root, 'packages/ui/dist/site.css'))
+  for (const entry of readdirSync(resolve(root, 'apps'), { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue
+    const manifest = resolve(root, 'apps', entry.name, 'package.json')
+    const app = JSON.parse(readFileSync(manifest, 'utf8'))
+    if (hasDirectAstryxDependency(app)) {
+      throw new Error(`${app.name}: Astryx dependencies belong in @n3wth/ui`)
+    }
+    const shared = checkImports(resolve(root, 'apps', entry.name))
+    // Redirect Workers serve no UI.
+    if (['@n3wth/garden', '@n3wth/r3-web', '@n3wth/ui-docs'].includes(app.name)) continue
+    if (!app.dependencies?.['@n3wth/ui']) {
+      throw new Error(`${app.name} is missing the shared UI dependency`)
+    }
+    const declared = app.dependencies['@n3wth/ui']
+    if (declared !== '*' && declared !== version) throw new Error(`${app.name} must use workspace UI "*" or ${version}`)
+    for (const component of ['N3wthProvider', 'SiteNavigation', 'PageHeader', 'SiteSection', 'SiteFooter', 'site.css']) {
+      if (!shared.has(component)) throw new Error(`${app.name} must consume shared ${component}`)
+    }
+    const resolved = realpathSync(createRequire(manifest).resolve('@n3wth/ui/site.css'))
+    if (resolved !== canonical) throw new Error(`${app.name} resolves a separate UI package: ${resolved}`)
+    console.log(`${app.name}: shared site foundation verified`)
+  }
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  checkSiteDesign()
+}

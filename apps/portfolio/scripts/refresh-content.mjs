@@ -5,8 +5,8 @@
  * Run manually, or on a schedule. This repo has no
  * refresh-portfolio-content workflow yet; add one under .github/workflows
  * if a schedule is needed. This script is not part of `prebuild`, `build`,
- * or `check`, and is not wired into scripts/build.mjs or
- * scripts/affected.mjs, so no task cache can skip it — every run always
+ * or `check`, and is not wired into scripts/workspace/build.mjs or
+ * scripts/workspace/affected.mjs, so no task cache can skip it — every run always
  * contacts every selected source.
  *
  * Unlike the old fetch-*.mjs scripts, a failed source does NOT keep quiet

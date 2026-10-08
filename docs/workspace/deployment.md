@@ -1,5 +1,7 @@
 # Workspace deployment
 
+Directory update (October 2026): current source paths are `apps/ui` and `apps/r3`. Older paths below describe historical snapshots; npm workspace and deployed preview names remain unchanged.
+
 ## Cloudflare builds and configuration
 
 Cloudflare Workers serves the public sites. Use Node 24 and npm 11.19.1,
@@ -92,7 +94,7 @@ Vinext output and generated preview configs can contain absolute paths; do not
 copy them to another machine for deployment.
 
 The Cloudflare preview workflow uses this build command, then
-`scripts/cloudflare-preview.mjs` generates an isolated config under `.cloudflare/`.
+`scripts/cloudflare/cloudflare-preview.mjs` generates an isolated config under `.cloudflare/`.
 It replaces the Worker name, domain and Skills auth origin,
 requires explicit preview stateful bindings, and adds preview-only noindex behavior.
 Secrets stay outside source config and are provisioned separately for each Worker.
@@ -101,7 +103,7 @@ production database.
 
 A build or dry run does not prove live readiness. Each preview deploy now runs an
 automated readiness gate. After the upload and the DNS record, the preview script
-requests the target host over HTTPS through `scripts/cloudflare-preview-verify.mjs`.
+requests the target host over HTTPS through `scripts/cloudflare/cloudflare-preview-verify.mjs`.
 The deploy fails unless the host resolves, the certificate validates, the page
 returns HTTP 200, and the preview `X-Robots-Tag: noindex` header is present. The
 gate keeps certificate validation on and retries while the Worker custom domain

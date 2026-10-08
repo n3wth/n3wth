@@ -1,5 +1,7 @@
 # Personal sites workspace decision
 
+Directory update (October 2026): current source paths are `apps/ui` and `apps/r3`. Older paths below describe historical snapshots; npm workspace and deployed preview names remain unchanged.
+
 Current status (October 2026): Portfolio and Skills render pages. Garden, r3 and UI are redirect Workers. Builds use the dependency graph without the retired Vercel/UI cache. The measurements and pilot decisions below are historical; use [deployment.md](deployment.md) for current commands.
 
 

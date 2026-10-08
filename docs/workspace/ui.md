@@ -12,7 +12,7 @@ Source: n3wth/ui main 62839d33ae0a439901b9515339e6259ce6dcf274, verified with Gi
 
 ## Pilot implementation
 
-- Library moved to packages/ui. Demo/docs/public assets moved to apps/ui-docs. Public fonts retained in both appropriate outputs.
+- Library moved to packages/ui. Demo/docs/public assets moved to apps/ui. Public fonts retained in both appropriate outputs.
 - Demo relative source imports replaced by @n3wth/ui public imports. Canonical footer URLs consume private @n3wth/site-config. Public component APIs, content and visual intent unchanged.
 - CSS packaging resolves Astryx through Node package resolution instead of a cwd-relative node_modules path, supporting npm hoisting.
 - Demo Tailwind scans built library modules; UI must build before docs. Existing React JSX development-runtime production shim retained.

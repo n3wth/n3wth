@@ -1,6 +1,8 @@
 # Vercel audit
 
-Linear N-717, "Retire redundant builds and verify realized hosting savings". Snapshot facts collected 2026-09-18. Sources: `cloudflare-migration.md`, `build-performance.md`, `deployment.md`, `environments.json`, `apps/*/vercel.json`, `scripts/check-invariants.mjs`, `satellites.md`.
+Directory update (October 2026): current source paths are `apps/ui` and `apps/r3`. Older paths below describe historical snapshots; npm workspace and deployed preview names remain unchanged.
+
+Linear N-717, "Retire redundant builds and verify realized hosting savings". Snapshot facts collected 2026-09-18. Sources: `cloudflare-migration.md`, `build-performance.md`, `deployment.md`, `environments.json`, `apps/*/vercel.json`, `scripts/workspace/check-invariants.mjs`, `satellites.md`.
 
 This document is a reference for the retirement decision. It does not authorize any billing or project change by itself.
 
@@ -101,7 +103,7 @@ Apply this per migrated app, only after that app's Cloudflare cutover is live an
 2. Stop automatic Git deployments for that Vercel project, using one of:
    - Dashboard: Settings > Git > Disconnect the repository. Note: this also removes preview deployments for that project.
    - Repo: set `git.deploymentEnabled: false` in the app's `vercel.json`.
-3. If you set `git.deploymentEnabled` to `false`, update `scripts/check-invariants.mjs` in the same pull request. That script requires `git.deploymentEnabled` to be `true` for every app. Update `scripts/check-invariants.test.mjs` in the same pull request.
+3. If you set `git.deploymentEnabled` to `false`, update `scripts/workspace/check-invariants.mjs` in the same pull request. That script requires `git.deploymentEnabled` to be `true` for every app. Update `scripts/workspace/check-invariants.test.mjs` in the same pull request.
 4. Keep the Vercel project, its last production deployment, and its environment variables in place for rollback, for at least one full Vercel billing cycle after cutover.
 5. Do not delete the project, its data, the Neon database, or any domain as part of this step. Deletion requires a separate explicit request.
 
