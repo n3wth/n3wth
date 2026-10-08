@@ -34,7 +34,7 @@ No rows were returned for `astryx vs shadcn` or `shadcn vs angular material`; th
 
 ## Validation and release
 
-Run `npm run check -w @n3wth/portfolio`, `npm run test:content-audit`, `npm run content:audit`, and `node scripts/check-built-metadata.mjs --apps portfolio` using Node 24. The portfolio check includes real component rendering and date regressions. Inspect built HTML and browser behavior on a rich essay and revised Markdown note.
+Run `npm run check -w @n3wth/portfolio`, `npm run test:content-audit`, `npm run content:audit`, and `node scripts/content/check-built-metadata.mjs --apps portfolio` using Node 24. The portfolio check includes real component rendering and date regressions. Inspect built HTML and browser behavior on a rich essay and revised Markdown note.
 
 Local validation covered all 283 articles with zero processing errors or structural findings, and 298 public pages with complete metadata. Rich article HTML now includes 32 subheadings, previously zero. Browser checks covered the desktop Field Guide, the comparison article at 390px, the latency slider's state change, and visible article chapters with JavaScript disabled. Canvas scenes still require JavaScript. Automated post-build checks guard the final article HTML and note dates across schema, sitemap and feed.
 

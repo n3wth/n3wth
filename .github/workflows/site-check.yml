@@ -27,27 +27,27 @@ jobs:
           node-version: 24
           cache: npm
       - name: Verify repository invariants
-        run: node --test scripts/check-invariants.test.mjs && node scripts/check-invariants.mjs
+        run: node --test scripts/workspace/check-invariants.test.mjs && node scripts/workspace/check-invariants.mjs
       - name: Verify newsletter import safeguards
-        run: node --test scripts/resend-newsletter-import.test.mjs
+        run: node --test scripts/migrations/resend-newsletter-import.test.mjs
       - name: Select affected workspaces
         id: affected
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          echo "workspaces=$(node scripts/affected.mjs --base "$BASE_SHA" --list)" >> "$GITHUB_OUTPUT"
-          echo "ui_package=$(node scripts/affected.mjs --base "$BASE_SHA" --ui-package)" >> "$GITHUB_OUTPUT"
+          echo "workspaces=$(node scripts/workspace/affected.mjs --base "$BASE_SHA" --list)" >> "$GITHUB_OUTPUT"
+          echo "ui_package=$(node scripts/workspace/affected.mjs --base "$BASE_SHA" --ui-package)" >> "$GITHUB_OUTPUT"
       - run: npm install --global npm@11.19.1
         if: steps.affected.outputs.workspaces != '[]'
       - run: npm ci
         if: steps.affected.outputs.workspaces != '[]'
       - name: Verify affected workspace selection
-        run: node --test scripts/affected.test.mjs scripts/create-site.test.mjs scripts/build.test.mjs scripts/check-built-metadata.test.mjs scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs
+        run: node --test scripts/workspace/affected.test.mjs scripts/workspace/create-site.test.mjs scripts/workspace/build.test.mjs scripts/content/check-built-metadata.test.mjs scripts/cloudflare/cloudflare-preview.test.mjs scripts/cloudflare/cloudflare-preview-config.test.mjs
       - name: Check affected workspaces
         if: steps.affected.outputs.workspaces != '[]'
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
-        run: node scripts/affected.mjs --base "$BASE_SHA"
+        run: node scripts/workspace/affected.mjs --base "$BASE_SHA"
       - name: Check built metadata
         if: steps.affected.outputs.workspaces != '[]'
         env:

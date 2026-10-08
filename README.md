@@ -7,7 +7,7 @@ I build agent infrastructure — memory, tooling, and interfaces that make AI sy
 ## Building
 
 - [r3](https://github.com/n3wth/r3) — persistent memory for AI apps over MCP. Local Redis, optional cloud sync. `npx @n3wth/r3`
-- [ui](https://github.com/n3wth/ui) — atomic design system for n3wth sites. Flat, minimal
+- [ui](packages/ui) — shared design system for n3wth sites
 - [canvas](https://github.com/n3wth/canvas) — live canvases with realtime sync
 - [gbrain](https://github.com/n3wth/gbrain) — personal knowledge base an agent can read and write
 - [skills](https://skills.n3wth.com) — reusable agent skills, installable via `curl -fsSL https://skills.n3wth.com/install.sh | bash`
@@ -18,15 +18,16 @@ I build agent infrastructure — memory, tooling, and interfaces that make AI sy
 Full docs for UI, Skills, and r3 — installation guides, examples, reference
 material, and troubleshooting — are at **[docs.n3wth.com](https://docs.n3wth.com)**.
 
-The docs source lives in this repository at `docs` (a Docs7 project).
+The docs source lives in this repository at `docs` (a Mintlify project).
 To run it locally after the root `npm ci`:
 
 ```bash
-npx @upstash/docs7 dev docs
+cd docs
+npx mint dev
 ```
 
 Validate with `node docs/check.mjs`. See [publishing and setup](docs/publishing.mdx)
-for the GitHub connection, production branch, and Context7 indexing configuration.
+for the GitHub connection and production branch.
 
 ## Workspace
 

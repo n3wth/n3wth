@@ -9,9 +9,6 @@ lerna-debug.log*
 
 node_modules
 dist
-.env
-.env.local
-.env.production.local
 dist-ssr
 *.local
 .worktrees
@@ -39,8 +36,6 @@ dist-ssr
 .vercel
 
 # Internal docs (contains SIDs, API references, playbooks)
-docs/
-!docs/
 docs/*
 !docs/*.mdx
 !docs/*.json
@@ -55,7 +50,6 @@ docs/*
 !docs/skills/
 !docs/skills/**
 .env*
-.vercel
 
 playwright-report/
 test-results/

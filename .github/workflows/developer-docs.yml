@@ -4,14 +4,12 @@ on:
   pull_request:
     paths:
       - 'docs/**'
-      - 'context7.json'
       - '.github/workflows/developer-docs.yml'
       - 'package-lock.json'
   push:
     branches: [main]
     paths:
       - 'docs/**'
-      - 'context7.json'
       - '.github/workflows/developer-docs.yml'
       - 'package-lock.json'
 

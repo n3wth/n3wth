@@ -1,5 +1,7 @@
 # Cloudflare Preview Implementation Plan
 
+Directory update (October 2026): current source paths are `apps/ui` and `apps/r3`. Older paths below describe historical snapshots; npm workspace and deployed preview names remain unchanged.
+
 > **For agentic workers:** Use superpowers:subagent-driven-development to implement each bounded task and review the integrated result.
 
 **Goal:** Deliver a verified UI docs preview pilot and reusable, safe PR preview lifecycle for the six-site migration.
@@ -31,9 +33,9 @@ Interface: base config named `n3wth-ui-docs-preview`, compatibility date 2026-09
 
 ## Task 2: Preview configuration and lifecycle
 
-Files: create `scripts/cloudflare-preview.mjs`, `scripts/cloudflare-preview.test.mjs`; controller owns CI workflow and package.json.
+Files: create `scripts/cloudflare/cloudflare-preview.mjs`, `scripts/cloudflare/cloudflare-preview.test.mjs`; controller owns CI workflow and package.json.
 
-Interface: CLI `node scripts/cloudflare-preview.mjs <deploy|delete|config> --app ui-docs --pr <positive-integer>`. Use local pinned Wrangler through argument-array subprocess invocation. `config` produces deterministic generated JSON config without deploying. `deploy` stages preview-only assets/headers, deploys exact named Worker + custom domain. `delete` removes only that exact named preview and associated owned domain/certificate if safely attributable. Missing Worker is an idempotent success; authentication/network errors fail.
+Interface: CLI `node scripts/cloudflare/cloudflare-preview.mjs <deploy|delete|config> --app ui-docs --pr <positive-integer>`. Use local pinned Wrangler through argument-array subprocess invocation. `config` produces deterministic generated JSON config without deploying. `deploy` stages preview-only assets/headers, deploys exact named Worker + custom domain. `delete` removes only that exact named preview and associated owned domain/certificate if safely attributable. Missing Worker is an idempotent success; authentication/network errors fail.
 
 - [ ] Validate action, app allowlist and number before filesystem or remote changes.
 - [ ] Never accept arbitrary account/domain/name flags; account comes from `CLOUDFLARE_ACCOUNT_ID`, exact preview host suffix is fixed.

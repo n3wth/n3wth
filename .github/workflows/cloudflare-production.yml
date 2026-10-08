@@ -41,24 +41,24 @@ jobs:
         shell: bash
         run: |
           if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
-            apps="$(node scripts/deploy-apps.mjs --slugs)"
+            apps="$(node scripts/cloudflare/deploy-apps.mjs --slugs)"
             echo "apps=$apps" >> "$GITHUB_OUTPUT"
             echo "Selected production apps: $apps"
           else
             node --input-type=module <<'JS'
           import { appendFileSync } from 'node:fs'
           import { execFileSync } from 'node:child_process'
-          import { DEPLOY_APP_SLUGS, deployAppForWorkspace } from './scripts/deploy-apps.mjs'
+          import { DEPLOY_APP_SLUGS, deployAppForWorkspace } from './scripts/cloudflare/deploy-apps.mjs'
 
           const base = process.env.BEFORE_SHA
-          const workspaces = JSON.parse(execFileSync(process.execPath, ['scripts/affected.mjs', '--base', base, '--list', '--deployment'], { encoding: 'utf8' }))
+          const workspaces = JSON.parse(execFileSync(process.execPath, ['scripts/workspace/affected.mjs', '--base', base, '--list', '--deployment'], { encoding: 'utf8' }))
           const files = execFileSync('git', ['diff', '--name-only', `${base}..HEAD`, '--'], { encoding: 'utf8' }).split('\n').filter(Boolean)
           const infrastructure = files.some(file => [
             '.github/workflows/cloudflare-production.yml',
             'package-lock.json',
-            'scripts/affected.mjs',
-            'scripts/build.mjs',
-            'scripts/deploy-apps.mjs',
+            'scripts/workspace/affected.mjs',
+            'scripts/workspace/build.mjs',
+            'scripts/cloudflare/deploy-apps.mjs',
           ].includes(file) || /^apps\/[^/]+\/(?:wrangler\.jsonc|worker\/wrangler\.jsonc)$/.test(file))
           const apps = infrastructure
             ? DEPLOY_APP_SLUGS
@@ -80,7 +80,7 @@ jobs:
         if: steps.affected.outputs.apps != ''
         env:
           BASE_SHA: ${{ github.event_name == 'workflow_dispatch' && '0000000000000000000000000000000000000000' || github.event.before }}
-        run: node scripts/affected.mjs --base "$BASE_SHA"
+        run: node scripts/workspace/affected.mjs --base "$BASE_SHA"
       - name: Build affected Cloudflare apps
         if: steps.affected.outputs.apps != ''
         env:

@@ -41,16 +41,16 @@ Use a separate test segment and topics for any provider integration test. Creden
 
 ```sh
 # Offline dry-run: validates provenance and reports aggregate eligibility only.
-node scripts/resend-newsletter-import.mjs --input /private/export.json --config /private/config.json
+node scripts/migrations/resend-newsletter-import.mjs --input /private/export.json --config /private/config.json
 
 # Provider dry-run: reads live suppression, contact, topic and segment state; no writes.
-node scripts/resend-newsletter-import.mjs --input /private/export.json --config /private/config.json --check-provider
+node scripts/migrations/resend-newsletter-import.mjs --input /private/export.json --config /private/config.json --check-provider
 
 # Only after verified live cutover and reviewed dry-run counts.
-node scripts/resend-newsletter-import.mjs --input /private/export.json --config /private/config.json --apply --live-cutover-confirmed
+node scripts/migrations/resend-newsletter-import.mjs --input /private/export.json --config /private/config.json --apply --live-cutover-confirmed
 
 # Focused tests use mocks and never contact providers.
-node --test scripts/resend-newsletter-import.test.mjs
+node --test scripts/migrations/resend-newsletter-import.test.mjs
 ```
 
 All output is aggregate counts. Provider bodies, addresses and input records are never logged. Save aggregate reports with the deployment evidence. For each provider run, `eligibleContacts` equals imported + existing + wouldImport + wouldUpdate + skippedSuppressed + skippedUnsubscribed + skippedTopicOptOut + failed. The `existing` count includes active contacts whose missing membership was repaired. Row-level exclusion counts describe input rows; eligible contacts are deduplicated, so these units differ.

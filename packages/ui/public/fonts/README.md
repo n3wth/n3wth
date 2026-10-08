@@ -12,7 +12,7 @@ directory, so these binaries are never redistributed on npm. **Do not replace th
 globs with `public/fonts`** — that would publish licensed binaries to a public
 registry.
 
-The release package check uses `scripts/pack-ui.mjs` to stage npm's allowlisted
+The release package check uses `scripts/ui/pack-ui.mjs` to stage npm's allowlisted
 files. It removes the excluded Suisse `@font-face` rules from the staged CSS and
 resolves shipped fonts through package-relative URLs. It does not change the
 workspace CSS or its licensed font assets.

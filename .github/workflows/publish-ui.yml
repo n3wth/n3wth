@@ -42,4 +42,4 @@ jobs:
       - run: npm run check:package
       # publish-ui.mjs skips versions already on the registry, so a manual
       # dispatch on main is a safe smoke test.
-      - run: node scripts/publish-ui.mjs
+      - run: node scripts/ui/publish-ui.mjs

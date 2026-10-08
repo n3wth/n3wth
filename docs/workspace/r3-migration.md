@@ -1,5 +1,7 @@
 # r3 website migration
 
+Directory update (October 2026): current source paths are `apps/ui` and `apps/r3`. Older paths below describe historical snapshots; npm workspace and deployed preview names remain unchanged.
+
 Source: n3wth/r3 main 895c27fe3525eb9cdb559180a08d302fa18ae0f9, matching the production snapshot. Only website/ is imported into apps/r3-web. Original repository history, core package and release authority remain in n3wth/r3.
 
 Next remains 15.5.19 and the registry UI package remains exactly 0.9.1. Direct dependency versions are pinned to the source lockfile. React/React DOM align from 19.1.0 to workspace 19.2.7, and React types align to 19.2.9/19.2.3 to avoid multiple React module identities and missing Three JSX augmentation. A stable environment.d.ts makes typecheck work before Next generates next-env.d.ts.

@@ -1,5 +1,7 @@
 # Cloudflare production cutover runbook
 
+Directory update (October 2026): current source paths are `apps/ui` and `apps/r3`. Older paths below describe historical snapshots; npm workspace and deployed preview names remain unchanged.
+
 Linear: N-715, "Cut over validated sites to Cloudflare with per-app rollback" (title confirmed against Linear on 2026-09-18).
 
 This document is a runbook. It does not authorize any production switch. See section 6.
@@ -165,7 +167,7 @@ The N-408 audit in `satellites.md` recorded dashboard root `website`, dashboard 
 
 Apply every general requirement below to every app.
 
-- Worker name convention, proposed and not yet in use for production: `n3wth-<app>`, for example `n3wth-portfolio`, `n3wth-ui-docs`, `n3wth-garden`, `n3wth-kit`, `n3wth-skills`, `n3wth-r3-web`. This mirrors the preview naming `n3wth-<app>-pr-<number>` in `scripts/cloudflare-preview.mjs`, minus the PR suffix. That script currently allows one app slug, `ui-docs`. Extend the allowlist before you rely on it for any other app.
+- Worker name convention, proposed and not yet in use for production: `n3wth-<app>`, for example `n3wth-portfolio`, `n3wth-ui-docs`, `n3wth-garden`, `n3wth-kit`, `n3wth-skills`, `n3wth-r3-web`. This mirrors the preview naming `n3wth-<app>-pr-<number>` in `scripts/cloudflare/cloudflare-preview.mjs`, minus the PR suffix. That script currently allows one app slug, `ui-docs`. Extend the allowlist before you rely on it for any other app.
 - Keep each canonical origin unchanged. `packages/site-config/index.js` declares them in the frozen `siteUrls` object. Note that the portfolio origin uses the key `home`.
   - portfolio, key `home`: https://n3wth.com
   - ui: https://ui.n3wth.com
@@ -173,7 +175,7 @@ Apply every general requirement below to every app.
   - kit: https://kit.n3wth.com
   - skills: https://skills.n3wth.com
   - r3: https://r3.n3wth.com
-- Keep `X-Robots-Tag: noindex, nofollow` out of production assets. `scripts/cloudflare-preview.mjs` injects that header through `injectPreviewHeaders`, which writes a `_headers` file into the staged directory `.cloudflare/<app>-pr-<pr>/assets`. Point each production Worker config at the app's real asset directory. Do not run the injection step for production.
+- Keep `X-Robots-Tag: noindex, nofollow` out of production assets. `scripts/cloudflare/cloudflare-preview.mjs` injects that header through `injectPreviewHeaders`, which writes a `_headers` file into the staged directory `.cloudflare/<app>-pr-<pr>/assets`. Point each production Worker config at the app's real asset directory. Do not run the injection step for production.
 - Register one exact Workers Custom Domain per production hostname: n3wth.com, ui.n3wth.com, garden.n3wth.com, kit.n3wth.com, skills.n3wth.com, r3.n3wth.com. Do not register a wildcard domain. Cloudflare provisions the DNS record and certificate for each one. The preview contract in `cloudflare-migration.md` already relies on that behavior.
 - Set secrets per Worker with `wrangler secret put <NAME>`. Run one command per name. Target the production Worker only. Write names only. Never write a value into this document or into any script argument list.
 
@@ -186,7 +188,7 @@ Apply every general requirement below to every app.
 
 ### UI docs
 
-- The preview pilot already provides a static-asset Worker design. Its files are `apps/ui-docs/wrangler.jsonc`, `apps/ui-docs/public/_headers`, `apps/ui-docs/public/_redirects`, and `scripts/cloudflare-preview.mjs`. Reuse the same asset build and the same header and redirect files for production. Bind the exact custom domain ui.n3wth.com instead of a `*-pr-*.preview.n3wth.com` host. Skip the preview noindex injection.
+- The preview pilot already provides a static-asset Worker design. Its files are `apps/ui-docs/wrangler.jsonc`, `apps/ui-docs/public/_headers`, `apps/ui-docs/public/_redirects`, and `scripts/cloudflare/cloudflare-preview.mjs`. Reuse the same asset build and the same header and redirect files for production. Bind the exact custom domain ui.n3wth.com instead of a `*-pr-*.preview.n3wth.com` host. Skip the preview noindex injection.
 - Give the production Worker its own name. The committed config in `apps/ui-docs/wrangler.jsonc` names the Worker `n3wth-ui-docs-preview`, sets `compatibility_date` 2026-09-18, disables `workers_dev` and `preview_urls`, and serves `./dist` with `html_handling` `drop-trailing-slash` and `not_found_handling` `404-page`.
 - Check the `/docs` redirect status code before cutover. Vercel returns a 308 for the `permanent: true` rule in `apps/ui-docs/vercel.json`. The Cloudflare `_redirects` file declares 301. Decide which code production should return, then record the decision and the observed code.
 - `environments.json` records no environment variables for the `ui` project.

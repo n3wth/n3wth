@@ -1,5 +1,15 @@
 # @n3wth/ui
 
+## Unreleased
+
+### Minor Changes
+
+- Add `SiteSignup`, a one-line email capture with app-owned delivery, and a `signup` slot on `SiteFooter` above the identity row.
+
+### Patch Changes
+
+- Keep newsletter signup fields out of PostHog autocapture and session replay.
+
 ## 2.1.1
 
 ### Patch Changes
