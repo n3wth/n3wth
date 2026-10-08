@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentRef } from 'react'
 import { Html, Line, useCursor } from '@react-three/drei'
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
-import { Button } from '@n3wth/ui/primitives'
+import { IconButton } from '@n3wth/ui/primitives'
+import { X } from 'lucide-react'
 import * as THREE from 'three'
 import { hashString, layoutWritingGroves, plantSegments, type WritingWorld } from '../lib/writingGroves'
 import './writingGroves.css'
@@ -265,7 +266,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
       <div ref={focusPanel} tabIndex={-1} className="writing-grove-panel" role="region" aria-label="Selected writing">
         <div className="writing-grove-heading">
           <h2>{current.title}</h2>
-          <Button label="Close" variant="ghost" size="sm" clickAction={() => setSelected(null)} />
+          <IconButton label="Close note" icon={<X size={16} strokeWidth={1.5} aria-hidden="true" />} variant="ghost" size="sm" className="writing-grove-close" clickAction={() => setSelected(null)} />
         </div>
         {current.description && <p>{current.description}</p>}
         <div className="writing-grove-links">
@@ -274,8 +275,6 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
             event.preventDefault()
             onEnter(current.id)
           }}>Read</a>
-          {current.tags.map((tag) => <a key={tag} href={`/thinking?topic=${encodeURIComponent(tag)}`}>{tag}</a>)}
-          <a href="/thinking">All thinking</a>
         </div>
       </div>
     </Html>}
