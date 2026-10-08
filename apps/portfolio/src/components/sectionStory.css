@@ -35,6 +35,11 @@
   }
 }
 
+/* Center the arches; the sweeping background lines remain full bleed. */
+.section-story--art svg {
+  left: 50%;
+}
+
 /* The root is y=740 within the -25…835 camera; anchor it to the hero floor. */
 .section-story--thinking svg {
   --story-size: min(150vw, 108svh);

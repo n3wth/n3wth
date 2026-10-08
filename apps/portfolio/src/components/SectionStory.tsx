@@ -132,7 +132,7 @@ function ContactStory() {
 const stories = { work: WorkStory, art: ArtStory, thinking: ThinkingStory, projects: ProjectsStory, library: LibraryStory, contact: ContactStory }
 const storyBounds: Record<SectionStoryKind, string> = {
   work: '575 15 620 620',
-  art: '510 40 760 760',
+  art: '458 50 760 760',
   thinking: '460 -25 860 860',
   projects: '-20 -55 760 760',
   library: '465 55 690 690',
