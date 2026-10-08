@@ -3,7 +3,7 @@ import { Html, Line, useCursor } from '@react-three/drei'
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { Button } from '@n3wth/ui/primitives'
 import * as THREE from 'three'
-import { layoutWritingGroves, plantSegments, type WritingWorld } from '../lib/writingGroves'
+import { hashString, layoutWritingGroves, plantSegments, type WritingWorld } from '../lib/writingGroves'
 import './writingGroves.css'
 
 const EMPTY_WORLD: WritingWorld = { nodes: [], edges: [] }
@@ -12,8 +12,8 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
   const [world, setWorld] = useState<WritingWorld>(EMPTY_WORLD)
   const [selected, setSelected] = useState<string | null>(null)
   const [hovered, setHovered] = useState<string | null>(null)
-  const [ambient, setAmbient] = useState<{ points: THREE.Vector3[]; length: number } | null>(null)
-  const trail = useRef<ComponentRef<typeof Line>>(null)
+  const [ambient, setAmbient] = useState<{ id: string; points: THREE.Vector3[]; length: number }[]>([])
+  const trails = useRef(new Map<string, ComponentRef<typeof Line>>())
   const panel = useRef<HTMLDivElement>(null)
   const focusPanel = useCallback((element: HTMLDivElement | null) => {
     panel.current = element
@@ -23,7 +23,8 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
   const leaves = useRef<THREE.InstancedMesh>(null)
   const hits = useRef<THREE.InstancedMesh>(null)
   const blooms = useRef<THREE.InstancedMesh>(null)
-  const light = useRef({ from: '', to: '', started: -10, lastFrame: -1 })
+  const light = useRef({ from: '', targets: new Set<string>(), started: -10 })
+  const wind = useRef({ plants: new Map<string, { seed: number; delta: THREE.Matrix4 }>(), instances: [] as { mesh: THREE.InstancedMesh; index: number; base: THREE.Matrix4; delta: THREE.Matrix4 }[], matrix: new THREE.Matrix4() })
   const palette = useRef({ bark: new THREE.Color('#8a7a68'), leaf: new THREE.Color('#b9c9a8'), active: new THREE.Color('#ffce8a'), pulse: new THREE.Color('#b9c9a8').multiplyScalar(3), mixed: new THREE.Color() })
   const aspect = useThree(({ size }) => size.width / size.height)
   const invalidate = useThree(({ invalidate }) => invalidate)
@@ -70,6 +71,17 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
   }), [world.edges, selected, treeById])
 
   useLayoutEffect(() => {
+    wind.current.instances = []
+    wind.current.plants.clear()
+    const remember = (mesh: THREE.InstancedMesh | null, index: number, id: string, matrix: THREE.Matrix4) => {
+      if (!mesh) return
+      let plant = wind.current.plants.get(id)
+      if (!plant) {
+        plant = { seed: hashString(id) / 4294967296, delta: new THREE.Matrix4() }
+        wind.current.plants.set(id, plant)
+      }
+      wind.current.instances.push({ mesh, index, base: matrix.clone(), delta: plant.delta })
+    }
     const dummy = new THREE.Object3D()
     const up = new THREE.Vector3(0, 1, 0)
     const direction = new THREE.Vector3()
@@ -84,6 +96,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
       dummy.quaternion.setFromUnitVectors(up, direction.normalize())
       dummy.updateMatrix()
       stems.current?.setMatrixAt(index, dummy.matrix)
+      remember(stems.current, index, segment.treeId, dummy.matrix)
     })
     foliage.forEach((segment, index) => {
       dummy.position.set(...segment.b)
@@ -91,6 +104,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
       dummy.scale.set(0.1, 0.025, 0.2)
       dummy.updateMatrix()
       leaves.current?.setMatrixAt(index, dummy.matrix)
+      remember(leaves.current, index, segment.treeId, dummy.matrix)
     })
     trees.forEach((tree, index) => {
       dummy.position.set(tree.x, tree.height * 0.65, tree.z)
@@ -98,6 +112,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
       dummy.scale.set(0.55, Math.max(0.6, tree.height * 0.65), 0.55)
       dummy.updateMatrix()
       hits.current?.setMatrixAt(index, dummy.matrix)
+      remember(hits.current, index, tree.id, dummy.matrix)
     })
     flowers.forEach((tree, index) => {
       dummy.position.set(tree.x, tree.height, tree.z)
@@ -105,6 +120,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
       dummy.scale.setScalar(tree.stage === 'evergreen' ? .12 : .045)
       dummy.updateMatrix()
       blooms.current?.setMatrixAt(index, dummy.matrix)
+      remember(blooms.current, index, tree.id, dummy.matrix)
     })
     for (const mesh of [stems.current, leaves.current, hits.current, blooms.current]) {
       if (!mesh) continue
@@ -134,34 +150,48 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
   }
 
   useFrame(({ clock }) => {
-    if (reducedMotion || !edges.length) return
+    if (reducedMotion) return
     const colors = palette.current
     const time = clock.elapsedTime
     const state = light.current
-    if (time - state.lastFrame < 1 / 24) return
-    state.lastFrame = time
+    const motion = wind.current
+    motion.plants.forEach(({ seed, delta }) => {
+      delta.elements[4] = Math.sin(time * (.38 + seed * .3) + seed * 20) * (.018 + seed * .025)
+      delta.elements[6] = Math.sin(time * (.27 + seed * .2) + seed * 31) * .022
+    })
+    motion.instances.forEach(({ mesh, index, base, delta }) => {
+      motion.matrix.multiplyMatrices(delta, base)
+      mesh.setMatrixAt(index, motion.matrix)
+    })
+    for (const mesh of [stems.current, leaves.current, hits.current, blooms.current]) {
+      if (mesh) mesh.instanceMatrix.needsUpdate = true
+    }
+    if (!edges.length) return
     if (time - state.started > 5) {
-      const onward = edges.filter(edge => edge.source === state.to || edge.target === state.to)
-      const candidates = onward.length ? onward : edges
-      const edge = candidates[Math.floor(Math.random() * candidates.length)]
-      state.from = edge.target === state.to ? edge.target : edge.source
-      state.to = state.from === edge.source ? edge.target : edge.source
+      const edge = edges[Math.floor(Math.random() * edges.length)]
+      state.from = Math.random() < .5 ? edge.source : edge.target
+      state.targets = new Set(edges.filter(item => item.source === state.from || item.target === state.from)
+        .map(item => item.source === state.from ? item.target : item.source))
       const a = treeById.get(state.from)!
-      const b = treeById.get(state.to)!
-      const curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(a.x, a.height, a.z), new THREE.Vector3((a.x + b.x) / 2, Math.max(a.height, b.height) + 2, (a.z + b.z) / 2), new THREE.Vector3(b.x, b.height, b.z))
-      setAmbient({ points: curve.getPoints(32), length: curve.getLength() })
+      setAmbient([...state.targets].map(id => {
+        const b = treeById.get(id)!
+        const curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(a.x, a.height, a.z), new THREE.Vector3((a.x + b.x) / 2, Math.max(a.height, b.height) + 2, (a.z + b.z) / 2), new THREE.Vector3(b.x, b.height, b.z))
+        return { id, points: curve.getPoints(32), length: curve.getLength() }
+      }))
       state.started = time
     }
     const age = time - state.started
-    if (trail.current && ambient) {
-      trail.current.visible = !selected && age >= 1 && age <= 2.6
-      trail.current.material.dashOffset = -(age - 1) / 1.6 * ambient.length
-    }
+    ambient.forEach(connection => {
+      const trail = trails.current.get(connection.id)
+      if (!trail) return
+      trail.visible = !selected && age >= 1 && age <= 2.6
+      trail.material.dashOffset = -(age - 1) / 1.6 * connection.length
+    })
     const paint = (mesh: THREE.InstancedMesh | null, index: number, treeId: string, y: number, base: THREE.Color) => {
       if (!mesh) return
       const height = treeById.get(treeId)?.height ?? 1
       const arrival = treeId === state.from ? y / height
-        : treeId === state.to ? 2.6 + 1 - y / height : -10
+        : state.targets.has(treeId) ? 2.6 + 1 - y / height : -10
       const amount = Math.max(0, 1 - Math.abs(age - arrival) / .65)
       mesh.setColorAt(index, treeId === selected || treeId === hovered
         ? colors.active : colors.mixed.copy(base).lerp(colors.pulse, amount))
@@ -171,7 +201,7 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
     if (stems.current?.instanceColor) stems.current.instanceColor.needsUpdate = true
     if (leaves.current?.instanceColor) leaves.current.instanceColor.needsUpdate = true
     flowers.forEach((tree, index) => {
-      const arrival = tree.id === state.from ? 1 : tree.id === state.to ? 2.6 : -10
+      const arrival = tree.id === state.from ? 1 : state.targets.has(tree.id) ? 2.6 : -10
       const amount = Math.max(0, 1 - Math.abs(age - arrival) / .65)
       blooms.current?.setColorAt(index, colors.mixed.copy(colors.leaf).multiplyScalar(.8 + amount * 2))
     })
@@ -179,7 +209,10 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
   })
 
   return <>
-    {!reducedMotion && ambient && <Line ref={trail} points={ambient.points} color="#e2e8d8" dashed dashSize={1.4} gapSize={1000} transparent opacity={.8} toneMapped={false} lineWidth={1.5} raycast={() => null} />}
+    {!reducedMotion && ambient.map(connection => <Line key={connection.id} ref={line => {
+      if (line) trails.current.set(connection.id, line)
+      else trails.current.delete(connection.id)
+    }} points={connection.points} color="#e2e8d8" dashed dashSize={1.4} gapSize={1000} transparent opacity={.8} toneMapped={false} lineWidth={1.5} raycast={() => null} />)}
     <Html center position={[compact ? -4.2 * spread : -6, -.8, -13]} zIndexRange={[20, 10]}>
       <a className="world-portal-link" href="/thinking#notes" aria-label="Notes" onClick={(event) => {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return

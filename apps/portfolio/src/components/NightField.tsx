@@ -1240,6 +1240,37 @@ function SceneReady({ onReady }: { onReady: () => void }) {
   return null
 }
 
+// Demand rendering avoids running the entire scene at the monitor's refresh
+// rate. Keep the last frame while the canvas is offscreen or the tab is hidden.
+function SceneCadence({ reducedMotion }: { reducedMotion: boolean }) {
+  const gl = useThree(state => state.gl)
+  const invalidate = useThree(state => state.invalidate)
+  useEffect(() => {
+    if (reducedMotion) return
+    let intersecting = false
+    let timer: ReturnType<typeof setInterval> | undefined
+    const update = () => {
+      clearInterval(timer)
+      timer = undefined
+      if (!intersecting || document.hidden) return
+      invalidate()
+      timer = setInterval(invalidate, 1000 / 30)
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      intersecting = entry.isIntersecting
+      update()
+    })
+    observer.observe(gl.domElement)
+    document.addEventListener('visibilitychange', update)
+    return () => {
+      clearInterval(timer)
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', update)
+    }
+  }, [gl, invalidate, reducedMotion])
+  return null
+}
+
 function WorldInterface({ ready }: { ready: boolean }) {
   return (
     <>
@@ -1294,12 +1325,13 @@ export default function NightField({ onEnter, reducedMotion, softwareRendering =
     <Canvas
       shadows={!softwareRendering}
       className={labelsReady ? 'night-field-stage is-settled' : 'night-field-stage'}
-      dpr={softwareRendering ? 1 : 2}
+      dpr={softwareRendering ? 1 : [1, 1.5]}
       camera={{ position: [0, 3.2, 22], fov: 48 }}
       gl={{ antialias: !softwareRendering, powerPreference: 'high-performance' }}
-      frameloop={reducedMotion ? 'demand' : 'always'}
+      frameloop="demand"
       style={{ position: 'absolute', inset: 0 }}
     >
+      <SceneCadence reducedMotion={reducedMotion} />
       <color attach="background" args={['#0e1113']} />
       <fog attach="fog" args={['#0e1113', 30, 145]} />
       <ambientLight intensity={0.1} />

@@ -233,8 +233,8 @@ test('projects index connects navigation, product pages and documentation', asyn
   await expect(page.getByRole('heading', { level: 1, name: 'Projects', exact: true })).toBeVisible()
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://n3wth.com/projects')
   const navigation = page.locator('.n3wth-site-navigation-links')
-  await expect(navigation.locator('a').nth(0)).toHaveText('Projects')
-  await expect(navigation.locator('a').nth(1)).toHaveText('Work')
+  await expect(navigation.locator('a').nth(0)).toHaveText('Work')
+  await expect(navigation.locator('a').nth(1)).toHaveText('Projects')
   for (const slug of ['ui', 'r3', 'skills']) {
     const feature = page.locator(`.project-feature--${slug}`)
     const copy = await feature.locator('.project-feature-copy').boundingBox()
@@ -463,6 +463,15 @@ test('hybrid planting remains navigable with motion', async ({ page }, testInfo)
   test.setTimeout(60_000)
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
+  await page.addInitScript(() => {
+    const original = WebGL2RenderingContext.prototype.drawElements
+    let draws = 0
+    Object.defineProperty(window, '__sceneDraws', { get: () => draws })
+    WebGL2RenderingContext.prototype.drawElements = function (...args) {
+      draws++
+      return original.apply(this, args)
+    }
+  })
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/')
   await expect(page.locator('.night-field-stage.is-settled')).toBeVisible({ timeout: 45_000 })
@@ -470,12 +479,27 @@ test('hybrid planting remains navigable with motion', async ({ page }, testInfo)
   await expect(notes).toBeVisible()
   await notes.focus()
   await page.screenshot({ path: testInfo.outputPath('hybrid-planting.png') })
-  if (testInfo.project.name === 'portfolio-852') {
-    for (let frame = 1; frame <= 4; frame++) {
-      await page.waitForTimeout(1000)
-      await page.screenshot({ path: testInfo.outputPath(`plant-connection-${frame}.png`) })
-    }
-  }
+  // Real WebGL draw calls stop below the scene and resume when it returns.
+  const draws = () => page.evaluate(() => Reflect.get(window, '__sceneDraws') as number)
+  expect(await draws()).toBeGreaterThan(0)
+  // The home page is intentionally short; add scroll room for this lifecycle check.
+  await page.evaluate(() => {
+    const spacer = document.createElement('div')
+    spacer.id = 'test-scroll-room'
+    spacer.style.height = '100vh'
+    document.body.append(spacer)
+    window.scrollTo(0, document.body.scrollHeight)
+  })
+  await expect.poll(() => page.locator('.night-field-stage').evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThanOrEqual(0)
+  await page.waitForTimeout(500)
+  const paused = await draws()
+  await page.waitForTimeout(500)
+  expect(await draws()).toBe(paused)
+  await page.evaluate(() => {
+    document.getElementById('test-scroll-room')?.remove()
+    window.scrollTo(0, 0)
+  })
+  await expect.poll(draws).toBeGreaterThan(paused)
   await notes.press('Enter')
   await expect(page).toHaveURL(/\/thinking#notes$/)
   expect(errors).toEqual([])
