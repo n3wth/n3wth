@@ -1,0 +1,30 @@
+# Oliver Newth (n3wth.com)
+
+> Oliver Newth is an AI Product Lead at Google (2025 to present), developing AI platforms that integrate DeepMind models into production software. Previously at Covariant, Meta, and Microsoft. MEng from MIT (Kennedy Scholar). His independent AI projects are separate from his work at Google. He also builds large-scale light installations for Burning Man and San Francisco memorials.
+
+## Pages
+
+- [Home](https://n3wth.com/): Who Oliver is — AI at Google, art in the desert.
+- [Work](https://n3wth.com/work): A decade of AI in production (Google, Covariant, Meta, Microsoft) and independent projects.
+- [After dark](https://n3wth.com/art): Light installations. THEM — Lighting and Circle of Light ring. Design: Simón Malvaez. Fabrication: Brenden Blaine Darby. Fractured Atlas. Black Rock City, Nevada, 2022. Pink Triangle — Project coordination as part of Illuminate on Patrick Carney’s Pride memorial. Twin Peaks, San Francisco, 2022. Circle of Light — World AIDS Day memorial for the National AIDS Memorial. AIDS Memorial Grove, San Francisco, 2021.
+- [Thinking](https://n3wth.com/thinking): Positions on production AI and agents as an org-design problem, with interactive AI-safety trade-off walkthroughs.
+- [Library](https://n3wth.com/library): The installable pieces — the essay kit, the @n3wth/ui component library, and the garden's structure, each with getting-started instructions.
+- [Contact](https://n3wth.com/contact): hey@n3wth.com — product, AI safety, LED art, or coffee in San Francisco.
+- [Support](https://n3wth.com/support): support@n3wth.com — one inbox for every n3wth project.
+- [RSS feed](https://n3wth.com/feed.xml): New thinking pieces.
+
+## Live products
+
+Products designed by Oliver, kept shipping by an autonomous agent team:
+
+- [hop.flights](https://hop.flights/): Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.
+- [lunchmoney.sh](https://lunchmoney.sh/): Unofficial Lunch Money plugin for Claude, Codex, and Cursor. Read-only spending, budgets, and bills.
+- [r3](https://n3wth.com/projects/r3): Memory for AI apps using vector search and knowledge graphs.
+- [@n3wth/ui](https://n3wth.com/projects/ui): Shared React components, theme tokens, and page compositions.
+- [garden](https://n3wth.com/thinking): A digital garden of interconnected working notes. Notes carry growth stages (seedling, budding, evergreen) and are gathered into groves. Read notes in Thinking.
+
+## Ecosystem
+
+- [GitHub](https://github.com/n3wth): Open source.
+- newth.ai redirects to n3wth.com.
+- here.n3wth.com is a host for here.now pages, not a product homepage.

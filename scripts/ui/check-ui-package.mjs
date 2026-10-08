@@ -115,7 +115,8 @@ try {
     name: 'n3wth-ui-next-consumer',
     private: true,
     type: 'module',
-    dependencies: { ...consumer.dependencies, next: lock.packages['node_modules/next'].version },
+    // Next is a compatibility fixture, not a workspace runtime dependency.
+    dependencies: { ...consumer.dependencies, next: '16.3.5' },
     devDependencies: { gsap: consumer.devDependencies.gsap },
   }, null, 2))
   execFileSync('npm', ['install', '--no-audit', '--no-fund'], { cwd: nextDirectory, stdio: 'inherit' })

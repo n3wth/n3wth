@@ -63,8 +63,9 @@ function rejects(root, pattern) {
 test('current repository keeps unique names, internal deps and a complete root build', () => {
   const workspaces = checkInvariants(repo)
   const apps = workspaces.filter(workspace => workspace.path.startsWith('apps/')).map(workspace => workspace.path.replace('apps/', ''))
-  for (const site of ['garden', 'portfolio', 'r3', 'skills', 'ui']) assert.ok(apps.includes(site), `missing site workspace ${site}`)
-  assert.equal(workspaces.filter(workspace => workspace.path.startsWith('apps/') && workspace.scripts?.build).length, 5)
+  for (const site of ['garden', 'portfolio', 'r3', 'ui']) assert.ok(apps.includes(site), `missing site workspace ${site}`)
+  assert.ok(!apps.includes('skills'), 'retired Skills downloads are not a workspace')
+  assert.equal(workspaces.filter(workspace => workspace.path.startsWith('apps/') && workspace.scripts?.build).length, 4)
 })
 
 test('hardcoded root builds fail instead of omitting apps', () => {

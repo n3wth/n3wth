@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { PanelsTopLeft, FileText, Braces } from 'lucide-react'
 import { Button, CheckboxInput, Switch, TextInput } from '@n3wth/ui/primitives'
 import './project-pages.css'
 
@@ -44,7 +43,7 @@ export function ProjectVisual({ slug }: { slug: string }) {
         </div>
         <div className="project-swatches" aria-label="Neutral and semantic color tokens" role="img"><i /><i /><i /><i /><i /><i /></div>
         <div className="project-control-specimen">
-          <Button label="Components" variant="primary" href="https://docs.n3wth.com/ui/primitives" />
+          <Button label="Components" variant="primary" href="/docs/ui/primitives" />
           <Button label="Reset" variant="secondary" clickAction={() => { setSample('Make it yours.'); setChecked(true); setEnabled(true) }} />
         </div>
         <div className="project-input-specimen"><TextInput label="Edit the headline" placeholder="Type something" value={sample} onChange={setSample} /></div>
@@ -53,12 +52,6 @@ export function ProjectVisual({ slug }: { slug: string }) {
           <Switch label="Enabled" value={enabled} onChange={setEnabled} />
         </div>
       </div>
-    </> : <>
-      <ul className="project-skill-collection">
-        <li><a href="https://skills.n3wth.com/skill/frontend-design"><PanelsTopLeft aria-hidden="true" /><span><strong>Frontend Design</strong><span>Build React interfaces with clear type and spacing.</span></span></a></li>
-        <li><a href="https://skills.n3wth.com/skill/pdf"><FileText aria-hidden="true" /><span><strong>PDF Toolkit</strong><span>Extract tables, merge files, and process forms.</span></span></a></li>
-        <li><a href="https://skills.n3wth.com/skill/webapp-testing"><Braces aria-hidden="true" /><span><strong>Webapp Testing</strong><span>Test local apps and capture browser screenshots.</span></span></a></li>
-      </ul>
-    </>}
+    </> : null}
   </figure>
 }

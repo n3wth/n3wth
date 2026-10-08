@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useReducedMotion } from '@n3wth/ui'
 import { buildEdgePath } from './edgePath'
 
 /**
@@ -45,10 +46,7 @@ interface EdgePath {
 }
 
 export function FlowDiagram({ nodes, edges, width = 1000, height = 220, className }: FlowDiagramProps) {
-  const reduced = useMemo(
-    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    []
-  )
+  const reduced = useReducedMotion()
 
   const paths = useMemo<EdgePath[]>(() => {
     const byId = new Map(nodes.map((n) => [n.id, n]))

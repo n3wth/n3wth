@@ -4,7 +4,7 @@ import { DEPLOY_APP_SLUGS } from './deploy-apps.mjs'
 import { createHash } from 'node:crypto'
 
 // Retain identity support so old migrated-site previews can still be cleaned up.
-export const PREVIEW_APPS = new Set([...DEPLOY_APP_SLUGS, 'ui-docs', 'r3-web'])
+export const PREVIEW_APPS = new Set([...DEPLOY_APP_SLUGS, 'ui-docs', 'r3-web', 'skills'])
 const PREVIEW_SUFFIX = 'preview.n3wth.com'
 const STATEFUL_BINDINGS = ['d1_databases', 'r2_buckets', 'kv_namespaces', 'durable_objects', 'hyperdrive', 'queues', 'vectorize', 'mtls_certificates']
 
@@ -172,7 +172,6 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   delete config.route
   // Production-only environment sections must never survive a preview override.
   delete config.env
-  if (app === 'skills') config.vars = { ...config.vars, BETTER_AUTH_URL: `https://${identity.host}` }
   if (app === 'garden') config.vars = { ...config.vars, TARGET_ORIGIN: `https://${previewIdentity('portfolio', pr).host}` }
   if (config.assets?.directory) config.assets = { ...config.assets, directory: absolutePath(config.assets.directory, sourcePath) }
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)

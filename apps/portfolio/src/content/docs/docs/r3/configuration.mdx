@@ -1,0 +1,91 @@
+---
+title: "Configuration"
+sidebar:
+  label: "Configuration"
+  order: 21
+description: "Set environment variables on the r3 MCP process to choose storage backends, intelligence modes, and optional Mem0 cloud sync."
+---
+
+import { Aside, TabItem, Tabs } from '@astrojs/starlight/components'
+
+
+You configure r3 through environment variables passed to the process your MCP client launches. This page covers the available variables, storage backends, intelligence modes, and an example with cloud sync enabled.
+
+## Environment variables
+
+#### `MEM0_API_KEY`
+
+`string`
+
+Enables Mem0 cloud sync. When unset, r3 runs entirely local and nothing leaves your machine.
+
+#### `REDIS_URL`
+
+`string` · Default: `embedded`
+
+URL of an external Redis server. Leave unset to use the embedded Redis server (recommended for most setups).
+
+#### `MEM0_USER_ID`
+
+`string` · Default: `default`
+
+Default namespace for memory isolation. Individual tool calls can override this with the `user_id` argument.
+
+#### `INTELLIGENCE_MODE`
+
+`string` · Default: `enhanced`
+
+Set to `enhanced` (default) or `basic`. Enhanced mode adds entity extraction, knowledge graph tools, and HuggingFace embeddings. Basic mode uses a simpler word-hash fallback.
+
+#### `DEBUG`
+
+`boolean` · Default: `false`
+
+Enable debug logging to stderr. Keep quiet mode enabled for normal MCP use so stdout stays reserved for protocol messages.
+
+## Storage backends
+
+### Embedded Redis
+
+r3 uses `redis-memory-server` to download and manage a local Redis binary automatically. It stores memory content and metadata. If the embedded server cannot start, r3 falls back to an in-process store. No external Redis installation is required.
+
+### Local vector index
+
+r3 maintains a file-backed vector index at `./data/vectra-index` relative to the process working directory. This powers semantic search with no network calls. Keep the working directory stable so the index path does not change between restarts.
+
+### Mem0 cloud (optional)
+
+Setting `MEM0_API_KEY` activates Mem0 cloud sync. Without a key, r3 operates entirely offline. With a key, writes are also sent to Mem0 so memories can follow you across devices.
+
+## Intelligence modes
+
+<Tabs>
+  <TabItem label="Enhanced (default)">
+    Enhanced mode is the default. It adds three extra tools: `extract_entities`, `get_knowledge_graph`, and `find_connections`. It also loads `@huggingface/transformers` embeddings for semantic search. This mode needs network access for the initial model download and more CPU for inference.
+  </TabItem>
+  <TabItem label="Basic">
+    Basic mode skips the HuggingFace model and entity extraction. Semantic search falls back to a word-hash implementation. Use this mode if you want faster startup, lower resource usage, or if enhanced initialization fails.
+  </TabItem>
+</Tabs>
+
+## Example: cloud sync enabled
+
+Add the `env` block to your MCP config to enable Mem0 cloud sync:
+
+```json
+{
+  "mcpServers": {
+    "r3": {
+      "command": "npx",
+      "args": ["@n3wth/r3"],
+      "env": {
+        "MEM0_API_KEY": "mem0_..."
+      }
+    }
+  }
+}
+```
+
+<Aside type="caution">
+  Verify restart behavior in the same working directory before treating r3 as your only copy. Local Redis records have a 30-day TTL, and the embedded backend does not configure explicit persistence. Test a write, read, and restart cycle with data you can afford to lose.
+</Aside>

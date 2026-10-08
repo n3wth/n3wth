@@ -1,10 +1,13 @@
-import { Fragment, Suspense, lazy } from 'react'
+import { Fragment } from 'react'
 import type { ComponentType } from 'react'
-import { RouterLink } from '../RouterLink'
 import { Shelf, CodeBlock } from './Shelf'
 import { kitPrimitives } from '../../data/library'
 import type { KitPrimitive } from '../../data/library'
 import { registeredPieces } from '../thinking/registry'
+import DemoBeat from './DemoBeat'
+import DemoRails from './DemoRails'
+import DemoFlow from './DemoFlow'
+import DemoField from './DemoField'
 
 /**
  * The essay kit shelf: the only place these eight components are written
@@ -15,17 +18,16 @@ import { registeredPieces } from '../thinking/registry'
  * the margin — so the page documenting the kit is laid out the way the
  * kit lays out everything else.
  *
- * Only four primitives get a live specimen, and each is lazy so /library's
- * first chunk stays small. The two react-three-fiber demos are deliberately
+ * Four small specimens render with the page. The two react-three-fiber demos are deliberately
  * absent: importing either would pull three.js and a .glb into a page that
  * is otherwise text, and /thinking/night-field already runs both.
  */
 
 const DEMOS: Record<NonNullable<KitPrimitive['demo']>, ComponentType> = {
-  beat: lazy(() => import('./DemoBeat')),
-  toggle: lazy(() => import('./DemoRails')),
-  flow: lazy(() => import('./DemoFlow')),
-  field: lazy(() => import('./DemoField')),
+  beat: DemoBeat,
+  toggle: DemoRails,
+  flow: DemoFlow,
+  field: DemoField,
 }
 
 /** Real title for a "seen in" link, straight off the piece registry so it
@@ -91,9 +93,9 @@ function KitRow({ primitive }: { primitive: KitPrimitive }) {
             {primitive.usedIn && (
               <p className="mt-4 text-sm leading-snug" style={{ color: 'var(--ink-dim)' }}>
                 Seen in{' '}
-                <RouterLink href={`/thinking/${primitive.usedIn}`} className="link-underline">
+                <a href={`/thinking/${primitive.usedIn}`} className="link-underline">
                   {pieceTitle(primitive.usedIn)}
-                </RouterLink>
+                </a>
               </p>
             )}
           </div>
@@ -107,9 +109,7 @@ function KitRow({ primitive }: { primitive: KitPrimitive }) {
         <div className="mt-10">
           <p className="index">Live</p>
           <div className="mt-5">
-            <Suspense fallback={<div className="h-36" aria-hidden />}>
-              <Demo />
-            </Suspense>
+            <Demo />
           </div>
         </div>
       )}
@@ -126,9 +126,9 @@ export function KitShelf() {
         <>
           Eight components used in the Thinking essays, with props, source links, and four live demos.
           The two 3D demos are in{' '}
-          <RouterLink href="/thinking/night-field" className="link-underline">
+          <a href="/thinking/night-field" className="link-underline">
             What the night field broke
-          </RouterLink>
+          </a>
           .
         </>
       }

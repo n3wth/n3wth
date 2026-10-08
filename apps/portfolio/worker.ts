@@ -3,16 +3,13 @@ import type { SubscribeEnv } from './api/subscribe'
 
 interface Env extends SubscribeEnv {
   ASSETS: { fetch(request: Request): Promise<Response> }
-  GEMINI_API_KEY?: string
-  OPENROUTER_API_KEY?: string
-  GITHUB_TOKEN?: string
   RESEND_API_KEY?: string
   RESEND_SEGMENT_ID?: string
   SUBSCRIBE?: { limit(options: { key: string }): Promise<{ success: boolean }> }
 }
 
 function cacheControl(path: string): string {
-  if (path.startsWith('/assets/') || path.startsWith('/fonts/')) return 'public, max-age=31536000, immutable'
+  if (path.startsWith('/_astro/') || path.startsWith('/assets/') || path.startsWith('/fonts/')) return 'public, max-age=31536000, immutable'
   return 'public, max-age=0, must-revalidate'
 }
 
@@ -39,6 +36,17 @@ function withCacheHeaders(request: Request, response: Response): Response {
 
 export default {
   async fetch(request: Request, env: Env, context?: { waitUntil(task: Promise<unknown>): void }): Promise<Response> {
+    const url = new URL(request.url)
+    if (url.hostname === 'skills.n3wth.com') {
+      if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {
+        return withSecurityHeaders(Response.json({ error: 'service_retired' }, {
+          status: 410,
+          headers: { 'Cache-Control': 'no-store' },
+        }))
+      }
+      const destination = url.pathname === '/install.sh' ? '/skills/install.sh' : '/docs/skills'
+      return Response.redirect(`https://n3wth.com${destination}`, 308)
+    }
     const apiResponse = await handlePortfolioApi(request, env, fetch, {
       waitUntil: context ? task => context.waitUntil(task) : undefined,
     })

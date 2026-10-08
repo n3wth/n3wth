@@ -11,11 +11,11 @@ import { siteUrls } from '../../packages/site-config/index.js'
 const accountId = 'ac23513945eb49f73a89faf1be12384e'
 
 test('active configs own domains, retired fixtures do not, and previews replace identities', () => {
-  const sites = { portfolio: 'home', 'ui-docs': null, garden: 'garden', skills: 'skills', 'r3-web': null }
-  for (const [app, site] of Object.entries(sites)) {
+  const sites = { portfolio: ['home', 'skills'], 'ui-docs': null, garden: ['garden'], 'r3-web': null }
+  for (const [app, domains] of Object.entries(sites)) {
     const source = parseJsonc(readFileSync(join(appRootPath(fileURLToPath(new URL('../../', import.meta.url)), app), 'wrangler.jsonc'), 'utf8'))
     assert.equal(source.name, `n3wth-${app}`)
-    assert.deepEqual(source.routes, site ? [{ pattern: new URL(siteUrls[site]).hostname, custom_domain: true }] : undefined)
+    assert.deepEqual(source.routes, domains?.map(site => ({ pattern: new URL(siteUrls[site]).hostname, custom_domain: true })))
     const original = structuredClone(source)
     const { config } = createPreviewConfig({
       source, sourcePath: join(appRootPath('/repo', app), 'wrangler.jsonc'), root: '/repo', app, pr: 23, accountId,
@@ -23,11 +23,8 @@ test('active configs own domains, retired fixtures do not, and previews replace 
     })
     assert.equal(config.name, `n3wth-${app}-pr-23`)
     assert.notDeepEqual(config.routes, source.routes)
+    assert.deepEqual(config.routes, [{ pattern: `${app}-pr-23.preview.n3wth.com`, custom_domain: true }])
     if (app === 'garden') assert.equal(config.vars.TARGET_ORIGIN, 'https://portfolio-pr-23.preview.n3wth.com')
-    if (app === 'skills') {
-      assert.equal(config.vars.BETTER_AUTH_URL, 'https://skills-pr-23.preview.n3wth.com')
-      assert.equal(config.d1_databases[0].database_id, 'preview-only')
-    }
     assert.deepEqual(source, original)
   }
 })
@@ -151,7 +148,7 @@ test('writes only generated config and wrapper artifacts', t => {
   assert.equal(readFileSync(sourcePath, 'utf8'), '{ "main": "./worker.ts", "assets": { "directory": "./dist" } }')
 })
 
-test('Vinext build defaults preserve isolation and bundle the preview wrapper', () => {
+test('Worker build defaults preserve isolation and bundle the preview wrapper', () => {
   const source = {
     main: './index.js', no_bundle: true,
     assets: { directory: '../client' },
@@ -169,7 +166,6 @@ test('Vinext build defaults preserve isolation and bundle the preview wrapper', 
   assert.equal(config.assets.directory, '/repo/apps/skills/dist/client')
   assert.equal(originalMain, '/repo/apps/skills/dist/server/index.js')
   assert.equal(config.d1_databases[0].database_id, 'preview-db')
-  assert.equal(config.vars.BETTER_AUTH_URL, 'https://skills-pr-8.preview.n3wth.com')
   assert.throws(() => createPreviewConfig({
     ...options, previewBindings,
     source: { ...source, durable_objects: { bindings: [{ name: 'STATE', class_name: 'State' }] } },

@@ -10,4 +10,4 @@ Run newsletter checks with `npm run test:newsletter`.
 
 For browser checks, run `npm run build`, install Chromium with `npx playwright install chromium`, then run `npm run check:browser`. Playwright starts the local servers.
 
-Keep app and package unit tests beside the code they cover. Skills has its own browser suite: `npm run test:browser --workspace @n3wth/skills`.
+Keep app and package unit tests beside the code they cover.

@@ -1,19 +1,37 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
 import { NotesIndex } from '../NotesIndex'
 import notes from '../../../data/writing-index.json'
 import { registeredPieces } from '../registry'
+import { renderToString } from 'react-dom/server'
 
 afterEach(() => {
   cleanup()
   vi.useRealTimers()
+  window.history.replaceState(null, '', '/')
+})
+
+function renderNotes(path: string) {
+  window.history.replaceState(null, '', path)
+  return render(<NotesIndex />)
+}
+
+it('keeps server dates stable across build times and controls disabled until hydration', () => {
+  vi.useFakeTimers()
+  vi.setSystemTime(new Date('2026-10-08T00:00:00Z'))
+  const first = renderToString(<NotesIndex />)
+  vi.setSystemTime(new Date('2026-11-12T23:00:00Z'))
+  const second = renderToString(<NotesIndex />)
+  expect(second).toBe(first)
+  const document = new DOMParser().parseFromString(first, 'text/html')
+  expect(document.querySelector('input[placeholder="Search writing"]')?.hasAttribute('disabled')).toBe(true)
+  expect(document.querySelector('time')?.textContent).not.toMatch(/ago|today|yesterday/)
 })
 
 it('restores topic and search from the URL and links notes locally', () => {
   const note = notes.find(entry => entry.tags.length > 0)!
   const query = new URLSearchParams({ topic: note.tags[0], q: note.title })
-  render(<MemoryRouter initialEntries={[`/thinking?${query}#notes`]}><NotesIndex /></MemoryRouter>)
+  renderNotes(`/thinking?${query}#notes`)
   expect(screen.getByRole('textbox', { name: 'Search writing' })).toHaveValue(note.title)
   expect(screen.getByRole('link', { name: note.title })).toHaveAttribute('href', note.href)
   fireEvent.change(screen.getByRole('textbox', { name: 'Search writing' }), { target: { value: 'no-match-72930811' } })
@@ -21,7 +39,7 @@ it('restores topic and search from the URL and links notes locally', () => {
 })
 
 it('makes the articles grove filter resolve to existing articles', () => {
-  render(<MemoryRouter initialEntries={['/thinking?topic=articles#notes']}><NotesIndex /></MemoryRouter>)
+  renderNotes('/thinking?topic=articles#notes')
   const { meta } = registeredPieces[0]
   expect(screen.getByRole('link', { name: meta.title })).toHaveAttribute('href', `/thinking/${meta.id}`)
   const row = screen.getByRole('link', { name: meta.title }).closest('li')!
@@ -37,7 +55,7 @@ it('shows when a note was tended with an exact accessible date', () => {
   now.setUTCHours(12)
   vi.useFakeTimers({ toFake: ['Date'] })
   vi.setSystemTime(now)
-  render(<MemoryRouter initialEntries={[`/thinking?q=${encodeURIComponent(note.title)}`]}><NotesIndex /></MemoryRouter>)
+  renderNotes(`/thinking?q=${encodeURIComponent(note.title)}`)
   const date = screen.getByText('Tended 4 days ago')
   expect(date).toHaveAttribute('datetime', value)
   expect(date).toHaveAttribute('aria-label', `Tended ${new Date(value).toLocaleDateString('en', { dateStyle: 'long', timeZone: 'UTC' })}`)
@@ -45,7 +63,7 @@ it('shows when a note was tended with an exact accessible date', () => {
 })
 
 it('searches articles and notes together and resets a later page on search', () => {
-  render(<MemoryRouter initialEntries={['/thinking?page=2']}><NotesIndex /></MemoryRouter>)
+  renderNotes('/thinking?page=2')
   expect(within(screen.getByRole('list')).getAllByRole('listitem')).toHaveLength(48)
   fireEvent.change(screen.getByRole('textbox', { name: 'Search writing' }), { target: { value: registeredPieces[0].meta.title } })
   expect(screen.getByRole('link', { name: registeredPieces[0].meta.title })).toBeInTheDocument()
@@ -55,7 +73,7 @@ it('searches articles and notes together and resets a later page on search', () 
 })
 
 it('appends writing and preserves format and sort in the accessible fallback', () => {
-  render(<MemoryRouter initialEntries={['/thinking?kind=notes&sort=title']}><NotesIndex /></MemoryRouter>)
+  renderNotes('/thinking?kind=notes&sort=title')
   const results = screen.getByRole('list')
   expect(within(results).getAllByRole('listitem')).toHaveLength(24)
   const firstTitle = within(results).getAllByRole('link')[0].textContent

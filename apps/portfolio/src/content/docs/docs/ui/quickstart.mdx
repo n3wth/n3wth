@@ -1,0 +1,145 @@
+---
+title: "Build your first UI page"
+sidebar:
+  label: "Quickstart"
+  order: 3
+description: "Install @n3wth/ui, apply the Newth theme, and render an interactive counter in a React app."
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: "@n3wth/ui, React, quickstart, Newth theme, N3wthProvider, Astryx"
+---
+
+import { Aside, CardGrid, LinkCard, Steps, TabItem, Tabs } from '@astrojs/starlight/components'
+
+
+`@n3wth/ui` is a React design system built on Astryx. This page installs the current version and renders a working page with a site layout and a native control.
+
+<Aside type="note">
+  The package supplies components and styles. It does not create a router, fetch data, or supply an app shell.
+</Aside>
+
+## Prerequisites
+
+- **Node.js 24** (declared in the package `engines` field)
+- **React and React DOM 18 or 19** (peer dependencies)
+- A bundler that resolves ESM, package CSS imports, and font URLs. The package includes a Vite starter.
+
+The example below assumes a React TypeScript app with `src/main.tsx` and an
+HTML element with `id="root"`. For Next.js, put interactive components in
+a client module and import the CSS through your application's global
+stylesheet entry.
+
+## Install and render
+
+<Steps>
+
+
+1. **Install the package**
+
+   From your application directory, install `@n3wth/ui`. React and React DOM are peer dependencies. GSAP is an optional peer used by animation hooks.
+
+   <Tabs>
+
+   <TabItem label="npm">
+
+   ```bash
+   npm install @n3wth/ui
+   ```
+
+   </TabItem>
+
+   <TabItem label="pnpm">
+
+   ```bash
+   pnpm add @n3wth/ui
+   ```
+
+   </TabItem>
+
+   <TabItem label="yarn">
+
+   ```bash
+   yarn add @n3wth/ui
+   ```
+
+   </TabItem>
+
+   </Tabs>
+
+   If you are contributing to this repository, follow [Workspace setup](/docs/workspace) instead of installing a second registry copy.
+
+
+1. **Render a page**
+
+   Replace `src/main.tsx` with this example. It mounts a provider, imports the shared stylesheet, and renders a counter with a native Astryx button.
+
+   ```tsx
+   import { useState } from 'react'
+   import { createRoot } from 'react-dom/client'
+   import {
+     N3wthProvider,
+     PageHeader,
+     SiteContainer,
+     SiteSection,
+     SiteText,
+   } from '@n3wth/ui/site'
+   import { Button } from '@n3wth/ui/primitives'
+   import '@n3wth/ui/site.css'
+
+   function App() {
+     const [count, setCount] = useState(0)
+
+     return (
+       <N3wthProvider mode="dark">
+         <SiteContainer as="main">
+           <PageHeader
+             title="Component sandbox"
+             description="Try a native control in the shared site theme."
+           />
+           <SiteSection aria-label="Counter">
+             <Button label="Increment" onClick={() => setCount(value => value + 1)} />
+             <SiteText as="div">
+               <output aria-live="polite">Count: {count}</output>
+             </SiteText>
+           </SiteSection>
+         </SiteContainer>
+       </N3wthProvider>
+     )
+   }
+
+   const root = document.getElementById('root')
+   if (!root) throw new Error('Missing #root element')
+   createRoot(root).render(<App />)
+   ```
+
+
+1. **Run and verify the page**
+
+   Start the app with its existing development command, such as `npm run dev` in a Vite app. Open the local URL printed by the server.
+
+   You should see **Component sandbox** and **Count: 0**. Select **Increment** and confirm the output changes to **Count: 1**.
+
+   `N3wthProvider` supplies the theme context. `site.css` supplies the generated theme and component CSS. You need both. This example does not require Tailwind utility generation.
+
+   If the page is unstyled or an import fails, see [Troubleshooting](/docs/ui/troubleshooting).
+
+
+</Steps>
+
+## Next steps
+
+<CardGrid>
+  <LinkCard title="Theme Provider" href="/docs/ui/theme-provider" description={"Mount N3wthProvider, load the theme CSS, and toggle modes with useTheme."} />
+
+  <LinkCard title="Primitives" href="/docs/ui/primitives" description={"Choose between native Astryx primitives and root compatibility adapters."} />
+
+  <LinkCard title="Layouts" href="/docs/ui/layouts" description={"Build page frames, navigation, headings, sections, and footers."} />
+
+  <LinkCard title="Tailwind" href="/docs/ui/tailwind" description={"Wire the token bridge into a Tailwind v4 stylesheet."} />
+
+  <LinkCard title="OG Images" href="/docs/ui/og-images" description={"Generate branded Open Graph images with OGCard and next/og."} />
+
+  <LinkCard title="Troubleshooting" href="/docs/ui/troubleshooting" description={"Fix version mismatches, CSS loading, font resolution, and theme issues."} />
+</CardGrid>

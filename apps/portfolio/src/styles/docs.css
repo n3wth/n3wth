@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url('@n3wth/ui/fonts/SuisseIntl-Book.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url('@n3wth/ui/fonts/SuisseIntl-Medium.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  --sl-font: 'Suisse Intl', sans-serif;
+  --sl-color-bg: #08090b;
+  --sl-color-bg-nav: #08090b;
+  --sl-color-bg-sidebar: #08090b;
+  --sl-color-accent-low: #23252a;
+  --sl-color-accent: #b3b7bf;
+  --sl-color-accent-high: #f2f3f5;
+}
+
+:root[data-theme='light'] {
+  --sl-color-bg: #f2f3f5;
+  --sl-color-bg-nav: #f2f3f5;
+  --sl-color-bg-sidebar: #f2f3f5;
+  --sl-color-accent-low: #e2e4e8;
+  --sl-color-accent: #4b5059;
+  --sl-color-accent-high: #08090b;
+}
+
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6),
+h1 {
+  font-weight: 500;
+}

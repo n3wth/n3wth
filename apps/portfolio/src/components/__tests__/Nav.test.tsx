@@ -1,6 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
 import { Nav } from '../Nav'
 
 afterEach(() => {
@@ -10,11 +9,7 @@ afterEach(() => {
 
 function renderNav(path = '/') {
   const onOpenSearch = vi.fn()
-  render(
-    <MemoryRouter initialEntries={[path]}>
-      <Nav onOpenSearch={onOpenSearch} />
-    </MemoryRouter>
-  )
+  render(<Nav pathname={path} onOpenSearch={onOpenSearch} />)
   return { trigger: screen.getByRole('button', { name: 'Open menu' }), onOpenSearch }
 }
 
@@ -66,7 +61,7 @@ describe('Navigation disclosure', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Work' }))
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.getByRole('link', { name: 'Work' })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('link', { name: 'Work' })).toHaveAttribute('href', '/work')
   })
 
   it('closes before handing off to site search', () => {
@@ -80,9 +75,7 @@ describe('Navigation disclosure', () => {
 
   it('exposes the icon-only search control as a named dialog trigger', () => {
     const { rerender } = render(
-      <MemoryRouter>
-        <Nav onOpenSearch={() => {}} searchOpen={false} />
-      </MemoryRouter>
+      <Nav onOpenSearch={() => {}} searchOpen={false} />
     )
     const search = screen.getByRole('button', { name: 'Search' })
     expect(search).toHaveAttribute('aria-haspopup', 'dialog')
@@ -90,9 +83,7 @@ describe('Navigation disclosure', () => {
     expect(search).toHaveAttribute('aria-controls', 'command-palette')
 
     rerender(
-      <MemoryRouter>
-        <Nav onOpenSearch={() => {}} searchOpen />
-      </MemoryRouter>
+      <Nav onOpenSearch={() => {}} searchOpen />
     )
     expect(search).toHaveAttribute('aria-expanded', 'true')
   })

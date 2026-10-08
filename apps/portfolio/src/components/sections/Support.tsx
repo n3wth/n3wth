@@ -2,7 +2,6 @@ import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
 import { track } from '../../lib/analytics'
 import { SiteSection, SiteHeading } from '@n3wth/ui/site'
-import { RouterLink } from '../RouterLink'
 
 const projects = [
   {
@@ -58,9 +57,9 @@ export default function Support() {
               style={{ borderColor: 'var(--rail-strong)' }}
             >
               <SiteHeading variant="item" level={3}>
-                <RouterLink href={project.href} className="link-underline">
+                <a href={project.href} className="link-underline">
                   {project.name}
-                </RouterLink>
+                </a>
               </SiteHeading>
               <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                 {project.purpose}

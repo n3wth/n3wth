@@ -1,0 +1,50 @@
+---
+title: "Cache and Sync Tools"
+sidebar:
+  label: "Cache Tools"
+  order: 24
+description: "Inspect cache health, optimize hit rates, and check background sync status for r3 memory operations."
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components'
+
+
+r3 caches memories in two tiers and processes writes asynchronously by default. These tools let you inspect cache health, tune what stays hot, and confirm that async writes have finished. See [Memory Tools](/docs/r3/memory-tools) for storing and retrieving memories.
+
+## cache_stats
+
+View cache performance metrics and health status. Use for monitoring and debugging.
+
+**Returns:** Summary text with cached memory count.
+
+## optimize_cache
+
+Reorganize cache for optimal hit rates. Promotes frequently accessed memories to L1 (24h TTL) and demotes cold data to L2 (7d TTL).
+
+#### `force_refresh`
+
+`boolean`
+
+`true` clears cache and reloads all from storage. `false` optimizes existing cache. Default: `false`.
+
+#### `max_memories`
+
+`number`
+
+Maximum memories to keep in cache. Range: 100-10000. Default: 1000.
+
+**Returns:** Summary of cached memories.
+
+## sync_status
+
+Check the background job queue and sync status. Shows pending async operations from `add_memory` calls.
+
+**Returns:** Count of pending operations, or `All operations complete`.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Memory Tools" href="/docs/r3/memory-tools" description={"Store, retrieve, search, and manage memories."} />
+
+  <LinkCard title="Configuration" href="/docs/r3/configuration" description={"Set storage backends and cache priorities."} />
+</CardGrid>

@@ -97,7 +97,7 @@ test('repository root build lists every site after UI and omits site-config', ()
   const order = buildOrder(readWorkspaces(repo), [], JSON.parse(readFileSync(new URL('../../package-lock.json', import.meta.url))))
   assert.ok(order.includes('@n3wth/ui'))
   assert.equal(order.filter(name => name === '@n3wth/ui').length, 1)
-  for (const app of apps) {
+  for (const app of apps.filter(name => name !== '@n3wth/skills')) {
     assert.ok(order.includes(app), `root build omits ${app}`)
     if (app !== '@n3wth/garden') assert.ok(order.indexOf('@n3wth/ui') < order.indexOf(app))
   }
@@ -107,7 +107,7 @@ test('repository root build lists every site after UI and omits site-config', ()
 test('root build scripts use the orchestrator', () => {
   const pkg = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url)))
   assert.equal(pkg.scripts.build, 'node scripts/workspace/build.mjs')
-  for (const script of ['build:garden', 'build:portfolio', 'build:r3', 'build:skills', 'build:ui', 'build:ui-docs']) {
+  for (const script of ['build:garden', 'build:portfolio', 'build:r3', 'build:ui', 'build:ui-docs']) {
     assert.match(pkg.scripts[script], /scripts\/workspace\/build\.mjs/, script)
   }
 })

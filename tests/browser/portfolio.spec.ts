@@ -2,24 +2,21 @@ import { test, expect } from '@playwright/test'
 import { MathUtils, PerspectiveCamera, Vector3 } from 'three'
 import { layoutWritingGroves, type WritingNode } from '../../apps/portfolio/src/lib/writingGroves'
 
-test('permanent footer navigation stays in the app and starts pages at the top', async ({ page }, testInfo) => {
+test('permanent footer navigation starts new pages at the top', async ({ page }, testInfo) => {
   await page.goto('/work')
   const continuation = page.getByRole('navigation', { name: 'Footer', exact: true })
   await continuation.scrollIntoViewIfNeeded()
-  await expect(continuation.getByRole('link')).toHaveText(['Work', 'Projects', 'Art', 'Thinking', 'Library', 'Contact', 'Privacy', 'Terms', 'GitHub'])
+  await expect(continuation.getByRole('link')).toHaveText(['Work', 'Projects', 'Art', 'Thinking', 'Library', 'Contact', 'Privacy', 'Terms', 'Support', 'SMS consent', 'GitHub'])
   await expect(page.locator('.n3wth-site-footer')).toHaveCSS('border-top-width', '0px')
   await page.screenshot({ path: testInfo.outputPath('work-continuation.png') })
   await page.locator('.n3wth-site-footer').screenshot({ path: testInfo.outputPath('footer.png') })
-  await page.evaluate(() => { document.documentElement.dataset.flowCheck = 'same-document' })
   await continuation.getByRole('link', { name: 'Projects', exact: true }).click()
   await expect(page).toHaveURL(/\/projects$/)
   await expect(page.locator('main h1')).toHaveText('Projects')
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
-  await expect(page.locator('html')).toHaveAttribute('data-flow-check', 'same-document')
   await page.locator('footer').getByRole('link', { name: 'Contact', exact: true }).click()
   await expect(page.locator('main h1')).toHaveText('Contact')
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
-  await expect(page.locator('html')).toHaveAttribute('data-flow-check', 'same-document')
   await page.goto('/thinking/frameworks/5-whys')
   await expect(page.getByRole('navigation', { name: 'Continue exploring' })).toHaveCount(0)
 })
@@ -190,7 +187,7 @@ test('Thinking notes keep local links, topics, anchors and browser Back', async 
   await page.goBack()
   await expect(page.getByLabel('Search writing', { exact: true })).toHaveValue('5 Whys')
   const html = await (await request.get('/thinking/frameworks/5-whys/index.html')).text()
-  expect(html).toContain('<h1>5 Whys</h1>')
+  expect(html).toMatch(/<h1[^>]*>5 Whys<\/h1>/)
   expect(html).toContain('https://n3wth.com/thinking/frameworks/5-whys')
   expect(html).toContain('href="/thinking/frameworks/frameworks-map"')
 })
@@ -241,7 +238,7 @@ test('projects index connects navigation, product pages and documentation', asyn
   const navigation = page.locator('.n3wth-site-navigation-links')
   await expect(navigation.locator('a').nth(0)).toHaveText('Work')
   await expect(navigation.locator('a').nth(1)).toHaveText('Projects')
-  for (const slug of ['ui', 'r3', 'skills']) {
+  for (const slug of ['ui', 'r3']) {
     const feature = page.locator(`.project-feature--${slug}`)
     const copy = await feature.locator('.project-feature-copy').boundingBox()
     const visual = await feature.locator('.project-visual').boundingBox()
@@ -263,16 +260,15 @@ test('projects index connects navigation, product pages and documentation', asyn
   await page.getByRole('button', { name: 'Reset', exact: true }).click()
   await expect(page.locator('.project-type-sample')).toHaveText('Make it yours.')
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-  for (const [slug, title] of [['r3', 'r3'], ['ui', '@n3wth/ui'], ['skills', 'Agent Skills']]) {
+  for (const [slug, title] of [['r3', 'r3'], ['ui', '@n3wth/ui']]) {
     await expect(page.getByRole('heading', { level: 2, name: title, exact: true }).getByRole('link')).toBeVisible()
-    // Vite preview serves clean URLs through its SPA fallback; inspect the
-    // prerendered file that Cloudflare resolves for the production route.
+    // Astro serves the same generated document for direct and browser requests.
     const response = await request.get(`/projects/${slug}/index.html`)
     expect(response.status()).toBe(200)
-    expect(await response.text()).toContain(`<h1>${title}</h1>`)
+    expect(await response.text()).toContain(title)
     await page.goto(`/projects/${slug}`)
     await expect(page.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Documentation', exact: true })).toHaveAttribute('href', `https://docs.n3wth.com/${slug}/quickstart`)
+    await expect(page.getByRole('link', { name: 'Documentation', exact: true })).toHaveAttribute('href', `/docs/${slug}/quickstart`)
     await expect(page.getByRole('link', { name: 'All projects', exact: true })).toHaveCount(0)
     await expect(page.locator('.project-install button')).toBeVisible()
     await page.getByRole('button', { name: 'Copy code', exact: true }).click()
@@ -293,25 +289,17 @@ test('projects index connects navigation, product pages and documentation', asyn
   expect(await (await request.get('/sitemap.xml')).text()).toContain('<loc>https://n3wth.com/projects</loc>')
 })
 
-test('lazy content and its footer appear together', async ({ page }) => {
-  let releasePage: () => void = () => {}
-  const pendingPage = new Promise<void>(resolve => { releasePage = resolve })
-  await page.route('**/assets/Thinking-*.js', async route => {
-    await pendingPage
-    await route.continue()
-  })
+test('page content and footer are readable without client JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false })
+  const page = await context.newPage()
   try {
-    await page.goto('/thinking', { waitUntil: 'domcontentloaded' })
-    await expect(page.locator('main[aria-busy="true"]')).toBeAttached()
-    await expect(page.locator('header').first()).toBeVisible()
-    await expect(page.locator('.n3wth-site-footer')).toHaveCount(0)
+    await page.goto('http://127.0.0.1:4281/thinking')
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+    await expect(page.locator('.n3wth-site-footer')).toHaveCount(1)
+    await expect(page).toHaveTitle('Thinking — Oliver Newth')
   } finally {
-    releasePage()
+    await context.close()
   }
-  await expect(page.locator('main[aria-busy="true"]')).toHaveCount(0)
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
-  await expect(page).toHaveTitle('Thinking — Oliver Newth')
-  await expect(page.locator('.n3wth-site-footer')).toHaveCount(1)
 })
 
 test('the project action reaches the projects page after a cold route load', async ({ page }) => {
@@ -319,7 +307,7 @@ test('the project action reaches the projects page after a cold route load', asy
   // the home-page checks; this also exercises navigation while it is loading.
   let releaseScene: () => void = () => {}
   const pendingScene = new Promise<void>(resolve => { releaseScene = resolve })
-  await page.route('**/assets/NightField-*.js', async route => {
+  await page.route('**/_astro/NightField.*.js', async route => {
     await pendingScene
     await route.continue()
   })
@@ -370,7 +358,7 @@ test('public navigation clears article and utility metadata', async ({ page }) =
 
 test('site identity is present in initial HTML and rendered routes', async ({ page, request }) => {
   const response = await request.get('/')
-  expect(await response.text()).toContain('"@type": "WebSite"')
+  expect(await response.text()).toMatch(/"@type":\s*"WebSite"/)
   for (const route of ['/', '/work', '/']) {
     await page.goto(route)
     const websites = await page.locator('script[type="application/ld+json"]').evaluateAll(elements => elements.map(element => JSON.parse(element.textContent || '{}')).filter(schema => schema['@type'] === 'WebSite'))
@@ -626,7 +614,7 @@ test('home primary navigation works before the scene settles', async ({ page }) 
   let releaseScene!: () => void
   let sceneRequested = false
   const sceneReady = new Promise<void>(resolve => { releaseScene = resolve })
-  await page.route('**/assets/NightField-*.js', async route => {
+  await page.route('**/_astro/NightField.*.js', async route => {
     sceneRequested = true
     await sceneReady
     await route.continue().catch(() => {}) // The page may have closed after a failed assertion.

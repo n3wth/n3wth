@@ -1,0 +1,52 @@
+---
+title: "n3wth Docs"
+sidebar:
+  label: "Overview"
+  order: 0
+description: "Build React interfaces, review work with Elephant-Goldfish, or connect to r3 memory."
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: "n3wth, developer tools, documentation, @n3wth/ui, r3, MCP"
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components'
+
+
+Choose the guide for your task. Each product has its own installation and release cycle.
+
+<CardGrid>
+  <LinkCard title="Build a React interface" href="/docs/ui/quickstart" description={"Install @n3wth/ui, apply the Newth theme, and render an interactive page."} />
+
+  <LinkCard title="Connect an agent to memory" href="/docs/r3/quickstart" description={"Connect r3 to a Model Context Protocol (MCP) client, then store and retrieve a test memory."} />
+
+  <LinkCard title="Elephant-Goldfish" href="/docs/elephant-goldfish/quickstart" description={"Fresh perspectives on designs, bug diagnoses, and code changes in Codex."} />
+
+  <LinkCard title="Contribute to the workspace" href="/docs/workspace" description={"Find the source, set up your environment, and validate a change."} />
+</CardGrid>
+
+## Explore the documentation
+
+### UI
+
+- Guides: [theming](/docs/ui/theme-provider) and [page layouts](/docs/ui/layouts).
+- Reference: [components](/docs/ui/primitives) and [package exports](/docs/ui/entry-points).
+- Help: [troubleshooting](/docs/ui/troubleshooting).
+
+### r3
+
+- Guides: [configuration](/docs/r3/configuration) and [troubleshooting](/docs/r3/troubleshooting).
+- Reference: [memory tools](/docs/r3/memory-tools), [cache tools](/docs/r3/cache-tools), and [transport](/docs/r3/transport).
+
+## Source and contributions
+
+UI lives in the [n3wth workspace](https://github.com/n3wth/n3wth). The r3 runtime lives in [its own repository](https://github.com/n3wth/r3). To improve these docs, follow the [preview and publishing guide](/docs/publishing).
+
+## Related projects
+
+These repositories share a maintainer but ship separately from this workspace.
+
+- [Lunch Money for Agents](https://github.com/n3wth/lunchmoney-mcp): a read-only financial MCP integration.
+- [Canvas](https://github.com/n3wth/canvas): live canvases with realtime sync.
+- [Markup](https://github.com/n3wth/markup): a prototype for agents collaborating with people in documents and chat.

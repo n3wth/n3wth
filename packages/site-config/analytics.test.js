@@ -25,7 +25,6 @@ const signupPaths = [
   'packages/site-config/analytics.js',
   'apps/portfolio/src/lib/analytics.ts',
   'apps/portfolio/src/components/Footer.tsx',
-  'apps/skills/src/components/Footer.tsx',
 ]
 
 test('shares one public GA4 measurement ID and filtered deferred bootstrap', () => {

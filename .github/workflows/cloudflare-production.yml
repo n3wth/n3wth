@@ -182,9 +182,6 @@ jobs:
           JS
             fi
             config="apps/$app/wrangler.jsonc"
-            if [ "$app" = skills ]; then
-              config="apps/$app/dist/server/wrangler.json"
-            fi
             npm exec -- wrangler deploy --config "$config"
           done
       - name: Preserve pre-release Worker versions
@@ -204,7 +201,6 @@ jobs:
               ui-docs) host='ui.n3wth.com' ;;
               portfolio) host='n3wth.com' ;;
               garden) host='garden.n3wth.com' ;;
-              skills) host='skills.n3wth.com' ;;
               r3-web) host='r3.n3wth.com' ;;
               *) echo "Unknown production app: $app"; exit 1 ;;
             esac

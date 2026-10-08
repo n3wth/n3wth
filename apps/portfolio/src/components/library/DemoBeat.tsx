@@ -2,8 +2,7 @@ import { Beat } from '../thinking/kit/Beat'
 import { MarginNote } from '../thinking/kit/MarginNote'
 
 /**
- * Beat, running. Lazy-loaded by KitShelf so the four live specimens on
- * /library stay out of the page's first chunk.
+ * Beat, rendered with the other small live specimens on /library.
  *
  * The margin note points at a real garden note (5 Whys), with the note's
  * own description verbatim from src/data/garden-index.json — a MarginNote

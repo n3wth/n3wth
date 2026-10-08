@@ -1,4 +1,3 @@
-import { RouterLink } from '../RouterLink'
 import { ecosystem } from '../../data/library'
 
 /**
@@ -33,9 +32,9 @@ export function EcosystemStrip() {
                 style={{ borderColor: 'var(--rail-strong)' }}
               >
                 <h3 className="display text-lg" style={{ lineHeight: 1.1 }}>
-                  <RouterLink href={property.href} className="link-underline">
+                  <a href={property.href} className="link-underline">
                     {property.name}
-                  </RouterLink>
+                  </a>
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
                   {property.purpose}

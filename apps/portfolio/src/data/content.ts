@@ -17,7 +17,7 @@ export const sections = {
   projects: { name: 'Projects', href: '/projects', description: 'Tools and experiments.' },
   art: { name: 'Art', href: '/art', description: 'Large-scale light installations.' },
   thinking: { name: 'Thinking', href: '/thinking', description: 'AI, design, and everyday life.' },
-  library: { name: 'Library', href: '/library', description: 'Notes, components, and skills.' },
+  library: { name: 'Library', href: '/library', description: 'Notes and reusable components.' },
   contact: { name: 'Contact', href: '/contact', description: 'Product, AI, art, or coffee.' },
 } as const
 
@@ -214,16 +214,6 @@ export const projects: Project[] = [
     tech: ['MCP', 'TypeScript', 'Cloudflare'],
     url: siteUrls.lunch,
     github: 'https://github.com/n3wth/lunchmoney-mcp',
-  },
-  {
-    id: 'skills',
-    name: 'Agent Skills',
-    focus: 'Reusable skills',
-    question: 'Turn a way of working into something others can use',
-    description: 'A registry of installable markdown skills for coding agents. Each skill packages instructions for a specific task.',
-    tech: ['Next.js', 'React', 'Supabase'],
-    url: '/projects/skills',
-    github: 'https://github.com/n3wth/n3wth/tree/main/apps/skills',
   },
   {
     id: 'garden',

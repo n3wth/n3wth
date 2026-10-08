@@ -8,7 +8,6 @@ import { fileURLToPath } from 'node:url'
 export const DEPLOY_APPS = [
   { workspace: '@n3wth/portfolio', app: 'portfolio' },
   { workspace: '@n3wth/garden', app: 'garden' },
-  { workspace: '@n3wth/skills', app: 'skills' },
 ]
 
 export const DEPLOY_APP_SLUGS = DEPLOY_APPS.map(entry => entry.app)

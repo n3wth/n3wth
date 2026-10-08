@@ -28,10 +28,10 @@ export function parseApplicationScope(args = process.argv.slice(2), env = proces
 
 export function listApplications(root) {
   return readdirSync(join(root, 'apps'), { withFileTypes: true })
-    .filter(entry => entry.isDirectory())
+    .filter(entry => entry.isDirectory() && existsSync(join(root, 'apps', entry.name, 'package.json')))
     .map(entry => {
       const manifest = JSON.parse(readFileSync(join(root, 'apps', entry.name, 'package.json'), 'utf8'))
-      return { directory: entry.name, name: manifest.name, vinext: Boolean(manifest.dependencies?.vinext) }
+      return { directory: entry.name, name: manifest.name }
     })
 }
 
@@ -86,10 +86,6 @@ export async function checkBuiltMetadata(root, options = {}) {
   let JSDOM
   const results = []
   for (const app of applications) {
-    if (app.vinext) {
-      results.push(await checkWorkerMetadata(root, app, log))
-      continue
-    }
     if (['garden', 'r3', 'ui'].includes(app.directory)) {
       log(`${app.directory}: redirect Worker has no public HTML`)
       continue
@@ -111,43 +107,6 @@ export async function checkBuiltMetadata(root, options = {}) {
     results.push({ directory: app.directory, checked })
   }
   return results
-}
-
-async function checkWorkerMetadata(root, app, log) {
-  const appRoot = join(root, 'apps', app.directory)
-  const config = join(appRoot, 'dist/server/wrangler.json')
-  assert.ok(existsSync(config), `${app.directory}: build the application first`)
-  const { unstable_dev } = await import('wrangler')
-  const worker = await unstable_dev(join(appRoot, 'dist/server/index.js'), {
-    config, local: true, persist: false, port: 0, logLevel: 'error',
-    experimental: { disableExperimentalWarning: true, disableDevRegistry: true, watch: false },
-  })
-  const JSDOM = loadJsdom(root)
-  let checked = 0
-  let redirects = 0
-  try {
-    // Validate rendered responses, since Vinext Workers render at request time.
-    const routes = readdirSync(join(appRoot, 'app'), { recursive: true })
-      .filter(file => /(^|\/)page\.[jt]sx?$/.test(file) && !file.includes('[') && !file.includes('@'))
-      .map(file => '/' + file.replace(/(^|\/)page\.[jt]sx?$/, '').split('/').filter(part => !part.startsWith('(')).join('/'))
-    for (const route of routes) {
-      const response = await worker.fetch(`http://localhost${route}`, { redirect: 'manual' })
-      const label = `${app.directory}${route}`
-      if ([301, 302, 307, 308].includes(response.status)) {
-        assert.match(response.headers.get('location') ?? '', /^(https?:\/\/|\/(?!\/))/, `${label}: valid redirect target`)
-        redirects++
-        continue
-      }
-      assert.equal(response.status, 200, `${label}: public route status`)
-      const window = new JSDOM(await response.text()).window
-      try {
-        if (checkPublicDocument(window.document, label)) checked++
-      } finally { window.close() }
-    }
-    assert.ok(checked + redirects, `${app.directory}: no public routes checked`)
-    log(`${app.directory}: ${checked} rendered documents have complete metadata; ${redirects} redirects checked`)
-    return { directory: app.directory, checked, redirects }
-  } finally { await worker.stop() }
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

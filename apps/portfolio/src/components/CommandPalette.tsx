@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Search, X, RotateCcw } from 'lucide-react'
 import { searchItems } from '../lib/search'
 import { track } from '../lib/analytics'
@@ -178,7 +177,7 @@ export interface CommandPaletteProps {
 }
 
 export function CommandPalette({ open, onClose }: CommandPaletteProps) {
-  const navigate = useNavigate()
+  const navigate = useCallback((href: string) => window.location.assign(href), [])
   const [query, setQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const [gardenItems, setGardenItems] = useState<SearchItem[]>([])

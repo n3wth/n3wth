@@ -4,7 +4,7 @@ Oliver Newth's personal site, n3wth.com. Follow the root [AGENTS.md](../../AGENT
 
 ## Source and validation
 
-- Routes live in `src/pages`; `src/App.tsx` owns the layout and loading boundary.
+- Astro routes live in `src/pages`; `src/layouts/SiteLayout.astro` owns the static document, metadata and shell. React bodies in `src/screens` hydrate independently.
 - `src/data/content.ts` owns navigation, experience, installations, and `siteConfig`. Canonical origins come from `@n3wth/site-config`.
 - From the repository root, run `npm run dev -w @n3wth/portfolio`, `npm run build:portfolio`, and `npm run check -w @n3wth/portfolio`. Build shared packages before app checks.
 - Run `AFFECTED_WORKSPACES='["@n3wth/portfolio"]' npm run check:browser` for route, layout, or packaging changes. See [portfolio quality checks](../../docs/workspace/portfolio-quality.md) for action events and release validation.
@@ -12,7 +12,7 @@ Oliver Newth's personal site, n3wth.com. Follow the root [AGENTS.md](../../AGENT
 ## Content invariants
 
 - Do not reword, trim, or alter installation credits or credit links in `src/data/content.ts`, rendered by `src/components/sections/Creative.tsx`.
-- Keep existing `og:*`, `twitter:*`, and `og-image.png` references in `index.html` unless the user explicitly requests a change. Preserve its crawler fallback and Person structured data.
+- Preserve social metadata and `og-image.png` references in the Astro layout, route metadata and site schema. Article and note prose must render in static HTML without JavaScript.
 - Use `siteConfig.email` for `hey@n3wth.com`. The separate `support@n3wth.com` address on Support is intentional.
 - `content/` owns the migrated Garden Markdown. `scripts/build-notes.mjs` generates pages, search data, and compatibility snapshots; `scripts/verify-content.mjs` validates them offline. Builds must not fetch content.
 - Preserve nested note slugs and existing article URLs under `/thinking/<slug>`. Homepage groves use the same local writing data. Garden is a redirect Worker, not a content source.

@@ -116,10 +116,12 @@ export interface SiteNavigationProps extends Omit<HTMLAttributes<HTMLElement>, '
   collapseAt?: 'md' | 'lg'
   /** Use a flush header and attached menu on compact screens. */
   compactBar?: boolean
+  /** Disable scripted controls until the consuming island has hydrated. */
+  controlsReady?: boolean
 }
 
 /** Router links remain app-owned; layout and disclosure behavior live here. */
-export function SiteNavigation({ brand, links, actions, navigationLabel = 'Primary', navigationId, menuLabel = 'Open menu', menuContent, collapseAt = 'md', compactBar = false, className, ...props }: SiteNavigationProps) {
+export function SiteNavigation({ brand, links, actions, navigationLabel = 'Primary', navigationId, menuLabel = 'Open menu', menuContent, collapseAt = 'md', compactBar = false, controlsReady = true, className, ...props }: SiteNavigationProps) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const generatedId = useId()
@@ -172,7 +174,7 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
           <div className="n3wth-site-navigation-menu">{menuContent}</div>
         </> : links}</nav>
         <div className="n3wth-site-navigation-actions" onClick={() => setOpen(false)}>{actions}</div>
-        <button ref={button} type="button" className="n3wth-site-navigation-toggle" aria-label={open ? 'Close menu' : menuLabel} aria-controls={menuId} aria-expanded={open} onClick={() => setOpen(value => !value)}>
+        <button ref={button} type="button" disabled={!controlsReady} className="n3wth-site-navigation-toggle" aria-label={open ? 'Close menu' : menuLabel} aria-controls={menuId} aria-expanded={open} onClick={() => setOpen(value => !value)}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
             {open ? <path d="m6 6 12 12M6 18 18 6" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
           </svg>
@@ -190,15 +192,16 @@ export interface SiteSignupProps extends Omit<ComponentProps<'form'>, 'onSubmit'
   successMessage?: ReactNode
   errorMessage?: ReactNode
   compact?: boolean
+  disabled?: boolean
 }
 
 type SignupStatus = 'idle' | 'sending' | 'done' | 'error'
 
 /** One-line email capture for footers. Native controls, app-owned delivery. */
-export function SiteSignup({ onSubmit, label = 'Notes and new work across design, technology, AI, and the things I’m exploring.', buttonLabel = 'Subscribe', successMessage = 'Thanks. You are on the list.', errorMessage = 'That did not go through. Try again.', compact = false, className, ...props }: SiteSignupProps) {
+export function SiteSignup({ onSubmit, label = 'Notes and new work across design, technology, AI, and the things I’m exploring.', buttonLabel = 'Subscribe', successMessage = 'Thanks. You are on the list.', errorMessage = 'That did not go through. Try again.', compact = false, disabled = false, className, ...props }: SiteSignupProps) {
   const id = useId()
   const [status, setStatus] = useState<SignupStatus>('idle')
-  const busy = status === 'sending' || status === 'done'
+  const busy = disabled || status === 'sending' || status === 'done'
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()

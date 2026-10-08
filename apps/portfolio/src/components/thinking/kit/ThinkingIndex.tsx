@@ -1,4 +1,3 @@
-import { RouterLink } from '../../RouterLink'
 import type { RegisteredPiece } from '../registry'
 
 /**
@@ -34,13 +33,13 @@ function IndexGroup({ group, pieces }: { group: 'position' | 'system'; pieces: R
                 build (the colophon owns that story), so a date column
                 here would repeat one value twenty times. Dates live on
                 the piece pages. */}
-            <RouterLink
+            <a
               href={`/thinking/${meta.id}`}
               className="link-underline display inline-block text-[clamp(1.3rem,2.2vw,1.75rem)] max-w-[26ch]"
               style={{ letterSpacing: '-0.02em', lineHeight: 1.12, fontWeight: 600 }}
             >
               {meta.title}
-            </RouterLink>
+            </a>
             <p className="mt-2 max-w-[46ch] text-sm leading-relaxed md:text-base" style={{ color: 'var(--ink-dim)' }}>
               {meta.dek}
             </p>
@@ -78,13 +77,13 @@ export function ThinkingIndex({ pieces }: { pieces: RegisteredPiece[] }) {
           <ul className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
             {notes.map(({ meta }) => (
               <li key={meta.id}>
-                <RouterLink
+                <a
                   href={`/thinking/${meta.id}`}
                   className="link-underline text-sm"
                   style={{ color: 'var(--ink-dim)' }}
                 >
                   {meta.title}
-                </RouterLink>
+                </a>
               </li>
             ))}
           </ul>

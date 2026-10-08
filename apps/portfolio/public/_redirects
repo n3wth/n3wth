@@ -8,3 +8,8 @@
 /news/ /thinking 308
 /press /thinking 308
 /press/ /thinking 308
+/docs/ui/api-and-recipes /docs/ui/entry-points 308
+/docs/ui/primitives-and-themes /docs/ui/primitives 308
+/docs/ui/site-compositions /docs/ui/layouts 308
+/docs/r3/tools /docs/r3/memory-tools 308
+/docs/r3/mcp /docs/r3/transport 308

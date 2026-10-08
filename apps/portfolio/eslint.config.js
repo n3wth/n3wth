@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', '.astro']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -19,13 +19,11 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: { 'react-refresh/only-export-components': ['error', { allowConstantExport: true, extraHOCs: ['withTheme'] }] },
   },
   {
-    // Entry point (main.tsx) is the Vite bootstrap with no exports; the
-    // thinking registry co-locates lazy component references with a metadata
-    // array. Both are intentional — the rule was tightened in
-    // eslint-plugin-react-refresh 0.5.x and now flags these patterns as errors.
-    files: ['src/main.tsx', 'src/components/thinking/registry.tsx'],
+    // The registry co-locates component references with article metadata.
+    files: ['src/components/thinking/registry.tsx'],
     rules: {
       'react-refresh/only-export-components': 'off',
     },

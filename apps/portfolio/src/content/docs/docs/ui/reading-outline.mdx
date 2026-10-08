@@ -1,0 +1,61 @@
+---
+title: "Render a Reading Outline"
+sidebar:
+  label: "Reading Outline"
+  order: 9
+description: "Render a ReadingOutline alongside matching section IDs to give long-form pages a scroll-spy table of contents."
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components'
+
+
+`ReadingOutline` renders a scroll-spy outline that highlights the current section as the reader scrolls. Pair it with `SiteDocSection` components whose IDs match your `items`.
+
+## Usage
+
+Render the outline and matching sections inside the provider:
+
+```tsx
+import {
+  ReadingOutline,
+  SiteDocSection,
+  SiteText,
+  type ReadingOutlineProps,
+} from '@n3wth/ui/site'
+
+const items: ReadingOutlineProps['items'] = [
+  { id: 'requirements', label: 'Requirements', level: 2 },
+  { id: 'usage', label: 'Usage', level: 2 },
+]
+
+export function Article() {
+  return (
+    <>
+      <ReadingOutline items={items} label="Article sections" collapsible />
+      <SiteDocSection id="requirements" title="Requirements">
+        <SiteText>Import the stylesheet and mount the provider.</SiteText>
+      </SiteDocSection>
+      <SiteDocSection id="usage" title="Usage">
+        <SiteText>Compose your page with shared components.</SiteText>
+      </SiteDocSection>
+    </>
+  )
+}
+```
+
+## Props
+
+| Prop | Default | Behavior |
+| --- | --- | --- |
+| `items` | Required | Native outline items targeting the article's sections |
+| `label` | `On this page` | Outline label and disclosure button text |
+| `collapsible` | `false` | Enables a disclosure, initially closed |
+| `className` | Unset | Additional wrapper class |
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Layouts" href="/docs/ui/layouts" description={"Compose pages with SiteDocSection and other site components."} />
+
+  <LinkCard title="Scroll Reset" href="/docs/ui/scroll-reset" description={"Reset scroll to top on route change."} />
+</CardGrid>

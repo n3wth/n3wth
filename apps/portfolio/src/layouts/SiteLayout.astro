@@ -1,0 +1,64 @@
+---
+import '../index.css'
+import SiteHeader from '../components/SiteHeader'
+import Footer from '../components/Footer'
+import siteSchema from '../data/site-schema.json'
+import { buildArticleSchema, buildWebPageSchema } from '../lib/metadata'
+
+interface Props {
+  path: string
+  title: string
+  description: string
+  ogImage?: string
+  noindex?: boolean
+  publishedTime?: string
+  modifiedTime?: string
+}
+const { path, title, description, ogImage = '/og-image.png', noindex, publishedTime, modifiedTime } = Astro.props
+const url = `https://n3wth.com/${path}`
+const image = new URL(ogImage, 'https://n3wth.com').href
+const breadcrumbs = path ? [{ name: 'Home', url: 'https://n3wth.com/' }, ...(path.startsWith('thinking/') ? [{ name: 'Thinking', url: 'https://n3wth.com/thinking' }] : path.startsWith('projects/') ? [{ name: 'Projects', url: 'https://n3wth.com/projects' }] : []), { name: title.replace(' — Oliver Newth', ''), url }] : undefined
+const schemas = buildWebPageSchema({ url, title, description, datePublished: publishedTime, dateModified: modifiedTime, breadcrumbs })
+if (path.startsWith('thinking/')) schemas.push(buildArticleSchema({ url, title: title.replace(' — Oliver Newth', ''), description, datePublished: publishedTime, dateModified: modifiedTime, image }))
+---
+<!doctype html>
+<html lang="en" data-theme="dark" data-astryx-theme="n3wth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Oliver Newth" />
+    <meta name="theme-color" content="#08090b" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={url} />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/atom+xml" title="Thinking — Oliver Newth" href="/feed.xml" />
+    <meta property="og:site_name" content="Oliver Newth" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content={publishedTime ? 'article' : 'website'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image:alt" content={title} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {path === '' && <link rel="preload" href="/images/hero-playa.webp" as="image" type="image/webp" fetchpriority="high" />}
+    {[...siteSchema, ...schemas].map(schema => <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />)}
+    <script>import '../lib/initializeAnalytics'</script>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <SiteHeader pathname={`/${path}`} client:load />
+    <div class="n3wth-site-main"><div class="frame"><main id="main" tabindex="-1"><slot /></main></div></div>
+    {path !== '' && <Footer client:load />}
+  </body>
+</html>
