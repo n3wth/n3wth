@@ -5,16 +5,33 @@
   isolation: isolate;
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-  /* Extend artwork behind the fixed navigation; keep copy below its clearance. */
+  /* Reserve navigation and copy space before centering the artwork. */
   margin-block-start: -96px;
-  padding-block-start: 96px;
+  padding-block-start: calc(var(--spacing-12) + var(--spacing-2) + env(safe-area-inset-top));
+  height: 100svh;
   min-height: 100svh;
   display: grid;
-  align-content: end;
+  grid-template-rows: minmax(0, 1fr) auto;
   overflow: hidden;
 }
 
+.portfolio-story-hero > .section-story {
+  position: relative;
+  inset: auto;
+  min-height: 0;
+  container-type: size;
+  overflow: visible;
+}
+
+.portfolio-story-hero > .section-story svg {
+  --story-size: min(135vw, 100cqh);
+  top: 50%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+}
+
 .portfolio-story-copy {
+  grid-row: 2;
   position: relative;
   z-index: 1;
   width: 100%;
@@ -23,13 +40,33 @@
   padding-block: 0 clamp(2rem, 5svh, 4rem);
 }
 
+.portfolio-story-hero > .section-story--thinking {
+  position: absolute;
+  inset: 0;
+  container-type: normal;
+}
+
+.portfolio-story-hero > .section-story--thinking svg {
+  --story-size: min(150vw, 108svh);
+  top: auto;
+  bottom: calc(var(--story-size) * -.1104651163);
+  transform: translateX(-50%);
+}
+
+.portfolio-story-copy :is(.portfolio-section-title, .portfolio-story-description) {
+  background: var(--color-background-body);
+  box-decoration-break: clone;
+}
+
 .portfolio-story-copy .portfolio-section-title {
+  width: fit-content;
   font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: -.03em;
 }
 
 @media (min-width: 1024px) {
-  .portfolio-story-hero { min-height: max(640px, 100svh); }
+  .portfolio-story-hero { min-height: max(640px, 100svh); padding-block-start: 96px; }
+  .portfolio-story-hero > .section-story svg { --story-size: min(78vw, 110cqh); }
   .portfolio-story-description { white-space: nowrap; }
 }
 

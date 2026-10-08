@@ -2,7 +2,6 @@ import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@n3wth/ui/primitives'
 import { siteConfig, sections } from '../../data/content'
 import { SectionHeader } from '../Frame'
-import { StoryScene } from '../StoryScene'
 import './contact.css'
 import { track } from '../../lib/analytics'
 
@@ -36,7 +35,6 @@ export function Contact() {
             clickAction={() => track('contact_intent', { ...contactEventProps, method: 'linkedin' })}
           />
         </div>
-        <StoryScene kind="contact" />
       </div>
     </section>
   )

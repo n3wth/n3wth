@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { StoryScene } from '../StoryScene'
 import './shelf.css'
 
 /** Library sections retain heading anchors for direct links and search. */
@@ -41,7 +40,6 @@ export function Shelf({
               {intro}
             </p>
           </div>
-          <StoryScene kind="library" />
         </div>
 
         {children}

@@ -13,8 +13,8 @@ export const siteConfig = {
 }
 
 export const sections = {
-  projects: { name: 'Projects', href: '/projects', description: 'Tools and experiments.' },
   work: { name: 'Work', href: '/work', description: 'Building AI products.' },
+  projects: { name: 'Projects', href: '/projects', description: 'Tools and experiments.' },
   art: { name: 'Art', href: '/art', description: 'Large-scale light installations.' },
   thinking: { name: 'Thinking', href: '/thinking', description: 'AI, design, and everyday life.' },
   library: { name: 'Library', href: '/library', description: 'Notes, components, and skills.' },

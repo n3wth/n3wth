@@ -8,6 +8,7 @@ import type { ResultGroup, SearchItem } from '../lib/search'
 import { registeredPieces } from './thinking/registry'
 import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
 import { siteUrls } from '../data/sites'
+import { navigation } from '../data/content'
 
 /** Minimum query length for automatic AI search. */
 const AI_MIN_CHARS = 2
@@ -42,41 +43,9 @@ const PAGES: SearchItem[] = [
     href: '/',
     group: 'Pages',
   },
-  {
-    id: 'page-work',
-    title: 'Work',
-    subtitle: 'A decade of AI in production, plus the products built alongside it',
-    href: '/work',
-    group: 'Pages',
-  },
-  {
-    id: 'page-art',
-    title: 'After dark',
-    subtitle: 'Light installations for Burning Man and San Francisco memorials',
-    href: '/art',
-    group: 'Pages',
-  },
-  {
-    id: 'page-thinking',
-    title: 'Thinking',
-    subtitle: 'Positions on production AI, and the build logs they came out of',
-    href: '/thinking',
-    group: 'Pages',
-  },
-  {
-    id: 'page-library',
-    title: 'Library',
-    subtitle: 'Essays, components, and notes',
-    href: '/library',
-    group: 'Pages',
-  },
-  {
-    id: 'page-contact',
-    title: 'Contact',
-    subtitle: 'Email, GitHub, LinkedIn',
-    href: '/contact',
-    group: 'Pages',
-  },
+  ...navigation.map(({ name, href, description }) => ({
+    id: `page-${href.slice(1)}`, title: name, subtitle: description, href, group: 'Pages' as const,
+  })),
   {
     id: 'page-support',
     title: 'Support',
@@ -148,7 +117,10 @@ const ELSEWHERE: SearchItem[] = [
   },
 ]
 
-const STATIC_ITEMS: SearchItem[] = [...PAGES, ...THINKING, ...KIT, ...UI, ...HOOKS, ...ELSEWHERE]
+const STATIC_ITEMS: SearchItem[] = [
+  ...PAGES,
+  ...THINKING, ...KIT, ...UI, ...HOOKS, ...ELSEWHERE,
+]
 
 /** The answer endpoint returns markdown links only ([text](href)) — this
     splits on that one pattern rather than pulling in a markdown parser
@@ -167,19 +139,14 @@ function renderAnswerLinks(text: string): Array<string | { label: string; href: 
   return parts
 }
 
-const page = (id: string): SearchItem => {
-  const found = PAGES.find((item) => item.id === id)
-  if (!found) throw new Error(`Unknown page in the command palette: ${id}`)
-  return found
-}
-
 /** An empty input is a worse first impression than a short opinionated list. */
-const START_HERE: SearchItem[] = [
-  page('page-library'),
-  page('page-work'),
-  page('page-thinking'),
-  ...THINKING.slice(0, 2),
-]
+const START_HERE: SearchItem[] = navigation.map(({ name, href, description }) => ({
+  id: `page-${href.slice(1)}`,
+  title: name,
+  subtitle: description,
+  href,
+  group: 'Pages',
+}))
 
 interface GardenNote {
   title: string
@@ -640,7 +607,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
-              placeholder="Search everything"
+              placeholder="Search"
               className="command-palette-input min-w-0 flex-1 bg-transparent font-sans text-sm outline-none placeholder:text-[color:var(--ink-dim)]"
               style={{ color: 'var(--ink)', height: '52px' }}
             />
@@ -750,7 +717,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                   <div key={group.group} role="group" aria-labelledby={labelId} className="pb-1">
                     <p
                       id={labelId}
-                      className="px-4 pb-1 pt-3 font-sans text-xs"
+                      className={trimmed ? 'px-4 pb-1 pt-3 font-sans text-xs' : 'sr-only'}
                       style={{ color: 'var(--ink-dim)', fontWeight: 500, letterSpacing: '0.04em' }}
                     >
                       {group.group}
@@ -770,11 +737,9 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                           rel={item.external ? 'noreferrer' : undefined}
                           onClick={onResultClick(item)}
                           onMouseMove={() => setActiveIndex(index)}
-                          className="flex flex-col justify-center gap-0.5 px-4 py-2"
+                          className="flex items-center px-4 py-2"
                           style={{
                             minHeight: '44px',
-                            borderLeft: '2px solid',
-                            borderLeftColor: isActive ? 'var(--accent-rail)' : 'transparent',
                             background: isActive
                               ? 'color-mix(in srgb, var(--ink) 6%, transparent)'
                               : 'transparent',
@@ -787,14 +752,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                           >
                             {item.title}
                           </span>
-                          {item.subtitle && (
-                            <span
-                              className="truncate font-sans text-xs"
-                              style={{ color: 'var(--ink-dim)' }}
-                            >
-                              {item.subtitle}
-                            </span>
-                          )}
                         </a>
                       )
                     })}

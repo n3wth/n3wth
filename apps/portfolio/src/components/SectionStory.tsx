@@ -29,7 +29,7 @@ function LitStoryLine({ d, seed }: { d: string; seed: number }) {
 function WorkStory() {
   return <>
     {Array.from({ length: 7 }, (_, i) => <LitStoryLine key={i} seed={i + 10}
-      d={`M -100 ${170 + i * 28} C 280 ${170 + i * 28}, 480 ${475 + i * 20}, 790 ${370 + i * 20} S 1150 ${180 + i * 28}, 1500 ${220 + i * 28}`} />)}
+      d={`M -2400 ${170 + i * 28} H -100 C 280 ${170 + i * 28}, 480 ${475 + i * 20}, 790 ${370 + i * 20} S 1150 ${180 + i * 28}, 1500 ${220 + i * 28} S 2500 ${300 + i * 28}, 3600 ${220 + i * 28}`} />)}
     {Array.from({ length: 5 }, (_, i) => <g key={i} className="section-story__plane" style={phase(i)}>
       <LitStoryLine seed={i + 3} d={`M ${690 + i * 40} ${580 - i * 10} V ${190 + i * 24} L ${950 + i * 32} ${105 + i * 26} V ${480 + i * 8} Z`} />
     </g>)}
@@ -39,7 +39,7 @@ function WorkStory() {
 function ArtStory() {
   return <>
     <g className="section-story__quiet">
-      {Array.from({ length: 8 }, (_, i) => <path key={i} d={`M ${410 + i * 30} ${690 - i * 18} Q ${870 + i * 20} ${490 - i * 10} 1540 ${620 - i * 11}`} />)}
+      {Array.from({ length: 8 }, (_, i) => <path key={i} d={`M -2400 ${950 - i * 18} C -1100 ${950 - i * 18}, ${-50 + i * 40} ${890 - i * 26}, ${410 + i * 30} ${690 - i * 18} Q ${870 + i * 20} ${490 - i * 10} 1540 ${620 - i * 11} T 3600 ${620 - i * 11}`} />)}
     </g>
     <g className="section-story__breath">
       {Array.from({ length: 9 }, (_, i) => {
@@ -90,18 +90,22 @@ function ProjectsStory() {
         <path className="section-story__quiet" d={`M ${x} ${y} v 28 l 240 120 v -28 M ${x + 240} ${y + 148} l 260 -95 v -28`} />
       </g>
     })}
-    <LitStoryLine seed={19} d="M 380 5 C 425 140 305 270 360 365 S 465 460 430 650" />
+    <LitStoryLine seed={19} d="M 380 -1800 C 330 -600 335 -130 380 5 C 425 140 305 270 360 365 S 465 460 430 650 C 395 840 400 1050 400 2200" />
   </>
 }
 
 function LibraryStory() {
   return <g transform="translate(850 390) rotate(-22)">
-    {Array.from({ length: 15 }, (_, i) => <g key={i} transform={`rotate(${(i - 7) * 5.5} 0 235)`}>
+    {Array.from({ length: 9 }, (_, i) => <g key={i} transform={`translate(${(i - 4) * 4} 0) rotate(${(i - 4) * 8} 0 235)`}>
       <g className="section-story__page" style={phase(i)}>
       <LitStoryLine seed={i + 25} d="M 0 235 C -143 125 -219 -5 -192 -205 C -77 -185 57 -151 142 -74 C 128 73 79 183 0 235 Z" />
       <path className="section-story__quiet" d="M 0 235 C -30 57 -107 -90 -192 -205" />
       </g>
     </g>)}
+    {Array.from({ length: 9 }, (_, i) => {
+      const x = (i - 4) * 4
+      return <LitStoryLine key={i} seed={41 + i} d={`M ${x} 235 C ${x - 30} 410 ${x - 220} 700 ${x - 680} 1900`} />
+    })}
   </g>
 }
 
@@ -117,7 +121,9 @@ function ContactStory() {
     </defs>
     {[0, 180].map((rotation, side) => <g key={rotation} transform={`rotate(${rotation} 924 350)`}>
         {Array.from({ length: 11 }, (_, i) => {
-          const d = `M 924 350 C ${730 + i * 12} ${410 - i * 10}, ${540 + i * 15} ${210 + i * 6}, ${660 + i * 12} ${100 + i * 15} C ${780 + i * 8} ${-10 + i * 21}, ${1010 - i * 7} ${120 + i * 10}, 924 350`
+          const d = i === 0
+            ? 'M -1800 350 C -200 350 540 210 660 100 C 780 -10 1010 120 924 350 C 730 410 540 210 660 100'
+            : `M 924 350 C ${730 + i * 12} ${410 - i * 10}, ${540 + i * 15} ${210 + i * 6}, ${660 + i * 12} ${100 + i * 15} C ${780 + i * 8} ${-10 + i * 21}, ${1010 - i * 7} ${120 + i * 10}, 924 350`
           return <g key={i}>
             <path d={d} />
               <path className="section-story__contact-spectrum" d={d} pathLength="1" stroke={`url(#${spectrum}-${(i * 3 + side) % colors.length})`} style={{
@@ -131,8 +137,8 @@ function ContactStory() {
 
 const stories = { work: WorkStory, art: ArtStory, thinking: ThinkingStory, projects: ProjectsStory, library: LibraryStory, contact: ContactStory }
 const storyBounds: Record<SectionStoryKind, string> = {
-  work: '575 15 620 620',
-  art: '510 40 760 760',
+  work: '575 32.5 620 620',
+  art: '458 50 760 760',
   thinking: '460 -25 860 860',
   projects: '-20 -55 760 760',
   library: '465 55 690 690',

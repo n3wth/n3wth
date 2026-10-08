@@ -1,9 +1,4 @@
 .contact-invitation {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 3rem;
-  min-height: 70svh;
   padding-block: 3rem;
 }
 .contact-invitation-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
@@ -16,7 +11,5 @@
   list-style: none;
 }
 @media (max-width: 767px) {
-  .contact-invitation { grid-template-columns: minmax(0, 1fr); gap: 1rem; min-height: auto; }
-  .contact-invitation > .story-scene { height: 18rem; }
   .contact-support-list { grid-template-columns: minmax(0, 1fr); }
 }

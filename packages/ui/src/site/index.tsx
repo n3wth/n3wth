@@ -114,16 +114,27 @@ export interface SiteNavigationProps extends Omit<HTMLAttributes<HTMLElement>, '
   menuLabel?: string
   menuContent?: ReactNode
   collapseAt?: 'md' | 'lg'
+  /** Use a flush header and attached menu on compact screens. */
+  compactBar?: boolean
 }
 
 /** Router links remain app-owned; layout and disclosure behavior live here. */
-export function SiteNavigation({ brand, links, actions, navigationLabel = 'Primary', navigationId, menuLabel = 'Open menu', menuContent, collapseAt = 'md', className, ...props }: SiteNavigationProps) {
+export function SiteNavigation({ brand, links, actions, navigationLabel = 'Primary', navigationId, menuLabel = 'Open menu', menuContent, collapseAt = 'md', compactBar = false, className, ...props }: SiteNavigationProps) {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const generatedId = useId()
   const menuId = navigationId ?? `site-navigation-${generatedId}`
   const button = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
   const hasMenuContent = menuContent != null
+
+  useEffect(() => {
+    if (!compactBar) return
+    const update = () => setScrolled(window.scrollY > 0)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [compactBar])
 
   useEffect(() => {
     if (!open) return
@@ -151,7 +162,7 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
   }, [open, collapseAt, hasMenuContent])
 
   return (
-    <header {...props} ref={header} className={cn('n3wth-site-navigation', `n3wth-site-navigation--${collapseAt}`, className)}>
+    <header {...props} ref={header} data-scrolled={scrolled} data-open={open} className={cn('n3wth-site-navigation', `n3wth-site-navigation--${collapseAt}`, compactBar && 'n3wth-site-navigation--compact-bar', className)}>
       <div className="n3wth-site-navigation-island" data-nosnippet>
         <div className="n3wth-site-navigation-brand" onClick={() => setOpen(false)}>{brand}</div>
         <nav id={menuId} aria-label={navigationLabel} className="n3wth-site-navigation-links" data-open={open} onClick={(event) => {
@@ -229,9 +240,11 @@ export interface SiteFooterProps extends HTMLAttributes<HTMLElement> {
   signup?: ReactNode
   /** Place a compact signup beside the footer links. */
   inlineSignup?: boolean
+  /** Separate the footer from adjacent content with a rule. */
+  separator?: boolean
 }
 
-export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a>, links, sourceHref = 'https://github.com/n3wth/n3wth', legalLinks, signup, inlineSignup = false, children, className, ...props }: SiteFooterProps) {
+export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a>, links, sourceHref = 'https://github.com/n3wth/n3wth', legalLinks, signup, inlineSignup = false, separator = true, children, className, ...props }: SiteFooterProps) {
   const footerLinks = links ?? <>
     <a href="https://n3wth.com/library">Library</a>
     <a href="https://skills.n3wth.com">Skills</a>
@@ -241,7 +254,7 @@ export function SiteFooter({ brand = <a href="https://n3wth.com">Oliver Newth</a
     <a href={sourceHref}>GitHub</a>
     {legalLinks}
   </>
-  return <footer {...props} className={cn('n3wth-site-footer', className)}>
+  return <footer {...props} className={cn('n3wth-site-footer', !separator && 'n3wth-site-footer--unruled', className)}>
     <SiteContainer data-nosnippet>
       {signup != null && !inlineSignup && <div className="n3wth-site-footer-signup">{signup}</div>}
       <div className="n3wth-site-footer-row">

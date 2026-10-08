@@ -3,7 +3,8 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  color: var(--color-text-primary);
+  /* Opaque muted ink preserves the weight where neutral strokes overlap. */
+  color: color-mix(in srgb, var(--color-text-primary) 40%, var(--color-background-body));
 }
 
 .section-story svg {
@@ -23,14 +24,13 @@
 
 .section-story path {
   vector-effect: non-scaling-stroke;
-  opacity: .4;
+  opacity: 1;
 }
 
 /* Shared camera scale; background paths may extend to the viewport edges. */
 @media (min-width: 1024px) {
   .section-story svg {
     top: 50%;
-    left: 70%;
     --story-size: min(78vw, 112svh);
   }
 }

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { submitNewsletter, newsletterErrorMessage } from '@n3wth/site-config/newsletter'
 import { SiteFooter, SiteSignup } from '@n3wth/ui/site'
-import { siteConfig } from '../data/content'
+import { navigation, siteConfig } from '../data/content'
 import { trackOutbound, trackSignup } from '../lib/analytics'
 
 export function Footer() {
@@ -16,10 +16,10 @@ export function Footer() {
     }
     trackSignup()
   }
-  return <SiteFooter brand={null} inlineSignup data-nosnippet signup={<SiteSignup compact onSubmit={subscribe} errorMessage={errorMessage} />} links={<>
-    <Link to="/contact">Contact</Link>
-    <Link to="/privacy">Privacy</Link>
-    <Link to="/terms">Terms</Link>
-    <a href={siteConfig.social.github} onClick={() => trackOutbound(siteConfig.social.github, 'footer')}>GitHub</a>
+  return <SiteFooter brand={null} inlineSignup separator={false} data-nosnippet signup={<SiteSignup compact onSubmit={subscribe} errorMessage={errorMessage} />} links={<>
+      {navigation.map(section => <Link key={section.href} to={section.href}>{section.name}</Link>)}
+      <Link to="/privacy">Privacy</Link>
+      <Link to="/terms">Terms</Link>
+      <a href={siteConfig.social.github} onClick={() => trackOutbound(siteConfig.social.github, 'footer')}>GitHub</a>
   </>} />
 }
