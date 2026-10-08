@@ -1,5 +1,19 @@
 # Garden migration
 
+## Current ownership
+
+Garden now serves redirects through a Cloudflare Worker. Portfolio owns the published Markdown, reading routes, and writing world. Follow [the Garden instructions](../../apps/garden/AGENTS.md) and [deployment runbook](deployment.md) for current operations. The migration snapshots below describe previous deployments, not a path to reconnect Vercel.
+
+## Retired product rationale
+
+The former Garden product brief named three equally important audiences: friends and colleagues exploring Oliver's interests, recruiters and professional peers evaluating his work, and Oliver using his public notes for recall and thinking. Search visitors were a secondary audience who entered on individual notes. Each note needed enough context to stand alone and a useful link onward. The goal was a second and third meaningful read, not simply an initial page view.
+
+The brief described more than 260 personally written Obsidian notes. Wikilinks, callouts, frontmatter, derived backlinks, and retained note history were meaningful content, not decoration. Growth stages (seedling, budding, evergreen), planted/tended dates, and link degree informed the visual world. It called for honest unfinished work, a quiet first-person voice, and no invented testimonials, benchmarks, or usage statistics. Accessible reading navigation and reduced-motion support remained necessary beside the 3D world. Current visual rules belong to [DESIGN.md](../../DESIGN.md) and [STYLE.md](../../STYLE.md).
+
+The February 15, 2026 redesign proposal explored local graphs with one or two connection levels, a full graph, 300 ms hover previews, a recently tended homepage, topic clusters, random notes, and weighted tag clouds. It proposed growth-stage heuristics: seedling below 200 words or two headings; budding at 200–800 words or two to five headings; evergreen above 800 words and five headings, with a frontmatter override. These were historical proposal thresholds, not the current content contract. D3 graphs, generated graph/preview data, and GSAP entrance/scroll reveals were proposed implementation details. Search, sidenotes, stacked panes, and mobile contents were deferred. This proposal is not an instruction to restore the retired renderer or its animations.
+
+## Historical migration record
+
 Source: n3wth/newth-garden main d29f51dca83cf3fc5707c6664a8d9b478f1637a9. Snapshot imported into apps/garden without content, public asset or theme changes. Original source history remains in its repository.
 
 Homepage improvements also preserved from clean feat/3d-fidelity commit 6208264: ground texture assets, GardenSurface, responsive scene framing, fixed camera position, charcoal ground, compact hero and family links in document flow. Its equivalent 480px navigation adjustment is superseded by the migration's tested 600px responsive layout; homepage top spacing uses the same breakpoint. The original worktree was not modified. Eight browser/HTTP checks now cover home, note listing and nested notes at 320/390/600/1440px, including heading clearance below the nav.

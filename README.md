@@ -13,7 +13,7 @@ I build agent infrastructure — memory, tooling, and interfaces that make AI sy
 - [skills](https://skills.n3wth.com) — reusable agent skills, installable via `curl -fsSL https://skills.n3wth.com/install.sh | bash`
 - [lunchmoney](https://lunchmoney.sh) — unofficial Lunch Money plugin for Claude, Codex, and Cursor
 
-## Developer documentation
+## Docs
 
 Full docs for UI, Skills, and r3 — installation guides, examples, reference
 material, and troubleshooting — are at **[docs.n3wth.com](https://docs.n3wth.com)**.

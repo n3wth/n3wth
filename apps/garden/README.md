@@ -1,25 +1,16 @@
-# n3wth/garden
+# Garden redirects
 
-A digital garden of interconnected notes on careers, learning, health, and building things. Built with Next.js 16 App Router, rendering Obsidian-flavored markdown from the `content/` directory.
+Garden serves permanent redirects to n3wth.com. Published notes and their parsing pipeline live in [Portfolio](../portfolio); Garden does not render a second reading site.
 
-Live at [garden.n3wth.com](https://garden.n3wth.com)
-
-## Development
+From the repository root:
 
 ```bash
-npm run dev          # Start dev server (port 3000)
-npm run build        # Production build
-npm start            # Serve production build
+npm run build:portfolio
+npm run build:garden
+npm run check -w @n3wth/garden
+npm run dev -w @n3wth/garden
 ```
 
-Requires Node >= 20.9.0 (`.nvmrc` pins 22).
+Build Portfolio first so Garden's redirect map matches published notes. Use the root Node and npm versions.
 
-## Architecture
-
-Markdown files in `content/` are the source of truth. The pipeline parses frontmatter, resolves `[[wikilinks]]`, converts Obsidian callouts, and builds backlinks. Notes are statically generated at build time.
-
-See `AGENTS.md` for detailed architecture documentation.
-
-## Contact
-
-hey@n3wth.com
+See [AGENTS.md](AGENTS.md) for redirect invariants, the [deployment runbook](../../docs/workspace/deployment.md) for release and rollback, and the [Garden history](../../docs/workspace/garden.md) for the former product and migration.
