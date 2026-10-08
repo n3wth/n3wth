@@ -78,6 +78,12 @@ function zoneIdFromEnv(env = process.env) {
 }
 
 export function findWranglerConfig(appRoot = APP_ROOT) {
+  const manifestPath = join(appRoot, 'package.json')
+  if (existsSync(manifestPath) && JSON.parse(readFileSync(manifestPath, 'utf8')).dependencies?.vinext) {
+    const builtConfig = join(appRoot, 'dist/server/wrangler.json')
+    if (!existsSync(builtConfig)) throw new Error(`Build the Vinext app before packaging: ${appRoot}`)
+    return builtConfig
+  }
   for (const name of ['wrangler.jsonc', 'wrangler.json']) {
     const path = join(appRoot, name)
     if (existsSync(path)) return path

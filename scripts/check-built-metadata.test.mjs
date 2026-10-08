@@ -123,26 +123,26 @@ test('listApplications reads workspace names from app manifests', () => {
     assert.deepEqual(
       listApplications(root).toSorted((left, right) => left.directory.localeCompare(right.directory)),
       [
-        { directory: 'kit', name: '@n3wth/kit', next: true },
-        { directory: 'portfolio', name: '@n3wth/portfolio', next: false },
+        { directory: 'kit', name: '@n3wth/kit', next: true, vinext: false },
+        { directory: 'portfolio', name: '@n3wth/portfolio', next: false, vinext: false },
       ],
     )
   } finally { rmSync(root, { recursive: true, force: true }) }
 })
 
-test('package-only affected scope does not require HTML output', () => {
+test('package-only affected scope does not require HTML output', async () => {
   const root = fixture(root => writeApp(root, 'kit', '@n3wth/kit', { next: true }))
   try {
     const messages = []
-    assert.deepEqual(checkBuiltMetadata(root, { scope: ['@n3wth/ui'], log: message => messages.push(message) }), [])
+    assert.deepEqual(await checkBuiltMetadata(root, { scope: ['@n3wth/ui'], log: message => messages.push(message) }), [])
     assert.match(messages.join('\n'), /no built applications in scope/)
   } finally { rmSync(root, { recursive: true, force: true }) }
 })
 
-test('scoped app without a build fails with a build-first message', () => {
+test('scoped app without a build fails with a build-first message', async () => {
   const root = fixture(root => writeApp(root, 'kit', '@n3wth/kit', { next: true }))
   try {
-    assert.throws(
+    await assert.rejects(
       () => checkBuiltMetadata(root, { scope: ['@n3wth/kit'] }),
       /kit: no public HTML checked; build the application first/,
     )

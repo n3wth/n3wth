@@ -11,6 +11,7 @@ import {
   deployPreview,
   deletePreview,
   injectPreviewHeaders,
+  findWranglerConfig,
   isMissingWorkerResult,
   parseCliArgs,
   parseJsonc,
@@ -22,6 +23,17 @@ import { createPreviewConfig } from './cloudflare-preview-config.mjs'
 import { checkPreviewOnce, classifyFetchError, verifyPreviewReadiness } from './cloudflare-preview-verify.mjs'
 
 const accountId = 'ac23513945eb49f73a89faf1be12384e'
+
+test('Vinext previews require generated configuration instead of the source entrypoint', t => {
+  const root = mkdtempSync(join(tmpdir(), 'vinext-preview-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  writeFileSync(join(root, 'package.json'), JSON.stringify({ dependencies: { vinext: '1.0.1' } }))
+  writeFileSync(join(root, 'wrangler.jsonc'), '{}')
+  assert.throws(() => findWranglerConfig(root), /Build the Vinext app/)
+  mkdirSync(join(root, 'dist/server'), { recursive: true })
+  writeFileSync(join(root, 'dist/server/wrangler.json'), '{}')
+  assert.equal(findWranglerConfig(root), join(root, 'dist/server/wrangler.json'))
+})
 
 test('accepts only the supported action, app, and positive PR syntax', () => {
   assert.deepEqual(parseCliArgs(['config', '--app', 'ui-docs', '--pr', '12']), { action: 'config', app: 'ui-docs', pr: 12 })

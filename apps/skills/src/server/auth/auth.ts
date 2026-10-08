@@ -1,6 +1,5 @@
 import { betterAuth, type D1Database as BetterAuthD1Database } from 'better-auth'
 import { magicLink } from 'better-auth/plugins'
-import { getCloudflareContext } from '@opennextjs/cloudflare'
 import type { D1Database, SkillsEnv } from '../db/d1'
 import { resolveAuthConfig, type SkillsAuthEnv } from './config'
 import { sendMagicLinkEmail } from '../email/magic-link'
@@ -72,10 +71,10 @@ export function getAuth(db: D1Database, env: SkillsAuthEnv): Auth {
 /** Resolve the worker env (Cloudflare context first, process.env fallback). */
 export async function getWorkerEnv(): Promise<SkillsWorkerEnv> {
   try {
-    const { env } = await getCloudflareContext({ async: true })
+    const { env } = await import('cloudflare:workers')
     return env as SkillsWorkerEnv
   } catch {
-    // Outside a Cloudflare context (plain `next dev`, tests)
+    // Outside a Cloudflare context (Node-based unit tests).
     return process.env as unknown as SkillsWorkerEnv
   }
 }

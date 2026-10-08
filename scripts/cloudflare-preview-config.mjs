@@ -103,6 +103,11 @@ function previewStatefulBindings(source, previewBindings) {
   for (const type of STATEFUL_BINDINGS) {
     const sourceBindings = source[type] || []
     if (sourceBindings.length === 0) continue
+    // The Vite plugin emits empty object-shaped defaults for these bindings.
+    // Non-empty objects still fail closed until explicit isolation is supported.
+    if (['durable_objects', 'queues'].includes(type)
+      && !Array.isArray(sourceBindings)
+      && Object.values(sourceBindings).every(value => Array.isArray(value) && value.length === 0)) continue
     const provided = previewBindings?.[type]
     if (!Array.isArray(provided)) {
       throw new Error(`${type} must use explicit per-preview bindings; production bindings cannot be copied.`)
@@ -191,6 +196,8 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   if (!STATIC_APPS.has(app)) {
     if (!config.main) throw new Error(`Dynamic preview ${app} requires a Worker main entrypoint.`)
     config.main = paths.wrapperPath
+    // Bundle the wrapper and its imported built Worker into the preview package.
+    if (source.no_bundle) config.no_bundle = false
   }
   return { config, identity, paths, originalMain: source.main ? absolutePath(source.main, sourcePath) : undefined }
 }

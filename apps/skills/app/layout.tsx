@@ -1,6 +1,6 @@
 import { siteUrls } from '@n3wth/site-config'
 import type { Metadata, Viewport } from 'next'
-import { AxiomWebVitals } from 'next-axiom'
+import AxiomWebVitals from './AxiomVitals'
 import { googleAnalyticsScript } from '@n3wth/site-config/analytics'
 import { Providers } from './providers'
 import { PostHogProvider } from '../src/components/PostHogProvider'
@@ -77,7 +77,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="dark" data-astryx-theme="n3wth" suppressHydrationWarning>
-      <AxiomWebVitals />
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
@@ -89,6 +88,7 @@ export default function RootLayout({
         <WebSiteJsonLd />
       </head>
       <body>
+        <AxiomWebVitals />
         <a
           href="#main-content"
           className="skills-skip-link"
@@ -102,8 +102,8 @@ export default function RootLayout({
             <div className="outline-none">{children}</div>
           </Providers>
         </PostHogProvider>
+        <script dangerouslySetInnerHTML={{ __html: googleAnalyticsScript }} />
       </body>
-      <script dangerouslySetInnerHTML={{ __html: googleAnalyticsScript }} />
     </html>
   )
 }

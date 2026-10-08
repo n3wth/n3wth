@@ -21,7 +21,7 @@ export default defineConfig({
     use: { browserName: 'chromium' as const, viewport: { width, height: 900 } },
   })),
   webServer: previewUrl ? undefined : {
-    command: 'npm run start -- --hostname 127.0.0.1 --port 4391',
+    command: 'npm run start -- --ip 127.0.0.1 --port 4391',
     url: 'http://127.0.0.1:4391',
     reuseExistingServer: false,
     timeout: 30_000,
