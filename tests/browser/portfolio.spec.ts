@@ -130,6 +130,10 @@ test('section openings fill the screen with distinct accessible stories', async 
     expect(copy!.y + copy!.height).toBeLessThanOrEqual(bounds!.y + bounds!.height + 1)
     if (page.viewportSize()!.width >= 1024) {
       expect(copy!.y).toBeGreaterThan(bounds!.y + bounds!.height * .7)
+    }
+    if (route === '/contact') {
+      await expect(page.locator('.portfolio-story-description')).toHaveCount(0)
+    } else if (page.viewportSize()!.width >= 1024) {
       const description = await page.locator('.portfolio-story-description').evaluate(element => {
         const range = document.createRange()
         range.selectNodeContents(element)
