@@ -23,16 +23,6 @@ export const sections = {
 
 export const navigation = Object.values(sections)
 
-/** Family sites for quiet access in the scene or keyboard nav */
-export const familySites = [
-  { name: 'hop.flights', href: siteUrls.hop },
-  { name: 'lunchmoney.sh', href: siteUrls.lunch },
-  { name: 'r3', href: siteUrls.r3 },
-  { name: 'garden', href: '/thinking' },
-  { name: 'Agent Skills', href: siteUrls.skills },
-  { name: 'ui', href: siteUrls.ui },
-]
-
 export interface Metric {
   value: string
   label: string

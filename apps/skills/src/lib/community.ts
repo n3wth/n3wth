@@ -1,5 +1,3 @@
-import { getFingerprint } from './fingerprint'
-
 // Community features: bundles, voting, and feature requests
 const BUNDLES_STORAGE_KEY = 'newth-skills-bundles'
 const VOTES_STORAGE_KEY = 'newth-skills-votes'
@@ -74,20 +72,6 @@ export function getAllBundles(): SkillBundle[] {
   return getBundles()
 }
 
-export function updateBundle(id: string, updates: Partial<Pick<SkillBundle, 'name' | 'description' | 'skillIds'>>): SkillBundle | undefined {
-  const bundles = getBundles()
-  const index = bundles.findIndex(b => b.id === id)
-  if (index === -1) return undefined
-  
-  bundles[index] = {
-    ...bundles[index],
-    ...updates,
-    updatedAt: Date.now(),
-  }
-  saveBundles(bundles)
-  return bundles[index]
-}
-
 export function deleteBundle(id: string): boolean {
   const bundles = getBundles()
   const filtered = bundles.filter(b => b.id !== id)
@@ -102,17 +86,6 @@ export function addSkillToBundle(bundleId: string, skillId: string): boolean {
   if (!bundle || bundle.skillIds.includes(skillId)) return false
   
   bundle.skillIds.push(skillId)
-  bundle.updatedAt = Date.now()
-  saveBundles(bundles)
-  return true
-}
-
-export function removeSkillFromBundle(bundleId: string, skillId: string): boolean {
-  const bundles = getBundles()
-  const bundle = bundles.find(b => b.id === bundleId)
-  if (!bundle) return false
-  
-  bundle.skillIds = bundle.skillIds.filter(id => id !== skillId)
   bundle.updatedAt = Date.now()
   saveBundles(bundles)
   return true
@@ -172,62 +145,6 @@ function saveVoteData(data: VoteData): void {
   } catch {
     // Storage error
   }
-}
-
-export function voteForSkill(skillId: string): { votes: number; hasVoted: boolean } {
-  const data = getVoteData()
-  const fingerprint = getFingerprint()
-  const wasVoted = data.userVotedSkills.includes(skillId)
-
-  if (wasVoted) {
-    // Unvote
-    data.userVotedSkills = data.userVotedSkills.filter(id => id !== skillId)
-    data.skillVotes[skillId] = Math.max(0, (data.skillVotes[skillId] || 1) - 1)
-
-    // Send to API
-    fetch(`/api/vote?skillId=${skillId}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fingerprint }),
-    }).catch(() => {})
-  } else {
-    // Vote
-    data.userVotedSkills.push(skillId)
-    data.skillVotes[skillId] = (data.skillVotes[skillId] || 0) + 1
-
-    // Send to API
-    fetch(`/api/vote?skillId=${skillId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fingerprint }),
-    }).catch(() => {})
-  }
-
-  saveVoteData(data)
-  return {
-    votes: data.skillVotes[skillId] || 0,
-    hasVoted: data.userVotedSkills.includes(skillId),
-  }
-}
-
-export function getSkillVotes(skillId: string): { votes: number; hasVoted: boolean } {
-  const data = getVoteData()
-  return {
-    votes: data.skillVotes[skillId] || 0,
-    hasVoted: data.userVotedSkills.includes(skillId),
-  }
-}
-
-export function getAllSkillVotes(): Record<string, number> {
-  return getVoteData().skillVotes
-}
-
-export function getTopVotedSkills(limit: number = 10): Array<{ skillId: string; votes: number }> {
-  const data = getVoteData()
-  return Object.entries(data.skillVotes)
-    .map(([skillId, votes]) => ({ skillId, votes }))
-    .sort((a, b) => b.votes - a.votes)
-    .slice(0, limit)
 }
 
 // Feature request functions
@@ -310,12 +227,6 @@ export function getRequestVotes(requestId: string): { votes: number; hasVoted: b
     votes: data.requestVotes[requestId] || 0,
     hasVoted: data.userVotedRequests.includes(requestId),
   }
-}
-
-export function getTopRequests(limit: number = 10): FeatureRequest[] {
-  return getAllRequests()
-    .sort((a, b) => b.votes - a.votes)
-    .slice(0, limit)
 }
 
 // Comparison functions

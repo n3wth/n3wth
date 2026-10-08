@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test'
+import { MathUtils, PerspectiveCamera, Vector3 } from 'three'
+import { layoutWritingGroves, type WritingNode } from '../../apps/portfolio/src/lib/writingGroves'
 
 test('permanent footer navigation stays in the app and starts pages at the top', async ({ page }, testInfo) => {
   await page.goto('/work')
@@ -495,10 +497,13 @@ test('hybrid planting remains navigable with motion', async ({ page }, testInfo)
     window.scrollTo(0, document.body.scrollHeight)
   })
   await expect.poll(() => page.locator('.night-field-stage').evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThanOrEqual(0)
-  await page.waitForTimeout(500)
+  // Late model uploads can request one final frame; continuous drawing must stop.
+  await expect.poll(async () => {
+    const before = await draws()
+    await page.waitForTimeout(500)
+    return await draws() - before
+  }).toBe(0)
   const paused = await draws()
-  await page.waitForTimeout(500)
-  expect(await draws()).toBe(paused)
   await page.evaluate(() => {
     document.getElementById('test-scroll-room')?.remove()
     window.scrollTo(0, 0)
@@ -507,6 +512,38 @@ test('hybrid planting remains navigable with motion', async ({ page }, testInfo)
   await notes.press('Enter')
   await expect(page).toHaveURL(/\/thinking#notes$/)
   expect(errors).toEqual([])
+})
+
+test('a selected plant opens a compact, dismissible reading card', async ({ page }, testInfo) => {
+  const node: WritingNode = { id: '/thinking/test-note', title: 'Connected thoughts', description: 'A short note about shared ideas.', stage: 'evergreen', tags: ['ideas'], linkCount: 0 }
+  await page.route('**/writing/world.json', route => route.fulfill({ json: { nodes: [node], edges: [] } }))
+  await page.goto('/')
+  await expect(page.locator('.night-field-stage.is-settled')).toBeVisible({ timeout: 45_000 })
+  const canvas = await page.locator('.night-field-stage canvas').boundingBox()
+  const aspect = canvas!.width / canvas!.height
+  const compact = aspect < 1.35
+  const spread = compact ? Math.max(1, Math.min(1.35, aspect) / .5) : 1
+  const [plant] = layoutWritingGroves([node], compact, spread)
+  // Project the fixture's hit target through the scene's fitted camera.
+  const camera = new PerspectiveCamera(Math.max(compact ? 54 : 48, MathUtils.radToDeg(2 * Math.atan((compact ? .25 : .68) / aspect))), aspect)
+  camera.position.set(0, compact ? 14 : 7, compact ? 26 : 22 + Math.max(0, 1.8 - aspect) * 14)
+  camera.lookAt(0, compact ? 1 : 2, -30)
+  camera.updateMatrixWorld()
+  const point = new Vector3(plant.x, plant.height * .65, plant.z).project(camera)
+  const select = () => page.mouse.click(canvas!.x + (point.x + 1) * canvas!.width / 2, canvas!.y + (1 - point.y) * canvas!.height / 2)
+  await select()
+  const card = page.getByRole('region', { name: 'Selected writing' })
+  await expect(card).toBeVisible()
+  await expect(card.getByRole('heading')).toHaveText(node.title)
+  await expect(card.getByRole('link')).toHaveCount(1)
+  await expect(card.getByRole('link', { name: 'Read', exact: true })).toHaveAttribute('href', node.id)
+  await page.screenshot({ path: testInfo.outputPath('selected-note.png') })
+  await card.getByRole('button', { name: 'Close note' }).click()
+  await expect(card).toHaveCount(0)
+  await select()
+  await expect(card).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(card).toHaveCount(0)
 })
 
 test('AI answers start automatically after typing pauses', async ({ page }, testInfo) => {

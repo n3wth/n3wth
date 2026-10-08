@@ -82,11 +82,9 @@ export function plantSegments(node: GroveTree): PlantSegment[] {
     segments.push({ a: base, b: tip, detail: true })
     if (node.stage === 'evergreen') {
       // One fine leaf per branch leaves the buds and stems visible.
-      for (let fork = 0; fork < 1; fork++) {
-        const leafAngle = angle + (fork - 1) * 0.9 + (random() - 0.5) * 0.3
-        const leafLength = node.height * (0.1 + random() * 0.08)
-        segments.push({ a: tip, b: [tip[0] + Math.cos(leafAngle) * leafLength, tip[1] + leafLength * 0.6, tip[2] + Math.sin(leafAngle) * leafLength], detail: true, leaf: true })
-      }
+      const leafAngle = angle - 0.9 + (random() - 0.5) * 0.3
+      const leafLength = node.height * (0.1 + random() * 0.08)
+      segments.push({ a: tip, b: [tip[0] + Math.cos(leafAngle) * leafLength, tip[1] + leafLength * 0.6, tip[2] + Math.sin(leafAngle) * leafLength], detail: true, leaf: true })
     }
   }
   return segments

@@ -9,7 +9,6 @@
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.116.0",
     "@tailwindcss/postcss": "4.3.3",
-    "@tailwindcss/vite": "4.3.3",
     "ai": "6.0.50",
     "better-auth": "1.7.5",
     "canvas-confetti": "1.9.4",
