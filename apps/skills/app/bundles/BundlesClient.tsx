@@ -9,6 +9,7 @@ import { IslandNav } from '@/src/components/IslandNav'
 import { Footer } from '@/src/components/Footer'
 import { SkillCard } from '@/src/components/SkillCard'
 import { CommandBox } from '@/src/components/CommandBox'
+import { getInstallCommand } from '@/src/config/commands'
 import {
   getAllBundles,
   createBundle,
@@ -105,7 +106,7 @@ export function BundlesClient() {
     if (!selectedBundle || selectedBundleSkills.length === 0) return ''
     const available = selectedBundleSkills.filter(skill => skill.skillFile)
     if (available.length === 0) return ''
-    return `curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini ${available.map(skill => skill.id).join(' ')}`
+    return `${getInstallCommand('gemini')!.command} ${available.map(skill => skill.id).join(' ')}`
   }, [selectedBundle, selectedBundleSkills])
 
   return (

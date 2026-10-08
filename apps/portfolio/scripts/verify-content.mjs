@@ -1,5 +1,5 @@
 /**
- * Validates the committed content snapshots in src/data/*.json without any
+ * Validates generated indexes and the committed registry snapshot without any
  * network access. This is the portfolio's `prebuild`: it makes sure the
  * source tree that's about to be compiled actually has the shapes every
  * page expects, and fails the build loudly if a snapshot is missing or

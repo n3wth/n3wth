@@ -24,7 +24,7 @@ function copyRealSnapshots(dir) {
 }
 
 describe('verifyContent', () => {
-  it('passes on the committed snapshots in src/data', () => {
+  it('passes on generated local indexes and the committed registry snapshot', () => {
     expect(verifyContent({ dataDir: REAL_DATA_DIR })).toEqual([])
   })
 
@@ -40,10 +40,10 @@ describe('verifyContent', () => {
   it('fails when a snapshot contains invalid JSON', () => {
     dataDir = mkdtempSync(join(tmpdir(), 'content-verify-'))
     copyRealSnapshots(dataDir)
-    writeFileSync(join(dataDir, 'garden-notes.json'), '{ not valid json')
+    writeFileSync(join(dataDir, 'garden-search.json'), '{ not valid json')
 
     const errors = verifyContent({ dataDir })
-    expect(errors.some((e) => e.includes('garden-notes.json') && e.includes('invalid JSON'))).toBe(true)
+    expect(errors.some((e) => e.includes('garden-search.json') && e.includes('invalid JSON'))).toBe(true)
   })
 
   it('fails on a placeholder empty-version ui-meta.json', () => {
@@ -55,24 +55,14 @@ describe('verifyContent', () => {
     expect(errors.some((e) => e.includes('ui-meta.json.version'))).toBe(true)
   })
 
-  it('fails on an empty-array garden-notes placeholder', () => {
-    dataDir = mkdtempSync(join(tmpdir(), 'content-verify-'))
-    copyRealSnapshots(dataDir)
-    writeFileSync(join(dataDir, 'garden-notes.json'), '[]')
-
-    const errors = verifyContent({ dataDir })
-    expect(errors.some((e) => e.includes('garden-notes.json'))).toBe(true)
-  })
-
   it('only reports validate errors for a source whose files all read cleanly', () => {
     dataDir = mkdtempSync(join(tmpdir(), 'content-verify-'))
     copyRealSnapshots(dataDir)
-    // garden-search.json missing should not crash validation of garden-notes/ui-meta
+    // Missing generated search data must not block validation of the registry snapshot
     unlinkSync(join(dataDir, 'garden-search.json'))
 
     const errors = verifyContent({ dataDir })
     expect(errors.some((e) => e.includes('garden-search.json') && e.includes('missing'))).toBe(true)
-    expect(errors.some((e) => e.includes('garden-notes.json'))).toBe(false)
     expect(errors.some((e) => e.includes('ui-meta.json'))).toBe(false)
   })
 })

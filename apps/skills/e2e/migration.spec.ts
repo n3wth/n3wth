@@ -87,3 +87,38 @@ test('health route dispatches to its own handler', async ({ request }) => {
   expect(body).toHaveProperty('tables')
   expect(body.error).not.toBe('skillId required')
 })
+
+for (const status of [200, 401, 402]) {
+  test(`playground preserves request identity and ${status} feedback`, async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('newth-playground-fingerprint', 'pg-existing-browser')
+      localStorage.setItem('newth-playground-runs', '1')
+      localStorage.setItem('newth-skills-fp', 'workflow-existing-browser')
+      localStorage.setItem('newth-workflow-usage-count', '2')
+    })
+    let sent: Record<string, unknown> | undefined
+    await page.route('**/api/playground', async route => {
+      sent = route.request().postDataJSON()
+      await route.fulfill({ status, json: status === 200
+        ? { result: 'Client request succeeded', remaining: 1 }
+        : { error: 'Provider error', limit: 3, used: 3 },
+      })
+    })
+    await page.goto('/playground')
+    // The stored count appears after hydration, before controls can handle clicks.
+    await expect(page.getByText('2 free runs remaining.', { exact: true })).toBeVisible()
+    await page.getByRole('button', { name: 'Try it', exact: true }).click()
+    await page.getByPlaceholder(/^Ask /).fill('Test this skill')
+    await page.getByRole('button', { name: 'Run', exact: true }).click()
+    await expect.poll(() => sent?.prompt).toBe('Test this skill')
+    expect(sent?.fingerprint).toBe('pg-existing-browser')
+    expect(sent?.skillContext).toHaveProperty('name')
+    expect(sent).not.toHaveProperty('userApiKey')
+    await expect(page.getByText(status === 200 ? 'Client request succeeded'
+      : status === 401 ? 'Invalid API key. Check your key and try again.'
+      : 'Free runs exhausted. Add your API key to continue.', { exact: true })).toBeVisible()
+    await expect.poll(() => page.evaluate(() => localStorage.getItem('newth-playground-runs')))
+      .toBe(status === 200 ? '2' : status === 402 ? '3' : '1')
+    expect(await page.evaluate(() => localStorage.getItem('newth-workflow-usage-count'))).toBe('2')
+  })
+}

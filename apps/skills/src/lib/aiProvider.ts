@@ -1,4 +1,5 @@
 import { getFingerprint } from './usageTracker'
+import type { Skill } from '../data/skills'
 
 export interface AIExecutionResult {
   result: string
@@ -15,17 +16,25 @@ export interface AIExecutionError {
 
 export async function executeAI(
   prompt: string,
-  options?: { apiKey?: string }
+  options?: {
+    apiKey?: string
+    playground?: {
+      fingerprint: string
+      skillContext: Pick<Skill, 'name' | 'description' | 'features' | 'useCases'>
+    }
+  }
 ): Promise<AIExecutionResult> {
-  const fingerprint = getFingerprint()
+  const playground = options?.playground
+  const fingerprint = playground?.fingerprint ?? getFingerprint()
 
-  const response = await fetch('/api/ai/execute', {
+  const response = await fetch(playground ? '/api/playground' : '/api/ai/execute', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       prompt,
       userApiKey: options?.apiKey || undefined,
-      fingerprint
+      fingerprint,
+      ...(playground && { skillContext: playground.skillContext }),
     })
   })
 
@@ -47,7 +56,7 @@ export async function executeAI(
     }
 
     throw new AIExecutionFailedError(
-      errorData.error || 'AI execution failed'
+      errorData.error || (playground ? 'Request failed' : 'AI execution failed')
     )
   }
 

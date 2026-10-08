@@ -3,29 +3,6 @@ export function canonical(value) {
   return JSON.stringify(value, null, 2) + '\n'
 }
 
-export function validateGardenNotes(notes) {
-  const errors = []
-  if (!Array.isArray(notes)) {
-    errors.push('garden-notes.json: expected an array')
-    return errors
-  }
-  if (notes.length === 0) errors.push('garden-notes.json: array is empty')
-  notes.forEach((note, i) => {
-    for (const field of ['title', 'href', 'description', 'date']) {
-      if (typeof note?.[field] !== 'string') {
-        errors.push(`garden-notes.json[${i}].${field}: expected a string`)
-      }
-    }
-    if (typeof note?.title === 'string' && note.title === '') {
-      errors.push(`garden-notes.json[${i}].title: must not be empty`)
-    }
-    if (typeof note?.href === 'string' && note.href === '') {
-      errors.push(`garden-notes.json[${i}].href: must not be empty`)
-    }
-  })
-  return errors
-}
-
 export function validateGardenIndex(index) {
   const errors = []
   if (typeof index !== 'object' || index === null || Array.isArray(index)) {
@@ -110,11 +87,6 @@ export const SOURCES = [
 
 export const SNAPSHOTS = [
   ...SOURCES,
-  {
-    name: 'garden-notes',
-    files: ['garden-notes.json'],
-    validate: (value) => validateGardenNotes(value['garden-notes.json']),
-  },
   {
     name: 'garden-index',
     files: ['garden-index.json', 'garden-search.json'],

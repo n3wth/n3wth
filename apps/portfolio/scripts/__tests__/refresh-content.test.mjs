@@ -122,7 +122,7 @@ describe('refreshContent', () => {
     expect(result.updated).toEqual(['ui-meta'])
     expect(result.unchanged).toEqual([])
     expect(result.failed).toEqual([])
-    expect(existsSync(join(dataDir, 'garden-notes.json'))).toBe(false)
+    expect(existsSync(join(dataDir, 'garden-index.json'))).toBe(false)
   })
 
   it('rejects invalid registry metadata without writing a placeholder', async () => {
