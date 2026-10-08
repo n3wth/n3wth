@@ -311,28 +311,3 @@ export async function handlePortfolioApi(request: Request, env: RuntimeEnv = {},
   if (path === '/api/unsubscribe') return handleUnsubscribeRequest(request, env, fetchImpl)
   return undefined
 }
-
-export async function handleVercelRequest(req: { method?: string; url?: string; headers: Record<string, string | string[] | undefined>; body?: unknown }, res: { setHeader(name: string, value: string): void; status(code: number): { json(body: unknown): unknown; end(): unknown; send(body: string): unknown }; write(chunk: Uint8Array): void; end(): void }): Promise<void> {
-  const headers = new Headers()
-  for (const [key, value] of Object.entries(req.headers)) if (typeof value === 'string') headers.set(key, value)
-  const method = req.method ?? 'GET'
-  const request = new Request(`https://${headers.get('host') ?? 'n3wth.com'}${req.url ?? '/'}`, { method, headers, body: method === 'GET' || method === 'HEAD' ? undefined : JSON.stringify(req.body ?? {}) })
-  const response = await handlePortfolioApi(request, process.env as RuntimeEnv)
-  if (!response) {
-    res.status(404).json({ error: 'Not found' })
-    return
-  }
-  response.headers.forEach((value, key) => res.setHeader(key, value))
-  const status = res.status(response.status)
-  if (response.headers.get('content-type')?.startsWith('text/event-stream') && response.body) {
-    const reader = response.body.getReader()
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      res.write(value)
-    }
-    res.end()
-    return
-  }
-  status.send(await response.text())
-}

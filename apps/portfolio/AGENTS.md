@@ -24,7 +24,6 @@ src/
 │   └── thinking/         # Thinking pieces + kit components
 ├── data/
 │   ├── content.ts        # siteConfig, navigation[], experiences[], installations[]
-│   ├── thinking.ts       # Thought pieces metadata
 │   └── library.ts        # Library shelf data
 ├── hooks/                # usePageMeta, useReveal, useCommandPalette, etc.
 └── lib/
@@ -62,7 +61,7 @@ npm run build    # tsc + vite build (verify before committing)
 - **UI Library:** `@n3wth/ui` (shared component library - Nav, Footer, NoiseOverlay)
 - **Analytics:** PostHog (deferred load via `requestIdleCallback`)
 - **Fonts:** Satoshi (display), Geist Sans (body), Geist Mono (code)
-- **Deploy:** Vercel
+- **Deploy:** Cloudflare Worker (`worker.ts`, `wrangler.jsonc`)
 
 ## Architecture
 
@@ -71,7 +70,6 @@ npm run build    # tsc + vite build (verify before committing)
 - `src/components/NightField.tsx` - Homepage 3D night field (three.js portals; identity layer paints above the loader)
 - `src/components/thinking/` - Thinking piece registry, kit, and pieces (one route per piece)
 - `src/data/content.ts` - All site content (experiences, frameworks, installations)
-- `src/data/thinking.ts` - Thought pieces content
 - `src/lib/gsap.ts` - Centralized GSAP plugin registration (always import from here)
 
 ## Design

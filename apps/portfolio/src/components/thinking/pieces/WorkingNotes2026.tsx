@@ -13,7 +13,7 @@ import { AssembleField } from '@n3wth/ui/visuals'
    That gap is real and load-bearing, not invented filler.
 
    Interaction: a constellation built on the shared AssembleField kit
-   primitive (the same particle-field motif as /work's EmergenceField),
+   primitive,
    with one cluster per generic goal category. Each cluster carries a
    partial ring — not a completion percentage (none exists in the source),
    but the review cadence attached to that category: how often something
