@@ -1,13 +1,15 @@
 import { test, expect } from '@playwright/test'
 
-test('section exits continue in the app and start the next page at the top', async ({ page }, testInfo) => {
+test('permanent footer navigation stays in the app and starts pages at the top', async ({ page }, testInfo) => {
   await page.goto('/work')
-  const continuation = page.getByRole('navigation', { name: 'Continue exploring' })
+  const continuation = page.getByRole('navigation', { name: 'Footer', exact: true })
   await continuation.scrollIntoViewIfNeeded()
-  await expect(continuation.getByRole('link')).toHaveCount(2)
+  await expect(continuation.getByRole('link')).toHaveText(['Projects', 'Work', 'Art', 'Thinking', 'Library', 'Contact'])
+  await expect(page.locator('.n3wth-site-footer')).toHaveCSS('border-top-width', '0px')
   await page.screenshot({ path: testInfo.outputPath('work-continuation.png') })
+  await page.locator('.n3wth-site-footer').screenshot({ path: testInfo.outputPath('footer.png') })
   await page.evaluate(() => { document.documentElement.dataset.flowCheck = 'same-document' })
-  await continuation.getByRole('link', { name: 'Projects Tools and experiments.' }).click()
+  await continuation.getByRole('link', { name: 'Projects', exact: true }).click()
   await expect(page).toHaveURL(/\/projects$/)
   await expect(page.locator('main h1')).toHaveText('Projects')
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
@@ -117,9 +119,14 @@ test('section openings fill the screen with distinct accessible stories', async 
     const copy = await page.locator('.portfolio-story-copy').boundingBox()
     const stage = await hero.locator('.section-story').boundingBox()
     const navigation = await page.locator('.n3wth-site-navigation-island').boundingBox()
-    expect(stage!.y).toBeGreaterThanOrEqual(navigation!.y + navigation!.height)
-    expect(Math.abs(stage!.y + stage!.height - copy!.y)).toBeLessThanOrEqual(1)
-    expect(Math.abs(artwork!.y + artwork!.height / 2 - (stage!.y + stage!.height / 2))).toBeLessThanOrEqual(1)
+    if (route === '/thinking') {
+      const rootY = artwork!.y + artwork!.height * (740 + 25) / 860
+      expect(Math.abs(rootY - (bounds!.y + bounds!.height))).toBeLessThanOrEqual(1)
+    } else {
+      expect(stage!.y).toBeGreaterThanOrEqual(navigation!.y + navigation!.height)
+      expect(Math.abs(stage!.y + stage!.height - copy!.y)).toBeLessThanOrEqual(1)
+      expect(Math.abs(artwork!.y + artwork!.height / 2 - (stage!.y + stage!.height / 2))).toBeLessThanOrEqual(1)
+    }
     expect(copy!.y + copy!.height).toBeLessThanOrEqual(bounds!.y + bounds!.height + 1)
     if (page.viewportSize()!.width >= 1024) {
       expect(copy!.y).toBeGreaterThan(bounds!.y + bounds!.height * .7)
@@ -429,7 +436,7 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
   })
 }
 
-test('work uses the shared theme and a usable resume action', async ({ page }) => {
+test('work uses the shared theme and a usable resume action', async ({ page }, testInfo) => {
   await page.goto('/work')
   await expectSiteFoundation(page, {
     sectionTopPadding: '0px',
@@ -437,6 +444,18 @@ test('work uses the shared theme and a usable resume action', async ({ page }) =
     navigationBorder: page.viewportSize()!.width < 1024 ? '0px' : '1px',
   })
   await expect(page.locator('#building')).toHaveCount(0)
+  const chapters = await page.locator('.work-chapters').boundingBox()
+  for (const paragraph of await page.locator('.work-chapter-story > p:first-child').all()) {
+    const bounds = await paragraph.boundingBox()
+    expect(bounds!.x).toBeCloseTo(chapters!.x, 0)
+    expect(bounds!.width).toBeCloseTo(chapters!.width, 0)
+  }
+  if (page.viewportSize()!.width < 1024) {
+    const brand = await page.locator('.n3wth-site-navigation-brand').boundingBox()
+    expect(brand!.x).toBeCloseTo(chapters!.x, 0)
+  }
+  await page.locator('.work-chapter').last().scrollIntoViewIfNeeded()
+  await page.screenshot({ path: testInfo.outputPath('work-alignment.png') })
   await expect(page.getByRole('link', { name: 'Open resume', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
 })
 
@@ -555,7 +574,7 @@ test('compact header is flush and its menu remains usable over photographs', asy
   const bounds = await bar.boundingBox()
   expect(bounds!.x).toBe(0)
   expect(bounds!.y).toBe(0)
-  expect(bounds!.width).toBe(page.viewportSize()!.width)
+  expect(bounds!.width).toBe(await page.evaluate(() => document.documentElement.clientWidth))
   expect(bounds!.height).toBe(56)
   await expect(bar).toHaveCSS('border-radius', '0px')
   const toggle = page.getByRole('button', { name: 'Open menu', exact: true })

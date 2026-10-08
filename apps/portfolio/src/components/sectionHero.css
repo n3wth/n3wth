@@ -31,6 +31,7 @@
 }
 
 .portfolio-story-copy {
+  grid-row: 2;
   position: relative;
   z-index: 1;
   width: 100%;
@@ -39,7 +40,26 @@
   padding-block: 0 clamp(2rem, 5svh, 4rem);
 }
 
+.portfolio-story-hero > .section-story--thinking {
+  position: absolute;
+  inset: 0;
+  container-type: normal;
+}
+
+.portfolio-story-hero > .section-story--thinking svg {
+  --story-size: min(150vw, 108svh);
+  top: auto;
+  bottom: calc(var(--story-size) * -.1104651163);
+  transform: translateX(-50%);
+}
+
+.portfolio-story-copy :is(.portfolio-section-title, .portfolio-story-description) {
+  background: var(--color-background-body);
+  box-decoration-break: clone;
+}
+
 .portfolio-story-copy .portfolio-section-title {
+  width: fit-content;
   font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: -.03em;
 }

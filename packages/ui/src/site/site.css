@@ -296,6 +296,7 @@ html[data-astryx-theme='n3wth'] {
 
 @media (max-width: 1023px) {
   .n3wth-site-navigation--compact-bar {
+    --compact-gutter: var(--spacing-6);
     inset-inline: 0;
     top: 0;
     padding-top: env(safe-area-inset-top);
@@ -304,13 +305,13 @@ html[data-astryx-theme='n3wth'] {
   .n3wth-site-navigation--compact-bar .n3wth-site-navigation-island {
     width: 100%;
     height: calc(var(--spacing-12) + var(--spacing-2));
-    padding-inline: max(var(--spacing-4), env(safe-area-inset-left)) max(var(--spacing-2), env(safe-area-inset-right));
+    padding-inline: max(var(--compact-gutter), env(safe-area-inset-left)) max(calc(var(--compact-gutter) - var(--spacing-2)), env(safe-area-inset-right));
     border: 0;
     border-radius: 0;
   }
   .n3wth-site-navigation--compact-bar .n3wth-site-navigation-links {
     top: 100%;
-    padding: var(--spacing-2) var(--spacing-4) max(var(--spacing-4), env(safe-area-inset-bottom));
+    padding: var(--spacing-2) var(--compact-gutter) max(var(--spacing-4), env(safe-area-inset-bottom));
     max-height: calc(100dvh - var(--spacing-12) - var(--spacing-2) - env(safe-area-inset-top));
     border: 0;
     border-bottom: 1px solid var(--color-border);
@@ -321,6 +322,10 @@ html[data-astryx-theme='n3wth'] {
   }
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .n3wth-site-navigation--compact-bar { --compact-gutter: var(--spacing-12); }
+}
+
 .n3wth-site-footer {
   padding-block: 24px;
   border-top: 1px solid var(--color-border);
@@ -328,6 +333,7 @@ html[data-astryx-theme='n3wth'] {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
+.n3wth-site-footer--unruled { border-top: 0; }
 .n3wth-site-footer-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; }
 .n3wth-site-footer > .n3wth-site-container { color: inherit; }
 .n3wth-site-footer-brand { font: inherit; color: var(--color-text-secondary); }
@@ -369,8 +375,8 @@ html[data-astryx-theme='n3wth'] {
 .n3wth-site-signup--compact { position: relative; width: 100%; max-width: none; }
 .n3wth-site-signup--compact .n3wth-site-signup-status:empty { position: absolute; width: 0; height: 0; min-height: 0; overflow: hidden; }
 .n3wth-site-signup--compact .n3wth-site-signup-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.n3wth-site-signup--compact .n3wth-site-signup-row { flex-wrap: nowrap; gap: 0; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-background-body); }
-.n3wth-site-signup--compact input { min-width: 0; }
+.n3wth-site-signup--compact .n3wth-site-signup-row { flex-wrap: nowrap; gap: 0; border: 1px solid var(--color-border-emphasized); border-radius: var(--radius-element); }
+.n3wth-site-signup--compact input { min-width: 0; padding-inline: var(--spacing-3); border-radius: var(--radius-element); }
 .n3wth-site-signup--compact :is(input, button) { border: 0; background: transparent; }
 .n3wth-site-signup--compact button { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; width: 44px; padding: 0; color: var(--color-text-secondary); }
 @media (max-width: 767px) {
