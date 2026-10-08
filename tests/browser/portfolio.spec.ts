@@ -20,24 +20,22 @@ test('section exits continue in the app and start the next page at the top', asy
   await expect(page.getByRole('navigation', { name: 'Continue exploring' })).toHaveCount(0)
 })
 
-test('compact section content follows the hero before secondary artwork', async ({ page }, testInfo) => {
-  test.skip(page.viewportSize()!.width >= 1024, 'Compact layout only')
+test('section content follows the hero without repeated artwork', async ({ page }, testInfo) => {
   for (const route of ['/work', '/thinking']) {
     await page.goto(route)
-    const content = page.locator('.story-layout-content')
+    const content = page.locator(route === '/work' ? '#work' : '.thinking-page')
     await expect(content).toBeVisible()
     const hero = await page.locator('.portfolio-story-hero').boundingBox()
     const bounds = await content.boundingBox()
-    const scene = await page.locator('.story-layout > .story-scene').boundingBox()
     expect(bounds!.y - (hero!.y + hero!.height)).toBeLessThan(180)
-    expect(scene!.y).toBeGreaterThanOrEqual(bounds!.y + bounds!.height - 1)
+    await expect(page.locator('.section-story')).toHaveCount(1)
     await content.locator('h2, input').first().scrollIntoViewIfNeeded()
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: testInfo.outputPath(`${route.slice(1)}-content.png`) })
   }
 })
 
-test('projects artwork fills the viewport behind lower copy', async ({ page }) => {
+test('projects artwork fills the available stage above lower copy', async ({ page }) => {
   const widths = [page.viewportSize()!.width]
   // The project matrix covers mobile, tablet and desktop; check the two
   // artwork breakpoints once, rather than repeating every width per project.
@@ -50,13 +48,14 @@ test('projects artwork fills the viewport behind lower copy', async ({ page }) =
     const geometry = await artwork.evaluate(svg => {
       const bounds = svg.getBoundingClientRect()
       const hero = document.querySelector('.portfolio-story-hero')!.getBoundingClientRect()
+      const stage = document.querySelector('.portfolio-story-hero > .section-story')!.getBoundingClientRect()
       const copy = document.querySelector('main h1')!.getBoundingClientRect()
-      return { center: bounds.x + bounds.width / 2, heroLeft: hero.x, heroWidth: hero.width, width: bounds.width, height: bounds.height, heroHeight: hero.height, heroBottom: hero.bottom, copyTop: copy.top, copyBottom: copy.bottom }
+      return { center: bounds.x + bounds.width / 2, heroLeft: hero.x, heroWidth: hero.width, width: bounds.width, height: bounds.height, stageHeight: stage.height, heroHeight: hero.height, heroBottom: hero.bottom, copyTop: copy.top, copyBottom: copy.bottom }
     })
     const center = geometry.heroLeft + geometry.heroWidth / 2
     expect(Math.abs(geometry.center - center)).toBeLessThanOrEqual(1)
-    expect(geometry.width).toBeGreaterThan(width * .6)
-    expect(geometry.height).toBeGreaterThan(Math.min(width, geometry.heroHeight) * .8)
+    expect(geometry.width).toBeGreaterThan(Math.min(width * .6, geometry.stageHeight * .9))
+    expect(geometry.height).toBeGreaterThan(Math.min(width, geometry.stageHeight) * .8)
     expect(geometry.copyTop).toBeGreaterThan(geometry.heroHeight * .7)
     expect(geometry.copyBottom).toBeLessThan(geometry.heroBottom)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
@@ -110,11 +109,17 @@ test('section openings fill the screen with distinct accessible stories', async 
     else opening = position
     const hero = page.locator('.portfolio-story-hero')
     const bounds = await hero.boundingBox()
+    await expect(page.locator('.section-story')).toHaveCount(1)
     const artwork = await hero.locator('.section-story svg').boundingBox()
     expect(Math.abs(artwork!.x + artwork!.width / 2 - (bounds!.x + bounds!.width / 2))).toBeLessThanOrEqual(1)
     expect(bounds!.y + bounds!.height).toBeGreaterThanOrEqual(page.viewportSize()!.height - 1)
     await expect(hero.locator('svg').first()).toHaveAttribute('aria-hidden', 'true')
     const copy = await page.locator('.portfolio-story-copy').boundingBox()
+    const stage = await hero.locator('.section-story').boundingBox()
+    const navigation = await page.locator('.n3wth-site-navigation-island').boundingBox()
+    expect(stage!.y).toBeGreaterThanOrEqual(navigation!.y + navigation!.height)
+    expect(Math.abs(stage!.y + stage!.height - copy!.y)).toBeLessThanOrEqual(1)
+    expect(Math.abs(artwork!.y + artwork!.height / 2 - (stage!.y + stage!.height / 2))).toBeLessThanOrEqual(1)
     expect(copy!.y + copy!.height).toBeLessThanOrEqual(bounds!.y + bounds!.height + 1)
     if (page.viewportSize()!.width >= 1024) {
       expect(copy!.y).toBeGreaterThan(bounds!.y + bounds!.height * .7)
@@ -141,32 +146,6 @@ test('Art uses each installation image once', async ({ page }) => {
   expect(new Set(images).size).toBe(3)
 })
 
-test('content scenes stay separate from text and pause independently', async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: 'no-preference' })
-  for (const route of ['/work', '/thinking', '/library', '/contact']) {
-    await page.goto(route)
-    const scene = page.locator('.story-scene').first()
-    const artwork = scene.locator('svg')
-    await expect(artwork).toHaveAttribute('data-story-paused', '')
-    await scene.scrollIntoViewIfNeeded()
-    await expect(artwork).not.toHaveAttribute('data-story-paused', '')
-    await expect(scene).toHaveAttribute('aria-hidden', 'true')
-    expect(await scene.locator('a, button, input').count()).toBe(0)
-    if (page.viewportSize()!.width >= 1024 && ['/work', '/thinking'].includes(route)) {
-      const content = await page.locator('.story-layout-content').boundingBox()
-      const bounds = await scene.boundingBox()
-      expect(content!.x + content!.width).toBeLessThanOrEqual(bounds!.x)
-      await page.evaluate(() => scrollBy(0, 250))
-      expect((await scene.boundingBox())!.y).toBeGreaterThanOrEqual(95)
-    }
-    await page.emulateMedia({ reducedMotion: 'reduce' })
-    await expect(artwork).toHaveAttribute('data-story-paused', '')
-    await expect.poll(() => artwork.evaluate(svg => svg.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length)).toBe(0)
-    await page.emulateMedia({ reducedMotion: 'no-preference' })
-    await page.evaluate(() => scrollTo(0, 0))
-    await expect(artwork).toHaveAttribute('data-story-paused', '')
-  }
-})
 import { expectSiteFoundation } from './site-foundation'
 
 test.beforeEach(async ({ page }) => {
@@ -241,7 +220,7 @@ test('Thinking loads more writing on scroll and restores its collection and filt
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 })
 
-test('projects index connects navigation, product pages and documentation', async ({ page, request }) => {
+test('projects index connects navigation, product pages and documentation', async ({ page, request }, testInfo) => {
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.goto('/projects/')
   await expect(page.getByRole('heading', { level: 1, name: 'Projects', exact: true })).toBeVisible()
@@ -249,6 +228,28 @@ test('projects index connects navigation, product pages and documentation', asyn
   const navigation = page.locator('.n3wth-site-navigation-links')
   await expect(navigation.locator('a').nth(0)).toHaveText('Projects')
   await expect(navigation.locator('a').nth(1)).toHaveText('Work')
+  for (const slug of ['ui', 'r3', 'skills']) {
+    const feature = page.locator(`.project-feature--${slug}`)
+    const copy = await feature.locator('.project-feature-copy').boundingBox()
+    const visual = await feature.locator('.project-visual').boundingBox()
+    if (page.viewportSize()!.width < 1024) {
+      expect(visual!.y).toBeGreaterThanOrEqual(copy!.y + copy!.height)
+      expect(visual!.y - copy!.y - copy!.height).toBeLessThanOrEqual(40)
+    } else {
+      expect(Math.abs(copy!.y - visual!.y)).toBeLessThanOrEqual(1)
+      expect(visual!.x).toBeGreaterThan(copy!.x + copy!.width)
+    }
+    if (slug === 'r3') {
+      const graph = await feature.locator('svg[role="img"]').boundingBox()
+      expect(graph!.width).toBeLessThanOrEqual(384)
+    }
+    await feature.screenshot({ path: testInfo.outputPath(`project-${slug}.png`) })
+  }
+  await page.getByRole('textbox', { name: 'Edit the headline' }).fill('A shared foundation')
+  await expect(page.locator('.project-type-sample')).toHaveText('A shared foundation')
+  await page.getByRole('button', { name: 'Reset', exact: true }).click()
+  await expect(page.locator('.project-type-sample')).toHaveText('Make it yours.')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   for (const [slug, title] of [['r3', 'r3'], ['ui', '@n3wth/ui'], ['skills', 'Agent Skills']]) {
     await expect(page.getByRole('heading', { level: 2, name: title, exact: true }).getByRole('link')).toBeVisible()
     // Vite preview serves clean URLs through its SPA fallback; inspect the

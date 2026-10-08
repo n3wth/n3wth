@@ -5,13 +5,29 @@
   isolation: isolate;
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-  /* Extend artwork behind the fixed navigation; keep copy below its clearance. */
+  /* Reserve navigation and copy space before centering the artwork. */
   margin-block-start: -96px;
-  padding-block-start: 96px;
+  padding-block-start: calc(var(--spacing-12) + var(--spacing-2) + env(safe-area-inset-top));
+  height: 100svh;
   min-height: 100svh;
   display: grid;
-  align-content: end;
+  grid-template-rows: minmax(0, 1fr) auto;
   overflow: hidden;
+}
+
+.portfolio-story-hero > .section-story {
+  position: relative;
+  inset: auto;
+  min-height: 0;
+  container-type: size;
+  overflow: visible;
+}
+
+.portfolio-story-hero > .section-story svg {
+  --story-size: min(135vw, 100cqh);
+  top: 50%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
 }
 
 .portfolio-story-copy {
@@ -29,7 +45,8 @@
 }
 
 @media (min-width: 1024px) {
-  .portfolio-story-hero { min-height: max(640px, 100svh); }
+  .portfolio-story-hero { min-height: max(640px, 100svh); padding-block-start: 96px; }
+  .portfolio-story-hero > .section-story svg { --story-size: min(78vw, 110cqh); }
   .portfolio-story-description { white-space: nowrap; }
 }
 

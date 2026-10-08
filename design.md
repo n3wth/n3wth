@@ -22,7 +22,7 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Use `SiteNavigation`, `PageHeader`, `SiteContainer`, `SiteSection` and `SiteFooter`.
 - One persistent top navbar. Do not stack a second sticky mobile heading or section selector beneath it.
 - Portfolio uses a flush, solid header below 1024px, with an attached menu and 44px touch targets. Desktop keeps the floating navigation. Other sites opt into the shared compact bar when appropriate.
-- Center section hero artwork horizontally at every width. Keep the page title and description at the lower left.
+- Center section hero artwork horizontally and vertically in the available space between the navigation and copy at every width. Size the artwork from that space; keep the page title and description at the lower left.
 - The homepage shows the same still image throughout scene loading, without a visible progress bar or loading label. Reveal the terrain as soon as it is ready; navigation stays available and reduced motion removes the fade.
 - For a few section or documentation destinations, use `SiteSectionLinks`: plain wrapping links in page flow, without a selected-section marker. Persistent desktop sidebars may track the current section.
 - For a grouped documentation hierarchy on compact screens, put the pages in the top navigation menu and show the documentation context in its brand path. Include every page, mark the current page and close after navigation; do not add a second navigation row.
@@ -56,7 +56,9 @@ The portfolio homepage combines topic groves with its existing art and navigatio
 
 On desktop, main section hero descriptions stay on one line. Keep useful actions such as the resume and contact links in the content immediately after the hero, rather than within the opening scene. Descriptions wrap naturally on mobile and tablet.
 
-Continue the section stories below their heroes. Work and Thinking keep a separate, sticky artwork column beside their content on desktop; compact layouts put the artwork in normal flow. Library shelves pair their introductions with page-edge scenes. Contact gives its actions a joined-path scene. Projects give functional specimens generous exhibition space, and Art photographs extend to the viewport edges with captions aligned to the shared content gutters. Artwork never sits behind readable text or controls. Each scene pauses independently when offscreen, and reduced motion retains the still composition.
+Use each section's abstract artwork once, in its hero. Content follows directly without repeated illustrations, sticky artwork columns, or empty space reserved for them. Projects retain useful product specimens, and Art photographs extend to the viewport edges with captions aligned to the shared content gutters. Artwork never sits behind readable text or controls. Hero scenes pause offscreen, and reduced motion retains the still composition.
+
+Projects uses one repeated layout: title, purpose, description and actions on the left, with a supporting specimen on the right. Compact screens keep that reading order in a single column. Use the same title scale, spacing and separators for each project; specimens remain content-sized, and diagrams have a bounded width rather than growing to fill a screen.
 
 Article graphics explain the adjacent argument. Keep each figure with a descriptive caption, visible source links and useful alt text. Distinguish original conceptual diagrams from measured charts and reproduced images. Use a single supporting text style for captions, reserve the image dimensions, and let readers open detailed graphics at full size. Record reuse rights for third-party assets; a citation alone is not permission.
 
@@ -64,7 +66,7 @@ Original diagrams stay in SVG format and follow the surrounding page's color sch
 
 Use selective Further reading previews after an article: publisher, linked title and a short explanation of its value. Keep them flat and within the reading column, using existing type and spacing. Do not turn every citation into a card or load remote thumbnails without verified reuse rights.
 
-- Portfolio section indexes end with two relevant section links before the footer. Keep these flat, with destination names and short descriptions. Reading pages retain their own related-content navigation. On compact screens, Work and Thinking put content before their secondary artwork; experience entries use content-driven heights.
+- Portfolio section indexes end with two relevant section links before the footer. Keep these flat, with destination names and short descriptions. Reading pages retain their own related-content navigation. Experience entries use content-driven heights.
 - Pages appear immediately. No default entry fades, sliding page transitions, staggered text or reveal observers hiding content.
 - Establish canvas, theme and navigation colors before first paint. Server output and client theme state must agree; test both saved preferences and system preference where supported.
 - Clicking to a different page starts at the top. Explicit anchor links go to their targets. Preserve browser Back scroll restoration.
