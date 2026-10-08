@@ -454,7 +454,7 @@ function Thylacine({
   // concentric, non-intersecting ellipses per animal, derived from phase
   const RX = portrait ? 3 : 7.5 - phase * 0.5
   const RZ = portrait ? 2.5 : 5.5 - phase * 0.35
-  const OMEGA = (2 * Math.PI) / (46 + phase * 5) // laps of ~46-62s; pack drifts apart and regroups
+  const OMEGA = (2 * Math.PI) / (70 + phase * 6) // Slow laps keep the pack from competing with the plant signals.
 
   useFrame(({ clock }, delta) => {
     const g = walker.current
@@ -913,7 +913,7 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
 
 function Embers({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: boolean }) {
   const inst = useRef<THREE.InstancedMesh>(null)
-  const N = 5
+  const N = 3
   const dummy = useMemo(() => new THREE.Object3D(), [])
   const phases = useMemo(() => Array.from({ length: N }, (_, i) => {
     const s = Math.sin(i * 91.7 + 47.3) * 43758.5453
@@ -1088,7 +1088,7 @@ function NightSky({ reflections = true }: { reflections?: boolean }) {
 /* A shooting star every so often: one bright streak, in and gone */
 function Meteors({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<THREE.Mesh>(null)
-  const st = useRef({ next: 6, active: false, t0: 0, from: new THREE.Vector3(), dir: new THREE.Vector3(), rot: 0 })
+  const st = useRef({ next: 18, active: false, t0: 0, from: new THREE.Vector3(), dir: new THREE.Vector3(), rot: 0 })
   useFrame(({ clock }) => {
     const m = ref.current
     if (!m || reducedMotion) return
@@ -1108,7 +1108,7 @@ function Meteors({ reducedMotion }: { reducedMotion: boolean }) {
       const p = (t - s.t0) / 0.8
       if (p >= 1) {
         s.active = false
-        s.next = t + 7 + Math.random() * 13
+        s.next = t + 18 + Math.random() * 22
         m.visible = false
       } else {
         m.visible = true
