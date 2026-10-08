@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree, type ThreeElements, type ThreeEvent } from '@react-three/fiber'
-import { Environment, Html, Line, useCursor, useProgress, useTexture } from '@react-three/drei'
+import { Environment, Html, Line, useCursor, useTexture } from '@react-three/drei'
 import { Bloom, EffectComposer, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { useOptionalTexture } from '../lib/optionalTexture'
@@ -1464,39 +1464,13 @@ function SceneReady({ onReady }: { onReady: () => void }) {
   return null
 }
 
-function WorldInterface({
-  progress,
-  ready,
-}: {
-  progress: number
-  ready: boolean
-}) {
-  const [shownProgress, setShownProgress] = useState(0)
-
-  useEffect(() => {
-    // Paint the empty track before applying even cached loading progress.
-    let updateFrame = 0
-    const paintFrame = requestAnimationFrame(() => {
-      updateFrame = requestAnimationFrame(() => {
-        setShownProgress((previous) => Math.max(previous, Math.min(100, Math.round(progress))))
-      })
-    })
-    return () => {
-      cancelAnimationFrame(paintFrame)
-      cancelAnimationFrame(updateFrame)
-    }
-  }, [progress])
-
+function WorldInterface({ ready }: { ready: boolean }) {
   return (
     <>
       <div className="night-field-loader" data-ready={ready ? 'true' : 'false'} aria-hidden={ready}>
         <img src="/images/hero-playa.webp" alt="" className="night-field-loader-image" />
         <div className="night-field-loader-tint" />
-        <div className="night-field-loader-status" role="progressbar" aria-label="Loading scene" aria-valuemin={0} aria-valuemax={100} aria-valuenow={shownProgress}>
-          <span className="night-field-loader-track" aria-hidden>
-            <span style={{ transform: `scaleX(${shownProgress / 100})` }} />
-          </span>
-        </div>
+        <span className="sr-only" role="status">Loading scene</span>
       </div>
 
     </>
@@ -1507,7 +1481,6 @@ export default function NightField({ onEnter, reducedMotion, softwareRendering =
   const hoverQuery = useHoverQuery()
   const [labelsReady, setLabelsReady] = useState(false)
   const [ready, setReady] = useState(false)
-  const { progress } = useProgress()
   const navigationTimer = useRef<number | null>(null)
   const pendingHref = useRef<string | null>(null)
 
@@ -1609,10 +1582,7 @@ export default function NightField({ onEnter, reducedMotion, softwareRendering =
         <SMAA />
       </EffectComposer>}
     </Canvas>
-    <WorldInterface
-      progress={progress}
-      ready={ready}
-    />
+    <WorldInterface ready={ready} />
     </>
   )
 }

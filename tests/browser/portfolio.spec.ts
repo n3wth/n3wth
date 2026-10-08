@@ -53,7 +53,7 @@ test('projects artwork fills the viewport behind lower copy', async ({ page }) =
       const copy = document.querySelector('main h1')!.getBoundingClientRect()
       return { center: bounds.x + bounds.width / 2, heroLeft: hero.x, heroWidth: hero.width, width: bounds.width, height: bounds.height, heroHeight: hero.height, heroBottom: hero.bottom, copyTop: copy.top, copyBottom: copy.bottom }
     })
-    const center = geometry.heroLeft + geometry.heroWidth * (width >= 1024 ? .7 : .5)
+    const center = geometry.heroLeft + geometry.heroWidth / 2
     expect(Math.abs(geometry.center - center)).toBeLessThanOrEqual(1)
     expect(geometry.width).toBeGreaterThan(width * .6)
     expect(geometry.height).toBeGreaterThan(Math.min(width, geometry.heroHeight) * .8)
@@ -110,6 +110,8 @@ test('section openings fill the screen with distinct accessible stories', async 
     else opening = position
     const hero = page.locator('.portfolio-story-hero')
     const bounds = await hero.boundingBox()
+    const artwork = await hero.locator('.section-story svg').boundingBox()
+    expect(Math.abs(artwork!.x + artwork!.width / 2 - (bounds!.x + bounds!.width / 2))).toBeLessThanOrEqual(1)
     expect(bounds!.y + bounds!.height).toBeGreaterThanOrEqual(page.viewportSize()!.height - 1)
     await expect(hero.locator('svg').first()).toHaveAttribute('aria-hidden', 'true')
     const copy = await page.locator('.portfolio-story-copy').boundingBox()
@@ -518,6 +520,9 @@ test('home primary navigation works before the scene settles', async ({ page }) 
   try {
     await page.goto('/', { waitUntil: 'domcontentloaded' })
     await expect.poll(() => sceneRequested).toBe(true)
+    await expect(page.locator('.night-field-loader img')).toBeVisible()
+    await expect(page.getByRole('progressbar')).toHaveCount(0)
+    await expect(page.locator('.night-field-loader-track')).toHaveCount(0)
     await expect(page.getByRole('navigation', { name: 'Scene destinations' })).toHaveCount(0)
     const navigation = page.locator('#primary-navigation')
     if (!await navigation.getByRole('link', { name: 'Work', exact: true }).isVisible()) {
@@ -535,6 +540,37 @@ test('home primary navigation works before the scene settles', async ({ page }) 
   } finally {
     releaseScene()
   }
+})
+
+test('compact header is flush and its menu remains usable over photographs', async ({ page }, testInfo) => {
+  test.skip(page.viewportSize()!.width >= 1024, 'Compact navigation only')
+  await page.goto('/art')
+  await page.locator('.art-opening').scrollIntoViewIfNeeded()
+  const bar = page.locator('header .n3wth-site-navigation-island')
+  const bounds = await bar.boundingBox()
+  expect(bounds!.x).toBe(0)
+  expect(bounds!.y).toBe(0)
+  expect(bounds!.width).toBe(page.viewportSize()!.width)
+  expect(bounds!.height).toBe(56)
+  await expect(bar).toHaveCSS('border-radius', '0px')
+  const toggle = page.getByRole('button', { name: 'Open menu', exact: true })
+  await toggle.click()
+  const menu = page.locator('#primary-navigation')
+  await expect(menu).toBeVisible()
+  expect((await menu.boundingBox())!.y).toBe(bounds!.height)
+  await expect(menu.getByRole('link').first()).toBeFocused()
+  for (const link of await menu.getByRole('link').all()) {
+    expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+  }
+  await page.screenshot({ path: testInfo.outputPath('compact-header-menu.png') })
+  await page.keyboard.press('Escape')
+  await expect(toggle).toBeFocused()
+  await expect(menu).not.toBeVisible()
+  await toggle.click()
+  await menu.getByRole('link', { name: 'Work', exact: true }).click()
+  await expect(page).toHaveURL(/\/work$/)
+  await expect(menu).not.toBeVisible()
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
 })
 
 test('primary navigation opens Work', async ({ page }) => {

@@ -75,13 +75,7 @@ export default function Home() {
               <div className="night-field-loader" data-ready="false">
                 <StaticNight />
                 <div className="night-field-loader-tint" />
-                <div className="night-field-loader-status" role="status">
-                  <span>Night field</span>
-                  <span>Loading</span>
-                  <span className="night-field-loader-track" aria-hidden>
-                    <span style={{ transform: 'scaleX(0.08)' }} />
-                  </span>
-                </div>
+                <span className="sr-only" role="status">Loading scene</span>
               </div>
             )}
           >

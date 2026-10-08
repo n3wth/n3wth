@@ -18,6 +18,8 @@ export function Nav({ onOpenSearch, searchOpen = false }: NavProps) {
   return (
     <SiteNavigation
       navigationId="primary-navigation"
+      collapseAt="lg"
+      compactBar
       menuLabel="Open menu"
       data-nosnippet
       brand={<Link to="/" aria-label="Oliver Newth — home" onClick={sameRouteClick('/')}>Oliver Newth</Link>}
