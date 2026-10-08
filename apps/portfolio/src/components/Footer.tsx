@@ -16,13 +16,10 @@ export function Footer() {
     }
     trackSignup()
   }
-  return <SiteFooter brand={null} inlineSignup separator={false} data-nosnippet signup={<SiteSignup compact onSubmit={subscribe} errorMessage={errorMessage} />} links={
-    navigation.map(section => <Link key={section.href} to={section.href}>{section.name}</Link>)
-  }>
-    <nav className="n3wth-site-footer-links" aria-label="Legal and source">
+  return <SiteFooter brand={null} inlineSignup separator={false} data-nosnippet signup={<SiteSignup compact onSubmit={subscribe} errorMessage={errorMessage} />} links={<>
+      {navigation.map(section => <Link key={section.href} to={section.href}>{section.name}</Link>)}
       <Link to="/privacy">Privacy</Link>
       <Link to="/terms">Terms</Link>
       <a href={siteConfig.social.github} onClick={() => trackOutbound(siteConfig.social.github, 'footer')}>GitHub</a>
-    </nav>
-  </SiteFooter>
+  </>} />
 }

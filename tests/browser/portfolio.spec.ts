@@ -4,7 +4,7 @@ test('permanent footer navigation stays in the app and starts pages at the top',
   await page.goto('/work')
   const continuation = page.getByRole('navigation', { name: 'Footer', exact: true })
   await continuation.scrollIntoViewIfNeeded()
-  await expect(continuation.getByRole('link')).toHaveText(['Projects', 'Work', 'Art', 'Thinking', 'Library', 'Contact'])
+  await expect(continuation.getByRole('link')).toHaveText(['Work', 'Projects', 'Art', 'Thinking', 'Library', 'Contact', 'Privacy', 'Terms', 'GitHub'])
   await expect(page.locator('.n3wth-site-footer')).toHaveCSS('border-top-width', '0px')
   await page.screenshot({ path: testInfo.outputPath('work-continuation.png') })
   await page.locator('.n3wth-site-footer').screenshot({ path: testInfo.outputPath('footer.png') })
@@ -459,7 +459,29 @@ test('work uses the shared theme and a usable resume action', async ({ page }, t
   await expect(page.getByRole('link', { name: 'Open resume', exact: true })).toHaveAttribute('href', 'https://r2.n3wth.com/resume/oliver-newth-resume.pdf')
 })
 
-test('AI answers start automatically after typing pauses', async ({ page }) => {
+test('hybrid planting remains navigable with motion', async ({ page }, testInfo) => {
+  test.setTimeout(60_000)
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/')
+  await expect(page.locator('.night-field-stage.is-settled')).toBeVisible({ timeout: 45_000 })
+  const notes = page.locator('.world-portal-link[aria-label="Notes"]')
+  await expect(notes).toBeVisible()
+  await notes.focus()
+  await page.screenshot({ path: testInfo.outputPath('hybrid-planting.png') })
+  if (testInfo.project.name === 'portfolio-852') {
+    for (let frame = 1; frame <= 4; frame++) {
+      await page.waitForTimeout(1000)
+      await page.screenshot({ path: testInfo.outputPath(`plant-connection-${frame}.png`) })
+    }
+  }
+  await notes.press('Enter')
+  await expect(page).toHaveURL(/\/thinking#notes$/)
+  expect(errors).toEqual([])
+})
+
+test('AI answers start automatically after typing pauses', async ({ page }, testInfo) => {
   let requests = 0
   await page.route('**/api/search', async route => {
     requests += 1
@@ -467,6 +489,9 @@ test('AI answers start automatically after typing pauses', async ({ page }) => {
   })
   await page.goto('/work')
   await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await expect(page.getByRole('option')).toHaveText(['Work', 'Projects', 'Art', 'Thinking', 'Library', 'Contact'])
+  await expect(page.getByRole('dialog', { name: 'Search n3wth.com' })).toHaveCSS('opacity', '1')
+  await page.screenshot({ path: testInfo.outputPath('search.png') })
   await page.getByRole('combobox').fill('garden')
   await expect(page.getByRole('option').first()).toBeVisible()
   await expect(page.getByRole('status', { name: 'Searching', exact: true })).toBeVisible()
@@ -569,12 +594,18 @@ test('home primary navigation works before the scene settles', async ({ page }) 
 test('compact header is flush and its menu remains usable over photographs', async ({ page }, testInfo) => {
   test.skip(page.viewportSize()!.width >= 1024, 'Compact navigation only')
   await page.goto('/art')
-  await page.locator('.art-opening').scrollIntoViewIfNeeded()
   const bar = page.locator('header .n3wth-site-navigation-island')
+  await expect(bar).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+  await expect(bar).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  await page.keyboard.press('Escape')
+  await page.locator('.art-opening').scrollIntoViewIfNeeded()
+  await expect(bar).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
   const bounds = await bar.boundingBox()
   expect(bounds!.x).toBe(0)
   expect(bounds!.y).toBe(0)
-  expect(bounds!.width).toBe(await page.evaluate(() => document.documentElement.clientWidth))
+  // The root reserves a stable scrollbar gutter on Linux even before overflow.
+  expect(bounds!.width).toBe(await page.evaluate(() => document.body.clientWidth))
   expect(bounds!.height).toBe(56)
   await expect(bar).toHaveCSS('border-radius', '0px')
   const toggle = page.getByRole('button', { name: 'Open menu', exact: true })

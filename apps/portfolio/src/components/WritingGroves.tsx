@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentRef } from 'react'
 import { Html, Line, useCursor } from '@react-three/drei'
-import { useThree, type ThreeEvent } from '@react-three/fiber'
+import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { Button } from '@n3wth/ui/primitives'
 import * as THREE from 'three'
 import { layoutWritingGroves, plantSegments, type WritingWorld } from '../lib/writingGroves'
@@ -8,10 +8,12 @@ import './writingGroves.css'
 
 const EMPTY_WORLD: WritingWorld = { nodes: [], edges: [] }
 
-export default function WritingGroves({ onEnter }: { onEnter: (href: string) => void }) {
+export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (href: string) => void; reducedMotion: boolean }) {
   const [world, setWorld] = useState<WritingWorld>(EMPTY_WORLD)
   const [selected, setSelected] = useState<string | null>(null)
   const [hovered, setHovered] = useState<string | null>(null)
+  const [ambient, setAmbient] = useState<{ points: THREE.Vector3[]; length: number } | null>(null)
+  const trail = useRef<ComponentRef<typeof Line>>(null)
   const panel = useRef<HTMLDivElement>(null)
   const focusPanel = useCallback((element: HTMLDivElement | null) => {
     panel.current = element
@@ -20,6 +22,9 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
   const stems = useRef<THREE.InstancedMesh>(null)
   const leaves = useRef<THREE.InstancedMesh>(null)
   const hits = useRef<THREE.InstancedMesh>(null)
+  const blooms = useRef<THREE.InstancedMesh>(null)
+  const light = useRef({ from: '', to: '', started: -10, lastFrame: -1 })
+  const palette = useRef({ bark: new THREE.Color('#8a7a68'), leaf: new THREE.Color('#b9c9a8'), active: new THREE.Color('#ffce8a'), pulse: new THREE.Color('#b9c9a8').multiplyScalar(3), mixed: new THREE.Color() })
   const aspect = useThree(({ size }) => size.width / size.height)
   const invalidate = useThree(({ invalidate }) => invalidate)
   useCursor(hovered !== null)
@@ -51,7 +56,9 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
   const trees = useMemo(() => layoutWritingGroves(world.nodes, compact, spread), [world.nodes, compact, spread])
   const segments = useMemo(() => trees.flatMap((tree) => plantSegments(tree).map((segment) => ({ ...segment, treeId: tree.id }))), [trees])
   const foliage = useMemo(() => segments.filter((segment) => segment.leaf), [segments])
+  const flowers = useMemo(() => trees.filter((_, index) => index % 4 === 0), [trees])
   const treeById = useMemo(() => new Map(trees.map((tree) => [tree.id, tree])), [trees])
+  const edges = useMemo(() => world.edges.filter(edge => edge.source !== edge.target && treeById.has(edge.source) && treeById.has(edge.target)), [world.edges, treeById])
   const current = selected ? treeById.get(selected) : undefined
   const preview = hovered ? treeById.get(hovered) : undefined
   const connections = useMemo(() => world.edges.filter((edge) => edge.source === selected || edge.target === selected).flatMap((edge) => {
@@ -72,7 +79,7 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
       direction.subVectors(b, a)
       dummy.position.copy(a).add(b).multiplyScalar(0.5)
       const height = treeById.get(segment.treeId)?.height ?? 1
-      const radius = segment.detail ? 0.018 : 0.025 + height * 0.012
+      const radius = segment.detail ? 0.009 : 0.012 + height * 0.004
       dummy.scale.set(radius, direction.length(), radius)
       dummy.quaternion.setFromUnitVectors(up, direction.normalize())
       dummy.updateMatrix()
@@ -81,7 +88,7 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
     foliage.forEach((segment, index) => {
       dummy.position.set(...segment.b)
       dummy.rotation.set(0.4, index * 2.4, -0.6)
-      dummy.scale.set(0.2, 0.055, 0.34)
+      dummy.scale.set(0.1, 0.025, 0.2)
       dummy.updateMatrix()
       leaves.current?.setMatrixAt(index, dummy.matrix)
     })
@@ -92,13 +99,20 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
       dummy.updateMatrix()
       hits.current?.setMatrixAt(index, dummy.matrix)
     })
-    for (const mesh of [stems.current, leaves.current, hits.current]) {
+    flowers.forEach((tree, index) => {
+      dummy.position.set(tree.x, tree.height, tree.z)
+      dummy.rotation.set(0, 0, 0)
+      dummy.scale.setScalar(tree.stage === 'evergreen' ? .12 : .045)
+      dummy.updateMatrix()
+      blooms.current?.setMatrixAt(index, dummy.matrix)
+    })
+    for (const mesh of [stems.current, leaves.current, hits.current, blooms.current]) {
       if (!mesh) continue
       mesh.instanceMatrix.needsUpdate = true
       mesh.computeBoundingSphere()
     }
     invalidate()
-  }, [segments, foliage, trees, treeById, invalidate])
+  }, [segments, foliage, flowers, trees, treeById, invalidate])
 
   useLayoutEffect(() => {
     const bark = new THREE.Color('#8a7a68')
@@ -119,7 +133,64 @@ export default function WritingGroves({ onEnter }: { onEnter: (href: string) => 
     setSelected(trees[event.instanceId].id)
   }
 
+  useFrame(({ clock }) => {
+    if (reducedMotion || !edges.length) return
+    const colors = palette.current
+    const time = clock.elapsedTime
+    const state = light.current
+    if (time - state.lastFrame < 1 / 24) return
+    state.lastFrame = time
+    if (time - state.started > 5) {
+      const onward = edges.filter(edge => edge.source === state.to || edge.target === state.to)
+      const candidates = onward.length ? onward : edges
+      const edge = candidates[Math.floor(Math.random() * candidates.length)]
+      state.from = edge.target === state.to ? edge.target : edge.source
+      state.to = state.from === edge.source ? edge.target : edge.source
+      const a = treeById.get(state.from)!
+      const b = treeById.get(state.to)!
+      const curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(a.x, a.height, a.z), new THREE.Vector3((a.x + b.x) / 2, Math.max(a.height, b.height) + 2, (a.z + b.z) / 2), new THREE.Vector3(b.x, b.height, b.z))
+      setAmbient({ points: curve.getPoints(32), length: curve.getLength() })
+      state.started = time
+    }
+    const age = time - state.started
+    if (trail.current && ambient) {
+      trail.current.visible = !selected && age >= 1 && age <= 2.6
+      trail.current.material.dashOffset = -(age - 1) / 1.6 * ambient.length
+    }
+    const paint = (mesh: THREE.InstancedMesh | null, index: number, treeId: string, y: number, base: THREE.Color) => {
+      if (!mesh) return
+      const height = treeById.get(treeId)?.height ?? 1
+      const arrival = treeId === state.from ? y / height
+        : treeId === state.to ? 2.6 + 1 - y / height : -10
+      const amount = Math.max(0, 1 - Math.abs(age - arrival) / .65)
+      mesh.setColorAt(index, treeId === selected || treeId === hovered
+        ? colors.active : colors.mixed.copy(base).lerp(colors.pulse, amount))
+    }
+    segments.forEach((segment, index) => paint(stems.current, index, segment.treeId, segment.b[1], colors.bark))
+    foliage.forEach((segment, index) => paint(leaves.current, index, segment.treeId, segment.b[1], colors.leaf))
+    if (stems.current?.instanceColor) stems.current.instanceColor.needsUpdate = true
+    if (leaves.current?.instanceColor) leaves.current.instanceColor.needsUpdate = true
+    flowers.forEach((tree, index) => {
+      const arrival = tree.id === state.from ? 1 : tree.id === state.to ? 2.6 : -10
+      const amount = Math.max(0, 1 - Math.abs(age - arrival) / .65)
+      blooms.current?.setColorAt(index, colors.mixed.copy(colors.leaf).multiplyScalar(.8 + amount * 2))
+    })
+    if (blooms.current?.instanceColor) blooms.current.instanceColor.needsUpdate = true
+  })
+
   return <>
+    {!reducedMotion && ambient && <Line ref={trail} points={ambient.points} color="#e2e8d8" dashed dashSize={1.4} gapSize={1000} transparent opacity={.8} toneMapped={false} lineWidth={1.5} raycast={() => null} />}
+    <Html center position={[compact ? -4.2 * spread : -6, -.8, -13]} zIndexRange={[20, 10]}>
+      <a className="world-portal-link" href="/thinking#notes" aria-label="Notes" onClick={(event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+        event.preventDefault()
+        onEnter('/thinking#notes')
+      }}>Notes</a>
+    </Html>
+    <instancedMesh ref={blooms} args={[undefined, undefined, flowers.length]} raycast={() => null}>
+      <icosahedronGeometry args={[1, 1]} />
+      <meshBasicMaterial color="#e2e8d8" wireframe toneMapped={false} />
+    </instancedMesh>
     <instancedMesh ref={stems} args={[undefined, undefined, segments.length]} raycast={() => null}>
       <cylinderGeometry args={[0.65, 1, 1, 8, 1, true]} />
       <meshStandardMaterial color="#ffffff" roughness={0.9} emissive="#8a7a68" emissiveIntensity={0.06} />

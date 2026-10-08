@@ -121,11 +121,20 @@ export interface SiteNavigationProps extends Omit<HTMLAttributes<HTMLElement>, '
 /** Router links remain app-owned; layout and disclosure behavior live here. */
 export function SiteNavigation({ brand, links, actions, navigationLabel = 'Primary', navigationId, menuLabel = 'Open menu', menuContent, collapseAt = 'md', compactBar = false, className, ...props }: SiteNavigationProps) {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const generatedId = useId()
   const menuId = navigationId ?? `site-navigation-${generatedId}`
   const button = useRef<HTMLButtonElement>(null)
   const header = useRef<HTMLElement>(null)
   const hasMenuContent = menuContent != null
+
+  useEffect(() => {
+    if (!compactBar) return
+    const update = () => setScrolled(window.scrollY > 0)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [compactBar])
 
   useEffect(() => {
     if (!open) return
@@ -153,7 +162,7 @@ export function SiteNavigation({ brand, links, actions, navigationLabel = 'Prima
   }, [open, collapseAt, hasMenuContent])
 
   return (
-    <header {...props} ref={header} className={cn('n3wth-site-navigation', `n3wth-site-navigation--${collapseAt}`, compactBar && 'n3wth-site-navigation--compact-bar', className)}>
+    <header {...props} ref={header} data-scrolled={scrolled} data-open={open} className={cn('n3wth-site-navigation', `n3wth-site-navigation--${collapseAt}`, compactBar && 'n3wth-site-navigation--compact-bar', className)}>
       <div className="n3wth-site-navigation-island" data-nosnippet>
         <div className="n3wth-site-navigation-brand" onClick={() => setOpen(false)}>{brand}</div>
         <nav id={menuId} aria-label={navigationLabel} className="n3wth-site-navigation-links" data-open={open} onClick={(event) => {

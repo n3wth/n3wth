@@ -11,10 +11,7 @@ export function Experience() {
               <SiteHeading variant="item" level={2}>
                 <span className="work-company">{exp.company}</span>
               </SiteHeading>
-              <div className="mt-1 flex flex-col gap-1">
-                <SiteText className="work-detail">{exp.role}</SiteText>
-                <SiteText className="work-detail">{exp.period}</SiteText>
-              </div>
+              <SiteText className="work-detail">{exp.role} · {exp.period}</SiteText>
             </div>
             <div className="work-chapter-story">
               <p>{exp.summary}</p>

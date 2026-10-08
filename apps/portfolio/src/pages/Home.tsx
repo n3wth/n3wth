@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../data/content'
-import { PageHeader, SiteText } from '@n3wth/ui/site'
+import { PageHeader } from '@n3wth/ui/site'
 import { Button } from '@n3wth/ui/primitives'
 import { track } from '../lib/analytics'
 import { getSceneGraphics } from '../lib/sceneGraphics'
@@ -92,17 +92,8 @@ export default function Home() {
     <PageHeader
       className="site-content-gutter"
       title={<span data-nosnippet>I build new ways to work with AI.</span>}
-      description={siteConfig.name}
       aside={
-        <div className="flex flex-col items-start gap-5">
-          <SiteText data-nosnippet>
-            I’m a product leader who spots opportunities, builds early versions, and learns by putting them in people’s hands.
-          </SiteText>
-          <SiteText>
-            My independent projects explore personal agents, tools for creating software, and skills that help people use both.
-          </SiteText>
           <Button label="Explore my projects" variant="primary" size="md" href="/projects" clickAction={() => track('home_projects_clicked', { source_page: '/' })} />
-        </div>
       }
     />
     </>

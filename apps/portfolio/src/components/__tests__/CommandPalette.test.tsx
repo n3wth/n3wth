@@ -17,10 +17,9 @@ describe('CommandPalette smoke', () => {
     )
     const input = screen.getByRole('combobox')
     expect(document.activeElement).toBe(input)
-    // Start-here shows 5 items from Pages and Thinking groups
-    expect(screen.getAllByRole('option').length).toBe(5)
-    // The start-here items include Library as first option
-    expect(screen.getByRole('option', { name: /Library/i })).toBeTruthy()
+    expect(screen.getAllByRole('option').map(option => option.textContent)).toEqual([
+      'Work', 'Projects', 'Art', 'Thinking', 'Library', 'Contact',
+    ])
 
     // garden arrives via dynamic import
     await waitFor(() => {

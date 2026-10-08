@@ -452,7 +452,7 @@ function Thylacine({
   const travel = useRef(0)
   const h = useEased01(hovered)
   // concentric, non-intersecting ellipses per animal, derived from phase
-  const RX = portrait ? 4.5 : 7.5 - phase * 0.5
+  const RX = portrait ? 3 : 7.5 - phase * 0.5
   const RZ = portrait ? 2.5 : 5.5 - phase * 0.35
   const OMEGA = (2 * Math.PI) / (46 + phase * 5) // laps of ~46-62s; pack drifts apart and regroups
 
@@ -468,7 +468,8 @@ function Thylacine({
     if (!reducedMotion) travel.current += Math.min(delta, 0.1) * pace
     const th = theta0 - travel.current * OMEGA
     const depth = portrait ? (phase === 0 ? 7 : phase < 2 ? -5 : -18) : 0
-    g.position.set(Math.cos(th) * RX, 0, depth + Math.sin(th) * RZ)
+    const lane = portrait ? (phase === 0 ? 2 : phase < 2 ? -3 : 1) : 0
+    g.position.set(lane + Math.cos(th) * RX, 0, depth + Math.sin(th) * RZ)
     // face along the direction of travel (ellipse tangent)
     g.rotation.y = Math.atan2(Math.cos(th) * RZ, Math.sin(th) * RX)
     // Derive cadence from path speed so narrower phone paths don't skate.
@@ -528,8 +529,8 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
 
   return (
     <group
-      position={portrait ? [3.2 * spread, 0, -35] : [27, 0, -46]}
-      scale={portrait ? 1.05 : 1}
+      position={portrait ? [4.6 * spread, 0, -28] : [27, 0, -46]}
+      scale={portrait ? 1.1 : 1}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -539,7 +540,7 @@ function Them({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnte
       <PortalLabel def={def} onEnter={onEnter} hovered={hovered} position={portrait ? [0, -1.5, 0] : [0, 7, 0]} />
       <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} portrait={portrait} scale={1.1} theta0={1.2} phase={0} />
       <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} portrait={portrait} scale={0.95} theta0={3.6} phase={1.7} />
-      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} portrait={portrait} scale={0.8} theta0={5.4} phase={3.1} />
+      <Thylacine parts={parts} hovered={hovered} reducedMotion={reducedMotion} portrait={portrait} scale={0.95} theta0={5.4} phase={3.1} />
       {/* invisible hit volume covering the loop the pack walks; grows while
           hovered so the camera glide can't slide it out from under the
           cursor between press and release */}
@@ -622,7 +623,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
     <group
       position={portrait ? [3.6 * spread, 0, 3] : [6.5, 0, 4]}
       rotation-y={0.45}
-      scale={portrait ? 0.48 : 0.42}
+      scale={portrait ? 0.56 : 0.48}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -855,8 +856,8 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
 
   return (
     <group
-      position={portrait ? [-2.8 * spread, 0, 7] : [-8, 0, 9]}
-      scale={portrait ? 1.4 : 1}
+      position={portrait ? [-2.8 * spread, 0, 5] : [-8, 0, 9]}
+      scale={portrait ? 1.25 : 1}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -940,231 +941,6 @@ function Embers({ hovered, reducedMotion }: { hovered: boolean; reducedMotion: b
       <sphereGeometry args={[1, 6, 6]} />
       <meshBasicMaterial color={new THREE.Color('#ffc490').multiplyScalar(hovered ? 4 : 3)} toneMapped={false} />
     </instancedMesh>
-  )
-}
-
-/* One new stem, seeded fresh every ~18s: grows from the ground, holds,
-   then fades so the next cycle can relocate cleanly. Literalizes
-   "250+ notes, growing" as an actual repeating growth animation. */
-const SPROUT_CYCLE = 18
-function sproutRnd(i: number, salt: number) {
-  const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453
-  return x - Math.floor(x)
-}
-function Sprout({ reducedMotion }: { reducedMotion: boolean }) {
-  const outer = useRef<THREE.Group>(null)
-  const inner = useRef<THREE.Group>(null)
-  const lineMat = useRef<(THREE.Material & { opacity: number }) | null>(null)
-  const tipMat = useRef<THREE.MeshBasicMaterial>(null)
-  const kRef = useRef(-1)
-  const [cycle, setCycle] = useState(() => ({
-    x: Math.cos(0 * 2.399) * (0.7 + sproutRnd(0, 31) * 2.6),
-    z: Math.sin(0 * 2.399) * (0.7 + sproutRnd(0, 32) * 2.6) * 0.7,
-    h: 0.7 + sproutRnd(0, 33) * 1.2,
-  }))
-
-  useFrame(({ clock }) => {
-    if (reducedMotion) return
-    const t = clock.elapsedTime
-    const k = Math.floor(t / SPROUT_CYCLE)
-    const p = (t % SPROUT_CYCLE) / SPROUT_CYCLE
-    if (k !== kRef.current) {
-      kRef.current = k
-      setCycle({
-        x: Math.cos(k * 2.399) * (0.7 + sproutRnd(k, 31) * 2.6),
-        z: Math.sin(k * 2.399) * (0.7 + sproutRnd(k, 32) * 2.6) * 0.7,
-        h: 0.7 + sproutRnd(k, 33) * 1.2,
-      })
-    }
-    let growth = 1
-    let opacity = 1
-    if (p < 0.12) {
-      const u = p / 0.12
-      growth = 1 - Math.pow(1 - u, 3)
-    } else if (p >= 0.92) {
-      const u = (p - 0.92) / 0.08
-      opacity = 1 - u
-    }
-    if (outer.current) outer.current.position.set(cycle.x, 0, cycle.z)
-    if (inner.current) inner.current.scale.y = Math.max(growth, 0.0001)
-    if (lineMat.current) lineMat.current.opacity = opacity
-    if (tipMat.current) tipMat.current.opacity = opacity
-  })
-
-  if (reducedMotion) return null
-
-  return (
-    <group ref={outer} position={[cycle.x, 0, cycle.z]}>
-      <group ref={inner}>
-        <Line
-          ref={(el: unknown) => {
-            const line = el as { material?: THREE.Material & { opacity: number } } | null
-            lineMat.current = line?.material ?? null
-          }}
-          points={[
-            [0, 0, 0],
-            [0, cycle.h, 0],
-          ]}
-          lineWidth={1}
-          color={new THREE.Color('#8a9a80').multiplyScalar(1.2)}
-          toneMapped={false}
-          transparent
-        />
-        <mesh position={[0, cycle.h, 0]}>
-          <sphereGeometry args={[0.05, 8, 8]} />
-          <meshBasicMaterial
-            ref={tipMat}
-            color={new THREE.Color('#e2e8d8').multiplyScalar(1.6)}
-            toneMapped={false}
-            transparent
-          />
-        </mesh>
-      </group>
-    </group>
-  )
-}
-
-/* The garden — an actual planted bed at night: curved stems with leaf
-   blades, glowing bud tips, and a few tall alliums holding orbs of
-   light over the rest. The plant-glyph language of garden.n3wth.com. */
-function GardenPatch({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEnter: NightFieldProps['onEnter']; reducedMotion: boolean; onLabel?: HoverLabel }) {
-  const [hovered, handlers] = usePortalHover(def, onLabel)
-  const portrait = usePortraitLayout()
-  const spread = useCompactSpread()
-  const tips = useRef<THREE.InstancedMesh>(null)
-  const orbs = useRef<THREE.InstancedMesh>(null)
-  const bed = useRef<THREE.Group>(null)
-  const stemsMat = useRef<THREE.LineBasicMaterial>(null)
-  const tipsMat = useRef<THREE.MeshBasicMaterial>(null)
-  const orbsMat = useRef<THREE.MeshBasicMaterial>(null)
-  const h = useEased01(hovered)
-  const dummy = useMemo(() => new THREE.Object3D(), [])
-
-  const { stemGeo, plants, alliums } = useMemo(() => {
-    const rnd = (i: number, salt: number) => {
-      const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453
-      return x - Math.floor(x)
-    }
-    const plants: { x: number; z: number; h: number; lean: number }[] = []
-    const pts: number[] = []
-    const seg = (a: THREE.Vector3, b: THREE.Vector3) => pts.push(a.x, a.y, a.z, b.x, b.y, b.z)
-
-    for (let i = 0; i < 44; i++) {
-      const a = i * 2.399
-      const r = (0.5 + rnd(i, 1) * 3.1) * (1 - 0.12 * Math.sin(a * 2))
-      const x = Math.cos(a) * r
-      const z = Math.sin(a) * r * 0.7
-      const h = 0.4 + Math.pow(rnd(i, 2), 1.6) * 1.9
-      const lean = (rnd(i, 3) - 0.5) * 0.5
-      plants.push({ x, z, h, lean })
-      const base = new THREE.Vector3(x, 0, z)
-      const mid = new THREE.Vector3(x + lean * 0.4, h * 0.55, z)
-      const tip = new THREE.Vector3(x + lean, h, z)
-      seg(base, mid)
-      seg(mid, tip)
-      // leaf blades off most stems
-      if (rnd(i, 4) > 0.35) {
-        const ly = h * (0.3 + rnd(i, 5) * 0.25)
-        const dir = rnd(i, 6) > 0.5 ? 1 : -1
-        seg(
-          new THREE.Vector3(x + lean * 0.25, ly, z),
-          new THREE.Vector3(x + lean * 0.25 + 0.4 * dir, ly + 0.28, z + (rnd(i, 7) - 0.5) * 0.3)
-        )
-      }
-    }
-
-    // tall alliums: bare stems holding orbs above the bed
-    const alliums: { x: number; z: number; h: number }[] = []
-    for (let i = 0; i < 6; i++) {
-      const a = i * 2.399 + 0.9
-      const r = 0.6 + rnd(i, 8) * 2.2
-      const x = Math.cos(a) * r
-      const z = Math.sin(a) * r * 0.7
-      const h = 1.9 + rnd(i, 9) * 0.9
-      alliums.push({ x, z, h })
-      seg(new THREE.Vector3(x, 0, z), new THREE.Vector3(x, h, z))
-    }
-
-    const stemGeo = new THREE.BufferGeometry()
-    stemGeo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3))
-    return { stemGeo, plants, alliums }
-  }, [])
-
-  useFrame(({ clock }) => {
-    const t = reducedMotion ? 0 : clock.elapsedTime
-    // wind over the whole bed: gusts lean everything from the ground up,
-    // two incommensurate periods so it swooshes instead of ticking
-    if (bed.current) {
-      bed.current.rotation.z = Math.sin(t * 0.55) * 0.014 + Math.sin(t * 1.31 + 2.1) * 0.011
-      bed.current.rotation.x = Math.sin(t * 0.43 + 1.2) * 0.008
-    }
-    if (stemsMat.current) stemsMat.current.color.set('#78876f').multiplyScalar(1 + h.current * 0.8)
-    if (tipsMat.current) tipsMat.current.color.set('#e2e8d8').multiplyScalar(1.3 + h.current * 0.9)
-    if (orbsMat.current) orbsMat.current.color.set('#efeee6').multiplyScalar(1.5 + h.current * 0.9)
-    if (tips.current) {
-      for (let i = 0; i < plants.length; i++) {
-        const p = plants[i]
-        const sway = reducedMotion ? 0 : Math.sin(t * (1.15 + (i % 7) * 0.09) + i * 1.9) * 0.05
-        dummy.position.set(p.x + p.lean + sway, p.h, p.z)
-        dummy.scale.setScalar((0.045 + (i % 4) * 0.014) * (1 + h.current * 0.5))
-        dummy.updateMatrix()
-        tips.current.setMatrixAt(i, dummy.matrix)
-      }
-      tips.current.instanceMatrix.needsUpdate = true
-    }
-    if (orbs.current) {
-      for (let i = 0; i < alliums.length; i++) {
-        const p = alliums[i]
-        const bob = reducedMotion ? 0 : Math.sin(t * (0.68 + (i % 3) * 0.11) + i * 2.6) * 0.04
-        dummy.position.set(p.x, p.h + 0.16 + bob, p.z)
-        dummy.scale.setScalar((0.16 + (i % 3) * 0.035) * (1 + h.current * 0.35))
-        dummy.updateMatrix()
-        orbs.current.setMatrixAt(i, dummy.matrix)
-      }
-      orbs.current.instanceMatrix.needsUpdate = true
-    }
-  })
-
-  return (
-    <group
-      position={portrait ? [-4.2 * spread, 0, -13] : [-6, 0, -16]}
-      scale={portrait ? 1.3 : 1}
-      {...handlers}
-      onClick={(e) => {
-        e.stopPropagation()
-        onEnter(def.href, def.external)
-      }}
-    >
-      <PortalLabel def={def} onEnter={onEnter} hovered={hovered} />
-      <group ref={bed}>
-        {/* stems + leaves, one draw call */}
-        <lineSegments geometry={stemGeo}>
-          <lineBasicMaterial ref={stemsMat} color={new THREE.Color('#78876f')} toneMapped={false} />
-        </lineSegments>
-        {/* glowing bud tips */}
-        <instancedMesh ref={tips} args={[undefined, undefined, plants.length]}>
-          <sphereGeometry args={[1, 8, 8]} />
-          <meshBasicMaterial ref={tipsMat} color={new THREE.Color('#e2e8d8').multiplyScalar(1.3)} toneMapped={false} />
-        </instancedMesh>
-        {/* allium orbs above the bed */}
-        <instancedMesh ref={orbs} args={[undefined, undefined, alliums.length]}>
-          <icosahedronGeometry args={[1, 1]} />
-          <meshBasicMaterial
-            ref={orbsMat}
-            color={new THREE.Color('#efeee6').multiplyScalar(1.5)}
-            wireframe
-            toneMapped={false}
-          />
-        </instancedMesh>
-        {/* one new stem growing every ~18s — makes "growing" literal */}
-        <Sprout reducedMotion={reducedMotion} />
-      </group>
-      <LightPool position={[0, 0.03, 0]} scale={4.5} color="#b9c9a8" opacity={0.025} />
-      <mesh position={[0, 1.9, 0]} scale={hovered ? 1.5 : 1} visible={false}>
-        <boxGeometry args={[8.5, 4.6, 6.5]} />
-      </mesh>
-      <EasedLight hovered={hovered} on={22} off={14} position={[0, 1.2, 0]} color="#b9c9a8" distance={14} decay={2} />
-    </group>
   )
 }
 
@@ -1412,8 +1188,8 @@ function Rig({ ready, onSettled }: { ready: boolean; onSettled: () => void }) {
     const aspect = size.width / size.height
     const portrait = aspect < COMPACT_ASPECT
     const baseZ = portrait ? 26 : 22 + Math.max(0, 1.8 - aspect) * 14
-    const baseY = portrait ? 14 : 3.2
-    const gazeY = portrait ? 1 : 4.5
+    const baseY = portrait ? 14 : 7
+    const gazeY = portrait ? 1 : 2
     const fittedFov = Math.max(
       portrait ? 54 : 48,
       THREE.MathUtils.radToDeg(2 * Math.atan((portrait ? 0.25 : 0.68) / aspect))
@@ -1564,13 +1340,10 @@ export default function NightField({ onEnter, reducedMotion, softwareRendering =
         <Beacon def={PORTALS.contact} onEnter={focusThenEnter} reducedMotion={reducedMotion} />
       </Suspense>
       <Suspense fallback={null}>
-        <GardenPatch def={PORTALS.garden} onEnter={focusThenEnter} reducedMotion={reducedMotion} />
-      </Suspense>
-      <Suspense fallback={null}>
         <PinkTriangle def={PORTALS.triangle} onEnter={focusThenEnter} />
       </Suspense>
       {ready && <Suspense fallback={null}>
-        <WritingGroves onEnter={onEnter} />
+        <WritingGroves onEnter={onEnter} reducedMotion={reducedMotion} />
       </Suspense>}
 
       <Meteors reducedMotion={reducedMotion} />

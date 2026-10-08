@@ -95,7 +95,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const progress = pulse.born === null ? 1 : Math.min(1, (time - pulse.born) / pulse.duration)
         const width = parseFloat(pulse.path.style.getPropertyValue('--pulse-length'))
         pulse.path.style.strokeDashoffset = String(width - progress * (1 + width))
-        pulse.path.style.opacity = String(.7 * smooth(progress / .18) * (1 - smooth((progress - .2) / .8)))
+        pulse.path.style.opacity = String(smooth(progress / .12) * (1 - smooth((progress - .8) / .2)))
       }
       transfers = transfers.filter(pulse => {
         const progress = (time - pulse.born) / pulse.duration
@@ -112,7 +112,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         }
         pulse.path.style.strokeDasharray = `${Math.max(.0001, width)} 2`
         pulse.path.style.strokeDashoffset = String(-tail)
-        pulse.path.style.opacity = String(.8 * .85 ** (pulse.depth - 1) * smooth(progress / .05) * (1 - smooth((progress - .18) / .82)))
+        pulse.path.style.opacity = String(smooth(progress / .05) * (1 - smooth((progress - .8) / .2)))
         return true
       })
 

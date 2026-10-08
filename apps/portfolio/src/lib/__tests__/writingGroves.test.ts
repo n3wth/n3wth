@@ -18,7 +18,7 @@ describe('homepage writing groves', () => {
     expect(new Set(first.map((tree) => tree.id)).size).toBe(nodes.length)
   })
 
-  it('keeps trees behind the near landmarks and separates topic clearings', () => {
+  it('keeps trees behind the near landmarks in one grove while preserving topics', () => {
     for (const compact of [false, true]) {
       for (const tree of layoutWritingGroves(nodes, compact)) {
         expect(tree.z).toBeLessThan(-5)
@@ -26,7 +26,8 @@ describe('homepage writing groves', () => {
       }
     }
     const trees = layoutWritingGroves(nodes, false)
-    expect(new Set(trees.map((tree) => tree.grove)).size).toBe(8)
+    expect(new Set(trees.map((tree) => tree.grove)).size).toBe(1)
+    expect(new Set(trees.flatMap((tree) => tree.tags)).size).toBe(8)
   })
 
   it('keeps trees on visible ground, outside landmark footprints, with selectable trees in view', () => {
@@ -35,12 +36,11 @@ describe('homepage writing groves', () => {
       const spread = compact ? Math.max(1, Math.min(1.35, aspect) / 0.5) : 1
       const fov = Math.max(compact ? 54 : 48, 2 * Math.atan((compact ? 0.25 : 0.68) / aspect) * 180 / Math.PI)
       const camera = new PerspectiveCamera(fov, aspect, 0.1, 1000)
-      camera.position.set(0, compact ? 14 : 3.2, compact ? 26 : 22 + Math.max(0, 1.8 - aspect) * 14)
-      camera.lookAt(0, compact ? 1 : 4.5, -30)
+      camera.position.set(0, compact ? 14 : 7, compact ? 26 : 22 + Math.max(0, 1.8 - aspect) * 14)
+      camera.lookAt(0, compact ? 1 : 2, -30)
       camera.updateMatrixWorld()
       const landmarks = [
-        { x: compact ? -4.2 * spread : -6, z: compact ? -13 : -16, width: compact ? 5.6 : 4.5, height: 5, depth: 4 },
-        { x: compact ? 3.2 * spread : 27, z: compact ? -35 : -46, width: 10.5, height: 8, depth: 7 },
+        { x: compact ? 4.6 * spread : 27, z: compact ? -28 : -46, width: 10.5, height: 8, depth: 7 },
         { x: compact ? -14 * spread : -52, z: compact ? -85 : -100, width: 13, height: 24, depth: 13 },
       ]
       let visible = 0
@@ -63,9 +63,9 @@ describe('homepage writing groves', () => {
       expect(segments.length).toBeLessThanOrEqual(27)
       expect(segments[0].a[1]).toBe(0)
       expect(segments[2].b[1]).toBe(tree.height)
-      const base = tree.stage === 'seedling' ? 0.65 : 3.8
-      expect(tree.height).toBeGreaterThanOrEqual(base * 0.8)
-      expect(tree.height).toBeLessThanOrEqual(base * 1.2)
+      const base = tree.stage === 'seedling' ? 0.65 : 2.2
+      expect(tree.height).toBeGreaterThanOrEqual(base * 0.65)
+      expect(tree.height).toBeLessThanOrEqual(base * 1.35)
       expect(segments.flatMap((segment) => [...segment.a, ...segment.b]).every(Number.isFinite)).toBe(true)
     }
   })

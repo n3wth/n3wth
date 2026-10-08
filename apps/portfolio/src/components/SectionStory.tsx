@@ -96,13 +96,16 @@ function ProjectsStory() {
 
 function LibraryStory() {
   return <g transform="translate(850 390) rotate(-22)">
-    {Array.from({ length: 15 }, (_, i) => <g key={i} transform={`rotate(${(i - 7) * 5.5} 0 235)`}>
+    {Array.from({ length: 9 }, (_, i) => <g key={i} transform={`translate(${(i - 4) * 4} 0) rotate(${(i - 4) * 8} 0 235)`}>
       <g className="section-story__page" style={phase(i)}>
       <LitStoryLine seed={i + 25} d="M 0 235 C -143 125 -219 -5 -192 -205 C -77 -185 57 -151 142 -74 C 128 73 79 183 0 235 Z" />
       <path className="section-story__quiet" d="M 0 235 C -30 57 -107 -90 -192 -205" />
       </g>
     </g>)}
-    <LitStoryLine seed={41} d="M 0 235 C -100 500 -280 900 -680 1900" />
+    {Array.from({ length: 9 }, (_, i) => {
+      const x = (i - 4) * 4
+      return <LitStoryLine key={i} seed={41 + i} d={`M ${x} 235 C ${x - 30} 410 ${x - 220} 700 ${x - 680} 1900`} />
+    })}
   </g>
 }
 
@@ -117,9 +120,10 @@ function ContactStory() {
       </linearGradient>)}
     </defs>
     {[0, 180].map((rotation, side) => <g key={rotation} transform={`rotate(${rotation} 924 350)`}>
-        <LitStoryLine seed={43 + side} d="M -1800 350 C -200 350 410 510 660 100" />
         {Array.from({ length: 11 }, (_, i) => {
-          const d = `M 924 350 C ${730 + i * 12} ${410 - i * 10}, ${540 + i * 15} ${210 + i * 6}, ${660 + i * 12} ${100 + i * 15} C ${780 + i * 8} ${-10 + i * 21}, ${1010 - i * 7} ${120 + i * 10}, 924 350`
+          const d = i === 0
+            ? 'M -1800 350 C -200 350 540 210 660 100 C 780 -10 1010 120 924 350 C 730 410 540 210 660 100'
+            : `M 924 350 C ${730 + i * 12} ${410 - i * 10}, ${540 + i * 15} ${210 + i * 6}, ${660 + i * 12} ${100 + i * 15} C ${780 + i * 8} ${-10 + i * 21}, ${1010 - i * 7} ${120 + i * 10}, 924 350`
           return <g key={i}>
             <path d={d} />
               <path className="section-story__contact-spectrum" d={d} pathLength="1" stroke={`url(#${spectrum}-${(i * 3 + side) % colors.length})`} style={{
