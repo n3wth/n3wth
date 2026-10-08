@@ -5,9 +5,9 @@ Before UI changes, read [design.md](design.md) and [style.md](style.md). They de
 Use Node 24 and npm 11.19.1, then run npm ci at the repository root. npm 10 has a peer-resolution failure on this workspace. The root package-lock.json is the only application/library lockfile. Use feature branches.
 
 - apps/portfolio: n3wth.com. Read its AGENTS.md before editing.
-- apps/ui-docs: ui.n3wth.com documentation app.
+- apps/ui-docs: redirect-only Worker for the retired UI documentation site.
 - apps/skills: skills.n3wth.com. Read its AGENTS.md before editing. It consumes the workspace UI package alongside the other sites.
-- apps/kit, apps/garden, apps/r3-web: other shared-system consumers. Read their AGENTS.md before editing.
+- apps/garden and apps/r3-web: redirect Workers. Read their AGENTS.md before editing. r3 also retains an independent search service.
 - packages/ui: public @n3wth/ui library. Read its AGENTS.md before editing.
 - packages/site-config: canonical public origins, with no framework dependency or secrets.
 

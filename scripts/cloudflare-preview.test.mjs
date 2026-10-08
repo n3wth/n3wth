@@ -66,7 +66,7 @@ test('preview identity is stable and scoped to the fixed app', () => {
   assert.throws(() => previewIdentity('anything', 42))
 })
 
-test('reads JSONC and generates an exact static custom-domain config without source mutation', () => {
+test('reads JSONC and wraps a custom-domain Worker without source mutation', () => {
   const sourcePath = '/repo/apps/ui-docs/wrangler.jsonc'
   const source = parseJsonc('{\n // comment\n "name": "source",\n "main": "./worker.js",\n "assets": { "directory": "./dist", },\n "routes": [{"pattern":"production.example"}]\n}')
   const generated = createPreviewConfig({
@@ -78,7 +78,7 @@ test('reads JSONC and generates an exact static custom-domain config without sou
     accountId,
   })
   assert.equal(generated.config.name, 'n3wth-ui-docs-pr-7')
-  assert.equal(generated.config.main, '/repo/apps/ui-docs/worker.js')
+  assert.equal(generated.config.main, generated.paths.wrapperPath)
   assert.equal(generated.config.assets.directory, '/repo/apps/ui-docs/dist')
   assert.deepEqual(generated.config.routes, [{ pattern: 'ui-docs-pr-7.preview.n3wth.com', custom_domain: true }])
   assert.equal(source.name, 'source')
@@ -111,17 +111,22 @@ test('stages assets and injects preview noindex without changing source files', 
 })
 
 test('local workerd preserves security headers, preview noindex, cache, redirect, and 404', async t => {
-  const builtDist = join(fileURLToPath(new URL('../apps/ui-docs/dist/', import.meta.url)))
-  const builtHeaders = join(builtDist, '_headers')
-  const builtRedirects = join(builtDist, '_redirects')
-  if (!existsSync(builtDist) || !existsSync(builtHeaders) || !existsSync(builtRedirects)) {
-    t.skip('apps/ui-docs/dist is not built; run npm run build:ui-docs first')
-    return
-  }
   const root = mkdtempSync(join(tmpdir(), 'cloudflare-workerd-'))
   t.after(() => rmSync(root, { recursive: true, force: true }))
+  const source = join(root, 'source')
+  mkdirSync(source)
+  writeFileSync(join(source, 'index.html'), '<!doctype html><title>Preview fixture</title>')
+  writeFileSync(join(source, '404.html'), '<!doctype html><title>Not found</title>')
+  writeFileSync(join(source, '_headers'), `/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Strict-Transport-Security: max-age=63072000
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cache-Control: public, max-age=0
+`)
   const assets = join(root, 'assets')
-  stagePreviewAssets({ sourceDirectory: builtDist, stageDirectory: assets })
+  stagePreviewAssets({ sourceDirectory: source, stageDirectory: assets })
   // Exercise static hosting independently of the retired UI domain's redirects.
   writeFileSync(join(assets, '_redirects'), '/legacy / 301\n')
   const configPath = join(root, 'wrangler.json')
@@ -350,15 +355,14 @@ test('command errors preserve relevant context and redact token-shaped values', 
   }), error => error.message.includes('custom domain could not be removed') && !error.message.includes('secret-value'))
 })
 
-test('OpenNext deploy generates a noindex wrapper, rebinds self service, and skips staging', async t => {
-  const root = mkdtempSync(join(tmpdir(), 'cloudflare-opennext-'))
+test('built Worker deploy generates a noindex wrapper, skips staging', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-worker-'))
   t.after(() => rmSync(root, { recursive: true, force: true }))
   const appRoot = join(root, 'apps', 'skills')
-  mkdirSync(join(appRoot, '.open-next', 'assets'), { recursive: true })
+  mkdirSync(join(appRoot, 'dist', 'client'), { recursive: true })
   writeFileSync(join(appRoot, 'wrangler.jsonc'), JSON.stringify({
-    main: '.open-next/worker.js',
-    assets: { directory: '.open-next/assets', binding: 'ASSETS' },
-    services: [{ binding: 'WORKER_SELF_REFERENCE', service: 'n3wth-skills-preview' }],
+    main: 'dist/server/index.js',
+    assets: { directory: 'dist/client', binding: 'ASSETS' },
   }))
   const calls = []
   const result = await deployPreview({
@@ -381,21 +385,20 @@ test('OpenNext deploy generates a noindex wrapper, rebinds self service, and ski
   assert.equal(result.assetsDirectory, undefined)
   assert.deepEqual(calls[0][1].slice(1), ['deploy', '--config', result.configPath])
   assert.equal(result.config.main, join(result.directory, 'preview-noindex-worker.mjs'))
-  assert.equal(result.config.services[0].service, 'n3wth-skills-pr-11')
-  assert.equal(result.config.assets.directory, join(appRoot, '.open-next', 'assets'))
+  assert.equal(result.config.assets.directory, join(appRoot, 'dist', 'client'))
   const wrapper = readFileSync(result.config.main, 'utf8')
-  assert.match(wrapper, /from ".*\.open-next\/worker\.js"/)
+  assert.match(wrapper, /from ".*dist\/server\/index\.js"/)
   assert.match(wrapper, /X-Robots-Tag.*noindex, nofollow/)
 })
 
-test('OpenNext deploy fails without explicit per-preview stateful bindings', async t => {
+test('built Worker deploy fails without explicit per-preview stateful bindings', async t => {
   const root = mkdtempSync(join(tmpdir(), 'cloudflare-bindings-'))
   t.after(() => rmSync(root, { recursive: true, force: true }))
   const appRoot = join(root, 'apps', 'garden')
-  mkdirSync(join(appRoot, '.open-next', 'assets'), { recursive: true })
+  mkdirSync(join(appRoot, 'dist', 'client'), { recursive: true })
   writeFileSync(join(appRoot, 'wrangler.jsonc'), JSON.stringify({
-    main: '.open-next/worker.js',
-    assets: { directory: '.open-next/assets', binding: 'ASSETS' },
+    main: 'dist/server/index.js',
+    assets: { directory: 'dist/client', binding: 'ASSETS' },
     d1_databases: [{ binding: 'DB', database_id: 'production-db' }],
   }))
   let ranWrangler = false

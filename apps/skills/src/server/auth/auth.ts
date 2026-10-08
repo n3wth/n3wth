@@ -4,7 +4,7 @@ import type { D1Database, SkillsEnv } from '../db/d1'
 import { resolveAuthConfig, type SkillsAuthEnv } from './config'
 import { sendMagicLinkEmail } from '../email/magic-link'
 
-export type SkillsWorkerEnv = SkillsEnv & SkillsAuthEnv
+export type SkillsWorkerEnv = SkillsEnv & SkillsAuthEnv & { GEMINI_API_KEY?: string; GOOGLE_GENERATIVE_AI_API_KEY?: string }
 
 /**
  * Better Auth instance bound to the worker's D1 database.
@@ -56,6 +56,17 @@ export function createAuth(db: D1Database, env: SkillsAuthEnv) {
 }
 
 export type Auth = ReturnType<typeof createAuth>
+
+/** Community reads work without auth configuration; writes still check sessions. */
+export async function getCommunityContext() {
+  const env = await getWorkerEnv()
+  const db = env.DB ?? null
+  let auth: Auth | null = null
+  if (db) {
+    try { auth = getAuth(db, env) } catch { /* Auth is optional for public reads. */ }
+  }
+  return { db, auth }
+}
 
 // One auth instance per D1 binding per isolate.
 const authCache = new WeakMap<D1Database, Auth>()

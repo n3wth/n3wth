@@ -1,5 +1,8 @@
 # Personal sites workspace decision
 
+Current status (October 2026): Portfolio and Skills render pages. Garden, r3 and UI are redirect Workers. Builds use the dependency graph without the retired Vercel/UI cache. The measurements and pilot decisions below are historical; use [deployment.md](deployment.md) for current commands.
+
+
 Status: workspace architecture. Per-site production evidence is recorded in the migration documents and Linear.
 
 Release update: the approved 2.0.0 cutover makes this monorepo the npm release

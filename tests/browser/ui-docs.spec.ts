@@ -1,11 +1,15 @@
 import { test, expect } from '@playwright/test'
 
-test('UI publishes the portfolio redirect for its landing page', async ({ request }) => {
-  const redirects = await (await request.get('/_redirects')).text()
-  expect(redirects).toContain('/* https://n3wth.com/projects/ui 301')
+test('UI redirects its landing page to the portfolio', async ({ request }) => {
+  const response = await request.get('/', { maxRedirects: 0 })
+  expect(response.status()).toBe(301)
+  expect(response.headers().location).toBe('https://n3wth.com/projects/ui')
 })
 
-test('UI publishes the shared docs redirect', async ({ request }) => {
-  const redirects = await (await request.get('/_redirects')).text()
-  expect(redirects).toContain('/docs/* https://docs.n3wth.com/ui/:splat 301')
+test('UI redirects legacy and current docs to the shared docs host', async ({ request }) => {
+  for (const [source, target] of [['theming', 'theme-provider'], ['future/page', 'future/page']]) {
+    const response = await request.get(`/docs/${source}?from=legacy`, { maxRedirects: 0 })
+    expect(response.status()).toBe(301)
+    expect(response.headers().location).toBe(`https://docs.n3wth.com/ui/${target}?from=legacy`)
+  }
 })

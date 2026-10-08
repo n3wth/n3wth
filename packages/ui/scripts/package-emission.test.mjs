@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { rollup } from 'rollup'
+import { build } from 'vite'
 import { needsClientBoundary, packageEmission } from './package-emission.mjs'
 
 test('client classification follows source behavior rather than filenames', () => {
@@ -35,25 +35,31 @@ test('emission keeps new client modules local, preserves directives and leaves o
     '/og.js': `export function OGCard() { return 'server' }`,
     '/animation.js': `'use client'; import gsap from 'gsap'; export const animation = gsap.to`,
   }
-  const bundle = await rollup({
-    input: '/index.js',
-    external: ['react', 'gsap'],
+  const { output } = await build({
+    configFile: false,
+    logLevel: 'silent',
     plugins: [{
       name: 'fixture',
       resolveId(id) { return id.startsWith('.') ? `/${id.slice(2)}` : id },
       load(id) { return modules[id] },
     }, packageEmission()],
-    onwarn(warning) { if (warning.code !== 'MODULE_LEVEL_DIRECTIVE') throw new Error(warning.message) },
+    build: {
+      write: false,
+      minify: false,
+      rolldownOptions: {
+        input: '/index.js',
+        preserveEntrySignatures: 'strict',
+        external: ['react', 'gsap'],
+        output: { format: 'es', preserveModules: true, entryFileNames: '[name].js' },
+      },
+    },
   })
-  try {
-    const { output } = await bundle.generate({ format: 'es', preserveModules: true })
-    const chunks = Object.fromEntries(output.map(chunk => [chunk.fileName, chunk]))
-    assert.match(chunks['new-name.js'].code, /^'use client';/)
-    assert.match(chunks['animation.js'].code, /^'use client';/)
-    assert.doesNotMatch(chunks['index.js'].code, /use client/)
-    assert.doesNotMatch(chunks['og.js'].code, /use client/)
-    assert.deepEqual(chunks['new-name.js'].imports, ['react'])
-    assert.deepEqual(chunks['og.js'].imports, [])
-    assert.deepEqual(chunks['animation.js'].imports, ['gsap'])
-  } finally { await bundle.close() }
+  const chunks = Object.fromEntries(output.map(chunk => [chunk.fileName, chunk]))
+  assert.match(chunks['new-name.js'].code, /^["']use client["'];/)
+  assert.match(chunks['animation.js'].code, /^["']use client["'];/)
+  assert.doesNotMatch(chunks['index.js'].code, /use client/)
+  assert.doesNotMatch(chunks['og.js'].code, /use client/)
+  assert.deepEqual(chunks['new-name.js'].imports, ['react'])
+  assert.deepEqual(chunks['og.js'].imports, [])
+  assert.deepEqual(chunks['animation.js'].imports, ['gsap'])
 })

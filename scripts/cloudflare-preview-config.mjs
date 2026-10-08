@@ -5,7 +5,6 @@ import { createHash } from 'node:crypto'
 
 // Retain identity support so old migrated-site previews can still be cleaned up.
 export const PREVIEW_APPS = new Set([...DEPLOY_APP_SLUGS, 'ui-docs', 'r3-web'])
-const STATIC_APPS = new Set(['ui-docs'])
 const PREVIEW_SUFFIX = 'preview.n3wth.com'
 const STATEFUL_BINDINGS = ['d1_databases', 'r2_buckets', 'kv_namespaces', 'durable_objects', 'hyperdrive', 'queues', 'vectorize', 'mtls_certificates']
 
@@ -161,16 +160,6 @@ function previewSubscribeVars(source, previewBindings, pr) {
   return Object.keys(vars).length > 0 ? vars : undefined
 }
 
-function previewServices(services, workerName) {
-  if (!services) return undefined
-  return services.map(service => {
-    if (service.binding !== 'WORKER_SELF_REFERENCE') {
-      throw new Error('Preview configs may only use the WORKER_SELF_REFERENCE service binding; found ' + service.binding)
-    }
-    return { ...service, service: workerName }
-  })
-}
-
 export function createPreviewConfig({ source, sourcePath, root, app, pr, accountId, previewBindings, assetsDirectory }) {
   const identity = previewIdentity(app, pr)
   const paths = previewPaths({ root, app, pr })
@@ -191,10 +180,10 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   Object.assign(config, previewStatefulBindings(source, previewBindings))
   if (config.ratelimits) config.ratelimits = previewRatelimits(source, identity, previewBindings)
   if (app === 'portfolio') config.vars = previewSubscribeVars(source, previewBindings, pr)
-  if (config.services) config.services = previewServices(config.services, identity.workerName)
+  if (config.services?.length) throw new Error('Preview service bindings require explicit isolation.')
   if (assetsDirectory) config.assets = { ...config.assets, directory: assetsDirectory }
-  if (!STATIC_APPS.has(app)) {
-    if (!config.main) throw new Error(`Dynamic preview ${app} requires a Worker main entrypoint.`)
+  if (!config.main && !config.assets?.directory) throw new Error(`Preview ${app} requires a Worker main entrypoint or assets.`)
+  if (config.main) {
     config.main = paths.wrapperPath
     // Bundle the wrapper and its imported built Worker into the preview package.
     if (source.no_bundle) config.no_bundle = false
@@ -222,7 +211,7 @@ export function writePreviewConfig({ root, app, pr, sourcePath, accountId, previ
   const source = parseJsonc(readFileSync(sourcePath, 'utf8'))
   const generated = createPreviewConfig({ source, sourcePath, root, app, pr, accountId, previewBindings, assetsDirectory })
   mkdirSync(generated.paths.directory, { recursive: true })
-  if (generated.originalMain && !STATIC_APPS.has(app)) writeFileSync(generated.paths.wrapperPath, noindexWrapper(generated.originalMain))
+  if (generated.originalMain) writeFileSync(generated.paths.wrapperPath, noindexWrapper(generated.originalMain))
   writeFileSync(generated.paths.configPath, `${JSON.stringify(generated.config, null, 2)}\n`)
   return generated
 }

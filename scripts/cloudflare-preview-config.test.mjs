@@ -43,14 +43,13 @@ test('parses JSONC without changing comment-like or comma-like string content', 
   })
 })
 
-test('generates an OpenNext config with absolute artifacts, PR self binding, and noindex wrapper', () => {
+test('generates an built Worker config with absolute artifacts, noindex wrapper', () => {
   const sourcePath = '/repo/apps/skills/wrangler.jsonc'
   const { config, paths, originalMain } = createPreviewConfig({
     source: {
-      main: '.open-next/worker.js',
-      assets: { directory: '.open-next/assets', binding: 'ASSETS' },
-      wasm_modules: { RESVG: '.open-next/resvg.wasm' },
-      services: [{ binding: 'WORKER_SELF_REFERENCE', service: 'n3wth-skills-preview' }],
+      main: 'dist/server/index.js',
+      assets: { directory: 'dist/client', binding: 'ASSETS' },
+      wasm_modules: { RESVG: 'dist/server/resvg.wasm' },
     },
     sourcePath,
     root: '/repo',
@@ -58,16 +57,15 @@ test('generates an OpenNext config with absolute artifacts, PR self binding, and
     pr: 23,
     accountId,
   })
-  assert.equal(originalMain, '/repo/apps/skills/.open-next/worker.js')
+  assert.equal(originalMain, '/repo/apps/skills/dist/server/index.js')
   assert.equal(config.main, paths.wrapperPath)
-  assert.equal(config.assets.directory, '/repo/apps/skills/.open-next/assets')
-  assert.equal(config.wasm_modules.RESVG, '/repo/apps/skills/.open-next/resvg.wasm')
-  assert.equal(config.services[0].service, 'n3wth-skills-pr-23')
+  assert.equal(config.assets.directory, '/repo/apps/skills/dist/client')
+  assert.equal(config.wasm_modules.RESVG, '/repo/apps/skills/dist/server/resvg.wasm')
   assert.deepEqual(config.routes, [{ pattern: 'skills-pr-23.preview.n3wth.com', custom_domain: true }])
   assert.match(noindexWrapper(originalMain), /X-Robots-Tag/)
 })
 
-test('keeps ui-docs static and does not create a Worker wrapper', () => {
+test('asset-only configurations do not create a Worker wrapper', () => {
   const { config, originalMain } = createPreviewConfig({
     source: { assets: { directory: './dist' } },
     sourcePath: '/repo/apps/ui-docs/wrangler.jsonc', root: '/repo', app: 'ui-docs', pr: 2, accountId,
@@ -75,6 +73,13 @@ test('keeps ui-docs static and does not create a Worker wrapper', () => {
   assert.equal(config.main, undefined)
   assert.equal(originalMain, undefined)
   assert.equal(config.assets.directory, '/repo/apps/ui-docs/dist')
+})
+
+test('rejects service bindings rather than inheriting production services', () => {
+  assert.throws(() => createPreviewConfig({
+    source: { main: './worker.js', services: [{ binding: 'SERVICE', service: 'production' }] },
+    sourcePath: '/repo/apps/skills/wrangler.jsonc', root: '/repo', app: 'skills', pr: 2, accountId,
+  }), /service bindings require explicit isolation/)
 })
 
 test('rejects production stateful bindings unless explicit per-preview replacements exist', () => {

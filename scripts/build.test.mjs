@@ -87,11 +87,10 @@ test('unknown workspace targets fail before any build runs', () => {
 test('parseBuildArgs accepts repeated workspace flags and list mode', () => {
   assert.deepEqual(parseBuildArgs(['--list', '--workspace', '@n3wth/garden', '-w', '@n3wth/skills']), {
     list: true,
-    cacheUi: false,
     workspaces: ['@n3wth/garden', '@n3wth/skills'],
   })
   assert.throws(() => parseBuildArgs(['--turbo']), /Unknown build argument/)
-  assert.equal(parseBuildArgs(['--cache-ui']).cacheUi, true)
+  assert.throws(() => parseBuildArgs(['--cache-ui']), /Unknown build argument/)
 })
 
 test('repository root build lists every site after UI and omits site-config', () => {

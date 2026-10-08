@@ -15,7 +15,6 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const APP_ROOT = join(ROOT, 'apps', 'ui-docs')
 const WRANGLER_ENTRYPOINT = resolve(ROOT, 'node_modules', 'wrangler', 'bin', 'wrangler.js')
 const CLOUDFLARE_API = 'https://api.cloudflare.com/client/v4'
-const STATIC_STAGE_APPS = new Set(['ui-docs', 'portfolio'])
 
 export { parseJsonc, previewIdentity }
 
@@ -129,8 +128,8 @@ export function stagePreviewAssets({ sourceDirectory, stageDirectory }) {
 }
 
 function stagePreviewAppAssets({ app, appRoot, source, sourcePath, stageDirectory }) {
-  if (!STATIC_STAGE_APPS.has(app)) return undefined
-  const sourceAssets = absoluteConfigPath(source.assets?.directory || 'dist', sourcePath)
+  if (!source.assets?.directory || (source.main && app !== 'portfolio')) return undefined
+  const sourceAssets = absoluteConfigPath(source.assets.directory, sourcePath)
   rmSync(stageDirectory, { recursive: true, force: true })
   mkdirSync(stageDirectory, { recursive: true })
   cpSync(sourceAssets, stageDirectory, { recursive: true })

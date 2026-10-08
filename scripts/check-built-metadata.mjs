@@ -31,7 +31,7 @@ export function listApplications(root) {
     .filter(entry => entry.isDirectory())
     .map(entry => {
       const manifest = JSON.parse(readFileSync(join(root, 'apps', entry.name, 'package.json'), 'utf8'))
-      return { directory: entry.name, name: manifest.name, next: Boolean(manifest.dependencies?.next), vinext: Boolean(manifest.dependencies?.vinext) }
+      return { directory: entry.name, name: manifest.name, vinext: Boolean(manifest.dependencies?.vinext) }
     })
 }
 
@@ -50,8 +50,7 @@ function htmlFiles(directory) {
 }
 
 function loadJsdom(root) {
-  // Reuse the documentation workspace's declared HTML test parser.
-  const { JSDOM } = createRequire(join(root, 'apps/ui-docs/package.json'))('jsdom')
+  const { JSDOM } = createRequire(join(root, 'package.json'))('jsdom')
   return JSDOM
 }
 
@@ -91,16 +90,14 @@ export async function checkBuiltMetadata(root, options = {}) {
       results.push(await checkWorkerMetadata(root, app, log))
       continue
     }
-    if (app.directory === 'garden') {
-      log('garden: redirect Worker has no public HTML')
+    if (['garden', 'r3-web', 'ui-docs'].includes(app.directory)) {
+      log(`${app.directory}: redirect Worker has no public HTML`)
       continue
     }
-    const output = join(root, 'apps', app.directory, app.next ? '.next/server/app' : 'dist')
+    const output = join(root, 'apps', app.directory, 'dist')
     let checked = 0
     for (const file of htmlFiles(output)) {
       const label = `${app.directory}/${relative(output, file)}`
-      // Framework crash shells are not public content routes.
-      if (file.endsWith('/_global-error.html')) continue
       JSDOM ??= loadJsdom(root)
       const window = new JSDOM(readFileSync(file, 'utf8')).window
       try {
@@ -137,7 +134,7 @@ async function checkWorkerMetadata(root, app, log) {
       const response = await worker.fetch(`http://localhost${route}`, { redirect: 'manual' })
       const label = `${app.directory}${route}`
       if ([301, 302, 307, 308].includes(response.status)) {
-        assert.match(response.headers.get('location') ?? '', /^https:\/\//, `${label}: absolute redirect`)
+        assert.match(response.headers.get('location') ?? '', /^(https?:\/\/|\/(?!\/))/, `${label}: valid redirect target`)
         redirects++
         continue
       }

@@ -1,5 +1,8 @@
 # Build performance
 
+Current status (October 2026): Portfolio and Skills render pages. Garden, r3 and UI are redirect Workers. Builds use the dependency graph without the retired Vercel/UI cache. The measurements and pilot decisions below are historical; use [deployment.md](deployment.md) for current commands.
+
+
 Measured against main at `03accd9` on September 14, 2026, using Node 24.20.0 and npm 11.19.1.
 
 ## Scope and measurements

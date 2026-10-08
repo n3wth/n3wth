@@ -123,8 +123,8 @@ test('listApplications reads workspace names from app manifests', () => {
     assert.deepEqual(
       listApplications(root).toSorted((left, right) => left.directory.localeCompare(right.directory)),
       [
-        { directory: 'kit', name: '@n3wth/kit', next: true, vinext: false },
-        { directory: 'portfolio', name: '@n3wth/portfolio', next: false, vinext: false },
+        { directory: 'kit', name: '@n3wth/kit', vinext: false },
+        { directory: 'portfolio', name: '@n3wth/portfolio', vinext: false },
       ],
     )
   } finally { rmSync(root, { recursive: true, force: true }) }

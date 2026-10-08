@@ -182,7 +182,7 @@ jobs:
           JS
             fi
             config="apps/$app/wrangler.jsonc"
-            if [ "$app" = skills ] || [ "$app" = r3-web ]; then
+            if [ "$app" = skills ]; then
               config="apps/$app/dist/server/wrangler.json"
             fi
             npm exec -- wrangler deploy --config "$config"

@@ -3,29 +3,12 @@
 import { createContext, useContext, useCallback, useState, type ReactNode } from 'react'
 import { authClient } from '../lib/auth-client'
 
-export interface Profile {
-  id: string
-  username: string
-  display_name: string | null
-  avatar_url: string | null
-  bio: string | null
-  github_url: string | null
-  twitter_url: string | null
-  website_url: string | null
-  reputation: number
-  streak: number
-  role: 'user' | 'maker' | 'admin'
-  created_at: string
-  updated_at: string
-}
-
 type SessionHookResult = ReturnType<typeof authClient.useSession>
 type SessionData = NonNullable<SessionHookResult['data']>
 export type User = SessionData['user']
 
 export interface AuthContextType {
   user: User | null
-  profile: Profile | null
   loading: boolean
   error: string | null
   signIn: (email: string) => Promise<void>
@@ -34,7 +17,6 @@ export interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  profile: null,
   loading: true,
   error: null,
   signIn: async () => {},
@@ -49,9 +31,7 @@ export function useAuth() {
  * Better Auth-backed provider. Replaces the legacy Supabase provider with the
  * same consumption surface; `useSession` (better-auth/react) keeps session
  * state in sync across signOut/auth changes, so no manual subscription is
- * needed. `profile` stays null: the D1 profiles table is read server-side
- * (comments/votes handlers derive identity from the session), and no profile
- * UI consumes it client-side.
+ * needed. Community routes derive identity from the same session.
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { data: session, isPending, error: sessionError } = authClient.useSession()
@@ -82,7 +62,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user: session?.user ?? null,
-        profile: null,
         loading: isPending,
         error: error ?? sessionError?.message ?? null,
         signIn,
