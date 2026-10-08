@@ -10,7 +10,7 @@ import { packageEmission } from './scripts/package-emission.mjs'
 export default defineConfig({
   plugins: [
     packageEmission(),
-    { name: 'package-styles', closeBundle: buildStyles },
+    { name: 'package-styles', writeBundle: buildStyles },
     react(),
     dts({
       include: ['src'],
@@ -71,8 +71,6 @@ export default defineConfig({
       },
     },
     cssCodeSplit: false,
-    // Minify for production
-    minify: 'esbuild',
     // Generate sourcemaps for debugging
     sourcemap: true,
     // Target modern browsers only

@@ -157,13 +157,10 @@ Site CI passes. Push a `ui-v<version>` tag on the merge commit. Release UI
 checks the package, validates the packed consumer, and publishes that exact
 tarball through npm trusted publishing.
 
-### Demo Site (Vercel)
+### Documentation
 
-The docs site at https://ui.n3wth.com deploys manually from the monorepo.
-
-- **Project:** Existing ui project, root apps/ui-docs in n3wth/n3wth
-- **Build:** Root npm run build:ui-docs
-- **Deployments:** Manual; package release does not deploy sites
+Documentation lives at https://docs.n3wth.com/ui. The retired ui.n3wth.com
+site is a redirect Worker in apps/ui-docs. Package releases do not deploy sites.
 
 ### Downstream Consumers
 

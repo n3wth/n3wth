@@ -3,8 +3,6 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { Footer as PortfolioFooter } from '../apps/portfolio/src/components/Footer'
 import { Footer as SkillsFooter } from '../apps/skills/src/components/Footer'
-import { FooterSignup as R3Footer } from '../apps/r3-web/components/FooterSignup'
-import { Signup as UiFooter } from '../apps/ui-docs/demo/Signup'
 
 const { capture, trackSignup } = vi.hoisted(() => ({ capture: vi.fn(), trackSignup: vi.fn() }))
 vi.mock('@n3wth/site-config/analytics', () => ({ captureNewsletterSubscribed: capture }))
@@ -20,7 +18,7 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
 for (const [source, Form] of [
-  ['home', PortfolioFooter], ['skills', SkillsFooter], ['r3', R3Footer], ['ui', UiFooter],
+  ['home', PortfolioFooter], ['skills', SkillsFooter],
 ] as const) {
   describe(`${source} newsletter form`, () => {
     it('waits for confirmed API success before showing success or capturing analytics', async () => {

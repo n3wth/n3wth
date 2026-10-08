@@ -13,7 +13,6 @@ const fonts = [
 ]
 const cards = [
   ['portfolio', 'Oliver Newth', '', 'apps/portfolio/public/og-image.png'],
-  ...['home', 'getting-started', 'theming', 'components', 'hooks', 'css-utilities'].map(slug => ['ui', slug === 'home' ? 'UI' : slug.split('-').map(word => word[0].toUpperCase() + word.slice(1)).join(' '), 'React components and design tokens', `apps/ui-docs/public/og/${slug}.png`]),
 ]
 for (const [site, title, subtitle, output] of cards) {
   const svg = await satori(socialCard(createElement, { site, title, subtitle, fontFamily: 'Geist' }), { ...socialSize, fonts })

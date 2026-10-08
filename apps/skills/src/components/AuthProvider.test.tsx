@@ -35,12 +35,11 @@ function makeUser(overrides: Record<string, unknown> = {}) {
 }
 
 function TestConsumer() {
-  const { user, profile, loading, error, signIn, signOut } = useAuth()
+  const { user, loading, error, signIn, signOut } = useAuth()
   return (
     <div>
       <span data-testid="loading">{String(loading)}</span>
       <span data-testid="user">{user ? 'authenticated' : 'none'}</span>
-      <span data-testid="profile">{profile?.username ?? 'none'}</span>
       <span data-testid="error">{error ?? 'none'}</span>
       <button onClick={() => signIn('test@example.com')}>Sign In</button>
       <button onClick={signOut}>Sign Out</button>
@@ -71,7 +70,6 @@ describe('AuthProvider', () => {
     )
     expect(screen.getByTestId('loading')).toHaveTextContent('false')
     expect(screen.getByTestId('user')).toHaveTextContent('none')
-    expect(screen.getByTestId('profile')).toHaveTextContent('none')
   })
 
   it('exposes the session user when signed in', () => {
@@ -136,7 +134,6 @@ describe('AuthProvider', () => {
     sessionState.value = { data: null, isPending: false, error: null }
     rerender(<AuthProvider><TestConsumer /></AuthProvider>)
     expect(screen.getByTestId('user')).toHaveTextContent('none')
-    expect(screen.getByTestId('profile')).toHaveTextContent('none')
   })
 
   it('handles signOut error and keeps the user signed in', async () => {
@@ -181,6 +178,5 @@ describe('AuthProvider', () => {
     rerender(<AuthProvider><TestConsumer /></AuthProvider>)
 
     expect(screen.getByTestId('user')).toHaveTextContent('none')
-    expect(screen.getByTestId('profile')).toHaveTextContent('none')
   })
 })

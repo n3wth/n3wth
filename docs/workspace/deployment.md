@@ -2,11 +2,11 @@
 
 ## Cloudflare builds and configuration
 
-Cloudflare Workers serves the six public sites. Use Node 24 and npm 11.19.1,
+Cloudflare Workers serves the public sites. Use Node 24 and npm 11.19.1,
 then run `npm ci` at the repository root.
 
 ```bash
-# Build all six Workers and their assets. Shared packages build once.
+# Build all Workers and their assets. Shared packages build once.
 npm run build:cloudflare
 
 # Select one site, or repeat --workspace to select several.
@@ -19,15 +19,15 @@ npm run build:cloudflare -- --workspace @n3wth/garden --list
 npm exec -- wrangler deploy --config apps/garden/wrangler.jsonc --dry-run
 ```
 
-The command uses the same workspace graph as `npm run build`. Portfolio and
-UI docs use their existing static builds. Garden builds a redirect Worker from
-portfolio's local published-note data. Skills and the retained r3 workspace use
-Vinext with the Cloudflare Vite plugin. Do not run a separate shared-package prebuild.
+The command uses the same workspace graph as `npm run build`. Portfolio uses
+Vite. Garden builds a redirect Worker from portfolio's published-note data.
+Skills uses Vinext with the Cloudflare Vite plugin. The retired r3 and UI sites
+use plain redirect Workers, without React builds. Do not run a separate shared-package prebuild.
 
 ### Vinext Workers
 
-Skills and r3 keep their App Router routes and `next/*` imports. `next` remains
-installed for types and library peer dependencies; Vite builds and runs the apps.
+Skills keeps its App Router routes and `next/*` imports. `next` remains
+installed for types and library peer dependencies; Vite builds and runs the app.
 The root Vite 8 pin ensures hoisted RSC and Cloudflare plugins detect the same
 version as these apps. Workspace Vite and React plugins use the same versions
 to avoid incompatible hoisted plugin types and runtime detection.
@@ -35,8 +35,11 @@ to avoid incompatible hoisted plugin types and runtime detection.
 `npm run dev -w @n3wth/skills` runs locally in workerd. After building, use
 `npm run start -w @n3wth/skills` to test the production Worker. Package and deploy
 the generated `apps/skills/dist/server/wrangler.json`, not the source config.
-Use the equivalent r3 path for that retained workspace. Its retirement redirects
-and automatic-deployment exclusion remain in place.
+The retired r3 and UI domains are served by Cloudflare redirect rules. Their
+local Worker fixtures use source `wrangler.jsonc` files for route tests and remain
+excluded from production deployments. Do not create replacement production
+Workers for these domains. r3's separate search Worker and its source corpus
+remain because they have independent consumers.
 
 The source `wrangler.jsonc` owns Worker identity, domains and bindings. Vite
 generates executable and asset paths under `dist/`. Preview tooling reads that
@@ -81,7 +84,7 @@ build or preview alone is not a completed cutover. Roll back Garden to its prior
 Worker version first if redirects fail; roll back portfolio only after restoring
 the standalone reader. Retain the prior Worker versions and domain bindings.
 
-Each `apps/<app>/wrangler.jsonc` is the production configuration: Worker name,
+Each active site's `apps/<app>/wrangler.jsonc` is the production configuration: Worker name,
 custom domain, assets and resource bindings. There are no separate production
 config files. Inspect the target before using Wrangler; a deploy with this config
 changes production. Build and package in the same checkout and operating system.
@@ -90,7 +93,7 @@ copy them to another machine for deployment.
 
 The Cloudflare preview workflow uses this build command, then
 `scripts/cloudflare-preview.mjs` generates an isolated config under `.cloudflare/`.
-It replaces the Worker name, domain, self-service binding and Skills auth origin,
+It replaces the Worker name, domain and Skills auth origin,
 requires explicit preview stateful bindings, and adds preview-only noindex behavior.
 Secrets stay outside source config and are provisioned separately for each Worker.
 Never deploy generated preview config to production or point a preview at the

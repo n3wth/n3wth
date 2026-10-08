@@ -42,16 +42,12 @@ jobs:
             node --input-type=module <<'JS'
           import { appendFileSync } from 'node:fs'
           import { execFileSync } from 'node:child_process'
+          import { DEPLOY_APP_SLUGS, deployAppForWorkspace } from './scripts/deploy-apps.mjs'
           const base = process.env.BASE_SHA
           const workspaces = JSON.parse(execFileSync(process.execPath, ['scripts/affected.mjs', '--base', base, '--list', '--deployment'], { encoding: 'utf8' }))
           const files = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`, '--'], { encoding: 'utf8' }).split('\n')
           const infrastructure = files.some(file => file === '.github/workflows/cloudflare-preview.yml' || file.startsWith('scripts/cloudflare-preview'))
-          const previewApps = {
-            '@n3wth/portfolio': 'portfolio',
-            '@n3wth/garden': 'garden',
-            '@n3wth/skills': 'skills',
-          }
-          const apps = infrastructure ? Object.values(previewApps) : workspaces.map(workspace => previewApps[workspace]).filter(Boolean)
+          const apps = infrastructure ? [...DEPLOY_APP_SLUGS] : workspaces.map(deployAppForWorkspace).filter(Boolean)
           // Every signup preview needs its matching isolated subscription API.
           if (apps.length && !apps.includes('portfolio')) apps.push('portfolio')
           appendFileSync(process.env.GITHUB_OUTPUT, `apps=${apps.join(' ')}\n`)
@@ -73,15 +69,6 @@ jobs:
             targets+=(--workspace "@n3wth/$app")
           done
           npm run build:cloudflare -- "${targets[@]}"
-          for app in $APPS; do
-            case "$app" in
-              ui-docs)
-                npm run typecheck -w @n3wth/ui-docs
-                npm test -w @n3wth/ui-docs
-                (cd apps/ui-docs && node --test scripts/prerender.test.mjs)
-                ;;
-            esac
-          done
       - name: Check preview lifecycle
         if: steps.affected.outputs.apps != ''
         run: node --test scripts/cloudflare-preview.test.mjs scripts/cloudflare-preview-config.test.mjs

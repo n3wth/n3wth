@@ -5,7 +5,7 @@ if (build.status !== 0) process.exit(build.status ?? 1)
 
 const children = [
   spawn('npm', ['run', 'dev', '-w', '@n3wth/ui'], { stdio: 'inherit' }),
-  spawn('npm', ['run', 'dev', '-w', '@n3wth/ui-docs'], { stdio: 'inherit' }),
+  spawn('npm', ['run', 'dev', '-w', '@n3wth/portfolio'], { stdio: 'inherit' }),
 ]
 let stopping = false
 function stop(code) {

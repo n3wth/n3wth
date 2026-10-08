@@ -5,20 +5,19 @@ import sharp from 'sharp'
 import { siteIconSvg } from '../packages/site-config/icons.js'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
-const apps = { portfolio: 'portfolio', garden: 'garden', r3: 'r3-web', skills: 'skills', ui: 'ui-docs' }
+const apps = ['portfolio', 'skills']
 
-for (const [site, app] of Object.entries(apps)) {
+for (const app of apps) {
   const directory = join(root, 'apps', app, 'public')
   await mkdir(directory, { recursive: true })
-  const svg = siteIconSvg(site)
+  const svg = siteIconSvg(app)
   await writeFile(join(directory, 'favicon.svg'), svg + '\n')
-  await writeFile(join(directory, 'logo.svg'), siteIconSvg(site, { background: false }) + '\n')
+  await writeFile(join(directory, 'logo.svg'), siteIconSvg(app, { background: false }) + '\n')
   for (const variant of ['black', 'white']) {
-    await writeFile(join(directory, `logo-${variant}.svg`), siteIconSvg(site, { background: false, variant }) + '\n')
+    await writeFile(join(directory, `logo-${variant}.svg`), siteIconSvg(app, { background: false, variant }) + '\n')
   }
   const sizes = { 'favicon-16x16.png': 16, 'favicon-32x32.png': 32, 'favicon-96.png': 96, 'favicon.png': 96, 'apple-touch-icon.png': 180, 'icon-192.png': 192, 'icon-512.png': 512 }
-  if (site === 'skills') Object.assign(sizes, { 'icons/icon-192.png': 192, 'icons/icon-512.png': 512 })
-  if (site === 'r3') Object.assign(sizes, { 'android-chrome-192x192.png': 192, 'android-chrome-512x512.png': 512 })
+  if (app === 'skills') Object.assign(sizes, { 'icons/icon-192.png': 192, 'icons/icon-512.png': 512 })
   for (const [file, size] of Object.entries(sizes)) {
     await mkdir(join(directory, file, '..'), { recursive: true })
     await sharp(Buffer.from(svg)).resize(size, size).png().toFile(join(directory, file))
@@ -36,5 +35,4 @@ for (const [site, app] of Object.entries(apps)) {
   header.writeUInt32LE(22, 18)
   const ico = Buffer.concat([header, png])
   await writeFile(join(directory, 'favicon.ico'), ico)
-  if (app === 'r3-web') await writeFile(join(root, 'apps', app, 'app/favicon.ico'), ico)
 }

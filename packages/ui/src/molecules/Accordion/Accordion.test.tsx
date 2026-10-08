@@ -230,7 +230,7 @@ describe('Accordion', () => {
   })
 
   it('content uses grid-template-rows for animation', () => {
-    const { container } = renderAccordion({ defaultValue: ['item-1'] })
+    renderAccordion({ defaultValue: ['item-1'] })
 
     const trigger1 = screen.getByText('Section One')
     const contentId = trigger1.getAttribute('aria-controls')!

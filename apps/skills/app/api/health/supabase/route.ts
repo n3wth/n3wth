@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
 
 /**
  * GET /api/health/supabase
- * Verifies Supabase connection and that migrations (upvotes, comments, profiles) are applied.
+ * Legacy diagnostic for the retained Supabase source, not current app health.
+ * Verifies the connection and migrations (upvotes, comments, profiles).
  * Safe to call from production — returns status only, no secrets.
  */
 export async function GET() {
@@ -17,13 +17,20 @@ export async function GET() {
     )
   }
 
-  const supabase = createClient(url, anonKey)
   const tables: Record<string, { ok: boolean; error?: string }> = {}
 
-  for (const table of ['upvotes', 'comments', 'profiles']) {
-    const { error } = await supabase.from(table).select('*').limit(1)
-    tables[table] = error ? { ok: false, error: error.message } : { ok: true }
-  }
+  await Promise.all(['upvotes', 'comments', 'profiles'].map(async table => {
+    try {
+      const response = await fetch(`${url.replace(/\/$/, '')}/rest/v1/${table}?select=id&limit=1`, {
+        method: 'HEAD',
+        headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
+        signal: AbortSignal.timeout(5000),
+      })
+      tables[table] = response.ok ? { ok: true } : { ok: false, error: `HTTP ${response.status}` }
+    } catch {
+      tables[table] = { ok: false, error: 'Connection failed' }
+    }
+  }))
 
   const allOk = Object.values(tables).every((t) => t.ok)
 

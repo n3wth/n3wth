@@ -20,11 +20,16 @@ dist-ssr
 # Canonical project skills live in .agents/skills/. These adapters are generated per machine.
 .claude/
 .codex/
+.gemini/
+.studio/
+/opencode.json
+/squirrel.toml
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
+.zed/
 .DS_Store
 *.suo
 *.ntvs*

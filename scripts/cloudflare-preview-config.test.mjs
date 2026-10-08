@@ -8,13 +8,12 @@ import { siteUrls } from '../packages/site-config/index.js'
 
 const accountId = 'ac23513945eb49f73a89faf1be12384e'
 
-test('each production config has its canonical domain and preview replaces its identity', () => {
-  const sites = { portfolio: 'home', 'ui-docs': 'ui', garden: 'garden', skills: 'skills', 'r3-web': 'r3' }
+test('active configs own domains, retired fixtures do not, and previews replace identities', () => {
+  const sites = { portfolio: 'home', 'ui-docs': null, garden: 'garden', skills: 'skills', 'r3-web': null }
   for (const [app, site] of Object.entries(sites)) {
     const source = parseJsonc(readFileSync(new URL(`../apps/${app}/wrangler.jsonc`, import.meta.url), 'utf8'))
     assert.equal(source.name, `n3wth-${app}`)
-    assert.deepEqual(source.routes, [{ pattern: new URL(siteUrls[site]).hostname, custom_domain: true }])
-    if (source.services) assert.equal(source.services[0].service, source.name)
+    assert.deepEqual(source.routes, site ? [{ pattern: new URL(siteUrls[site]).hostname, custom_domain: true }] : undefined)
     const original = structuredClone(source)
     const { config } = createPreviewConfig({
       source, sourcePath: `/repo/apps/${app}/wrangler.jsonc`, root: '/repo', app, pr: 23, accountId,
@@ -43,14 +42,13 @@ test('parses JSONC without changing comment-like or comma-like string content', 
   })
 })
 
-test('generates an OpenNext config with absolute artifacts, PR self binding, and noindex wrapper', () => {
+test('generates an built Worker config with absolute artifacts, noindex wrapper', () => {
   const sourcePath = '/repo/apps/skills/wrangler.jsonc'
   const { config, paths, originalMain } = createPreviewConfig({
     source: {
-      main: '.open-next/worker.js',
-      assets: { directory: '.open-next/assets', binding: 'ASSETS' },
-      wasm_modules: { RESVG: '.open-next/resvg.wasm' },
-      services: [{ binding: 'WORKER_SELF_REFERENCE', service: 'n3wth-skills-preview' }],
+      main: 'dist/server/index.js',
+      assets: { directory: 'dist/client', binding: 'ASSETS' },
+      wasm_modules: { RESVG: 'dist/server/resvg.wasm' },
     },
     sourcePath,
     root: '/repo',
@@ -58,16 +56,15 @@ test('generates an OpenNext config with absolute artifacts, PR self binding, and
     pr: 23,
     accountId,
   })
-  assert.equal(originalMain, '/repo/apps/skills/.open-next/worker.js')
+  assert.equal(originalMain, '/repo/apps/skills/dist/server/index.js')
   assert.equal(config.main, paths.wrapperPath)
-  assert.equal(config.assets.directory, '/repo/apps/skills/.open-next/assets')
-  assert.equal(config.wasm_modules.RESVG, '/repo/apps/skills/.open-next/resvg.wasm')
-  assert.equal(config.services[0].service, 'n3wth-skills-pr-23')
+  assert.equal(config.assets.directory, '/repo/apps/skills/dist/client')
+  assert.equal(config.wasm_modules.RESVG, '/repo/apps/skills/dist/server/resvg.wasm')
   assert.deepEqual(config.routes, [{ pattern: 'skills-pr-23.preview.n3wth.com', custom_domain: true }])
   assert.match(noindexWrapper(originalMain), /X-Robots-Tag/)
 })
 
-test('keeps ui-docs static and does not create a Worker wrapper', () => {
+test('asset-only configurations do not create a Worker wrapper', () => {
   const { config, originalMain } = createPreviewConfig({
     source: { assets: { directory: './dist' } },
     sourcePath: '/repo/apps/ui-docs/wrangler.jsonc', root: '/repo', app: 'ui-docs', pr: 2, accountId,
@@ -75,6 +72,13 @@ test('keeps ui-docs static and does not create a Worker wrapper', () => {
   assert.equal(config.main, undefined)
   assert.equal(originalMain, undefined)
   assert.equal(config.assets.directory, '/repo/apps/ui-docs/dist')
+})
+
+test('rejects service bindings rather than inheriting production services', () => {
+  assert.throws(() => createPreviewConfig({
+    source: { main: './worker.js', services: [{ binding: 'SERVICE', service: 'production' }] },
+    sourcePath: '/repo/apps/skills/wrangler.jsonc', root: '/repo', app: 'skills', pr: 2, accountId,
+  }), /service bindings require explicit isolation/)
 })
 
 test('rejects production stateful bindings unless explicit per-preview replacements exist', () => {
