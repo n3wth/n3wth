@@ -4,6 +4,15 @@ import { generateThemeCSS } from '@astryxdesign/core/theme'
 
 describe('shared site composition', () => {
 
+  it('keeps native links available while scripted navigation waits for hydration', () => {
+    const { rerender } = render(<SiteNavigation controlsReady={false} brand={<a href="/">Site</a>} links={<a href="/docs">Docs</a>} />)
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeDisabled()
+    expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute('href', '/docs')
+    rerender(<SiteNavigation controlsReady brand={<a href="/">Site</a>} links={<a href="/docs">Docs</a>} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Open menu' }))
+    expect(screen.getByRole('button', { name: 'Close menu' })).toHaveAttribute('aria-expanded', 'true')
+  })
+
   it('stacks doc sections with shared rhythm classes', () => {
     const { container } = render(
       <N3wthProvider>

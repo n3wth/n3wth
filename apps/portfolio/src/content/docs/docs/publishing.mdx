@@ -1,0 +1,61 @@
+---
+title: "Preview and Publish"
+sidebar:
+  label: "Publishing"
+  order: 2
+description: "Preview Starlight documentation locally, check links, and publish alongside the portfolio at n3wth.com/docs."
+---
+
+The documentation uses Starlight inside the portfolio's Astro build. Public pages live in [apps/portfolio/src/content/docs/docs](https://github.com/n3wth/n3wth/tree/HEAD/apps/portfolio/src/content/docs/docs). The portfolio and documentation share one Cloudflare deployment.
+
+## Preview locally
+
+Install workspace dependencies from the repository root, then start the portfolio:
+
+```bash
+npm ci
+npm run dev
+```
+
+Open `/docs` on the local URL printed by the server. Astro reloads content changes as you edit.
+
+## Check for broken links
+
+From the repository root, validate MDX, metadata, and local documentation links:
+
+```bash
+node docs/check.mjs
+npm run build:portfolio
+```
+
+Preview representative pages at desktop, tablet, and mobile widths. Check navigation, search, page links, code blocks, tables, and horizontal overflow. A successful build does not prove an example's API is correct; verify changed examples against the implementation.
+
+## Write a useful page
+
+- Give each page a specific `title` and a short `description` of what the reader will accomplish. Use `sidebar.label` for a shorter navigation label and `sidebar.order` for ordering.
+- Put prerequisites before commands. Identify the working directory and files to edit.
+- Keep a quickstart focused on one working result. Put optional configuration and detailed reference material on linked pages.
+- Follow commands with an observable result and a link to help when that result is missing.
+- Use language-tagged, copyable code blocks. Explain placeholders and keep secrets out of examples.
+- Use headings for tasks and questions. Reserve callouts for information that changes the reader's next action.
+- Check compatibility, defaults, versions, and persistence against the source.
+
+Use Starlight's native [MDX components](https://starlight.astro.build/components/using-components/). Product directories appear automatically in the sidebar. The sidebar groups live in `apps/portfolio/starlight.config.mjs`.
+
+Use root-relative paths for documentation links, such as `/docs/ui/quickstart`. Keep internal plans and operational records in the root `docs/` directory; these files are not part of the public content collection.
+
+## Publish and verify
+
+1. Push a feature branch and wait for passing GitHub checks and the Cloudflare preview.
+2. Check the preview's documentation routes, navigation, and search before merging.
+3. After merging, confirm the production deployment matches the merged commit.
+4. Load one page per product directly at [n3wth.com/docs](https://n3wth.com/docs) and check page links and search.
+5. Confirm the public sitemap includes documentation URLs.
+
+Revert a broken documentation commit and verify the replacement deployment. The repository's [deployment runbook](https://github.com/n3wth/n3wth/blob/HEAD/docs/workspace/deployment.md) owns deployment and rollback procedures.
+
+## Metadata
+
+Astro's site URL and each page's route define its canonical URL. Starlight uses `title` and `description` for page metadata. Add extra meta tags through the standard `head` frontmatter field. See the [Starlight frontmatter reference](https://starlight.astro.build/reference/frontmatter/).
+
+Update examples when exports, command flags, or installation sources change. Link separate runtime repositories, such as [n3wth/r3](https://github.com/n3wth/r3), instead of copying their release workflows here.

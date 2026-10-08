@@ -258,12 +258,6 @@ export const ecosystem: EcosystemProperty[] = [
     href: '/projects/ui',
     purpose: 'React components and theme tokens.',
   },
-  {
-    id: 'skills',
-    name: 'Agent Skills',
-    href: '/projects/skills',
-    purpose: 'Skills to install locally for coding agents.',
-  },
 ]
 
 export interface GardenTopic {

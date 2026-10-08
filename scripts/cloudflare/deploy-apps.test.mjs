@@ -25,7 +25,7 @@ test('each app slug equals its directory so wrangler config paths resolve', () =
 })
 
 test('preview apps read the same source list', () => {
-  assert.deepEqual([...PREVIEW_APPS], [...DEPLOY_APP_SLUGS, 'ui-docs', 'r3-web'])
+  assert.deepEqual([...PREVIEW_APPS], [...DEPLOY_APP_SLUGS, 'ui-docs', 'r3-web', 'skills'])
 })
 
 test('deployAppForWorkspace maps known workspaces and ignores others', () => {
@@ -33,6 +33,7 @@ test('deployAppForWorkspace maps known workspaces and ignores others', () => {
   assert.equal(deployAppForWorkspace('@n3wth/ui'), undefined)
   assert.equal(deployAppForWorkspace('@n3wth/r3-web'), undefined)
   assert.equal(deployAppForWorkspace('@n3wth/ui-docs'), undefined)
+  assert.equal(deployAppForWorkspace('@n3wth/skills'), undefined)
 })
 
 test('the CLI prints slugs and JSON for the workflows', () => {

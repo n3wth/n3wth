@@ -2,6 +2,7 @@ import { readFileSync, realpathSync, readdirSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { readWorkspaces } from './affected.mjs'
 
 export const DEPENDENCY_GROUPS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
 
@@ -36,14 +37,12 @@ function checkImports(directory, shared = new Set()) {
 export function checkSiteDesign(root = fileURLToPath(new URL('../../', import.meta.url))) {
   const version = JSON.parse(readFileSync(resolve(root, 'packages/ui/package.json'), 'utf8')).version
   const canonical = realpathSync(resolve(root, 'packages/ui/dist/site.css'))
-  for (const entry of readdirSync(resolve(root, 'apps'), { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue
-    const manifest = resolve(root, 'apps', entry.name, 'package.json')
-    const app = JSON.parse(readFileSync(manifest, 'utf8'))
+  for (const app of readWorkspaces(root).filter(workspace => workspace.path.startsWith('apps/'))) {
+    const manifest = resolve(root, app.path, 'package.json')
     if (hasDirectAstryxDependency(app)) {
       throw new Error(`${app.name}: Astryx dependencies belong in @n3wth/ui`)
     }
-    const shared = checkImports(resolve(root, 'apps', entry.name))
+    const shared = checkImports(resolve(root, app.path))
     // Redirect Workers serve no UI.
     if (['@n3wth/garden', '@n3wth/r3-web', '@n3wth/ui-docs'].includes(app.name)) continue
     if (!app.dependencies?.['@n3wth/ui']) {

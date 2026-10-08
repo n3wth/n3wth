@@ -13,7 +13,7 @@ test('final article HTML preserves authored chapters and links without JavaScrip
     assert.ok([...main.querySelectorAll('h2')].some(h => h.textContent === 'Figure out the story'))
     assert.ok(main.querySelector('a[href="/thinking/night-field"]'))
     for (const path of ['/support', '/privacy', '/terms', '/consent']) {
-      assert.ok(main.querySelector(`nav a[href="${path}"]`), `Missing crawlable ${path}`)
+      assert.ok(dom.window.document.querySelector(`a[href="${path}"]`), `Missing crawlable ${path}`)
     }
   } finally { dom.window.close() }
 })
@@ -29,7 +29,7 @@ test('final note schema, sitemap and feed preserve source publication and revisi
       const url = `https://n3wth.com${note.href}`
       const dom = new JSDOM(read(`../dist${note.href}/index.html`))
       try {
-        const article = [...dom.window.document.querySelectorAll('script[data-page-json-ld]')].map(node => JSON.parse(node.textContent)).find(value => value['@type'] === 'Article')
+        const article = [...dom.window.document.querySelectorAll('script[type="application/ld+json"]')].map(node => JSON.parse(node.textContent)).find(value => value['@type'] === 'Article')
         assert.equal(article.datePublished, note.date, `${note.slug}: publication`)
         assert.equal(article.dateModified, note.updated || note.date, `${note.slug}: revision`)
         assert.equal(urls.get(url), note.date ? note.updated || note.date : undefined, `${note.slug}: sitemap`)

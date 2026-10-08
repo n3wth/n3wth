@@ -54,7 +54,7 @@ jobs:
           AFFECTED_WORKSPACES: ${{ steps.affected.outputs.workspaces }}
         run: npm run check:metadata
       - name: Check newsletter forms
-        if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web') || contains(steps.affected.outputs.workspaces, '@n3wth/skills')
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
         run: npm run test:newsletter
       - name: Check article figure evidence and assets
         if: contains(steps.affected.outputs.workspaces, '@n3wth/garden')
@@ -62,11 +62,8 @@ jobs:
       - name: Verify shared site design resolution
         if: contains(steps.affected.outputs.workspaces, '@n3wth/ui')
         run: npm run check:design
-      - name: Check Linux installer
-        if: contains(steps.affected.outputs.workspaces, '@n3wth/skills')
-        run: node --test apps/skills/scripts/install.test.mjs
       - name: Install browser
-        if: contains(steps.affected.outputs.workspaces, '@n3wth/ui') || contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web') || contains(steps.affected.outputs.workspaces, '@n3wth/skills')
+        if: contains(steps.affected.outputs.workspaces, '@n3wth/ui') || contains(steps.affected.outputs.workspaces, '@n3wth/portfolio') || contains(steps.affected.outputs.workspaces, '@n3wth/ui-docs') || contains(steps.affected.outputs.workspaces, '@n3wth/garden') || contains(steps.affected.outputs.workspaces, '@n3wth/r3-web')
         run: npx playwright install --with-deps chromium
       - name: Check standalone UI package
         if: contains(steps.affected.outputs.workspaces, '@n3wth/ui') && steps.affected.outputs.ui_package == 'true'
@@ -76,9 +73,6 @@ jobs:
         run: npm run check:browser -- --output=test-results/sites
         env:
           AFFECTED_WORKSPACES: ${{ steps.affected.outputs.workspaces }}
-      - name: Check Skills browser
-        if: contains(steps.affected.outputs.workspaces, '@n3wth/skills')
-        run: npm run test:migration -w @n3wth/skills -- --output=../../test-results/skills
       - uses: actions/upload-artifact@v7
         if: always()
         with:

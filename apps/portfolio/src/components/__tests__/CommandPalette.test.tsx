@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
 import { CommandPalette } from '../CommandPalette'
 import { track } from '../../lib/analytics'
 
@@ -11,9 +10,9 @@ const noop = () => {}
 describe('CommandPalette smoke', () => {
   it('renders a start-here set and filters live', async () => {
     render(
-      <MemoryRouter>
+      <>
         <CommandPalette open onClose={noop} />
-      </MemoryRouter>
+      </>
     )
     const input = screen.getByRole('combobox')
     expect(document.activeElement).toBe(input)
@@ -46,9 +45,9 @@ describe('CommandPalette smoke', () => {
 
   it('renders nothing when closed', () => {
     const { container } = render(
-      <MemoryRouter>
+      <>
         <CommandPalette open={false} onClose={noop} />
-      </MemoryRouter>
+      </>
     )
     expect(container.firstChild).toBeNull()
   })
@@ -69,9 +68,9 @@ describe('CommandPalette AI search', () => {
 
   it('does not show AI row for queries under 2 characters', () => {
     render(
-      <MemoryRouter>
+      <>
         <CommandPalette open onClose={noop} />
-      </MemoryRouter>
+      </>
     )
     const input = screen.getByRole('combobox')
 
@@ -93,9 +92,9 @@ describe('CommandPalette AI search', () => {
     globalThis.fetch = mockFetch
 
     render(
-      <MemoryRouter>
+      <>
         <CommandPalette open onClose={noop} />
-      </MemoryRouter>
+      </>
     )
     const input = screen.getByRole('combobox')
 
@@ -131,7 +130,7 @@ describe('CommandPalette AI search', () => {
   it('shows pending feedback immediately and ignores an answer after the query is cleared', async () => {
     let complete!: (value: unknown) => void
     globalThis.fetch = vi.fn(() => new Promise(resolve => { complete = resolve })) as typeof fetch
-    render(<MemoryRouter><CommandPalette open onClose={noop} /></MemoryRouter>)
+    render(<><CommandPalette open onClose={noop} /></>)
     const input = screen.getByRole('combobox')
     fireEvent.change(input, { target: { value: 'zzzznotathing' } })
     expect(globalThis.fetch).not.toHaveBeenCalled()
@@ -148,7 +147,7 @@ describe('CommandPalette AI search', () => {
   it('records the model and no-answer outcome from a streamed response', async () => {
     const events = 'data: {"model":"stream-model"}\n\ndata: {"delta":"No relevant information found. Try another search."}\n\ndata: [DONE]\n\n'
     globalThis.fetch = vi.fn(async () => new Response(events, { headers: { 'content-type': 'text/event-stream' } }))
-    render(<MemoryRouter><CommandPalette open onClose={noop} /></MemoryRouter>)
+    render(<><CommandPalette open onClose={noop} /></>)
     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'fgh' } })
     await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({
       $ai_model: 'stream-model',
@@ -162,9 +161,9 @@ describe('CommandPalette AI search', () => {
     vi.useFakeTimers()
     try {
       globalThis.fetch = vi.fn()
-      const { rerender } = render(<MemoryRouter><CommandPalette open onClose={noop} /></MemoryRouter>)
+      const { rerender } = render(<><CommandPalette open onClose={noop} /></>)
       fireEvent.change(screen.getByRole('combobox'), { target: { value: 'garden' } })
-      rerender(<MemoryRouter><CommandPalette open={false} onClose={noop} /></MemoryRouter>)
+      rerender(<><CommandPalette open={false} onClose={noop} /></>)
       await vi.advanceTimersByTimeAsync(400)
       expect(globalThis.fetch).not.toHaveBeenCalled()
     } finally {
@@ -176,9 +175,9 @@ describe('CommandPalette AI search', () => {
     vi.useFakeTimers()
     try {
       globalThis.fetch = vi.fn()
-      const { rerender } = render(<MemoryRouter><CommandPalette open onClose={noop} /></MemoryRouter>)
+      const { rerender } = render(<><CommandPalette open onClose={noop} /></>)
       fireEvent.change(screen.getByRole('combobox'), { target: { value: 'garden' } })
-      rerender(<MemoryRouter><CommandPalette open={false} onClose={noop} /></MemoryRouter>)
+      rerender(<><CommandPalette open={false} onClose={noop} /></>)
       await vi.advanceTimersByTimeAsync(400)
       expect(globalThis.fetch).not.toHaveBeenCalled()
     } finally {
@@ -206,9 +205,9 @@ describe('CommandPalette AI search', () => {
     globalThis.fetch = mockFetch
 
     render(
-      <MemoryRouter>
+      <>
         <CommandPalette open onClose={noop} />
-      </MemoryRouter>
+      </>
     )
     const input = screen.getByRole('combobox')
 
@@ -235,9 +234,9 @@ describe('CommandPalette AI search', () => {
 
   it('shows only loading dots while waiting for an automatic answer', () => {
     render(
-      <MemoryRouter>
+      <>
         <CommandPalette open onClose={noop} />
-      </MemoryRouter>
+      </>
     )
     const input = screen.getByRole('combobox')
 
@@ -253,9 +252,9 @@ describe('CommandPalette AI search', () => {
     globalThis.fetch = mockFetch
 
     render(
-      <MemoryRouter>
+      <>
         <CommandPalette open onClose={noop} />
-      </MemoryRouter>
+      </>
     )
     const input = screen.getByRole('combobox')
 
@@ -284,9 +283,9 @@ describe('CommandPalette AI search', () => {
     globalThis.fetch = mockFetch
 
     render(
-      <MemoryRouter>
+      <>
         <CommandPalette open onClose={noop} />
-      </MemoryRouter>
+      </>
     )
     const input = screen.getByRole('combobox')
 

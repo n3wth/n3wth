@@ -1,4 +1,14 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useSyncExternalStore } from 'react'
+
+const motionQuery = '(prefers-reduced-motion: reduce)'
+const motionSnapshot = () => window.matchMedia(motionQuery).matches
+const serverMotionSnapshot = () => true
+
+function subscribeToMotion(onChange: () => void) {
+  const query = window.matchMedia(motionQuery)
+  query.addEventListener('change', onChange)
+  return () => query.removeEventListener('change', onChange)
+}
 
 /**
  * Hook to detect user's motion preference with SSR safety
@@ -10,35 +20,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
  * - Skip parallax and auto-playing animations
  */
 export function useReducedMotion(): boolean {
-  const getInitialState = useCallback(() => {
-    if (typeof window === 'undefined') {
-      // Default to reduced motion for SSR (safer, more accessible)
-      return true
-    }
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  }, [])
-
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(getInitialState)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return
-    }
-
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-    // Update on mount for SSR hydration
-    setPrefersReducedMotion(mediaQuery.matches)
-
-    const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersReducedMotion(event.matches)
-    }
-
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
-
-  return prefersReducedMotion
+  return useSyncExternalStore(subscribeToMotion, motionSnapshot, serverMotionSnapshot)
 }
 
 /**

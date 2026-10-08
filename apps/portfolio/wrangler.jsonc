@@ -6,11 +6,15 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": false,
   "preview_urls": false,
-  "routes": [{ "pattern": "n3wth.com", "custom_domain": true }],
+  "routes": [
+    { "pattern": "n3wth.com", "custom_domain": true },
+    { "pattern": "skills.n3wth.com", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./dist",
     "html_handling": "drop-trailing-slash",
     "not_found_handling": "404-page",
+    "run_worker_first": true,
     "binding": "ASSETS"
   },
   // RESEND_API_KEY is a Worker secret. Previews replace all newsletter destinations.

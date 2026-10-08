@@ -1,0 +1,120 @@
+[
+  {
+    "path": "",
+    "title": "Oliver Newth — AI Product Lead at Google",
+    "description": "AI product lead at Google. Previously at Covariant, Meta, and Microsoft. Independent AI projects and large-scale light art.",
+    "ogImage": "/og-image.png"
+  },
+  {
+    "path": "projects/elephant-goldfish",
+    "title": "Elephant-Goldfish — Oliver Newth",
+    "description": "Check assumptions before you ship. Fresh reviewers question designs, investigate bugs, and inspect changes in Codex.",
+    "ogImage": "/og/work.png"
+  },
+  {
+    "path": "projects",
+    "title": "Projects — Oliver Newth",
+    "description": "Independent projects by Oliver Newth: tools for AI agents, a shared component library, and other experiments.",
+    "ogImage": "/og/work.png"
+  },
+  {
+    "path": "work",
+    "title": "Work — Oliver Newth",
+    "description": "Oliver Newth’s product experience at Google, Covariant, Meta, and Microsoft.",
+    "ogImage": "/og/work.png"
+  },
+  {
+    "path": "projects/r3",
+    "title": "r3 — Oliver Newth",
+    "description": "A local memory service for AI assistants with semantic search, vector embeddings, and a knowledge graph.",
+    "ogImage": "/og/work.png"
+  },
+  {
+    "path": "projects/ui",
+    "title": "@n3wth/ui — Oliver Newth",
+    "description": "A shared React component library with theme tokens, typography, native controls, and site compositions.",
+    "ogImage": "/og/library.png"
+  },
+  {
+    "path": "art",
+    "title": "After dark — Oliver Newth",
+    "description": "Large-scale light installations for Burning Man and San Francisco memorials. THEM, Pink Triangle, and Circle of Light.",
+    "ogImage": "/og/art.png"
+  },
+  {
+    "path": "library",
+    "title": "Library — Oliver Newth",
+    "description": "Installable pieces from across the n3wth properties: the essay kit behind the Thinking pieces, the @n3wth/ui component library, and the digital garden.",
+    "ogImage": "/og/library.png"
+  },
+  {
+    "path": "contact",
+    "title": "Contact — Oliver Newth",
+    "description": "Product, AI safety, or LED art. Coffee if you're in San Francisco.",
+    "ogImage": "/og/contact.png"
+  },
+  {
+    "path": "elsa",
+    "title": "Elsa · SMS Messaging Consent",
+    "description": "SMS messaging consent for Elsa, Oliver Grosvenor-Newth's personal AI assistant on n3wth.com at +1 (463) 258-8004.",
+    "ogImage": "/og-image.png"
+  },
+  {
+    "path": "billy",
+    "title": "Billy · SMS Messaging Consent",
+    "description": "SMS messaging consent for Billy, Oliver Grosvenor-Newth's personal AI assistant on n3wth.com at +1 (415) 718-0992.",
+    "ogImage": "/og-image.png"
+  },
+  {
+    "path": "privacy",
+    "title": "Privacy Policy — Oliver Newth",
+    "description": "Privacy policy for n3wth.com - Oliver Newth's personal website.",
+    "ogImage": "/og-image.png"
+  },
+  {
+    "path": "terms",
+    "title": "Terms of Service — n3wth",
+    "description": "Terms for n3wth.com, the Elephant-Goldfish plugin, and the They Won't Shut Up AI voice hotline.",
+    "ogImage": "/og-image.png"
+  },
+  {
+    "path": "consent",
+    "title": "SMS Consent — They Won't Shut Up",
+    "description": "Opt in to receive SMS messages from They Won't Shut Up, an AI voice hotline by n3wth.com.",
+    "ogImage": "/og-image.png"
+  },
+  {
+    "path": "login",
+    "title": "Signing in — Oliver Newth",
+    "description": "Redirecting to sign-in.",
+    "ogImage": "/og-image.png",
+    "noindex": true
+  },
+  {
+    "path": "logout",
+    "title": "Signed out — Oliver Newth",
+    "description": "You have been signed out.",
+    "ogImage": "/og-image.png",
+    "noindex": true
+  },
+  {
+    "path": "error",
+    "title": "Something went wrong — Oliver Newth",
+    "description": "An error occurred.",
+    "ogImage": "/og-image.png",
+    "noindex": true
+  },
+  {
+    "path": "thinking",
+    "title": "Thinking — Oliver Newth",
+    "description": "Essays and notes on AI, design, and everyday life.",
+    "ogImage": "/og/thinking.png"
+  },
+  {
+    "path": "404",
+    "title": "Not found — Oliver Newth",
+    "description": "This page does not exist.",
+    "ogImage": "/og-image.png",
+    "noindex": true
+  }
+]

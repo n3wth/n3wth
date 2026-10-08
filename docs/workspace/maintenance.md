@@ -4,29 +4,27 @@
 
 | Responsibility | Source |
 | --- | --- |
-| Six websites and preview deployments | n3wth/n3wth apps/* |
-| Canonical public origins | packages/site-config |
-| Installed workspace dependencies | Root package-lock.json with npm 11.19.1 |
-| Public @n3wth/ui publishing | packages/ui via publish-ui.yml |
-| r3 core runtime and releases | n3wth/r3 |
-| Skills installer and preserved CLI/editor sources | apps/skills |
-| Kit registry and preserved CLI source | apps/kit |
-| Garden published notes | apps/portfolio/content |
+| Portfolio and documentation website | `apps/portfolio` |
+| Published docs pages | `apps/portfolio/src/content/docs/docs` |
+| Published articles | `apps/portfolio/content` |
+| Public UI library and npm releases | `packages/ui`, `publish-ui.yml` |
+| Canonical public origins | `packages/site-config` |
+| Installed dependencies | Root `package-lock.json` |
+| Legacy download compatibility | `apps/skills/skills`, `apps/portfolio/public/skills/install.sh` |
+| Garden compatibility redirects | `apps/garden` |
+| Retired UI/r3 URL contracts | `apps/ui`, `apps/r3`; production zone rules |
+| r3 runtime releases | Separate `n3wth/r3` repository |
 
-Change shared origins once in site-config. Framework-specific components remain with each application. Registry-pinned UI consumers retain their tested versions; they do not silently consume the local library.
+Use Node 24 and npm 11.19.1, then `npm ci` at the repository root. `npm run dev` runs the Astro site and Starlight docs together. `npm run check` validates workspace builds and tests. Run the affected browser checks after building. Use `npm run check:package` when changing the public UI package.
 
-## Development and validation
+Astro owns page generation; React islands retain interactions where needed. Documentation is static Starlight content with local search. Avoid introducing a second site runtime or a separate docs deployment.
 
-Install at the root with Node 24 and npm 11.19.1. Use each application's workspace scripts for development. Run npm run check:affected for a branch and npm run check for the complete workspace. The lock-aware graph follows installed workspace links, including transitive consumers. Unknown lock metadata falls back to conservative validation.
+Root development dependencies own browser and asset tools. Keep one root lockfile. Do not run parallel browser suites into the same report directory. CI and local builds do not prove delivery, live DNS routing, or third-party integrations; verify these after release.
 
-Root devDependencies own browser testing and manual asset-generation tools, including sharp, satori, resvg, opentype.js and wawoff2. Development and deployment use root `npm ci`. The `icons`, `social`, and portfolio `og:cards`/`og:plates` commands resolve these tools from the root. UI docs is a redirect Worker; the UI package owns library development and runtime dependencies.
+## Retirement safeguards
 
-Run the affected browser suites after their application builds. Do not run multiple Playwright configurations against the same output directory concurrently. CI covers responsive routes and installers; it does not prove configured authentication or third-party delivery. After affected workspace checks, Site CI runs `check:metadata` with `AFFECTED_WORKSPACES` so only the HTML actually built is required; local `npm run check` still validates every app.
+Keep legacy download paths stable while installed scripts reference them. Do not restore Skills account or catalog features. Database exports belong in a restricted directory outside the repository, with a restore check and row-count manifest. Never commit user records or authentication material.
 
-Dependabot owns the root workspace lock, GitHub Actions and standalone nested CLI/editor packages. Pending dependency upgrades from retired repositories are tracked separately in Linear. Do not combine broad upgrades with a source migration.
+Keep live resources until the replacement is verified. Source removal, provider disconnection, DNS cutover and stored-data deletion are different operations. Preserve rollback versions and routing configuration before cutover. Follow [deployment](deployment.md).
 
-## Repository retirement
-
-Archive Garden, Kit and Skills source repositories only after their replacement is deployed, active source and installer URLs are updated, maintenance workflows are transferred and open work is linked to its replacement issue. Save previous repository metadata and deployment settings. Leave a new-source notice and preserve Git history through archival.
-
-The monorepo owns @n3wth/ui releases; n3wth/r3 still owns the r3 runtime package. Archiving a website's old repository does not remove its Vercel project, domains, environment variables or historical deployments.
+The monorepo continues to publish `@n3wth/ui`; site consolidation does not retire that package or its release workflow.

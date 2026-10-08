@@ -1,0 +1,10 @@
+---
+import Layout from '../../layouts/SiteLayout.astro'
+import Content from '../../screens/ProjectPage'
+import routes from '../../data/routes.json'
+export function getStaticPaths() {
+  return routes.filter(route => route.path.startsWith('projects/')).map(meta => ({ params: { slug: meta.path.slice(9) }, props: { meta } }))
+}
+const { meta } = Astro.props
+---
+<Layout {...meta}><Content slug={Astro.params.slug!} client:load /></Layout>

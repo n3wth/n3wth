@@ -118,13 +118,14 @@ test('listApplications reads workspace names from app manifests', () => {
   const root = fixture(root => {
     writeApp(root, 'kit', '@n3wth/kit', { next: true })
     writeApp(root, 'portfolio', '@n3wth/portfolio')
+    mkdirSync(join(root, 'apps', 'retired-downloads'))
   })
   try {
     assert.deepEqual(
       listApplications(root).toSorted((left, right) => left.directory.localeCompare(right.directory)),
       [
-        { directory: 'kit', name: '@n3wth/kit', vinext: false },
-        { directory: 'portfolio', name: '@n3wth/portfolio', vinext: false },
+        { directory: 'kit', name: '@n3wth/kit' },
+        { directory: 'portfolio', name: '@n3wth/portfolio' },
       ],
     )
   } finally { rmSync(root, { recursive: true, force: true }) }
@@ -167,5 +168,5 @@ test('checkPublicDocument rejects missing canonical or mismatched social URL', (
 
 test('current repository still lists every site application', () => {
   const names = listApplications(repo).map(app => app.directory).toSorted()
-  assert.deepEqual(names, ['garden', 'portfolio', 'r3', 'skills', 'ui'])
+  assert.deepEqual(names, ['garden', 'portfolio', 'r3', 'ui'])
 })

@@ -1,0 +1,18 @@
+---
+import Layout from '../../../layouts/SiteLayout.astro'
+
+export function getStaticPaths() {
+  return [undefined, 'quickstart', 'installation', 'authoring', 'interface', 'cli']
+    .map(slug => ({ params: { slug } }))
+}
+
+const path = ['docs/skills', Astro.params.slug].filter(Boolean).join('/')
+---
+
+<Layout path={path} title="Skills documentation retired — Oliver Newth" description="The Skills catalog and its documentation have been retired." noindex>
+  <main class="n3wth-site-container n3wth-site-main">
+    <h1>Skills documentation retired</h1>
+    <p>The Skills catalog and its documentation are no longer maintained.</p>
+    <p><a href="/docs">Read the current documentation</a></p>
+  </main>
+</Layout>

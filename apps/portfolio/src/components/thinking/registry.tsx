@@ -1,6 +1,9 @@
 import { lazy } from 'react'
 import type { ComponentType } from 'react'
 
+// Astro renders article prose synchronously; browsers load only the selected body.
+const serverBodies = import.meta.env.SSR ? import.meta.glob<ComponentType>(['./pieces/*.tsx', './pieces/FieldGuide/FieldGuide.tsx'], { eager: true, import: 'default' }) : {}
+
 /**
  * Registry of rich Thinking pieces. Each owns its own interaction
  * pattern (registered in docs/thinking-pieces-tracker.md), lazy-loaded
@@ -26,27 +29,27 @@ export interface RegisteredPiece {
   Body: ComponentType
 }
 
-const NightField = lazy(() => import('./pieces/NightField'))
-const AgentsOrgDesign = lazy(() => import('./pieces/AgentsOrgDesign'))
-const TrustProduction = lazy(() => import('./pieces/TrustProduction'))
-const AmbientAi = lazy(() => import('./pieces/AmbientAi'))
-const GtdMini = lazy(() => import('./pieces/GtdMini'))
-const AiDesignSlop = lazy(() => import('./pieces/AiDesignSlop'))
-const LiveArtifacts = lazy(() => import('./pieces/LiveArtifacts'))
-const PersonalKnowledgeGraph = lazy(() => import('./pieces/PersonalKnowledgeGraph'))
-const HomeAutomation = lazy(() => import('./pieces/HomeAutomation'))
-const CompoundEngineering = lazy(() => import('./pieces/CompoundEngineering'))
-const AutonomousAgents = lazy(() => import('./pieces/AutonomousAgents'))
-const LlmInference = lazy(() => import('./pieces/LlmInference'))
-const EdgeTypescript = lazy(() => import('./pieces/EdgeTypescript'))
-const HopFlights = lazy(() => import('./pieces/HopFlights'))
-const KrootsMap = lazy(() => import('./pieces/KrootsMap'))
-const TollFreeMaze = lazy(() => import('./pieces/TollFreeMaze'))
-const AgentDesks = lazy(() => import('./pieces/AgentDesks'))
-const WorkingNotes2026 = lazy(() => import('./pieces/WorkingNotes2026'))
-const PdfCharspaceGotcha = lazy(() => import('./pieces/PdfCharspaceGotcha'))
-const ThisPage = lazy(() => import('./pieces/ThisPage'))
-const FieldGuide = lazy(() => import('./pieces/FieldGuide/FieldGuide'))
+const NightField = import.meta.env.SSR ? serverBodies['./pieces/NightField.tsx'] : lazy(() => import('./pieces/NightField'))
+const AgentsOrgDesign = import.meta.env.SSR ? serverBodies['./pieces/AgentsOrgDesign.tsx'] : lazy(() => import('./pieces/AgentsOrgDesign'))
+const TrustProduction = import.meta.env.SSR ? serverBodies['./pieces/TrustProduction.tsx'] : lazy(() => import('./pieces/TrustProduction'))
+const AmbientAi = import.meta.env.SSR ? serverBodies['./pieces/AmbientAi.tsx'] : lazy(() => import('./pieces/AmbientAi'))
+const GtdMini = import.meta.env.SSR ? serverBodies['./pieces/GtdMini.tsx'] : lazy(() => import('./pieces/GtdMini'))
+const AiDesignSlop = import.meta.env.SSR ? serverBodies['./pieces/AiDesignSlop.tsx'] : lazy(() => import('./pieces/AiDesignSlop'))
+const LiveArtifacts = import.meta.env.SSR ? serverBodies['./pieces/LiveArtifacts.tsx'] : lazy(() => import('./pieces/LiveArtifacts'))
+const PersonalKnowledgeGraph = import.meta.env.SSR ? serverBodies['./pieces/PersonalKnowledgeGraph.tsx'] : lazy(() => import('./pieces/PersonalKnowledgeGraph'))
+const HomeAutomation = import.meta.env.SSR ? serverBodies['./pieces/HomeAutomation.tsx'] : lazy(() => import('./pieces/HomeAutomation'))
+const CompoundEngineering = import.meta.env.SSR ? serverBodies['./pieces/CompoundEngineering.tsx'] : lazy(() => import('./pieces/CompoundEngineering'))
+const AutonomousAgents = import.meta.env.SSR ? serverBodies['./pieces/AutonomousAgents.tsx'] : lazy(() => import('./pieces/AutonomousAgents'))
+const LlmInference = import.meta.env.SSR ? serverBodies['./pieces/LlmInference.tsx'] : lazy(() => import('./pieces/LlmInference'))
+const EdgeTypescript = import.meta.env.SSR ? serverBodies['./pieces/EdgeTypescript.tsx'] : lazy(() => import('./pieces/EdgeTypescript'))
+const HopFlights = import.meta.env.SSR ? serverBodies['./pieces/HopFlights.tsx'] : lazy(() => import('./pieces/HopFlights'))
+const KrootsMap = import.meta.env.SSR ? serverBodies['./pieces/KrootsMap.tsx'] : lazy(() => import('./pieces/KrootsMap'))
+const TollFreeMaze = import.meta.env.SSR ? serverBodies['./pieces/TollFreeMaze.tsx'] : lazy(() => import('./pieces/TollFreeMaze'))
+const AgentDesks = import.meta.env.SSR ? serverBodies['./pieces/AgentDesks.tsx'] : lazy(() => import('./pieces/AgentDesks'))
+const WorkingNotes2026 = import.meta.env.SSR ? serverBodies['./pieces/WorkingNotes2026.tsx'] : lazy(() => import('./pieces/WorkingNotes2026'))
+const PdfCharspaceGotcha = import.meta.env.SSR ? serverBodies['./pieces/PdfCharspaceGotcha.tsx'] : lazy(() => import('./pieces/PdfCharspaceGotcha'))
+const ThisPage = import.meta.env.SSR ? serverBodies['./pieces/ThisPage.tsx'] : lazy(() => import('./pieces/ThisPage'))
+const FieldGuide = import.meta.env.SSR ? serverBodies['./pieces/FieldGuide/FieldGuide.tsx'] : lazy(() => import('./pieces/FieldGuide/FieldGuide'))
 
 export const registeredPieces: RegisteredPiece[] = [
   {

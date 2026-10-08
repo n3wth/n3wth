@@ -43,8 +43,9 @@ describe('AssembleField', () => {
 
   it('reacts to motion preference changes without moving or hiding the dots', () => {
     const listeners = new Set<(event: MediaQueryListEvent) => void>()
+    let matches = false
     vi.spyOn(window, 'matchMedia').mockImplementation((media) => ({
-      matches: false, media, onchange: null,
+      get matches() { return matches }, media, onchange: null,
       addEventListener: (_type, listener) => listeners.add(listener as (event: MediaQueryListEvent) => void),
       removeEventListener: (_type, listener) => listeners.delete(listener as (event: MediaQueryListEvent) => void),
       addListener: vi.fn(), removeListener: vi.fn(), dispatchEvent: () => true,
@@ -52,10 +53,16 @@ describe('AssembleField', () => {
     const { container, unmount } = render(<AssembleField clusters={clusters} cols={6} rows={4} />)
     const original = geometry(container)
     expect(container.querySelector('svg')).toHaveAttribute('data-reduced-motion', 'false')
-    act(() => listeners.forEach((listener) => listener({ matches: true } as MediaQueryListEvent)))
+    act(() => {
+      matches = true
+      listeners.forEach((listener) => listener({ matches } as MediaQueryListEvent))
+    })
     expect(container.querySelector('svg')).toHaveAttribute('data-reduced-motion', 'true')
     expect(geometry(container)).toEqual(original)
-    act(() => listeners.forEach((listener) => listener({ matches: false } as MediaQueryListEvent)))
+    act(() => {
+      matches = false
+      listeners.forEach((listener) => listener({ matches } as MediaQueryListEvent))
+    })
     expect(container.querySelector('svg')).toHaveAttribute('data-reduced-motion', 'false')
     unmount()
     expect(listeners.size).toBe(0)

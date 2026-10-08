@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react'
-import { Link, useSearchParams, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useSyncExternalStore } from 'react'
+import { useHydrated, useQueryString } from '../../lib/navigation'
 import { Icon, Selector, TextInput } from '@n3wth/ui/primitives'
-import { RouterLink } from '../RouterLink'
 import { registeredPieces } from './registry'
 import notes from '../../data/writing-index.json'
 import './writingIndex.css'
@@ -17,20 +16,26 @@ const topics = [...new Set(notes.flatMap(note => note.tags))].sort()
 const topicLabel = (tag: string) => tag.replace(/-/g, ' ')
 const topicOptions = [{ value: '', label: 'All topics' }, ...topics.map(tag => ({ value: tag, label: topicLabel(tag) }))]
 const relativeDate = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
+const subscribeToDate = () => () => {}
+const serverDate = () => null
+const currentDate = () => {
+  const now = new Date()
+  return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+}
 
 function WritingDate({ value, label }: { value?: string; label: string }) {
+  const today = useSyncExternalStore(subscribeToDate, currentDate, serverDate)
   if (!value) return null
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return null
-  const now = new Date()
-  const days = Math.round((Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 86_400_000)
+  const days = today === null ? null : Math.round((Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - today) / 86_400_000)
   const exactDate = date.toLocaleDateString('en', { dateStyle: 'long', timeZone: 'UTC' })
-  return <><time dateTime={value} title={exactDate} aria-label={`${label} ${exactDate}`}>{label} {relativeDate.format(days, 'day')}</time>{' · '}</>
+  return <><time dateTime={value} title={exactDate} aria-label={`${label} ${exactDate}`}>{label} {days === null ? exactDate : relativeDate.format(days, 'day')}</time>{' · '}</>
 }
 
 export function NotesIndex() {
-  const [params] = useSearchParams()
-  const navigate = useNavigate()
+  const ready = useHydrated()
+  const [params, navigate] = useQueryString()
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const query = params.get('q') ?? ''
   const topic = params.get('topic') ?? ''
@@ -54,7 +59,7 @@ export function NotesIndex() {
       observer.disconnect()
       const next = new URLSearchParams(search)
       next.set('page', String(page + 1))
-      navigate(`/thinking?${next}`, { replace: true, state: { preserveScroll: true } })
+      navigate(`/thinking?${next}`, { replace: true })
     }, { rootMargin: '300px' })
     observer.observe(target)
     return () => observer.disconnect()
@@ -69,43 +74,50 @@ export function NotesIndex() {
     }
     return `/thinking${next.size ? `?${next}` : ''}#notes`
   }
-  const update = (changes: Record<string, string>, replace = false) => navigate(href(changes), { replace, state: { preserveScroll: true } })
+  const update = (changes: Record<string, string>, replace = false) => navigate(href(changes), { replace })
 
   return (
-    <section id="notes" aria-label="Writing collection" className="site-content-gutter writing-index">
+    <section id="notes" aria-label="Writing collection" onClick={event => {
+      const link = (event.target as HTMLElement).closest('a')
+      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || link.hasAttribute('download')) return
+      const url = new URL(link.href)
+      if (url.origin !== window.location.origin || url.pathname !== '/thinking') return
+      event.preventDefault()
+      navigate(link.href)
+    }} className="site-content-gutter writing-index">
       <div className="writing-search">
-        <TextInput className="writing-control" label="Search writing" isLabelHidden placeholder="Search writing" size="lg" width="100%" startIcon={<Icon icon="search" size="sm" color="secondary" />} value={query} onChange={value => update({ q: value }, true)} />
+        <TextInput className="writing-control" label="Search writing" isDisabled={!ready} isLabelHidden placeholder="Search writing" size="lg" width="100%" startIcon={<Icon icon="search" size="sm" color="secondary" />} value={query} onChange={value => update({ q: value }, true)} />
       </div>
       <div className="writing-toolbar" id="writing-results">
         <nav aria-label="Writing format" className="writing-formats">
           {[['', 'All'], ['articles', 'Articles'], ['notes', 'Notes']].map(([value, label]) => (
-            <Link key={value} to={href({ kind: value, topic: '' })} state={{ preserveScroll: true }} aria-current={kind === value ? 'page' : undefined}>
+            <a key={value} href={href({ kind: value, topic: '' })} aria-current={kind === value ? 'page' : undefined}>
               {label}
-            </Link>
+            </a>
           ))}
         </nav>
         <div className="writing-topic-picker">
-          <Selector className="writing-control" label="Topic" isLabelHidden size="lg" options={topicOptions} value={topic === 'articles' ? '' : topic} onChange={value => update({ topic: value, kind: '' })} hasSearch searchPlaceholder="Find a topic" width="100%" />
+          <Selector className="writing-control" label="Topic" isDisabled={!ready} isLabelHidden size="lg" options={topicOptions} value={topic === 'articles' ? '' : topic} onChange={value => update({ topic: value, kind: '' })} hasSearch searchPlaceholder="Find a topic" width="100%" />
         </div>
         <p role="status">{visible.length} {visible.length === 1 ? 'result' : 'results'}</p>
-        <div className="writing-sort"><Selector className="writing-control" label="Sort writing" isLabelHidden size="lg" width="100%" options={[{ value: 'newest', label: 'Newest first' }, { value: 'title', label: 'Title A–Z' }]} value={sort} onChange={value => update({ sort: value === 'newest' ? '' : value })} /></div>
+        <div className="writing-sort"><Selector className="writing-control" label="Sort writing" isDisabled={!ready} isLabelHidden size="lg" width="100%" options={[{ value: 'newest', label: 'Newest first' }, { value: 'title', label: 'Title A–Z' }]} value={sort} onChange={value => update({ sort: value === 'newest' ? '' : value })} /></div>
       </div>
       {isFiltered && <div className="writing-filter-summary">
         <span>{[kind === 'articles' ? 'Articles' : kind === 'notes' ? 'Notes' : '', topic && topic !== 'articles' ? topicLabel(topic) : '', query ? `“${query}”` : ''].filter(Boolean).join(' / ')}</span>
-        <Link to="/thinking#notes" state={{ preserveScroll: true }}>Clear filters</Link>
+        <a href="/thinking#notes">Clear filters</a>
       </div>}
       <ul className="writing-results">
         {visible.slice(0, shown).map(entry => <li key={entry.href}>
           <div>
-            <h2><RouterLink href={entry.href}>{entry.title}</RouterLink></h2>
+            <h2><a href={entry.href}>{entry.title}</a></h2>
             {entry.description && <p>{entry.description}</p>}
             <span className="writing-entry-meta"><WritingDate value={entry.updated ?? entry.date} label={entry.kind === 'notes' ? 'Tended' : 'Published'} />{[entry.kind === 'articles' ? 'Article' : 'Note', entry.readingTime].filter(Boolean).join(' · ')}</span>
           </div>
         </li>)}
       </ul>
-      {visible.length === 0 && <div className="writing-empty"><p>No writing matches these filters.</p><p>Try a broader search, choose another topic, or <Link to="/thinking#notes" state={{ preserveScroll: true }}>browse all writing</Link>.</p></div>}
+      {visible.length === 0 && <div className="writing-empty"><p>No writing matches these filters.</p><p>Try a broader search, choose another topic, or <a href="/thinking#notes">browse all writing</a>.</p></div>}
       {page < pageCount && <div ref={loadMoreRef} className="writing-load-more">
-        <Link to={href({ page: String(page + 1) }).replace('#notes', '')} replace state={{ preserveScroll: true }}>Load more</Link>
+        <a href={href({ page: String(page + 1) }).replace('#notes', '')}>Load more</a>
       </div>}
     </section>
   )

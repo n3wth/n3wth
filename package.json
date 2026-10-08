@@ -21,13 +21,11 @@
     "social": "node scripts/assets/social-card.mjs",
     "dev": "npm run dev -w @n3wth/portfolio",
     "dev:ui": "node scripts/ui/dev-ui.mjs",
-    "dev:skills": "npm run dev -w @n3wth/skills",
     "build": "node scripts/workspace/build.mjs",
     "build:cloudflare": "node scripts/workspace/build.mjs --cloudflare",
     "build:garden": "node scripts/workspace/build.mjs --workspace @n3wth/garden",
     "build:portfolio": "node scripts/workspace/build.mjs --workspace @n3wth/portfolio",
     "build:r3": "node scripts/workspace/build.mjs --workspace @n3wth/r3-web",
-    "build:skills": "node scripts/workspace/build.mjs --workspace @n3wth/skills",
     "build:ui": "node scripts/workspace/build.mjs --workspace @n3wth/ui-docs",
     "build:ui-docs": "node scripts/workspace/build.mjs --workspace @n3wth/ui-docs",
     "check": "node --test scripts/content/article-audit.test.mjs scripts/workspace/affected.test.mjs scripts/workspace/create-site.test.mjs scripts/workspace/check-invariants.test.mjs scripts/workspace/build.test.mjs scripts/content/check-built-metadata.test.mjs scripts/cloudflare/cloudflare-preview.test.mjs scripts/cloudflare/cloudflare-preview-config.test.mjs scripts/cloudflare/deploy-apps.test.mjs && node scripts/workspace/check-invariants.mjs && node scripts/workspace/affected.mjs --all && npm run test:newsletter && npm run check:design && npm run check:metadata",
@@ -60,14 +58,8 @@
   },
   "allowScripts": {
     "core-js@3.50.0": true,
-    "esbuild@0.27.0": true,
     "esbuild@0.28.1": true,
-    "esbuild@0.25.4": true,
-    "msw@2.15.0": true,
-    "unrs-resolver@1.12.2": true,
-    "workerd@1.20260917.1": true,
-    "@posthog/cli@0.5.30": true,
-    "@posthog/cli@0.14.1": true,
-    "@sentry/cli@2.58.6": true
+    "fsevents@2.3.3": true,
+    "workerd@1.20261006.1": true
   }
 }

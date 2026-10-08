@@ -4,9 +4,9 @@ Before UI changes, read [DESIGN.md](DESIGN.md) and [STYLE.md](STYLE.md). They de
 
 Use Node 24 and npm 11.19.1, then run npm ci at the repository root. npm 10 has a peer-resolution failure on this workspace. The root package-lock.json is the only application/library lockfile. Use feature branches.
 
-- apps/portfolio: n3wth.com. Read its AGENTS.md before editing.
+- apps/portfolio: n3wth.com and /docs. Astro builds pages, Starlight owns docs, React islands retain interactions. Read its AGENTS.md before editing.
 - apps/ui: local redirect fixture for the retired UI site; production uses Cloudflare zone rules.
-- apps/skills: skills.n3wth.com. Read its AGENTS.md before editing. It consumes the workspace UI package alongside the other sites.
+- apps/skills: static legacy download compatibility only, not an npm workspace. Do not restore the retired app.
 - apps/garden: production redirect Worker. Read its AGENTS.md before editing.
 - apps/r3: local redirect fixture and independent search service. Read its AGENTS.md before editing. Production site redirects use Cloudflare zone rules.
 - packages/ui: public @n3wth/ui library. Read its AGENTS.md before editing.
@@ -22,7 +22,7 @@ Commands: npm run dev, npm run dev:ui, npm run build, npm run build:portfolio an
 
 For shared changes, identify affected consumers and verify them at mobile and desktop widths. Check both themes where supported, initial theme paint, scroll reset on page navigation, anchor links, browser Back, code overflow and footer consistency. Preserve useful product actions; remove redundant navigation only where appropriate. Keep public metadata and sitemaps correct. Never report production complete from a local build alone.
 
-Do not redesign the portfolio scene/navigation or upgrade frameworks as part of migration. Preserve routes, redirects, metadata, assets and API behavior. The original feature/contact-form checkout contains unfinished work and must not be reset.
+The approved architecture consolidates portfolio and docs under Astro and Starlight. Preserve useful public routes, redirects, metadata, assets and retained API behavior. Skills product features are retired. The original feature/contact-form checkout contains unfinished work and must not be reset.
 
 Deployment cutover and rollback are separate from source preparation. See docs/workspace/architecture.md and the Linear Personal sites workspace project. Keep existing projects and domains and verify previews before any production root changes.
 
@@ -30,10 +30,9 @@ Deployment cutover and rollback are separate from source preparation. See docs/w
 
 Cloudflare builds use `npm run build:cloudflare`, with optional repeated
 `--workspace @n3wth/<app>` arguments. This reuses the dependency-aware build
-script. Each app's `wrangler.jsonc` targets production; preview configs are
-generated with isolated identities and bindings. Do not copy generated Vinext
-output between build environments. See the deployment runbook before deploying.
+script. Active apps' `wrangler.jsonc` files target production; local redirect
+fixtures do not. Preview configs use isolated identities and bindings. See the deployment runbook before deploying.
 
-All six sites use Cloudflare. Vercel is retired: there is no `vercel.json` in any app and the site generator creates none. The six Vercel projects stay disconnected from GitHub so pushes and pull requests do not create Vercel deployments or status checks. Their domains and deployment history are kept for reference only, with no path back without redoing the integration from scratch; do not reconnect Git as part of normal work.
+The content site and legacy redirects use Cloudflare. Vercel is retired: there is no `vercel.json` in any app and the site generator creates none. The six Vercel projects stay disconnected from GitHub so pushes and pull requests do not create Vercel deployments or status checks. Their domains and deployment history are kept for reference only, with no path back without redoing the integration from scratch; do not reconnect Git as part of normal work.
 
 Keep GitHub CI and Cloudflare workflows enabled and wait for passing checks before merging. The current branch ruleset does not require CI or pull requests. Verify the target environment, successful deployment, and live behavior before reporting a release complete. Follow [the deployment runbook](docs/workspace/deployment.md), including its rollback guidance.

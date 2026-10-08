@@ -19,6 +19,7 @@ dist-ssr
 .codex/
 .gemini/
 .studio/
+.impeccable/hook.cache.json
 /opencode.json
 /squirrel.toml
 
@@ -58,6 +59,7 @@ test-results/
 .wrangler/
 .open-next/
 .vinext/
+.astro/
 apps/portfolio/public/writing/
 apps/portfolio/src/data/garden-index.json
 apps/portfolio/src/data/garden-search.json

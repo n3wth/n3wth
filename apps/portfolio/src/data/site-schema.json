@@ -1,0 +1,89 @@
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://n3wth.com/#website",
+    "url": "https://n3wth.com/",
+    "name": "Oliver Newth",
+    "alternateName": "n3wth.com",
+    "description": "AI product lead at Google. Previously at Covariant, Meta, and Microsoft. Independent AI projects and large-scale light art.",
+    "publisher": {
+      "@id": "https://n3wth.com/#organization"
+    },
+    "inLanguage": "en-US"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://n3wth.com/#organization",
+    "name": "n3wth",
+    "alternateName": "Oliver Newth",
+    "url": "https://n3wth.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://n3wth.com/icon-192.png"
+    },
+    "email": "hey@n3wth.com",
+    "founder": {
+      "@id": "https://n3wth.com/#person"
+    },
+    "sameAs": [
+      "https://n3wth.com/thinking",
+      "https://n3wth.com/projects/ui",
+      "https://n3wth.com/projects/r3",
+      "https://hop.flights",
+      "https://lunchmoney.sh"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://n3wth.com/#person",
+    "name": "Oliver Newth",
+    "url": "https://n3wth.com",
+    "jobTitle": "AI Product Lead",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Google",
+      "url": "https://www.google.com/"
+    },
+    "description": "AI product lead at Google. Previously at Covariant, Meta, and Microsoft. Independent AI projects and large-scale light art.",
+    "sameAs": [
+      "https://github.com/n3wth",
+      "https://www.linkedin.com/in/n3wth",
+      "https://contra.com/olivernewth",
+      "https://peerlist.io/newth",
+      "https://www.instagram.com/lightsbyoliver/",
+      "https://glama.ai/mcp/servers/n3wth/r3",
+      "https://n3wth.com/thinking",
+      "https://n3wth.com/projects/ui"
+    ],
+    "knowsAbout": [
+      "Artificial Intelligence",
+      "AI Agents",
+      "Product Management",
+      "Design Systems",
+      "Trust and Safety",
+      "Machine Learning",
+      "Light Art"
+    ],
+    "email": "hey@n3wth.com",
+    "image": "https://n3wth.com/og-image.png",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "San Francisco",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    },
+    "alumniOf": [
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "Massachusetts Institute of Technology"
+      },
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "University of Warwick"
+      }
+    ]
+  }
+]

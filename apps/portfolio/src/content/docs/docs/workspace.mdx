@@ -1,0 +1,88 @@
+---
+title: "Workspace Setup"
+sidebar:
+  label: "Workspace"
+  order: 1
+description: "Clone the n3wth monorepo, install dependencies, find the source for each product, and validate your change before opening a pull request."
+---
+
+
+Use this guide to contribute to the products. You do not need to clone this
+workspace to install a product in another application.
+
+## Prerequisites
+
+- Node.js **24.x**.
+- npm **11.19.1**, matching the root `packageManager` field.
+- Git and a feature branch.
+
+```bash
+git clone https://github.com/n3wth/n3wth.git
+cd n3wth
+git switch -c docs/my-change
+npm install --global npm@11.19.1
+npm ci
+```
+
+Run installation at the repository root. The root lockfile owns application
+and shared-library dependencies. Do not fix a workspace resolution problem by
+creating an app-local lockfile or installing another copy of UI.
+
+## Find the right source
+
+| Path | Responsibility | Start or validate |
+| --- | --- | --- |
+| [packages/ui](https://github.com/n3wth/n3wth/tree/HEAD/packages/ui) | Public `@n3wth/ui` package | `npm run check -w @n3wth/ui` |
+| [packages/site-config](https://github.com/n3wth/n3wth/tree/HEAD/packages/site-config) | Private shared origins and metadata helpers | `npm run check -w @n3wth/site-config` |
+| [apps/portfolio/src/content/docs](https://github.com/n3wth/n3wth/tree/HEAD/apps/portfolio/src/content/docs) | This Starlight documentation site | `npm run dev` |
+
+The portfolio shares its Astro build with this documentation. Its
+public content is not an installable developer product. r3's core server,
+Redis tests, and package release workflow stay in [n3wth/r3](https://github.com/n3wth/r3).
+
+## Build from the root
+
+Root build commands build shared dependencies before their consumers:
+
+```bash
+npm run build:portfolio
+```
+
+Use `npm run build` for all applications. Use `npm run check` for the complete
+workspace validation. `npm run check:metadata` expects build output. Run a
+build first, or it will report missing files.
+
+Applications import UI. UI owns its Astryx dependency and theme. Applications
+must not import Astryx directly. Shared packages must not import applications.
+Read the root and relevant package `AGENTS.md` before you edit.
+
+## Verify a change
+
+1. Run the relevant package or app check while iterating.
+2. Build the affected app through its root build command.
+3. Run the complete checks required for shared changes. For route, layout, or
+   packaging changes, also run the relevant browser tests.
+4. Push a feature branch and wait for GitHub **Site CI** before merging.
+
+UI changes can affect the portfolio and remaining sites. Check both supported themes, mobile and desktop layouts, first paint, code overflow, anchor links, and browser Back. Pure edits to this site use the [documentation checks](/docs/publishing#check-for-broken-links).
+
+## Releases and deployments
+
+`@n3wth/ui` releases from 2.0.0 publish from this monorepo through
+`publish-ui.yml` on a `ui-v*` tag. Bump the version and add a changelog entry
+for consumer-facing library changes. Do not run `npm publish` locally.
+Documentation-only changes do not need a package release.
+
+The portfolio and documentation deploy together through Cloudflare workflows. Verify the deployment and the hosted result at [n3wth.com/docs](https://n3wth.com/docs) after merging.
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| npm fails during peer resolution | Confirm `node --version` is 24.x and `npm --version` is 11.19.1; install from the root |
+| An app cannot resolve UI output | Use the root app build command so shared packages build first |
+| Unexpected duplicate React/UI behavior | Check workspace resolution with `npm ls @n3wth/ui react`; avoid nested registry copies |
+| Metadata validation reports missing HTML | Build the relevant applications before checking generated metadata |
+| r3 runtime tests are missing here | Run core development and tests in [n3wth/r3](https://github.com/n3wth/r3) |
+
+Source: [workspace instructions](https://github.com/n3wth/n3wth/blob/HEAD/AGENTS.md), [build scripts](https://github.com/n3wth/n3wth/blob/HEAD/package.json), and [UI release process](https://github.com/n3wth/n3wth/blob/HEAD/docs/workspace/npm-release.md).

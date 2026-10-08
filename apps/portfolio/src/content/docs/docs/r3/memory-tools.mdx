@@ -1,0 +1,266 @@
+---
+title: "Memory Tools Reference"
+sidebar:
+  label: "Memory Tools"
+  order: 23
+description: "Reference for the 8 r3 MCP memory tools: add, get, update, delete, search, list, deduplicate, and import."
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components'
+
+
+r3 exposes memory operations as MCP tools. This page documents the 8 always-available memory tools. See [Cache Tools](/docs/r3/cache-tools) for cache and sync, and [Knowledge Graph](/docs/r3/knowledge-graph) for enhanced-mode entity and graph tools.
+
+## add_memory
+
+Store a new memory with automatic deduplication and indexing. Use for persisting facts, preferences, or conversation context. Prefer this over `update_memory` for new content.
+
+#### `content`
+
+`string`
+
+Plain text content to store. Use instead of `messages` for simple facts.
+
+#### `messages`
+
+`array`
+
+Conversation messages to store. Use instead of `content` for multi-turn context. Each item needs `role` (`user`, `assistant`, or `system`) and `content`.
+
+#### `user_id`
+
+`string`
+
+User namespace for memory isolation. Default is the value of `MEM0_USER_ID`.
+
+#### `metadata`
+
+`object`
+
+Key-value pairs for categorization. Searchable via `search_memory`.
+
+#### `priority`
+
+`string`
+
+Cache priority: `high` (L1, 24h TTL), `medium` (standard), or `low` (L2, 7d TTL). Default: `medium`.
+
+#### `async`
+
+`boolean`
+
+`true` returns immediately and indexes in the background. `false` blocks until complete. Default: `true`.
+
+#### `skip_duplicate_check`
+
+`boolean`
+
+Bypass duplicate detection. Use only when intentionally storing similar content. Default: `false`.
+
+**Returns:** `Saved` or `Already saved`.
+
+## get_memory
+
+Retrieve a single memory by its unique ID. Use when you have a specific `memory_id` from prior search or list results.
+
+#### `memory_id`
+
+`string` · Required
+
+Unique identifier of the memory to retrieve.
+
+#### `user_id`
+
+`string`
+
+User namespace. Must match the `user_id` used when the memory was created.
+
+**Returns:** Memory object `{id, content, user_id, metadata}` or `null` if not found.
+
+## update_memory
+
+Modify an existing memory's content or metadata. Use for corrections or adding context. Fails if `memory_id` is not found.
+
+#### `memory_id`
+
+`string` · Required
+
+Unique identifier of the memory to update.
+
+#### `content`
+
+`string`
+
+New content to replace existing. Omit to keep current content unchanged.
+
+#### `metadata`
+
+`object`
+
+Metadata fields to merge. Existing fields not specified are preserved.
+
+#### `user_id`
+
+`string`
+
+User namespace. Must match the original.
+
+**Returns:** Updated memory object.
+
+## delete_memory
+
+Permanently remove a memory by ID. This is irreversible and removes the record from storage, cache, and search index.
+
+#### `memory_id`
+
+`string` · Required
+
+Unique identifier of the memory to delete.
+
+**Returns:** Confirmation text.
+
+## search_memory
+
+Find memories matching a natural language query using hybrid semantic and keyword search. This is the primary retrieval tool for content-based lookup.
+
+#### `query`
+
+`string` · Required
+
+Natural language search query. Supports keywords, phrases, or questions.
+
+#### `user_id`
+
+`string`
+
+User namespace to search within. Default is `MEM0_USER_ID`.
+
+#### `limit`
+
+`number`
+
+Maximum results to return. Range: 1-100. Default: 10.
+
+#### `prefer_cache`
+
+`boolean`
+
+`true` checks cache first, then falls back to storage. `false` queries storage directly. Default: `true`.
+
+**Returns:** Array of memory objects, or `No memories found`.
+
+## get_all_memories
+
+List all memories for a user with pagination. Use for browsing or bulk operations. For content search, prefer `search_memory`.
+
+#### `user_id`
+
+`string`
+
+User namespace to list. Default is `MEM0_USER_ID`.
+
+#### `limit`
+
+`number`
+
+Maximum memories per page. Range: 1-500. Default: 100.
+
+#### `offset`
+
+`number`
+
+Number of memories to skip. Use for pagination. Default: 0.
+
+#### `include_cache_stats`
+
+`boolean`
+
+Append cache statistics to the response. Default: `true`.
+
+#### `prefer_cache`
+
+`boolean`
+
+`true` returns cached memories (faster). `false` fetches from storage (fresher). Default: `true`.
+
+**Returns:** `{total, limit, offset, returned, hasMore, source, memories[]}`.
+
+## deduplicate_memories
+
+Detect and optionally remove duplicate memories using content similarity. Run with `dry_run: true` first to preview.
+
+#### `user_id`
+
+`string`
+
+User namespace to deduplicate. Default is `MEM0_USER_ID`.
+
+#### `similarity_threshold`
+
+`number`
+
+Minimum similarity (0-1) to consider as duplicate. Range: 0.5-1.0. Default: 0.85.
+
+#### `dry_run`
+
+`boolean`
+
+`true` previews duplicates without deletion. `false` actually deletes duplicates. Default: `true`.
+
+**Returns:** Summary with duplicate groups.
+
+## import_memories
+
+Bulk import memories from external sources. Supports Mem0 API export or local JSON files. Processes in batches with duplicate detection.
+
+#### `source`
+
+`string` · Required
+
+Import source: `mem0_api` or `json_file`.
+
+#### `api_key`
+
+`string`
+
+Mem0 API token. Required when `source` is `mem0_api`.
+
+#### `file_path`
+
+`string`
+
+Absolute path to JSON file. Required when `source` is `json_file`. Must be an array of memory objects or `{memories: [...]}`.
+
+#### `user_id`
+
+`string`
+
+User namespace for imported memories. Default is `MEM0_USER_ID`.
+
+#### `batch_size`
+
+`number`
+
+Memories per batch. Range: 10-200. Default: 50.
+
+#### `priority`
+
+`string`
+
+Cache priority for all imported memories: `high`, `medium`, or `low`. Default: `high`.
+
+#### `skip_duplicates`
+
+`boolean`
+
+Check each memory for duplicates before import. Default: `true`.
+
+**Returns:** Summary with imported, skipped, and failed counts.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Cache Tools" href="/docs/r3/cache-tools" description={"Inspect cache health, optimize hit rates, and check sync status."} />
+
+  <LinkCard title="Knowledge Graph" href="/docs/r3/knowledge-graph" description={"Extract entities and traverse relationships in enhanced mode."} />
+</CardGrid>

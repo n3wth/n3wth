@@ -1,0 +1,9 @@
+---
+import Head from '@astrojs/starlight/components/Head.astro'
+
+const { entry } = Astro.locals.starlightRoute
+---
+
+<Head />
+<meta name="twitter:title" content={entry.data.title} />
+<meta name="twitter:description" content={entry.data.description} />

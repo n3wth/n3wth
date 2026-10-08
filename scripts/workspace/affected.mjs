@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { resolve, posix } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
@@ -109,7 +109,7 @@ export function readWorkspaces(root) {
   return patterns.flatMap(pattern => {
     if (!pattern.endsWith('/*')) return [pattern]
     return readdirSync(resolve(root, pattern.slice(0, -2)), { withFileTypes: true })
-      .filter(entry => entry.isDirectory())
+      .filter(entry => entry.isDirectory() && existsSync(resolve(root, pattern.slice(0, -2), entry.name, 'package.json')))
       .map(entry => `${pattern.slice(0, -1)}${entry.name}`)
   }).map(path => ({ ...JSON.parse(readFileSync(resolve(root, path, 'package.json'), 'utf8')), path }))
 }

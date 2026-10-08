@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import type { ReactNode } from 'react'
 import { Blockquote } from '@n3wth/ui/primitives'
 import { Beat } from '../../kit/Beat'
-import { RouterLink } from '../../../RouterLink'
 import { gsap, useGSAP, ScrollTrigger, SplitText } from '../../../../lib/scroll'
 import { Cameo } from './Cameo'
 import { ChapterRail } from './ChapterRail'
@@ -529,12 +528,12 @@ export default function FieldGuide() {
           build anyway, taken seriously enough to become a place someone else can walk through.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <RouterLink href="/" className="btn">
+          <a href="/" className="btn">
             Walk the field
-          </RouterLink>
-          <RouterLink href="/thinking/night-field" className="btn">
+          </a>
+          <a href="/thinking/night-field" className="btn">
             What broke building it
-          </RouterLink>
+          </a>
         </div>
       </div>
 

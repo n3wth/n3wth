@@ -1,31 +1,34 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { renderToString } from 'react-dom/server'
 import { Footer as PortfolioFooter } from '../../apps/portfolio/src/components/Footer'
-import { Footer as SkillsFooter } from '../../apps/skills/src/components/Footer'
 
 const { capture, trackSignup } = vi.hoisted(() => ({ capture: vi.fn(), trackSignup: vi.fn() }))
 vi.mock('@n3wth/site-config/analytics', () => ({ captureNewsletterSubscribed: capture }))
 vi.mock('../../apps/portfolio/src/lib/analytics', () => ({ trackSignup, trackOutbound: vi.fn() }))
-vi.mock('next/navigation', () => ({ usePathname: () => '/notes' }))
 vi.mock('posthog-js', () => ({ default: {} }))
 
 beforeEach(() => {
   vi.stubEnv('VITE_SUBSCRIBE_ENDPOINT', 'http://localhost/api/subscribe')
-  vi.stubEnv('NEXT_PUBLIC_SUBSCRIBE_ENDPOINT', 'http://localhost/api/subscribe')
   vi.clearAllMocks()
 })
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
+it('disables server-rendered signup until its submit handler is hydrated', () => {
+  const html = new DOMParser().parseFromString(renderToString(<PortfolioFooter />), 'text/html')
+  expect(html.querySelector('input[type="email"]')?.hasAttribute('disabled')).toBe(true)
+  expect(html.querySelector('button[type="submit"]')?.hasAttribute('disabled')).toBe(true)
+})
+
 for (const [source, Form] of [
-  ['home', PortfolioFooter], ['skills', SkillsFooter],
+  ['home', PortfolioFooter],
 ] as const) {
   describe(`${source} newsletter form`, () => {
     it('waits for confirmed API success before showing success or capturing analytics', async () => {
       let complete!: (value: Response) => void
       const request = vi.fn<typeof fetch>(() => new Promise<Response>(resolve => { complete = resolve }))
       vi.stubGlobal('fetch', request)
-      render(<MemoryRouter><Form /></MemoryRouter>)
+      render(<Form />)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: 'reader@example.com' } })
       fireEvent.submit(screen.getByRole('button', { name: 'Subscribe' }).closest('form')!)
       expect(screen.getByRole('button', { name: 'Subscribe' })).toBeDisabled()
@@ -35,8 +38,7 @@ for (const [source, Form] of [
       expect(JSON.parse(request.mock.calls[0][1]!.body as string)).toEqual({ address: 'reader@example.com', source })
       await act(async () => { complete(Response.json({ ok: true })) })
       expect(screen.getByText('Thanks. You are on the list.')).toBeInTheDocument()
-      if (source === 'home') expect(trackSignup).toHaveBeenCalledOnce()
-      else expect(capture).toHaveBeenCalledWith({}, source)
+      expect(trackSignup).toHaveBeenCalledOnce()
     })
 
     it('preserves suppression feedback, retains the address and supports retry', async () => {
@@ -44,7 +46,7 @@ for (const [source, Form] of [
         .mockResolvedValueOnce(Response.json({ ok: false, code: 'subscription_unavailable' }, { status: 409 }))
         .mockResolvedValueOnce(Response.json({ ok: true }))
       vi.stubGlobal('fetch', request)
-      render(<MemoryRouter><Form /></MemoryRouter>)
+      render(<Form />)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: 'reader@example.com' } })
       await act(async () => { fireEvent.submit(screen.getByRole('button', { name: 'Subscribe' }).closest('form')!) })
       expect(screen.getByText('We could not subscribe this address. Contact hey@n3wth.com for help.')).toBeInTheDocument()

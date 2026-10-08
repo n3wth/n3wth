@@ -1,0 +1,18 @@
+---
+import { readFile } from 'node:fs/promises'
+import Layout from '../../layouts/SiteLayout.astro'
+import Article from '../../screens/ThinkingPiece'
+import Note from '../../screens/ThinkingNote'
+import { registeredPieces } from '../../components/thinking/registry'
+import notes from '../../data/writing-index.json'
+export async function getStaticPaths() {
+  const articles = registeredPieces.map(({ meta }) => ({ params: { slug: meta.id }, props: { article: meta } }))
+  const pages = await Promise.all(notes.map(async entry => ({ params: { slug: entry.slug }, props: { note: JSON.parse(await readFile('public/writing/notes/' + entry.slug + '.json', 'utf8')) } })))
+  return [...articles, ...pages]
+}
+const { article, note } = Astro.props
+const meta = article ? { path: 'thinking/' + article.id, title: article.title + ' — Oliver Newth', description: article.dek, ogImage: '/og/thinking/' + article.id + '.png', publishedTime: article.date } : { path: note.href.slice(1), title: note.title + ' — Oliver Newth', description: note.description || `${note.title}. A working note by Oliver Newth.`, ogImage: '/og/thinking.png', publishedTime: note.date, modifiedTime: note.updated }
+---
+<Layout {...meta}>
+  {article ? <Article slug={article.id} client:load /> : <Note note={note} client:load />}
+</Layout>

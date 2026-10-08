@@ -1,17 +1,7 @@
-# Skills for Antigravity CLI
+# Retired Skills compatibility files
 
-Markdown instructions for Antigravity CLI (formerly Gemini CLI). Browse the catalog at https://skills.n3wth.com.
+The Skills application is retired. There is no workspace, runtime, catalog, or account service here.
 
-```bash
-curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini
-```
+`skills/` preserves published raw GitHub download URLs and the source path used by existing installer copies. The single legacy installer source lives at `apps/portfolio/public/skills/install.sh` and is served at `https://n3wth.com/skills/install.sh`. Keep these static files for compatibility.
 
-Install a selected skill by appending its ID:
-
-```bash
-curl -fsSL https://skills.n3wth.com/install.sh | bash -s -- gemini gsap-animations
-```
-
-Downloads install under `~/.gemini/skills` and preserve existing files. Catalog entries without downloadable content are marked unavailable.
-
-Source lives in `apps/skills` in https://github.com/n3wth/n3wth. Run `npm ci` at the workspace root, then `npm run check --workspace @n3wth/skills`.
+The installer is a legacy download. Its old public URL must redirect to the same shell file on n3wth.com during cutover. Production data backups live outside the repository.

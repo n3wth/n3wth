@@ -1,6 +1,19 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { affectedWorkspaces, affectsUiPackage } from './affected.mjs'
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { affectedWorkspaces, affectsUiPackage, readWorkspaces } from './affected.mjs'
+
+test('static legacy downloads do not become workspaces', t => {
+  const root = mkdtempSync(join(tmpdir(), 'static-workspace-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  mkdirSync(join(root, 'apps', 'downloads'), { recursive: true })
+  mkdirSync(join(root, 'apps', 'site'), { recursive: true })
+  writeFileSync(join(root, 'package.json'), JSON.stringify({ workspaces: ['apps/*'] }))
+  writeFileSync(join(root, 'apps', 'site', 'package.json'), JSON.stringify({ name: '@example/site' }))
+  assert.deepEqual(readWorkspaces(root).map(app => app.name), ['@example/site'])
+})
 
 test('UI package validation skips app-only edits without skipping its build prerequisite', () => {
   for (const file of ['apps/portfolio/src/pages/Thinking.tsx', 'apps/portfolio/src/notes.css', 'tests/browser/portfolio.spec.ts', 'docs/workspace/deployment.md', 'DESIGN.md']) {

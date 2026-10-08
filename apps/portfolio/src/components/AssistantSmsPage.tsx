@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react'
 import { Button } from '@n3wth/ui/primitives'
 import { SiteSection, SiteHeading, SiteText, SiteDocSection, SiteDocList } from '@n3wth/ui/site'
-import { usePageMeta, buildWebPageSchema } from '../hooks/usePageMeta'
-import { RouterLink } from './RouterLink'
 
 export interface AssistantSmsLine {
   /** Assistant service name, e.g. "Elsa". */
@@ -29,31 +27,9 @@ const FEATURES = [
 
 const strong = (children: ReactNode) => <strong style={{ color: 'var(--ink)' }}>{children}</strong>
 
-function assistantSmsMeta(line: AssistantSmsLine) {
-  return {
-    title: `${line.name} · SMS Messaging Consent`,
-    description: `SMS messaging consent for ${line.name}, Oliver Grosvenor-Newth's personal AI assistant on n3wth.com at ${line.display}.`,
-  }
-}
-
 export default function AssistantSmsPage({ line }: { line: AssistantSmsLine }) {
   const { name, display } = line
   const sms = `sms:${line.number}`
-  const url = `https://n3wth.com/${line.slug}`
-  const { title, description } = assistantSmsMeta(line)
-
-  usePageMeta(title, description, {
-    ogImage: '/og-image.png',
-    jsonLd: buildWebPageSchema({
-      url,
-      title,
-      description,
-      breadcrumbs: [
-        { name: 'Home', url: 'https://n3wth.com/' },
-        { name: `${name} SMS Consent`, url },
-      ],
-    }),
-  })
 
   const features = [
     ...FEATURES,
@@ -206,13 +182,13 @@ export default function AssistantSmsPage({ line }: { line: AssistantSmsLine }) {
             (n3wth.com / Oliver Grosvenor-Newth, sole proprietor). Message frequency varies. Message
             and data rates may apply. Reply STOP to opt out. Consent is not a condition of purchase.
             Reply HELP for help. See{' '}
-            <RouterLink href="/privacy" className="link-underline">
+            <a href="/privacy" className="link-underline">
               Privacy Policy
-            </RouterLink>{' '}
+            </a>{' '}
             and{' '}
-            <RouterLink href="/terms" className="link-underline">
+            <a href="/terms" className="link-underline">
               Terms of Service
-            </RouterLink>
+            </a>
             .
           </SiteText>
         </SiteDocSection>
@@ -222,13 +198,13 @@ export default function AssistantSmsPage({ line }: { line: AssistantSmsLine }) {
             Your phone number is used only to deliver {name} / n3wth assistant-related SMS and to
             operate conversations you start. We do {strong('not')} sell or share mobile numbers with
             third parties or affiliates for their marketing. See the full{' '}
-            <RouterLink href="/privacy" className="link-underline">
+            <a href="/privacy" className="link-underline">
               Privacy Policy
-            </RouterLink>
+            </a>
             .{' '}
-            <RouterLink href="/terms" className="link-underline">
+            <a href="/terms" className="link-underline">
               Terms of Service
-            </RouterLink>
+            </a>
             .
           </SiteText>
         </SiteDocSection>

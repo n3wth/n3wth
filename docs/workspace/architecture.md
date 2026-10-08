@@ -1,54 +1,23 @@
-# Personal sites workspace decision
+# Workspace architecture
 
-Directory update (October 2026): current source paths are `apps/ui` and `apps/r3`. Older paths below describe historical snapshots; npm workspace and deployed preview names remain unchanged.
+The content site is `n3wth.com`, including documentation at `/docs`. `apps/portfolio` uses Astro for static pages, Starlight for documentation, and React islands for existing interactive experiences. Its Cloudflare Worker owns the retained APIs and serves built assets.
 
-Current status (October 2026): Portfolio and Skills render pages. Garden, r3 and UI are redirect Workers. Builds use the dependency graph without the retired Vercel/UI cache. The measurements and pilot decisions below are historical; use [deployment.md](deployment.md) for current commands.
+## Ownership
 
+- `apps/portfolio`: portfolio, articles, project pages, docs, assets, and public APIs. Docs content lives under `src/content/docs/docs`.
+- `apps/garden`: compatibility redirects for old Garden URLs. Published article content belongs to portfolio.
+- `apps/r3` and `apps/ui`: local redirect contract fixtures. Live site redirects are Cloudflare zone rules. The independent r3 search service remains separate until its consumers are verified retired.
+- `apps/skills`: static legacy installer and raw skill downloads only. It has no package manifest or application runtime.
+- `packages/ui`: public `@n3wth/ui` library. This repository remains its npm publishing authority through `publish-ui.yml` and `ui-v*` tags.
+- `packages/site-config`: public origins and shared contracts without app dependencies or secrets.
+- `docs/workspace`: repository operations and maintenance documentation, not a separate website.
 
-Status: workspace architecture. Per-site production evidence is recorded in the migration documents and Linear.
+Applications may depend on shared packages. Packages must not depend on applications. The root npm lockfile owns dependencies. Node 24 and npm 11.19.1 are required. The dependency-aware build script builds packages before consumers once per run.
 
-Release update: the approved 2.0.0 cutover makes this monorepo the npm release
-source. The publishing restrictions below describe the historical pilot and
-are superseded by [npm-release.md](npm-release.md).
+## Retirements
 
-Design-system update: all six site apps now consume the workspace UI foundation through `@n3wth/ui/site`. The initial visual-preservation and published-version exceptions described below record the migration baseline; the subsequent user-authorized Astryx alignment supersedes those exceptions. See [design-system.md](design-system.md) for current theme ownership, components and new-site creation.
+Skills accounts, comments, voting, analytics, playground and catalog UI are retired. Existing raw GitHub downloads must remain available while published installer copies reference their paths. D1 data and prior Worker versions are preserved outside source preparation for rollback; deleting source does not authorize deleting stored user data.
 
-## Source and package manager
+Mintlify is replaced by Starlight in the source architecture. Production DNS, redirects and integration disconnection are a separate verified cutover. Vercel remains disconnected and is not a deployment target.
 
-Use the existing n3wth/n3wth repository. Retain its history and import the UI library/demo from a recorded n3wth/ui main revision. Keep the source repository and its public package release process active until publishing migration is explicitly validated. Use npm workspaces and Node 24, matching the maintenance baseline. One root lockfile owns the pilot dependency graph; do not introduce another build orchestrator yet.
-
-## Boundaries
-
-- apps/portfolio: existing portfolio application, API functions, public assets and app-specific configs. Name @n3wth/portfolio.
-- apps/ui-docs: UI documentation/demo and its assets and Vite config. Name @n3wth/ui-docs.
-- apps/garden: Garden homepage, notes, content history and search route.
-- apps/skills: Gemini skills website, installer and CLI source.
-- apps/kit: Kit website, registry and preserved CLI source.
-- apps/r3-web: r3 website and documentation. Core runtime remains separate.
-- packages/ui: existing public @n3wth/ui library, version 0.9.2. Preserve exports and public fonts. No visual redesign or component API upgrade.
-- packages/site-config: private @n3wth/site-config package containing canonical public origins only. No environment values, app behavior or framework dependency.
-- Root: lockfile, workspace commands, affected-app CI and maintenance documentation.
-
-Applications can depend on shared packages. Shared packages must not depend on applications. Portfolio only consumes site-config initially; it has no current UI dependency and must retain its custom scene/navigation. UI docs consumes UI and site-config through package imports. Build UI before docs; watch its build during docs development. Resolve dependency asset paths through package resolution so npm hoisting is supported.
-
-## Preservation
-
-Move portfolio files without changing public content, routes, metadata, redirects or assets. Keep the original work/n3wth feature/contact-form checkout untouched. Reapply that unfinished work separately against moved paths. Import UI with a source revision manifest and retain the original repository history externally; do not pretend a snapshot import contains all UI history. Public npm publishing stays with n3wth/ui during the pilot, avoiding two release authorities.
-
-## Deployment
-
-Retain the two Vercel project identities and domains. Stage independent previews before switching root directories to apps/portfolio and apps/ui-docs. Each build runs from the root workspace lockfile. Shared changes rebuild consumers. Preserve portfolio API functions and rewrite/header rules. Production rollback includes the old deployment plus prior root/build/install settings. Do not archive old repositories or switch UI package publishing during the pilot.
-
-## Validation and rollout
-
-Inventory -> boundaries -> workspace pilot -> deployment previews and affected checks in parallel -> production pilot -> individual later migrations -> shared cleanup.
-
-Run existing app/library checks with clean npm ci. Verify package exports using npm pack --dry-run and the docs build as a consumer. Add dependency-selection tests and browser checks for routes, overflow and representative responsive pages. Avoid animation pixel equality. Preserve current framework versions by seeding the workspace lock with current locks and review resolved-version drift before accepting it.
-
-Garden, Skills, Kit and the r3 website follow the validated pilot into separate application workspaces. The r3 core runtime and failing memory tests remain separate. Domains and frameworks remain unchanged. See maintenance.md for source and release ownership after migration.
-
-## Validated dependency adjustment
-
-The original portfolio lock resolved React and React DOM 19.2.3 while UI resolved 19.2.7. Combining both initially produced invalid hook calls through a shared testing library. Align the pilot on UI's existing 19.2.7 patch and retain Vite 7.3.5 and TypeScript 5.9.3. This is a scoped React patch alignment, not a framework major upgrade; verify both applications and library tests on the resulting lockfile.
-
-Generate the combined lock with npm 11.19.1. npm 10.9.8 failed in Arborist peer resolution and did not produce a valid combined tree. The regenerated lock preserves the source direct dependency versions (apart from the explicit React patch alignment); transitive dependencies resolve normally. CI and Vercel installs use the pinned npm version.
+The public r3 runtime remains in `n3wth/r3`; website changes do not publish that package. See [deployment](deployment.md), [maintenance](maintenance.md), and [UI release](npm-release.md).
