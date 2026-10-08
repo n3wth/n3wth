@@ -55,7 +55,7 @@ npm run build    # tsc + vite build (verify before committing)
 
 ## Stack
 
-- **Framework:** React 19 + TypeScript + Vite 7
+- **Framework:** React 19 + TypeScript + Vite 8
 - **Styling:** Tailwind CSS v4 (`@import "tailwindcss"`, `@theme` in CSS, `@source` directive)
 - **Animation:** GSAP 3 (ScrollTrigger, SplitText) - always import from `src/lib/gsap.ts`
 - **UI Library:** `@n3wth/ui` (shared component library - Nav, Footer, NoiseOverlay)

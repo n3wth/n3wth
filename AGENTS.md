@@ -30,7 +30,7 @@ Deployment cutover and rollback are separate from source preparation. See docs/w
 Cloudflare builds use `npm run build:cloudflare`, with optional repeated
 `--workspace @n3wth/<app>` arguments. This reuses the dependency-aware build
 script. Each app's `wrangler.jsonc` targets production; preview configs are
-generated with isolated identities and bindings. Do not copy generated OpenNext
+generated with isolated identities and bindings. Do not copy generated Vinext
 output between build environments. See the deployment runbook before deploying.
 
 All six sites use Cloudflare. Vercel is retired: there is no `vercel.json` in any app and the site generator creates none. The six Vercel projects stay disconnected from GitHub so pushes and pull requests do not create Vercel deployments or status checks. Their domains and deployment history are kept for reference only, with no path back without redoing the integration from scratch; do not reconnect Git as part of normal work.

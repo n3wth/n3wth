@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { siteUrls } from "@n3wth/site-config";
 import { googleAnalyticsScript } from "@n3wth/site-config/analytics";
-import { AxiomWebVitals } from "next-axiom";
+import AxiomWebVitals from "./AxiomVitals";
 import { PostHogProvider } from "../components/PostHogProvider";
 import { JsonLd } from "../components/JsonLd";
 import { SkipLink } from "../components/SkipLink";
@@ -78,7 +78,6 @@ export default function RootLayout({
       data-astryx-theme="n3wth"
       suppressHydrationWarning
     >
-      <AxiomWebVitals />
       <head>
         <JsonLd type="WebSite" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -117,6 +116,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen" suppressHydrationWarning>
+        <AxiomWebVitals />
         <SkipLink />
         <PostHogProvider>
           <SiteProvider>

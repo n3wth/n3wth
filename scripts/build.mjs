@@ -63,20 +63,8 @@ function readLockfile(root) {
   }
 }
 
-const openNextWorkspaces = ['skills', 'r3-web'].map(app => `@n3wth/${app}`)
-
-export function workspaceBuildArgs(workspace, cloudflare = false) {
-  return cloudflare && openNextWorkspaces.includes(workspace)
-    ? ['exec', '--workspace', workspace, '--', 'opennextjs-cloudflare', 'build']
-    : ['run', 'build', '--workspace', workspace]
-}
-
-/** Copies prerendered output into static assets for apps whose open-next.config
-    selects the static-assets incremental cache; a no-op for the others. */
-export function workspacePopulateCacheArgs(workspace, cloudflare = false) {
-  return cloudflare && openNextWorkspaces.includes(workspace)
-    ? ['exec', '--workspace', workspace, '--', 'opennextjs-cloudflare', 'populateCache', 'local']
-    : undefined
+export function workspaceBuildArgs(workspace) {
+  return ['run', 'build', '--workspace', workspace]
 }
 
 export function checkCloudflareToolchain(nodeVersion = process.versions.node, npmVersion) {
@@ -85,7 +73,7 @@ export function checkCloudflareToolchain(nodeVersion = process.versions.node, np
   }
 }
 
-export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = false, cloudflare = false } = {}) {
+export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = false } = {}) {
   for (const workspace of order) {
     const key = cacheUi && workspace === '@n3wth/ui' ? uiBuildKey(cwd) : undefined
     if (key && restoreUiBuild(cwd, key)) {
@@ -93,12 +81,9 @@ export function runWorkspaceBuilds(order, spawn = spawnSync, cwd, { cacheUi = fa
       continue
     }
     if (key) console.log('@n3wth/ui: cache miss; building')
-    const steps = [workspaceBuildArgs(workspace, cloudflare), workspacePopulateCacheArgs(workspace, cloudflare)].filter(Boolean)
-    for (const args of steps) {
-      const result = spawn('npm', args, { cwd, stdio: 'inherit' })
-      if (result.error) throw result.error
-      if (result.status !== 0) process.exit(result.status ?? 1)
-    }
+    const result = spawn('npm', workspaceBuildArgs(workspace), { cwd, stdio: 'inherit' })
+    if (result.error) throw result.error
+    if (result.status !== 0) process.exit(result.status ?? 1)
     if (key) saveUiBuild(cwd, key)
   }
 }

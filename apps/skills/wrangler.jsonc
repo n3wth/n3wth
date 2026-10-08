@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
+  "main": "vinext/server/app-router-entry",
   "name": "n3wth-skills",
   "compatibility_date": "2026-09-18",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
@@ -8,7 +8,7 @@
   "preview_urls": false,
   "routes": [{ "pattern": "skills.n3wth.com", "custom_domain": true }],
   "assets": {
-    "directory": ".open-next/assets",
+    "not_found_handling": "none",
     "binding": "ASSETS"
   },
   "vars": { "BETTER_AUTH_URL": "https://skills.n3wth.com" },
@@ -18,12 +18,6 @@
       "database_name": "n3wth-skills",
       "database_id": "2f4ee3ca-a435-4b70-b621-4d2ad9192176",
       "migrations_dir": "migrations"
-    }
-  ],
-  "services": [
-    {
-      "binding": "WORKER_SELF_REFERENCE",
-      "service": "n3wth-skills"
     }
   ]
 }

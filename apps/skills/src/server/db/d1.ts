@@ -1,5 +1,3 @@
-import { getCloudflareContext } from '@opennextjs/cloudflare'
-
 /**
  * Apps-side view of the Cloudflare D1 binding.
  *
@@ -40,7 +38,7 @@ export interface SkillsEnv {
 }
 
 export async function getDatabase(): Promise<D1Database> {
-  const { env } = await getCloudflareContext({ async: true })
+  const { env } = await import('cloudflare:workers')
   const database = (env as SkillsEnv).DB
   if (!database) {
     throw new Error('D1 database binding DB is not configured')

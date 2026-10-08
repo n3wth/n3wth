@@ -142,10 +142,8 @@ jobs:
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
           # Keep the pre-cutover version IDs available for rollback, including failed releases.
           mkdir -p rollback-versions
-          for app in portfolio garden; do
-            if [[ " $APPS " == *" $app "* ]]; then
-              npm exec -- wrangler deployments list --config "apps/$app/wrangler.jsonc" --json | tee "rollback-versions/$app.json"
-            fi
+          for app in $APPS; do
+            npm exec -- wrangler deployments list --config "apps/$app/wrangler.jsonc" --json | tee "rollback-versions/$app.json"
           done
           # Release the shared signup API before its form consumers.
           if [[ " $APPS " == *" portfolio "* ]]; then
@@ -183,7 +181,11 @@ jobs:
           }
           JS
             fi
-            npm exec -- wrangler deploy --config "apps/$app/wrangler.jsonc"
+            config="apps/$app/wrangler.jsonc"
+            if [ "$app" = skills ] || [ "$app" = r3-web ]; then
+              config="apps/$app/dist/server/wrangler.json"
+            fi
+            npm exec -- wrangler deploy --config "$config"
           done
       - name: Preserve pre-release Worker versions
         if: always()

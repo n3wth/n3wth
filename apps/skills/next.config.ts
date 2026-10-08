@@ -1,14 +1,9 @@
 import type { NextConfig } from 'next'
 import { withAxiom } from 'next-axiom'
-import { fileURLToPath } from 'node:url'
 
 const nextConfig = {
   // Transpile the declared @n3wth/ui package consistently in development and CI.
   transpilePackages: ['@n3wth/ui'],
-
-  // Empty turbopack config to satisfy Next.js 16 (uses Turbopack by default)
-  turbopack: { root: fileURLToPath(new URL('../..', import.meta.url)) },
-  outputFileTracingRoot: fileURLToPath(new URL('../..', import.meta.url)),
 
   images: {
     unoptimized: true,

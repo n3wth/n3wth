@@ -144,3 +144,28 @@ test('writes only generated config and wrapper artifacts', t => {
   assert.match(readFileSync(output.paths.wrapperPath, 'utf8'), /worker\.ts/)
   assert.equal(readFileSync(sourcePath, 'utf8'), '{ "main": "./worker.ts", "assets": { "directory": "./dist" } }')
 })
+
+test('Vinext build defaults preserve isolation and bundle the preview wrapper', () => {
+  const source = {
+    main: './index.js', no_bundle: true,
+    assets: { directory: '../client' },
+    durable_objects: { bindings: [] }, queues: { producers: [], consumers: [] },
+    d1_databases: [{ binding: 'DB', database_id: 'production-db' }],
+  }
+  const options = {
+    source, sourcePath: '/repo/apps/skills/dist/server/wrangler.json',
+    root: '/repo', app: 'skills', pr: 8, accountId,
+  }
+  assert.throws(() => createPreviewConfig(options), /d1_databases must use explicit/)
+  const previewBindings = { d1_databases: [{ binding: 'DB', database_id: 'preview-db' }] }
+  const { config, originalMain } = createPreviewConfig({ ...options, previewBindings })
+  assert.equal(config.no_bundle, false)
+  assert.equal(config.assets.directory, '/repo/apps/skills/dist/client')
+  assert.equal(originalMain, '/repo/apps/skills/dist/server/index.js')
+  assert.equal(config.d1_databases[0].database_id, 'preview-db')
+  assert.equal(config.vars.BETTER_AUTH_URL, 'https://skills-pr-8.preview.n3wth.com')
+  assert.throws(() => createPreviewConfig({
+    ...options, previewBindings,
+    source: { ...source, durable_objects: { bindings: [{ name: 'STATE', class_name: 'State' }] } },
+  }), /durable_objects must use explicit/)
+})

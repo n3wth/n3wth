@@ -58,6 +58,7 @@ test-results/
 .cloudflare/
 .wrangler/
 .open-next/
+.vinext/
 apps/portfolio/public/writing/
 
 # This is source code, not the macOS custom-folder Icon file.

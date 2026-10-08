@@ -21,8 +21,50 @@ npm exec -- wrangler deploy --config apps/garden/wrangler.jsonc --dry-run
 
 The command uses the same workspace graph as `npm run build`. Portfolio and
 UI docs use their existing static builds. Garden builds a redirect Worker from
-portfolio's local published-note data. Kit, Skills and r3 use their pinned
-OpenNext adapter. Do not run a separate shared-package prebuild.
+portfolio's local published-note data. Skills and the retained r3 workspace use
+Vinext with the Cloudflare Vite plugin. Do not run a separate shared-package prebuild.
+
+### Vinext Workers
+
+Skills and r3 keep their App Router routes and `next/*` imports. `next` remains
+installed for types and library peer dependencies; Vite builds and runs the apps.
+The root Vite 8 pin ensures hoisted RSC and Cloudflare plugins detect the same
+version as these apps. Workspace Vite and React plugins use the same versions
+to avoid incompatible hoisted plugin types and runtime detection.
+
+`npm run dev -w @n3wth/skills` runs locally in workerd. After building, use
+`npm run start -w @n3wth/skills` to test the production Worker. Package and deploy
+the generated `apps/skills/dist/server/wrangler.json`, not the source config.
+Use the equivalent r3 path for that retained workspace. Its retirement redirects
+and automatic-deployment exclusion remain in place.
+
+The source `wrangler.jsonc` owns Worker identity, domains and bindings. Vite
+generates executable and asset paths under `dist/`. Preview tooling reads that
+generated config, substitutes isolated bindings and adds noindex headers. It
+fails if the build is absent. Verify with:
+
+```bash
+npm run build:cloudflare -- --workspace @n3wth/skills
+npm exec -- wrangler deploy --config apps/skills/dist/server/wrangler.json --dry-run
+npm run test:migration -w @n3wth/skills
+npm run check:metadata -- --apps skills
+```
+
+Metadata checks render public static routes in a temporary local Worker rather
+than reading Next.js prerender files. Browser checks cover representative dynamic
+routes, search, downloads and responsive layout. Auth and D1 tests exercise the
+existing schema, token replay rejection, ownership and quotas.
+
+This migration changes no persisted data or database schema. D1 and auth helpers
+read native `cloudflare:workers` bindings. Cookies, secrets, database IDs and
+public routes retain their contracts so old and new Workers can overlap. No new
+cache or image service is required. Axiom runs after client hydration.
+
+Before production cutover, verify the isolated preview including authenticated
+flows with preview credentials. Record the previous Worker version, then use the
+existing production workflow and verify live routes. Rollback restores that
+Worker version and reverts the migration commit for subsequent builds. Retain
+the database, secrets and domain bindings. A local build is not a live cutover.
 
 ### Garden consolidation cutover
 
@@ -43,7 +85,7 @@ Each `apps/<app>/wrangler.jsonc` is the production configuration: Worker name,
 custom domain, assets and resource bindings. There are no separate production
 config files. Inspect the target before using Wrangler; a deploy with this config
 changes production. Build and package in the same checkout and operating system.
-OpenNext output and generated preview configs can contain absolute paths; do not
+Vinext output and generated preview configs can contain absolute paths; do not
 copy them to another machine for deployment.
 
 The Cloudflare preview workflow uses this build command, then
