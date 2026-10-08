@@ -16,7 +16,7 @@ test('legacy r3 documentation maps to existing replacement pages', async ({ requ
   for (const [legacy, current] of [
     ['introduction', 'quickstart'], ['installation', 'quickstart'],
     ['api-reference', 'memory-tools'], ['api/client', 'memory-tools'],
-    ['sdks/python', 'transport'], ['examples/chatbot-memory', 'memory-tools'],
+    ['sdks/python', 'transport'], ['examples/chatbot-memory', 'quickstart'],
   ]) {
     const response = await request.get(`/docs/${legacy}`, { maxRedirects: 0 })
     expect(response.status()).toBe(308)

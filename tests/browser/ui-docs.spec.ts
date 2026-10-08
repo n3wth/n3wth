@@ -7,7 +7,7 @@ test('UI redirects its landing page to the portfolio', async ({ request }) => {
 })
 
 test('UI redirects legacy and current docs to the shared docs host', async ({ request }) => {
-  for (const [source, target] of [['theming', 'theme-provider'], ['future/page', 'future/page']]) {
+  for (const [source, target] of [['theming', 'theme-provider'], ['theming/', 'theme-provider'], ['', 'quickstart'], ['future/page', 'future/page']]) {
     const response = await request.get(`/docs/${source}?from=legacy`, { maxRedirects: 0 })
     expect(response.status()).toBe(301)
     expect(response.headers().location).toBe(`https://docs.n3wth.com/ui/${target}?from=legacy`)

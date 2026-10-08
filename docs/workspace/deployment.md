@@ -35,10 +35,11 @@ to avoid incompatible hoisted plugin types and runtime detection.
 `npm run dev -w @n3wth/skills` runs locally in workerd. After building, use
 `npm run start -w @n3wth/skills` to test the production Worker. Package and deploy
 the generated `apps/skills/dist/server/wrangler.json`, not the source config.
-The retired r3 and UI Workers use their source `wrangler.jsonc` directly and
-remain excluded from automatic production deployments. Their URL mappings are
-covered by Worker and browser tests. r3's separate search Worker and its source
-corpus remain because they have independent consumers.
+The retired r3 and UI domains are served by Cloudflare redirect rules. Their
+local Worker fixtures use source `wrangler.jsonc` files for route tests and remain
+excluded from production deployments. Do not create replacement production
+Workers for these domains. r3's separate search Worker and its source corpus
+remain because they have independent consumers.
 
 The source `wrangler.jsonc` owns Worker identity, domains and bindings. Vite
 generates executable and asset paths under `dist/`. Preview tooling reads that
@@ -83,7 +84,7 @@ build or preview alone is not a completed cutover. Roll back Garden to its prior
 Worker version first if redirects fail; roll back portfolio only after restoring
 the standalone reader. Retain the prior Worker versions and domain bindings.
 
-Each `apps/<app>/wrangler.jsonc` is the production configuration: Worker name,
+Each active site's `apps/<app>/wrangler.jsonc` is the production configuration: Worker name,
 custom domain, assets and resource bindings. There are no separate production
 config files. Inspect the target before using Wrangler; a deploy with this config
 changes production. Build and package in the same checkout and operating system.

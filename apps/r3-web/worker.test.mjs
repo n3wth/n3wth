@@ -8,7 +8,7 @@ test('preserves every legacy documentation mapping and query values', () => {
     'api-reference': 'memory-tools', 'api/client': 'memory-tools',
     'ai-intelligence': 'knowledge-graph', integrations: 'configuration',
     'sdks/python': 'transport', 'sdks/typescript': 'transport',
-    examples: 'quickstart', 'examples/chatbot-memory': 'memory-tools',
+    examples: 'quickstart', 'examples/chatbot-memory': 'quickstart',
     changelog: 'quickstart', 'getting-started/introduction': 'quickstart',
     'getting-started/quickstart': 'quickstart', 'getting-started/installation': 'quickstart',
     quickstart: 'quickstart', 'future/page': 'future/page',

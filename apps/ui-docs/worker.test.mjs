@@ -5,8 +5,10 @@ import worker from './worker.mjs'
 test('preserves static redirect mappings, wildcard paths, status and query', () => {
   for (const [path, target] of [
     ['/docs', 'https://docs.n3wth.com/ui/quickstart'],
+    ['/docs/', 'https://docs.n3wth.com/ui/quickstart'],
     ['/docs/getting-started', 'https://docs.n3wth.com/ui/quickstart'],
     ['/docs/theming', 'https://docs.n3wth.com/ui/theme-provider'],
+    ['/docs/theming/', 'https://docs.n3wth.com/ui/theme-provider'],
     ['/docs/components', 'https://docs.n3wth.com/ui/primitives'],
     ['/docs/hooks', 'https://docs.n3wth.com/ui/scroll-reset'],
     ['/docs/css-utilities', 'https://docs.n3wth.com/ui/tailwind'],

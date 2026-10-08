@@ -110,7 +110,9 @@ test('stages assets and injects preview noindex without changing source files', 
   assert.match(headers, /X-Frame-Options: DENY/)
 })
 
-test('local workerd preserves security headers, preview noindex, cache, redirect, and 404', async t => {
+test('local workerd preserves security headers, preview noindex, cache, redirect, and 404', {
+  skip: !existsSync(new URL('../node_modules/wrangler/bin/wrangler.js', import.meta.url)),
+}, async t => {
   const root = mkdtempSync(join(tmpdir(), 'cloudflare-workerd-'))
   t.after(() => rmSync(root, { recursive: true, force: true }))
   const source = join(root, 'source')
