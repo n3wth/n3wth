@@ -58,8 +58,8 @@ function Home() {
   )
 
   return (
-    <>
-    <section aria-label="Explore the night scene" className="bleed relative -mt-24" style={{ height: '100svh' }}>
+    <div className="home-opening">
+    <section aria-label="Explore the night scene" className="bleed relative home-opening-scene">
       {graphics !== 'unavailable' ? (
         <SceneBoundary>
           <Suspense
@@ -82,13 +82,13 @@ function Home() {
       )}
     </section>
     <PageHeader
-      className="site-content-gutter"
+      className="site-content-gutter home-opening-copy"
       title={<span data-nosnippet>I build new ways to work with AI.</span>}
       aside={
           <Button label="Explore my projects" variant="primary" size="md" href="/projects" clickAction={() => track('home_projects_clicked', { source_page: '/' })} />
       }
     />
-    </>
+    </div>
   )
 }
 

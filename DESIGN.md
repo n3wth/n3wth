@@ -24,6 +24,7 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Portfolio uses a flush, solid header below 1024px, with an attached menu and 44px touch targets. Desktop keeps the floating navigation. Other sites opt into the shared compact bar when appropriate.
 - Center section hero artwork horizontally and vertically in the available space between the navigation and copy at every width. Size the artwork from that space; keep the page title and description at the lower left.
 - The homepage shows the same still image throughout scene loading, without a visible progress bar or loading label. Reveal the terrain as soon as it is ready; navigation stays available and reduced motion removes the fade.
+- The homepage scene shares the opening viewport with its headline and project link. Keep both visible before scrolling at ordinary mobile and desktop heights.
 - For a few section or documentation destinations, use `SiteSectionLinks`: plain wrapping links in page flow, without a selected-section marker. Persistent desktop sidebars may track the current section.
 - For a grouped documentation hierarchy on compact screens, put the pages in the top navigation menu and show the documentation context in its brand path. Include every page, mark the current page and close after navigation; do not add a second navigation row.
 - Use a clear title and short description in a hero. Omit actions that repeat navigation or merely jump to the content immediately below. Keep useful product actions such as installation or a resume download.

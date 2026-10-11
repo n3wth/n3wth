@@ -67,6 +67,12 @@ h1 {
   box-shadow: none;
 }
 
+.starlight-aside,
+.sl-markdown-content pre,
+.expressive-code .frame {
+  border-radius: 0.5rem;
+}
+
 .sl-menu-button {
   background: transparent;
   color: var(--sl-color-white);
