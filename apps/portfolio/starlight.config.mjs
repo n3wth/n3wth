@@ -7,7 +7,10 @@ export default function docs() {
     description: 'Developer documentation for @n3wth/ui, Elephant-Goldfish, and the r3 memory server.',
     favicon: '/favicon.svg',
     disable404Route: true,
-    components: { Head: './src/components/docs/Head.astro' },
+    components: {
+      Head: './src/components/docs/Head.astro',
+      SiteTitle: './src/components/docs/SiteTitle.astro',
+    },
     customCss: ['./src/styles/docs.css'],
     head: [
       { tag: 'script', content: googleAnalyticsScript },
@@ -19,11 +22,42 @@ export default function docs() {
     editLink: { baseUrl: 'https://github.com/n3wth/n3wth/edit/main/apps/portfolio/' },
     sidebar: [
       { label: 'Overview', slug: 'docs' },
-      { label: 'Contribute', items: ['docs/workspace', 'docs/publishing'] },
-      { label: 'UI', items: [{ autogenerate: { directory: 'docs/ui' } }] },
-      { label: 'Elephant-Goldfish', items: [{ autogenerate: { directory: 'docs/elephant-goldfish' } }] },
-      { label: 'r3', items: [{ autogenerate: { directory: 'docs/r3' } }] },
-      { label: 'Back to n3wth.com', link: '/' },
+      {
+        label: 'UI',
+        items: [
+          { label: 'Getting started', slug: 'docs/ui/quickstart' },
+          { label: 'Theming', slug: 'docs/ui/theme-provider' },
+          { label: 'Components', slug: 'docs/ui/primitives' },
+          { label: 'Page layouts', slug: 'docs/ui/layouts' },
+          {
+            label: 'Recipes', collapsed: true,
+            items: ['docs/ui/tailwind', 'docs/ui/scroll-reset', 'docs/ui/reading-outline', 'docs/ui/og-images'],
+          },
+          { label: 'API reference', slug: 'docs/ui/entry-points' },
+          'docs/ui/troubleshooting',
+        ],
+      },
+      {
+        label: 'r3',
+        items: [
+          { label: 'Getting started', slug: 'docs/r3/quickstart' },
+          'docs/r3/configuration',
+          { label: 'Working with memory', slug: 'docs/r3/memory-tools' },
+          {
+            label: 'Reference', collapsed: true,
+            items: ['docs/r3/transport', 'docs/r3/cache-tools', 'docs/r3/knowledge-graph'],
+          },
+          'docs/r3/troubleshooting',
+        ],
+      },
+      {
+        label: 'Elephant-Goldfish',
+        items: [
+          { label: 'Getting started', slug: 'docs/elephant-goldfish/quickstart' },
+          'docs/elephant-goldfish/workflows',
+        ],
+      },
+      { label: 'Contribute', collapsed: true, items: ['docs/workspace', 'docs/publishing'] },
     ],
   })
 }
