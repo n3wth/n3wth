@@ -10,6 +10,7 @@ export default function docs() {
     components: {
       Head: './src/components/docs/Head.astro',
       SiteTitle: './src/components/docs/SiteTitle.astro',
+      PageTitle: './src/components/docs/PageTitle.astro',
     },
     customCss: ['./src/styles/docs.css'],
     head: [
@@ -26,28 +27,28 @@ export default function docs() {
         label: 'UI',
         items: [
           { label: 'Getting started', slug: 'docs/ui/quickstart' },
-          { label: 'Theming', slug: 'docs/ui/theme-provider' },
           { label: 'Components', slug: 'docs/ui/primitives' },
           { label: 'Page layouts', slug: 'docs/ui/layouts' },
+          { label: 'Theming', slug: 'docs/ui/theme-provider' },
+          { label: 'API reference', slug: 'docs/ui/entry-points' },
+          'docs/ui/troubleshooting',
           {
             label: 'Recipes', collapsed: true,
             items: ['docs/ui/tailwind', 'docs/ui/scroll-reset', 'docs/ui/reading-outline', 'docs/ui/og-images'],
           },
-          { label: 'API reference', slug: 'docs/ui/entry-points' },
-          'docs/ui/troubleshooting',
         ],
       },
       {
         label: 'r3',
         items: [
           { label: 'Getting started', slug: 'docs/r3/quickstart' },
-          'docs/r3/configuration',
           { label: 'Working with memory', slug: 'docs/r3/memory-tools' },
+          'docs/r3/configuration',
+          'docs/r3/troubleshooting',
           {
             label: 'Reference', collapsed: true,
             items: ['docs/r3/transport', 'docs/r3/cache-tools', 'docs/r3/knowledge-graph'],
           },
-          'docs/r3/troubleshooting',
         ],
       },
       {

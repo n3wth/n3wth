@@ -40,6 +40,22 @@ h1 {
   font-size: var(--sl-text-sm);
 }
 
+.sidebar-content .top-level > li + li {
+  margin-top: 1.5rem;
+}
+
+.sidebar-content .top-level > li > details > summary {
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-content :is(a, summary) {
+  min-height: 2rem;
+}
+
+@media (pointer: coarse) {
+  .sidebar-content :is(a, summary) { min-height: 2.75rem; }
+}
+
 .sidebar-content .large,
 .right-sidebar h2,
 .sl-link-card .title {
@@ -93,34 +109,8 @@ starlight-theme-select .label-icon {
 
 starlight-theme-select .caret { display: none; }
 
-/* Keep the native disclosure and anchor behavior without a second fixed bar. */
-mobile-starlight-toc nav {
-  position: static;
-  border: 0;
-  padding: 0.75rem var(--sl-content-pad-x) 0;
-}
-
-mobile-starlight-toc summary {
-  height: auto;
-  min-height: 2.75rem;
-  padding: 0;
-  border: 0;
-}
-
-mobile-starlight-toc .toggle {
-  padding: 0;
-  min-height: 2.75rem;
-  border: 0;
-  background: transparent;
-}
-
-mobile-starlight-toc .display-current { display: none; }
-
-mobile-starlight-toc .dropdown {
-  border: 0;
-  box-shadow: none;
-  background: transparent;
-}
+/* Compact contents live below the title; the wide-screen outline stays native. */
+mobile-starlight-toc { display: none; }
 
 @media (max-width: 49.999rem) {
   :root { --sl-text-h1: 2rem; }
