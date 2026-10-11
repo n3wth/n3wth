@@ -46,13 +46,6 @@
   container-type: normal;
 }
 
-.portfolio-story-hero > .section-story--thinking svg {
-  --story-size: min(150vw, 108svh);
-  top: auto;
-  bottom: calc(var(--story-size) * -.1104651163);
-  transform: translateX(-50%);
-}
-
 .portfolio-story-copy :is(.portfolio-section-title, .portfolio-story-description) {
   background: var(--color-background-body);
   box-decoration-break: clone;
@@ -68,6 +61,14 @@
   .portfolio-story-hero { min-height: max(640px, 100svh); padding-block-start: 96px; }
   .portfolio-story-hero > .section-story svg { --story-size: min(78vw, 110cqh); }
   .portfolio-story-description { white-space: nowrap; }
+}
+
+/* Keep the floor-rooted tree's scale after the shared desktop artwork rule. */
+.portfolio-story-hero > .section-story--thinking svg {
+  --story-size: min(150vw, 108svh);
+  top: auto;
+  bottom: calc(var(--story-size) * -.1104651163);
+  transform: translateX(-50%);
 }
 
 .portfolio-story-actions {

@@ -24,6 +24,7 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Portfolio uses a flush, solid header below 1024px, with an attached menu and 44px touch targets. Desktop keeps the floating navigation. Other sites opt into the shared compact bar when appropriate.
 - Center section hero artwork horizontally and vertically in the available space between the navigation and copy at every width. Size the artwork from that space; keep the page title and description at the lower left.
 - The homepage shows the same still image throughout scene loading, without a visible progress bar or loading label. Reveal the terrain as soon as it is ready; navigation stays available and reduced motion removes the fade.
+- The homepage scene shares the opening viewport with its headline and project link. Keep both visible before scrolling at ordinary mobile and desktop heights.
 - For a few section or documentation destinations, use `SiteSectionLinks`: plain wrapping links in page flow, without a selected-section marker. Persistent desktop sidebars may track the current section.
 - For a grouped documentation hierarchy on compact screens, put the pages in the top navigation menu and show the documentation context in its brand path. Include every page, mark the current page and close after navigation; do not add a second navigation row.
 - Use a clear title and short description in a hero. Omit actions that repeat navigation or merely jump to the content immediately below. Keep useful product actions such as installation or a resume download.
@@ -32,6 +33,7 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Portfolio art photographs fill the available page width; their captions share the page content gutters.
 - Documentation articles use `PageHeader spacing="compact"` with parent-owned margins. Keep the title, description and useful start links together; avoid hero-sized gaps and cards for simple navigation.
 - Documentation brand paths link each segment to its own home. Keep page-copy and Markdown actions compact below the title. Use one search dialog for content results and explicitly requested, cited AI answers; keep results available when AI fails.
+- Starlight docs use the shared Suisse Intl and Geist Mono font assets, an Oliver Newth / Docs brand path, and a compact heading scale. Order navigation by getting started, core concepts, then recipes/reference; contributor setup comes last. Keep detailed recipes collapsed until needed. The overview needs no contents bar; guides show section links below the title on compact screens and an outline on wide screens.
 - Portfolio search starts AI answers after typing pauses, with loading dots while waiting. Sources appear as wrapping link chips below the answer, without a separate AI introduction label.
 - Keep footer content minimal: identity, Contact, GitHub and necessary legal links. All footer text uses the same muted color.
 - The portfolio footer keeps links and a compact email signup on one desktop row, without repeating the identity. On smaller screens, the signup fills the content width above the links. Compact signup uses a standard thin field border and shared control radius, inherited footer typography and an arrow submit button. Align the field edge to the footer links and retain normal input padding. Empty signup status messages take no layout space.
@@ -40,6 +42,7 @@ Change the lowest appropriate shared layer. Do not copy shared components, CSS o
 - Paragraph copy uses regular weight (400) across all six sites, including article prose and lead paragraphs. Preserve heading, emphasis and control weights.
 - Primary paragraph copy uses the existing softer gray ink in dark mode. Supporting/status text retains its semantic color; light-theme ink stays unchanged.
 - Reading outline labels, section counts and links use the same supporting type size and regular weight; active links may use medium weight.
+- Documentation sidebar groups and page links share one font size; weight and indentation communicate hierarchy.
 - Connected-note links use the same supporting size. Avoid decorative side-accent borders on callouts or article graphics.
 
 ## Interaction

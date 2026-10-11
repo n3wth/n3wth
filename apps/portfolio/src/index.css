@@ -471,6 +471,23 @@ body {
 }
 
 /* ---------- Night-field home ---------- */
+.home-opening {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  margin-top: -96px;
+}
+
+.home-opening-scene {
+  flex: 1;
+  min-height: 20rem;
+}
+
+.home-opening-copy {
+  flex-shrink: 0;
+  padding-block: 24px;
+}
+
 .night-field-stage:not(.is-settled) .world-portal-link {
   visibility: hidden;
   opacity: 0;

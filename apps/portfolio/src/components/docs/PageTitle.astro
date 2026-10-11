@@ -1,0 +1,24 @@
+---
+import PageTitle from '@astrojs/starlight/components/PageTitle.astro'
+
+const { toc } = Astro.locals.starlightRoute
+const sections = toc ? toc.items.filter(({ slug }) => slug !== '_top') : []
+---
+
+<PageTitle />
+{sections.length > 0 && (
+  <nav class="page-contents" aria-label="On this page">
+    <span>On this page</span>
+    <ul>
+      {sections.map(({ slug, text }) => <li><a href={`#${slug}`}>{text}</a></li>)}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .page-contents { font-size: var(--sl-text-sm); color: var(--sl-color-gray-2); }
+  ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; list-style: none; padding: 0; margin: 0.25rem 0 0; }
+  a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--sl-color-text); text-underline-offset: 0.2em; }
+  a:hover { color: var(--sl-color-white); }
+  @media (min-width: 72rem) { .page-contents { display: none; } }
+</style>

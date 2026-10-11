@@ -596,6 +596,8 @@ test('home keeps ordinary writing navigation when WebGL is unavailable', async (
   await page.goto('/')
   await expect(page.locator('section[aria-label="Explore the night scene"] img')).toBeVisible()
   await expect(page.locator('canvas')).toHaveCount(0)
+  await expect(page.getByRole('heading', { level: 1 })).toBeInViewport({ ratio: 1 })
+  await expect(page.getByRole('link', { name: 'Explore my projects' })).toBeInViewport({ ratio: 1 })
   const thinking = page.locator('#primary-navigation').getByRole('link', { name: 'Thinking', exact: true })
   if (!await thinking.isVisible()) await page.getByRole('button', { name: 'Open menu', exact: true }).click()
   await thinking.focus()
