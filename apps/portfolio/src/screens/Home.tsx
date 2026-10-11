@@ -81,13 +81,16 @@ function Home() {
         </>
       )}
     </section>
+    <div className="home-opening-copy">
     <PageHeader
-      className="site-content-gutter home-opening-copy"
+      className="site-content-gutter"
+      spacing="compact"
       title={<span data-nosnippet>I build new ways to work with AI.</span>}
       aside={
           <Button label="Explore my projects" variant="primary" size="md" href="/projects" clickAction={() => track('home_projects_clicked', { source_page: '/' })} />
       }
     />
+    </div>
     </div>
   )
 }

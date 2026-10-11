@@ -483,7 +483,7 @@ body {
   min-height: 20rem;
 }
 
-.home-opening-copy.n3wth-site-page-header {
+.home-opening-copy {
   flex-shrink: 0;
   padding-block: 24px;
 }
