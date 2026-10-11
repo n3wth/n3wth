@@ -36,6 +36,10 @@ h1 {
 }
 
 /* Keep Starlight's layout and controls, with the site's quieter type hierarchy. */
+.sidebar-content :is(a, summary, .large) {
+  font-size: var(--sl-text-sm);
+}
+
 .sidebar-content .large,
 .right-sidebar h2,
 .sl-link-card .title {
