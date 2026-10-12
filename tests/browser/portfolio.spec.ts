@@ -317,7 +317,9 @@ test('the project action reaches the projects page after a cold route load', asy
   })
   try {
     await page.goto('/')
-    await page.getByRole('link', { name: 'Explore my projects', exact: true }).click()
+    const projects = page.locator('#primary-navigation').getByRole('link', { name: 'Projects', exact: true })
+    if (!await projects.isVisible()) await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+    await projects.click()
     await expect(page).toHaveURL(/\/projects$/)
     await expect(page.getByRole('heading', { level: 1, name: 'Projects' })).toBeInViewport()
   } finally {
@@ -365,7 +367,7 @@ test('site identity is present in initial HTML and rendered routes', async ({ pa
     expect(websites).toHaveLength(1)
     expect(websites[0]).toMatchObject({ name: 'Oliver Newth', alternateName: 'n3wth.com', url: 'https://n3wth.com/' })
   }
-  await expect(page.getByText('I build new ways to work with AI.', { exact: true })).toHaveAttribute('data-nosnippet', 'true')
+  await expect(page.getByRole('heading', { level: 1, name: 'Oliver Newth', exact: true })).toHaveCount(1)
 })
 
 test('diagrams are immediately visible with normal motion', async ({ page }) => {
@@ -476,15 +478,15 @@ test('hybrid planting remains navigable with motion', async ({ page }, testInfo)
   // Real WebGL draw calls stop below the scene and resume when it returns.
   const draws = () => page.evaluate(() => Reflect.get(window, '__sceneDraws') as number)
   expect(await draws()).toBeGreaterThan(0)
-  // The home page is intentionally short; add scroll room for this lifecycle check.
+  // Scroll fully past the scene; an edge touching the viewport still intersects.
   await page.evaluate(() => {
     const spacer = document.createElement('div')
     spacer.id = 'test-scroll-room'
-    spacer.style.height = '100vh'
+    spacer.style.height = '200vh'
     document.body.append(spacer)
     window.scrollTo(0, document.body.scrollHeight)
   })
-  await expect.poll(() => page.locator('.night-field-stage').evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThanOrEqual(0)
+  await expect.poll(() => page.locator('.night-field-stage').evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThan(0)
   // Late model uploads can request one final frame; continuous drawing must stop.
   await expect.poll(async () => {
     const before = await draws()
@@ -596,8 +598,10 @@ test('home keeps ordinary writing navigation when WebGL is unavailable', async (
   await page.goto('/')
   await expect(page.locator('section[aria-label="Explore the night scene"] img')).toBeVisible()
   await expect(page.locator('canvas')).toHaveCount(0)
-  await expect(page.getByRole('heading', { level: 1 })).toBeInViewport({ ratio: 1 })
-  await expect(page.getByRole('link', { name: 'Explore my projects' })).toBeInViewport({ ratio: 1 })
+  await expect(page.getByRole('link', { name: 'Explore my projects' })).toHaveCount(0)
+  await expect(page.getByText('I build new ways to work with AI.', { exact: true })).toHaveCount(0)
+  const scene = await page.getByRole('region', { name: 'Explore the night scene' }).boundingBox()
+  expect(scene!.height).toBeGreaterThanOrEqual(page.viewportSize()!.height)
   const thinking = page.locator('#primary-navigation').getByRole('link', { name: 'Thinking', exact: true })
   if (!await thinking.isVisible()) await page.getByRole('button', { name: 'Open menu', exact: true }).click()
   await thinking.focus()

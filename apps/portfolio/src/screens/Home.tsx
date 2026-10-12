@@ -1,9 +1,6 @@
 import { withTheme } from '../components/withTheme'
 import { Component, Suspense, lazy, useCallback, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { PageHeader } from '@n3wth/ui/site'
-import { Button } from '@n3wth/ui/primitives'
-import { track } from '../lib/analytics'
 import { getSceneGraphics } from '../lib/sceneGraphics'
 
 /* The front door is a field at night (three.js, lazy so the rest of the
@@ -59,6 +56,7 @@ function Home() {
 
   return (
     <div className="home-opening">
+    <h1 className="sr-only">Oliver Newth</h1>
     <section aria-label="Explore the night scene" className="bleed relative home-opening-scene">
       {graphics !== 'unavailable' ? (
         <SceneBoundary>
@@ -81,16 +79,6 @@ function Home() {
         </>
       )}
     </section>
-    <div className="home-opening-copy">
-    <PageHeader
-      className="site-content-gutter"
-      spacing="compact"
-      title={<span data-nosnippet>I build new ways to work with AI.</span>}
-      aside={
-          <Button label="Explore my projects" variant="primary" size="md" href="/projects" clickAction={() => track('home_projects_clicked', { source_page: '/' })} />
-      }
-    />
-    </div>
     </div>
   )
 }
