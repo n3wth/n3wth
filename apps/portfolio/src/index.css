@@ -483,11 +483,6 @@ body {
   min-height: 20rem;
 }
 
-.home-opening-copy {
-  flex-shrink: 0;
-  padding-block: 24px;
-}
-
 .night-field-stage:not(.is-settled) .world-portal-link {
   visibility: hidden;
   opacity: 0;
