@@ -478,15 +478,15 @@ test('hybrid planting remains navigable with motion', async ({ page }, testInfo)
   // Real WebGL draw calls stop below the scene and resume when it returns.
   const draws = () => page.evaluate(() => Reflect.get(window, '__sceneDraws') as number)
   expect(await draws()).toBeGreaterThan(0)
-  // The home page is intentionally short; add scroll room for this lifecycle check.
+  // Scroll fully past the scene; an edge touching the viewport still intersects.
   await page.evaluate(() => {
     const spacer = document.createElement('div')
     spacer.id = 'test-scroll-room'
-    spacer.style.height = '100vh'
+    spacer.style.height = '200vh'
     document.body.append(spacer)
     window.scrollTo(0, document.body.scrollHeight)
   })
-  await expect.poll(() => page.locator('.night-field-stage').evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThanOrEqual(0)
+  await expect.poll(() => page.locator('.night-field-stage').evaluate(element => element.getBoundingClientRect().bottom)).toBeLessThan(0)
   // Late model uploads can request one final frame; continuous drawing must stop.
   await expect.poll(async () => {
     const before = await draws()
