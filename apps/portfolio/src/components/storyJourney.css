@@ -1,0 +1,27 @@
+/* Native document navigation preserves URLs, history and keyboard behavior. */
+@view-transition { navigation: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .section-story { view-transition-name: story-artwork; }
+  .n3wth-site-navigation-island { view-transition-name: site-navigation; }
+  .portfolio-story-copy { view-transition-name: story-caption; }
+
+  ::view-transition-group(story-artwork) { animation-duration: 420ms; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+  ::view-transition-old(story-artwork) { animation: story-depart 420ms ease-in-out both; }
+  ::view-transition-new(story-artwork) { animation: story-arrive 420ms ease-in-out both; }
+  ::view-transition-group(site-navigation) { animation-duration: 180ms; }
+  ::view-transition-group(story-caption) { animation-duration: 240ms; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+@keyframes story-depart {
+  to { opacity: 0; }
+}
+@keyframes story-arrive {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  ::view-transition-group(*) { animation: none; }
+}
