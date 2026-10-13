@@ -1,5 +1,6 @@
 const storageKey = 'n3wth-story-journey'
 export const storyEnergy = (time: number) => .12 + .88 * (.5 + .28 * Math.cos(time * .09) + .22 * Math.cos(time * .047 + 1)) ** 2
+export const storyChaos = (time: number) => Math.max(0, Math.sin(time * .067 + 1)) ** 2
 export function storyColor(time: number, offset = 0) {
   const palette = ['cyan', 'green', 'yellow', 'red']
   const phase = ((time / 38 + offset) % 4 + 4) % 4
@@ -60,18 +61,22 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   reset()
   return {
     profile: profiles[kind] ?? profiles.art,
-    startPattern(time: number, duration: number, color: string, stagger: number, blocks: Set<number>) {
+    startPattern(time: number, duration: number, color: string, stagger: number, blocks: Set<number>, chaos: number) {
       lights.forEach((light, index) => {
         if (!blocks.has(index)) return
-        light.events.push({ start: time + index / 8 * stagger, duration, color, coordinated: true })
+        const independent = ink(index * 3 % palette.length)
+        const tint = chaos > .001 ? `color-mix(in srgb, ${color} ${(1 - chaos) * 100}%, ${independent})` : color
+        light.events.push({ start: time + index / 8 * stagger, duration, color: tint, coordinated: true })
       })
       orderedUntil = time + stagger + duration
       lights.forEach(light => { light.next = orderedUntil + 1 + Math.random() * 4 })
     },
-    colorFor(path: SVGPathElement, time: number) {
+    colorFor(path: SVGPathElement, time: number, planned = false) {
       const block = path.closest<SVGGElement>('[data-story-block]')
       if (!block) return null
-      const active = lights[Number(block.dataset.storyBlock)].events.filter(light => strength(light, time) > .05)
+      const events = lights[Number(block.dataset.storyBlock)].events
+      if (planned) return events.at(-1)?.color ?? null
+      const active = events.filter(light => strength(light, time) > .05)
       active.sort((a, b) => strength(b, time) - strength(a, time))
       return active[0]?.color ?? null
     },
@@ -88,7 +93,9 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         if (time < orderedUntil || time < light.next) return
         const duration = 1.8 + Math.random() * 2.7
         light.next = time + duration + 3 + Math.random() * 7 + (1 - energy) * 10
-        light.events.push({ start: time, duration, color: storyColor(time, (Math.random() - .5) * .3), coordinated: false })
+        const chaos = storyChaos(time)
+        const color = `color-mix(in srgb, ${storyColor(time)} ${(1 - chaos) * 100}%, ${ink(Math.floor(Math.random() * palette.length))})`
+        light.events.push({ start: time, duration, color, coordinated: false })
       })
       faces.forEach(face => {
         const layer = Number(face.dataset.storyFace)

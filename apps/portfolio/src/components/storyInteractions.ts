@@ -1,5 +1,5 @@
 import { useEffect, type RefObject } from 'react'
-import { createStorySpace, pulseEnvelope, readStoryJourney, saveStoryJourney, storyEnergy, storyColor } from './storySpace'
+import { createStorySpace, pulseEnvelope, readStoryJourney, saveStoryJourney, storyEnergy, storyColor, storyChaos } from './storySpace'
 
 type Point = { x: number; y: number }
 
@@ -99,8 +99,11 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         path.dataset.origin = String(position)
         path.dataset.direction = String(end > position ? 1 : -1)
         color += 1 + Math.floor(Math.random() * 3)
-        const matchedColor = ordered || synchronized ? patternColor : space.colorFor(line.path, sceneTime)
-        path.setAttribute('stroke', matchedColor || storyColor(sceneTime, (Math.random() - .5) * .3))
+        const matchedColor = space.colorFor(line.path, sceneTime, ordered || synchronized)
+        const independent = `var(--color-icon-${colors[color % colors.length]})`
+        const chaos = synchronized ? 0 : storyChaos(sceneTime)
+        const themedColor = `color-mix(in srgb, ${patternColor} ${(1 - chaos) * 100}%, ${independent})`
+        path.setAttribute('stroke', matchedColor || (synchronized ? patternColor : themedColor))
         path.style.opacity = '0'
         // Render above the artwork so quiet/reflection groups do not hide a real contact.
         svg!.appendChild(path)
@@ -187,7 +190,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         patternColor = white ? 'white' : storyColor(sceneTime)
         const blocks = new Set(Array.from({ length: 9 }, (_, i) => i).filter(() => synchronized || energy > .65 || Math.random() < energy))
         if (!blocks.size) blocks.add(Math.floor(Math.random() * 9))
-        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, ordered ? burstDuration * .00065 : 0, blocks)
+        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, ordered ? burstDuration * .00065 : 0, blocks, synchronized ? 0 : storyChaos(sceneTime))
         seeded.clear()
         const paths = geometry()
         const sorted = [...paths].sort((a, b) => Math.min(...a.points.map(p => p.y)) - Math.min(...b.points.map(p => p.y)))
