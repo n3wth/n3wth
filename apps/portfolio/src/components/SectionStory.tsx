@@ -44,15 +44,18 @@ function ArtStory() {
       {Array.from({ length: 8 }, (_, i) => <path key={i} data-art-current={i === 0 ? '' : undefined} d={`M -2400 ${950 - i * 18} C -1100 ${950 - i * 18}, ${-50 + i * 40} ${890 - i * 26}, ${410 + i * 30} ${690 - i * 18} Q ${870 + i * 20} ${490 - i * 10} 1540 ${620 - i * 11} T 3600 ${620 - i * 11}`} />)}
     </g>
     <g className="section-story__breath">
-      {Array.from({ length: 9 }, (_, i) => {
+      {Array.from({ length: 12 }, (_, index) => {
+        const i = index - 3
         const scale = .84 ** i
         const x = 950 - 380 * scale
         const y = 420 + 140 * scale
         const height = 490 * scale
         const right = 950 + 80 * scale
         const arch = `M ${x} ${y} V ${y - height * .62} C ${x} ${y - height * 1.14}, ${right} ${y - height * 1.14}, ${right} ${y - height * .62} V ${y}`
+        const loop = `${arch} V ${y + height * .279} C ${right} ${y + height * .513}, ${x} ${y + height * .513}, ${x} ${y + height * .279} V ${y} Z`
+        if (i < 0) return <path key={i} data-story-halo={-i} d={loop} pathLength="1" style={{ opacity: 0 }} />
         return <g key={i} data-story-light={i} style={phase(i)}>
-          <path data-art-loop style={{ opacity: 0 }} d={`${arch} V ${y + height * .279} C ${right} ${y + height * .513}, ${x} ${y + height * .513}, ${x} ${y + height * .279} V ${y} Z`} />
+          <path data-art-loop style={{ opacity: 0 }} d={loop} />
           <path d={arch} />
           <StoryPulse seed={i + 8} d={arch} />
           <g data-story-reflection transform={`translate(0 ${y * 1.45}) scale(1 -.45)`}>

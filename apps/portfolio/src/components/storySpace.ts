@@ -47,6 +47,9 @@ export function saveStoryJourney(journey: { epoch: number; color: number }) {
 export function createStorySpace(svg: SVGSVGElement, kind: string, amount: number, smoothing: number) {
   const faces = [...svg.querySelectorAll<SVGPathElement>('[data-story-face]')]
   const borders = [...svg.querySelectorAll<SVGPathElement>('[data-story-border]')]
+  const halos = [...svg.querySelectorAll<SVGPathElement>('[data-story-halo]')]
+  let haloStart: number | undefined
+  let nextHalo: number | undefined
   const backdrop = svg.closest<HTMLElement>('.portfolio-story-hero')
   let crescendo: { start: number; duration: number; color: string } | null = null
   const palette = ['cyan', 'green', 'yellow', 'red']
@@ -78,6 +81,8 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     lastAttentionTime = undefined
     faces.forEach(face => { face.style.fill = 'none'; face.style.stroke = 'none' })
     borders.forEach(border => { border.style.opacity = '0'; border.removeAttribute('transform') })
+    halos.forEach(halo => { halo.style.opacity = '0' })
+    haloStart = nextHalo = undefined
   }
   reset()
   return {
@@ -109,6 +114,21 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     },
     update(time: number) {
       const energy = storyEnergy(time)
+      if (halos.length) {
+        nextHalo ??= time + 10 + Math.random() * 8
+        if (time >= nextHalo) {
+          haloStart = time
+          nextHalo = time + 16 + 40 + Math.random() * 30
+        }
+        halos.forEach(halo => {
+          const distance = Number(halo.dataset.storyHalo)
+          const age = haloStart === undefined ? -1 : (time - haloStart - distance * 1.4) / 10
+          halo.style.opacity = String(pulseEnvelope(age, .8) * (.55 - distance * .08))
+          halo.style.stroke = storyColor(time, distance * .12)
+          halo.style.strokeDasharray = '.34 .66'
+          halo.style.strokeDashoffset = String(-age * .8)
+        })
+      }
       // Two wandering centers share neighboring edges; their wake guides later passages.
       const first = 4 + 3.5 * Math.sin(time * .021 + phase)
       const second = 4 + 3.5 * Math.sin(time * .016 + phase + 2.1)
