@@ -101,7 +101,8 @@ function ProjectsStory() {
     {blocks.map(({ x, y }, i) => {
       return <g key={i} data-story-block={i}>
         <LitStoryLine seed={i + 4} d={`M ${x} ${y} l 260 -95 l 240 120 l -260 95 Z`} />
-        <path className="section-story__quiet" d={`M ${x} ${y} v 28 l 240 120 v -28 M ${x + 240} ${y + 148} l 260 -95 v -28`} />
+        <path className="section-story__quiet" d={`M ${x} ${y} v 28 l 240 120 v -28`} />
+        <path className="section-story__quiet" d={`M ${x + 240} ${y + 148} l 260 -95 v -28`} />
       </g>
     })}
     <LitStoryLine seed={19} d="M 380 -1800 C 330 -600 335 -130 380 5 C 425 140 305 270 360 365 S 465 460 430 650 C 395 840 400 1050 400 2200" />
