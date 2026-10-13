@@ -1,4 +1,5 @@
 const storageKey = 'n3wth-story-journey'
+export type StoryAccent = 'return' | 'depth' | 'suspend' | null
 export const storyEnergy = (time: number) => .12 + .88 * (.5 + .28 * Math.cos(time * .09) + .22 * Math.cos(time * .047 + 1)) ** 2
 export const storyChaos = (time: number) => Math.max(0, Math.sin(time * .067 + 1)) ** 2
 export function storyColor(time: number, offset = 0) {
@@ -47,7 +48,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   const borders = [...svg.querySelectorAll<SVGPathElement>('[data-story-border]')]
   const palette = ['cyan', 'green', 'yellow', 'red']
   const ink = (index: number) => `var(--color-icon-${palette[index]})`
-  type Light = { start: number; duration: number; color: string; coordinated: boolean; expansion?: boolean }
+  type Light = { start: number; duration: number; color: string; coordinated: boolean; expansion?: boolean; accent?: StoryAccent }
   const lights = Array.from({ length: 9 }, () => ({ next: 0, events: [] as Light[] }))
   const strength = (light: Light, time: number) => {
     const age = (time - light.start) / light.duration
@@ -63,14 +64,15 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   reset()
   return {
     profile: profiles[kind] ?? profiles.art,
-    startPattern(time: number, duration: number, color: string, stagger: number, blocks: Set<number>, chaos: number, expansion = false) {
+    startPattern(time: number, duration: number, color: string, stagger: number, blocks: Set<number>, chaos: number, expansion = false, accent: StoryAccent = null) {
       lights.forEach((light, index) => {
         if (!blocks.has(index)) return
         const independent = ink(index * 3 % palette.length)
         const tint = chaos > .001 ? `color-mix(in srgb, ${color} ${(1 - chaos) * 100}%, ${independent})` : color
-        light.events.push({ start: time + index / 8 * stagger, duration, color: tint, coordinated: true, expansion })
+        light.events.push({ start: time + index / 8 * stagger, duration, color: tint, coordinated: true, expansion, accent })
+        if (accent === 'return') light.events.push({ start: time + stagger + duration * 3.5, duration: duration * .8, color: 'white', coordinated: true })
       })
-      orderedUntil = time + stagger + duration
+      orderedUntil = time + stagger + duration * (accent === 'return' ? 4.5 : accent === 'suspend' ? 2 : 1)
       lights.forEach(light => { light.next = orderedUntil + 1 + Math.random() * 4 })
     },
     colorFor(path: SVGPathElement, time: number, planned = false) {
@@ -91,7 +93,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         initialized = true
       }
       lights.forEach(light => {
-        light.events = light.events.filter(event => time < event.start + event.duration * (event.expansion ? 2.3 : 1))
+        light.events = light.events.filter(event => time < event.start + event.duration * (event.accent === 'return' ? 4.5 : event.expansion ? 2.3 : 1))
         if (time < orderedUntil || time < light.next) return
         const duration = 1.8 + Math.random() * 2.7
         light.next = time + duration + 3 + Math.random() * 7 + (1 - energy) * 10
@@ -102,15 +104,16 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
       faces.forEach(face => {
         const layer = Number(face.dataset.storyFace)
         const shade = Number(face.dataset.faceShade)
-        let total = 0, color = ink(0)
+        let total = 0, depth = 0, color = ink(0)
         for (const light of lights[layer].events) {
           const weight = strength(light, time)
           if (!weight) continue
           color = total ? `color-mix(in srgb, ${color} ${total / (total + weight) * 100}%, ${light.color})` : light.color
           total += weight
+          if (light.accent === 'depth') depth = Math.max(depth, weight)
         }
         face.style.fill = color
-        face.style.fillOpacity = String(Math.min(1, total) * amount * shade)
+        face.style.fillOpacity = String(Math.min(1, total) * amount * (shade + (1.5 - 2 * shade) * depth))
       })
       const scale = borders.length ? Math.abs(svg.getScreenCTM()?.a || 1) : 1
       borders.forEach(border => {
@@ -120,7 +123,9 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         let brightness = 0
         for (const event of events) {
           if (!event.expansion) continue
-          const age = (time - event.start) / event.duration - distance * .45
+          const elapsed = (time - event.start) / event.duration
+          const returning = event.accent === 'return' && elapsed >= 2.3
+          const age = elapsed - (returning ? 2.3 + (3 - distance) * .4 : distance * .45)
           const envelope = pulseEnvelope(age / 1.35, smoothing) / (1 + (distance - 1) * .5)
           if (envelope <= brightness) continue
           brightness = envelope
@@ -130,7 +135,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
           border.style.stroke = event.color
           border.style.strokeWidth = String(1.25 / scale)
           border.style.strokeDasharray = `${tail} 2`
-          border.style.strokeDashoffset = String(side < 0 ? -(1 - head) : -(head - tail))
+          border.style.strokeDashoffset = String((side < 0) !== returning ? -(1 - head) : -(head - tail))
         }
         border.style.opacity = String(brightness)
       })
