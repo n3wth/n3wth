@@ -73,7 +73,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     let passage = 0
     let nextAccent = 25000
     let nextMotif = 0, motifOrdered = true, motifExpansion = false
-    let nextExpansion = 30000 + Math.random() * 30000, expansionUntil = 0
+    let nextExpansion = 10000 + Math.random() * 8000, expansionUntil = 0
     let nextPerformance = 45000 + Math.random() * 45000, awaitingAnswer = false
     let order = new Map<Line, number>()
     const seeded = new Set<Line>()
@@ -180,21 +180,20 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const calm = .65 + Math.sin(sceneTime * .037) * .18 + Math.sin(sceneTime * .013) * .1
         if (time >= nextMotif && (energy < .45 || passage === 1)) {
           motifOrdered = Math.random() < calm
-          motifExpansion = kind === 'projects' && motifOrdered && time >= nextExpansion && Math.random() < .2
-          if (motifExpansion) {
-            expansionUntil = time + 9000 + Math.random() * 5000
-            nextExpansion = expansionUntil + 40000 + Math.random() * 30000
-          }
           nextMotif = time + 18000 + Math.random() * 18000
         }
-        if (time >= expansionUntil) motifExpansion = false
+        if (kind === 'projects' && time >= nextExpansion) {
+          expansionUntil = time + 9000 + Math.random() * 5000
+          nextExpansion = expansionUntil + 40000 + Math.random() * 30000
+        }
+        motifExpansion = time < expansionUntil
         const answering = awaitingAnswer
         const accent: StoryAccent = !answering && kind === 'projects' && time >= nextPerformance
           ? motifExpansion ? 'return' : Math.random() < .5 ? 'depth' : 'suspend' : null
         if (accent) nextPerformance = time + 90000 + Math.random() * 60000
         awaitingAnswer = accent === 'suspend'
         synchronized = answering || (!accent && Math.random() < space.profile.chorus * energy)
-        ordered = !synchronized && (motifOrdered || !!accent)
+        ordered = !synchronized && (motifOrdered || motifExpansion || !!accent)
         longChase = Math.random() < (ordered ? .35 : .2)
         white = synchronized && Math.random() < .4
         psychedelic = !accent && !answering && !white && energy > .45 && time >= nextAccent && Math.random() < .12
