@@ -1,5 +1,5 @@
 const storageKey = 'n3wth-story-journey'
-const paletteSpace = typeof CSS !== 'undefined' && CSS.supports('color', 'color-mix(in oklch, red, blue)') ? 'oklch' : 'srgb'
+const paletteSpace = typeof CSS !== 'undefined' && CSS.supports?.('color', 'color-mix(in oklch, red, blue)') ? 'oklch' : 'srgb'
 export type StoryAccent = 'return' | 'depth' | 'suspend' | null
 export const storyEnergy = (time: number) => .12 + .88 * (.5 + .28 * Math.cos(time * .09) + .22 * Math.cos(time * .047 + 1)) ** 2
 export const storyChaos = (time: number) => Math.max(0, Math.sin(time * .067 + 1)) ** 2
