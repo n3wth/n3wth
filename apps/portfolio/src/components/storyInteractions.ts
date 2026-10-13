@@ -268,7 +268,8 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           const position = pulse.start + (pulse.end - pulse.start) * travel(t)
           const length = Math.min(tuning.length * pulse.lengthScale, Math.abs(position - pulse.start))
           const ghost = pulse.psychedelic ? smooth((progress - .55) / .45) * depth : 0
-          echo.setAttribute('transform', ghost ? `translate(${ghost * 4} ${-ghost * 3}) ${transform}` : transform)
+          const drift = Math.sin(pulse.phase + index * .7)
+          echo.setAttribute('transform', ghost ? `translate(${ghost * (10 + drift * 12)} ${-ghost * (8 + index * 3)}) ${transform}` : transform)
           echo.style.strokeWidth = pulse.path.style.strokeWidth
           echo.style.strokeDasharray = `${Math.max(.0001, length)} 2`
           echo.style.strokeDashoffset = String(-(pulse.end > pulse.start ? position - length : position))

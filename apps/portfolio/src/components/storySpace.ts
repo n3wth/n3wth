@@ -46,6 +46,8 @@ export function saveStoryJourney(journey: { epoch: number; color: number }) {
 export function createStorySpace(svg: SVGSVGElement, kind: string, amount: number, smoothing: number) {
   const faces = [...svg.querySelectorAll<SVGPathElement>('[data-story-face]')]
   const borders = [...svg.querySelectorAll<SVGPathElement>('[data-story-border]')]
+  const backdrop = svg.closest<HTMLElement>('.portfolio-story-hero')
+  let crescendo: { start: number; duration: number; color: string } | null = null
   const palette = ['cyan', 'green', 'yellow', 'red']
   const ink = (index: number) => `var(--color-icon-${palette[index]})`
   type Light = { start: number; duration: number; color: string; coordinated: boolean; expansion?: boolean; accent?: StoryAccent }
@@ -58,13 +60,17 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   let orderedUntil = 0
   const reset = () => {
     svg.style.filter = ''
+    svg.style.color = ''
+    if (backdrop) backdrop.style.backgroundColor = ''
+    crescendo = null
     faces.forEach(face => { face.style.fill = 'none'; face.style.stroke = 'none' })
-    borders.forEach(border => { border.style.opacity = '0' })
+    borders.forEach(border => { border.style.opacity = '0'; border.removeAttribute('transform') })
   }
   reset()
   return {
     profile: profiles[kind] ?? profiles.art,
     startPattern(time: number, duration: number, color: string, stagger: number, blocks: Set<number>, chaos: number, expansion = false, accent: StoryAccent = null) {
+      if (accent === 'return') crescendo = { start: time + stagger + duration * 3.3, duration: Math.max(5, duration * 1.6), color }
       lights.forEach((light, index) => {
         if (!blocks.has(index)) return
         const independent = ink(index * 3 % palette.length)
@@ -87,7 +93,11 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     update(time: number) {
       const energy = storyEnergy(time)
       const inversion = Math.max(0, (Math.sin(time * .043 - 1.5) - .55) / .45) ** 2
-      svg.style.filter = inversion > .001 ? `invert(${inversion}) hue-rotate(${inversion * 30}deg)` : ''
+      const bloom = crescendo ? pulseEnvelope((time - crescendo.start) / crescendo.duration, .8) : 0
+      if (backdrop) backdrop.style.backgroundColor = bloom > 0 ? `color-mix(in srgb, ${crescendo!.color} ${bloom * 65}%, var(--color-background-body))` : ''
+      svg.style.color = bloom > 0 ? `color-mix(in srgb, var(--color-background-body) ${bloom * 100}%, color-mix(in srgb, var(--color-text-primary) 40%, var(--color-background-body)))` : ''
+      const sceneInversion = inversion * (1 - bloom)
+      svg.style.filter = sceneInversion > .001 ? `invert(${sceneInversion}) hue-rotate(${sceneInversion * 30}deg)` : ''
       if (!initialized) {
         lights.forEach(light => { light.next = time + Math.random() * 5 })
         initialized = true
@@ -121,6 +131,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         const distance = Math.abs(side)
         const events = lights[Number(border.dataset.storyBorder)].events
         let brightness = 0
+        border.removeAttribute('transform')
         for (const event of events) {
           if (!event.expansion) continue
           const elapsed = (time - event.start) / event.duration
@@ -136,6 +147,10 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
           border.style.strokeWidth = String(1.25 / scale)
           border.style.strokeDasharray = `${tail} 2`
           border.style.strokeDashoffset = String((side < 0) !== returning ? -(1 - head) : -(head - tail))
+          if (returning) {
+            const release = Math.max(0, Math.min(1, (age - .85) / .5))
+            border.setAttribute('transform', `translate(${Math.sign(side) * release * release * 24} ${-release * release * 12})`)
+          }
         }
         border.style.opacity = String(brightness)
       })
