@@ -1,5 +1,5 @@
 import { useEffect, type RefObject } from 'react'
-import { createStorySpace, pulseEnvelope, readStoryJourney, saveStoryJourney } from './storySpace'
+import { createStorySpace, pulseEnvelope, readStoryJourney, saveStoryJourney, storyEnergy, storyColor } from './storySpace'
 
 type Point = { x: number; y: number }
 
@@ -20,7 +20,7 @@ export function segmentContact(a: Point, b: Point, c: Point, d: Point, radius = 
 
 type Line = { path: SVGPathElement; points: DOMPoint[]; length: number }
 type Trail = { previous?: Point; position: number; direction: number; width: number; visited: Set<Line>; depth: number }
-type Transfer = Trail & { path: SVGPathElement; echoes: SVGPathElement[]; phase: number; lengthScale: number; line: Line; start: number; end: number; born: number; duration: number }
+type Transfer = Trail & { path: SVGPathElement; echoes: SVGPathElement[]; phase: number; lengthScale: number; line: Line; start: number; end: number; born: number; duration: number; passage: number; coordinated: boolean; psychedelic: boolean }
 
 /** Exact crossing with normalized positions on both segments. */
 export function crossing(a: Point, b: Point, c: Point, d: Point) {
@@ -70,9 +70,12 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     let synchronized = false, ordered = false, longChase = false, white = false, burstDuration = 500
     let patternColor = '', sceneTime = 0
     let psychedelic = false
+    let passage = 0
+    let nextAccent = 25000
+    let nextMotif = 0, motifOrdered = true
     let order = new Map<Line, number>()
     const seeded = new Set<Line>()
-    const pulseLimit = () => lines.length * 2
+    const pulseLimit = () => lines.length * 4
 
     function clearTransfers() {
       transfers.forEach(pulse => { pulse.path.remove(); pulse.echoes.forEach(path => path.remove()) })
@@ -92,11 +95,12 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         path.setAttribute('pathLength', '1')
         path.style.vectorEffect = 'none'
         path.dataset.generation = String(parent.depth + 1)
+        path.dataset.passage = String(passage)
         path.dataset.origin = String(position)
         path.dataset.direction = String(end > position ? 1 : -1)
         color += 1 + Math.floor(Math.random() * 3)
         const matchedColor = ordered || synchronized ? patternColor : space.colorFor(line.path, sceneTime)
-        path.setAttribute('stroke', matchedColor || `var(--color-icon-${colors[color % colors.length]})`)
+        path.setAttribute('stroke', matchedColor || storyColor(sceneTime, (Math.random() - .5) * .3))
         path.style.opacity = '0'
         // Render above the artwork so quiet/reflection groups do not hide a real contact.
         svg!.appendChild(path)
@@ -104,11 +108,12 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           const echo = path.cloneNode(false) as SVGPathElement
           echo.setAttribute('class', 'section-story__transfer section-story__echo')
           echo.removeAttribute('data-generation')
-          echo.setAttribute('stroke', psychedelic && !white ? `var(--color-icon-${colors[(index + color) % colors.length]})` : matchedColor || `var(--color-icon-${colors[(index + color) % colors.length]})`)
+          echo.setAttribute('stroke', psychedelic && !white ? `var(--color-icon-${colors[(index + color) % colors.length]})` : path.getAttribute('stroke')!)
           svg!.insertBefore(echo, path)
           return echo
         }) : []
         transfers.push({
+          passage, coordinated: ordered || synchronized, psychedelic,
           path, echoes, phase: synchronized ? 0 : Math.random() * Math.PI * 2,
           lengthScale: synchronized || ordered ? (longChase ? 2.4 : 1) : longChase ? 1.8 + Math.random() * 1.2 : .45 + Math.random() * .9,
           line, start: position, end, position, direction: end > position ? 1 : -1, width: 0,
@@ -163,16 +168,26 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       time += delta
       lastTime = now
       sceneTime = journeyOffset + time / 1000
+      const energy = storyEnergy(sceneTime)
       space.update(sceneTime)
-      if (!transfers.length && time >= nextBurst) {
-        synchronized = Math.random() < space.profile.chorus
-        ordered = !synchronized && Math.random() < .7
+      if (time >= nextBurst && transfers.length <= lines.length * 2) {
+        passage++
+        const calm = .65 + Math.sin(sceneTime * .037) * .18 + Math.sin(sceneTime * .013) * .1
+        if (time >= nextMotif && (energy < .45 || passage === 1)) {
+          motifOrdered = Math.random() < calm
+          nextMotif = time + 18000 + Math.random() * 18000
+        }
+        synchronized = Math.random() < space.profile.chorus * energy
+        ordered = !synchronized && motifOrdered
         longChase = Math.random() < (ordered ? .35 : .2)
         white = synchronized && Math.random() < .4
-        psychedelic = !white && Math.random() < .3
+        psychedelic = !white && energy > .45 && time >= nextAccent && Math.random() < .12
+        if (psychedelic) nextAccent = time + 35000 + Math.random() * 45000
         burstDuration = tuning.duration * space.profile.speed * (.85 + Math.random() * .3) * (longChase ? 2 + Math.random() : 1)
-        patternColor = white ? 'white' : `var(--color-icon-${colors[Math.floor(Math.random() * colors.length)]})`
-        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, ordered ? burstDuration * .00065 : 0)
+        patternColor = white ? 'white' : storyColor(sceneTime)
+        const blocks = new Set(Array.from({ length: 9 }, (_, i) => i).filter(() => synchronized || energy > .65 || Math.random() < energy))
+        if (!blocks.size) blocks.add(Math.floor(Math.random() * 9))
+        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, ordered ? burstDuration * .00065 : 0, blocks)
         seeded.clear()
         const paths = geometry()
         const sorted = [...paths].sort((a, b) => Math.min(...a.points.map(p => p.y)) - Math.min(...b.points.map(p => p.y)))
@@ -183,18 +198,23 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         // Usually one local spark; occasionally light the whole connected drawing.
         if (kind === 'thinking' || (kind === 'projects' && (ordered || synchronized))) {
           // The canopy is one rooted drawing. Every branch starts at the floor.
-          for (const line of lines) emit(line, 0, { position: 0, direction: 1, width: 0, visited: new Set(), depth: -1 })
+          for (const line of lines) {
+            const block = line.path.closest<SVGGElement>('[data-story-block]')
+            if (block && !blocks.has(Number(block.dataset.storyBlock))) continue
+            if (kind === 'thinking' && !synchronized && energy < .65 && Math.random() > energy) continue
+            emit(line, 0, { position: 0, direction: 1, width: 0, visited: new Set(), depth: -1 })
+          }
         } else {
-          const count = synchronized || ordered ? lines.length : 1 + Math.floor(Math.random() * 3)
+          const count = synchronized ? lines.length : ordered ? Math.max(1, Math.round(lines.length * energy)) : 1 + Math.floor(Math.random() * 3 * energy)
           for (let i = 0; i < count && startBurst(paths); i++) { /* seed connected lines */ }
         }
-        nextBurst = time + burstDuration + tuning.gap * space.profile.gap * (.65 + Math.random() * .7)
+        nextBurst = time + burstDuration * (ordered ? 1.2 : .85) + tuning.gap * (.25 + (1 - energy) * 2) * space.profile.gap
         saveJourney()
       }
       transfers = transfers.filter(pulse => {
         const age = (time - pulse.born) / pulse.duration
         if (age < 0) return true
-        if (age >= 1 + afterimages * (psychedelic ? .9 : .45)) {
+        if (age >= 1 + afterimages * (pulse.psychedelic ? .9 : .45)) {
           pulse.path.remove()
           pulse.echoes.forEach(path => path.remove())
           return false
@@ -202,7 +222,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const progress = Math.min(1, age)
         const travel = (age: number) => {
           const t = Math.min(1, age / .8)
-          if (ordered || synchronized) return smooth(t)
+          if (pulse.coordinated) return smooth(t)
           return easeOut(t + .03 * noise * Math.sin(t * Math.PI * 2 + pulse.phase) * Math.sin(t * Math.PI) ** 2)
         }
         pulse.position = pulse.start + (pulse.end - pulse.start) * travel(progress)
@@ -225,15 +245,16 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         pulse.path.style.opacity = String(envelope(progress) * brightness)
         pulse.echoes.forEach((echo, index) => {
           const depth = (index + 1) * afterimages
-          const t = Math.max(0, Math.min(1, age - (psychedelic ? depth * .3 : ordered || synchronized ? 0 : depth * .15)))
+          const t = Math.max(0, Math.min(1, age - (pulse.psychedelic ? depth * .3 : pulse.coordinated ? 0 : depth * .15)))
           const position = pulse.start + (pulse.end - pulse.start) * travel(t)
           const length = Math.min(tuning.length * pulse.lengthScale, Math.abs(position - pulse.start))
-          echo.setAttribute('transform', transform)
+          const ghost = pulse.psychedelic ? smooth((progress - .55) / .45) * depth : 0
+          echo.setAttribute('transform', ghost ? `translate(${ghost * 4} ${-ghost * 3}) ${transform}` : transform)
           echo.style.strokeWidth = pulse.path.style.strokeWidth
           echo.style.strokeDasharray = `${Math.max(.0001, length)} 2`
           echo.style.strokeDashoffset = String(-(pulse.end > pulse.start ? position - length : position))
-          const reveal = psychedelic ? smooth((progress - .5) / .35) : 1
-          echo.style.opacity = String(envelope(t) * brightness * afterimages * (psychedelic ? .8 : .38) / (index + 1) * reveal)
+          const reveal = pulse.psychedelic ? smooth((progress - .5) / .35) : 1
+          echo.style.opacity = String(envelope(t) * brightness * afterimages * (pulse.psychedelic ? .8 : .38) / (index + 1) * reveal)
         })
         return true
       })
@@ -242,7 +263,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       if (time - lastCollision >= 16) {
         lastCollision = time
         // Existing reactions get the first chance to continue before new sources start chains.
-        const active: { path: SVGPathElement; trail: Trail }[] = transfers.filter(pulse => time >= pulse.born && time - pulse.born < pulse.duration).map(pulse => ({ path: pulse.path, trail: pulse }))
+        const active: { path: SVGPathElement; trail: Trail }[] = transfers.filter(pulse => pulse.passage === passage && time >= pulse.born && time - pulse.born < pulse.duration).map(pulse => ({ path: pulse.path, trail: pulse }))
         const targets = active.length ? geometry() : []
 
         for (const { path, trail } of active) {

@@ -1,7 +1,15 @@
 const storageKey = 'n3wth-story-journey'
+export const storyEnergy = (time: number) => .12 + .88 * (.5 + .28 * Math.cos(time * .09) + .22 * Math.cos(time * .047 + 1)) ** 2
+export function storyColor(time: number, offset = 0) {
+  const palette = ['cyan', 'green', 'yellow', 'red']
+  const phase = ((time / 38 + offset) % 4 + 4) % 4
+  const index = Math.floor(phase), fraction = phase - index
+  const blend = fraction * fraction * (3 - 2 * fraction)
+  return `color-mix(in srgb, var(--color-icon-${palette[index]}) ${(1 - blend) * 100}%, var(--color-icon-${palette[(index + 1) % 4]}))`
+}
 export function pulseEnvelope(t: number, smoothing: number) {
   const smooth = (n: number) => { const x = Math.max(0, Math.min(1, n)); return x * x * (3 - 2 * x) }
-  return smooth(t / (.04 + smoothing * .2)) * (1 - smooth((t - (.88 - smoothing * .28)) / (.12 + smoothing * .28)))
+  return smooth(t / (.16 + smoothing * .24)) * (1 - smooth((t - (.7 - smoothing * .12)) / (.3 + smoothing * .12)))
 }
 const profiles: Record<string, { speed: number; gap: number; chorus: number }> = {
   art: { speed: 1, gap: 1.4, chorus: .25 },
@@ -13,12 +21,19 @@ const profiles: Record<string, { speed: number; gap: number; chorus: number }> =
 }
 
 /** A tab-local clock and palette connect the scenes without changing navigation. */
+let documentJourney: { epoch: number; color: number } | undefined
 export function readStoryJourney() {
+  if (documentJourney) return documentJourney
+  const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
   try {
     const value = JSON.parse(sessionStorage.getItem(storageKey) || 'null')
-    if (Number.isFinite(value?.epoch) && Number.isFinite(value?.color)) return value as { epoch: number; color: number }
+    if (navigation?.type !== 'reload' && Number.isFinite(value?.epoch) && Number.isFinite(value?.color)) {
+      documentJourney = value as { epoch: number; color: number }
+      return documentJourney
+    }
   } catch { /* Storage is optional. */ }
-  return { epoch: Date.now(), color: 0 }
+  documentJourney = { epoch: Date.now() - Math.random() * 600000, color: Math.floor(Math.random() * 4) }
+  return documentJourney
 }
 
 export function saveStoryJourney(journey: { epoch: number; color: number }) {
@@ -30,18 +45,25 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   const faces = [...svg.querySelectorAll<SVGPathElement>('[data-story-face]')]
   const palette = ['cyan', 'green', 'yellow', 'red']
   const ink = (index: number) => `var(--color-icon-${palette[index]})`
-  const lights = Array.from({ length: 9 }, () => ({ start: -1, duration: 1, next: 0, color: ink(0) }))
+  type Light = { start: number; duration: number; color: string; coordinated: boolean }
+  const lights = Array.from({ length: 9 }, () => ({ next: 0, events: [] as Light[] }))
+  const strength = (light: Light, time: number) => {
+    const age = (time - light.start) / light.duration
+    return age > 0 && age < 1 ? (light.coordinated ? pulseEnvelope(age, smoothing) : Math.sin(age * Math.PI) ** 2) : 0
+  }
   let initialized = false
   let orderedUntil = 0
-  const reset = () => faces.forEach(face => { face.style.fill = 'none'; face.style.stroke = 'none' })
+  const reset = () => {
+    svg.style.filter = ''
+    faces.forEach(face => { face.style.fill = 'none'; face.style.stroke = 'none' })
+  }
   reset()
   return {
     profile: profiles[kind] ?? profiles.art,
-    startPattern(time: number, duration: number, color: string, stagger: number) {
+    startPattern(time: number, duration: number, color: string, stagger: number, blocks: Set<number>) {
       lights.forEach((light, index) => {
-        light.start = time + index / 8 * stagger
-        light.duration = duration
-        light.color = color
+        if (!blocks.has(index)) return
+        light.events.push({ start: time + index / 8 * stagger, duration, color, coordinated: true })
       })
       orderedUntil = time + stagger + duration
       lights.forEach(light => { light.next = orderedUntil + 1 + Math.random() * 4 })
@@ -49,29 +71,37 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     colorFor(path: SVGPathElement, time: number) {
       const block = path.closest<SVGGElement>('[data-story-block]')
       if (!block) return null
-      const light = lights[Number(block.dataset.storyBlock)]
-      return time >= light.start && time < light.start + light.duration ? light.color : null
+      const active = lights[Number(block.dataset.storyBlock)].events.filter(light => strength(light, time) > .05)
+      active.sort((a, b) => strength(b, time) - strength(a, time))
+      return active[0]?.color ?? null
     },
     update(time: number) {
+      const energy = storyEnergy(time)
+      const inversion = Math.max(0, (Math.sin(time * .043 - 1.5) - .55) / .45) ** 2
+      svg.style.filter = inversion > .001 ? `invert(${inversion}) hue-rotate(${inversion * 30}deg)` : ''
       if (!initialized) {
         lights.forEach(light => { light.next = time + Math.random() * 5 })
         initialized = true
       }
       lights.forEach(light => {
+        light.events = light.events.filter(event => time < event.start + event.duration)
         if (time < orderedUntil || time < light.next) return
-        light.start = time
-        light.duration = 1.8 + Math.random() * 2.7
-        light.next = time + light.duration + 1.5 + Math.random() * 7
-        light.color = ink(Math.floor(Math.random() * palette.length))
+        const duration = 1.8 + Math.random() * 2.7
+        light.next = time + duration + 3 + Math.random() * 7 + (1 - energy) * 10
+        light.events.push({ start: time, duration, color: storyColor(time, (Math.random() - .5) * .3), coordinated: false })
       })
       faces.forEach(face => {
         const layer = Number(face.dataset.storyFace)
         const shade = Number(face.dataset.faceShade)
-        const light = lights[layer]
-        const age = (time - light.start) / light.duration
-        const strength = age > 0 && age < 1 ? (time < orderedUntil ? pulseEnvelope(age, smoothing) : Math.sin(age * Math.PI) ** 2) * amount * shade : 0
-        face.style.fill = light.color
-        face.style.fillOpacity = String(strength)
+        let total = 0, color = ink(0)
+        for (const light of lights[layer].events) {
+          const weight = strength(light, time)
+          if (!weight) continue
+          color = total ? `color-mix(in srgb, ${color} ${total / (total + weight) * 100}%, ${light.color})` : light.color
+          total += weight
+        }
+        face.style.fill = color
+        face.style.fillOpacity = String(Math.min(1, total) * amount * shade)
       })
     },
     reset,
