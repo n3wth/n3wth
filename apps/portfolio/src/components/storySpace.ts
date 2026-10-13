@@ -53,8 +53,12 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   const ink = (index: number) => `var(--color-icon-${palette[index]})`
   type Light = { start: number; duration: number; color: string; coordinated: boolean; expansion?: boolean; accent?: StoryAccent }
   const lights = Array.from({ length: 9 }, () => ({ next: 0, events: [] as Light[] }))
-  const outlines = [...svg.querySelectorAll<SVGPathElement>('[data-story-block] > path:not(.section-story__pulse)')]
-    .map(path => ({ path, stroke: path.style.stroke, layer: Number(path.closest<SVGGElement>('[data-story-block]')!.dataset.storyBlock) }))
+  const outlines = [...svg.querySelectorAll<SVGPathElement>('[data-story-block] > path:not(.section-story__pulse), [data-story-light] path:not(.section-story__pulse):not(.section-story__contact-spectrum)')]
+    .map(path => {
+      const group = path.closest<SVGGElement>('[data-story-block], [data-story-light]')!
+      return { path, stroke: path.style.stroke, layer: Number(group.dataset.storyBlock ?? group.dataset.storyLight) }
+    })
+  const atmosphere = { projects: 1, art: .8, work: .45, thinking: .55, library: .3, contact: .5 }[kind] ?? 0
   const attention = Array<number>(9).fill(0)
   const trace = Array<number>(9).fill(0)
   const phase = Math.random() * Math.PI * 2
@@ -93,7 +97,10 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     },
     colorFor(path: SVGPathElement, time: number, planned = false) {
       const block = path.closest<SVGGElement>('[data-story-block]')
-      if (!block) return null
+      if (!block) {
+        const group = path.closest<SVGGElement>('[data-story-light]')
+        return group && !planned && storyChaos(time) < .6 ? storyColor(time, (Number(group.dataset.storyLight) - 4) * .035) : null
+      }
       const events = lights[Number(block.dataset.storyBlock)].events
       if (planned) return events.at(-1)?.color ?? null
       const active = events.filter(light => strength(light, time) > .05)
@@ -116,7 +123,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
       const inversion = Math.max(0, (Math.sin(time * .043 - 1.5) - .55) / .45) ** 2
       const bloom = crescendo ? pulseEnvelope((time - crescendo.start) / crescendo.duration, .8) : 0
       const wake = trace.reduce((total, value) => total + value, 0) / trace.length
-      const ambient = kind === 'projects' ? (1.5 + wake * 5 + meeting * 1.5) * amount : 0
+      const ambient = (1.5 + wake * 5 + meeting * 1.5) * amount * atmosphere
       const ground = ambient > 0 ? `color-mix(in srgb, ${ambientColor} ${ambient}%, var(--color-background-body))` : 'var(--color-background-body)'
       if (backdrop) backdrop.style.backgroundColor = bloom > 0 ? `color-mix(in srgb, ${crescendo!.color} ${bloom * 65}%, ${ground})` : ambient > 0 ? ground : ''
       svg.style.color = bloom > 0 ? `color-mix(in srgb, var(--color-background-body) ${bloom * 100}%, color-mix(in srgb, var(--color-text-primary) 40%, var(--color-background-body)))` : ''
@@ -141,7 +148,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         const weight = (attention[layer] * .12 + trace[layer] * .08) * (1 - energy * .5)
         const quiet = `color-mix(in srgb, ${ambientColor} ${weight * 100}%, currentColor)`
         // Neutral edges become ink over lit faces instead of muddy grey on color.
-        const contrast = illumination[layer] * Math.min(1, amount * 1.8)
+        const contrast = kind === 'projects' ? illumination[layer] * Math.min(1, amount * 1.8) : 0
         path.style.stroke = `color-mix(in srgb, var(--color-background-body) ${contrast * 88}%, ${quiet})`
       })
       faces.forEach(face => {

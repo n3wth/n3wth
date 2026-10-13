@@ -32,7 +32,7 @@ function WorkStory() {
   return <>
     {Array.from({ length: 7 }, (_, i) => <LitStoryLine key={i} seed={i + 10}
       d={`M -2400 ${170 + i * 28} H -100 C 280 ${170 + i * 28}, 480 ${475 + i * 20}, 790 ${370 + i * 20} S 1150 ${180 + i * 28}, 1500 ${220 + i * 28} S 2500 ${300 + i * 28}, 3600 ${220 + i * 28}`} />)}
-    {Array.from({ length: 5 }, (_, i) => <g key={i} className="section-story__plane" style={phase(i)}>
+    {Array.from({ length: 5 }, (_, i) => <g key={i} data-story-light={i * 2} className="section-story__plane" style={phase(i)}>
       <LitStoryLine seed={i + 3} d={`M ${690 + i * 40} ${580 - i * 10} V ${190 + i * 24} L ${950 + i * 32} ${105 + i * 26} V ${480 + i * 8} Z`} />
     </g>)}
   </>
@@ -49,7 +49,7 @@ function ArtStory() {
         const y = 545 - i * 15
         const height = 415 - i * 29
         const arch = `M ${x} ${y} V ${y - height * .62} C ${x} ${y - height * 1.14}, ${x + 220 - i * 9} ${y - height * 1.14}, ${x + 220 - i * 9} ${y - height * .62} V ${y}`
-        return <g key={i} style={phase(i)}>
+        return <g key={i} data-story-light={i} style={phase(i)}>
           <path d={arch} />
           <StoryPulse seed={i + 8} d={arch} />
           <path d={arch} transform={`translate(0 ${y * 1.45}) scale(1 -.45)`} />
@@ -71,7 +71,7 @@ function ThinkingStory() {
       const jointY = 420 - Math.abs(i - 11) * 6
       const d = `M ${root} 740 C ${root + 55} 590, ${jointX - Math.cos(angle) * 45} ${jointY + 85}, ${jointX} ${jointY} C ${jointX + Math.cos(angle) * 70} ${jointY - 130}, ${x} ${y + 115}, ${x} ${y}`
         .replace(/-?\d+(?:\.\d+)?/g, value => String(Math.round(Number(value) * 1000) / 1000))
-      return <g key={i} className="section-story__branch" style={{
+      return <g key={i} data-story-light={Math.round(i / 22 * 8)} className="section-story__branch" style={{
         transformOrigin: `${root}px 740px`,
         '--branch-duration': `${11 + ((i * 7) % 13) * 1.13}s`,
         '--branch-delay': `${-i * 2.37}s`,
@@ -112,7 +112,7 @@ function ProjectsStory() {
 function LibraryStory() {
   return <g transform="translate(850 390) rotate(-22)">
     {Array.from({ length: 9 }, (_, i) => <g key={i} transform={`translate(${(i - 4) * 4} 0) rotate(${(i - 4) * 8} 0 235)`}>
-      <g className="section-story__page" style={phase(i)}>
+      <g data-story-light={i} className="section-story__page" style={phase(i)}>
       <LitStoryLine seed={i + 25} d="M 0 235 C -143 125 -219 -5 -192 -205 C -77 -185 57 -151 142 -74 C 128 73 79 183 0 235 Z" />
       <path className="section-story__quiet" d="M 0 235 C -30 57 -107 -90 -192 -205" />
       </g>
@@ -139,7 +139,7 @@ function ContactStory() {
           const d = i === 0
             ? 'M -1800 350 C -200 350 540 210 660 100 C 780 -10 1010 120 924 350 C 730 410 540 210 660 100'
             : `M 924 350 C ${730 + i * 12} ${410 - i * 10}, ${540 + i * 15} ${210 + i * 6}, ${660 + i * 12} ${100 + i * 15} C ${780 + i * 8} ${-10 + i * 21}, ${1010 - i * 7} ${120 + i * 10}, 924 350`
-          return <g key={i}>
+          return <g key={i} data-story-light={Math.round(i / 10 * 8)}>
             <path d={d} />
               <path className="section-story__contact-spectrum" d={d} pathLength="1" stroke={`url(#${spectrum}-${(i * 3 + side) % colors.length})`} style={{
                 '--pulse-length': .06 + (i % 5) * .018,
