@@ -1,4 +1,5 @@
 import { useEffect, type RefObject } from 'react'
+import { createArtRoutes } from './artRoutes'
 import { createStorySpace, pulseEnvelope, readStoryJourney, saveStoryJourney, storyEnergy, storyColor, storyChaos, type StoryAccent } from './storySpace'
 
 type Point = { x: number; y: number }
@@ -51,15 +52,17 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     const spectralColor = CSS.supports('color', 'color-mix(in oklch longer hue, red, blue)')
     const sources = [...svg.querySelectorAll<SVGPathElement>(pulseSelector)]
     sources.forEach(path => { path.style.opacity = '0' })
+    const artRoutes = kind === 'art' ? createArtRoutes(svg) : []
     const lines: Line[] = [...svg.querySelectorAll<SVGPathElement>('path')]
       .filter(path => !path.matches(pulseSelector) && !path.matches('[data-story-face], [data-story-border]') && !path.closest('defs'))
+      .filter(path => kind !== 'art' || !path.closest('[data-story-light]') || path.hasAttribute('data-art-route'))
       .map(path => {
         const length = path.getTotalLength()
         const count = Math.max(8, Math.min(160, Math.ceil(length / 10)))
         return { path, length, points: Array.from({ length: count + 1 }, (_, i) => path.getPointAtLength(length * i / count)) }
       }).filter(line => line.length > 0)
     // Sample once: nearby outlines share a breath rather than flickering independently.
-    const restingLines = lines.map(({ path, points }) => ({
+    const restingLines = lines.filter(line => !line.path.hasAttribute('data-art-route')).map(({ path, points }) => ({
       path, opacity: path.style.opacity,
       y: points[Math.floor(points.length / 2)].y,
     }))
@@ -99,8 +102,9 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     function emit(line: Line, position: number, parent: Trail) {
       // Cuboid edges ignite at real corners, even when a crossing triggers them.
       const cuboid = kind === 'projects' && !!line.path.closest('[data-story-block]')
-      if (cuboid) position = position < .5 ? 0 : 1
-      const ends = cuboid ? [1 - position] : kind === 'thinking' ? [1] : synchronized || ordered || Math.random() < .5 ? [0, 1] : [Math.random() < .5 ? 0 : 1]
+      const anchored = cuboid || line.path.hasAttribute('data-art-route')
+      if (anchored) position = position < .5 ? 0 : 1
+      const ends = anchored ? [1 - position] : kind === 'thinking' ? [1] : synchronized || ordered || Math.random() < .5 ? [0, 1] : [Math.random() < .5 ? 0 : 1]
       for (const end of ends) {
         if (Math.abs(end - position) < .001 || transfers.length >= pulseLimit()) continue
         const path = line.path.cloneNode(false) as SVGPathElement
@@ -139,7 +143,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           return echo
         }) : []
         transfers.push({
-          gain: line.path.closest('[data-story-reflection]') ? .55 : 1,
+          gain: line.path.closest('[data-story-reflection]') || line.path.dataset.artRoute === 'reflection' ? .55 : 1,
           passage, color: pulseColor, coordinated: ordered || synchronized, psychedelic,
           path, echoes, phase: synchronized ? 0 : Math.random() * Math.PI * 2,
           lengthScale: synchronized || ordered ? (longChase ? 2.4 : 1) : longChase ? 1.8 + Math.random() * 1.2 : .45 + Math.random() * .9,
@@ -218,7 +222,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           motifOrdered = Math.random() < calm
           nextMotif = time + 18000 + Math.random() * 18000
         }
-        if (kind === 'projects' && time >= nextExpansion) {
+        if (time >= nextExpansion) {
           expansionUntil = time + 9000 + Math.random() * 5000
           nextExpansion = expansionUntil + 40000 + Math.random() * 30000
         }
@@ -231,6 +235,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         synchronized = answering || (!accent && Math.random() < space.profile.chorus * energy)
         ordered = !synchronized && (motifOrdered || motifExpansion || !!accent)
         longChase = Math.random() < (kind === 'work' ? .55 : ordered ? .35 : .2)
+        if (kind === 'work' && motifExpansion) longChase = true
         white = synchronized && Math.random() < .4
         psychedelic = !accent && !answering && !white && energy > .45 && time >= nextAccent && Math.random() < .12
         if (psychedelic) nextAccent = time + 35000 + Math.random() * 45000
@@ -254,7 +259,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           const group = line.path.closest<SVGGElement>('[data-story-light]')
           if (group) {
             const layer = Number(group.dataset.storyLight) / 8
-            if (kind === 'art') return [line, layer + (line.path.closest('[data-story-reflection]') ? .55 : 0)]
+            if (kind === 'art') return [line, layer + (line.path.dataset.artRoute === 'reflection' ? .55 : 0)]
             if (kind === 'contact') return [line, (Number(line.path.closest<SVGGElement>('[data-story-side]')?.dataset.storySide) === passage % 2 ? 0 : .85) + layer * .15]
             if (kind === 'thinking') return [line, Math.abs(layer - (.5 + .35 * Math.sin(sceneTime * .021)))]
             return [line, passage % 2 ? layer : 1 - layer]
@@ -266,9 +271,16 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           // The canopy is one rooted drawing. Every branch starts at the floor.
           for (const line of lines) {
             const block = line.path.closest<SVGGElement>('[data-story-block]')
+            const light = line.path.closest<SVGGElement>('[data-story-light]')
+            // Work opens through its actual junctions before feeding the long currents.
+            if (kind === 'work' && motifExpansion && !light) continue
+            if (light && kind !== 'thinking' && !motifExpansion && !synchronized) {
+              const focus = 4 + 3 * Math.sin(sceneTime * .021)
+              if (Math.abs(Number(light.dataset.storyLight) - focus) > 2) continue
+            }
             if (accent === 'suspend' && (!block || line.path.classList.contains('section-story__quiet'))) continue
             if (block && !blocks.has(Number(block.dataset.storyBlock))) continue
-            if (kind === 'thinking' && !synchronized && energy < .65) {
+            if (kind === 'thinking' && !synchronized && !motifExpansion && energy < .65) {
               const layer = Number(line.path.closest<SVGGElement>('[data-story-light]')?.dataset.storyLight ?? 4) / 8
               const focus = .5 + .35 * Math.sin(sceneTime * .021)
               if (Math.abs(layer - focus) > .15 + energy * .35) continue
@@ -409,6 +421,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       clearTransfers()
       saveJourney()
       space.dispose()
+      artRoutes.forEach(path => path.remove())
       resetBreath()
       window.removeEventListener('pagehide', saveJourney)
       sources.forEach(path => { path.style.opacity = ''; path.style.strokeDashoffset = '' })

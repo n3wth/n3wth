@@ -53,7 +53,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   const ink = (index: number) => `var(--color-icon-${palette[index]})`
   type Light = { start: number; duration: number; color: string; coordinated: boolean; expansion?: boolean; accent?: StoryAccent }
   const lights = Array.from({ length: 9 }, () => ({ next: 0, events: [] as Light[] }))
-  const outlines = [...svg.querySelectorAll<SVGPathElement>('[data-story-block] > path:not(.section-story__pulse), [data-story-light] path:not(.section-story__pulse):not(.section-story__contact-spectrum)')]
+  const outlines = [...svg.querySelectorAll<SVGPathElement>('[data-story-block] > path:not(.section-story__pulse), [data-story-light] path:not(.section-story__pulse):not(.section-story__contact-spectrum):not([data-art-loop]):not([data-art-route])')]
     .map(path => {
       const group = path.closest<SVGGElement>('[data-story-block], [data-story-light]')!
       return { path, stroke: path.style.stroke, layer: Number(group.dataset.storyBlock ?? group.dataset.storyLight) }
