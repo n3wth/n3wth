@@ -1,8 +1,10 @@
-import { useId, useRef, type CSSProperties } from 'react'
-import { useStoryInteractions } from './storyInteractions'
+import { lazy, Suspense, useId, useRef, useState, type CSSProperties } from 'react'
+import { useStoryInteractions, type PulseTuning } from './storyInteractions'
+import { useHydrated } from '../lib/navigation'
 import './sectionStory.css'
 
 const phase = (index: number): CSSProperties => ({ '--story-phase': index } as CSSProperties)
+const PulseTuner = import.meta.env.DEV ? lazy(() => import('./PulseTuner')) : null
 
 export type SectionStoryKind = 'work' | 'art' | 'thinking' | 'projects' | 'library' | 'contact'
 
@@ -147,11 +149,16 @@ const storyBounds: Record<SectionStoryKind, string> = {
 
 export function SectionStory({ kind }: { kind: SectionStoryKind }) {
   const scene = useRef<SVGSVGElement>(null)
-  useStoryInteractions(scene, kind)
+  const [tuning, setTuning] = useState<PulseTuning>()
+  const ready = useHydrated()
+  useStoryInteractions(scene, kind, tuning)
   const Story = stories[kind]
-  return <div className={`section-story section-story--${kind}`} aria-hidden="true">
+  return <><div className={`section-story section-story--${kind}`} aria-hidden="true">
     <svg ref={scene} viewBox={storyBounds[kind]} fill="none" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
       <Story />
     </svg>
   </div>
+    {PulseTuner && ready && new URLSearchParams(window.location.search).has('tune') &&
+      <Suspense fallback={null}><PulseTuner onChange={setTuning} /></Suspense>}
+  </>
 }

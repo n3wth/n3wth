@@ -24,19 +24,21 @@ type Transfer = Trail & { path: SVGPathElement; line: Line; start: number; end: 
 const pulseSelector = '.section-story__pulse, .section-story__contact-spectrum'
 const colors = ['cyan', 'green', 'yellow', 'red']
 const smooth = (n: number) => { const t = Math.max(0, Math.min(1, n)); return t * t * (3 - 2 * t) }
+export interface PulseTuning { duration: number; gap: number; length: number; easing: number }
 
-export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind: string) {
+export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind: string, tuning?: PulseTuning) {
   useEffect(() => {
     const svg = ref.current
     if (!svg || typeof SVGPathElement === 'undefined' || !SVGPathElement.prototype.getTotalLength) return
     let visible = typeof IntersectionObserver === 'undefined'
     const media = matchMedia('(prefers-reduced-motion: reduce)')
+    const easeOut = (t: number) => 1 - (1 - t) ** (tuning?.easing ?? 3)
     const sources = [...svg.querySelectorAll<SVGPathElement>(pulseSelector)]
     const sourceTiming = sources.map((path, index) => {
-      const duration = 3500 + Math.random() * 3500
+      const duration = tuning?.duration ?? 400 + Math.random() * 250
       return {
         path, duration, born: null as number | null, direction: 1,
-        next: index === 0 ? 0 : 2000 + Math.random() * 22000,
+        next: index === 0 ? 0 : tuning ? index * (tuning.duration + tuning.gap) : 2000 + Math.random() * 22000,
       }
     })
     const lines: Line[] = [...svg.querySelectorAll<SVGPathElement>('path')]
@@ -72,7 +74,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       const end = position < .5 ? 1 : 0
       transfers.push({
         path, line, start: position, end, position, direction: end > position ? 1 : -1, width: 0, born: time,
-        duration: 2500 + Math.abs(end - position) * 2500,
+        duration: tuning ? tuning.duration * (.5 + Math.abs(end - position) * .5) : 250 + Math.abs(end - position) * 250,
         depth: parent.depth + 1, visited: new Set([...parent.visited, line]), spawned: false,
       })
       line.cooldown = time + 2000
@@ -90,21 +92,22 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           pulse.born = time
           pulse.direction = Math.random() < .5 ? 1 : -1
           trails.delete(pulse.path)
-          pulse.duration = 3500 + Math.random() * 3500
-          pulse.next = time + pulse.duration + 18000 + Math.random() * 32000
-          pulse.path.style.setProperty('--pulse-length', String(.05 + Math.random() * .08))
+          pulse.duration = tuning?.duration ?? 400 + Math.random() * 250
+          pulse.next = time + pulse.duration + (tuning?.gap ?? 18000 + Math.random() * 32000)
+          pulse.path.style.setProperty('--pulse-length', String(tuning?.length ?? .05 + Math.random() * .08))
         }
         const progress = pulse.born === null ? 1 : Math.min(1, (time - pulse.born) / pulse.duration)
         const width = parseFloat(pulse.path.style.getPropertyValue('--pulse-length'))
+        const travel = easeOut(progress)
         pulse.path.style.strokeDashoffset = String(pulse.direction === 1
-          ? width - progress * (1 + width) : -1 + progress * (1 + width))
+          ? width - travel * (1 + width) : -1 + travel * (1 + width))
         pulse.path.style.opacity = String(smooth(progress / .12) * (1 - smooth((progress - .8) / .2)))
       }
       transfers = transfers.filter(pulse => {
         const progress = (time - pulse.born) / pulse.duration
         if (progress >= 1) { pulse.path.remove(); return false }
-        pulse.position = pulse.start + (pulse.end - pulse.start) * progress
-        const width = Math.min(.075, Math.abs(pulse.position - pulse.start))
+        pulse.position = pulse.start + (pulse.end - pulse.start) * easeOut(progress)
+        const width = Math.min(tuning?.length ?? .075, Math.abs(pulse.position - pulse.start))
         pulse.width = width
         const tail = pulse.end > pulse.start ? pulse.position - width : pulse.position
         const rootMatrix = svg!.getScreenCTM()
@@ -119,8 +122,8 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         return true
       })
 
-      // Geometry checks run at 12.5Hz; pulse rendering remains at display refresh rate.
-      if (time - lastCollision >= 80) {
+      // Sample contacts frequently enough to catch the fast launch of each pulse.
+      if (time - lastCollision >= 16) {
         lastCollision = time
         // Existing reactions get the first chance to continue before new sources start chains.
         const active: { path: SVGPathElement; trail: Trail }[] = transfers.map(pulse => ({ path: pulse.path, trail: pulse }))
@@ -210,5 +213,5 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       sources.forEach(path => { path.style.opacity = ''; path.style.strokeDashoffset = '' })
       svg.removeAttribute('data-story-paused')
     }
-  }, [ref, kind])
+  }, [ref, kind, tuning])
 }
