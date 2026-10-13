@@ -1,6 +1,5 @@
 ---
 import '../index.css'
-import '../components/storyJourney.css'
 import SiteHeader from '../components/SiteHeader'
 import Footer from '../components/Footer'
 import siteSchema from '../data/site-schema.json'
@@ -25,12 +24,6 @@ if (path.startsWith('thinking/')) schemas.push(buildArticleSchema({ url, title: 
 <!doctype html>
 <html lang="en" data-theme="dark" data-astryx-theme="n3wth">
   <head>
-    <script is:inline>
-      // Native transitions may be skipped during navigation or a motion-preference change.
-      for (const type of ['pageswap', 'pagereveal']) {
-        addEventListener(type, event => { event.viewTransition?.ready.catch(() => {}) })
-      }
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
