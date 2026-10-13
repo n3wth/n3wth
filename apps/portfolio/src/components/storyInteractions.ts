@@ -48,6 +48,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     const media = matchMedia('(prefers-reduced-motion: reduce)')
     const easeOut = (t: number) => 1 - (1 - t) ** tuning.easing
     const { noise, smoothing, afterimages } = tuning
+    const spectralColor = CSS.supports('color', 'color-mix(in oklch longer hue, red, blue)')
     const sources = [...svg.querySelectorAll<SVGPathElement>(pulseSelector)]
     sources.forEach(path => { path.style.opacity = '0' })
     const lines: Line[] = [...svg.querySelectorAll<SVGPathElement>('path')]
@@ -114,6 +115,11 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           echo.setAttribute('class', 'section-story__transfer section-story__echo')
           echo.removeAttribute('data-generation')
           echo.setAttribute('stroke', psychedelic && !white ? `var(--color-icon-${colors[(index + color) % colors.length]})` : path.getAttribute('stroke')!)
+          if (psychedelic && !white) {
+            echo.dataset.spectrumFrom = `var(--color-icon-${colors[(index + color) % colors.length]})`
+            echo.dataset.spectrumTo = `var(--color-icon-${colors[(index + color + 1) % colors.length]})`
+            if (index === 1) echo.style.mixBlendMode = 'difference'
+          }
           svg!.insertBefore(echo, path)
           return echo
         }) : []
@@ -274,6 +280,9 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           echo.style.strokeDasharray = `${Math.max(.0001, length)} 2`
           echo.style.strokeDashoffset = String(-(pulse.end > pulse.start ? position - length : position))
           const reveal = pulse.psychedelic ? smooth((progress - .5) / .35) : 1
+          if (spectralColor && echo.dataset.spectrumFrom) {
+            echo.style.stroke = `color-mix(in oklch longer hue, ${echo.dataset.spectrumFrom} ${(1 - smooth(t)) * 100}%, ${echo.dataset.spectrumTo})`
+          }
           echo.style.opacity = String(envelope(t) * brightness * afterimages * (pulse.psychedelic ? .8 : .38) / (index + 1) * reveal)
         })
         return true

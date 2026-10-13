@@ -166,7 +166,7 @@ export function SectionStory({ kind }: { kind: SectionStoryKind }) {
   useStoryInteractions(scene, kind, tuning)
   const Story = stories[kind]
   return <><div className={`section-story section-story--${kind}`} aria-hidden="true">
-    <svg ref={scene} viewBox={storyBounds[kind]} fill="none" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
+    <svg ref={scene} viewBox={storyBounds[kind]} fill="none" style={{ isolation: 'isolate' }} preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
       <g data-story-space><Story /></g>
     </svg>
   </div>
