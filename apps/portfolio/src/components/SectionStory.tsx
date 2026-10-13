@@ -52,8 +52,9 @@ function ArtStory() {
         return <g key={i} data-story-light={i} style={phase(i)}>
           <path d={arch} />
           <StoryPulse seed={i + 8} d={arch} />
-          <path d={arch} transform={`translate(0 ${y * 1.45}) scale(1 -.45)`} />
-          <g transform={`translate(0 ${y * 1.45}) scale(1 -.45)`}><StoryPulse seed={i + 8} d={arch} /></g>
+          <g data-story-reflection transform={`translate(0 ${y * 1.45}) scale(1 -.45)`}>
+            <path d={arch} /><StoryPulse seed={i + 8} d={arch} />
+          </g>
         </g>
       })}
     </g>
@@ -134,7 +135,7 @@ function ContactStory() {
         <stop offset="1" stopColor={`var(--color-icon-${colors[(i + 1) % colors.length]})`} />
       </linearGradient>)}
     </defs>
-    {[0, 180].map((rotation, side) => <g key={rotation} transform={`rotate(${rotation} 924 350)`}>
+    {[0, 180].map((rotation, side) => <g key={rotation} data-story-side={side} transform={`rotate(${rotation} 924 350)`}>
         {Array.from({ length: 11 }, (_, i) => {
           const d = i === 0
             ? 'M -1800 350 C -200 350 540 210 660 100 C 780 -10 1010 120 924 350 C 730 410 540 210 660 100'

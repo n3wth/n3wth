@@ -20,7 +20,7 @@ export function segmentContact(a: Point, b: Point, c: Point, d: Point, radius = 
 
 type Line = { path: SVGPathElement; points: DOMPoint[]; length: number }
 type Trail = { previous?: Point; color?: string; position: number; direction: number; width: number; visited: Set<Line>; depth: number }
-type Transfer = Trail & { path: SVGPathElement; echoes: SVGPathElement[]; phase: number; lengthScale: number; line: Line; start: number; end: number; born: number; duration: number; passage: number; coordinated: boolean; psychedelic: boolean }
+type Transfer = Trail & { path: SVGPathElement; echoes: SVGPathElement[]; gain: number; phase: number; lengthScale: number; line: Line; start: number; end: number; born: number; duration: number; passage: number; coordinated: boolean; psychedelic: boolean }
 
 /** Exact crossing with normalized positions on both segments. */
 export function crossing(a: Point, b: Point, c: Point, d: Point) {
@@ -139,6 +139,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           return echo
         }) : []
         transfers.push({
+          gain: line.path.closest('[data-story-reflection]') ? .55 : 1,
           passage, color: pulseColor, coordinated: ordered || synchronized, psychedelic,
           path, echoes, phase: synchronized ? 0 : Math.random() * Math.PI * 2,
           lengthScale: synchronized || ordered ? (longChase ? 2.4 : 1) : longChase ? 1.8 + Math.random() * 1.2 : .45 + Math.random() * .9,
@@ -229,7 +230,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         awaitingAnswer = accent === 'suspend'
         synchronized = answering || (!accent && Math.random() < space.profile.chorus * energy)
         ordered = !synchronized && (motifOrdered || motifExpansion || !!accent)
-        longChase = Math.random() < (ordered ? .35 : .2)
+        longChase = Math.random() < (kind === 'work' ? .55 : ordered ? .35 : .2)
         white = synchronized && Math.random() < .4
         psychedelic = !accent && !answering && !white && energy > .45 && time >= nextAccent && Math.random() < .12
         if (psychedelic) nextAccent = time + 35000 + Math.random() * 45000
@@ -250,16 +251,28 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const sorted = [...paths].sort((a, b) => Math.min(...a.points.map(p => p.y)) - Math.min(...b.points.map(p => p.y)))
         order = new Map(sorted.map(({ line }, index) => {
           const block = line.path.closest<SVGGElement>('[data-story-block]')
+          const group = line.path.closest<SVGGElement>('[data-story-light]')
+          if (group) {
+            const layer = Number(group.dataset.storyLight) / 8
+            if (kind === 'art') return [line, layer + (line.path.closest('[data-story-reflection]') ? .55 : 0)]
+            if (kind === 'contact') return [line, (Number(line.path.closest<SVGGElement>('[data-story-side]')?.dataset.storySide) === passage % 2 ? 0 : .85) + layer * .15]
+            if (kind === 'thinking') return [line, Math.abs(layer - (.5 + .35 * Math.sin(sceneTime * .021)))]
+            return [line, passage % 2 ? layer : 1 - layer]
+          }
           return [line, block ? Math.abs(Number(block.dataset.storyBlock) - origin) / 8 : index / Math.max(1, sorted.length - 1)]
         }))
         // Usually one local spark; occasionally light the whole connected drawing.
-        if (kind === 'thinking' || (kind === 'projects' && (ordered || synchronized))) {
+        if (kind === 'thinking' || ordered || synchronized) {
           // The canopy is one rooted drawing. Every branch starts at the floor.
           for (const line of lines) {
             const block = line.path.closest<SVGGElement>('[data-story-block]')
             if (accent === 'suspend' && (!block || line.path.classList.contains('section-story__quiet'))) continue
             if (block && !blocks.has(Number(block.dataset.storyBlock))) continue
-            if (kind === 'thinking' && !synchronized && energy < .65 && Math.random() > energy) continue
+            if (kind === 'thinking' && !synchronized && energy < .65) {
+              const layer = Number(line.path.closest<SVGGElement>('[data-story-light]')?.dataset.storyLight ?? 4) / 8
+              const focus = .5 + .35 * Math.sin(sceneTime * .021)
+              if (Math.abs(layer - focus) > .15 + energy * .35) continue
+            }
             const start = circulating && block && (reverse !== line.path.classList.contains('section-story__quiet')) ? 1 : 0
             emit(line, start, { position: start, direction: start ? -1 : 1, width: 0, visited: new Set(), depth: -1 })
           }
@@ -302,7 +315,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         pulse.path.style.strokeDasharray = `${Math.max(.0001, width)} 2`
         pulse.path.style.strokeDashoffset = String(-tail)
         const envelope = (t: number) => pulseEnvelope(t, smoothing)
-        const brightness = 1 - noise * .25 * (.5 + .5 * Math.sin(time * .003 + pulse.phase))
+        const brightness = pulse.gain * (1 - noise * .25 * (.5 + .5 * Math.sin(time * .003 + pulse.phase)))
         pulse.path.style.opacity = String(envelope(progress) * brightness)
         pulse.echoes.forEach((echo, index) => {
           const depth = (index + 1) * afterimages
