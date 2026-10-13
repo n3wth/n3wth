@@ -29,9 +29,8 @@ function Projects() {
         </article>
       })}
       <section className="project-other">
-        <SiteHeading level={2}>Other explorations</SiteHeading>
         <div className="project-other-list">{projects.filter(project => !['r3', 'ui'].includes(project.id)).map(project => <article key={project.id}>
-          <SiteHeading level={3} variant="item"><a href={project.url} target="_blank" rel="noopener noreferrer">{project.name}</a></SiteHeading>
+          <SiteHeading level={2} variant="item"><a href={project.url} target="_blank" rel="noopener noreferrer">{project.name}</a></SiteHeading>
           <p>{project.description}</p>
         </article>)}</div>
       </section>

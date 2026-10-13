@@ -7,10 +7,10 @@ import { ElephantGoldfishExplanation } from '../components/ElephantGoldfishExpla
 
 const details = {
   'elephant-goldfish': {
-    title: 'Elephant-Goldfish',
+    title: 'elephant-goldfish',
     question: 'Check your assumptions before you ship.',
-    description: 'An assistant reviewing its own work already knows why each choice seemed right. Elephant-Goldfish brings a fresh reviewer into Codex to question a design, investigate a bug, or inspect a change. It reviews the evidence without inheriting the working conversation.',
-    install: 'Review my staged changes with Elephant-Goldfish.\nReport findings without editing files.',
+    description: 'An assistant reviewing its own work already knows why each choice seemed right. elephant-goldfish brings a fresh reviewer into Codex to question a design, investigate a bug, or inspect a change. It reviews the evidence without inheriting the working conversation.',
+    install: 'Review my staged changes with elephant-goldfish.\nReport findings without editing files.',
     sections: [
       ['Before you build', 'Challenge an idea, clarify the requirements, and find unanswered questions in a design before committing to an approach.'],
       ['When a bug resists a fix', 'Give a fresh reviewer the symptoms and reproduction. Compare its diagnosis with yours before making another change.'],
