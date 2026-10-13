@@ -44,9 +44,10 @@ export function saveStoryJourney(journey: { epoch: number; color: number }) {
 /** Fixed geometry; light travels through the stack and shades each solid face. */
 export function createStorySpace(svg: SVGSVGElement, kind: string, amount: number, smoothing: number) {
   const faces = [...svg.querySelectorAll<SVGPathElement>('[data-story-face]')]
+  const borders = [...svg.querySelectorAll<SVGPathElement>('[data-story-border]')]
   const palette = ['cyan', 'green', 'yellow', 'red']
   const ink = (index: number) => `var(--color-icon-${palette[index]})`
-  type Light = { start: number; duration: number; color: string; coordinated: boolean }
+  type Light = { start: number; duration: number; color: string; coordinated: boolean; expansion?: boolean }
   const lights = Array.from({ length: 9 }, () => ({ next: 0, events: [] as Light[] }))
   const strength = (light: Light, time: number) => {
     const age = (time - light.start) / light.duration
@@ -57,16 +58,17 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   const reset = () => {
     svg.style.filter = ''
     faces.forEach(face => { face.style.fill = 'none'; face.style.stroke = 'none' })
+    borders.forEach(border => { border.style.opacity = '0' })
   }
   reset()
   return {
     profile: profiles[kind] ?? profiles.art,
-    startPattern(time: number, duration: number, color: string, stagger: number, blocks: Set<number>, chaos: number) {
+    startPattern(time: number, duration: number, color: string, stagger: number, blocks: Set<number>, chaos: number, expansion = false) {
       lights.forEach((light, index) => {
         if (!blocks.has(index)) return
         const independent = ink(index * 3 % palette.length)
         const tint = chaos > .001 ? `color-mix(in srgb, ${color} ${(1 - chaos) * 100}%, ${independent})` : color
-        light.events.push({ start: time + index / 8 * stagger, duration, color: tint, coordinated: true })
+        light.events.push({ start: time + index / 8 * stagger, duration, color: tint, coordinated: true, expansion })
       })
       orderedUntil = time + stagger + duration
       lights.forEach(light => { light.next = orderedUntil + 1 + Math.random() * 4 })
@@ -89,7 +91,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         initialized = true
       }
       lights.forEach(light => {
-        light.events = light.events.filter(event => time < event.start + event.duration)
+        light.events = light.events.filter(event => time < event.start + event.duration * (event.expansion ? 2.3 : 1))
         if (time < orderedUntil || time < light.next) return
         const duration = 1.8 + Math.random() * 2.7
         light.next = time + duration + 3 + Math.random() * 7 + (1 - energy) * 10
@@ -109,6 +111,28 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         }
         face.style.fill = color
         face.style.fillOpacity = String(Math.min(1, total) * amount * shade)
+      })
+      const scale = borders.length ? Math.abs(svg.getScreenCTM()?.a || 1) : 1
+      borders.forEach(border => {
+        const side = Number(border.dataset.borderSide)
+        const distance = Math.abs(side)
+        const events = lights[Number(border.dataset.storyBorder)].events
+        let brightness = 0
+        for (const event of events) {
+          if (!event.expansion) continue
+          const age = (time - event.start) / event.duration - distance * .45
+          const envelope = pulseEnvelope(age / 1.35, smoothing) / (1 + (distance - 1) * .5)
+          if (envelope <= brightness) continue
+          brightness = envelope
+          const t = Math.max(0, Math.min(1, age / 1.1))
+          const head = t * t * (3 - 2 * t)
+          const tail = Math.min(.38, head)
+          border.style.stroke = event.color
+          border.style.strokeWidth = String(1.25 / scale)
+          border.style.strokeDasharray = `${tail} 2`
+          border.style.strokeDashoffset = String(side < 0 ? -(1 - head) : -(head - tail))
+        }
+        border.style.opacity = String(brightness)
       })
     },
     reset,
