@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Button, HStack, Slider, VStack } from '@n3wth/ui/primitives'
-import type { PulseTuning } from './storyInteractions'
+import { defaultPulseTuning, type PulseTuning } from './storyInteractions'
 
-const initial: PulseTuning = { duration: 1500, gap: 2700, length: .27, easing: 3, noise: .2, smoothing: .65, afterimages: .35 }
+const initial = defaultPulseTuning
 const easingNames = ['Linear', 'Quadratic out', 'Cubic out', 'Quartic out', 'Quintic out']
 
 export default function PulseTuner({ onChange }: { onChange: (settings: PulseTuning) => void }) {

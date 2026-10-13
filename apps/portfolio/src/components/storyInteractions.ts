@@ -37,17 +37,16 @@ const pulseSelector = '.section-story__pulse, .section-story__contact-spectrum'
 const colors = ['cyan', 'green', 'yellow', 'red']
 const smooth = (n: number) => { const t = Math.max(0, Math.min(1, n)); return t * t * (3 - 2 * t) }
 export interface PulseTuning { duration: number; gap: number; length: number; easing: number; noise: number; smoothing: number; afterimages: number }
+export const defaultPulseTuning: PulseTuning = { duration: 1700, gap: 800, length: .2, easing: 3, noise: 0, smoothing: .25, afterimages: .7 }
 
-export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind: string, tuning?: PulseTuning) {
+export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind: string, tuning: PulseTuning = defaultPulseTuning) {
   useEffect(() => {
     const svg = ref.current
     if (!svg || typeof SVGPathElement === 'undefined' || !SVGPathElement.prototype.getTotalLength) return
     let visible = typeof IntersectionObserver === 'undefined'
     const media = matchMedia('(prefers-reduced-motion: reduce)')
-    const easeOut = (t: number) => 1 - (1 - t) ** (tuning?.easing ?? 3)
-    const noise = tuning?.noise ?? .2
-    const smoothing = tuning?.smoothing ?? .65
-    const afterimages = tuning?.afterimages ?? .35
+    const easeOut = (t: number) => 1 - (1 - t) ** tuning.easing
+    const { noise, smoothing, afterimages } = tuning
     const sources = [...svg.querySelectorAll<SVGPathElement>(pulseSelector)]
     sources.forEach(path => { path.style.opacity = '0' })
     const lines: Line[] = [...svg.querySelectorAll<SVGPathElement>('path')]
@@ -150,13 +149,13 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       if (!transfers.length && time >= nextBurst) {
         synchronized = Math.random() < .25
         white = synchronized && Math.random() < .4
-        burstDuration = (tuning?.duration ?? 500) * (.85 + Math.random() * .3)
+        burstDuration = tuning.duration * (.85 + Math.random() * .3)
         seeded.clear()
         const paths = geometry()
         // Usually one local spark; occasionally light the whole connected drawing.
         const count = synchronized ? lines.length : 1
         for (let i = 0; i < count && startBurst(paths); i++) { /* seed connected lines */ }
-        nextBurst = time + burstDuration + (tuning?.gap ?? 18000 + Math.random() * 32000) * (.65 + Math.random() * .7)
+        nextBurst = time + burstDuration + tuning.gap * (.65 + Math.random() * .7)
       }
       transfers = transfers.filter(pulse => {
         const age = (time - pulse.born) / pulse.duration
@@ -168,7 +167,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const progress = Math.min(1, age)
         const travel = (t: number) => easeOut(t + .03 * noise * Math.sin(t * Math.PI * 2 + pulse.phase) * Math.sin(t * Math.PI) ** 2)
         pulse.position = pulse.start + (pulse.end - pulse.start) * travel(progress)
-        const width = Math.min(tuning?.length ?? .075, Math.abs(pulse.position - pulse.start))
+        const width = Math.min(tuning.length, Math.abs(pulse.position - pulse.start))
         pulse.width = width
         const tail = pulse.end > pulse.start ? pulse.position - width : pulse.position
         const rootMatrix = svg!.getScreenCTM()
@@ -188,7 +187,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           const depth = (index + 1) * afterimages
           const t = Math.max(0, Math.min(1, age - depth * .15))
           const position = pulse.start + (pulse.end - pulse.start) * travel(t)
-          const length = Math.min(tuning?.length ?? .075, Math.abs(position - pulse.start))
+          const length = Math.min(tuning.length, Math.abs(position - pulse.start))
           const box = svg!.viewBox.baseVal
           const cx = box.x + box.width / 2, cy = box.y + box.height / 2
           echo.setAttribute('transform', `translate(${cx} ${cy}) rotate(${depth * 1.4 * smooth(t)}) scale(${1 - depth * .025 * smooth(t)}) translate(${-cx} ${-cy}) ${transform}`)
