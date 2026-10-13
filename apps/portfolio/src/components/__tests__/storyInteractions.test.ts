@@ -1,7 +1,17 @@
 import { describe, expect, it } from 'vitest'
-import { segmentContact } from '../storyInteractions'
+import { crossing, segmentContact } from '../storyInteractions'
 
 describe('hero line contacts', () => {
+  it('locates a shared origin on both intersecting segments', () => {
+    expect(crossing({ x: 0, y: 5 }, { x: 20, y: 5 }, { x: 5, y: 0 }, { x: 5, y: 20 }))
+      .toEqual({ first: .25, second: .25, x: 5, y: 5 })
+  })
+
+  it('does not seed bursts on parallel overlaps or nearby disconnected lines', () => {
+    expect(crossing({ x: 0, y: 0 }, { x: 20, y: 0 }, { x: 5, y: 0 }, { x: 10, y: 0 })).toBeNull()
+    expect(crossing({ x: 0, y: 0 }, { x: 20, y: 0 }, { x: 5, y: 1 }, { x: 5, y: 10 })).toBeNull()
+  })
+
   it('finds a crossing even when the pulse moves past it between frames', () => {
     expect(segmentContact({ x: -20, y: 5 }, { x: 20, y: 5 }, { x: 0, y: 0 }, { x: 0, y: 10 })).toBe(.5)
   })
