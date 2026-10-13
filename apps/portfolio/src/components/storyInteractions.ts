@@ -19,7 +19,7 @@ export function segmentContact(a: Point, b: Point, c: Point, d: Point, radius = 
 }
 
 type Line = { path: SVGPathElement; points: DOMPoint[]; length: number }
-type Trail = { previous?: Point; position: number; direction: number; width: number; visited: Set<Line>; depth: number }
+type Trail = { previous?: Point; color?: string; position: number; direction: number; width: number; visited: Set<Line>; depth: number }
 type Transfer = Trail & { path: SVGPathElement; echoes: SVGPathElement[]; phase: number; lengthScale: number; line: Line; start: number; end: number; born: number; duration: number; passage: number; coordinated: boolean; psychedelic: boolean }
 
 /** Exact crossing with normalized positions on both segments. */
@@ -58,6 +58,17 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const count = Math.max(8, Math.min(160, Math.ceil(length / 10)))
         return { path, length, points: Array.from({ length: count + 1 }, (_, i) => path.getPointAtLength(length * i / count)) }
       }).filter(line => line.length > 0)
+    // Sample once: nearby outlines share a breath rather than flickering independently.
+    const restingLines = lines.map(({ path, points }) => ({
+      path, opacity: path.style.opacity,
+      y: points[Math.floor(points.length / 2)].y,
+    }))
+    const low = Math.min(...restingLines.map(line => line.y))
+    const span = Math.max(1, Math.max(...restingLines.map(line => line.y)) - low)
+    let breathStart = 2000 + Math.random() * 4000
+    let breathDuration = 14000 + Math.random() * 9000
+    let breathDirection = Math.random() < .5 ? 1 : -1
+    const resetBreath = () => restingLines.forEach(({ path, opacity }) => { path.style.opacity = opacity })
     let transfers: Transfer[] = []
     const journey = readStoryJourney()
     const space = createStorySpace(svg, kind, tuning.space, smoothing)
@@ -106,7 +117,8 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const independent = `var(--color-icon-${colors[color % colors.length]})`
         const chaos = synchronized ? 0 : storyChaos(sceneTime)
         const themedColor = `color-mix(in srgb, ${patternColor} ${(1 - chaos) * 100}%, ${independent})`
-        path.setAttribute('stroke', matchedColor || (synchronized ? patternColor : themedColor))
+        const pulseColor = parent.color || matchedColor || (synchronized ? patternColor : themedColor)
+        path.setAttribute('stroke', pulseColor)
         path.style.opacity = '0'
         // Render above the artwork so quiet/reflection groups do not hide a real contact.
         svg!.appendChild(path)
@@ -124,7 +136,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           return echo
         }) : []
         transfers.push({
-          passage, coordinated: ordered || synchronized, psychedelic,
+          passage, color: pulseColor, coordinated: ordered || synchronized, psychedelic,
           path, echoes, phase: synchronized ? 0 : Math.random() * Math.PI * 2,
           lengthScale: synchronized || ordered ? (longChase ? 2.4 : 1) : longChase ? 1.8 + Math.random() * 1.2 : .45 + Math.random() * .9,
           line, start: position, end, position, direction: end > position ? 1 : -1, width: 0,
@@ -181,6 +193,20 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       sceneTime = journeyOffset + time / 1000
       const energy = storyEnergy(sceneTime)
       space.update(sceneTime)
+      if (time > breathStart + breathDuration + 4000) {
+        breathStart = time + 5000 + Math.random() * 7000
+        breathDuration = 14000 + Math.random() * 9000
+        breathDirection = Math.random() < .5 ? 1 : -1
+      }
+      restingLines.forEach(({ path, opacity, y }) => {
+        const position = (y - low) / span
+        const delay = (breathDirection > 0 ? position : 1 - position) * 4000
+        const age = (time - breathStart - delay) / breathDuration
+        // A soft exhale passes through the structure, then returns fully to rest.
+        const breath = age > 0 && age < 1 ? Math.sin(Math.PI * age) ** 2 : 0
+        const undertone = (.5 + .5 * Math.sin(sceneTime * .31 - position * 2.4)) * .04
+        path.style.opacity = String((opacity ? Number(opacity) : 1) * (1 - (undertone + breath * .18) * (1 - energy * .65)))
+      })
       if (time >= nextBurst && transfers.length <= lines.length * 2) {
         passage++
         const calm = .65 + Math.sin(sceneTime * .037) * .18 + Math.sin(sceneTime * .013) * .1
@@ -206,16 +232,22 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         if (psychedelic) nextAccent = time + 35000 + Math.random() * 45000
         burstDuration = tuning.duration * space.profile.speed * (.85 + Math.random() * .3) * (longChase ? 2 + Math.random() : 1)
         if (accent) burstDuration = tuning.duration * space.profile.speed * 2
+        if (accent === 'depth') burstDuration *= 2
         patternColor = white ? 'white' : storyColor(sceneTime)
-        const blocks = new Set(Array.from({ length: 9 }, (_, i) => i).filter(i => accent === 'suspend' ? i === 4 : !!accent || motifExpansion || synchronized || energy > .65 || Math.random() < energy))
-        if (!blocks.size) blocks.add(Math.floor(Math.random() * 9))
-        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, accent ? 0 : ordered ? burstDuration * .00065 : 0, blocks, accent || synchronized ? 0 : storyChaos(sceneTime), motifExpansion && accent !== 'suspend', accent)
+        const blocks = new Set(Array.from({ length: 9 }, (_, i) => i).filter(i => accent === 'suspend' ? i === 4 : !!accent || motifExpansion || synchronized || energy > .65 || Math.random() < energy * (.55 + space.affinity(i))))
+        const focus = kind === 'projects' ? Array.from({ length: 9 }, (_, i) => i).reduce((best, i) => space.affinity(i) > space.affinity(best) ? i : best, 0) : 0
+        if (!blocks.size) blocks.add(kind === 'projects' ? focus : Math.floor(Math.random() * 9))
+        // Alternate familiar sweeps with passages growing out of the lingering light.
+        const origin = kind === 'projects' && ordered && !accent && !motifExpansion && passage % 3 !== 0 ? focus : 0
+        const circulating = kind === 'projects' && ordered && !accent && !motifExpansion && passage % 3 !== 0
+        const reverse = Math.sin(sceneTime * .023) > 0
+        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, accent ? 0 : ordered ? burstDuration * .00065 : 0, blocks, accent || synchronized ? 0 : storyChaos(sceneTime), motifExpansion && accent !== 'suspend', accent, origin)
         seeded.clear()
         const paths = geometry()
         const sorted = [...paths].sort((a, b) => Math.min(...a.points.map(p => p.y)) - Math.min(...b.points.map(p => p.y)))
         order = new Map(sorted.map(({ line }, index) => {
           const block = line.path.closest<SVGGElement>('[data-story-block]')
-          return [line, block ? Number(block.dataset.storyBlock) / 8 : index / Math.max(1, sorted.length - 1)]
+          return [line, block ? Math.abs(Number(block.dataset.storyBlock) - origin) / 8 : index / Math.max(1, sorted.length - 1)]
         }))
         // Usually one local spark; occasionally light the whole connected drawing.
         if (kind === 'thinking' || (kind === 'projects' && (ordered || synchronized))) {
@@ -225,7 +257,8 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
             if (accent === 'suspend' && (!block || line.path.classList.contains('section-story__quiet'))) continue
             if (block && !blocks.has(Number(block.dataset.storyBlock))) continue
             if (kind === 'thinking' && !synchronized && energy < .65 && Math.random() > energy) continue
-            emit(line, 0, { position: 0, direction: 1, width: 0, visited: new Set(), depth: -1 })
+            const start = circulating && block && (reverse !== line.path.classList.contains('section-story__quiet')) ? 1 : 0
+            emit(line, start, { position: start, direction: start ? -1 : 1, width: 0, visited: new Set(), depth: -1 })
           }
         } else {
           const count = synchronized ? lines.length : ordered ? Math.max(1, Math.round(lines.length * energy)) : 1 + Math.floor(Math.random() * 3 * energy)
@@ -338,6 +371,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       if (media.matches) {
         clearTransfers()
         space.reset()
+        resetBreath()
         sources.forEach(path => { path.style.opacity = '0' })
       }
       if (!paused) frame = requestAnimationFrame(tick)
@@ -359,6 +393,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       clearTransfers()
       saveJourney()
       space.dispose()
+      resetBreath()
       window.removeEventListener('pagehide', saveJourney)
       sources.forEach(path => { path.style.opacity = ''; path.style.strokeDashoffset = '' })
       svg.removeAttribute('data-story-paused')
