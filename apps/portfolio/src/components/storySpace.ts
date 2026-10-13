@@ -145,6 +145,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
       })
       const illumination = lights.map(light => Math.min(1, light.events.reduce((sum, event) => sum + strength(event, time), 0)))
       const dimension = Math.max(0, Math.sin(time * .035 + phase)) ** 6
+      const tunnel = kind === 'art' ? .18 + .82 * Math.max(0, Math.sin(time * .047 + phase)) ** 4 : 0
       outlines.forEach(({ path, layer }) => {
         const weight = (attention[layer] * .12 + trace[layer] * .08) * (1 - energy * .5)
         const quiet = `color-mix(in srgb, ${ambientColor} ${weight * 100}%, currentColor)`
@@ -154,7 +155,11 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         const depthInk = kind === 'projects' ? quiet : `color-mix(in srgb, var(--color-text-primary) ${dimension * near * 24}%, ${quiet})`
         const reflected = path.closest('[data-story-reflection]')
         const recession = kind === 'art' ? layer / 8 * 45 : 0
-        path.style.stroke = reflected ? `color-mix(in srgb, var(--color-background-body) ${Math.max(recession, dimension * 45)}%, ${depthInk})` : `color-mix(in srgb, var(--color-background-body) ${Math.max(recession, contrast * 88)}%, ${depthInk})`
+        const neutral = reflected ? `color-mix(in srgb, var(--color-background-body) ${Math.max(recession, dimension * 45)}%, ${depthInk})` : `color-mix(in srgb, var(--color-background-body) ${Math.max(recession, contrast * 88)}%, ${depthInk})`
+        const direction = Math.sin(time * .019 + phase)
+        const wave = (.5 + .5 * Math.sin(time * .7 - layer * .65 * direction - (reflected ? .6 : 0))) ** 3
+        const spectral = tunnel * wave * (reflected ? .4 : .85)
+        path.style.stroke = spectral > .001 ? `color-mix(in ${paletteSpace}, ${storyColor(time, layer * .32)} ${spectral * 100}%, ${neutral})` : neutral
         if ((kind === 'work' || kind === 'library') && /Z\s*$/i.test(path.getAttribute('d') ?? '')) {
           path.style.fill = storyColor(time - layer * 2)
           path.style.fillOpacity = String(dimension * amount * (.035 + near * .085))
