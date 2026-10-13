@@ -215,11 +215,4 @@ export const projects: Project[] = [
     url: siteUrls.lunch,
     github: 'https://github.com/n3wth/lunchmoney-mcp',
   },
-  {
-    id: 'garden',
-    name: 'garden',
-    description: 'A digital garden: Obsidian-flavored markdown rendered as a wiki, every note linked.',
-    tech: ['Next.js', 'Astryx', 'Wikilinks'],
-    url: '/thinking',
-  },
 ]
