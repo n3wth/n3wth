@@ -1,5 +1,5 @@
 import { useEffect, type RefObject } from 'react'
-import { createStorySpace, pulseEnvelope, readStoryJourney, saveStoryJourney, storyEnergy, storyColor, storyChaos } from './storySpace'
+import { createStorySpace, pulseEnvelope, readStoryJourney, saveStoryJourney, storyEnergy, storyColor, storyChaos, type StoryAccent } from './storySpace'
 
 type Point = { x: number; y: number }
 
@@ -73,7 +73,8 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     let passage = 0
     let nextAccent = 25000
     let nextMotif = 0, motifOrdered = true, motifExpansion = false
-    let nextExpansion = 30000 + Math.random() * 30000, expansionUntil = 0
+    let nextExpansion = 10000 + Math.random() * 8000, expansionUntil = 0
+    let nextPerformance = 45000 + Math.random() * 45000, awaitingAnswer = false
     let order = new Map<Line, number>()
     const seeded = new Set<Line>()
     const pulseLimit = () => lines.length * 4
@@ -179,25 +180,30 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const calm = .65 + Math.sin(sceneTime * .037) * .18 + Math.sin(sceneTime * .013) * .1
         if (time >= nextMotif && (energy < .45 || passage === 1)) {
           motifOrdered = Math.random() < calm
-          motifExpansion = kind === 'projects' && motifOrdered && time >= nextExpansion && Math.random() < .2
-          if (motifExpansion) {
-            expansionUntil = time + 9000 + Math.random() * 5000
-            nextExpansion = expansionUntil + 40000 + Math.random() * 30000
-          }
           nextMotif = time + 18000 + Math.random() * 18000
         }
-        if (time >= expansionUntil) motifExpansion = false
-        synchronized = Math.random() < space.profile.chorus * energy
-        ordered = !synchronized && motifOrdered
+        if (kind === 'projects' && time >= nextExpansion) {
+          expansionUntil = time + 9000 + Math.random() * 5000
+          nextExpansion = expansionUntil + 40000 + Math.random() * 30000
+        }
+        motifExpansion = time < expansionUntil
+        const answering = awaitingAnswer
+        const accent: StoryAccent = !answering && kind === 'projects' && time >= nextPerformance
+          ? motifExpansion ? 'return' : Math.random() < .5 ? 'depth' : 'suspend' : null
+        if (accent) nextPerformance = time + 90000 + Math.random() * 60000
+        awaitingAnswer = accent === 'suspend'
+        synchronized = answering || (!accent && Math.random() < space.profile.chorus * energy)
+        ordered = !synchronized && (motifOrdered || motifExpansion || !!accent)
         longChase = Math.random() < (ordered ? .35 : .2)
         white = synchronized && Math.random() < .4
-        psychedelic = !white && energy > .45 && time >= nextAccent && Math.random() < .12
+        psychedelic = !accent && !answering && !white && energy > .45 && time >= nextAccent && Math.random() < .12
         if (psychedelic) nextAccent = time + 35000 + Math.random() * 45000
         burstDuration = tuning.duration * space.profile.speed * (.85 + Math.random() * .3) * (longChase ? 2 + Math.random() : 1)
+        if (accent) burstDuration = tuning.duration * space.profile.speed * 2
         patternColor = white ? 'white' : storyColor(sceneTime)
-        const blocks = new Set(Array.from({ length: 9 }, (_, i) => i).filter(() => motifExpansion || synchronized || energy > .65 || Math.random() < energy))
+        const blocks = new Set(Array.from({ length: 9 }, (_, i) => i).filter(i => accent === 'suspend' ? i === 4 : !!accent || motifExpansion || synchronized || energy > .65 || Math.random() < energy))
         if (!blocks.size) blocks.add(Math.floor(Math.random() * 9))
-        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, ordered ? burstDuration * .00065 : 0, blocks, synchronized ? 0 : storyChaos(sceneTime), motifExpansion)
+        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, accent ? 0 : ordered ? burstDuration * .00065 : 0, blocks, accent || synchronized ? 0 : storyChaos(sceneTime), motifExpansion && accent !== 'suspend', accent)
         seeded.clear()
         const paths = geometry()
         const sorted = [...paths].sort((a, b) => Math.min(...a.points.map(p => p.y)) - Math.min(...b.points.map(p => p.y)))
@@ -210,6 +216,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           // The canopy is one rooted drawing. Every branch starts at the floor.
           for (const line of lines) {
             const block = line.path.closest<SVGGElement>('[data-story-block]')
+            if (accent === 'suspend' && (!block || line.path.classList.contains('section-story__quiet'))) continue
             if (block && !blocks.has(Number(block.dataset.storyBlock))) continue
             if (kind === 'thinking' && !synchronized && energy < .65 && Math.random() > energy) continue
             emit(line, 0, { position: 0, direction: 1, width: 0, visited: new Set(), depth: -1 })
@@ -219,6 +226,8 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           for (let i = 0; i < count && startBurst(paths); i++) { /* seed connected lines */ }
         }
         nextBurst = time + burstDuration * (ordered ? 1.2 : .85) + tuning.gap * (.25 + (1 - energy) * 2) * space.profile.gap
+        if (accent === 'return') nextBurst = time + burstDuration * 4.5
+        if (accent === 'suspend') nextBurst = time + burstDuration * 1.6
         saveJourney()
       }
       transfers = transfers.filter(pulse => {
@@ -270,7 +279,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
       })
 
       // Sample contacts frequently enough to catch the fast launch of each pulse.
-      if (time - lastCollision >= 16) {
+      if (!awaitingAnswer && time - lastCollision >= 16) {
         lastCollision = time
         // Existing reactions get the first chance to continue before new sources start chains.
         const active: { path: SVGPathElement; trail: Trail }[] = transfers.filter(pulse => pulse.passage === passage && time >= pulse.born && time - pulse.born < pulse.duration).map(pulse => ({ path: pulse.path, trail: pulse }))
