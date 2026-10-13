@@ -48,6 +48,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   const faces = [...svg.querySelectorAll<SVGPathElement>('[data-story-face]')]
   const borders = [...svg.querySelectorAll<SVGPathElement>('[data-story-border]')]
   const halos = [...svg.querySelectorAll<SVGPathElement>('[data-story-halo]')]
+  const walls = [...svg.querySelectorAll<SVGPathElement>('[data-story-wall]')]
   let haloStart: number | undefined
   let nextHalo: number | undefined
   const backdrop = svg.closest<HTMLElement>('.portfolio-story-hero')
@@ -82,6 +83,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     faces.forEach(face => { face.style.fill = 'none'; face.style.stroke = 'none' })
     borders.forEach(border => { border.style.opacity = '0'; border.removeAttribute('transform') })
     halos.forEach(halo => { halo.style.opacity = '0' })
+    walls.forEach(wall => { wall.style.opacity = '0' })
     haloStart = nextHalo = undefined
   }
   reset()
@@ -125,8 +127,10 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
           const age = haloStart === undefined ? -1 : (time - haloStart - distance * 1.4) / 10
           halo.style.opacity = String(pulseEnvelope(age, .8) * (.55 - distance * .08))
           halo.style.stroke = storyColor(time, distance * .12)
-          halo.style.strokeDasharray = '.34 .66'
-          halo.style.strokeDashoffset = String(-age * .8)
+          const head = Math.max(0, Math.min(1, age))
+          const tail = Math.min(.34, head)
+          halo.style.strokeDasharray = `${Math.max(.0001, tail)} 2`
+          halo.style.strokeDashoffset = String(-(head - tail))
         })
       }
       // Two wandering centers share neighboring edges; their wake guides later passages.
@@ -166,6 +170,12 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
       const illumination = lights.map(light => Math.min(1, light.events.reduce((sum, event) => sum + strength(event, time), 0)))
       const dimension = Math.max(0, Math.sin(time * .035 + phase)) ** 6
       const tunnel = kind === 'art' ? .18 + .82 * Math.max(0, Math.sin(time * .047 + phase)) ** 4 : 0
+      walls.forEach(wall => {
+        const layer = Number(wall.dataset.storyWall)
+        const wave = (.5 + .5 * Math.sin(time * .7 - layer * .65 * Math.sin(time * .019 + phase))) ** 3
+        wall.style.fill = storyColor(time, layer * .32)
+        wall.style.opacity = String(amount * (.025 + tunnel * wave * .65) * (1 - layer * .045))
+      })
       outlines.forEach(({ path, layer }) => {
         const weight = (attention[layer] * .12 + trace[layer] * .08) * (1 - energy * .5)
         const quiet = `color-mix(in srgb, ${ambientColor} ${weight * 100}%, currentColor)`

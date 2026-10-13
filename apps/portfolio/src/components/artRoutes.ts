@@ -15,7 +15,7 @@ export function createArtRoutes(svg: SVGSVGElement) {
     return a.y + (b.y - a.y) * (x - a.x) / (b.x - a.x)
   }
   const routes: SVGPathElement[] = []
-  svg.querySelectorAll<SVGPathElement>('[data-art-loop]').forEach(loop => {
+  svg.querySelectorAll<SVGPathElement>('[data-art-loop], [data-story-halo-loop]').forEach(loop => {
     const total = loop.getTotalLength()
     const count = Math.ceil(total / 2)
     const distance = (at: number) => {
@@ -40,6 +40,10 @@ export function createArtRoutes(svg: SVGSVGElement) {
       const points = Array.from({ length: steps + 1 }, (_, i) => loop.getPointAtLength((start + (end - start) * i / steps) % total))
       const route = document.createElementNS('http://www.w3.org/2000/svg', 'path')
       route.dataset.artRoute = index ? 'reflection' : 'arch'
+      if (loop.dataset.storyHaloLoop) {
+        route.dataset.storyHalo = loop.dataset.storyHaloLoop
+        route.setAttribute('pathLength', '1')
+      }
       route.setAttribute('d', points.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(3)} ${p.y.toFixed(3)}`).join(' '))
       route.style.opacity = '0'
       loop.parentElement!.appendChild(route)

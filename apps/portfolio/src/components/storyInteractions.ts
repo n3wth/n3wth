@@ -54,7 +54,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     sources.forEach(path => { path.style.opacity = '0' })
     const artRoutes = kind === 'art' ? createArtRoutes(svg) : []
     const lines: Line[] = [...svg.querySelectorAll<SVGPathElement>('path')]
-      .filter(path => !path.matches(pulseSelector) && !path.matches('[data-story-face], [data-story-border], [data-story-halo]') && !path.closest('defs'))
+      .filter(path => !path.matches(pulseSelector) && !path.matches('[data-story-face], [data-story-border], [data-story-halo], [data-story-halo-loop], [data-story-wall]') && !path.closest('defs'))
       .filter(path => kind !== 'art' || !path.closest('[data-story-light]') || path.hasAttribute('data-art-route'))
       .map(path => {
         const length = path.getTotalLength()
