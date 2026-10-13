@@ -56,7 +56,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
   const outlines = [...svg.querySelectorAll<SVGPathElement>('[data-story-block] > path:not(.section-story__pulse), [data-story-light] path:not(.section-story__pulse):not(.section-story__contact-spectrum):not([data-art-loop]):not([data-art-route])')]
     .map(path => {
       const group = path.closest<SVGGElement>('[data-story-block], [data-story-light]')!
-      return { path, stroke: path.style.stroke, layer: Number(group.dataset.storyBlock ?? group.dataset.storyLight) }
+      return { path, stroke: path.style.stroke, fill: path.style.fill, fillOpacity: path.style.fillOpacity, layer: Number(group.dataset.storyBlock ?? group.dataset.storyLight) }
     })
   const atmosphere = { projects: 1, art: .8, work: .45, thinking: .55, library: .3, contact: .5 }[kind] ?? 0
   const attention = Array<number>(9).fill(0)
@@ -74,7 +74,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     svg.style.color = ''
     if (backdrop) backdrop.style.backgroundColor = ''
     crescendo = null
-    outlines.forEach(({ path, stroke }) => { path.style.stroke = stroke })
+    outlines.forEach(({ path, stroke, fill, fillOpacity }) => { path.style.stroke = stroke; path.style.fill = fill; path.style.fillOpacity = fillOpacity })
     lastAttentionTime = undefined
     faces.forEach(face => { face.style.fill = 'none'; face.style.stroke = 'none' })
     borders.forEach(border => { border.style.opacity = '0'; border.removeAttribute('transform') })
@@ -144,12 +144,21 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         light.events.push({ start: time, duration, color, coordinated: false })
       })
       const illumination = lights.map(light => Math.min(1, light.events.reduce((sum, event) => sum + strength(event, time), 0)))
+      const dimension = Math.max(0, Math.sin(time * .035 + phase)) ** 6
       outlines.forEach(({ path, layer }) => {
         const weight = (attention[layer] * .12 + trace[layer] * .08) * (1 - energy * .5)
         const quiet = `color-mix(in srgb, ${ambientColor} ${weight * 100}%, currentColor)`
         // Neutral edges become ink over lit faces instead of muddy grey on color.
         const contrast = kind === 'projects' ? illumination[layer] * Math.min(1, amount * 1.8) : 0
-        path.style.stroke = `color-mix(in srgb, var(--color-background-body) ${contrast * 88}%, ${quiet})`
+        const near = kind === 'art' ? 1 - layer / 8 : kind === 'contact' ? Number(path.closest<SVGGElement>('[data-story-side]')?.dataset.storySide ?? 0) : layer / 8
+        const depthInk = kind === 'projects' ? quiet : `color-mix(in srgb, var(--color-text-primary) ${dimension * near * 24}%, ${quiet})`
+        const reflected = path.closest('[data-story-reflection]')
+        const recession = kind === 'art' ? layer / 8 * 45 : 0
+        path.style.stroke = reflected ? `color-mix(in srgb, var(--color-background-body) ${Math.max(recession, dimension * 45)}%, ${depthInk})` : `color-mix(in srgb, var(--color-background-body) ${Math.max(recession, contrast * 88)}%, ${depthInk})`
+        if ((kind === 'work' || kind === 'library') && /Z\s*$/i.test(path.getAttribute('d') ?? '')) {
+          path.style.fill = storyColor(time - layer * 2)
+          path.style.fillOpacity = String(dimension * amount * (.035 + near * .085))
+        }
       })
       faces.forEach(face => {
         const layer = Number(face.dataset.storyFace)

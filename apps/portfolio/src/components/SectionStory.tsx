@@ -45,12 +45,14 @@ function ArtStory() {
     </g>
     <g className="section-story__breath">
       {Array.from({ length: 9 }, (_, i) => {
-        const x = 580 + i * 46
-        const y = 545 - i * 15
-        const height = 415 - i * 29
-        const arch = `M ${x} ${y} V ${y - height * .62} C ${x} ${y - height * 1.14}, ${x + 220 - i * 9} ${y - height * 1.14}, ${x + 220 - i * 9} ${y - height * .62} V ${y}`
+        const scale = .84 ** i
+        const x = 950 - 380 * scale
+        const y = 420 + 140 * scale
+        const height = 490 * scale
+        const right = 950 + 80 * scale
+        const arch = `M ${x} ${y} V ${y - height * .62} C ${x} ${y - height * 1.14}, ${right} ${y - height * 1.14}, ${right} ${y - height * .62} V ${y}`
         return <g key={i} data-story-light={i} style={phase(i)}>
-          <path data-art-loop style={{ opacity: 0 }} d={`${arch} V ${y + height * .279} C ${x + 220 - i * 9} ${y + height * .513}, ${x} ${y + height * .513}, ${x} ${y + height * .279} V ${y} Z`} />
+          <path data-art-loop style={{ opacity: 0 }} d={`${arch} V ${y + height * .279} C ${right} ${y + height * .513}, ${x} ${y + height * .513}, ${x} ${y + height * .279} V ${y} Z`} />
           <path d={arch} />
           <StoryPulse seed={i + 8} d={arch} />
           <g data-story-reflection transform={`translate(0 ${y * 1.45}) scale(1 -.45)`}>
