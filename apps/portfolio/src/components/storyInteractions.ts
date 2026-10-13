@@ -51,7 +51,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     const sources = [...svg.querySelectorAll<SVGPathElement>(pulseSelector)]
     sources.forEach(path => { path.style.opacity = '0' })
     const lines: Line[] = [...svg.querySelectorAll<SVGPathElement>('path')]
-      .filter(path => !path.matches(pulseSelector) && !path.hasAttribute('data-story-face') && !path.closest('defs'))
+      .filter(path => !path.matches(pulseSelector) && !path.matches('[data-story-face], [data-story-border]') && !path.closest('defs'))
       .map(path => {
         const length = path.getTotalLength()
         const count = Math.max(8, Math.min(160, Math.ceil(length / 10)))
@@ -72,7 +72,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     let psychedelic = false
     let passage = 0
     let nextAccent = 25000
-    let nextMotif = 0, motifOrdered = true
+    let nextMotif = 0, motifOrdered = true, motifExpansion = false
     let order = new Map<Line, number>()
     const seeded = new Set<Line>()
     const pulseLimit = () => lines.length * 4
@@ -178,6 +178,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const calm = .65 + Math.sin(sceneTime * .037) * .18 + Math.sin(sceneTime * .013) * .1
         if (time >= nextMotif && (energy < .45 || passage === 1)) {
           motifOrdered = Math.random() < calm
+          motifExpansion = kind === 'projects' && motifOrdered && Math.random() < .35
           nextMotif = time + 18000 + Math.random() * 18000
         }
         synchronized = Math.random() < space.profile.chorus * energy
@@ -188,9 +189,9 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         if (psychedelic) nextAccent = time + 35000 + Math.random() * 45000
         burstDuration = tuning.duration * space.profile.speed * (.85 + Math.random() * .3) * (longChase ? 2 + Math.random() : 1)
         patternColor = white ? 'white' : storyColor(sceneTime)
-        const blocks = new Set(Array.from({ length: 9 }, (_, i) => i).filter(() => synchronized || energy > .65 || Math.random() < energy))
+        const blocks = new Set(Array.from({ length: 9 }, (_, i) => i).filter(() => motifExpansion || synchronized || energy > .65 || Math.random() < energy))
         if (!blocks.size) blocks.add(Math.floor(Math.random() * 9))
-        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, ordered ? burstDuration * .00065 : 0, blocks, synchronized ? 0 : storyChaos(sceneTime))
+        if (ordered || synchronized) space.startPattern(sceneTime, burstDuration / 1000, patternColor, ordered ? burstDuration * .00065 : 0, blocks, synchronized ? 0 : storyChaos(sceneTime), motifExpansion)
         seeded.clear()
         const paths = geometry()
         const sorted = [...paths].sort((a, b) => Math.min(...a.points.map(p => p.y)) - Math.min(...b.points.map(p => p.y)))

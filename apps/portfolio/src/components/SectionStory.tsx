@@ -86,6 +86,11 @@ function ThinkingStory() {
 function ProjectsStory() {
   const blocks = Array.from({ length: 9 }, (_, i) => ({ x: Math.round((120 + Math.sin(i * .7) * 70) * 1000) / 1000, y: 100 + i * 48 }))
   return <>
+    {[-2, -1, 1, 2].map(side => <g key={side} transform={`translate(${side * 260} 0)`}>
+      {blocks.map(({ x, y }, i) => <path key={i} data-story-border={i} data-border-side={side}
+        pathLength="1" style={{ opacity: 0, vectorEffect: 'none' }}
+        d={`M ${x} ${y} l 260 -95 l 240 120 l -260 95 l -240 -120 v 28 l 240 120 l 260 -95 v -28 l -260 95 v 28`} />)}
+    </g>)}
     <g stroke="none">
       {blocks.map(({ x, y }, i) => <g key={i}>
         <path data-story-face={i} data-face-shade="1" d={`M ${x} ${y} l 260 -95 l 240 120 l -260 95 Z`} />
