@@ -236,8 +236,9 @@ test('projects index connects navigation, product pages and documentation', asyn
   await expect(page.getByRole('heading', { level: 1, name: 'Projects', exact: true })).toBeVisible()
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://n3wth.com/projects')
   const navigation = page.locator('.n3wth-site-navigation-links')
-  await expect(navigation.locator('a').nth(0)).toHaveText('Work')
-  await expect(navigation.locator('a').nth(1)).toHaveText('Projects')
+  await expect(navigation.locator('a').nth(0)).toHaveText('Art')
+  await expect(navigation.locator('a').nth(1)).toHaveText('Work')
+  await expect(navigation.locator('a').nth(2)).toHaveText('Projects')
   for (const slug of ['ui', 'r3']) {
     const feature = page.locator(`.project-feature--${slug}`)
     const copy = await feature.locator('.project-feature-copy').boundingBox()

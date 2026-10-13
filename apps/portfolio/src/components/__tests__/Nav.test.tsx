@@ -25,10 +25,10 @@ describe('Navigation disclosure', () => {
     },
   )
 
-  it('places Work before Projects and keeps Projects active on product pages', () => {
+  it('places Art first and keeps Projects active on product pages', () => {
     renderNav('/projects/r3')
     const links = screen.getByRole('navigation', { name: 'Primary' }).querySelectorAll('a')
-    expect(Array.from(links).slice(0, 2).map(link => link.textContent)).toEqual(['Work', 'Projects'])
+    expect(Array.from(links).map(link => link.textContent)).toEqual(['Art', 'Work', 'Projects', 'Thinking', 'Library', 'Contact'])
     expect(screen.getByRole('link', { name: 'Projects' })).toHaveAttribute('aria-current', 'page')
   })
 

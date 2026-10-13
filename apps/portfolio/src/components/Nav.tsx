@@ -1,10 +1,12 @@
 import { type MouseEvent } from 'react'
 import { Search } from 'lucide-react'
 import { SiteNavigation } from '@n3wth/ui/site'
-import { navigation } from '../data/content'
+import { navigation, sections } from '../data/content'
 import { useHydrated } from '../lib/navigation'
 
 export interface NavProps { onOpenSearch?: () => void; searchOpen?: boolean; pathname?: string }
+
+const topNavigation = [sections.art, ...navigation.filter(item => item !== sections.art)]
 
 export function Nav({ onOpenSearch, searchOpen = false, pathname = '/' }: NavProps) {
   const ready = useHydrated()
@@ -24,7 +26,7 @@ export function Nav({ onOpenSearch, searchOpen = false, pathname = '/' }: NavPro
       menuLabel="Open menu"
       data-nosnippet
       brand={<a href="/" aria-label="Oliver Newth — home" onClick={sameRouteClick('/')}>Oliver Newth</a>}
-      links={navigation.map((item) => <a key={item.href} href={item.href} aria-current={pathname === item.href || pathname.startsWith(`${item.href}/`) ? 'page' : undefined} onClick={sameRouteClick(item.href)}>{item.name}</a>)}
+      links={topNavigation.map((item) => <a key={item.href} href={item.href} aria-current={pathname === item.href || pathname.startsWith(`${item.href}/`) ? 'page' : undefined} onClick={sameRouteClick(item.href)}>{item.name}</a>)}
       actions={<>
         {onOpenSearch && (
           <button
