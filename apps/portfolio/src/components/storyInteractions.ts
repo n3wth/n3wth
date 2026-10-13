@@ -73,6 +73,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     let passage = 0
     let nextAccent = 25000
     let nextMotif = 0, motifOrdered = true, motifExpansion = false
+    let nextExpansion = 30000 + Math.random() * 30000, expansionUntil = 0
     let order = new Map<Line, number>()
     const seeded = new Set<Line>()
     const pulseLimit = () => lines.length * 4
@@ -178,9 +179,14 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
         const calm = .65 + Math.sin(sceneTime * .037) * .18 + Math.sin(sceneTime * .013) * .1
         if (time >= nextMotif && (energy < .45 || passage === 1)) {
           motifOrdered = Math.random() < calm
-          motifExpansion = kind === 'projects' && motifOrdered && Math.random() < .35
+          motifExpansion = kind === 'projects' && motifOrdered && time >= nextExpansion && Math.random() < .2
+          if (motifExpansion) {
+            expansionUntil = time + 9000 + Math.random() * 5000
+            nextExpansion = expansionUntil + 75000 + Math.random() * 60000
+          }
           nextMotif = time + 18000 + Math.random() * 18000
         }
+        if (time >= expansionUntil) motifExpansion = false
         synchronized = Math.random() < space.profile.chorus * energy
         ordered = !synchronized && motifOrdered
         longChase = Math.random() < (ordered ? .35 : .2)
