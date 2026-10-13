@@ -167,7 +167,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 'elephant-goldfish',
-    name: 'Elephant-Goldfish',
+    name: 'elephant-goldfish',
     description: 'A Codex plugin for design checks, bug diagnosis, and code review. Fresh reviewers examine bounded evidence without inheriting the working conversation.',
     tech: ['Codex', 'Agent Skills'],
     url: '/projects/elephant-goldfish',

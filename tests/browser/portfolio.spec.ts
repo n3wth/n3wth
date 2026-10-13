@@ -36,7 +36,7 @@ test('section content follows the hero without repeated artwork', async ({ page 
   }
 })
 
-test('projects artwork fills the available stage above lower copy', async ({ page }) => {
+test('projects artwork fills the available stage without visible captions', async ({ page }) => {
   const widths = [page.viewportSize()!.width]
   // The project matrix covers mobile, tablet and desktop; check the two
   // artwork breakpoints once, rather than repeating every width per project.
@@ -50,15 +50,14 @@ test('projects artwork fills the available stage above lower copy', async ({ pag
       const bounds = svg.getBoundingClientRect()
       const hero = document.querySelector('.portfolio-story-hero')!.getBoundingClientRect()
       const stage = document.querySelector('.portfolio-story-hero > .section-story')!.getBoundingClientRect()
-      const copy = document.querySelector('main h1')!.getBoundingClientRect()
-      return { center: bounds.x + bounds.width / 2, heroLeft: hero.x, heroWidth: hero.width, width: bounds.width, height: bounds.height, stageHeight: stage.height, heroHeight: hero.height, heroBottom: hero.bottom, copyTop: copy.top, copyBottom: copy.bottom }
+      return { center: bounds.x + bounds.width / 2, heroLeft: hero.x, heroWidth: hero.width, width: bounds.width, height: bounds.height, stageHeight: stage.height, stageBottom: stage.bottom, heroBottom: hero.bottom }
     })
     const center = geometry.heroLeft + geometry.heroWidth / 2
     expect(Math.abs(geometry.center - center)).toBeLessThanOrEqual(1)
     expect(geometry.width).toBeGreaterThan(Math.min(width * .6, geometry.stageHeight * .9))
     expect(geometry.height).toBeGreaterThan(Math.min(width, geometry.stageHeight) * .8)
-    expect(geometry.copyTop).toBeGreaterThan(geometry.heroHeight * .7)
-    expect(geometry.copyBottom).toBeLessThan(geometry.heroBottom)
+    expect(Math.abs(geometry.stageBottom - geometry.heroBottom)).toBeLessThanOrEqual(1)
+    await expect(page.getByRole('heading', { level: 1 })).toHaveClass('sr-only')
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   }
 })
@@ -101,13 +100,11 @@ test('reading pages center their columns and put dates below the title', async (
 })
 
 test('section openings fill the screen with distinct accessible stories', async ({ page }, testInfo) => {
-  let opening: { x: number; size: string } | undefined
   for (const route of ['/art', '/thinking', '/work', '/library', '/projects', '/contact']) {
     await page.goto(route)
-    await expect(page.locator('.portfolio-section-title')).toBeVisible()
-    const position = await page.locator('.portfolio-section-title').evaluate(element => ({ x: element.getBoundingClientRect().x, size: getComputedStyle(element).fontSize }))
-    if (opening) expect(position).toEqual(opening)
-    else opening = position
+    await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
+    await expect(page.locator('.portfolio-story-hero > h1')).toHaveClass('sr-only')
+    await expect(page.locator('.portfolio-story-copy')).toHaveCount(0)
     const hero = page.locator('.portfolio-story-hero')
     const bounds = await hero.boundingBox()
     await expect(page.locator('.section-story')).toHaveCount(1)
@@ -115,7 +112,6 @@ test('section openings fill the screen with distinct accessible stories', async 
     expect(Math.abs(artwork!.x + artwork!.width / 2 - (bounds!.x + bounds!.width / 2))).toBeLessThanOrEqual(1)
     expect(bounds!.y + bounds!.height).toBeGreaterThanOrEqual(page.viewportSize()!.height - 1)
     await expect(hero.locator('svg').first()).toHaveAttribute('aria-hidden', 'true')
-    const copy = await page.locator('.portfolio-story-copy').boundingBox()
     const stage = await hero.locator('.section-story').boundingBox()
     const navigation = await page.locator('.n3wth-site-navigation-island').boundingBox()
     if (route === '/thinking') {
@@ -123,24 +119,10 @@ test('section openings fill the screen with distinct accessible stories', async 
       expect(Math.abs(rootY - (bounds!.y + bounds!.height))).toBeLessThanOrEqual(1)
     } else {
       expect(stage!.y).toBeGreaterThanOrEqual(navigation!.y + navigation!.height)
-      expect(Math.abs(stage!.y + stage!.height - copy!.y)).toBeLessThanOrEqual(1)
+      expect(Math.abs(stage!.y + stage!.height - (bounds!.y + bounds!.height))).toBeLessThanOrEqual(1)
       expect(Math.abs(artwork!.y + artwork!.height / 2 - (stage!.y + stage!.height / 2))).toBeLessThanOrEqual(1)
     }
-    expect(copy!.y + copy!.height).toBeLessThanOrEqual(bounds!.y + bounds!.height + 1)
-    if (page.viewportSize()!.width >= 1024) {
-      expect(copy!.y).toBeGreaterThan(bounds!.y + bounds!.height * .7)
-    }
-    if (route === '/contact') {
-      await expect(page.locator('.portfolio-story-description')).toHaveCount(0)
-    } else if (page.viewportSize()!.width >= 1024) {
-      const description = await page.locator('.portfolio-story-description').evaluate(element => {
-        const range = document.createRange()
-        range.selectNodeContents(element)
-        return { lines: range.getClientRects().length, right: range.getBoundingClientRect().right }
-      })
-      expect(description.lines).toBe(1)
-      expect(description.right).toBeLessThanOrEqual(page.viewportSize()!.width)
-    }
+    await expect(page.locator('.portfolio-story-description')).toHaveCount(0)
     await expect(hero.locator('a, button')).toHaveCount(0)
     expect(await hero.evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === 'running').length)).toBe(0)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
@@ -236,8 +218,9 @@ test('projects index connects navigation, product pages and documentation', asyn
   await expect(page.getByRole('heading', { level: 1, name: 'Projects', exact: true })).toBeVisible()
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://n3wth.com/projects')
   const navigation = page.locator('.n3wth-site-navigation-links')
-  await expect(navigation.locator('a').nth(0)).toHaveText('Work')
-  await expect(navigation.locator('a').nth(1)).toHaveText('Projects')
+  await expect(navigation.locator('a').nth(0)).toHaveText('Art')
+  await expect(navigation.locator('a').nth(1)).toHaveText('Work')
+  await expect(navigation.locator('a').nth(2)).toHaveText('Projects')
   for (const slug of ['ui', 'r3']) {
     const feature = page.locator(`.project-feature--${slug}`)
     const copy = await feature.locator('.project-feature-copy').boundingBox()
@@ -321,7 +304,8 @@ test('the project action reaches the projects page after a cold route load', asy
     if (!await projects.isVisible()) await page.getByRole('button', { name: 'Open menu', exact: true }).click()
     await projects.click()
     await expect(page).toHaveURL(/\/projects$/)
-    await expect(page.getByRole('heading', { level: 1, name: 'Projects' })).toBeInViewport()
+    await expect(page.getByRole('heading', { level: 1, name: 'Projects' })).toHaveCount(1)
+    await expect(page.locator('.section-story--projects')).toBeInViewport()
   } finally {
     releaseScene()
     await page.unrouteAll({ behavior: 'wait' })
@@ -435,6 +419,7 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
 test('work uses the shared theme and a usable resume action', async ({ page }, testInfo) => {
   await page.goto('/work')
   await expectSiteFoundation(page, {
+    artworkHero: true,
     sectionTopPadding: '0px',
     headerPadding: '0px',
     navigationBorder: page.viewportSize()!.width < 1024 ? '0px' : '1px',

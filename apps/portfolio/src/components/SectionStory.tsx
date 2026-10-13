@@ -1,8 +1,10 @@
-import { useId, useRef, type CSSProperties } from 'react'
-import { useStoryInteractions } from './storyInteractions'
+import { lazy, Suspense, useId, useRef, useState, type CSSProperties } from 'react'
+import { useStoryInteractions, type PulseTuning } from './storyInteractions'
+import { useHydrated } from '../lib/navigation'
 import './sectionStory.css'
 
 const phase = (index: number): CSSProperties => ({ '--story-phase': index } as CSSProperties)
+const PulseTuner = import.meta.env.DEV ? lazy(() => import('./PulseTuner')) : null
 
 export type SectionStoryKind = 'work' | 'art' | 'thinking' | 'projects' | 'library' | 'contact'
 
@@ -68,6 +70,7 @@ function ThinkingStory() {
       const jointX = 890 + (i - 11) * 3
       const jointY = 420 - Math.abs(i - 11) * 6
       const d = `M ${root} 740 C ${root + 55} 590, ${jointX - Math.cos(angle) * 45} ${jointY + 85}, ${jointX} ${jointY} C ${jointX + Math.cos(angle) * 70} ${jointY - 130}, ${x} ${y + 115}, ${x} ${y}`
+        .replace(/-?\d+(?:\.\d+)?/g, value => String(Math.round(Number(value) * 1000) / 1000))
       return <g key={i} className="section-story__branch" style={{
         transformOrigin: `${root}px 740px`,
         '--branch-duration': `${11 + ((i * 7) % 13) * 1.13}s`,
@@ -81,11 +84,17 @@ function ThinkingStory() {
 }
 
 function ProjectsStory() {
+  const blocks = Array.from({ length: 9 }, (_, i) => ({ x: Math.round((120 + Math.sin(i * .7) * 70) * 1000) / 1000, y: 100 + i * 48 }))
   return <>
-    {Array.from({ length: 9 }, (_, i) => {
-      const x = 120 + Math.sin(i * .7) * 70
-      const y = 100 + i * 48
-      return <g key={i}>
+    <g stroke="none">
+      {blocks.map(({ x, y }, i) => <g key={i}>
+        <path data-story-face={i} data-face-shade="1" d={`M ${x} ${y} l 260 -95 l 240 120 l -260 95 Z`} />
+        <path data-story-face={i} data-face-shade=".5" d={`M ${x} ${y} l 240 120 v 28 l -240 -120 Z`} />
+        <path data-story-face={i} data-face-shade=".75" d={`M ${x + 240} ${y + 120} l 260 -95 v 28 l -260 95 Z`} />
+      </g>)}
+    </g>
+    {blocks.map(({ x, y }, i) => {
+      return <g key={i} data-story-block={i}>
         <LitStoryLine seed={i + 4} d={`M ${x} ${y} l 260 -95 l 240 120 l -260 95 Z`} />
         <path className="section-story__quiet" d={`M ${x} ${y} v 28 l 240 120 v -28 M ${x + 240} ${y + 148} l 260 -95 v -28`} />
       </g>
@@ -147,11 +156,16 @@ const storyBounds: Record<SectionStoryKind, string> = {
 
 export function SectionStory({ kind }: { kind: SectionStoryKind }) {
   const scene = useRef<SVGSVGElement>(null)
-  useStoryInteractions(scene, kind)
+  const [tuning, setTuning] = useState<PulseTuning>()
+  const ready = useHydrated()
+  useStoryInteractions(scene, kind, tuning)
   const Story = stories[kind]
-  return <div className={`section-story section-story--${kind}`} aria-hidden="true">
+  return <><div className={`section-story section-story--${kind}`} aria-hidden="true">
     <svg ref={scene} viewBox={storyBounds[kind]} fill="none" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
-      <Story />
+      <g data-story-space><Story /></g>
     </svg>
   </div>
+    {PulseTuner && ready && new URLSearchParams(window.location.search).has('tune') &&
+      <Suspense fallback={null}><PulseTuner onChange={setTuning} /></Suspense>}
+  </>
 }

@@ -5,13 +5,13 @@
   isolation: isolate;
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-  /* Reserve navigation and copy space before centering the artwork. */
+  /* Reserve navigation space before centering the artwork. */
   margin-block-start: -96px;
   padding-block-start: calc(var(--spacing-12) + var(--spacing-2) + env(safe-area-inset-top));
   height: 100svh;
   min-height: 100svh;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
   overflow: hidden;
 }
 
@@ -30,37 +30,15 @@
   transform: translate(-50%, -50%);
 }
 
-.portfolio-story-copy {
-  grid-row: 2;
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: var(--frame-max);
-  margin-inline: auto;
-  padding-block: 0 clamp(2rem, 5svh, 4rem);
-}
-
 .portfolio-story-hero > .section-story--thinking {
   position: absolute;
   inset: 0;
   container-type: normal;
 }
 
-.portfolio-story-copy :is(.portfolio-section-title, .portfolio-story-description) {
-  background: var(--color-background-body);
-  box-decoration-break: clone;
-}
-
-.portfolio-story-copy .portfolio-section-title {
-  width: fit-content;
-  font-size: clamp(2rem, 4vw, 3rem);
-  letter-spacing: -.03em;
-}
-
 @media (min-width: 1024px) {
   .portfolio-story-hero { min-height: max(640px, 100svh); padding-block-start: 96px; }
   .portfolio-story-hero > .section-story svg { --story-size: min(78vw, 110cqh); }
-  .portfolio-story-description { white-space: nowrap; }
 }
 
 /* Keep the floor-rooted tree's scale after the shared desktop artwork rule. */

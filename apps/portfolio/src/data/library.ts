@@ -123,15 +123,6 @@ interface FlowDiagramProps {
     demo: 'field',
   },
   {
-    id: 'live-constellation-demo',
-    name: 'LiveConstellationDemo',
-    blurb:
-      'The homepage telescope model in a standalone canvas with cursor tilt.',
-    signature: '// no props (reads /models/telescope.glb and the cursor directly)',
-    source: 'src/components/thinking/kit/LiveConstellationDemo.tsx',
-    usedIn: 'night-field',
-  },
-  {
     id: 'live-material-demo',
     name: 'LiveMaterialDemo',
     blurb:
@@ -139,14 +130,6 @@ interface FlowDiagramProps {
     signature: '// no props (reads /models/rocks.glb and toggles its own state)',
     source: 'src/components/thinking/kit/LiveMaterialDemo.tsx',
     usedIn: 'night-field',
-  },
-  {
-    id: 'thinking-index',
-    name: 'ThinkingIndex',
-    blurb:
-      'Lists registered essays by date, title, and summary, grouped into positions and build logs.',
-    signature: '{ pieces: RegisteredPiece[] }',
-    source: 'src/components/thinking/kit/ThinkingIndex.tsx',
   },
 ]
 

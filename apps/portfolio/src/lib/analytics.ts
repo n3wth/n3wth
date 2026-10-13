@@ -16,13 +16,7 @@ function run(job: (posthog: PostHog) => void) {
       queue.push(job)
       return
     }
-    void import('posthog-js').then(({ default: posthog }) => {
-      try {
-        job(posthog)
-      } catch {
-        /* analytics must never break the page */
-      }
-    }).catch(() => {
+    void import('posthog-js').then(({ default: posthog }) => job(posthog)).catch(() => {
       /* analytics must never break the page */
     })
   } catch {
