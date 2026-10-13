@@ -252,11 +252,11 @@ export default function WritingGroves({ onEnter, reducedMotion }: { onEnter: (hr
     </instancedMesh>
     <instancedMesh ref={stems} args={[undefined, undefined, segments.length]} raycast={() => null}>
       <cylinderGeometry args={[0.65, 1, 1, 8, 1, true]} />
-      <meshStandardMaterial color="#ffffff" roughness={0.9} emissive={GROVE_COLORS.bark} emissiveIntensity={0.06} />
+      <meshStandardMaterial color="#ffffff" roughness={0.9} emissive={GROVE_COLORS.bark} emissiveIntensity={0.11} />
     </instancedMesh>
     <instancedMesh ref={leaves} args={[undefined, undefined, foliage.length]} raycast={() => null}>
       <sphereGeometry args={[1, 10, 6]} />
-      <meshStandardMaterial color="#ffffff" roughness={0.85} emissive={GROVE_COLORS.leaf} emissiveIntensity={0.08} />
+      <meshStandardMaterial color="#ffffff" roughness={0.85} emissive={GROVE_COLORS.leaf} emissiveIntensity={0.16} />
     </instancedMesh>
     <instancedMesh ref={hits} args={[undefined, undefined, trees.length]} onClick={selectTree} onPointerMove={(event) => {
       if (event.instanceId === undefined) return

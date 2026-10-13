@@ -496,7 +496,9 @@ body {
   min-width: 44px;
   min-height: 44px;
   padding: 0 10px;
-  color: var(--ink-dim);
+  color: var(--ink);
+  background: var(--color-background-body);
+  border-radius: var(--radius-inner);
   font-family: var(--font-sans);
   font-size: var(--font-size-sm);
   font-weight: 400;
@@ -521,7 +523,10 @@ body {
   width: max-content;
   max-width: 160px;
   transform: translateX(-50%);
-  font-size: 11px;
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-background-body);
+  border-radius: var(--radius-inner);
+  font-size: var(--font-size-sm);
   line-height: 1.4;
   text-align: center;
   white-space: normal;
