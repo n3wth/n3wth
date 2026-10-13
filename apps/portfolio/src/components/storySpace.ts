@@ -47,14 +47,22 @@ export function saveStoryJourney(journey: { epoch: number; color: number }) {
 export function createStorySpace(svg: SVGSVGElement, kind: string, amount: number, smoothing: number) {
   const faces = [...svg.querySelectorAll<SVGPathElement>('[data-story-face]')]
   const borders = [...svg.querySelectorAll<SVGPathElement>('[data-story-border]')]
+  const halos = [...svg.querySelectorAll<SVGPathElement>('[data-story-halo]')]
+  const walls = [...svg.querySelectorAll<SVGPathElement>('[data-story-wall]')]
+  let haloStart: number | undefined
+  let nextHalo: number | undefined
   const backdrop = svg.closest<HTMLElement>('.portfolio-story-hero')
   let crescendo: { start: number; duration: number; color: string } | null = null
   const palette = ['cyan', 'green', 'yellow', 'red']
   const ink = (index: number) => `var(--color-icon-${palette[index]})`
   type Light = { start: number; duration: number; color: string; coordinated: boolean; expansion?: boolean; accent?: StoryAccent }
   const lights = Array.from({ length: 9 }, () => ({ next: 0, events: [] as Light[] }))
-  const outlines = [...svg.querySelectorAll<SVGPathElement>('[data-story-block] > path:not(.section-story__pulse)')]
-    .map(path => ({ path, stroke: path.style.stroke, layer: Number(path.closest<SVGGElement>('[data-story-block]')!.dataset.storyBlock) }))
+  const outlines = [...svg.querySelectorAll<SVGPathElement>('[data-story-block] > path:not(.section-story__pulse), [data-story-light] path:not(.section-story__pulse):not(.section-story__contact-spectrum):not([data-art-loop]):not([data-art-route])')]
+    .map(path => {
+      const group = path.closest<SVGGElement>('[data-story-block], [data-story-light]')!
+      return { path, stroke: path.style.stroke, fill: path.style.fill, fillOpacity: path.style.fillOpacity, layer: Number(group.dataset.storyBlock ?? group.dataset.storyLight) }
+    })
+  const atmosphere = { projects: 1, art: .8, work: .45, thinking: .55, library: .3, contact: .5 }[kind] ?? 0
   const attention = Array<number>(9).fill(0)
   const trace = Array<number>(9).fill(0)
   const phase = Math.random() * Math.PI * 2
@@ -70,10 +78,13 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     svg.style.color = ''
     if (backdrop) backdrop.style.backgroundColor = ''
     crescendo = null
-    outlines.forEach(({ path, stroke }) => { path.style.stroke = stroke })
+    outlines.forEach(({ path, stroke, fill, fillOpacity }) => { path.style.stroke = stroke; path.style.fill = fill; path.style.fillOpacity = fillOpacity })
     lastAttentionTime = undefined
     faces.forEach(face => { face.style.fill = 'none'; face.style.stroke = 'none' })
     borders.forEach(border => { border.style.opacity = '0'; border.removeAttribute('transform') })
+    halos.forEach(halo => { halo.style.opacity = '0' })
+    walls.forEach(wall => { wall.style.opacity = '0' })
+    haloStart = nextHalo = undefined
   }
   reset()
   return {
@@ -93,7 +104,10 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     },
     colorFor(path: SVGPathElement, time: number, planned = false) {
       const block = path.closest<SVGGElement>('[data-story-block]')
-      if (!block) return null
+      if (!block) {
+        const group = path.closest<SVGGElement>('[data-story-light]')
+        return group && !planned && storyChaos(time) < .6 ? storyColor(time, (Number(group.dataset.storyLight) - 4) * .035) : null
+      }
       const events = lights[Number(block.dataset.storyBlock)].events
       if (planned) return events.at(-1)?.color ?? null
       const active = events.filter(light => strength(light, time) > .05)
@@ -102,6 +116,23 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
     },
     update(time: number) {
       const energy = storyEnergy(time)
+      if (halos.length) {
+        nextHalo ??= time + 10 + Math.random() * 8
+        if (time >= nextHalo) {
+          haloStart = time
+          nextHalo = time + 16 + 40 + Math.random() * 30
+        }
+        halos.forEach(halo => {
+          const distance = Number(halo.dataset.storyHalo)
+          const age = haloStart === undefined ? -1 : (time - haloStart - distance * 1.4) / 10
+          halo.style.opacity = String(pulseEnvelope(age, .8) * (.55 - distance * .08))
+          halo.style.stroke = storyColor(time, distance * .12)
+          const head = Math.max(0, Math.min(1, age))
+          const tail = Math.min(.34, head)
+          halo.style.strokeDasharray = `${Math.max(.0001, tail)} 2`
+          halo.style.strokeDashoffset = String(-(head - tail))
+        })
+      }
       // Two wandering centers share neighboring edges; their wake guides later passages.
       const first = 4 + 3.5 * Math.sin(time * .021 + phase)
       const second = 4 + 3.5 * Math.sin(time * .016 + phase + 2.1)
@@ -116,7 +147,7 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
       const inversion = Math.max(0, (Math.sin(time * .043 - 1.5) - .55) / .45) ** 2
       const bloom = crescendo ? pulseEnvelope((time - crescendo.start) / crescendo.duration, .8) : 0
       const wake = trace.reduce((total, value) => total + value, 0) / trace.length
-      const ambient = kind === 'projects' ? (1.5 + wake * 5 + meeting * 1.5) * amount : 0
+      const ambient = (1.5 + wake * 5 + meeting * 1.5) * amount * atmosphere
       const ground = ambient > 0 ? `color-mix(in srgb, ${ambientColor} ${ambient}%, var(--color-background-body))` : 'var(--color-background-body)'
       if (backdrop) backdrop.style.backgroundColor = bloom > 0 ? `color-mix(in srgb, ${crescendo!.color} ${bloom * 65}%, ${ground})` : ambient > 0 ? ground : ''
       svg.style.color = bloom > 0 ? `color-mix(in srgb, var(--color-background-body) ${bloom * 100}%, color-mix(in srgb, var(--color-text-primary) 40%, var(--color-background-body)))` : ''
@@ -137,12 +168,32 @@ export function createStorySpace(svg: SVGSVGElement, kind: string, amount: numbe
         light.events.push({ start: time, duration, color, coordinated: false })
       })
       const illumination = lights.map(light => Math.min(1, light.events.reduce((sum, event) => sum + strength(event, time), 0)))
+      const dimension = Math.max(0, Math.sin(time * .035 + phase)) ** 6
+      const tunnel = kind === 'art' ? .18 + .82 * Math.max(0, Math.sin(time * .047 + phase)) ** 4 : 0
+      walls.forEach(wall => {
+        const layer = Number(wall.dataset.storyWall)
+        const wave = (.5 + .5 * Math.sin(time * .7 - layer * .65 * Math.sin(time * .019 + phase))) ** 3
+        wall.style.fill = storyColor(time, layer * .32)
+        wall.style.opacity = String(amount * (.025 + tunnel * wave * .65) * (1 - layer * .045))
+      })
       outlines.forEach(({ path, layer }) => {
         const weight = (attention[layer] * .12 + trace[layer] * .08) * (1 - energy * .5)
         const quiet = `color-mix(in srgb, ${ambientColor} ${weight * 100}%, currentColor)`
         // Neutral edges become ink over lit faces instead of muddy grey on color.
-        const contrast = illumination[layer] * Math.min(1, amount * 1.8)
-        path.style.stroke = `color-mix(in srgb, var(--color-background-body) ${contrast * 88}%, ${quiet})`
+        const contrast = kind === 'projects' ? illumination[layer] * Math.min(1, amount * 1.8) : 0
+        const near = kind === 'art' ? 1 - layer / 8 : kind === 'contact' ? Number(path.closest<SVGGElement>('[data-story-side]')?.dataset.storySide ?? 0) : layer / 8
+        const depthInk = kind === 'projects' ? quiet : `color-mix(in srgb, var(--color-text-primary) ${dimension * near * 24}%, ${quiet})`
+        const reflected = path.closest('[data-story-reflection]')
+        const recession = kind === 'art' ? layer / 8 * 45 : 0
+        const neutral = reflected ? `color-mix(in srgb, var(--color-background-body) ${Math.max(recession, dimension * 45)}%, ${depthInk})` : `color-mix(in srgb, var(--color-background-body) ${Math.max(recession, contrast * 88)}%, ${depthInk})`
+        const direction = Math.sin(time * .019 + phase)
+        const wave = (.5 + .5 * Math.sin(time * .7 - layer * .65 * direction - (reflected ? .6 : 0))) ** 3
+        const spectral = tunnel * wave * (reflected ? .4 : .85)
+        path.style.stroke = spectral > .001 ? `color-mix(in ${paletteSpace}, ${storyColor(time, layer * .32)} ${spectral * 100}%, ${neutral})` : neutral
+        if ((kind === 'work' || kind === 'library') && /Z\s*$/i.test(path.getAttribute('d') ?? '')) {
+          path.style.fill = storyColor(time - layer * 2)
+          path.style.fillOpacity = String(dimension * amount * (.035 + near * .085))
+        }
       })
       faces.forEach(face => {
         const layer = Number(face.dataset.storyFace)
