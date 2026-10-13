@@ -97,7 +97,10 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
     }
 
     function emit(line: Line, position: number, parent: Trail) {
-      const ends = kind === 'thinking' ? [1] : synchronized || ordered || Math.random() < .5 ? [0, 1] : [Math.random() < .5 ? 0 : 1]
+      // Cuboid edges ignite at real corners, even when a crossing triggers them.
+      const cuboid = kind === 'projects' && !!line.path.closest('[data-story-block]')
+      if (cuboid) position = position < .5 ? 0 : 1
+      const ends = cuboid ? [1 - position] : kind === 'thinking' ? [1] : synchronized || ordered || Math.random() < .5 ? [0, 1] : [Math.random() < .5 ? 0 : 1]
       for (const end of ends) {
         if (Math.abs(end - position) < .001 || transfers.length >= pulseLimit()) continue
         const path = line.path.cloneNode(false) as SVGPathElement
