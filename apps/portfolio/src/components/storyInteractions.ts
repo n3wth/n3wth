@@ -182,7 +182,7 @@ export function useStoryInteractions(ref: RefObject<SVGSVGElement | null>, kind:
           motifExpansion = kind === 'projects' && motifOrdered && time >= nextExpansion && Math.random() < .2
           if (motifExpansion) {
             expansionUntil = time + 9000 + Math.random() * 5000
-            nextExpansion = expansionUntil + 75000 + Math.random() * 60000
+            nextExpansion = expansionUntil + 40000 + Math.random() * 30000
           }
           nextMotif = time + 18000 + Math.random() * 18000
         }
