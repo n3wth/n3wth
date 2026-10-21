@@ -37,6 +37,9 @@ Who Oliver is — AI at Google, art in the desert. A 3D night field scene built 
 #### Work (https://n3wth.com/work)
 Independent AI projects and product roles at Google, Covariant, Meta, and Microsoft.
 
+#### Projects (https://n3wth.com/projects)
+Independent agent tools, prototypes, and shared UI foundations. Project pages explain their purpose and link to documentation and source. This work is separate from Oliver's role at Google.
+
 #### After Dark / Art (https://n3wth.com/art)
 Large-scale light installations for Burning Man and San Francisco memorials:
 - **THEM** (2022): Lighting and Circle of Light ring. Black Rock City, Nevada. Design: Simón Malvaez. Fabrication: Brenden Blaine Darby. Fractured Atlas.
@@ -81,9 +84,20 @@ hey@n3wth.com — product, AI safety, LED art, or coffee in San Francisco.
 #### Support (https://n3wth.com/support)
 support@n3wth.com — one inbox covering every n3wth project (n3wth.com, hop.flights, lunchmoney.sh, theywontshutup.com).
 
-## Live Products
+## Projects and tools
 
-Products designed by Oliver, kept shipping by an autonomous agent team:
+Independent projects, tools, and experiments:
+
+### elephant-goldfish (https://n3wth.com/projects/elephant-goldfish)
+Oliver's Codex adaptation of the Elephant-Goldfish workflow for design checks, bug diagnosis, and code review. Fresh reviewers receive a question and bounded evidence without inheriting the working conversation.
+- Dave Rensin introduced the Elephant-Goldfish model. Vladyslav Shvedov published the upstream workflows under the MIT license. Oliver adapted them for this plugin.
+- Documentation: https://n3wth.com/docs/elephant-goldfish/quickstart
+- Source bundle: https://n3wth.com/downloads/elephant-goldfish-0.1.0.zip
+
+### markup (https://github.com/n3wth/markup)
+An independent prototype exploring personal AI agents working alongside people in shared documents and chat. Visible cursors and edits make agent activity easier to follow.
+- Tech: TypeScript, React, Tiptap
+- Source: https://github.com/n3wth/markup
 
 ### hop.flights (https://hop.flights/)
 Points-vs-cash flight optimizer — finds the cheapest way to fly, miles or money.
