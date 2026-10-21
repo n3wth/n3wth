@@ -521,6 +521,29 @@ test('a selected plant opens a compact, dismissible reading card', async ({ page
   await expect(card).toHaveCount(0)
 })
 
+test('long search answers remain scrollable without hiding local results', async ({ page }, testInfo) => {
+  await page.route('**/api/search', route => route.fulfill({ json: {
+    answer: 'This is an example answer about the projects and experience on this portfolio. '.repeat(28)
+      + ' Sources: [Work](https://n3wth.com/work).',
+  } }))
+  await page.goto('/work')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page.getByRole('combobox').fill('projects')
+  const answer = page.getByRole('region', { name: 'Search answer' })
+  await expect(answer.getByText('This is an example answer', { exact: false })).toBeVisible()
+  const results = page.getByRole('listbox', { name: 'Search results' })
+  await expect(results.getByRole('option', { name: 'Projects', exact: true, selected: true })).toBeInViewport()
+  expect(await answer.evaluate(el => el.scrollHeight > el.clientHeight)).toBe(true)
+  await answer.focus()
+  await page.keyboard.press('End')
+  await expect(answer.getByRole('link', { name: 'Work', exact: true })).toBeInViewport()
+  await expect(results.getByRole('option', { name: 'Projects', exact: true, selected: true })).toBeInViewport()
+  await page.screenshot({ path: testInfo.outputPath('search-long-answer.png') })
+  await page.getByRole('combobox').focus()
+  await page.keyboard.press('Enter')
+  await expect(page).toHaveURL(/\/projects$/)
+})
+
 test('AI answers start automatically after typing pauses', async ({ page }, testInfo) => {
   let requests = 0
   await page.route('**/api/search', async route => {
