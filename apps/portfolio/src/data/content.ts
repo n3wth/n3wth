@@ -160,6 +160,7 @@ export interface Project {
   tech: string[]
   url: string
   github?: string
+  docs?: string
   question?: string
   focus?: string
 }
@@ -168,9 +169,11 @@ export const projects: Project[] = [
   {
     id: 'elephant-goldfish',
     name: 'elephant-goldfish',
+    question: 'A fresh review before the next change',
     description: 'A Codex plugin for design checks, bug diagnosis, and code review. Fresh reviewers examine bounded evidence without inheriting the working conversation.',
     tech: ['Codex', 'Agent Skills'],
     url: '/projects/elephant-goldfish',
+    docs: '/docs/elephant-goldfish/quickstart',
   },
   {
     id: 'markup',
@@ -188,6 +191,7 @@ export const projects: Project[] = [
     description: 'A memory service for AI apps with semantic search and a knowledge graph. An MCP interface makes that context available across tools.',
     tech: ['TypeScript', 'Redis', 'Vector Embeddings', 'MCP'],
     url: '/projects/r3',
+    docs: '/docs/r3/quickstart',
     github: 'https://github.com/n3wth/r3',
   },
   {
@@ -198,6 +202,7 @@ export const projects: Project[] = [
     description: 'A React component library with theme tokens, typography, native controls, and page compositions shared across the n3wth sites.',
     tech: ['React', 'TypeScript', 'Tailwind CSS'],
     url: '/projects/ui',
+    docs: '/docs/ui/quickstart',
     github: 'https://github.com/n3wth/ui',
   },
   {
