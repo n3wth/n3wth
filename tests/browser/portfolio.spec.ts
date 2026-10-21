@@ -521,6 +521,24 @@ test('a selected plant opens a compact, dismissible reading card', async ({ page
   await expect(card).toHaveCount(0)
 })
 
+test('search leaves composition keys to the input method', async ({ page }) => {
+  await page.goto('/work')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  const input = page.getByRole('combobox')
+  await expect(input).toBeFocused()
+  await input.dispatchEvent('keydown', { key: 'ArrowDown', isComposing: true })
+  await expect(page.getByRole('option', { selected: true })).toHaveText('Work')
+  await input.dispatchEvent('keydown', { key: 'Enter', isComposing: true })
+  await input.dispatchEvent('keydown', { key: 'Enter', keyCode: 229 })
+  await input.dispatchEvent('keydown', { key: 'Escape', isComposing: true })
+  await expect(input).toBeVisible()
+  await expect(page).toHaveURL(/\/work$/)
+  await input.press('ArrowDown')
+  await expect(page.getByRole('option', { selected: true })).toHaveText('Projects')
+  await input.press('Enter')
+  await expect(page).toHaveURL(/\/projects$/)
+})
+
 test('AI answers start automatically after typing pauses', async ({ page }, testInfo) => {
   let requests = 0
   await page.route('**/api/search', async route => {

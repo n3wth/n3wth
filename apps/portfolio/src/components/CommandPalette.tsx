@@ -486,6 +486,8 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   )
 
   const onPanelKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    // Candidate selection belongs to the input method, not search navigation.
+    if (event.defaultPrevented || event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) return
     if (event.key === 'Tab') {
       const panel = panelRef.current
       if (!panel) return

@@ -8,6 +8,22 @@ vi.mock('../../lib/analytics', () => ({ track: vi.fn() }))
 const noop = () => {}
 
 describe('CommandPalette smoke', () => {
+  it('does not navigate or select results while composing text', () => {
+    const onClose = vi.fn()
+    render(<CommandPalette open onClose={onClose} />)
+    const input = screen.getByRole('combobox')
+    const initial = input.getAttribute('aria-activedescendant')
+
+    fireEvent.keyDown(input, { key: 'ArrowDown', isComposing: true })
+    expect(input.getAttribute('aria-activedescendant')).toBe(initial)
+    fireEvent.keyDown(input, { key: 'Enter', isComposing: true })
+    fireEvent.keyDown(input, { key: 'Enter', keyCode: 229 })
+    expect(onClose).not.toHaveBeenCalled()
+
+    fireEvent.keyDown(input, { key: 'ArrowDown' })
+    expect(input.getAttribute('aria-activedescendant')).not.toBe(initial)
+  })
+
   it('renders a start-here set and filters live', async () => {
     render(
       <>
