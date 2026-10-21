@@ -4,7 +4,7 @@ import { Search, X, RotateCcw } from 'lucide-react'
 import { searchItems } from '../lib/search'
 import { track } from '../lib/analytics'
 import type { ResultGroup, SearchItem } from '../lib/search'
-import { registeredPieces } from './thinking/registry'
+import articleMeta from '../data/article-index.json'
 import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
 import { siteUrls } from '../data/sites'
 import { navigation } from '../data/content'
@@ -23,9 +23,9 @@ const AI_MIN_CHARS = 2
  * pages themselves render from, so the palette can't drift out of sync with
  * what actually ships.
  *
- * registeredPieces is imported for its `meta` only. The piece bodies behind
- * it are React.lazy() calls, so this import moves metadata, not essays, and
- * registry.tsx is already in the entry chunk by way of src/pages/Thinking.tsx.
+ * Article metadata is generated from the registry during the existing local
+ * content build. Importing the registry itself also pulls interactive article
+ * code into the header, even though search only reads titles and descriptions.
  */
 
 /** How many results are drawn at once. The true match count is still shown. */
@@ -54,7 +54,7 @@ const PAGES: SearchItem[] = [
   },
 ]
 
-const THINKING: SearchItem[] = registeredPieces.map(({ meta }) => ({
+const THINKING: SearchItem[] = articleMeta.map(meta => ({
   id: `thinking-${meta.id}`,
   title: meta.title,
   subtitle: meta.dek,

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { registeredPieces } from '../registry'
+import articleMeta from '../../../data/article-index.json'
 
 /* Every /thinking/:slug route ships its own document title and meta
    description (via usePageMeta and scripts/prerender-meta.mjs). A piece
@@ -7,6 +8,10 @@ import { registeredPieces } from '../registry'
    collapse those routes to duplicate or empty meta — assert uniqueness
    here so it fails before the prerendered HTML ships. */
 describe('thinking piece metadata', () => {
+  it('keeps the lightweight index identical to the published article metadata', () => {
+    expect(articleMeta).toEqual(registeredPieces.map(({ meta: { id, title, dek, date } }) => ({ id, title, dek, date })))
+  })
+
   it('registers at least one piece', () => {
     expect(registeredPieces.length).toBeGreaterThan(0)
   })

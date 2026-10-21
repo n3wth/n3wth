@@ -22,7 +22,7 @@ test('clean generation recreates identical local indexes without committed outpu
   symlinkSync(join(source, 'content'), join(app, 'content'))
   symlinkSync(join(source, 'public/figures'), join(app, 'public/figures'))
   symlinkSync(fileURLToPath(new URL('../../../node_modules', import.meta.url)), join(app, 'node_modules'))
-  const files = ['garden-index.json', 'garden-search.json', 'writing-index.json']
+  const files = ['garden-index.json', 'garden-search.json', 'writing-index.json', 'article-index.json']
   const generate = () => execFileSync(process.execPath, ['scripts/build-notes.mjs'], { cwd: app })
   generate()
   const first = files.map(file => readFileSync(join(app, 'src/data', file), 'utf8'))
