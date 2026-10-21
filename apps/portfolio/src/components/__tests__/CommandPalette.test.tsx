@@ -81,6 +81,19 @@ describe('CommandPalette AI search', () => {
     expect(screen.queryByRole('button', { name: /Ask about/ })).toBeNull()
   })
 
+  it('renders unsafe answer destinations as text and excludes unsafe source links', async () => {
+    globalThis.fetch = vi.fn(async () => new Response(JSON.stringify({
+      answer: '[Unsafe](javascript:alert) and [Work page](/work). Sources: [Invalid source](data:text/html,test), [Valid source](https://n3wth.com/work)',
+    }), { headers: { 'content-type': 'application/json' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'career' } })
+    await waitFor(() => expect(screen.getByText('Unsafe')).toBeTruthy())
+    expect(screen.queryByRole('link', { name: 'Unsafe' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Invalid source' })).toBeNull()
+    expect(screen.getByRole('link', { name: 'Work page' }).getAttribute('href')).toBe('/work')
+    expect(screen.getByRole('link', { name: 'Valid source' }).getAttribute('href')).toBe('https://n3wth.com/work')
+  })
+
   it('requests an AI answer after typing pauses', async () => {
     const mockFetch = vi.fn().mockImplementation(() =>
       Promise.resolve({
