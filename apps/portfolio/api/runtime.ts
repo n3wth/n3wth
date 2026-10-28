@@ -197,9 +197,9 @@ async function search(request: Request, fetchImpl: FetchImplementation): Promise
     const upstream = await fetchImpl(AI_SEARCH_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: query }], max_tokens: 180, temperature: 0.3, stream: Boolean(body.stream) }), signal: request.signal })
     if (!upstream.ok) return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
     if (body.stream && upstream.body) return streamSearch(upstream, cors)
-    const data = await upstream.json() as { model?: string; choices?: Array<{ message?: { content?: string } }>; chunks?: SearchChunk[] }
+    const data = await upstream.json() as { model?: string; choices?: Array<{ message?: { content?: string } }>; chunks?: unknown }
     const content = data.choices?.[0]?.message?.content
-    return content ? json({ answer: hasNoSearchAnswer(content) ? NO_SEARCH_ANSWER : content.trim() + citations(data.chunks ?? [], content), ...(data.model && { model: data.model }) }, 200, true) : json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
+    return content ? json({ answer: hasNoSearchAnswer(content) ? NO_SEARCH_ANSWER : content.trim() + citations(Array.isArray(data.chunks) ? data.chunks : [], content), ...(data.model && { model: data.model }) }, 200, true) : json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
   } catch {
     return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
   }

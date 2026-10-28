@@ -50,6 +50,11 @@ describe('portfolio Worker API runtime', () => {
     expect((await response?.text())?.match(/"model":"provider-model"/g)).toHaveLength(1)
   })
 
+  it.each([{}, 42, 'invalid'])('preserves a valid answer when citation metadata is malformed: %j', async chunks => {
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work' }) }), {}, async () => Response.json({ choices: [{ message: { content: 'A supported answer.' } }], chunks }))
+    expect(await response?.json()).toEqual({ answer: 'A supported answer.' })
+  })
+
   it('preserves search SSE deltas and terminal event', async () => {
     const upstream = ['event: chunks\n', 'data: [{"item":{"key":"https://n3wth.com/work"}}]\n\n', 'data: {"choices":[{"delta":{"content":"hello"}}]}\n\n', 'data: [DONE]\n\n'].join('')
     const fetchMock: typeof fetch = async () => new Response(upstream)
