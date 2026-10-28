@@ -9,7 +9,7 @@ interface Env extends SubscribeEnv {
 }
 
 function cacheControl(path: string): string {
-  if (path.startsWith('/_astro/') || path.startsWith('/assets/') || path.startsWith('/fonts/')) return 'public, max-age=31536000, immutable'
+  if (path.startsWith('/_astro/')) return 'public, max-age=31536000, immutable'
   return 'public, max-age=0, must-revalidate'
 }
 
