@@ -82,7 +82,7 @@ test('portfolio deploy supplies both secrets in one private temporary file and r
   const directory = mkdtempSync(join(tmpdir(), 'portfolio-deploy-test-'))
   let path
   try {
-    const env = { RUNNER_TEMP: directory, RESEND_API_KEY: 'test-key', RESEND_UNSUBSCRIBE_SECRET: 'test-signing-secret' }
+    const env = { RUNNER_TEMP: directory, RESEND_API_KEY: 'test-key', RESEND_UNSUBSCRIBE_SECRET: `  ${'s'.repeat(32)}  ` }
     deployPortfolio(env, (command, args) => {
       assert.equal(command, 'npm')
       assert.deepEqual(args.slice(0, -1), ['exec', '--', 'wrangler', 'deploy', '--config', 'apps/portfolio/wrangler.jsonc', '--secrets-file'])
@@ -93,6 +93,9 @@ test('portfolio deploy supplies both secrets in one private temporary file and r
     })
     assert.equal(existsSync(path), false)
     assert.throws(() => deployPortfolio({ ...env, RESEND_UNSUBSCRIBE_SECRET: '' }, () => assert.fail('must not deploy')), /Both Resend secrets/)
+    for (const invalid of [{ RESEND_API_KEY: '  ' }, { RESEND_UNSUBSCRIBE_SECRET: 'short' }, { RESEND_UNSUBSCRIBE_SECRET: `  ${'s'.repeat(31)}  ` }]) {
+      assert.throws(() => deployPortfolio({ ...env, ...invalid }, () => assert.fail('must not deploy')), /Both Resend secrets/)
+    }
     assert.throws(() => deployPortfolio(env, (_command, args) => { path = args.at(-1); return { status: 1 } }), /Portfolio deploy failed/)
     assert.equal(existsSync(path), false)
     assert.throws(() => deployPortfolio(env, (_command, args) => { path = args.at(-1); return { error: new Error('cannot start') } }), /cannot start/)
@@ -115,7 +118,7 @@ fs.writeFileSync(process.env.TEST_REPORT, JSON.stringify({ args, path, mode: fs.
 process.exit(Number(process.env.TEST_EXIT))
 `, { mode: 0o755 })
     const report = join(directory, 'report.json')
-    const env = { ...process.env, PATH: `${directory}:${process.env.PATH}`, RUNNER_TEMP: directory, TEST_REPORT: report, RESEND_API_KEY: 'private-test-key', RESEND_UNSUBSCRIBE_SECRET: 'private-test-signing-secret' }
+    const env = { ...process.env, PATH: `${directory}:${process.env.PATH}`, RUNNER_TEMP: directory, TEST_REPORT: report, RESEND_API_KEY: 'private-test-key', RESEND_UNSUBSCRIBE_SECRET: 's'.repeat(32) }
     for (const exit of ['0', '1']) {
       const result = spawnSync(process.execPath, [fileURLToPath(new URL('./deploy-portfolio.mjs', import.meta.url))], { env: { ...env, TEST_EXIT: exit }, encoding: 'utf8' })
       assert.equal(result.status, Number(exit))

@@ -6,7 +6,10 @@ import { fileURLToPath } from 'node:url'
 
 export function deployPortfolio(env = process.env, run = spawnSync) {
   const { RESEND_API_KEY, RESEND_UNSUBSCRIBE_SECRET } = env
-  if (!RESEND_API_KEY || !RESEND_UNSUBSCRIBE_SECRET) throw new Error('Both Resend secrets are required')
+  if (typeof RESEND_API_KEY !== 'string' || !RESEND_API_KEY.trim()
+    || typeof RESEND_UNSUBSCRIBE_SECRET !== 'string' || RESEND_UNSUBSCRIBE_SECRET.trim().length < 32) {
+    throw new Error('Both Resend secrets are required; the signing secret must be at least 32 characters')
+  }
   const directory = mkdtempSync(join(env.RUNNER_TEMP || tmpdir(), 'portfolio-secrets-'))
   try {
     const path = join(directory, 'secrets.json')
