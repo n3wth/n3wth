@@ -39,6 +39,18 @@ describe('signed unsubscribe', () => {
     expect(JSON.parse(fetchImpl.mock.calls[0][1]?.body as string)).toEqual([{ id: topic, subscription: 'opt_out' }])
   })
 
+  it('accepts links signed with either the configured or trimmed secret', async () => {
+    const padded = `  ${secret}  `
+    const fetchImpl = vi.fn().mockResolvedValue(Response.json({}))
+    for (const signingSecret of [secret, padded]) {
+      const url = await createUnsubscribeUrl(contact, topic, signingSecret)
+      const paddedEnv = { ...env, RESEND_UNSUBSCRIBE_SECRET: padded }
+      expect((await handleUnsubscribeRequest(new Request(url), paddedEnv, fetchImpl)).status).toBe(200)
+      expect((await handleUnsubscribeRequest(new Request(url, { method: 'POST' }), paddedEnv, fetchImpl)).status).toBe(200)
+    }
+    expect(fetchImpl).toHaveBeenCalledTimes(2)
+  })
+
   it('rejects forged and modified tokens without contacting the provider', async () => {
     const url = await createUnsubscribeUrl(contact, topic, secret)
     const token = new URL(url).searchParams.get('token')!

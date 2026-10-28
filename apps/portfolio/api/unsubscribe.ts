@@ -58,7 +58,12 @@ export async function handleUnsubscribeRequest(request: Request, env: Unsubscrib
   let topicId: string
   try {
     const [payload, signature] = token.split('.')
-    if (!await crypto.subtle.verify('HMAC', await signingKey(secret), decode(signature), encoder.encode(payload))) throw new Error('Invalid signature')
+    const signed = decode(signature)
+    const data = encoder.encode(payload)
+    const normalized = secret.trim()
+    const valid = await crypto.subtle.verify('HMAC', await signingKey(secret), signed, data)
+      || (normalized !== secret && normalized.length >= 32 && await crypto.subtle.verify('HMAC', await signingKey(normalized), signed, data))
+    if (!valid) throw new Error('Invalid signature')
     const parsed: unknown = JSON.parse(new TextDecoder().decode(decode(payload)))
     if (!parsed || typeof parsed !== 'object') throw new Error('Invalid payload')
     const value = parsed as { v?: unknown; c?: unknown; t?: unknown }

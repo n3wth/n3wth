@@ -220,6 +220,18 @@ describe('new website subscriber welcome', () => {
     expect(fake.calls.filter(call => call.url.endsWith('/emails'))).toHaveLength(1)
   })
 
+  it('accepts the welcome unsubscribe link when the configured secret is padded', async () => {
+    const fake = welcomeFake()
+    const paddedEnv = { ...welcomeEnv, RESEND_UNSUBSCRIBE_SECRET: `  ${welcomeEnv.RESEND_UNSUBSCRIBE_SECRET}  ` }
+    expect((await handlePortfolioApi(subscribeRequest({ body: body() }), paddedEnv, fake.fetchMock))?.status).toBe(200)
+    const sent = fake.calls.find(call => call.url.endsWith('/emails'))!.body as { template: { variables: { UNSUBSCRIBE_URL: string } } }
+    const url = sent.template.variables.UNSUBSCRIBE_URL
+    const fetchMock = vi.fn().mockResolvedValue(Response.json({}))
+    expect((await handlePortfolioApi(new Request(url), paddedEnv, fetchMock))?.status).toBe(200)
+    expect((await handlePortfolioApi(new Request(url, { method: 'POST' }), paddedEnv, fetchMock))?.status).toBe(200)
+    expect(fetchMock).toHaveBeenCalledOnce()
+  })
+
   it('also accepts legacy flat string properties when retrying a pending welcome', async () => {
     const fake = welcomeFake({ existing: true, properties: pending(), flatProperties: true })
     const response = await handlePortfolioApi(subscribeRequest({ body: body() }), welcomeEnv, fake.fetchMock)
