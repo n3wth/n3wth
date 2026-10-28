@@ -69,14 +69,26 @@ export async function handleUnsubscribeRequest(request: Request, env: Unsubscrib
     if (!parsed || typeof parsed !== 'object') throw new Error('Invalid payload')
     const value = parsed as { v?: unknown; c?: unknown; t?: unknown }
     if (value.v !== 1 || typeof value.c !== 'string' || typeof value.t !== 'string' || !UUID.test(value.c) || !UUID.test(value.t)) throw new Error('Invalid identifiers')
-    const configured: unknown = JSON.parse(env.RESEND_TOPIC_IDS ?? '{}')
-    if (!configured || typeof configured !== 'object' || Array.isArray(configured)) throw new Error('Invalid topics')
-    const allowed = [PLEX_TOPIC, ...Object.values(configured)]
-    if (!allowed.includes(value.t)) throw new Error('Unknown topic')
     contactId = value.c
-    topicId = value.t
+    topicId = value.t.toLowerCase()
   } catch {
     return page('Invalid link', 'Use the unsubscribe link from your email.', 400)
+  }
+  if (topicId !== PLEX_TOPIC) {
+    let configured: unknown
+    try {
+      configured = JSON.parse(env.RESEND_TOPIC_IDS ?? '')
+      if (!configured || typeof configured !== 'object' || Array.isArray(configured)) throw new Error('Invalid topics')
+    } catch {
+      return page('Please try again', 'Email preferences are temporarily unavailable.', 503)
+    }
+    const values = Object.values(configured)
+    if (!values.some(value => typeof value === 'string' && UUID.test(value) && value.toLowerCase() === topicId)) {
+      if (!values.length || values.some(value => typeof value !== 'string' || !UUID.test(value))) {
+        return page('Please try again', 'Email preferences are temporarily unavailable.', 503)
+      }
+      return page('Invalid link', 'Use the unsubscribe link from your email.', 400)
+    }
   }
   // GET is deliberately inert: email security scanners must not unsubscribe users.
   if (request.method === 'GET') return page('Unsubscribe from these updates?', 'Your other email subscriptions will stay unchanged.', 200, token)

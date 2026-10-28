@@ -80,6 +80,61 @@ describe('signed unsubscribe', () => {
     expect(fetchImpl).not.toHaveBeenCalled()
   })
 
+  it.each([true, false])('accepts signed UUIDs regardless of letter case (uppercase token: %s)', async uppercaseToken => {
+    const mixedTopic = 'ABCDEFAB-CDEF-4ABC-8ABC-ABCDEFABCDEF'
+    const url = await createUnsubscribeUrl(contact, uppercaseToken ? mixedTopic : mixedTopic.toLowerCase(), secret)
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(Response.json({}))
+    const config = { ...env, RESEND_TOPIC_IDS: JSON.stringify({ home: uppercaseToken ? mixedTopic.toLowerCase() : mixedTopic }) }
+    expect((await handleUnsubscribeRequest(new Request(url), config, fetchImpl)).status).toBe(200)
+    const response = await handleUnsubscribeRequest(new Request(url, { method: 'POST' }), config, fetchImpl)
+    expect(response.status).toBe(200)
+    expect(JSON.parse(fetchImpl.mock.calls[0][1]?.body as string)).toEqual([{ id: mixedTopic.toLowerCase(), subscription: 'opt_out' }])
+  })
+
+  it.each([undefined, '{', '[]', '{}', 'null', '{"home":null}', '{"home":"not-a-uuid"}'])('reports malformed topic configuration as unavailable: %s', async topics => {
+    const url = await createUnsubscribeUrl(contact, topic, secret)
+    const fetchImpl = vi.fn<typeof fetch>()
+    for (const method of ['GET', 'POST']) {
+      const response = await handleUnsubscribeRequest(new Request(url, { method }), { ...env, RESEND_TOPIC_IDS: topics }, fetchImpl)
+      expect(response.status).toBe(503)
+    }
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  it('allows a configured topic despite an unrelated malformed entry', async () => {
+    const url = await createUnsubscribeUrl(contact, topic, secret)
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(Response.json({}))
+    const response = await handleUnsubscribeRequest(new Request(url, { method: 'POST' }), { ...env, RESEND_TOPIC_IDS: JSON.stringify({ home: topic, other: null }) }, fetchImpl)
+    expect(response.status).toBe(200)
+    expect(fetchImpl).toHaveBeenCalledOnce()
+  })
+
+  it('reports an unmatched topic as unavailable when the map is partially malformed', async () => {
+    const url = await createUnsubscribeUrl(contact, '33333333-3333-4333-8333-333333333333', secret)
+    const fetchImpl = vi.fn<typeof fetch>()
+    const response = await handleUnsubscribeRequest(new Request(url, { method: 'POST' }), { ...env, RESEND_TOPIC_IDS: JSON.stringify({ home: topic, other: null }) }, fetchImpl)
+    expect(response.status).toBe(503)
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
+  it('keeps Plex links usable when website topic configuration is malformed', async () => {
+    const url = await createUnsubscribeUrl(contact, 'ad622614-9af0-4edb-846f-9e200c4bfa97', secret)
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(Response.json({}))
+    const response = await handleUnsubscribeRequest(new Request(url, { method: 'POST' }), { ...env, RESEND_TOPIC_IDS: '{' }, fetchImpl)
+    expect(response.status).toBe(200)
+    expect(fetchImpl).toHaveBeenCalledOnce()
+  })
+
+  it('rejects a forged token before inspecting malformed configuration', async () => {
+    const url = await createUnsubscribeUrl(contact, topic, secret)
+    const altered = new URL(url)
+    const token = altered.searchParams.get('token')!
+    altered.searchParams.set('token', `${token[0] === 'A' ? 'B' : 'A'}${token.slice(1)}`)
+    const fetchImpl = vi.fn<typeof fetch>()
+    expect((await handleUnsubscribeRequest(new Request(altered, { method: 'POST' }), { ...env, RESEND_TOPIC_IDS: '{' }, fetchImpl)).status).toBe(400)
+    expect(fetchImpl).not.toHaveBeenCalled()
+  })
+
   it('allows the Plex topic without requiring website membership', async () => {
     const url = await createUnsubscribeUrl(contact, 'ad622614-9af0-4edb-846f-9e200c4bfa97', secret)
     expect((await handleUnsubscribeRequest(new Request(url), env, vi.fn())).status).toBe(200)
