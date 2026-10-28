@@ -17,6 +17,16 @@ describe('portfolio Worker API runtime', () => {
     expect(response?.headers.get('access-control-allow-methods')).toBe('POST, OPTIONS')
   })
 
+  it.each(['null', '{', JSON.stringify({ query: '   ' }), JSON.stringify({ query: 'a', padding: 'x'.repeat(4096) })])('rejects invalid or oversized search bodies', async body => {
+    let called = false
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body, headers: { 'Content-Length': '1' } }), {}, async () => {
+      called = true
+      return new Response()
+    })
+    expect(response?.status).toBe(400)
+    expect(called).toBe(false)
+  })
+
   it.each([
     ['My work experience', 'Oliver Newth work experience'],
     ['work experience', 'Oliver Newth work experience'],
@@ -49,6 +59,56 @@ describe('portfolio Worker API runtime', () => {
     expect(text).toContain('"delta":"hello"')
     expect(text).toContain('"delta":" Sources: [work](https://n3wth.com/work)."')
     expect(text).toContain('data: [DONE]')
+  })
+
+  it('handles CRLF streams and emits exactly one terminal event', async () => {
+    const upstream = 'event: chunks\r\ndata: [{"item":{"key":"https://n3wth.com/work"}}]\r\n\r\n'
+      + 'data: {"choices":[{"delta":{"content":"hello"}}]}\r\n\r\ndata: [DONE]\r\n\r\n'
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true }) }), {}, async () => new Response(upstream))
+    const text = await response?.text()
+    expect(text).toContain('Sources: [work](https://n3wth.com/work)')
+    expect(text?.match(/data: \[DONE\]/g)).toHaveLength(1)
+  })
+
+  it.each(['', 'data: {"choices":[{"delta":{"content":"partial"}}]}\n\n'])('terminates an incomplete stream once', async upstream => {
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true }) }), {}, async () => new Response(upstream))
+    const text = await response?.text()
+    expect(text?.match(/data: \[DONE\]/g)).toHaveLength(1)
+    expect(text).toContain(upstream ? 'partial' : "Couldn't generate an answer")
+  })
+
+  it('ends a failed partial response without citing candidates', async () => {
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode('event: chunks\ndata: [{"item":{"key":"https://n3wth.com/work"}}]\n\ndata: {"choices":[{"delta":{"content":"partial"}}]}\n\n'))
+      },
+      pull: controller => controller.error(new Error('upstream failure')),
+    })
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true }) }), {}, async () => new Response(body))
+    const text = await response?.text()
+    expect(text).toContain('partial')
+    expect(text).not.toContain('Sources:')
+    expect(text?.match(/data: \[DONE\]/g)).toHaveLength(1)
+  })
+
+  it('ignores malformed citation data and completes the stream', async () => {
+    const upstream = 'event: chunks\ndata: [null,{"item":{"key":"https://n3wth.com/work","metadata":{"title":3}}}]\n\n'
+      + 'data: {"choices":[{"delta":{"content":"hello"}}]}\n\ndata: [DONE]\n\n'
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true }) }), {}, async () => new Response(upstream))
+    const text = await response?.text()
+    expect(text).toContain('Sources: [work](https://n3wth.com/work)')
+    expect(text?.match(/data: \[DONE\]/g)).toHaveLength(1)
+  })
+
+  it('closes after DONE even when the upstream stays open', async () => {
+    let canceled = false
+    const body = new ReadableStream<Uint8Array>({
+      start: controller => controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n')),
+      cancel: () => { canceled = true },
+    })
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true }) }), {}, async () => new Response(body))
+    expect((await response?.text())?.match(/data: \[DONE\]/g)).toHaveLength(1)
+    expect(canceled).toBe(true)
   })
 
   it.each([

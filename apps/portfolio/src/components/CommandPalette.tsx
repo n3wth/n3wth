@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react'
 import { Search, X, RotateCcw } from 'lucide-react'
 import { searchItems } from '../lib/search'
+import { answerLinkHref } from '../lib/answerLinks'
 import { track } from '../lib/analytics'
 import type { ResultGroup, SearchItem } from '../lib/search'
 import { registeredPieces } from './thinking/registry'
@@ -80,7 +81,7 @@ const HOOKS: SearchItem[] = uiHooks.map((name) => ({
   id: `ui-hook-${name.toLowerCase()}`,
   title: name,
   subtitle: '@n3wth/ui hook',
-  href: `/library#ui-hook-${name.toLowerCase()}`,
+  href: `/library#ui-${name.toLowerCase()}`,
   group: 'Library' as ResultGroup,
 }))
 
@@ -131,7 +132,8 @@ function renderAnswerLinks(text: string): Array<string | { label: string; href: 
   let match: RegExpExecArray | null
   while ((match = linkRe.exec(text))) {
     if (match.index > last) parts.push(text.slice(last, match.index))
-    parts.push({ label: match[1], href: match[2] })
+    const href = answerLinkHref(match[2])
+    parts.push(href ? { label: match[1], href } : match[1])
     last = match.index + match[0].length
   }
   if (last < text.length) parts.push(text.slice(last))

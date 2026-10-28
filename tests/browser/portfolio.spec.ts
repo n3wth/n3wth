@@ -521,6 +521,16 @@ test('a selected plant opens a compact, dismissible reading card', async ({ page
   await expect(card).toHaveCount(0)
 })
 
+test('search links UI hooks to their library entries', async ({ page }) => {
+  await page.route('**/api/search', route => route.fulfill({ json: { answer: '' } }))
+  await page.goto('/work')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page.getByRole('combobox').fill('useButtonPulse')
+  await page.getByRole('option', { name: /useButtonPulse/i }).click()
+  await expect(page).toHaveURL(/\/library#ui-usebuttonpulse$/)
+  await expect(page.locator('#ui-usebuttonpulse')).toBeInViewport()
+})
+
 test('AI answers start automatically after typing pauses', async ({ page }, testInfo) => {
   let requests = 0
   await page.route('**/api/search', async route => {

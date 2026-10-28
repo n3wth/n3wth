@@ -1,4 +1,4 @@
-import { handleSubscribe, type SubscribeEnv, type SubscribeOptions } from './subscribe'
+import { boundedText, handleSubscribe, type SubscribeEnv, type SubscribeOptions } from './subscribe'
 import { handleUnsubscribeRequest } from './unsubscribe'
 
 type FetchImplementation = typeof fetch
@@ -61,10 +61,11 @@ function citations(chunks: SearchChunk[], content: string): string {
   const seen = new Set<string>()
   const links: string[] = []
   for (const chunk of chunks) {
-    const key = chunk.item?.key
-    if (!key || seen.has(key)) continue
+    const key = chunk?.item?.key
+    if (typeof key !== 'string' || !key || seen.has(key)) continue
     seen.add(key)
-    const title = decodeEntities(chunk.item?.metadata?.title ?? titleFromKey(key))
+    const rawTitle = chunk.item?.metadata?.title
+    const title = decodeEntities(typeof rawTitle === 'string' ? rawTitle : titleFromKey(key))
     links.push(`[${title}](${key})`)
     if (links.length >= 4) break
   }
@@ -96,9 +97,21 @@ function streamSearch(upstream: Response, responseHeaders: Headers): Response {
       let chunks: SearchChunk[] = []
       let content = ''
       let model: string | undefined
+      let finished = false
       const emit = (value: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(value)}\n\n`))
-      const emitDone = () => controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+      const emitDone = (includeSources = true) => {
+        if (finished) return
+        if (!content) emit({ delta: "Couldn't generate an answer — try browsing instead." })
+        else if (includeSources) {
+          const sourceText = citations(chunks, content)
+          if (sourceText) emit({ delta: sourceText })
+        }
+        finished = true
+        controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+      }
       const processLine = (line: string) => {
+        line = line.replace(/\r$/, '')
+        if (finished) return
         if (line.startsWith('event: ')) {
           currentEvent = line.slice(7).trim()
           return
@@ -106,14 +119,13 @@ function streamSearch(upstream: Response, responseHeaders: Headers): Response {
         if (!line.startsWith('data: ')) return
         const data = line.slice(6)
         if (data === '[DONE]') {
-          const sourceText = citations(chunks, content)
-          if (sourceText) emit({ delta: sourceText })
           emitDone()
           return
         }
         try {
           if (currentEvent === 'chunks') {
-            chunks = JSON.parse(data) as SearchChunk[]
+            const parsed: unknown = JSON.parse(data)
+            chunks = Array.isArray(parsed) ? parsed : []
           } else {
             const completion = JSON.parse(data) as { model?: string; choices?: Array<{ delta?: { content?: string } }> }
             if (completion.model && completion.model !== model) {
@@ -134,23 +146,26 @@ function streamSearch(upstream: Response, responseHeaders: Headers): Response {
       try {
         while (true) {
           const { done, value } = await reader.read()
+          if (clientCanceled) return
           if (done) break
           buffer += decoder.decode(value, { stream: true })
           const lines = buffer.split('\n')
           buffer = lines.pop() ?? ''
           lines.forEach(processLine)
+          if (finished) {
+            controller.close()
+            await cancelReader()
+            return
+          }
         }
+        buffer += decoder.decode()
         if (buffer) processLine(buffer)
-        if (!content) {
-          emit({ delta: "Couldn't generate an answer — try browsing instead." })
-          emitDone()
-        }
+        emitDone(false)
         controller.close()
       } catch (error) {
         await cancelReader(error)
         if (clientCanceled) return
-        if (!content) emit({ delta: "Couldn't generate an answer — try browsing instead." })
-        emitDone()
+        emitDone(false)
         controller.close()
       } finally {
         if (!released) {
@@ -174,8 +189,8 @@ async function search(request: Request, fetchImpl: FetchImplementation): Promise
   const cors = corsHeaders()
   if (request.method === 'OPTIONS') return new Response(null, { status: 200, headers: cors })
   if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405, true)
-  const body = await request.json().catch(() => ({})) as { query?: string; stream?: boolean }
-  if (!body.query || typeof body.query !== 'string' || body.query.length > 300) return json({ error: 'Invalid query' }, 400, true)
+  const body = await boundedText(request, 4096).then(text => JSON.parse(text)).catch(() => null) as { query?: unknown; stream?: boolean } | null
+  if (typeof body?.query !== 'string' || !body.query.trim() || body.query.length > 300) return json({ error: 'Invalid query' }, 400, true)
   // Resolve portfolio shorthand before retrieval, not just during generation.
   const query = body.query.trim().replace(/^(?:(?:my|your)\s+)?(work experience|career|professional background|resume|cv)[?.!]?$/i, 'Oliver Newth $1')
   try {
