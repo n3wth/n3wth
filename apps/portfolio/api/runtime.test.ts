@@ -64,6 +64,7 @@ describe('portfolio Worker API runtime', () => {
     const text = await response?.text()
     expect(text).toContain('"delta":"hello"')
     expect(text).toContain('"delta":" Sources: [work](https://n3wth.com/work)."')
+    expect(text).not.toContain('"fallback":true')
     expect(text).toContain('data: [DONE]')
   })
 
@@ -81,6 +82,8 @@ describe('portfolio Worker API runtime', () => {
     const text = await response?.text()
     expect(text?.match(/data: \[DONE\]/g)).toHaveLength(1)
     expect(text).toContain(upstream ? 'partial' : "Couldn't generate an answer")
+    expect(text).toContain('"fallback":true')
+    if (upstream) expect(text).toContain('Answer interrupted. Try again.')
   })
 
   it('ends a failed partial response without citing candidates', async () => {
@@ -93,6 +96,8 @@ describe('portfolio Worker API runtime', () => {
     const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true }) }), {}, async () => new Response(body))
     const text = await response?.text()
     expect(text).toContain('partial')
+    expect(text).toContain('Answer interrupted. Try again.')
+    expect(text).toContain('"fallback":true')
     expect(text).not.toContain('Sources:')
     expect(text?.match(/data: \[DONE\]/g)).toHaveLength(1)
   })
@@ -209,6 +214,8 @@ describe('portfolio Worker API runtime', () => {
     deadline.abort()
     const text = await result
     expect(text).toContain(partial ? 'partial' : "Couldn't generate an answer")
+    expect(text).toContain('"fallback":true')
+    if (partial) expect(text).toContain('Answer interrupted. Try again.')
     expect(text.match(/data: \[DONE\]/g)).toHaveLength(1)
     expect(text).not.toContain('Sources:')
   })

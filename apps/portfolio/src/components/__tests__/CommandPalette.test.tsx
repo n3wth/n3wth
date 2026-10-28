@@ -171,6 +171,95 @@ describe('CommandPalette AI search', () => {
     expect(vi.mocked(track).mock.calls.filter(([event]) => event === '$ai_generation')).toHaveLength(1)
   })
 
+  it.each([
+    ['server fallback', 'data: {"delta":"Partial answer."}\n\ndata: {"delta":" Answer interrupted. Try again.","fallback":true}\n\ndata: [DONE]\n\n'],
+    ['unexpected EOF', 'data: {"delta":"Partial answer."}\n\n'],
+  ])('shows a partial answer and records an unavailable outcome on %s', async (_case, events) => {
+    globalThis.fetch = vi.fn(async () => new Response(events, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'partial test' } })
+    await waitFor(() => expect(screen.getByText(/Partial answer.*Answer interrupted\. Try again\./)).toBeTruthy())
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'unavailable', $ai_is_error: true })))
+    expect(vi.mocked(track).mock.calls.filter(([event]) => event === '$ai_generation')).toHaveLength(1)
+  })
+
+  it('records an empty server fallback as unavailable', async () => {
+    const events = 'data: {"delta":"Could not generate an answer.","fallback":true}\n\ndata: [DONE]\n\n'
+    globalThis.fetch = vi.fn(async () => new Response(events, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'fallback test' } })
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'unavailable', $ai_is_error: true })))
+    expect(screen.getByText('Could not generate an answer.')).toBeTruthy()
+  })
+
+  it('keeps the interruption notice when partial text contains Sources', async () => {
+    const events = 'data: {"delta":"Partial Sources: unverified"}\n\ndata: {"delta":" Answer interrupted. Try again.","fallback":true}\n\ndata: [DONE]\n\n'
+    globalThis.fetch = vi.fn(async () => new Response(events, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'partial sources' } })
+    await waitFor(() => expect(screen.getByText(/Partial Sources: unverified Answer interrupted\. Try again\./)).toBeTruthy())
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'unavailable' })))
+  })
+
+  it('treats cancellation of an active partial stream as cancelled', async () => {
+    globalThis.fetch = vi.fn<typeof fetch>().mockImplementation(async (input, init) => {
+      void input
+      const body = new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('data: {"delta":"Partial answer."}\n\n'))
+          init?.signal?.addEventListener('abort', () => controller.error(new DOMException('Aborted', 'AbortError')), { once: true })
+        },
+      })
+      return new Response(body, { headers: { 'content-type': 'text/event-stream' } })
+    })
+    render(<CommandPalette open onClose={noop} />)
+    const input = screen.getByRole('combobox')
+    fireEvent.change(input, { target: { value: 'cancel partial' } })
+    await waitFor(() => expect(screen.getByText('Partial answer.')).toBeTruthy())
+    fireEvent.change(input, { target: { value: '' } })
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'cancelled' })))
+    expect(screen.queryByText(/Answer interrupted/)).toBeNull()
+  })
+
+  it('keeps partial text when the response stream fails', async () => {
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) { controller.enqueue(new TextEncoder().encode('data: {"delta":"Partial answer."}\n\n')) },
+      pull(controller) { controller.error(new Error('connection lost')) },
+    })
+    globalThis.fetch = vi.fn(async () => new Response(body, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'stream failure' } })
+    await waitFor(() => expect(screen.getByText(/Partial answer.*Answer interrupted\. Try again\./)).toBeTruthy())
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'unavailable', $ai_is_error: true })))
+  })
+
+  it('does not repeat a server interruption notice if the transport also fails', async () => {
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) { controller.enqueue(new TextEncoder().encode('data: {"delta":"Partial answer. Answer interrupted. Try again.","fallback":true}\n\n')) },
+      pull(controller) { controller.error(new Error('connection lost')) },
+    })
+    globalThis.fetch = vi.fn(async () => new Response(body, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'interrupted transport' } })
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'unavailable' })))
+    const answer = screen.getByText(/Partial answer/).textContent!
+    expect(answer.match(/Answer interrupted/g)).toHaveLength(1)
+  })
+
+  it('finishes after DONE even if the server leaves the stream open', async () => {
+    let cancelled = false
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) { controller.enqueue(new TextEncoder().encode('data: {"delta":"Complete answer."}\n\ndata: [DONE]\n\n')) },
+      cancel() { cancelled = true },
+    })
+    globalThis.fetch = vi.fn(async () => new Response(body, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'finished test' } })
+    await waitFor(() => expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'success', $ai_is_error: false })))
+    expect(cancelled).toBe(true)
+    expect(screen.getByText('Complete answer.')).toBeTruthy()
+  })
+
   it('cancels the pending automatic search when the dialog closes', async () => {
     vi.useFakeTimers()
     try {

@@ -569,6 +569,22 @@ test('AI answers start automatically after typing pauses', async ({ page }, test
   await expect(page).toHaveURL(/\/work$/)
 })
 
+test('interrupted AI answers remain visibly marked', async ({ page }, testInfo) => {
+  await page.route('**/api/search', route => route.fulfill({
+    contentType: 'text/event-stream',
+    body: 'data: {"delta":"Partial answer Sources: unverified"}\n\ndata: {"delta":"\\n\\nAnswer interrupted. Try again.","fallback":true}\n\ndata: [DONE]\n\n',
+  }))
+  await page.goto('/work')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page.getByRole('combobox').fill('interrupted search')
+  const answer = page.getByRole('dialog', { name: 'Search n3wth.com' }).getByRole('paragraph').filter({ hasText: 'Partial answer' })
+  await expect(answer).toBeVisible()
+  await expect(answer).toContainText('Partial answer Sources: unverified')
+  await expect(answer).toContainText('Answer interrupted. Try again.')
+  await expect(page.getByRole('navigation', { name: 'Answer sources' })).toHaveCount(0)
+  await page.screenshot({ path: testInfo.outputPath('interrupted-search.png') })
+})
+
 for (const route of ['/', '/work', '/art', '/thinking', '/library', '/contact']) {
   test(`${route} renders without runtime errors or horizontal overflow`, async ({ page }, testInfo) => {
     const errors: string[] = []

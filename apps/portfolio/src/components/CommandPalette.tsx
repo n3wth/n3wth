@@ -188,7 +188,8 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const [reduceMotion, setReduceMotion] = useState(false)
   const [askState, setAskState] = useState<'idle' | 'loading' | 'answered' | 'error'>('idle')
   const [askAnswer, setAskAnswer] = useState('')
-  const sourcesAt = askAnswer.lastIndexOf(' Sources: ')
+  const [askIncomplete, setAskIncomplete] = useState(false)
+  const sourcesAt = askIncomplete ? -1 : askAnswer.lastIndexOf(' Sources: ')
   const answerText = sourcesAt < 0 ? askAnswer : askAnswer.slice(0, sourcesAt)
   const answerSources = sourcesAt < 0 ? [] : renderAnswerLinks(askAnswer.slice(sourcesAt + 10))
     .filter((part): part is { label: string; href: string } => typeof part !== 'string')
@@ -332,11 +333,14 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
       setAskState('loading')
       setAskAnswer('')
+      setAskIncomplete(false)
       const traceId = crypto.randomUUID()
       const startedAt = performance.now()
       let firstTextAt: number | undefined
       let model: string | undefined
       let outcome = 'success'
+      let accumulated = ''
+      let fallback = false
       track('ai_search_asked', { query_length: trimmed.length, immediate, $ai_trace_id: traceId })
 
       try {
@@ -359,7 +363,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           const reader = response.body.getReader()
           const decoder = new TextDecoder()
           let buffer = ''
-          let accumulated = ''
+          let completed = false
 
           try {
             while (true) {
@@ -379,11 +383,18 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               for (const line of lines) {
                 if (!line.startsWith('data: ')) continue
                 const data = line.slice(6)
-                if (data === '[DONE]') continue
+                if (data === '[DONE]') {
+                  completed = true
+                  break
+                }
 
                 try {
-                  const parsed = JSON.parse(data) as { delta?: string; model?: string }
+                  const parsed = JSON.parse(data) as { delta?: string; model?: string; fallback?: boolean }
                   if (parsed.model) model = parsed.model
+                  if (parsed.fallback) {
+                    fallback = true
+                    if (version === aiRequestVersion.current) setAskIncomplete(true)
+                  }
                   if (parsed.delta) {
                     firstTextAt ??= performance.now()
                     accumulated += parsed.delta
@@ -397,13 +408,23 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                   // Skip malformed JSON
                 }
               }
+              if (completed) {
+                void reader.cancel().catch(() => {})
+                break
+              }
             }
           } finally {
             reader.releaseLock()
           }
 
+          if (!completed && !fallback) {
+            accumulated += accumulated ? '\n\nAnswer interrupted. Try again.' : "Couldn't generate an answer — try browsing instead."
+            fallback = true
+            if (version === aiRequestVersion.current) setAskIncomplete(true)
+          }
           if (version === aiRequestVersion.current && accumulated) {
-            if (accumulated.startsWith('No relevant information found.')) outcome = 'no_answer'
+            if (fallback) outcome = 'unavailable'
+            else if (accumulated.startsWith('No relevant information found.')) outcome = 'no_answer'
             setAskAnswer(accumulated)
             setAskState('answered')
           } else if (version === aiRequestVersion.current && !accumulated) {
@@ -420,13 +441,17 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           setAskAnswer(data.answer)
           setAskState('answered')
         }
-      } catch (err) {
+      } catch {
         outcome = controller.signal.aborted ? 'cancelled' : 'error'
-        // Ignore abort errors (they're intentional)
-        if (err instanceof Error && err.name === 'AbortError') return
+        if (controller.signal.aborted) return
         // Only update state if this is still the current request
         if (version === aiRequestVersion.current) {
-          setAskState('error')
+          if (accumulated) {
+            outcome = 'unavailable'
+            setAskIncomplete(true)
+            setAskAnswer(fallback ? accumulated : `${accumulated}\n\nAnswer interrupted. Try again.`)
+            setAskState('answered')
+          } else setAskState('error')
         }
       } finally {
         if (controller.signal.aborted || version !== aiRequestVersion.current) outcome = 'cancelled'
@@ -649,7 +674,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 <div>
                 <p
                   className="font-sans text-sm leading-relaxed"
-                  style={{ color: 'var(--ink)' }}
+                  style={{ color: 'var(--ink)', whiteSpace: 'pre-line' }}
                   aria-live="polite"
                 >
                   {renderAnswerLinks(answerText).map((part, i) =>

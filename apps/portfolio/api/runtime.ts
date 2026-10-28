@@ -102,8 +102,9 @@ function streamSearch(upstream: Response, responseHeaders: Headers): Response {
       const emit = (value: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(value)}\n\n`))
       const emitDone = (includeSources = true) => {
         if (finished) return
-        if (!content) emit({ delta: "Couldn't generate an answer — try browsing instead." })
-        else if (includeSources) {
+        if (!content) emit({ delta: "Couldn't generate an answer — try browsing instead.", fallback: true })
+        else if (!includeSources) emit({ delta: '\n\nAnswer interrupted. Try again.', fallback: true })
+        else {
           const sourceText = citations(chunks, content)
           if (sourceText) emit({ delta: sourceText })
         }
