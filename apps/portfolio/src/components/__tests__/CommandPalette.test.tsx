@@ -104,6 +104,46 @@ describe('CommandPalette AI search', () => {
     expect(screen.queryByRole('navigation', { name: 'Answer sources' })).toBeNull()
   })
 
+  it('keeps structured answer text intact and renders only safe sources', async () => {
+    const answer = 'Notes Sources: [guide](https://example.com).'
+    const events = [
+      { format: 2 },
+      { delta: answer },
+      { sources: [{ label: 'Work', href: 'https://n3wth.com/work' }, { label: 'Unsafe', href: 'javascript:alert(1)' }] },
+    ].map(event => `data: ${JSON.stringify(event)}\n\n`).join('') + 'data: [DONE]\n\n'
+    globalThis.fetch = vi.fn(async () => new Response(events, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'structured sources' } })
+    await waitFor(() => expect(screen.getByText('Notes Sources:')).toBeTruthy())
+    expect(screen.getByRole('link', { name: 'guide' }).getAttribute('href')).toBe('https://example.com')
+    expect(screen.getByRole('navigation', { name: 'Answer sources' }).textContent).toBe('Work')
+    expect(screen.queryByRole('link', { name: 'Unsafe' })).toBeNull()
+  })
+
+  it('handles structured JSON when streaming is unavailable', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true, body: null,
+      json: async () => ({ format: 2, answer: 'Notes Sources: [guide](https://example.com).', sources: [] }),
+    })
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'structured json' } })
+    await waitFor(() => expect(screen.getByRole('link', { name: 'guide' })).toBeTruthy())
+    expect(screen.queryByRole('navigation', { name: 'Answer sources' })).toBeNull()
+  })
+
+  it('does not display structured sources from an interrupted stream', async () => {
+    const events = [
+      { format: 2 },
+      { delta: 'Partial answer.' },
+      { sources: [{ label: 'Work', href: 'https://n3wth.com/work' }] },
+    ].map(event => `data: ${JSON.stringify(event)}\n\n`).join('')
+    globalThis.fetch = vi.fn(async () => new Response(events, { headers: { 'content-type': 'text/event-stream' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'interrupted sources' } })
+    await waitFor(() => expect(screen.getByText(/Answer interrupted/)).toBeTruthy())
+    expect(screen.queryByRole('navigation', { name: 'Answer sources' })).toBeNull()
+  })
+
   it('does not show AI row for queries under 2 characters', () => {
     render(
       <>

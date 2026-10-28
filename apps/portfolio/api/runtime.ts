@@ -56,24 +56,28 @@ function hasNoSearchAnswer(content: string): boolean {
     || /(?:no (?:relevant|related) (?:information|results|content)|(?:documents?|context|sources?) (?:do(?:es)? not|doesn't|don't) (?:contain|provide|include)|(?:cannot|can't|unable to|not possible to) (?:provide|find) (?:a )?(?:relevant|answer))/i.test(content)
 }
 
-function citations(chunks: SearchChunk[], content: string): string {
+function citations(chunks: SearchChunk[], content: string): Array<{ label: string; href: string }> {
   // Retrieval candidates are not evidence when the model abstains.
-  if (hasNoSearchAnswer(content)) return ''
+  if (hasNoSearchAnswer(content)) return []
   const seen = new Set<string>()
-  const links: string[] = []
+  const links: Array<{ label: string; href: string }> = []
   for (const chunk of chunks) {
     const key = chunk?.item?.key
     if (typeof key !== 'string' || !key || seen.has(key)) continue
     seen.add(key)
     const rawTitle = chunk.item?.metadata?.title
     const title = decodeEntities(typeof rawTitle === 'string' ? rawTitle : titleFromKey(key))
-    links.push(`[${title}](${key})`)
+    links.push({ label: title, href: key })
     if (links.length >= 4) break
   }
-  return links.length ? ` Sources: ${links.join(', ')}.` : ''
+  return links
 }
 
-function streamSearch(upstream: Response, responseHeaders: Headers): Response {
+function citationText(sources: Array<{ label: string; href: string }>): string {
+  return sources.length ? ` Sources: ${sources.map(({ label, href }) => `[${label}](${href})`).join(', ')}.` : ''
+}
+
+function streamSearch(upstream: Response, responseHeaders: Headers, structured: boolean): Response {
   const reader = upstream.body?.getReader()
   if (!reader) return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
   let clientCanceled = false
@@ -100,13 +104,15 @@ function streamSearch(upstream: Response, responseHeaders: Headers): Response {
       let model: string | undefined
       let finished = false
       const emit = (value: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(value)}\n\n`))
+      if (structured) emit({ format: 2 })
       const emitDone = (includeSources = true) => {
         if (finished) return
         if (!content) emit({ delta: "Couldn't generate an answer — try browsing instead.", fallback: true })
         else if (!includeSources) emit({ delta: '\n\nAnswer interrupted. Try again.', fallback: true })
         else {
-          const sourceText = citations(chunks, content)
-          if (sourceText) emit({ delta: sourceText })
+          const sources = citations(chunks, content)
+          if (structured) emit({ sources })
+          else if (sources.length) emit({ delta: citationText(sources) })
         }
         finished = true
         controller.enqueue(encoder.encode('data: [DONE]\n\n'))
@@ -191,7 +197,7 @@ async function search(request: Request, fetchImpl: FetchImplementation): Promise
   const cors = corsHeaders()
   if (request.method === 'OPTIONS') return new Response(null, { status: 200, headers: cors })
   if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405, true)
-  const body = await boundedText(request, 4096).then(text => JSON.parse(text)).catch(() => null) as { query?: unknown; stream?: boolean } | null
+  const body = await boundedText(request, 4096).then(text => JSON.parse(text)).catch(() => null) as { query?: unknown; stream?: boolean; responseFormat?: unknown } | null
   if (typeof body?.query !== 'string' || !body.query.trim() || body.query.length > 300) return json({ error: 'Invalid query' }, 400, true)
   // Resolve portfolio shorthand before retrieval, not just during generation.
   const query = body.query.trim().replace(/^(?:(?:my|your)\s+)?(work experience|career|professional background|resume|cv)[?.!]?$/i, 'Oliver Newth $1')
@@ -199,10 +205,13 @@ async function search(request: Request, fetchImpl: FetchImplementation): Promise
     const signal = AbortSignal.any([request.signal, AbortSignal.timeout(SEARCH_TIMEOUT_MS)])
     const upstream = await fetchImpl(AI_SEARCH_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: query }], max_tokens: 180, temperature: 0.3, stream: Boolean(body.stream) }), signal })
     if (!upstream.ok) return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
-    if (body.stream && upstream.body) return streamSearch(upstream, cors)
+    if (body.stream && upstream.body) return streamSearch(upstream, cors, body.responseFormat === 2)
     const data = await upstream.json() as { model?: string; choices?: Array<{ message?: { content?: string } }>; chunks?: unknown }
     const content = data.choices?.[0]?.message?.content
-    return content ? json({ answer: hasNoSearchAnswer(content) ? NO_SEARCH_ANSWER : content.trim() + citations(Array.isArray(data.chunks) ? data.chunks : [], content), ...(data.model && { model: data.model }) }, 200, true) : json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
+    if (!content) return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
+    const sources = citations(Array.isArray(data.chunks) ? data.chunks : [], content)
+    const answer = hasNoSearchAnswer(content) ? NO_SEARCH_ANSWER : content.trim()
+    return json({ answer: body.responseFormat === 2 ? answer : answer + citationText(sources), ...(body.responseFormat === 2 && { format: 2, sources }), ...(data.model && { model: data.model }) }, 200, true)
   } catch {
     return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
   }

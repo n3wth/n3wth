@@ -141,6 +141,17 @@ function renderAnswerLinks(text: string): Array<string | { label: string; href: 
   return parts
 }
 
+function safeSources(value: unknown): Array<{ label: string; href: string }> {
+  if (!Array.isArray(value)) return []
+  return value.flatMap((source: unknown) => {
+    if (!source || typeof source !== 'object') return []
+    const { label, href } = source as { label?: unknown; href?: unknown }
+    if (typeof label !== 'string' || typeof href !== 'string') return []
+    const safeHref = answerLinkHref(href)
+    return label && safeHref ? [{ label, href: safeHref }] : []
+  })
+}
+
 /** An empty input is a worse first impression than a short opinionated list. */
 const START_HERE: SearchItem[] = navigation.map(({ name, href, description }) => ({
   id: `page-${href.slice(1)}`,
@@ -190,12 +201,13 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const [askState, setAskState] = useState<'idle' | 'loading' | 'answered' | 'error'>('idle')
   const [askAnswer, setAskAnswer] = useState('')
   const [askIncomplete, setAskIncomplete] = useState(false)
-  const candidateSourcesAt = askIncomplete ? -1 : askAnswer.lastIndexOf(' Sources: ')
+  const [structuredSources, setStructuredSources] = useState<Array<{ label: string; href: string }> | null>(null)
+  const candidateSourcesAt = askIncomplete || structuredSources !== null ? -1 : askAnswer.lastIndexOf(' Sources: ')
   const sourceList = candidateSourcesAt < 0 ? '' : askAnswer.slice(candidateSourcesAt + 10)
   const sourcesAt = /^\[[^\]]+\]\([^)]+\)(?:, \[[^\]]+\]\([^)]+\))*\.$/.test(sourceList) ? candidateSourcesAt : -1
   const answerText = sourcesAt < 0 ? askAnswer : askAnswer.slice(0, sourcesAt)
-  const answerSources = sourcesAt < 0 ? [] : renderAnswerLinks(askAnswer.slice(sourcesAt + 10))
-    .filter((part): part is { label: string; href: string } => typeof part !== 'string')
+  const answerSources = structuredSources ?? (sourcesAt < 0 ? [] : renderAnswerLinks(askAnswer.slice(sourcesAt + 10))
+    .filter((part): part is { label: string; href: string } => typeof part !== 'string'))
 
   const panelRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -337,6 +349,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       setAskState('loading')
       setAskAnswer('')
       setAskIncomplete(false)
+      setStructuredSources(null)
       const traceId = crypto.randomUUID()
       const startedAt = performance.now()
       let firstTextAt: number | undefined
@@ -357,7 +370,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         const response = await fetch('/api/search', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: trimmed, stream: true }),
+          body: JSON.stringify({ query: trimmed, stream: true, responseFormat: 2 }),
           signal: controller.signal,
         })
 
@@ -374,6 +387,8 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           const decoder = new TextDecoder()
           let buffer = ''
           let completed = false
+          let structured = false
+          let pendingSources: Array<{ label: string; href: string }> = []
 
           try {
             while (true) {
@@ -399,11 +414,19 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 }
 
                 try {
-                  const parsed = JSON.parse(data) as { delta?: string; model?: string; fallback?: boolean }
+                  const parsed = JSON.parse(data) as { delta?: string; model?: string; fallback?: boolean; format?: number; sources?: unknown }
+                  if (parsed.format === 2) {
+                    structured = true
+                    if (version === aiRequestVersion.current) setStructuredSources([])
+                  }
+                  if (structured && Array.isArray(parsed.sources)) pendingSources = safeSources(parsed.sources)
                   if (parsed.model) model = parsed.model
                   if (parsed.fallback) {
                     fallback = true
-                    if (version === aiRequestVersion.current) setAskIncomplete(true)
+                    if (version === aiRequestVersion.current) {
+                      setAskIncomplete(true)
+                      if (structured) setStructuredSources([])
+                    }
                   }
                   if (parsed.delta) {
                     firstTextAt ??= performance.now()
@@ -435,6 +458,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           if (version === aiRequestVersion.current && accumulated) {
             if (fallback) outcome = 'unavailable'
             else if (accumulated.startsWith('No relevant information found.')) outcome = 'no_answer'
+            if (structured && completed && !fallback) setStructuredSources(pendingSources)
             setAskAnswer(accumulated)
             setAskState('answered')
           } else if (version === aiRequestVersion.current && !accumulated) {
@@ -442,11 +466,12 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           }
         } else {
           // Fallback for non-streaming response
-          const data = (await response.json()) as { answer?: string; model?: string; fallback?: boolean }
+          const data = (await response.json()) as { answer?: string; model?: string; fallback?: boolean; format?: number; sources?: unknown }
           if (version !== aiRequestVersion.current) return
           if (!data.answer) throw new Error('empty answer')
           firstTextAt = performance.now()
           model = data.model
+          if (data.format === 2) setStructuredSources(safeSources(data.sources))
           outcome = data.fallback ? 'unavailable' : data.answer.startsWith('No relevant information found.') ? 'no_answer' : 'success'
           setAskAnswer(data.answer)
           setAskState('answered')
@@ -492,6 +517,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
     aiAbortController.current = null
     aiRequestVersion.current += 1
     setAskAnswer('')
+    setStructuredSources(null)
     const shouldSearch = open && trimmed.length >= AI_MIN_CHARS
     setAskState(shouldSearch ? 'loading' : 'idle')
     const timer = shouldSearch ? window.setTimeout(() => void askAi(), 300) : undefined

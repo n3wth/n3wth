@@ -18,6 +18,41 @@ describe('portfolio Worker API runtime', () => {
     expect(response?.headers.get('access-control-allow-methods')).toBe('POST, OPTIONS')
   })
 
+  it('returns opt-in structured JSON without changing answer text', async () => {
+    const answer = 'Notes Sources: [guide](https://example.com).'
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', responseFormat: 2 }) }), {}, async () => Response.json({ choices: [{ message: { content: answer } }], chunks: [{ item: { key: 'https://n3wth.com/work', metadata: { title: 'Work' } } }] }))
+    expect(await response?.json()).toEqual({ format: 2, answer, sources: [{ label: 'Work', href: 'https://n3wth.com/work' }] })
+  })
+
+  it('separates streamed sources from answer deltas when requested', async () => {
+    const answer = 'Notes Sources: [guide](https://example.com).'
+    const upstream = 'event: chunks\ndata: [{"item":{"key":"https://n3wth.com/work"}}]\n\n'
+      + `data: ${JSON.stringify({ choices: [{ delta: { content: answer } }] })}\n\ndata: [DONE]\n\n`
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true, responseFormat: 2 }) }), {}, async () => new Response(upstream))
+    const events = (await response!.text()).split('\n\n').filter(Boolean)
+    expect(events).toEqual([
+      'data: {"format":2}',
+      `data: ${JSON.stringify({ delta: answer })}`,
+      'data: {"sources":[{"label":"work","href":"https://n3wth.com/work"}]}',
+      'data: [DONE]',
+    ])
+  })
+
+  it('does not emit structured sources for an interrupted stream', async () => {
+    const upstream = 'event: chunks\ndata: [{"item":{"key":"https://n3wth.com/work"}}]\n\n'
+      + 'data: {"choices":[{"delta":{"content":"partial"}}]}\n\n'
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true, responseFormat: 2 }) }), {}, async () => new Response(upstream))
+    const text = await response!.text()
+    expect(text).toContain('"format":2')
+    expect(text).toContain('"fallback":true')
+    expect(text).not.toContain('"sources"')
+  })
+
+  it('returns no structured sources when the answer abstains', async () => {
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', responseFormat: 2 }) }), {}, async () => Response.json({ choices: [{ message: { content: 'No relevant information found. Try another search.' } }], chunks: [{ item: { key: 'https://n3wth.com/work' } }] }))
+    expect(await response?.json()).toEqual({ format: 2, answer: 'No relevant information found. Try another search.', sources: [] })
+  })
+
   it.each(['null', '{', JSON.stringify({ query: '   ' }), JSON.stringify({ query: 'a', padding: 'x'.repeat(4096) })])('rejects invalid or oversized search bodies', async body => {
     let called = false
     const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body, headers: { 'Content-Length': '1' } }), {}, async () => {
