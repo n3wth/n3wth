@@ -1,7 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 import { DEPLOY_APP_SLUGS } from './deploy-apps.mjs'
-import { createHash } from 'node:crypto'
 
 // Retain identity support so old migrated-site previews can still be cleaned up.
 export const PREVIEW_APPS = new Set([...DEPLOY_APP_SLUGS, 'ui-docs', 'r3-web', 'skills'])
@@ -163,27 +162,27 @@ function previewStatefulBindings(source, previewBindings) {
   return output
 }
 
-function previewRatelimits(source, identity, previewBindings) {
+function previewRatelimits(source, app, previewBindings) {
   const bindings = source.ratelimits
   if (!Array.isArray(bindings) || bindings.some(binding => !binding || typeof binding !== 'object')) {
     throw new Error('Preview ratelimits require valid binding objects')
   }
   const name = binding => binding.binding || binding.name
-  const sourceNames = new Set(bindings.map(name))
-  if (sourceNames.size !== bindings.length || [...sourceNames].some(value => typeof value !== 'string' || !value.trim())) {
+  const allNames = new Set(bindings.map(name))
+  if (allNames.size !== bindings.length || [...allNames].some(value => typeof value !== 'string' || !value.trim())) {
     throw new Error('Preview ratelimits require matching unique binding names')
   }
   const numericId = value => typeof value === 'string' && /^\d+$/.test(value) && BigInt(value) > 0n ? BigInt(value).toString() : null
   const productionIds = bindings.map(binding => numericId(binding.namespace_id))
   if (productionIds.includes(null)) throw new Error('Preview ratelimits require isolated numeric namespace IDs')
+  const remaining = bindings.filter(binding => !(app === 'portfolio' && name(binding) === 'SUBSCRIBE'))
+  const sourceNames = new Set(remaining.map(name))
   const provided = previewBindings?.ratelimits
   if (provided !== undefined && (!Array.isArray(provided) || provided.some(binding => !binding || typeof binding !== 'object'))) {
     throw new Error('Preview ratelimits require valid binding objects')
   }
-  const result = provided === undefined ? bindings.map(binding => ({
-    ...structuredClone(binding),
-    namespace_id: String(3000000000 + createHash('sha256').update(`${identity.workerName}-${name(binding)}`).digest().readUInt32BE(0)),
-  })) : structuredClone(provided)
+  if (provided === undefined && remaining.length) throw new Error('Preview ratelimits require explicit isolated bindings')
+  const result = provided === undefined ? [] : structuredClone(provided)
   const names = new Set(result.map(name))
   if (names.size !== result.length || names.size !== sourceNames.size || [...sourceNames].some(value => !names.has(value))) {
     throw new Error('Preview ratelimits require matching unique binding names')
@@ -221,7 +220,7 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)
   if (config.main) config.main = absolutePath(config.main, sourcePath)
   Object.assign(config, previewStatefulBindings(source, previewBindings))
-  if (config.ratelimits) config.ratelimits = previewRatelimits(source, identity, previewBindings)
+  if (config.ratelimits) config.ratelimits = previewRatelimits(source, app, previewBindings)
   if (app === 'portfolio') config.vars = previewSubscribeVars(source, pr)
   if (config.services !== undefined && (!Array.isArray(config.services) || config.services.length)) throw new Error('Preview service bindings require explicit isolation.')
   if (assetsDirectory) config.assets = { ...config.assets, directory: assetsDirectory }

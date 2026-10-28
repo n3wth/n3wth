@@ -253,12 +253,12 @@ describe('new website subscriber welcome', () => {
     }
   })
 
-  it('rejects preview subscriptions without contacting Resend even with production credentials', async () => {
+  it.each([undefined, allow.SUBSCRIBE])('rejects preview subscriptions without contacting Resend with limiter %s', async limiter => {
     const fake = welcomeFake()
     const response = await handlePortfolioApi(subscribeRequest({
       body: body(), origin: 'https://portfolio-pr-413.preview.n3wth.com',
       url: 'https://portfolio-pr-413.preview.n3wth.com/api/subscribe',
-    }), { ...welcomeEnv, SUBSCRIBE_ENVIRONMENT: 'preview', SUBSCRIBE_PREVIEW_PR: '413' }, fake.fetchMock)
+    }), { ...welcomeEnv, SUBSCRIBE: limiter, SUBSCRIBE_ENVIRONMENT: 'preview', SUBSCRIBE_PREVIEW_PR: '413' }, fake.fetchMock)
     expect(response?.status).toBe(503)
     expect(fake.calls).toHaveLength(0)
   })

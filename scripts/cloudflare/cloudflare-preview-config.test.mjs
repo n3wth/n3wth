@@ -4,7 +4,6 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { createHash } from 'node:crypto'
 import { appRootPath } from './cloudflare-preview.mjs'
 import { createPreviewConfig, noindexWrapper, parseJsonc, previewIdentity, writePreviewConfig } from './cloudflare-preview-config.mjs'
 import { siteUrls } from '../../packages/site-config/index.js'
@@ -160,7 +159,7 @@ test('rejects missing production identity and matching production D1 names', () 
   assert.throws(() => createPreviewConfig({ ...options, source: { main: './worker.js', d1_databases: [{ binding: 'DB', database_id: 'production-id', database_name: 'production' }] }, previewBindings: { d1_databases: [{ binding: 'DB', database_id: 'preview-id', database_name: 'PRODUCTION' }] } }), /distinct preview database names/)
 })
 
-test('isolates portfolio rate limits and disables newsletter configuration', () => {
+test('omits the portfolio newsletter rate limiter and disables newsletter configuration', () => {
   const source = {
     main: './worker.ts',
     vars: { RESEND_SEGMENT_ID: 'production-segment', RESEND_PREVIEW_SEGMENT_ID: 'preview-test-segment', RESEND_TOPIC_IDS: '{"home":"production-topic"}', RESEND_PREVIEW_TOPIC_ID: 'test-topic' },
@@ -171,9 +170,7 @@ test('isolates portfolio rate limits and disables newsletter configuration', () 
     source, sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 8, accountId,
   })
   assert.deepEqual(source, original)
-  assert.equal(config.ratelimits[0].name, 'SUBSCRIBE')
-  assert.match(config.ratelimits[0].namespace_id, /^\d+$/)
-  assert.notEqual(config.ratelimits[0].namespace_id, source.ratelimits[0].namespace_id)
+  assert.deepEqual(config.ratelimits, [])
   assert.equal(config.vars.RESEND_SEGMENT_ID, undefined)
   assert.equal(config.vars.RESEND_PREVIEW_SEGMENT_ID, undefined)
   assert.equal(config.vars.SUBSCRIBE_ENVIRONMENT, 'preview')
@@ -207,10 +204,14 @@ test('rejects preview rate-limit identifiers shared across bindings or productio
   }
 })
 
-test('rejects a generated rate-limit ID that aliases a production numeric ID', () => {
-  const generated = String(3000000000 + createHash('sha256').update('n3wth-garden-pr-9-A').digest().readUInt32BE(0))
-  const source = { main: './worker.ts', ratelimits: [{ name: 'A', namespace_id: `000${generated}`, simple: { limit: 10, period: 60 } }] }
-  assert.throws(() => createPreviewConfig({ source, sourcePath: '/repo/apps/garden/wrangler.jsonc', root: '/repo', app: 'garden', pr: 9, accountId }), /isolated numeric namespace IDs/)
+test('requires explicit rate-limit bindings and cannot restore the omitted newsletter limiter', () => {
+  const limiter = { name: 'SUBSCRIBE', namespace_id: '100', simple: { limit: 5, period: 60 } }
+  const options = { source: { main: './worker.ts', ratelimits: [limiter] }, sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 64036, accountId }
+  for (const pr of [64036, 65765]) assert.deepEqual(createPreviewConfig({ ...options, pr }).config.ratelimits, [])
+  assert.throws(() => createPreviewConfig({ ...options, previewBindings: { ratelimits: [{ ...limiter, namespace_id: '101' }] } }), /matching unique binding names/)
+  const other = { ...options, app: 'garden', source: { main: './worker.ts', ratelimits: [{ ...limiter, name: 'OTHER' }] } }
+  assert.throws(() => createPreviewConfig(other), /explicit isolated bindings/)
+  assert.equal(createPreviewConfig({ ...other, previewBindings: { ratelimits: [{ ...limiter, name: 'OTHER', namespace_id: '101' }] } }).config.ratelimits[0].namespace_id, '101')
 })
 
 test('writes only generated config and wrapper artifacts', t => {

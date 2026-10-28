@@ -20,7 +20,7 @@ Preview overrides for D1, KV, R2 and Vectorize must use explicit identifiers tha
 
 Newsletter signup is disabled in previews. Portfolio preview uploads replace any retained Resend API key with an invalid value; the production key is not supplied to preview workflows. Existing previews retain their old bindings until redeployed or removed, and prior Worker versions may retain secrets. Audit those previews and rotate the production key if exposure is suspected. This does not isolate other retained secrets or make same-repository PR code untrusted-safe.
 
-Automatically generated preview rate-limit IDs use a 32-bit hash and can collide between PRs or with resources outside the source configuration. They are not proof of account-wide isolation; verify namespace ownership before relying on it. Unsupported data-access and side-effect bindings fail closed, and source event triggers are removed from previews.
+Portfolio previews omit the unused newsletter rate limiter. Other preview rate-limit bindings require explicit IDs distinct from the source configuration; verify their ownership and uniqueness across the account before use. Existing previews retain their prior bindings until redeployed or removed. Unsupported data-access and side-effect bindings fail closed, and source event triggers are removed from previews.
 
 The preview readiness gate checks DNS, TLS, HTTP behavior and noindex without disabling certificate verification. Verify responsive pages, docs navigation/search, old aliases, images, and retained APIs before merging. Wait for passing Site CI and preview checks.
 
