@@ -160,7 +160,7 @@ test('rejects missing production identity and matching production D1 names', () 
   assert.throws(() => createPreviewConfig({ ...options, source: { main: './worker.js', d1_databases: [{ binding: 'DB', database_id: 'production-id', database_name: 'production' }] }, previewBindings: { d1_databases: [{ binding: 'DB', database_id: 'preview-id', database_name: 'PRODUCTION' }] } }), /distinct preview database names/)
 })
 
-test('isolates portfolio subscribe rate limits and uses the preview test segment', () => {
+test('isolates portfolio rate limits and disables newsletter configuration', () => {
   const source = {
     main: './worker.ts',
     vars: { RESEND_SEGMENT_ID: 'production-segment', RESEND_PREVIEW_SEGMENT_ID: 'preview-test-segment', RESEND_TOPIC_IDS: '{"home":"production-topic"}', RESEND_PREVIEW_TOPIC_ID: 'test-topic' },
@@ -174,29 +174,28 @@ test('isolates portfolio subscribe rate limits and uses the preview test segment
   assert.equal(config.ratelimits[0].name, 'SUBSCRIBE')
   assert.match(config.ratelimits[0].namespace_id, /^\d+$/)
   assert.notEqual(config.ratelimits[0].namespace_id, source.ratelimits[0].namespace_id)
-  assert.equal(config.vars.RESEND_SEGMENT_ID, 'preview-test-segment')
+  assert.equal(config.vars.RESEND_SEGMENT_ID, undefined)
   assert.equal(config.vars.RESEND_PREVIEW_SEGMENT_ID, undefined)
   assert.equal(config.vars.SUBSCRIBE_ENVIRONMENT, 'preview')
   assert.equal(config.vars.SUBSCRIBE_PREVIEW_PR, '8')
-  assert.equal(JSON.parse(config.vars.RESEND_TOPIC_IDS).home, 'test-topic')
+  assert.equal(config.vars.RESEND_TOPIC_IDS, undefined)
   assert.equal(config.vars.RESEND_PREVIEW_TOPIC_ID, undefined)
 })
 
-test('explicit preview subscribe bindings win over production values', () => {
+test('portfolio previews disable newsletter without relying on a rate-limit binding', () => {
   const { config } = createPreviewConfig({
     source: {
       main: './worker.ts',
       vars: { RESEND_SEGMENT_ID: 'production-segment' },
-      ratelimits: [{ name: 'SUBSCRIBE', namespace_id: '100', simple: { limit: 5, period: 60 } }],
     },
     sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 9, accountId,
     previewBindings: {
-      ratelimits: [{ name: 'SUBSCRIBE', namespace_id: '92001', simple: { limit: 5, period: 60 } }],
       vars: { RESEND_SEGMENT_ID: 'explicit-test-segment' },
     },
   })
-  assert.equal(config.ratelimits[0].namespace_id, '92001')
-  assert.equal(config.vars.RESEND_SEGMENT_ID, 'explicit-test-segment')
+  assert.equal(config.vars.RESEND_SEGMENT_ID, undefined)
+  assert.equal(config.vars.SUBSCRIBE_ENVIRONMENT, 'preview')
+  assert.equal(config.vars.SUBSCRIBE_PREVIEW_PR, '9')
 })
 
 test('rejects preview rate-limit identifiers shared across bindings or production', () => {

@@ -443,6 +443,7 @@ export async function handleSubscribe(
   }
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(origin) })
   if (request.method !== 'POST') return errorResponse(origin, 'invalid_request', 405)
+  if (env.SUBSCRIBE_ENVIRONMENT === 'preview') return errorResponse(origin, 'service_unavailable', 503)
 
   const apiKey = env.RESEND_API_KEY?.trim()
   const segmentId = env.RESEND_SEGMENT_ID?.trim()

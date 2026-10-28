@@ -1,5 +1,6 @@
 import { spawnSync } from 'node:child_process'
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
@@ -248,8 +249,22 @@ export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = pro
   const { path: sourcePath, config: source } = readAppConfig(appRoot)
   const stagedAssets = stagePreviewAppAssets({ app, appRoot, source, sourcePath, stageDirectory })
   const generated = writePreviewConfig({ root, app, pr, sourcePath, accountId, previewBindings: bindings, assetsDirectory: stagedAssets })
-  const result = runWrangler(['deploy', '--config', generated.paths.configPath], { cwd: root, env, run })
-  assertCommandSucceeded(result, 'Wrangler deploy')
+  const deployArgs = ['deploy', '--config', generated.paths.configPath]
+  const deployEnv = app === 'portfolio' ? { ...env } : env
+  if (app === 'portfolio') delete deployEnv.RESEND_API_KEY
+  // Wrangler retains existing secrets unless a replacement is provided in the upload.
+  const secretsDirectory = app === 'portfolio' ? mkdtempSync(join(tmpdir(), 'n3wth-preview-')) : undefined
+  try {
+    if (secretsDirectory) {
+      const secretsPath = join(secretsDirectory, 'secrets.json')
+      writeFileSync(secretsPath, JSON.stringify({ RESEND_API_KEY: 'preview-newsletter-disabled' }), { mode: 0o600 })
+      deployArgs.push('--secrets-file', secretsPath)
+    }
+    const result = runWrangler(deployArgs, { cwd: root, env: deployEnv, run })
+    assertCommandSucceeded(result, 'Wrangler deploy')
+  } finally {
+    if (secretsDirectory) rmSync(secretsDirectory, { recursive: true, force: true })
+  }
   await ensurePreviewDnsRecord({ identity, env, fetchFn })
   // A Wrangler upload only proves the script uploaded; confirm the host actually
   // resolves, serves TLS, and returns the noindex preview page before reporting success.
@@ -269,7 +284,7 @@ export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = pro
     host: generated.identity.host,
     sourcePath,
     config: generated.config,
-    command: [process.execPath, WRANGLER_ENTRYPOINT, 'deploy', '--config', generated.paths.configPath],
+    command: [process.execPath, WRANGLER_ENTRYPOINT, ...deployArgs],
   }
 }
 

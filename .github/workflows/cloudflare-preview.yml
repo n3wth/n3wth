@@ -86,18 +86,12 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ac23513945eb49f73a89faf1be12384e
           CLOUDFLARE_ZONE_ID: 5e3780e8b6272182ea60a146ede42577
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          RESEND_PREVIEW_SEGMENT_ID: ${{ secrets.RESEND_PREVIEW_SEGMENT_ID }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           APPS: ${{ steps.affected.outputs.apps }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'CLOUDFLARE_API_TOKEN repository secret is required'; exit 1; }
           for app in $APPS; do
             node scripts/cloudflare/cloudflare-preview.mjs deploy --app "$app" --pr "$PR_NUMBER"
-            if [ "$app" = portfolio ]; then
-              test -n "$RESEND_API_KEY" || { echo 'RESEND_API_KEY repository secret is required'; exit 1; }
-              printf '%s' "$RESEND_API_KEY" | npm exec -- wrangler secret put RESEND_API_KEY --config ".cloudflare/portfolio-pr-$PR_NUMBER/wrangler.json"
-            fi
             echo "Preview $app: https://$app-pr-$PR_NUMBER.preview.n3wth.com" >> "$GITHUB_STEP_SUMMARY"
           done
       - name: Delete closed preview

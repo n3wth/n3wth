@@ -253,15 +253,14 @@ describe('new website subscriber welcome', () => {
     }
   })
 
-  it('never marks or sends welcome messages from previews even with production template configuration', async () => {
+  it('rejects preview subscriptions without contacting Resend even with production credentials', async () => {
     const fake = welcomeFake()
     const response = await handlePortfolioApi(subscribeRequest({
       body: body(), origin: 'https://portfolio-pr-413.preview.n3wth.com',
       url: 'https://portfolio-pr-413.preview.n3wth.com/api/subscribe',
     }), { ...welcomeEnv, SUBSCRIBE_ENVIRONMENT: 'preview', SUBSCRIBE_PREVIEW_PR: '413' }, fake.fetchMock)
-    expect(response?.status).toBe(200)
-    expect(fake.calls.find(call => call.url.endsWith('/contacts'))?.body?.properties).toBeUndefined()
-    expect(fake.calls.some(call => call.url.endsWith('/emails'))).toBe(false)
+    expect(response?.status).toBe(503)
+    expect(fake.calls).toHaveLength(0)
   })
 
   it('retries transient delivery with the same key and keeps subscription success during an outage', async () => {

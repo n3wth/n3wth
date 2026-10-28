@@ -431,6 +431,7 @@ test('portfolio stages dist with public headers and redirects under the noindex 
     main: './worker.ts',
     assets: { directory: './dist', binding: 'ASSETS' },
   }))
+  let secretFile
   const result = await deployPreview({
     appRoot,
     root,
@@ -441,8 +442,16 @@ test('portfolio stages dist with public headers and redirects under the noindex 
       CLOUDFLARE_ACCOUNT_ID: 'ac23513945eb49f73a89faf1be12384e',
       CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
       CLOUDFLARE_API_TOKEN: 'test-token',
+      RESEND_API_KEY: 'production-key-must-not-be-forwarded',
     },
-    run: () => ({ status: 0, stdout: 'deployed' }),
+    run: (_binary, args, options) => {
+      const secretIndex = args.indexOf('--secrets-file')
+      assert.notEqual(secretIndex, -1)
+      secretFile = args[secretIndex + 1]
+      assert.deepEqual(JSON.parse(readFileSync(secretFile, 'utf8')), { RESEND_API_KEY: 'preview-newsletter-disabled' })
+      assert.equal(options.env.RESEND_API_KEY, undefined)
+      return { status: 0, stdout: 'deployed' }
+    },
     log: () => {},
     fetchFn: async () => cloudflareResponse([]),
   })
@@ -455,6 +464,28 @@ test('portfolio stages dist with public headers and redirects under the noindex 
   assert.equal(result.config.main, join(result.directory, 'preview-noindex-worker.mjs'))
   assert.match(readFileSync(result.config.main, 'utf8'), /worker\.ts/)
   assert.equal(result.config.assets.directory, result.assetsDirectory)
+  assert.equal(existsSync(secretFile), false)
+  assert.deepEqual(result.command.slice(-2), ['--secrets-file', secretFile])
+})
+
+test('portfolio removes the replacement secrets file when deployment fails', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cloudflare-preview-failed-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const appRoot = join(root, 'apps', 'portfolio')
+  mkdirSync(appRoot, { recursive: true })
+  writeFileSync(join(appRoot, 'wrangler.jsonc'), JSON.stringify({ main: './worker.ts' }))
+  let secretFile
+  await assert.rejects(() => deployPreview({
+    appRoot, root, app: 'portfolio', pr: 5, verifyDeployment: null,
+    env: { CLOUDFLARE_ACCOUNT_ID: accountId, CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577', CLOUDFLARE_API_TOKEN: 'test-token' },
+    run: (_binary, args) => {
+      secretFile = args[args.indexOf('--secrets-file') + 1]
+      assert.equal(existsSync(secretFile), true)
+      return { status: 1, stderr: 'upload failed' }
+    },
+    log: () => {}, fetchFn: async () => cloudflareResponse([]),
+  }), /Wrangler deploy failed/)
+  assert.equal(existsSync(secretFile), false)
 })
 
 test('push, synchronize, close, and reopen recycle one preview cleanly', async t => {
@@ -591,6 +622,7 @@ test('the workflow queues lifecycle events per PR and gates reopen deploys on cu
   assert.match(workflow, /pr\.state === 'open' && pr\.head\.sha === context\.payload\.pull_request\.head\.sha/, 'deploy requires the PR to still be open at the queued SHA')
   assert.match(workflow, /if:\s*steps\.affected\.outputs\.apps != '' && steps\.current\.outputs\.deploy == 'true'/, 'deploy is gated on the current-state check')
   assert.match(workflow, /if:\s*steps\.affected\.outputs\.apps != '' && github\.event\.action == 'closed'/, 'delete only runs on close')
+  assert.doesNotMatch(workflow, /secrets\.RESEND_API_KEY/, 'preview workflow must not receive the production key')
 })
 
 test('readiness classifies DNS, TLS, and other network failures apart', () => {

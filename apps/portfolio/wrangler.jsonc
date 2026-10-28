@@ -17,7 +17,7 @@
     "run_worker_first": true,
     "binding": "ASSETS"
   },
-  // RESEND_API_KEY is a Worker secret. Previews replace all newsletter destinations.
+  // RESEND_API_KEY is a Worker secret. Newsletter signup is disabled in previews.
   "vars": {
     "SUBSCRIBE_ENVIRONMENT": "production",
     "RESEND_WELCOME_TEMPLATE_ID": "68d8d7db-2025-41cf-94e0-31bd07537b19",

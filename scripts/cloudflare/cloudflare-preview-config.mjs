@@ -195,22 +195,12 @@ function previewRatelimits(source, identity, previewBindings) {
   return result
 }
 
-function previewSubscribeVars(source, previewBindings, pr) {
-  const testSegment = previewBindings?.vars?.RESEND_SEGMENT_ID
-    || source.vars?.RESEND_PREVIEW_SEGMENT_ID
-    || process.env.RESEND_PREVIEW_SEGMENT_ID
+function previewSubscribeVars(source, pr) {
   const vars = { ...source.vars }
-  if (source.ratelimits?.some(binding => binding.name === 'SUBSCRIBE')) {
-    if (!testSegment || testSegment === source.vars?.RESEND_SEGMENT_ID) throw new Error('Newsletter previews require an isolated test segment')
-    vars.RESEND_SEGMENT_ID = testSegment
-    vars.SUBSCRIBE_ENVIRONMENT = 'preview'
-    vars.SUBSCRIBE_PREVIEW_PR = String(pr)
-    const topic = previewBindings?.vars?.RESEND_PREVIEW_TOPIC_ID || source.vars?.RESEND_PREVIEW_TOPIC_ID
-    vars.RESEND_TOPIC_IDS = topic ? JSON.stringify(Object.fromEntries(['home', 'skills', 'garden', 'r3', 'ui'].map(key => [key, topic]))) : '{}'
-  }
-  delete vars.RESEND_PREVIEW_SEGMENT_ID
-  delete vars.RESEND_PREVIEW_TOPIC_ID
-  return Object.keys(vars).length > 0 ? vars : undefined
+  for (const key of Object.keys(vars)) if (key.startsWith('RESEND_')) delete vars[key]
+  vars.SUBSCRIBE_ENVIRONMENT = 'preview'
+  vars.SUBSCRIBE_PREVIEW_PR = String(pr)
+  return vars
 }
 
 export function createPreviewConfig({ source, sourcePath, root, app, pr, accountId, previewBindings, assetsDirectory }) {
@@ -232,7 +222,7 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   if (config.main) config.main = absolutePath(config.main, sourcePath)
   Object.assign(config, previewStatefulBindings(source, previewBindings))
   if (config.ratelimits) config.ratelimits = previewRatelimits(source, identity, previewBindings)
-  if (app === 'portfolio') config.vars = previewSubscribeVars(source, previewBindings, pr)
+  if (app === 'portfolio') config.vars = previewSubscribeVars(source, pr)
   if (config.services !== undefined && (!Array.isArray(config.services) || config.services.length)) throw new Error('Preview service bindings require explicit isolation.')
   if (assetsDirectory) config.assets = { ...config.assets, directory: assetsDirectory }
   if (!config.main && !config.assets?.directory) throw new Error(`Preview ${app} requires a Worker main entrypoint or assets.`)
