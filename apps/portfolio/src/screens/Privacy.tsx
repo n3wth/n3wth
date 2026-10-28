@@ -57,7 +57,7 @@ function Privacy() {
             The footer form on n3wth.com collects an email
             address for notes and new work across design, technology, AI, and the things I’m exploring.
             Resend stores the address, segment membership, and selected topic subscription.
-            Signup is immediate; no confirmation click is needed. New subscribers receive a welcome email.
+            Signup is immediate; no confirmation click is needed. New subscribers may receive a welcome email.
             A subscription is recorded only after Resend confirms the contact, segment, and topic.
             You can unsubscribe from the link on any note or by emailing{' '}
             <a href="mailto:hey@n3wth.com" className="link-underline">hey@n3wth.com</a>. Resend
