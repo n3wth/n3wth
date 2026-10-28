@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback, useMemo, useSyncExternalStore } from 'react'
+import { useMemo, useSyncExternalStore } from 'react'
+import { useMediaQuery } from './useMediaQuery'
 
 const motionQuery = '(prefers-reduced-motion: reduce)'
 const motionSnapshot = () => window.matchMedia(motionQuery).matches
@@ -66,30 +67,5 @@ export function useMotionConfig() {
  * Returns true if user prefers high contrast
  */
 export function usePrefersHighContrast(): boolean {
-  const getInitialState = useCallback(() => {
-    if (typeof window === 'undefined') {
-      return false
-    }
-    return window.matchMedia('(prefers-contrast: high)').matches
-  }, [])
-
-  const [prefersHighContrast, setPrefersHighContrast] = useState(getInitialState)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return
-    }
-
-    const mediaQuery = window.matchMedia('(prefers-contrast: high)')
-    setPrefersHighContrast(mediaQuery.matches)
-
-    const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersHighContrast(event.matches)
-    }
-
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
-
-  return prefersHighContrast
+  return useMediaQuery('(prefers-contrast: high)')
 }

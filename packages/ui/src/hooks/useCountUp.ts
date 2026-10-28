@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 export interface UseCountUpOptions {
   /** Animation duration in seconds */
@@ -44,42 +45,66 @@ export function useCountUp(
 
   const [value, setValue] = useState(0)
   const ref = useRef<HTMLElement>(null)
-  const hasAnimated = useRef(false)
+  const currentValue = useRef(0)
+  const currentTarget = useRef(target)
+  const hasStarted = useRef(false)
+  const hasCompleted = useRef(false)
+  const onCompleteRef = useRef(onComplete)
+
+  useIsomorphicLayoutEffect(() => {
+    onCompleteRef.current = onComplete
+  }, [onComplete])
 
   useEffect(() => {
     const element = ref.current
-    if (!element || hasAnimated.current) return
+    if (!element) return
+    if (!Object.is(currentTarget.current, target)) {
+      currentTarget.current = target
+      hasCompleted.current = false
+    }
+    if (hasCompleted.current) return
 
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches
 
     if (prefersReducedMotion) {
+      currentValue.current = target
+      hasStarted.current = true
+      hasCompleted.current = true
       setValue(target)
-      onComplete?.()
+      onCompleteRef.current?.()
       return
     }
 
-    const counter = { value: 0 }
+    const counter = { value: currentValue.current }
+    let tween: ReturnType<typeof gsap.to> | undefined
+    let trigger: ReturnType<typeof ScrollTrigger.create> | undefined
+    let startedHere = false
 
     const animate = () => {
-      if (hasAnimated.current) return
-      hasAnimated.current = true
+      if (startedHere || hasCompleted.current) return
+      startedHere = true
+      hasStarted.current = true
 
-      gsap.to(counter, {
+      tween = gsap.to(counter, {
         value: target,
         duration,
         delay,
         ease: 'power2.out',
         onUpdate: () => {
+          currentValue.current = counter.value
           setValue(Math.round(counter.value))
         },
-        onComplete,
+        onComplete: () => {
+          hasCompleted.current = true
+          onCompleteRef.current?.()
+        },
       })
     }
 
-    if (onScroll) {
-      ScrollTrigger.create({
+    if (onScroll && !hasStarted.current) {
+      trigger = ScrollTrigger.create({
         trigger: element,
         start: 'top 80%',
         onEnter: animate,
@@ -90,11 +115,10 @@ export function useCountUp(
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach((st) => {
-        if (st.trigger === element) st.kill()
-      })
+      trigger?.kill()
+      tween?.kill()
     }
-  }, [target, duration, delay, onScroll, onComplete])
+  }, [target, duration, delay, onScroll])
 
   const displayValue = `${prefix}${value.toLocaleString()}${suffix}`
 
