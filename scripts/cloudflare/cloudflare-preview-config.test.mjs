@@ -4,6 +4,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { createHash } from 'node:crypto'
 import { appRootPath } from './cloudflare-preview.mjs'
 import { createPreviewConfig, noindexWrapper, parseJsonc, previewIdentity, writePreviewConfig } from './cloudflare-preview-config.mjs'
 import { siteUrls } from '../../packages/site-config/index.js'
@@ -96,11 +97,74 @@ test('rejects production stateful bindings unless explicit per-preview replaceme
   assert.equal(config.kv_namespaces[0].id, 'preview-kv')
 })
 
+test('rejects production resource collisions, cross-binding aliases and missing identities', () => {
+  for (const [type, field] of Object.entries({ d1_databases: 'database_id', r2_buckets: 'bucket_name', kv_namespaces: 'id', vectorize: 'index_name' })) {
+    const source = { main: './worker.js', [type]: [{ binding: 'A', [field]: 'production-a' }, { binding: 'B', [field]: 'production-b' }] }
+    const options = { source, sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 3, accountId }
+    const overrides = replacements => ({ [type]: replacements })
+    assert.throws(() => createPreviewConfig({ ...options, previewBindings: overrides([{ binding: 'A', [field]: 'PRODUCTION-B' }, { binding: 'B', [field]: 'preview-b' }]) }), /distinct explicit preview resource identities/)
+    assert.throws(() => createPreviewConfig({ ...options, previewBindings: overrides([{ binding: 'A' }, { binding: 'B', [field]: 'preview-b' }]) }), /distinct explicit preview resource identities/)
+    assert.throws(() => createPreviewConfig({ ...options, previewBindings: overrides([{ binding: 'A', [field]: 'preview-a' }, { binding: 'A', [field]: 'preview-b' }]) }), /matching unique binding names/)
+    const { config } = createPreviewConfig({ ...options, previewBindings: overrides([{ binding: 'A', [field]: 'preview-a', preview_id: 'production-a' }, { binding: 'B', [field]: 'preview-b' }]) })
+    assert.equal(config[type][0][field], 'preview-a')
+    assert.equal(config[type][0].preview_id, undefined)
+  }
+})
+
+test('rejects AI Search and unsupported stateful capabilities even with overrides', () => {
+  for (const [type, value] of Object.entries({
+    ai_search: [{ binding: 'SEARCH', instance_name: 'n3wth-com' }],
+    ai_search_namespaces: [{ binding: 'SEARCH', namespace: 'default' }],
+    hyperdrive: [{ binding: 'DB', id: 'production' }],
+    mtls_certificates: [{ binding: 'CERT', certificate_id: 'production' }],
+    durable_objects: { bindings: [{ name: 'STATE', class_name: 'State' }] },
+    queues: { producers: [{ binding: 'QUEUE', queue: 'production' }] },
+  })) {
+    const options = { source: { main: './worker.js', [type]: value }, sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 3, accountId }
+    assert.throws(() => createPreviewConfig({ ...options, previewBindings: { [type]: value } }), /verified isolation and are not supported/)
+  }
+  assert.throws(() => createPreviewConfig({ source: { main: './worker.js', ai_search: null }, sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 3, accountId }), /verified isolation/)
+})
+
+test('rejects unsupported capabilities while accepting empty generated defaults', () => {
+  const arrays = ['analytics_engine_datasets', 'pipelines', 'workflows', 'secrets_store_secrets', 'dispatch_namespaces', 'vpc_services', 'send_email', 'containers', 'tail_consumers', 'agent_memory', 'artifacts', 'flagship', 'worker_loaders', 'vpc_networks', 'connect', 'streaming_tail_consumers', 'k2', 'migrations']
+  const objects = ['ai', 'browser', 'images', 'unsafe', 'logfwdr', 'media', 'stream', 'analytics', 'cloudchamber', 'exports']
+  const options = { sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 3, accountId }
+  for (const type of arrays) {
+    assert.throws(() => createPreviewConfig({ ...options, source: { main: './worker.js', [type]: [{ binding: 'PRODUCTION' }] } }), /verified isolation/)
+  }
+  for (const type of objects) {
+    assert.throws(() => createPreviewConfig({ ...options, source: { main: './worker.js', [type]: { binding: 'PRODUCTION' } } }), /verified isolation/)
+  }
+  const source = { main: './worker.js', ...Object.fromEntries(arrays.map(type => [type, []])), ...Object.fromEntries(objects.map(type => [type, {}])), logfwdr: { bindings: [] } }
+  assert.doesNotThrow(() => createPreviewConfig({ ...options, source }))
+})
+
+test('rejects nonempty object-shaped stateful bindings even with a misleading length', () => {
+  const options = { sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 3, accountId }
+  for (const [type, value] of Object.entries({ durable_objects: { length: 0, bindings: [{ name: 'DB', class_name: 'State' }] }, queues: { length: 0, producers: [{ binding: 'QUEUE', queue: 'production' }] } })) {
+    assert.throws(() => createPreviewConfig({ ...options, source: { main: './worker.js', [type]: value } }), /verified isolation/)
+  }
+})
+
+test('removes production event triggers from previews', () => {
+  const source = { main: './worker.js', triggers: { crons: ['* * * * *'] } }
+  const { config } = createPreviewConfig({ source, sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 3, accountId })
+  assert.equal(config.triggers, undefined)
+  assert.deepEqual(source.triggers, { crons: ['* * * * *'] })
+})
+
+test('rejects missing production identity and matching production D1 names', () => {
+  const options = { sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 3, accountId }
+  assert.throws(() => createPreviewConfig({ ...options, source: { main: './worker.js', d1_databases: [{ binding: 'DB', database_name: 'production' }] }, previewBindings: { d1_databases: [{ binding: 'DB', database_id: 'preview' }] } }), /distinct explicit preview resource identities/)
+  assert.throws(() => createPreviewConfig({ ...options, source: { main: './worker.js', d1_databases: [{ binding: 'DB', database_id: 'production-id', database_name: 'production' }] }, previewBindings: { d1_databases: [{ binding: 'DB', database_id: 'preview-id', database_name: 'PRODUCTION' }] } }), /distinct preview database names/)
+})
+
 test('isolates portfolio subscribe rate limits and uses the preview test segment', () => {
   const source = {
     main: './worker.ts',
     vars: { RESEND_SEGMENT_ID: 'production-segment', RESEND_PREVIEW_SEGMENT_ID: 'preview-test-segment', RESEND_TOPIC_IDS: '{"home":"production-topic"}', RESEND_PREVIEW_TOPIC_ID: 'test-topic' },
-    ratelimits: [{ name: 'SUBSCRIBE', namespace_id: 'n3wth-portfolio-subscribe', simple: { limit: 5, period: 60 } }],
+    ratelimits: [{ name: 'SUBSCRIBE', namespace_id: '100', simple: { limit: 5, period: 60 } }],
   }
   const original = structuredClone(source)
   const { config } = createPreviewConfig({
@@ -123,7 +187,7 @@ test('explicit preview subscribe bindings win over production values', () => {
     source: {
       main: './worker.ts',
       vars: { RESEND_SEGMENT_ID: 'production-segment' },
-      ratelimits: [{ name: 'SUBSCRIBE', namespace_id: 'production', simple: { limit: 5, period: 60 } }],
+      ratelimits: [{ name: 'SUBSCRIBE', namespace_id: '100', simple: { limit: 5, period: 60 } }],
     },
     sourcePath: '/repo/apps/portfolio/wrangler.jsonc', root: '/repo', app: 'portfolio', pr: 9, accountId,
     previewBindings: {
@@ -133,6 +197,21 @@ test('explicit preview subscribe bindings win over production values', () => {
   })
   assert.equal(config.ratelimits[0].namespace_id, '92001')
   assert.equal(config.vars.RESEND_SEGMENT_ID, 'explicit-test-segment')
+})
+
+test('rejects preview rate-limit identifiers shared across bindings or production', () => {
+  const source = { main: './worker.ts', ratelimits: [{ name: 'A', namespace_id: '1', simple: { limit: 10, period: 60 } }, { name: 'B', namespace_id: '2', simple: { limit: 10, period: 60 } }] }
+  const options = { source, sourcePath: '/repo/apps/garden/wrangler.jsonc', root: '/repo', app: 'garden', pr: 9, accountId }
+  for (const ids of [['10', '010'], ['001', '11'], ['0', '11']]) {
+    const ratelimits = ids.map((namespace_id, index) => ({ name: index ? 'B' : 'A', namespace_id, simple: { limit: 10, period: 60 } }))
+    assert.throws(() => createPreviewConfig({ ...options, previewBindings: { ratelimits } }), /isolated numeric namespace IDs/)
+  }
+})
+
+test('rejects a generated rate-limit ID that aliases a production numeric ID', () => {
+  const generated = String(3000000000 + createHash('sha256').update('n3wth-garden-pr-9-A').digest().readUInt32BE(0))
+  const source = { main: './worker.ts', ratelimits: [{ name: 'A', namespace_id: `000${generated}`, simple: { limit: 10, period: 60 } }] }
+  assert.throws(() => createPreviewConfig({ source, sourcePath: '/repo/apps/garden/wrangler.jsonc', root: '/repo', app: 'garden', pr: 9, accountId }), /isolated numeric namespace IDs/)
 })
 
 test('writes only generated config and wrapper artifacts', t => {
@@ -169,5 +248,5 @@ test('Worker build defaults preserve isolation and bundle the preview wrapper', 
   assert.throws(() => createPreviewConfig({
     ...options, previewBindings,
     source: { ...source, durable_objects: { bindings: [{ name: 'STATE', class_name: 'State' }] } },
-  }), /durable_objects must use explicit/)
+  }), /durable_objects preview bindings require verified isolation/)
 })

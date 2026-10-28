@@ -7,6 +7,9 @@ import { createHash } from 'node:crypto'
 export const PREVIEW_APPS = new Set([...DEPLOY_APP_SLUGS, 'ui-docs', 'r3-web', 'skills'])
 const PREVIEW_SUFFIX = 'preview.n3wth.com'
 const STATEFUL_BINDINGS = ['d1_databases', 'r2_buckets', 'kv_namespaces', 'durable_objects', 'hyperdrive', 'queues', 'vectorize', 'mtls_certificates']
+const RESOURCE_IDENTITIES = { d1_databases: 'database_id', r2_buckets: 'bucket_name', kv_namespaces: 'id', vectorize: 'index_name' }
+const UNSUPPORTED_ARRAY_BINDINGS = ['ai_search', 'ai_search_namespaces', 'analytics_engine_datasets', 'pipelines', 'workflows', 'secrets_store_secrets', 'dispatch_namespaces', 'vpc_services', 'send_email', 'containers', 'tail_consumers', 'agent_memory', 'artifacts', 'flagship', 'worker_loaders', 'vpc_networks', 'connect', 'streaming_tail_consumers', 'k2', 'migrations']
+const UNSUPPORTED_OBJECT_BINDINGS = ['ai', 'browser', 'images', 'unsafe', 'logfwdr', 'media', 'stream', 'analytics', 'cloudchamber', 'exports']
 
 export function previewIdentity(app, pr) {
   if (!PREVIEW_APPS.has(app)) throw new Error(`Unsupported preview app: ${app}`)
@@ -99,47 +102,97 @@ function absoluteWasmModules(wasmModules, sourcePath) {
 
 function previewStatefulBindings(source, previewBindings) {
   const output = {}
+  for (const type of UNSUPPORTED_ARRAY_BINDINGS) {
+    const bindings = source[type]
+    if (bindings !== undefined && (!Array.isArray(bindings) || bindings.length > 0)) {
+      throw new Error(`${type} preview bindings require verified isolation and are not supported.`)
+    }
+  }
+  for (const type of UNSUPPORTED_OBJECT_BINDINGS) {
+    const bindings = source[type]
+    if (bindings !== undefined && (!bindings || typeof bindings !== 'object' || Array.isArray(bindings)
+      || !Object.values(bindings).every(value => Array.isArray(value) && value.length === 0))) {
+      throw new Error(`${type} preview bindings require verified isolation and are not supported.`)
+    }
+  }
   for (const type of STATEFUL_BINDINGS) {
-    const sourceBindings = source[type] || []
-    if (sourceBindings.length === 0) continue
+    const sourceBindings = source[type] === undefined ? [] : source[type]
+    if (!sourceBindings) throw new Error(`${type} preview bindings require verified isolation and are not supported.`)
+    if (Array.isArray(sourceBindings) && sourceBindings.length === 0) continue
     // The Vite plugin emits empty object-shaped defaults for these bindings.
     // Non-empty objects still fail closed until explicit isolation is supported.
     if (['durable_objects', 'queues'].includes(type)
+      && typeof sourceBindings === 'object'
       && !Array.isArray(sourceBindings)
       && Object.values(sourceBindings).every(value => Array.isArray(value) && value.length === 0)) continue
+    const field = RESOURCE_IDENTITIES[type]
+    if (!field || !Array.isArray(sourceBindings)) throw new Error(`${type} preview bindings require verified isolation and are not supported.`)
     const provided = previewBindings?.[type]
     if (!Array.isArray(provided)) {
       throw new Error(`${type} must use explicit per-preview bindings; production bindings cannot be copied.`)
     }
+    if ([...sourceBindings, ...provided].some(binding => !binding || typeof binding !== 'object' || Array.isArray(binding))) {
+      throw new Error(`${type} requires valid binding objects.`)
+    }
     const sourceNames = new Set(sourceBindings.map(binding => binding.binding))
     const providedNames = new Set(provided.map(binding => binding.binding))
+    if (sourceNames.size !== sourceBindings.length || providedNames.size !== provided.length
+      || [...sourceNames, ...providedNames].some(name => typeof name !== 'string' || !name.trim())
+      || sourceNames.size !== providedNames.size) throw new Error(`${type} requires matching unique binding names.`)
     for (const name of sourceNames) {
       if (!providedNames.has(name)) throw new Error(`Missing per-preview ${type} binding: ${name}`)
     }
-    output[type] = structuredClone(provided)
+    const identity = binding => typeof binding[field] === 'string' ? binding[field].trim().toLowerCase() : ''
+    const productionIds = new Set(sourceBindings.map(identity))
+    if (productionIds.has('') || provided.some(binding => !identity(binding) || productionIds.has(identity(binding)))) {
+      throw new Error(`${type} requires distinct explicit preview resource identities.`)
+    }
+    if (type === 'd1_databases') {
+      const productionNames = new Set(sourceBindings.map(binding => binding.database_name?.trim().toLowerCase()).filter(Boolean))
+      if (provided.some(binding => productionNames.has(binding.database_name?.trim().toLowerCase()))) {
+        throw new Error('d1_databases requires distinct preview database names.')
+      }
+    }
+    output[type] = structuredClone(provided).map(binding => {
+      delete binding.preview_database_id
+      delete binding.preview_bucket_name
+      delete binding.preview_id
+      return binding
+    })
   }
   return output
 }
 
 function previewRatelimits(source, identity, previewBindings) {
-  const provided = previewBindings?.ratelimits
-  if (Array.isArray(provided)) {
-    const sourceNames = new Set((source.ratelimits || []).map(binding => binding.binding || binding.name))
-    const providedNames = new Set(provided.map(binding => binding.binding || binding.name))
-    for (const name of sourceNames) {
-      if (!providedNames.has(name)) throw new Error(`Missing per-preview ratelimits binding: ${name}`)
-    }
-    for (const binding of provided) {
-      if (!/^\d+$/.test(binding.namespace_id) || (source.ratelimits || []).some(item => item.namespace_id === binding.namespace_id)) {
-        throw new Error('Preview ratelimits require isolated numeric namespace IDs')
-      }
-    }
-    return structuredClone(provided)
+  const bindings = source.ratelimits
+  if (!Array.isArray(bindings) || bindings.some(binding => !binding || typeof binding !== 'object')) {
+    throw new Error('Preview ratelimits require valid binding objects')
   }
-  return (source.ratelimits || []).map(binding => ({
+  const name = binding => binding.binding || binding.name
+  const sourceNames = new Set(bindings.map(name))
+  if (sourceNames.size !== bindings.length || [...sourceNames].some(value => typeof value !== 'string' || !value.trim())) {
+    throw new Error('Preview ratelimits require matching unique binding names')
+  }
+  const numericId = value => typeof value === 'string' && /^\d+$/.test(value) && BigInt(value) > 0n ? BigInt(value).toString() : null
+  const productionIds = bindings.map(binding => numericId(binding.namespace_id))
+  if (productionIds.includes(null)) throw new Error('Preview ratelimits require isolated numeric namespace IDs')
+  const provided = previewBindings?.ratelimits
+  if (provided !== undefined && (!Array.isArray(provided) || provided.some(binding => !binding || typeof binding !== 'object'))) {
+    throw new Error('Preview ratelimits require valid binding objects')
+  }
+  const result = provided === undefined ? bindings.map(binding => ({
     ...structuredClone(binding),
-    namespace_id: String(3000000000 + createHash('sha256').update(`${identity.workerName}-${binding.name}`).digest().readUInt32BE(0)),
-  }))
+    namespace_id: String(3000000000 + createHash('sha256').update(`${identity.workerName}-${name(binding)}`).digest().readUInt32BE(0)),
+  })) : structuredClone(provided)
+  const names = new Set(result.map(name))
+  if (names.size !== result.length || names.size !== sourceNames.size || [...sourceNames].some(value => !names.has(value))) {
+    throw new Error('Preview ratelimits require matching unique binding names')
+  }
+  const ids = result.map(binding => numericId(binding.namespace_id))
+  if (ids.includes(null) || new Set(ids).size !== ids.length || ids.some(id => productionIds.includes(id))) {
+    throw new Error('Preview ratelimits require isolated numeric namespace IDs')
+  }
+  return result
 }
 
 function previewSubscribeVars(source, previewBindings, pr) {
@@ -172,6 +225,7 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   delete config.route
   // Production-only environment sections must never survive a preview override.
   delete config.env
+  delete config.triggers
   if (app === 'garden') config.vars = { ...config.vars, TARGET_ORIGIN: `https://${previewIdentity('portfolio', pr).host}` }
   if (config.assets?.directory) config.assets = { ...config.assets, directory: absolutePath(config.assets.directory, sourcePath) }
   if (config.wasm_modules) config.wasm_modules = absoluteWasmModules(config.wasm_modules, sourcePath)
@@ -179,7 +233,7 @@ export function createPreviewConfig({ source, sourcePath, root, app, pr, account
   Object.assign(config, previewStatefulBindings(source, previewBindings))
   if (config.ratelimits) config.ratelimits = previewRatelimits(source, identity, previewBindings)
   if (app === 'portfolio') config.vars = previewSubscribeVars(source, previewBindings, pr)
-  if (config.services?.length) throw new Error('Preview service bindings require explicit isolation.')
+  if (config.services !== undefined && (!Array.isArray(config.services) || config.services.length)) throw new Error('Preview service bindings require explicit isolation.')
   if (assetsDirectory) config.assets = { ...config.assets, directory: assetsDirectory }
   if (!config.main && !config.assets?.directory) throw new Error(`Preview ${app} requires a Worker main entrypoint or assets.`)
   if (config.main) {
