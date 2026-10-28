@@ -80,6 +80,30 @@ describe('CommandPalette AI search', () => {
     expect(screen.getByRole('link', { name: 'safe source' }).getAttribute('href')).toBe('https://n3wth.com/work')
   })
 
+  it('preserves answer prose that contains a Sources label', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true, body: null,
+      json: async () => ({ answer: 'Research notes. Sources: the archive and [a guide](/work) explain the history.' }),
+    })
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'research notes' } })
+    await waitFor(() => expect(screen.getByText(/Sources: the archive and/)).toBeTruthy())
+    expect(screen.getByRole('link', { name: 'a guide' }).getAttribute('href')).toBe('/work')
+    expect(screen.getByText(/explain the history\./)).toBeTruthy()
+    expect(screen.queryByRole('navigation', { name: 'Answer sources' })).toBeNull()
+  })
+
+  it('preserves a Sources label followed by plain text', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true, body: null,
+      json: async () => ({ answer: 'Research notes. Sources: the archive and the library.' }),
+    })
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'research notes' } })
+    await waitFor(() => expect(screen.getByText('Research notes. Sources: the archive and the library.')).toBeTruthy())
+    expect(screen.queryByRole('navigation', { name: 'Answer sources' })).toBeNull()
+  })
+
   it('does not show AI row for queries under 2 characters', () => {
     render(
       <>

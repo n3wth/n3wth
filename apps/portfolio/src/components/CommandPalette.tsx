@@ -190,7 +190,9 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const [askState, setAskState] = useState<'idle' | 'loading' | 'answered' | 'error'>('idle')
   const [askAnswer, setAskAnswer] = useState('')
   const [askIncomplete, setAskIncomplete] = useState(false)
-  const sourcesAt = askIncomplete ? -1 : askAnswer.lastIndexOf(' Sources: ')
+  const candidateSourcesAt = askIncomplete ? -1 : askAnswer.lastIndexOf(' Sources: ')
+  const sourceList = candidateSourcesAt < 0 ? '' : askAnswer.slice(candidateSourcesAt + 10)
+  const sourcesAt = /^\[[^\]]+\]\([^)]+\)(?:, \[[^\]]+\]\([^)]+\))*\.$/.test(sourceList) ? candidateSourcesAt : -1
   const answerText = sourcesAt < 0 ? askAnswer : askAnswer.slice(0, sourcesAt)
   const answerSources = sourcesAt < 0 ? [] : renderAnswerLinks(askAnswer.slice(sourcesAt + 10))
     .filter((part): part is { label: string; href: string } => typeof part !== 'string')
