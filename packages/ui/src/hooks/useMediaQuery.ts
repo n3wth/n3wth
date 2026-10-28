@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useSyncExternalStore } from 'react'
 
 /**
  * Standard breakpoints matching Tailwind CSS defaults
@@ -16,42 +16,21 @@ export type Breakpoint = keyof typeof BREAKPOINTS
 
 /**
  * Hook for responsive media queries with SSR safety
- * Returns false during SSR to prevent hydration mismatches
+ * Uses the supplied default during SSR and hydration
  *
  * @param query - CSS media query string
  * @param defaultValue - Initial value for SSR (defaults to false)
  * @returns boolean indicating if the query matches
  */
 export function useMediaQuery(query: string, defaultValue = false): boolean {
-  // Use callback to get initial state to avoid SSR issues
-  const getInitialState = useCallback(() => {
-    if (typeof window === 'undefined') {
-      return defaultValue
-    }
-    return window.matchMedia(query).matches
-  }, [query, defaultValue])
-
-  const [matches, setMatches] = useState(getInitialState)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return
-    }
-
+  const subscribe = useCallback((onChange: () => void) => {
     const mediaQuery = window.matchMedia(query)
-
-    // Set initial value (handles SSR hydration)
-    setMatches(mediaQuery.matches)
-
-    const handleChange = (event: MediaQueryListEvent) => {
-      setMatches(event.matches)
-    }
-
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
+    mediaQuery.addEventListener('change', onChange)
+    return () => mediaQuery.removeEventListener('change', onChange)
   }, [query])
-
-  return matches
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query])
+  const getServerSnapshot = useCallback(() => defaultValue, [defaultValue])
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 }
 
 /**
