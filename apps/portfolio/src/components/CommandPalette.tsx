@@ -12,6 +12,7 @@ import { navigation } from '../data/content'
 
 /** Minimum query length for automatic AI search. */
 const AI_MIN_CHARS = 2
+const AI_TIMEOUT_MS = 25_000
 
 /**
  * One input over four properties: this site's routes, every Thinking piece,
@@ -341,7 +342,14 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       let outcome = 'success'
       let accumulated = ''
       let fallback = false
+      let timedOut = false
       track('ai_search_asked', { query_length: trimmed.length, immediate, $ai_trace_id: traceId })
+      const timeout = window.setTimeout(() => {
+        if (controller.signal.aborted) return
+        timedOut = true
+        controller.abort()
+      }, AI_TIMEOUT_MS)
+      controller.signal.addEventListener('abort', () => window.clearTimeout(timeout), { once: true })
 
       try {
         const response = await fetch('/api/search', {
@@ -442,8 +450,8 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           setAskState('answered')
         }
       } catch {
-        outcome = controller.signal.aborted ? 'cancelled' : 'error'
-        if (controller.signal.aborted) return
+        outcome = timedOut ? 'unavailable' : controller.signal.aborted ? 'cancelled' : 'error'
+        if (controller.signal.aborted && !timedOut) return
         // Only update state if this is still the current request
         if (version === aiRequestVersion.current) {
           if (accumulated) {
@@ -454,7 +462,8 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           } else setAskState('error')
         }
       } finally {
-        if (controller.signal.aborted || version !== aiRequestVersion.current) outcome = 'cancelled'
+        window.clearTimeout(timeout)
+        if ((controller.signal.aborted && !timedOut) || version !== aiRequestVersion.current) outcome = 'cancelled'
         // Reuse the site's PostHog identity and privacy filters. No typed text or answers.
         track('$ai_generation', {
           $ai_trace_id: traceId,

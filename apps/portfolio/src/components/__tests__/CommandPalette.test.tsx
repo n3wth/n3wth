@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { CommandPalette } from '../CommandPalette'
 import { track } from '../../lib/analytics'
 
@@ -192,6 +192,93 @@ describe('CommandPalette AI search', () => {
     expect(screen.getByText('Could not generate an answer.')).toBeTruthy()
   })
 
+  it('times out a stalled request without reporting a user cancellation', async () => {
+    vi.useFakeTimers()
+    try {
+      globalThis.fetch = vi.fn<typeof fetch>().mockImplementation((input, init) => {
+        void input
+        return new Promise((_resolve, reject) => init?.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), { once: true }))
+      })
+      render(<CommandPalette open onClose={noop} />)
+      fireEvent.change(screen.getByRole('combobox'), { target: { value: 'stalled request' } })
+      await act(async () => { await vi.advanceTimersByTimeAsync(300) })
+      expect(globalThis.fetch).toHaveBeenCalledOnce()
+      await act(async () => { await vi.advanceTimersByTimeAsync(25_000) })
+      expect(screen.getByRole('button', { name: 'Retry AI search' })).toBeTruthy()
+      expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'unavailable', $ai_is_error: true }))
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('keeps partial text when a stream reaches the client deadline', async () => {
+    vi.useFakeTimers()
+    try {
+      globalThis.fetch = vi.fn<typeof fetch>().mockImplementation(async (input, init) => {
+        void input
+        const body = new ReadableStream<Uint8Array>({
+          start(controller) {
+            controller.enqueue(new TextEncoder().encode('data: {"delta":"Partial answer."}\n\n'))
+            init?.signal?.addEventListener('abort', () => controller.error(new DOMException('Aborted', 'AbortError')), { once: true })
+          },
+        })
+        return new Response(body, { headers: { 'content-type': 'text/event-stream' } })
+      })
+      render(<CommandPalette open onClose={noop} />)
+      fireEvent.change(screen.getByRole('combobox'), { target: { value: 'stalled stream' } })
+      await act(async () => { await vi.advanceTimersByTimeAsync(300) })
+      expect(screen.getByText('Partial answer.')).toBeTruthy()
+      await act(async () => { await vi.advanceTimersByTimeAsync(25_000) })
+      expect(screen.getByText(/Partial answer.*Answer interrupted\. Try again\./)).toBeTruthy()
+      expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'unavailable', $ai_is_error: true }))
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('clears the deadline after a successful response', async () => {
+    vi.useFakeTimers()
+    try {
+      let signal: AbortSignal | null | undefined
+      globalThis.fetch = vi.fn<typeof fetch>().mockImplementation(async (input, init) => {
+        void input
+        signal = init?.signal
+        return Response.json({ answer: 'Complete answer.' })
+      })
+      render(<CommandPalette open onClose={noop} />)
+      fireEvent.change(screen.getByRole('combobox'), { target: { value: 'finished answer' } })
+      await act(async () => { await vi.advanceTimersByTimeAsync(300) })
+      expect(screen.getByText('Complete answer.')).toBeTruthy()
+      await act(async () => { await vi.advanceTimersByTimeAsync(25_000) })
+      expect(signal?.aborted).toBe(false)
+      expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'success' }))
+      expect(vi.mocked(track).mock.calls.filter(([event]) => event === '$ai_generation')).toHaveLength(1)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('keeps a user cancellation distinct from a deadline', async () => {
+    vi.useFakeTimers()
+    try {
+      globalThis.fetch = vi.fn<typeof fetch>().mockImplementation((input, init) => {
+        void input
+        return new Promise((_resolve, reject) => init?.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), { once: true }))
+      })
+      render(<CommandPalette open onClose={noop} />)
+      const input = screen.getByRole('combobox')
+      fireEvent.change(input, { target: { value: 'cancel before deadline' } })
+      await act(async () => { await vi.advanceTimersByTimeAsync(300 + 24_999) })
+      fireEvent.change(input, { target: { value: '' } })
+      await act(async () => { await vi.advanceTimersByTimeAsync(2) })
+      expect(track).toHaveBeenCalledWith('$ai_generation', expect.objectContaining({ outcome: 'cancelled', $ai_is_error: false }))
+      expect(vi.mocked(track).mock.calls.filter(([event]) => event === '$ai_generation')).toHaveLength(1)
+      expect(screen.queryByRole('button', { name: 'Retry AI search' })).toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('keeps the interruption notice when partial text contains Sources', async () => {
     const events = 'data: {"delta":"Partial Sources: unverified"}\n\ndata: {"delta":" Answer interrupted. Try again.","fallback":true}\n\ndata: [DONE]\n\n'
     globalThis.fetch = vi.fn(async () => new Response(events, { headers: { 'content-type': 'text/event-stream' } }))
@@ -289,15 +376,7 @@ describe('CommandPalette AI search', () => {
   })
 
   it('aborts previous request when typing a new query', async () => {
-    const abortSpy = vi.fn()
-
-    class MockAbortController {
-      signal = { aborted: false }
-      abort = abortSpy
-    }
-
-    const OriginalAbortController = globalThis.AbortController
-    globalThis.AbortController = MockAbortController as unknown as typeof AbortController
+    const abortSpy = vi.spyOn(AbortController.prototype, 'abort')
 
     let resolveFirst: (value: unknown) => void
     const firstPromise = new Promise((resolve) => {
@@ -332,7 +411,6 @@ describe('CommandPalette AI search', () => {
 
     // Cleanup
     resolveFirst!({ ok: true, body: null, json: () => Promise.resolve({ answer: 'test' }) })
-    globalThis.AbortController = OriginalAbortController
   })
 
   it('shows only loading dots while waiting for an automatic answer', () => {
