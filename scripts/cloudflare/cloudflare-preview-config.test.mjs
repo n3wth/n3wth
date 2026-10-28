@@ -24,6 +24,10 @@ test('active configs own domains, retired fixtures do not, and previews replace 
     assert.equal(config.name, `n3wth-${app}-pr-23`)
     assert.notDeepEqual(config.routes, source.routes)
     assert.deepEqual(config.routes, [{ pattern: `${app}-pr-23.preview.n3wth.com`, custom_domain: true }])
+    if (app === 'portfolio') {
+      assert.ok(source.compatibility_flags.includes('enable_request_signal'))
+      assert.ok(config.compatibility_flags.includes('enable_request_signal'))
+    }
     if (app === 'garden') assert.equal(config.vars.TARGET_ORIGIN, 'https://portfolio-pr-23.preview.n3wth.com')
     assert.deepEqual(source, original)
   }
