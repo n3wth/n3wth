@@ -212,6 +212,8 @@ test('requires explicit rate-limit bindings and cannot restore the omitted newsl
   const other = { ...options, app: 'garden', source: { main: './worker.ts', ratelimits: [{ ...limiter, name: 'OTHER' }] } }
   assert.throws(() => createPreviewConfig(other), /explicit isolated bindings/)
   assert.equal(createPreviewConfig({ ...other, previewBindings: { ratelimits: [{ ...limiter, name: 'OTHER', namespace_id: '101' }] } }).config.ratelimits[0].namespace_id, '101')
+  assert.throws(() => createPreviewConfig({ ...other, previewBindings: { ratelimits: [{ ...limiter, binding: 'OTHER', namespace_id: '101' }] } }), /valid binding objects/)
+  assert.throws(() => createPreviewConfig({ ...options, source: { main: './worker.ts', ratelimits: [{ ...limiter, binding: 'OTHER' }] } }), /valid binding objects/)
 })
 
 test('writes only generated config and wrapper artifacts', t => {

@@ -164,10 +164,10 @@ function previewStatefulBindings(source, previewBindings) {
 
 function previewRatelimits(source, app, previewBindings) {
   const bindings = source.ratelimits
-  if (!Array.isArray(bindings) || bindings.some(binding => !binding || typeof binding !== 'object')) {
+  if (!Array.isArray(bindings) || bindings.some(binding => !binding || typeof binding !== 'object' || Array.isArray(binding) || 'binding' in binding)) {
     throw new Error('Preview ratelimits require valid binding objects')
   }
-  const name = binding => binding.binding || binding.name
+  const name = binding => binding.name
   const allNames = new Set(bindings.map(name))
   if (allNames.size !== bindings.length || [...allNames].some(value => typeof value !== 'string' || !value.trim())) {
     throw new Error('Preview ratelimits require matching unique binding names')
@@ -178,7 +178,7 @@ function previewRatelimits(source, app, previewBindings) {
   const remaining = bindings.filter(binding => !(app === 'portfolio' && name(binding) === 'SUBSCRIBE'))
   const sourceNames = new Set(remaining.map(name))
   const provided = previewBindings?.ratelimits
-  if (provided !== undefined && (!Array.isArray(provided) || provided.some(binding => !binding || typeof binding !== 'object'))) {
+  if (provided !== undefined && (!Array.isArray(provided) || provided.some(binding => !binding || typeof binding !== 'object' || Array.isArray(binding) || 'binding' in binding))) {
     throw new Error('Preview ratelimits require valid binding objects')
   }
   if (provided === undefined && remaining.length) throw new Error('Preview ratelimits require explicit isolated bindings')

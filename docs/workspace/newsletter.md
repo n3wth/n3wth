@@ -26,9 +26,11 @@ and the things I’m exploring.” Topic choice still follows the source site.
 Preview builds use the matching portfolio PR endpoint via
 `VITE_SUBSCRIBE_ENDPOINT` for Portfolio/UI docs and
 `NEXT_PUBLIC_SUBSCRIBE_ENDPOINT` for Skills/Garden/r3. The preview workflow also
-deploys Portfolio when another site changes. Preview topics, segments and rate
-limits are isolated. Production rejects preview origins. Local forms require
-an explicit nonproduction endpoint; automated tests mock it.
+deploys Portfolio when another site changes. Newly deployed previews disable
+signup and receive no production Resend key or newsletter limiter.
+Existing previews must be redeployed or removed to replace previously retained
+credentials; see [deployment guidance](deployment.md). Production rejects preview
+origins. Local forms require an explicit nonproduction endpoint; tests mock it.
 
 Run `npm run check`, `npm run build:cloudflare`, and the preview browser checks
 before release. CI runs the real form suite and the historical import tests.
