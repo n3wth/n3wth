@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { handlePortfolioApi } from './runtime'
 
 const request = (path: string, init?: RequestInit) => new Request(`https://preview.n3wth.com${path}`, init)
+afterEach(() => vi.restoreAllMocks())
 
 describe('portfolio Worker API runtime', () => {
   it.each(['/api/agent', '/api/github-stats'])('returns gone for retired endpoint %s', async path => {
@@ -156,6 +157,60 @@ describe('portfolio Worker API runtime', () => {
     const fetchMock: typeof fetch = async () => new Response(upstreamBody)
     const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true }) }), {}, fetchMock)
     await expect(response?.text()).resolves.toContain("Couldn't generate an answer")
+  })
+
+  it('returns the fallback when the upstream connection exceeds the deadline', async () => {
+    const deadline = new AbortController()
+    const timeout = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(deadline.signal)
+    let started!: () => void
+    const ready = new Promise<void>(resolve => { started = resolve })
+    const pending = handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work' }) }), {}, async (_input, init) => new Promise((_resolve, reject) => {
+      init?.signal?.addEventListener('abort', () => reject(init.signal?.reason), { once: true })
+      started()
+    }))
+    await ready
+    expect(timeout).toHaveBeenCalledWith(20_000)
+    deadline.abort()
+    expect(await (await pending)?.json()).toEqual({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true })
+  })
+
+  it('propagates client cancellation before the deadline', async () => {
+    const deadline = new AbortController()
+    const client = new AbortController()
+    vi.spyOn(AbortSignal, 'timeout').mockReturnValue(deadline.signal)
+    let started!: () => void
+    const ready = new Promise<void>(resolve => { started = resolve })
+    let upstreamSignal: AbortSignal | null | undefined
+    const pending = handlePortfolioApi(request('/api/search', { method: 'POST', signal: client.signal, body: JSON.stringify({ query: 'work' }) }), {}, async (_input, init) => new Promise((_resolve, reject) => {
+      upstreamSignal = init?.signal
+      upstreamSignal?.addEventListener('abort', () => reject(upstreamSignal?.reason), { once: true })
+      started()
+    }))
+    await ready
+    client.abort()
+    expect(upstreamSignal?.aborted).toBe(true)
+    expect(deadline.signal.aborted).toBe(false)
+    await pending
+  })
+
+  it.each([false, true])('ends a stalled stream after the deadline (partial answer: %s)', async partial => {
+    const deadline = new AbortController()
+    vi.spyOn(AbortSignal, 'timeout').mockReturnValue(deadline.signal)
+    const response = await handlePortfolioApi(request('/api/search', { method: 'POST', body: JSON.stringify({ query: 'work', stream: true }) }), {}, async (_input, init) => {
+      const body = new ReadableStream<Uint8Array>({
+        start(controller) {
+          if (partial) controller.enqueue(new TextEncoder().encode('data: {"choices":[{"delta":{"content":"partial"}}]}\n\n'))
+          init?.signal?.addEventListener('abort', () => controller.error(init.signal?.reason), { once: true })
+        },
+      })
+      return new Response(body)
+    })
+    const result = response!.text()
+    deadline.abort()
+    const text = await result
+    expect(text).toContain(partial ? 'partial' : "Couldn't generate an answer")
+    expect(text.match(/data: \[DONE\]/g)).toHaveLength(1)
+    expect(text).not.toContain('Sources:')
   })
 
   it('does not claim API ownership for unrelated paths', async () => {

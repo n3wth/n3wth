@@ -5,6 +5,7 @@ type FetchImplementation = typeof fetch
 
 const AI_SEARCH_ENDPOINT =
   'https://ns-5d811e45-2200-4a51-815d-66292af832dd.search.ai.cloudflare.com/chat/completions'
+const SEARCH_TIMEOUT_MS = 20_000
 
 const NO_SEARCH_ANSWER = "No relevant information found. Try another search."
 
@@ -194,7 +195,8 @@ async function search(request: Request, fetchImpl: FetchImplementation): Promise
   // Resolve portfolio shorthand before retrieval, not just during generation.
   const query = body.query.trim().replace(/^(?:(?:my|your)\s+)?(work experience|career|professional background|resume|cv)[?.!]?$/i, 'Oliver Newth $1')
   try {
-    const upstream = await fetchImpl(AI_SEARCH_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: query }], max_tokens: 180, temperature: 0.3, stream: Boolean(body.stream) }), signal: request.signal })
+    const signal = AbortSignal.any([request.signal, AbortSignal.timeout(SEARCH_TIMEOUT_MS)])
+    const upstream = await fetchImpl(AI_SEARCH_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: query }], max_tokens: 180, temperature: 0.3, stream: Boolean(body.stream) }), signal })
     if (!upstream.ok) return json({ answer: "Couldn't reach the search index — try browsing instead.", fallback: true }, 200, true)
     if (body.stream && upstream.body) return streamSearch(upstream, cors)
     const data = await upstream.json() as { model?: string; choices?: Array<{ message?: { content?: string } }>; chunks?: unknown }
