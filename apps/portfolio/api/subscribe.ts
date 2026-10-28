@@ -301,14 +301,12 @@ function isUnsubscribed(value: unknown): boolean {
   return readObject(value)?.unsubscribed === true
 }
 
-function segmentIds(value: unknown): string[] {
+function segmentIds(value: unknown): string[] | undefined {
   const body = readObject(value)
   const data = body?.data
-  if (!Array.isArray(data)) return []
-  return data.flatMap((item) => {
-    const id = readObject(item)?.id
-    return typeof id === 'string' && id ? [id] : []
-  })
+  if (!Array.isArray(data) || (body?.has_more !== undefined && body.has_more !== false)) return undefined
+  const ids = data.map(item => readObject(item)?.id)
+  return ids.every(id => typeof id === 'string' && id.trim()) ? ids as string[] : undefined
 }
 
 async function confirmMembership(
@@ -319,7 +317,7 @@ async function confirmMembership(
   topicId: string,
   budget: ProviderBudget,
   welcome?: WelcomeConfig,
-): Promise<ProviderResult> {
+): Promise<ProviderResult | 'missing_segment'> {
   const contactResponse = await resend(fetchImpl, apiKey, resendPath('contacts', address), { method: 'GET' }, budget)
   if (!contactResponse.ok) return 'partial'
   const contact = await readJson(contactResponse)
@@ -327,17 +325,20 @@ async function confirmMembership(
   if (readObject(contact)?.unsubscribed !== false) return 'partial'
   const id = contactId(contact)
   if (!id) return 'partial'
+  const topic = await confirmTopic(fetchImpl, apiKey, id, topicId, budget)
+  if (topic !== 'ok') return topic
   const segmentsResponse = await resend(fetchImpl, apiKey, resendPath('contacts', id, '/segments'), { method: 'GET' }, budget)
   if (!segmentsResponse.ok) return 'partial'
-  if (!segmentIds(await readJson(segmentsResponse)).includes(segmentId)) return 'partial'
-  const topic = await confirmTopic(fetchImpl, apiKey, id, topicId, budget)
-  if (topic === 'ok' && welcome) {
+  const segments = segmentIds(await readJson(segmentsResponse))
+  if (!segments) return 'partial'
+  if (!segments.includes(segmentId)) return 'missing_segment'
+  if (welcome) {
     const delivery = sendPendingWelcome(fetchImpl, apiKey, contact, address, topicId,
       { requestMs: budget.requestMs, deadline: Date.now() + 15000 }, welcome)
     if (welcome.waitUntil) welcome.waitUntil(delivery)
     else await delivery
   }
-  return topic
+  return 'ok'
 }
 
 async function confirmTopic(fetchImpl: FetchImplementation, apiKey: string, identity: string, topicId: string, budget: ProviderBudget): Promise<ProviderResult> {
@@ -399,11 +400,16 @@ async function subscribeWithResend(
     const topic = await confirmTopic(fetchImpl, apiKey, id, topicId, budget)
     if (topic !== 'ok') return topic
     const segmentsResponse = await resend(fetchImpl, apiKey, resendPath('contacts', id, '/segments'), { method: 'GET' }, budget)
-    if (segmentsResponse.ok && segmentIds(await readJson(segmentsResponse)).includes(segmentId)) {
-      return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
+    if (!segmentsResponse.ok) return 'provider'
+    const segments = segmentIds(await readJson(segmentsResponse))
+    if (!segments) return 'partial'
+    if (segments.includes(segmentId)) {
+      const confirmed = await confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
+      return confirmed === 'missing_segment' ? 'partial' : confirmed
     }
     if (!await addToSegment(fetchImpl, apiKey, id, segmentId, budget)) return 'provider'
-    return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
+    const confirmed = await confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
+    return confirmed === 'missing_segment' ? 'partial' : confirmed
   }
   if (existing.status !== 404) return 'provider'
 
@@ -423,9 +429,10 @@ async function subscribeWithResend(
   }, budget)
   if (!created.ok && created.status !== 409) return 'provider'
   const confirmed = await confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
-  if (confirmed !== 'partial') return confirmed
+  if (confirmed !== 'missing_segment') return confirmed
   if (!await addToSegment(fetchImpl, apiKey, address, segmentId, budget)) return 'partial'
-  return confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
+  const repaired = await confirmMembership(fetchImpl, apiKey, address, segmentId, topicId, budget, welcome)
+  return repaired === 'missing_segment' ? 'partial' : repaired
 }
 
 export async function handleSubscribe(

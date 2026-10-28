@@ -39,6 +39,7 @@ interface FakeOptions {
   failOn?: string
   topicSubscription?: string
   missingTopic?: boolean
+  segmentResponse?: unknown
 }
 
 function resendFake(options: FakeOptions = {}) {
@@ -69,6 +70,7 @@ function resendFake(options: FakeOptions = {}) {
       return new Response(JSON.stringify({ id: SEGMENT }), { status: options.addStatus ?? 200 })
     }
     if (url.includes('/segments') && method === 'GET') {
+      if (options.segmentResponse !== undefined) return Response.json(options.segmentResponse)
       segmentReads += 1
       const member = options.confirmSegments === 'empty-then-member'
         ? segmentReads > 1
@@ -86,7 +88,7 @@ function resendFake(options: FakeOptions = {}) {
       if (!options.existing && options.createStatus === undefined && !calls.some(call => call.method === 'POST' && call.url.endsWith('/contacts'))) {
         return new Response(JSON.stringify({ statusCode: 404, name: 'not_found' }), { status: 404 })
       }
-      if (!options.existing && !calls.some(call => call.method === 'POST' && call.url.endsWith('/contacts')) && options.createStatus !== 409) {
+      if (!options.existing && !calls.some(call => call.method === 'POST' && call.url.endsWith('/contacts'))) {
         return new Response(JSON.stringify({ statusCode: 404, name: 'not_found' }), { status: 404 })
       }
       return new Response(JSON.stringify({
@@ -391,6 +393,37 @@ describe('POST /api/subscribe', () => {
     expect(response?.status).toBe(409)
     expect(await response?.json()).toEqual({ ok: false, code: 'subscription_unavailable' })
     expect(calls.every(call => call.method === 'GET')).toBe(true)
+  })
+
+  it('does not add a concurrently created, opted-out contact to a segment', async () => {
+    const { fetchMock, calls } = resendFake({ createStatus: 409, topicSubscription: 'opt_out', confirmSegments: false })
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, fetchMock)
+    expect(response?.status).toBe(409)
+    expect(calls.some(call => call.method === 'POST' && call.url.endsWith('/contacts'))).toBe(true)
+    expect(calls.some(call => call.method === 'POST' && call.url.includes('/segments/'))).toBe(false)
+  })
+
+  it('repairs missing membership after a concurrent creation with topic consent', async () => {
+    const { fetchMock, calls } = resendFake({ createStatus: 409, confirmSegments: 'empty-then-member' })
+    const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, fetchMock)
+    expect(response?.status).toBe(200)
+    expect(calls.filter(call => call.method === 'POST' && call.url.includes('/segments/'))).toHaveLength(1)
+  })
+
+  it('does not add a segment when membership cannot be determined', async () => {
+    for (const options of [
+      { failOn: '/segments' },
+      { segmentResponse: { data: {} } },
+      { segmentResponse: { data: [{}] } },
+      { segmentResponse: { data: [], has_more: true } },
+    ]) {
+      for (const contact of [{ existing: true }, { createStatus: 409 }]) {
+        const { fetchMock, calls } = resendFake({ ...contact, ...options })
+        const response = await handlePortfolioApi(subscribeRequest({ body: body() }), configured, fetchMock)
+        expect(response?.status).toBe(503)
+        expect(calls.some(call => call.method === 'POST' && call.url.includes('/segments/'))).toBe(false)
+      }
+    }
   })
 
   it('never reports success for missing topic membership or failed topic checks', async () => {
