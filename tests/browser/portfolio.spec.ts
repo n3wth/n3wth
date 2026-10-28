@@ -175,6 +175,11 @@ test('Thinking notes keep local links, topics, anchors and browser Back', async 
 })
 
 test('Thinking loads more writing on scroll and restores its collection and filters', async ({ page }) => {
+  const hydrationErrors: string[] = []
+  page.on('pageerror', error => hydrationErrors.push(error.message))
+  page.on('console', message => {
+    if (message.type() === 'error' && /hydrat|server rendered/i.test(message.text())) hydrationErrors.push(message.text())
+  })
   await page.goto('/thinking')
   await expect(page.getByRole('heading', { level: 1, name: 'Thinking', exact: true })).toBeVisible()
   await expect(page.locator('.writing-results > li')).toHaveCount(24)
@@ -210,6 +215,7 @@ test('Thinking loads more writing on scroll and restores its collection and filt
   await expect(page.getByRole('status')).toHaveText('1 result')
   await expect(page.locator('.writing-results a')).toHaveText('5 Whys')
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  expect(hydrationErrors).toEqual([])
 })
 
 test('projects index connects navigation, product pages and documentation', async ({ page, request }, testInfo) => {
@@ -278,6 +284,17 @@ test('page content and footer are readable without client JavaScript', async ({ 
   try {
     await page.goto('http://127.0.0.1:4281/thinking')
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+    const rows = page.locator('.writing-results > li')
+    const count = Number((await page.getByRole('status').innerText()).split(' ')[0])
+    expect(count).toBeGreaterThan(24)
+    await expect(rows).toHaveCount(count)
+    await expect(rows.last()).toBeVisible()
+    await expect(rows.last().getByRole('link')).toHaveAttribute('href', /^\/thinking\//)
+    await expect(page.getByRole('navigation', { name: 'Writing format' })).toBeHidden()
+    await expect(page.getByRole('link', { name: 'Load more' })).toBeHidden()
+    await page.goto('http://127.0.0.1:4281/thinking?page=2')
+    await expect(rows).toHaveCount(count)
+    await expect(rows.last()).toBeVisible()
     await expect(page.locator('.n3wth-site-footer')).toHaveCount(1)
     await expect(page).toHaveTitle('Thinking — Oliver Newth')
   } finally {

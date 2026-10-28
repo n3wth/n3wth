@@ -25,6 +25,8 @@ it('keeps server dates stable across build times and controls disabled until hyd
   expect(second).toBe(first)
   const document = new DOMParser().parseFromString(first, 'text/html')
   expect(document.querySelector('input[placeholder="Search writing"]')?.hasAttribute('disabled')).toBe(true)
+  expect(document.querySelectorAll('.writing-results > li')).toHaveLength(notes.length + registeredPieces.length)
+  expect(document.querySelectorAll('.writing-results > .writing-extra')).toHaveLength(notes.length + registeredPieces.length - 24)
   expect(document.querySelector('time')?.textContent).not.toMatch(/ago|today|yesterday/)
 })
 

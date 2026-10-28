@@ -107,7 +107,7 @@ export function NotesIndex() {
         <a href="/thinking#notes">Clear filters</a>
       </div>}
       <ul className="writing-results">
-        {visible.slice(0, shown).map(entry => <li key={entry.href}>
+        {visible.slice(0, ready ? shown : visible.length).map((entry, index) => <li key={entry.href} className={!ready && index >= shown ? 'writing-extra' : undefined}>
           <div>
             <h2><a href={entry.href}>{entry.title}</a></h2>
             {entry.description && <p>{entry.description}</p>}

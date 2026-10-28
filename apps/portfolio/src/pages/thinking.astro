@@ -4,4 +4,10 @@ import Content from '../screens/Thinking'
 import routes from '../data/routes.json'
 const meta = routes.find(route => route.path === 'thinking')!
 ---
-<Layout {...meta}><Content client:load /></Layout>
+<Layout {...meta}>
+  <noscript><style is:inline>
+    .writing-index .writing-extra { display: list-item; }
+    .writing-search, .writing-formats, .writing-topic-picker, .writing-sort, .writing-load-more { display: none; }
+  </style></noscript>
+  <Content client:load />
+</Layout>
