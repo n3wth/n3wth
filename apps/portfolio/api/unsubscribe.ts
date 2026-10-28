@@ -48,7 +48,8 @@ function page(title: string, message: string, status: number, token?: string): R
 export async function handleUnsubscribeRequest(request: Request, env: UnsubscribeEnv, fetchImpl: typeof fetch = fetch): Promise<Response> {
   if (!['GET', 'POST'].includes(request.method)) return page('Method not allowed', 'Open the unsubscribe link in your email.', 405)
   const secret = env.RESEND_UNSUBSCRIBE_SECRET
-  if (!secret || secret.length < 32 || !env.RESEND_API_KEY) return page('Please try again', 'Email preferences are temporarily unavailable.', 503)
+  const apiKey = env.RESEND_API_KEY?.trim()
+  if (!secret || secret.length < 32 || !apiKey) return page('Please try again', 'Email preferences are temporarily unavailable.', 503)
   const url = new URL(request.url)
   const token = url.searchParams.get('token') ?? ''
   if (url.searchParams.getAll('token').length !== 1 || token.length > 512 || !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{43}$/.test(token)) {
@@ -82,7 +83,7 @@ export async function handleUnsubscribeRequest(request: Request, env: Unsubscrib
   try {
     const response = await fetchImpl(`https://api.resend.com/contacts/${contactId}/topics`, {
       method: 'PATCH',
-      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify([{ id: topicId, subscription: 'opt_out' }]),
       signal: AbortSignal.timeout(5000),
     })

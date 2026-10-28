@@ -39,6 +39,16 @@ describe('signed unsubscribe', () => {
     expect(JSON.parse(fetchImpl.mock.calls[0][1]?.body as string)).toEqual([{ id: topic, subscription: 'opt_out' }])
   })
 
+  it('normalizes the provider key and rejects a blank key', async () => {
+    const url = await createUnsubscribeUrl(contact, topic, secret)
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(Response.json({}))
+    const response = await handleUnsubscribeRequest(new Request(url, { method: 'POST' }), { ...env, RESEND_API_KEY: '  test-key  ' }, fetchImpl)
+    expect(response.status).toBe(200)
+    expect(new Headers(fetchImpl.mock.calls[0][1]?.headers).get('Authorization')).toBe('Bearer test-key')
+    expect((await handleUnsubscribeRequest(new Request(url, { method: 'POST' }), { ...env, RESEND_API_KEY: '  ' }, fetchImpl)).status).toBe(503)
+    expect(fetchImpl).toHaveBeenCalledOnce()
+  })
+
   it('accepts links signed with either the configured or trimmed secret', async () => {
     const padded = `  ${secret}  `
     const fetchImpl = vi.fn().mockResolvedValue(Response.json({}))
