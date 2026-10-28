@@ -18,6 +18,10 @@ Each active app's `wrangler.jsonc` is a production configuration. Preview toolin
 
 The preview readiness gate checks DNS, TLS, HTTP behavior and noindex without disabling certificate verification. Verify responsive pages, docs navigation/search, old aliases, images, and retained APIs before merging. Wait for passing Site CI and preview checks.
 
+Production runs only from main. Before deployment, the workflow checks the selected commit with the full repository, package, editorial and browser checks; a failed check blocks deployment. Manual dispatch also uses the selected main commit and runs the same checks. Re-running an older main run can still deploy its older commit; verify the target SHA before retrying.
+
+Automatic app selection compares only the triggering push with its immediate predecessor. A failed, canceled, or replaced run can leave earlier changes undeployed. After such a run, dispatch the workflow on the current main commit to validate and deploy all active apps. Portfolio and Garden deploy separately; if a release fails between them, inspect both live Workers and retry or roll back as needed.
+
 ## One-site cutover
 
 Source preparation is not a production release. Before changes, export Worker versions, DNS records and complete redirect rulesets. Retain the existing integrations until the replacement is verified.

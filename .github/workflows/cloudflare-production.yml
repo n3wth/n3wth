@@ -19,8 +19,9 @@ env:
 jobs:
   validate:
     name: validate / affected apps
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 60
     outputs:
       apps: ${{ steps.affected.outputs.apps }}
     steps:
@@ -76,11 +77,21 @@ jobs:
       - name: Install dependencies
         if: steps.affected.outputs.apps != ''
         run: npm ci
-      - name: Run affected workspace checks
+      - name: Run repository checks
         if: steps.affected.outputs.apps != ''
-        env:
-          BASE_SHA: ${{ github.event_name == 'workflow_dispatch' && '0000000000000000000000000000000000000000' || github.event.before }}
-        run: node scripts/workspace/affected.mjs --base "$BASE_SHA"
+        run: npm run check
+      - name: Install browser
+        if: steps.affected.outputs.apps != ''
+        run: npx playwright install --with-deps chromium
+      - name: Check standalone UI package
+        if: steps.affected.outputs.apps != ''
+        run: npm run check:package
+      - name: Check article figure evidence and assets
+        if: steps.affected.outputs.apps != ''
+        run: node docs/editorial/visuals/check.mjs
+      - name: Check site browsers
+        if: steps.affected.outputs.apps != ''
+        run: npm run check:browser
       - name: Build affected Cloudflare apps
         if: steps.affected.outputs.apps != ''
         env:

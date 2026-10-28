@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { execFileSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { DEPLOY_APPS, DEPLOY_APP_SLUGS, deployAppForWorkspace } from './deploy-apps.mjs'
 import { readWorkspaces } from '../workspace/affected.mjs'
@@ -39,4 +40,15 @@ test('deployAppForWorkspace maps known workspaces and ignores others', () => {
 test('the CLI prints slugs and JSON for the workflows', () => {
   assert.equal(execFileSync(process.execPath, [scriptPath, '--slugs'], { encoding: 'utf8' }).trim(), DEPLOY_APP_SLUGS.join(' '))
   assert.deepEqual(JSON.parse(execFileSync(process.execPath, [scriptPath], { encoding: 'utf8' })), DEPLOY_APPS)
+})
+
+test('production deploy requires main and the full validation job', () => {
+  const workflow = readFileSync(new URL('../../.github/workflows/cloudflare-production.yml', import.meta.url), 'utf8')
+  assert.match(workflow, /validate:\s*\n\s*name:.*\n\s*if: github\.ref == 'refs\/heads\/main'/)
+  assert.match(workflow, /ref: \$\{\{ github\.sha \}\}/)
+  for (const command of ['npm run check', 'npm run check:package', 'node docs/editorial/visuals/check.mjs', 'npm run check:browser']) {
+    assert.ok(workflow.includes(`run: ${command}`), `missing production check: ${command}`)
+  }
+  assert.ok(workflow.indexOf('npx playwright install --with-deps chromium') < workflow.indexOf('npm run check:package'))
+  assert.match(workflow, /deploy:\s*\n\s*name:.*\n\s*needs: validate/)
 })
