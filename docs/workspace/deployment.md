@@ -18,9 +18,9 @@ Each active app's `wrangler.jsonc` is a production configuration. Preview toolin
 
 The preview readiness gate checks DNS, TLS, HTTP behavior and noindex without disabling certificate verification. Verify responsive pages, docs navigation/search, old aliases, images, and retained APIs before merging. Wait for passing Site CI and preview checks.
 
-Production runs only from main. Before deployment, the workflow checks the selected commit with the full repository, package, editorial and browser checks; a failed check blocks deployment. Manual dispatch also uses the selected main commit and runs the same checks. Re-running an older main run can still deploy its older commit; verify the target SHA before retrying.
+Production runs only from main. Each run validates and deploys both active Workers, including on docs-only pushes, so the next successful run reconciles changes from a missed or partially failed release. Full repository, package, editorial and browser checks block deployment on failure. Immediately before deploying, the workflow rejects a SHA that is no longer current main. This check is point-in-time: main can advance while deployment is underway.
 
-Automatic app selection compares only the triggering push with its immediate predecessor. A failed, canceled, or replaced run can leave earlier changes undeployed. After such a run, dispatch the workflow on the current main commit to validate and deploy all active apps. Portfolio and Garden deploy separately; if a release fails between them, inspect both live Workers and retry or roll back as needed.
+The deployment queue holds at most 100 pending runs and does not guarantee dispatch order. After a failure, cancellation, or queue overflow, dispatch the workflow on current main and verify the live Workers. Re-running a historical workflow uses its historical rules, which may not reject an old SHA. Portfolio and Garden deploy separately; if a release fails between them, inspect both live Workers and retry or roll back as needed. GitHub's Resend secrets are published with the portfolio version, so keep them synchronized with any manual rotation.
 
 ## One-site cutover
 
