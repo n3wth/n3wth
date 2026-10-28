@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react'
 import { Search, X, RotateCcw } from 'lucide-react'
 import { searchItems } from '../lib/search'
+import { answerLinkHref } from '../lib/answerLinks'
 import { track } from '../lib/analytics'
 import type { ResultGroup, SearchItem } from '../lib/search'
 import { registeredPieces } from './thinking/registry'
@@ -131,10 +132,8 @@ function renderAnswerLinks(text: string): Array<string | { label: string; href: 
   let match: RegExpExecArray | null
   while ((match = linkRe.exec(text))) {
     if (match.index > last) parts.push(text.slice(last, match.index))
-    const href = match[2]
-    const safe = !Array.from(href).some(char => char.charCodeAt(0) <= 32 || char.charCodeAt(0) === 127 || char === '\\')
-      && (/^https?:\/\//i.test(href) || /^\/(?!\/)/.test(href))
-    parts.push(safe ? { label: match[1], href } : match[1])
+    const href = answerLinkHref(match[2])
+    parts.push(href ? { label: match[1], href } : match[1])
     last = match.index + match[0].length
   }
   if (last < text.length) parts.push(text.slice(last))

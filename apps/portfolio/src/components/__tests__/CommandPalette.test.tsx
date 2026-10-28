@@ -69,7 +69,7 @@ describe('CommandPalette AI search', () => {
   it('does not link unsafe answer or source URLs', async () => {
     globalThis.fetch = vi.fn().mockResolvedValue({
       ok: true, body: null,
-      json: async () => ({ answer: '[bad](javascript:alert`1`) [good](/work) Sources: [bad source](//evil.example), [safe source](https://n3wth.com/work).' }),
+      json: async () => ({ answer: '[bad](javascript:alert`1`) [good](/work) Sources: [bad source](data:text/html,test), [safe source](https://n3wth.com/work).' }),
     })
     render(<CommandPalette open onClose={noop} />)
     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'security' } })
