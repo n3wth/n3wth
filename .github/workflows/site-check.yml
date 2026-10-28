@@ -42,7 +42,10 @@ jobs:
       - run: npm ci
         if: steps.affected.outputs.workspaces != '[]'
       - name: Verify affected workspace selection
-        run: node --test scripts/workspace/affected.test.mjs scripts/workspace/create-site.test.mjs scripts/workspace/build.test.mjs scripts/content/check-built-metadata.test.mjs scripts/cloudflare/cloudflare-preview.test.mjs scripts/cloudflare/cloudflare-preview-config.test.mjs
+        run: node --test scripts/workspace/affected.test.mjs scripts/workspace/create-site.test.mjs scripts/workspace/build.test.mjs scripts/content/check-built-metadata.test.mjs scripts/cloudflare/cloudflare-preview.test.mjs scripts/cloudflare/cloudflare-preview-config.test.mjs scripts/cloudflare/deploy-apps.test.mjs
+      - name: Verify article audit
+        if: steps.affected.outputs.workspaces != '[]'
+        run: node --test scripts/content/article-audit.test.mjs
       - name: Check affected workspaces
         if: steps.affected.outputs.workspaces != '[]'
         env:

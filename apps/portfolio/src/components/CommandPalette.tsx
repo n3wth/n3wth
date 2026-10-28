@@ -80,7 +80,7 @@ const HOOKS: SearchItem[] = uiHooks.map((name) => ({
   id: `ui-hook-${name.toLowerCase()}`,
   title: name,
   subtitle: '@n3wth/ui hook',
-  href: `/library#ui-hook-${name.toLowerCase()}`,
+  href: `/library#ui-${name.toLowerCase()}`,
   group: 'Library' as ResultGroup,
 }))
 
@@ -131,7 +131,10 @@ function renderAnswerLinks(text: string): Array<string | { label: string; href: 
   let match: RegExpExecArray | null
   while ((match = linkRe.exec(text))) {
     if (match.index > last) parts.push(text.slice(last, match.index))
-    parts.push({ label: match[1], href: match[2] })
+    const href = match[2]
+    const safe = !Array.from(href).some(char => char.charCodeAt(0) <= 32 || char.charCodeAt(0) === 127 || char === '\\')
+      && (/^https?:\/\//i.test(href) || /^\/(?!\/)/.test(href))
+    parts.push(safe ? { label: match[1], href } : match[1])
     last = match.index + match[0].length
   }
   if (last < text.length) parts.push(text.slice(last))

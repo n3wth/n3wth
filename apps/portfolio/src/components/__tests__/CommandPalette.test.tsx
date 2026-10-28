@@ -66,6 +66,20 @@ describe('CommandPalette AI search', () => {
     vi.restoreAllMocks()
   })
 
+  it('does not link unsafe answer or source URLs', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true, body: null,
+      json: async () => ({ answer: '[bad](javascript:alert`1`) [good](/work) Sources: [bad source](//evil.example), [safe source](https://n3wth.com/work).' }),
+    })
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'security' } })
+    await waitFor(() => expect(screen.getByText('bad')).toBeTruthy(), { timeout: 2000 })
+    expect(screen.queryByRole('link', { name: 'bad' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'bad source' })).toBeNull()
+    expect(screen.getByRole('link', { name: 'good' }).getAttribute('href')).toBe('/work')
+    expect(screen.getByRole('link', { name: 'safe source' }).getAttribute('href')).toBe('https://n3wth.com/work')
+  })
+
   it('does not show AI row for queries under 2 characters', () => {
     render(
       <>
