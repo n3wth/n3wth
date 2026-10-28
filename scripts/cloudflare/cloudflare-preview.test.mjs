@@ -443,13 +443,18 @@ test('portfolio stages dist with public headers and redirects under the noindex 
       CLOUDFLARE_ZONE_ID: '5e3780e8b6272182ea60a146ede42577',
       CLOUDFLARE_API_TOKEN: 'test-token',
       RESEND_API_KEY: 'production-key-must-not-be-forwarded',
+      RESEND_UNSUBSCRIBE_SECRET: 'production-signing-secret-must-not-be-forwarded',
     },
     run: (_binary, args, options) => {
       const secretIndex = args.indexOf('--secrets-file')
       assert.notEqual(secretIndex, -1)
       secretFile = args[secretIndex + 1]
-      assert.deepEqual(JSON.parse(readFileSync(secretFile, 'utf8')), { RESEND_API_KEY: 'preview-newsletter-disabled' })
+      assert.deepEqual(JSON.parse(readFileSync(secretFile, 'utf8')), {
+        RESEND_API_KEY: 'preview-newsletter-disabled',
+        RESEND_UNSUBSCRIBE_SECRET: 'preview-unsubscribe-disabled',
+      })
       assert.equal(options.env.RESEND_API_KEY, undefined)
+      assert.equal(options.env.RESEND_UNSUBSCRIBE_SECRET, undefined)
       return { status: 0, stdout: 'deployed' }
     },
     log: () => {},

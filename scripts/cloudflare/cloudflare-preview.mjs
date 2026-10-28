@@ -251,13 +251,19 @@ export async function deployPreview({ appRoot = APP_ROOT, root = ROOT, env = pro
   const generated = writePreviewConfig({ root, app, pr, sourcePath, accountId, previewBindings: bindings, assetsDirectory: stagedAssets })
   const deployArgs = ['deploy', '--config', generated.paths.configPath]
   const deployEnv = app === 'portfolio' ? { ...env } : env
-  if (app === 'portfolio') delete deployEnv.RESEND_API_KEY
+  if (app === 'portfolio') {
+    delete deployEnv.RESEND_API_KEY
+    delete deployEnv.RESEND_UNSUBSCRIBE_SECRET
+  }
   // Wrangler retains existing secrets unless a replacement is provided in the upload.
   const secretsDirectory = app === 'portfolio' ? mkdtempSync(join(tmpdir(), 'n3wth-preview-')) : undefined
   try {
     if (secretsDirectory) {
       const secretsPath = join(secretsDirectory, 'secrets.json')
-      writeFileSync(secretsPath, JSON.stringify({ RESEND_API_KEY: 'preview-newsletter-disabled' }), { mode: 0o600 })
+      writeFileSync(secretsPath, JSON.stringify({
+        RESEND_API_KEY: 'preview-newsletter-disabled',
+        RESEND_UNSUBSCRIBE_SECRET: 'preview-unsubscribe-disabled',
+      }), { mode: 0o600 })
       deployArgs.push('--secrets-file', secretsPath)
     }
     const result = runWrangler(deployArgs, { cwd: root, env: deployEnv, run })
