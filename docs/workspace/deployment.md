@@ -14,7 +14,11 @@ The dependency-aware build script builds shared packages once before consumers. 
 
 `scripts/cloudflare/deploy-apps.mjs` owns the active deployment inventory. Skills is excluded. Historical preview identities remain supported only so old previews can be cleaned up.
 
-Each active app's `wrangler.jsonc` is a production configuration. Preview tooling generates an isolated configuration under `.cloudflare/`, replaces Worker names and domains, wraps responses with `X-Robots-Tag: noindex, nofollow`, and refuses inherited production stateful bindings. Secrets remain outside source. Never deploy a preview config to production or attach a preview to production data.
+Each active app's `wrangler.jsonc` is a production configuration. Preview tooling generates a configuration under `.cloudflare/`, replaces Worker names and domains, wraps responses with `X-Robots-Tag: noindex, nofollow`, and refuses inherited production stateful bindings. Secrets remain outside source. Never deploy a preview config to production or attach a preview to production data.
+
+Preview overrides for D1, KV, R2 and Vectorize must use explicit identifiers that differ from every resource declared in the source config. This check does not establish ownership or prove a resource is unique to a PR; verify that separately before providing an override. AI Search, Durable Objects, Queues, Hyperdrive and mTLS bindings are rejected until their isolation can be verified.
+
+Automatically generated preview rate-limit IDs use a 32-bit hash and can collide between PRs or with resources outside the source configuration. They are not proof of account-wide isolation; verify namespace ownership before relying on it. Unsupported data-access and side-effect bindings fail closed, and source event triggers are removed from previews.
 
 The preview readiness gate checks DNS, TLS, HTTP behavior and noindex without disabling certificate verification. Verify responsive pages, docs navigation/search, old aliases, images, and retained APIs before merging. Wait for passing Site CI and preview checks.
 
