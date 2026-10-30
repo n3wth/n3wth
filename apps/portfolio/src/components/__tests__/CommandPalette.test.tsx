@@ -51,6 +51,27 @@ describe('CommandPalette smoke', () => {
     )
     expect(container.firstChild).toBeNull()
   })
+
+  it('finds local and external projects without duplicate destinations', () => {
+    render(<CommandPalette open onClose={noop} />)
+    const input = screen.getByRole('combobox')
+
+    fireEvent.change(input, { target: { value: 'elephant-goldfish' } })
+    const plugin = screen.getAllByRole('option')[0]
+    expect(plugin).toHaveAttribute('href', '/projects/elephant-goldfish')
+    expect(plugin).not.toHaveAttribute('target')
+
+    fireEvent.change(input, { target: { value: 'markup' } })
+    const prototype = screen.getAllByRole('option')[0]
+    expect(prototype).toHaveAttribute('href', 'https://github.com/n3wth/markup')
+    expect(prototype).toHaveAttribute('target', '_blank')
+
+    fireEvent.change(input, { target: { value: '@n3wth/ui' } })
+    expect(screen.getAllByRole('option').filter(option => option.getAttribute('href') === '/projects/ui')).toHaveLength(1)
+
+    fireEvent.change(input, { target: { value: 'code review' } })
+    expect(screen.getAllByRole('option').some(option => option.getAttribute('href') === '/projects/elephant-goldfish')).toBe(true)
+  })
 })
 
 describe('CommandPalette AI search', () => {
