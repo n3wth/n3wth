@@ -8,6 +8,22 @@ vi.mock('../../lib/analytics', () => ({ track: vi.fn() }))
 const noop = () => {}
 
 describe('CommandPalette smoke', () => {
+  it('does not navigate or select results while composing text', () => {
+    const onClose = vi.fn()
+    render(<CommandPalette open onClose={onClose} />)
+    const input = screen.getByRole('combobox')
+    const initial = input.getAttribute('aria-activedescendant')
+
+    fireEvent.keyDown(input, { key: 'ArrowDown', isComposing: true })
+    expect(input.getAttribute('aria-activedescendant')).toBe(initial)
+    fireEvent.keyDown(input, { key: 'Enter', isComposing: true })
+    fireEvent.keyDown(input, { key: 'Enter', keyCode: 229 })
+    expect(onClose).not.toHaveBeenCalled()
+
+    fireEvent.keyDown(input, { key: 'ArrowDown' })
+    expect(input.getAttribute('aria-activedescendant')).not.toBe(initial)
+  })
+
   it('renders a start-here set and filters live', async () => {
     render(
       <>
@@ -51,6 +67,27 @@ describe('CommandPalette smoke', () => {
     )
     expect(container.firstChild).toBeNull()
   })
+
+  it('finds local and external projects without duplicate destinations', () => {
+    render(<CommandPalette open onClose={noop} />)
+    const input = screen.getByRole('combobox')
+
+    fireEvent.change(input, { target: { value: 'elephant-goldfish' } })
+    const plugin = screen.getAllByRole('option')[0]
+    expect(plugin).toHaveAttribute('href', '/projects/elephant-goldfish')
+    expect(plugin).not.toHaveAttribute('target')
+
+    fireEvent.change(input, { target: { value: 'markup' } })
+    const prototype = screen.getAllByRole('option')[0]
+    expect(prototype).toHaveAttribute('href', 'https://github.com/n3wth/markup')
+    expect(prototype).toHaveAttribute('target', '_blank')
+
+    fireEvent.change(input, { target: { value: '@n3wth/ui' } })
+    expect(screen.getAllByRole('option').filter(option => option.getAttribute('href') === '/projects/ui')).toHaveLength(1)
+
+    fireEvent.change(input, { target: { value: 'code review' } })
+    expect(screen.getAllByRole('option').some(option => option.getAttribute('href') === '/projects/elephant-goldfish')).toBe(true)
+  })
 })
 
 describe('CommandPalette AI search', () => {
@@ -79,6 +116,19 @@ describe('CommandPalette AI search', () => {
     // Use aria-live="polite" to find the AI status area specifically
     expect(screen.queryByText(/Thinking…/)).toBeNull()
     expect(screen.queryByRole('button', { name: /Ask about/ })).toBeNull()
+  })
+
+  it('renders unsafe answer destinations as text and excludes unsafe source links', async () => {
+    globalThis.fetch = vi.fn(async () => new Response(JSON.stringify({
+      answer: '[Unsafe](javascript:alert) and [Work page](/work). Sources: [Invalid source](data:text/html,test), [Valid source](https://n3wth.com/work)',
+    }), { headers: { 'content-type': 'application/json' } }))
+    render(<CommandPalette open onClose={noop} />)
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'career' } })
+    await waitFor(() => expect(screen.getByText('Unsafe')).toBeTruthy())
+    expect(screen.queryByRole('link', { name: 'Unsafe' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Invalid source' })).toBeNull()
+    expect(screen.getByRole('link', { name: 'Work page' }).getAttribute('href')).toBe('/work')
+    expect(screen.getByRole('link', { name: 'Valid source' }).getAttribute('href')).toBe('https://n3wth.com/work')
   })
 
   it('requests an AI answer after typing pauses', async () => {

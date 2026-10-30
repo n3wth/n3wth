@@ -22,6 +22,7 @@ export function useCommandPalette(): CommandPaletteControls {
      closes. The '/' guard mirrors useKeyboardNav. */
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.isComposing || event.keyCode === 229) return
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault()
         setOpen((wasOpen) => !wasOpen)
@@ -31,7 +32,7 @@ export function useCommandPalette(): CommandPaletteControls {
         setOpen(false)
         return
       }
-      if (event.key !== '/' || event.altKey || event.shiftKey) return
+      if (event.key !== '/' || event.altKey || event.shiftKey || event.metaKey || event.ctrlKey) return
       const target = event.target as HTMLElement
       if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return
       event.preventDefault()

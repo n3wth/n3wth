@@ -3,7 +3,7 @@ import type { ComponentType } from 'react'
 import { Shelf, CodeBlock } from './Shelf'
 import { kitPrimitives } from '../../data/library'
 import type { KitPrimitive } from '../../data/library'
-import { registeredPieces } from '../thinking/registry'
+import articleMeta from '../../data/article-index.json'
 import DemoBeat from './DemoBeat'
 import DemoRails from './DemoRails'
 import DemoFlow from './DemoFlow'
@@ -32,7 +32,7 @@ const DEMOS: Record<NonNullable<KitPrimitive['demo']>, ComponentType> = {
 /** Real title for a "seen in" link, straight off the piece registry so it
  *  can't drift from what's actually published. */
 function pieceTitle(slug: string) {
-  return registeredPieces.find((piece) => piece.meta.id === slug)?.meta.title ?? slug
+  return articleMeta.find(piece => piece.id === slug)?.title ?? slug
 }
 
 /**

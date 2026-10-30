@@ -21,7 +21,6 @@ Products designed by Oliver, kept shipping by an autonomous agent team:
 - [lunchmoney.sh](https://lunchmoney.sh/): Unofficial Lunch Money plugin for Claude, Codex, and Cursor. Read-only spending, budgets, and bills.
 - [r3](https://n3wth.com/projects/r3): Memory for AI apps using vector search and knowledge graphs.
 - [@n3wth/ui](https://n3wth.com/projects/ui): Shared React components, theme tokens, and page compositions.
-- [garden](https://n3wth.com/thinking): A digital garden of interconnected working notes. Notes carry growth stages (seedling, budding, evergreen) and are gathered into groves. Read notes in Thinking.
 
 ## Ecosystem
 

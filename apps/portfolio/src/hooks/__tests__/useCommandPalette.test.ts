@@ -34,4 +34,20 @@ describe('useCommandPalette keyboard shortcuts', () => {
 
     input.remove()
   })
+
+  it('leaves composition and modified slash shortcuts to their owner', () => {
+    const { result } = renderHook(() => useCommandPalette())
+    fireEvent.keyDown(window, { key: '/', isComposing: true })
+    fireEvent.keyDown(window, { key: '/', ctrlKey: true })
+    fireEvent.keyDown(window, { key: '/', metaKey: true })
+    fireEvent.keyDown(window, { key: 'k', metaKey: true, keyCode: 229 })
+    expect(result.current.open).toBe(false)
+
+    fireEvent.keyDown(window, { key: '/' })
+    fireEvent.keyDown(window, { key: 'Escape', isComposing: true })
+    fireEvent.keyDown(window, { key: 'Escape', keyCode: 229 })
+    expect(result.current.open).toBe(true)
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(result.current.open).toBe(false)
+  })
 })

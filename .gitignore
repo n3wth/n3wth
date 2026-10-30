@@ -64,6 +64,7 @@ apps/portfolio/public/writing/
 apps/portfolio/src/data/garden-index.json
 apps/portfolio/src/data/garden-search.json
 apps/portfolio/src/data/writing-index.json
+apps/portfolio/src/data/article-index.json
 
 # This is source code, not the macOS custom-folder Icon file.
 !/packages/ui/src/atoms/Icon/
