@@ -226,8 +226,8 @@ function useGLBScene(url: string, { fogOff = false, tint = '#ffffff' } = {}): TH
           metalnessMap: old.metalnessMap ?? null,
           aoMap: old.aoMap ?? null,
           color: old.map ? new THREE.Color(tint) : (old.color ?? new THREE.Color(0x888888)),
-          roughness: old.roughness ?? 0.7,
-          metalness: Math.min(old.metalness ?? 0.15, 0.65),
+          roughness: Math.max(old.roughness ?? 0.7, 0.72),
+          metalness: Math.min(old.metalness ?? 0.15, 0.35),
           fog: !fogOff,
           side: THREE.DoubleSide,
         })
@@ -340,8 +340,8 @@ function SteelAndWire({
           color={bodyColor}
           emissive="#b99567"
           emissiveIntensity={0.035}
-          roughness={0.46}
-          metalness={0.65}
+          roughness={0.65}
+          metalness={0.45}
           fog={bodyFog}
           side={THREE.DoubleSide}
           polygonOffset
@@ -399,7 +399,7 @@ function WalkingLeg({ geometry, pivot, phase, stride, reducedMotion }: {
     knee.position.y = -length
     hip.add(knee)
     const skeleton = new THREE.Skeleton([hip, knee])
-    const material = new THREE.MeshStandardMaterial({ map: texture, color: '#a7a29a', roughness: 0.46, metalness: 0.65 })
+    const material = new THREE.MeshStandardMaterial({ map: texture, color: '#a7a29a', roughness: 0.65, metalness: 0.45 })
     const mesh = new THREE.SkinnedMesh(geo, material)
     mesh.add(hip)
     mesh.bind(skeleton)
@@ -467,8 +467,8 @@ function Thylacine({
       * (1 - THREE.MathUtils.smoothstep(restCycle, 20 + phase * 3, 23 + phase * 3))
     if (!reducedMotion) travel.current += Math.min(delta, 0.1) * pace
     const th = theta0 - travel.current * OMEGA
-    const depth = portrait ? (phase === 0 ? 7 : phase < 2 ? -5 : -18) : 0
-    const lane = portrait ? (phase === 0 ? 2 : phase < 2 ? -3 : 1) : 0
+    const depth = portrait ? (phase === 0 ? 3 : phase < 2 ? -5 : -18) : 0
+    const lane = portrait ? (phase === 0 ? 0 : phase < 2 ? -1.2 : 1) : 0
     g.position.set(lane + Math.cos(th) * RX, 0, depth + Math.sin(th) * RZ)
     // face along the direction of travel (ellipse tangent)
     g.rotation.y = Math.atan2(Math.cos(th) * RZ, Math.sin(th) * RX)
@@ -605,7 +605,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
   const [hovered, handlers] = usePortalHover(def, onLabel)
   const portrait = usePortraitLayout()
   const spread = useCompactSpread()
-  const signpost = useGLBScene('/models/signpost-hd.glb')
+  const signpost = useGLBScene('/models/signpost-hd.glb', { tint: '#a7a29a' })
   const rocks = useRocks()
 
   /* two rows of dim marker stones diverging where the paths split */
@@ -652,7 +652,7 @@ function Fork({ def, onEnter, onLabel }: { def: PortalDef; onEnter: NightFieldPr
       <mesh position={[0, 2.4, 0]} scale={hovered ? 1.5 : 1} visible={false}>
         <boxGeometry args={[6.5, 5.4, 3.5]} />
       </mesh>
-      <EasedLight hovered={hovered} on={20} off={9} position={[1.6, 3.4, 1.8]} color="#d8c294" distance={9} decay={2} />
+      <EasedLight hovered={hovered} on={6} off={3} position={[1.6, 3.4, 1.8]} color="#d8c294" distance={9} decay={2} />
     </group>
   )
 }
@@ -856,8 +856,8 @@ function Beacon({ def, onEnter, reducedMotion, onLabel }: { def: PortalDef; onEn
 
   return (
     <group
-      position={portrait ? [-2.8 * spread, 0, 5] : [-8, 0, 9]}
-      scale={portrait ? 1.25 : 1}
+      position={portrait ? [-2.3 * spread, 0, 3.5] : [-7, 0, 5.5]}
+      scale={portrait ? 1.1 : 1}
       {...handlers}
       onClick={(e) => {
         e.stopPropagation()
@@ -972,7 +972,7 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
   }, [])
   return (
     <group
-      position={portrait ? [20 * spread, 10, -122] : [82, 9, -128]}
+      position={portrait ? [18 * spread, 0, -110] : [25, 0, -145]}
       scale={portrait ? 1.35 : 1.7}
       {...handlers}
       onClick={(e) => {
@@ -981,6 +981,7 @@ function PinkTriangle({ def, onEnter, onLabel }: { def: PortalDef; onEnter: Nigh
       }}
     >
       <PortalLabel def={def} onEnter={onEnter} hovered={hovered} position={[0, 4.6, 0]} />
+      <LightPool position={[0, 0.03, 0]} scale={8} color="#ff5fa2" opacity={0.035} />
       <Line
         ref={(el: unknown) => {
           const line = el as { material?: { color: THREE.Color } } | null
