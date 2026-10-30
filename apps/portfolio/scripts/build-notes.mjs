@@ -71,8 +71,11 @@ write(resolve(root, 'src/data/garden-search.json'), { notes: index.map(note => (
 write(resolve(root, 'src/data/garden-index.json'), { noteCount: index.length, indexedCount: index.length, topics: [...getAllTags()].map(([name, notes]) => ({ name, href: topicPath(name), count: notes.length })) })
 // Read literal article metadata without importing React or article bodies into Node.
 const registry = readFileSync(resolve(root, 'src/components/thinking/registry.tsx'), 'utf8')
-const articles = parseThinkingMeta(registry).map(meta => ({ id: `/thinking/${meta.id}`, title: meta.title, description: meta.dek, stage: 'evergreen', tags: ['articles'], linkCount: 0 }))
+const articleMeta = parseThinkingMeta(registry)
+const articles = articleMeta.map(meta => ({ id: `/thinking/${meta.id}`, title: meta.title, description: meta.dek, stage: 'evergreen', tags: ['articles'], linkCount: 0 }))
 if (articles.length !== (registry.match(/meta:\s*\{/g) || []).length) throw new Error('Article metadata could not be read')
+// Search and indexes need titles and dates, never the interactive article bodies.
+write(resolve(root, 'src/data/article-index.json'), articleMeta)
 for (const article of articles) {
   if (index.some(note => note.href === article.id)) throw new Error(`Article and note route collision: ${article.id}`)
 }

@@ -1,12 +1,12 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react'
 import { useHydrated, useQueryString } from '../../lib/navigation'
 import { Icon, Selector, TextInput } from '@n3wth/ui/primitives'
-import { registeredPieces } from './registry'
+import articleMeta from '../../data/article-index.json'
 import notes from '../../data/writing-index.json'
 import './writingIndex.css'
 
 const PAGE_SIZE = 24
-const articles = registeredPieces.map(({ meta }) => ({
+const articles = articleMeta.map(meta => ({
   slug: meta.id, href: `/thinking/${meta.id}`, title: meta.title,
   description: meta.dek, tags: ['articles'], date: meta.date,
   readingTime: '', kind: 'articles', updated: undefined,
