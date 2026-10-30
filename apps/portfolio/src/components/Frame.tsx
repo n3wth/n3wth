@@ -37,7 +37,7 @@ export function SectionHeader({
     <>
       <div className="portfolio-story-hero">
         <SectionStory kind={story} />
-        <div className="portfolio-story-copy">{header}</div>
+        <Heading className="sr-only">{title}</Heading>
       </div>
       {action && <div className="site-content-gutter portfolio-story-actions">{action}</div>}
     </>

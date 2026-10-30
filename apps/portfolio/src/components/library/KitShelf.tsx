@@ -3,14 +3,14 @@ import type { ComponentType } from 'react'
 import { Shelf, CodeBlock } from './Shelf'
 import { kitPrimitives } from '../../data/library'
 import type { KitPrimitive } from '../../data/library'
-import { registeredPieces } from '../thinking/registry'
+import articleMeta from '../../data/article-index.json'
 import DemoBeat from './DemoBeat'
 import DemoRails from './DemoRails'
 import DemoFlow from './DemoFlow'
 import DemoField from './DemoField'
 
 /**
- * The essay kit shelf: the only place these eight components are written
+ * The essay kit shelf: the only place these components are written
  * down, since the Thinking pieces just import them.
  *
  * Each row borrows the kit's own layout grammar — Beat's 7fr/3fr split,
@@ -18,9 +18,8 @@ import DemoField from './DemoField'
  * the margin — so the page documenting the kit is laid out the way the
  * kit lays out everything else.
  *
- * Four small specimens render with the page. The two react-three-fiber demos are deliberately
- * absent: importing either would pull three.js and a .glb into a page that
- * is otherwise text, and /thinking/night-field already runs both.
+ * Four small specimens render with the page. The material demo stays in
+ * /thinking/night-field so this shelf does not load three.js and a .glb.
  */
 
 const DEMOS: Record<NonNullable<KitPrimitive['demo']>, ComponentType> = {
@@ -33,7 +32,7 @@ const DEMOS: Record<NonNullable<KitPrimitive['demo']>, ComponentType> = {
 /** Real title for a "seen in" link, straight off the piece registry so it
  *  can't drift from what's actually published. */
 function pieceTitle(slug: string) {
-  return registeredPieces.find((piece) => piece.meta.id === slug)?.meta.title ?? slug
+  return articleMeta.find(piece => piece.id === slug)?.title ?? slug
 }
 
 /**
@@ -124,8 +123,8 @@ export function KitShelf() {
       title="The essay kit"
       intro={
         <>
-          Eight components used in the Thinking essays, with props, source links, and four live demos.
-          The two 3D demos are in{' '}
+          Components used in the Thinking essays, with props, source links, and four live demos.
+          The 3D material demo is in{' '}
           <a href="/thinking/night-field" className="link-underline">
             What the night field broke
           </a>

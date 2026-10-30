@@ -2,12 +2,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from 'react'
 import { Search, X, RotateCcw } from 'lucide-react'
 import { searchItems } from '../lib/search'
+import { answerLinkHref } from '../lib/answerLinks'
 import { track } from '../lib/analytics'
 import type { ResultGroup, SearchItem } from '../lib/search'
-import { registeredPieces } from './thinking/registry'
+import articleMeta from '../data/article-index.json'
 import { ecosystem, kitPrimitives, uiTiers, uiHooks } from '../data/library'
-import { siteUrls } from '../data/sites'
-import { navigation } from '../data/content'
+import { navigation, projects } from '../data/content'
 
 /** Minimum query length for automatic AI search. */
 const AI_MIN_CHARS = 2
@@ -23,9 +23,9 @@ const AI_MIN_CHARS = 2
  * pages themselves render from, so the palette can't drift out of sync with
  * what actually ships.
  *
- * registeredPieces is imported for its `meta` only. The piece bodies behind
- * it are React.lazy() calls, so this import moves metadata, not essays, and
- * registry.tsx is already in the entry chunk by way of src/pages/Thinking.tsx.
+ * Article metadata is generated from the registry during the existing local
+ * content build. Importing the registry itself also pulls interactive article
+ * code into the header, even though search only reads titles and descriptions.
  */
 
 /** How many results are drawn at once. The true match count is still shown. */
@@ -54,7 +54,7 @@ const PAGES: SearchItem[] = [
   },
 ]
 
-const THINKING: SearchItem[] = registeredPieces.map(({ meta }) => ({
+const THINKING: SearchItem[] = articleMeta.map(meta => ({
   id: `thinking-${meta.id}`,
   title: meta.title,
   subtitle: meta.dek,
@@ -95,10 +95,21 @@ const UI: SearchItem[] = uiTiers.flatMap((tier) => {
   }))
 })
 
-/* n3wth.com is one of the four, and its href is a route rather than a URL,
-   so `external` is read off the href instead of assumed. */
+// Keep project discovery in step with the public portfolio. Section routes
+// already appear in PAGES, even if an older project still points to one.
+const PROJECTS: SearchItem[] = projects
+  .filter(project => !navigation.some(section => section.href === project.url))
+  .map(project => ({
+    id: `project-${project.id}`,
+    title: project.name,
+    subtitle: project.description,
+    href: project.url,
+    external: project.url.startsWith('http'),
+    group: 'Projects',
+  }))
+
 const ELSEWHERE: SearchItem[] = [
-  ...ecosystem.map((property) => ({
+  ...ecosystem.filter(property => !PROJECTS.some(project => project.href === property.href)).map((property) => ({
     id: `elsewhere-${property.id}`,
     title: property.name,
     subtitle: property.purpose,
@@ -106,18 +117,10 @@ const ELSEWHERE: SearchItem[] = [
     external: property.href.startsWith('http'),
     group: 'Elsewhere' as const,
   })),
-  {
-    id: 'elsewhere-lunchmoney',
-    title: 'lunchmoney.sh',
-    subtitle: 'Unofficial Lunch Money plugin for Claude, Codex, and Cursor',
-    href: siteUrls.lunch,
-    external: true,
-    group: 'Elsewhere' as const,
-  },
 ]
 
 const STATIC_ITEMS: SearchItem[] = [
-  ...PAGES,
+  ...PAGES, ...PROJECTS,
   ...THINKING, ...KIT, ...UI, ...HOOKS, ...ELSEWHERE,
 ]
 
@@ -131,7 +134,8 @@ function renderAnswerLinks(text: string): Array<string | { label: string; href: 
   let match: RegExpExecArray | null
   while ((match = linkRe.exec(text))) {
     if (match.index > last) parts.push(text.slice(last, match.index))
-    parts.push({ label: match[1], href: match[2] })
+    const href = answerLinkHref(match[2])
+    parts.push(href ? { label: match[1], href } : match[1])
     last = match.index + match[0].length
   }
   if (last < text.length) parts.push(text.slice(last))
@@ -486,6 +490,8 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   )
 
   const onPanelKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    // Candidate selection belongs to the input method, not search navigation.
+    if (event.defaultPrevented || event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) return
     if (event.key === 'Tab') {
       const panel = panelRef.current
       if (!panel) return
@@ -601,7 +607,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               aria-expanded="true"
               aria-controls={LIST_ID}
               aria-autocomplete="list"
-              aria-label="Search pages, pieces, components and garden notes"
+              aria-label="Search pages, projects, pieces, components and garden notes"
               aria-activedescendant={safeIndex >= 0 ? optionId(safeIndex) : undefined}
               autoComplete="off"
               autoCorrect="off"

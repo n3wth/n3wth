@@ -8,7 +8,7 @@
  * (src/lib/__tests__/search.test.ts).
  */
 
-export type ResultGroup = 'Pages' | 'Thinking' | 'Library' | 'Garden' | 'Elsewhere'
+export type ResultGroup = 'Pages' | 'Projects' | 'Thinking' | 'Library' | 'Garden' | 'Elsewhere'
 
 export interface SearchItem {
   id: string
@@ -26,6 +26,7 @@ export interface SearchItem {
  */
 export const GROUP_ORDER: readonly ResultGroup[] = [
   'Pages',
+  'Projects',
   'Thinking',
   'Library',
   'Garden',
@@ -34,10 +35,11 @@ export const GROUP_ORDER: readonly ResultGroup[] = [
 
 const GROUP_RANK: Record<ResultGroup, number> = {
   Pages: 0,
-  Thinking: 1,
-  Library: 2,
-  Garden: 3,
-  Elsewhere: 4,
+  Projects: 1,
+  Thinking: 2,
+  Library: 3,
+  Garden: 4,
+  Elsewhere: 5,
 }
 
 /* Bands, not a continuous scale: a title match of any kind always outranks
