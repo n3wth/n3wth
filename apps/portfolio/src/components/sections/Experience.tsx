@@ -4,6 +4,11 @@ import { SiteSection, SiteHeading, SiteText } from '@n3wth/ui/site'
 export function Experience() {
   return (
     <SiteSection id="work" aria-label="Experience" className="site-content-gutter" style={{ paddingTop: 0 }}>
+      <SiteText>
+        I build AI products and developer tools. At Google, I work on platforms
+        that bring DeepMind models into production software. My earlier work
+        spans robotics, video calling, and enterprise AI.
+      </SiteText>
       <ol className="work-chapters">
         {experiences.map((exp) => (
           <li key={exp.id} id={exp.id} className="work-chapter">
