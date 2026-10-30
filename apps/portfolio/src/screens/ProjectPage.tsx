@@ -35,15 +35,15 @@ const details = {
   ui: {
     title: '@n3wth/ui',
     question: 'A common visual system for individual sites',
-    description: 'A React component library with theme tokens, typography, native controls, and page compositions shared across the n3wth sites. The package keeps the visual foundation in one place while each app owns its content and routes.',
+    description: 'A shared React theme and page system built on Astryx. The package brings typography, tokens, and page compositions together across the n3wth sites while each app owns its content and routes.',
     install: 'npm install @n3wth/ui',
     sections: [
-      ['Primitives and compositions', 'Use native controls through the primitives entry point, then compose them with the shared site layout, typography, and footer pieces.'],
-      ['Tokens and themes', 'The package owns the color, type, spacing, and light and dark theme foundations used by the portfolio and its related projects.'],
-      ['Documentation', 'The design-system reference now lives beside the project here, with the source and published package remaining available for installation.'],
+      ['A clear boundary', 'Astryx supplies generic controls and their interaction behavior. UI owns the React integration, brand theme, fonts, and shared page structure. Applications own routing, data, and specialized interactions.'],
+      ['One foundation across sites', 'The portfolio and related sites share color, type, spacing, navigation, and footer components. A shared package keeps those decisions together without making every page the same.'],
+      ['Inspect and try it', 'The current implementation and package releases live in the n3wth monorepo. The documentation includes a working page example, native control APIs, and the shared layout components used on this site.'],
     ],
     docs: '/docs/ui/quickstart',
-    source: 'https://github.com/n3wth/ui',
+    source: 'https://github.com/n3wth/n3wth/tree/main/packages/ui',
   },
 } as const
 
