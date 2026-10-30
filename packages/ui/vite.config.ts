@@ -8,6 +8,8 @@ import { buildStyles } from './scripts/build-styles.mjs'
 import { packageEmission } from './scripts/package-emission.mjs'
 
 export default defineConfig({
+  // Preserved modules produce hundreds of asset lines; keep warnings and errors.
+  logLevel: 'warn',
   plugins: [
     packageEmission(),
     { name: 'package-styles', writeBundle: buildStyles },
@@ -34,11 +36,11 @@ export default defineConfig({
     copyPublicDir: false,
     lib: {
       entry: {
-        index: resolve(__dirname, 'src/index.ts'),
-        'og/index': resolve(__dirname, 'src/og/index.ts'),
-        'site/index': resolve(__dirname, 'src/site/index.tsx'),
-        'primitives/index': resolve(__dirname, 'src/primitives/index.ts'),
-        'visuals/index': resolve(__dirname, 'src/visuals/index.ts'),
+        index: resolve(import.meta.dirname, 'src/index.ts'),
+        'og/index': resolve(import.meta.dirname, 'src/og/index.ts'),
+        'site/index': resolve(import.meta.dirname, 'src/site/index.tsx'),
+        'primitives/index': resolve(import.meta.dirname, 'src/primitives/index.ts'),
+        'visuals/index': resolve(import.meta.dirname, 'src/visuals/index.ts'),
       },
       formats: ['es'],
     },
@@ -78,8 +80,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      'react/jsx-dev-runtime': resolve(__dirname, 'src/utils/jsx-dev-runtime.js'),
-      '@': resolve(__dirname, './src')
+      'react/jsx-dev-runtime': resolve(import.meta.dirname, 'src/utils/jsx-dev-runtime.js'),
+      '@': resolve(import.meta.dirname, './src')
     }
   },
   // Optimize dependency pre-bundling
