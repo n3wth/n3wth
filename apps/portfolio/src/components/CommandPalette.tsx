@@ -628,7 +628,12 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           </div>
 
           {trimmed.length >= AI_MIN_CHARS && (
-            <div className="shrink-0 px-4 py-3">
+            <div
+              className="max-h-[40vh] shrink-0 overflow-y-auto overscroll-contain px-4 py-3"
+              role="region"
+              aria-label="Search answer"
+              tabIndex={askState === 'answered' ? 0 : undefined}
+            >
               {askState === 'loading' && (
                 <div className="command-palette-loading" role="status" aria-label="Searching">
                   <span /><span /><span />
