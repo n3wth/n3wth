@@ -60,5 +60,9 @@ if (path.startsWith('thinking/')) schemas.push(buildArticleSchema({ url, title: 
     <SiteHeader pathname={`/${path}`} client:load />
     <div class="n3wth-site-main"><div class="frame"><main id="main" tabindex="-1"><slot /></main></div></div>
     {path !== '' && <Footer client:load />}
+    <script>
+      import { mountRouteTransitions } from '../lib/routeTransition'
+      mountRouteTransitions()
+    </script>
   </body>
 </html>

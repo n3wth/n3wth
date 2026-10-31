@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { PageHeader } from '@n3wth/ui/site'
+import { RouteMorph } from './RouteMorph'
 import { SectionStory, type SectionStoryKind } from './SectionStory'
 import './sectionHero.css'
 
@@ -37,6 +38,7 @@ export function SectionHeader({
     <>
       <div className="portfolio-story-hero">
         <SectionStory kind={story} />
+        <RouteMorph kind={story} />
         <Heading className="sr-only">{title}</Heading>
       </div>
       {action && <div className="site-content-gutter portfolio-story-actions">{action}</div>}
