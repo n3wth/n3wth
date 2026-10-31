@@ -24,7 +24,7 @@
 .nav-anchor { display: none; }
 
 @media (min-width: 1024px) {
-  .n3wth-site-navigation-links a:has(.nav-anchor) {
+  a:has(> .nav-anchor) {
     position: relative;
     text-decoration: none;
   }
@@ -63,13 +63,13 @@
 
   .section-story,
   .portfolio-story-hero ~ *,
-  .n3wth-site-footer {
+  footer {
     transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   html[data-route-leave] .section-story,
   html[data-route-leave] .portfolio-story-hero ~ *,
-  html[data-route-leave] .n3wth-site-footer {
+  html[data-route-leave] footer {
     opacity: 0;
   }
 }
