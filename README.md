@@ -2,14 +2,20 @@
 
 AI product lead at Google. San Francisco.
 
-I build agent infrastructure: memory, tooling, and interfaces that make AI systems useful over long horizons, plus smart-home and design systems.
+I work on AI agents that remember, adapt and earn trust over time.
 
-## Building
+## At Google
+
+- [Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model) — open-source plugin for designing and reviewing software with AI agents. One agent keeps the project context; independent reviewers start fresh. Built with a small group at Google. [egm.dev](https://egm.dev)
+
+## Independent projects
 
 - [r3](https://github.com/n3wth/r3) — persistent memory for AI apps over MCP
-- [ui](https://github.com/n3wth/personal-site/tree/main/packages/ui) — shared design system for n3wth sites
+- [markup](https://github.com/n3wth/markup) — prototype where personal AI agents work alongside people in documents and chat
+- [skills](https://github.com/n3wth/skills) — catalog of skills for AI coding assistants
+- [lunchmoney-mcp](https://github.com/n3wth/lunchmoney-mcp) — unofficial, read-only Lunch Money integration for agents
+- [hop](https://github.com/n3wth/hop) — points-vs-cash flight optimizer
 - [canvas](https://github.com/n3wth/canvas) — live canvases with realtime sync
-- [gbrain](https://github.com/n3wth/gbrain) — personal knowledge base an agent can read and write
-- [lunchmoney](https://lunchmoney.sh) — unofficial Lunch Money plugin
+- [ui](https://github.com/n3wth/ui) — design system for n3wth sites
 
-[Website](https://n3wth.com) · [Website source](https://github.com/n3wth/personal-site) · [LinkedIn](https://linkedin.com/in/n3wth)
+[Website](https://n3wth.com) · [LinkedIn](https://www.linkedin.com/in/n3wth)
